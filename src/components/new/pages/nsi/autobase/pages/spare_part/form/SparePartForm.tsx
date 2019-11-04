@@ -141,17 +141,17 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
-            <ExtField
-              type="date"
-              label="Дата поставки"
-              date={state.supplied_at}
-              time={false}
-              error={errors.supplied_at}
-              onChange={this.props.handleChange}
-              boundKeys="supplied_at"
-              disabled={!isPermitted}
-            />
-          </EtsBootstrap.Col>
+              <ExtField
+                type="date"
+                label="Дата поставки"
+                date={state.supplied_at}
+                time={false}
+                error={errors.supplied_at}
+                onChange={this.props.handleChange}
+                boundKeys="supplied_at"
+                disabled={!isPermitted}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
@@ -173,12 +173,12 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
         <EtsBootstrap.ModalFooter>
           {
             isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
+              ? (
+                <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
           }
           <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>

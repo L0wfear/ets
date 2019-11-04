@@ -88,7 +88,9 @@ const fixedValidators = [
   {
     name: 'maxLength',
     validator(config, value) {
-      if (typeof config.maxLength === 'undefined') { return undefined; }
+      if (typeof config.maxLength === 'undefined') {
+        return undefined; 
+      }
       return String(value).length > config.maxLength
         ? `Поле "${config.title || config.key}" должно содержать не больше ${
           config.maxLength
@@ -99,7 +101,9 @@ const fixedValidators = [
   {
     name: 'minLength',
     validator(config, value) {
-      if (typeof config.maxLength === 'undefined') { return undefined; }
+      if (typeof config.maxLength === 'undefined') {
+        return undefined; 
+      }
       return String(value).length < config.minLength
         ? `Поле "${config.title || config.key}" должно содержать не меньше ${
           config.minLength
@@ -110,7 +114,9 @@ const fixedValidators = [
   {
     name: 'equalLength',
     validator(config, value) {
-      if (typeof config.equalLength === 'undefined') { return undefined; }
+      if (typeof config.equalLength === 'undefined') {
+        return undefined; 
+      }
       const stringPresent = String(value);
       return stringPresent.length < config.equalLength
         || stringPresent.length > config.equalLength

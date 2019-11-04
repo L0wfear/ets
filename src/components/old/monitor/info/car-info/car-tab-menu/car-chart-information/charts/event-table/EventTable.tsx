@@ -34,12 +34,12 @@ const EventTable: React.FC<Props> = React.memo(
           {
             front_events_list.length
               ? front_events_list.map((row, indexRow) => (
-                  <EtsBootstrap.Grid.GridBootstrapTbody.Tr enable borderedTd={true} key={indexRow} data-ievent={indexRow} onClick={handleEventClick} registryKey="car_info-event_table">
-                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.date}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.type_name}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.value}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-                  </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
-                ))
+                <EtsBootstrap.Grid.GridBootstrapTbody.Tr enable borderedTd={true} key={indexRow} data-ievent={indexRow} onClick={handleEventClick} registryKey="car_info-event_table">
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.date}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.type_name}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.value}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+              ))
               : (
                 <EtsBootstrap.Grid.GridBootstrapTbody.Tr borderedTd={true} registryKey={'car_info-event_table'}>
                   <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter={true} colSpan={3}>Нет данных</EtsBootstrap.Grid.GridBootstrapTbody.Td>

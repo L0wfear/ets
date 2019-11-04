@@ -68,8 +68,8 @@ const Title: React.FC<Props> = React.memo(
       [is_current_structure, dispatch, props.registryKey],
     );
     return (
-      userStructureId &&
-        <ChangeIsCurrentStructureWrap>
+      userStructureId
+        && <ChangeIsCurrentStructureWrap>
           <ExtField
             type="boolean"
             value={is_current_structure}

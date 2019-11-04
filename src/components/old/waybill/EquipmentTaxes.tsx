@@ -52,7 +52,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const result = data.reduce(
       (res, cur) => {
         if (typeof cur.RESULT !== 'undefined') {
-          res += parseFloat(cur.RESULT); // tslint:disable-line:no-console
+          res += parseFloat(cur.RESULT); // eslint-disable-line
         }
         return res;
       },
@@ -68,7 +68,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const result = data.reduce(
       (res, cur) => {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
-          res += parseFloat(cur.FACT_VALUE); // tslint:disable-line:no-console
+          res += parseFloat(cur.FACT_VALUE); // eslint-disable-line
         }
         return res;
       },
@@ -77,8 +77,8 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     return parseFloat(result).toFixed(3);
   }
 
-  tableCaptions: any[];
-  tableCols: string[];
+  tableCaptions: Array<any>;
+  tableCols: Array<string>;
   tableCellRenderers: Record<string, any>;
 
   constructor(props) {

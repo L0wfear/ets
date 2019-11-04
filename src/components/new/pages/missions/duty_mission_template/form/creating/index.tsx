@@ -8,7 +8,7 @@ const DutyMissionTemplateCreatingForm = React.lazy(() =>
 );
 
 // Ленивая загрузка шаблона наряд-задания
-const DutyMissionTemplateCreatingFormLazy: React.FC<WithFormRegistrySearchAddProps<null> & { dutyMissionTemplates: Record<DutyMissionTemplate['id'], DutyMissionTemplate> }> = React.memo(
+const DutyMissionTemplateCreatingFormLazy: React.FC<WithFormRegistrySearchAddProps<null> & { dutyMissionTemplates: Record<DutyMissionTemplate['id'], DutyMissionTemplate>; }> = React.memo(
   (props) => {
     const path = `${props.path ? `${props.path}-` : ''}duty_mission_template_form`;
 

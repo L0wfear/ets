@@ -63,7 +63,7 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
     }
 
     this.setState({ ...changeStateObj });
-  }
+  };
 
   render() {
     const {

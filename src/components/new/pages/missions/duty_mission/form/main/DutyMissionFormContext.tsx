@@ -9,7 +9,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 const formKey: FormKeys = 'duty_mission';
 
 // new withForm
-const DutyMissionFormContext: React.FC<WithFormRegistrySearchAddProps<Partial<DutyMission>> & { readOnly?: boolean }> = React.memo(
+const DutyMissionFormContext: React.FC<WithFormRegistrySearchAddProps<Partial<DutyMission>> & { readOnly?: boolean; }> = React.memo(
   (props) => {
     const {
       hasData,

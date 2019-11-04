@@ -13,7 +13,7 @@ const reportUrl = 'daily-cleaning-reports-ets';
 const serviceName = 'DailyCleaningReportsServiceETS';
 
 const schemaMakers = {
-    cars_gov_numbers: (schema) => ({
+  cars_gov_numbers: (schema) => ({
     ...schema,
     filter: {
       type: 'string',

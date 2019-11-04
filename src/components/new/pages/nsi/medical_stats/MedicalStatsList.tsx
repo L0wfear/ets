@@ -24,10 +24,10 @@ const MedicalStatsList: React.FC<Props> = (props) => {
       dispatch(
         registryAddInitialData(
           getToConfig(
-              date_from || createValidDateTime(getToday0am()),
-              date_to || createValidDateTime(getToday2359()),
-            ),
+            date_from || createValidDateTime(getToday0am()),
+            date_to || createValidDateTime(getToday2359()),
           ),
+        ),
       );
       return () => {
         dispatch(

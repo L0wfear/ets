@@ -11,7 +11,7 @@ export const promiseGetSpecialModel = async (payload: object) => {
     response = null;
   }
 
-  const data: SpecialModel[] = get(response, 'result.rows', []);
+  const data: Array<SpecialModel> = get(response, 'result.rows', []);
 
   return {
     data,

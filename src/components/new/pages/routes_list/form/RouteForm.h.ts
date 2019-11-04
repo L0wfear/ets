@@ -33,7 +33,7 @@ export type InputRouteFormProps = {
   fromMission?: boolean;
   fromMissionTemplate?: boolean;
   fromOrder?: boolean;
-  missionAvailableRouteTypes?: string[];
+  missionAvailableRouteTypes?: Array<string>;
   hasMissionStructureId?: boolean;
 
 };
@@ -49,9 +49,9 @@ export type PropsRouteWithForm = StateRouteFormProps &
   };
 
 export type FormStateRouteForm = Route & {
-  normatives: any[];
-  available_route_types: string[];
-  draw_object_list: any[];
+  normatives: Array<any>;
+  available_route_types: Array<string>;
+  draw_object_list: Array<any>;
 };
 
 export type PropsRouteForm = OutputWithFormProps<

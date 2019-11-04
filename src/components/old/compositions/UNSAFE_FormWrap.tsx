@@ -40,7 +40,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
   }
 
   // prettier-ignore
-  UNSAFE_componentWillReceiveProps(props) { // tslint:disable-line:no-console
+  UNSAFE_componentWillReceiveProps(props) { // eslint-disable-line
     if (props.showForm && props.showForm !== this.props.showForm) {
       let element = {};
       if (props.element !== null) {
@@ -94,7 +94,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
     const { formState } = this.state;
     const newState: any = {};
 
-    console.info('Form changed', field, value);  // tslint:disable-line:no-console
+    console.info('Form changed', field, value);  // eslint-disable-line
     formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);
@@ -197,7 +197,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(errorData.error_text);  // tslint:disable-line:no-console
+          console.warn(errorData.error_text);  // eslint-disable-line
           return;
         }
       } else {
@@ -223,7 +223,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(error_text);  // tslint:disable-line:no-console
+          console.warn(error_text);  // eslint-disable-line
           return;
         }
       } else {

@@ -11,7 +11,7 @@ export const promiseGetTechnicalOperationObjects = async (payload: any) => {
     response = null;
   }
 
-  const data: TechnicalOperationObjects[] = get(response, 'result.rows', []);
+  const data: Array<TechnicalOperationObjects> = get(response, 'result.rows', []);
 
   return data;
 };

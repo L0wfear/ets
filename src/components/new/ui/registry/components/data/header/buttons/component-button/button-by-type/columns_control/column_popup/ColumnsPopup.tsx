@@ -62,24 +62,24 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
 
   return (
     <ColumnPopupContainer>
-    {
-      props.fields.reduce(
-        (newArr, fieldData, index) => {
-          if ('key' in fieldData && fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
-            newArr.push(
-              <ControlItem
-                key={fieldData.key.toString()}
-                fieldData={fieldData}
+      {
+        props.fields.reduce(
+          (newArr, fieldData, index) => {
+            if ('key' in fieldData && fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
+              newArr.push(
+                <ControlItem
+                  key={fieldData.key.toString()}
+                  fieldData={fieldData}
 
-                onChange={handleChange}
-              />,
-            );
-          }
-          return newArr;
-        },
-        [],
-      )
-    }
+                  onChange={handleChange}
+                />,
+              );
+            }
+            return newArr;
+          },
+          [],
+        )
+      }
     </ColumnPopupContainer>
   );
 };

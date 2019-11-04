@@ -21,11 +21,11 @@ export type ConfigPageData = {
     update?: Parameters<typeof validatePermissions>[0];
     delete?: Parameters<typeof validatePermissions>[0];
     [k: string]: Parameters<typeof validatePermissions>[0];
-  }
+  };
 
-  noHash?: boolean
+  noHash?: boolean;
   noRoute?: boolean;
-  checkHidden?: (isShow: boolean, userData: InitialStateSession['userData']) => boolean,
+  checkHidden?: (isShow: boolean, userData: InitialStateSession['userData']) => boolean;
 };
 
 export type ConfigPageDataOrDivider = (
@@ -37,8 +37,8 @@ export type ConfigPageDataOrDivider = (
 
 export type ConfigParentData = {
   title: string;
-  children: Record<string, ConfigParentData | ConfigPageDataOrDivider>,
-  hiddenNav?: boolean,
+  children: Record<string, ConfigParentData | ConfigPageDataOrDivider>;
+  hiddenNav?: boolean;
   permissions: {
     [P in keyof ConfigPageData['permissions']]: ConfigPageData['permissions'][P];
   };

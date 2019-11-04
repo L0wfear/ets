@@ -21,7 +21,7 @@ type ButtonCloseEdcRequestStateProps = {
 type ButtonCloseEdcRequestDispatchProps = {
   actionCloseEdcRequestById: HandleThunkActionCreator<typeof edcRequestActions.actionCloseEdcRequestById>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonCloseEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCloseEdcRequestMergeProps = {};

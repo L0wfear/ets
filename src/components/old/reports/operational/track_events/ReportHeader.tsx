@@ -12,10 +12,10 @@ import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapp
 import Div from 'components/old/ui/Div';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
@@ -28,7 +28,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_start: createValidDate(date_start),
       date_end: createValidDate(date_end),
     });
-  }
+  };
   render() {
     const {
       readOnly,

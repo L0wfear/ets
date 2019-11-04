@@ -11,13 +11,13 @@ export type WaybillClosedItemsSubItemsType = {
 };
 
 export type WaybillClosedItemsType = {
-  subItems: WaybillClosedItemsSubItemsType[],
+  subItems: Array<WaybillClosedItemsSubItemsType>;
   tooltip?: string;
   value: string;
 };
 
 export type WaybillClosedAnsType = {
-  items: WaybillClosedItemsType[];
+  items: Array<WaybillClosedItemsType>;
   tooltip?: string;
   title: string;
 };

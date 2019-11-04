@@ -19,8 +19,8 @@ const serviceName = 'LongRepair';
 const testEndRepairWithLongTime20 = (lineData) => {
   const { fact_date_start, fact_date_end } = lineData;
 
-  const ansTest =
-    moment(fact_date_end).diff(moment(fact_date_start), 'days') > 20;
+  const ansTest
+    = moment(fact_date_end).diff(moment(fact_date_start), 'days') > 20;
 
   return ansTest;
 };
@@ -109,7 +109,7 @@ const schemaMakers: ISchemaMaker = {
   }),
 };
 
-const additionalSchemaMakers: IDataTableColSchema[] = [
+const additionalSchemaMakers: Array<IDataTableColSchema> = [
   {
     name: 'additionalFilter#1',
     displayName: 'Тип ремонта',

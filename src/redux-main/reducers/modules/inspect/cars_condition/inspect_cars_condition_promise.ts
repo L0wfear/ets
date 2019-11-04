@@ -45,31 +45,31 @@ const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   // if (inspectCarsConditionBackend) {
-    const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
+  const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
 
-    inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
-    inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', cloneDeep(default_head_operating_base));
+  inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
+  inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', cloneDeep(default_head_operating_base));
 
-    inspectCarsCondition.data = {
-      types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
-        rowData.customId = index + 1;
-        rowData.disabled = true;
-        return rowData;
-      }),
-      types_harvesting_unit: get(inspectCarsCondition, 'data.types_harvesting_unit', []).map((rowData, index) => {
-        rowData.customId = index + 1;
-        return rowData;
-      }),
-      preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
-      headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
-      cars_use: {
-        ...cloneDeep(default_cars_use),
-        ...get(inspectCarsCondition, 'data.cars_use', {}),
-      },
-    };
-    inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
+  inspectCarsCondition.data = {
+    types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
+      rowData.customId = index + 1;
+      rowData.disabled = true;
+      return rowData;
+    }),
+    types_harvesting_unit: get(inspectCarsCondition, 'data.types_harvesting_unit', []).map((rowData, index) => {
+      rowData.customId = index + 1;
+      return rowData;
+    }),
+    preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
+    headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
+    cars_use: {
+      ...cloneDeep(default_cars_use),
+      ...get(inspectCarsCondition, 'data.cars_use', {}),
+    },
+  };
+  inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
-    return inspectCarsCondition;
+  return inspectCarsCondition;
   // }
 
   // return null;
@@ -79,14 +79,14 @@ export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
 
   inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
-      delete rowData.customId;
-      delete rowData.disabled;
-      return rowData;
-    });
+    delete rowData.customId;
+    delete rowData.disabled;
+    return rowData;
+  });
   inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
-      delete rowData.customId;
-      return rowData;
-    });
+    delete rowData.customId;
+    return rowData;
+  });
 
   return inspectCarsCondition;
 };
@@ -104,13 +104,13 @@ export const makeInspectCarsConditionExtendedFront = (elem) => { // Перено
   }
 };
 
-export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number }) => {
+export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number; }) => {
   const response = await promiseGetInspectRegistry<InspectCarsCondition>({
     base_id: payload.carsConditionId,
     type: 'cars_condition',
   });
 
-  const data: InspectCarsCondition[] = response.data;
+  const data: Array<InspectCarsCondition> = response.data;
   return {
     data,
     dataIndex: keyBy(data, 'id'),
@@ -128,7 +128,7 @@ export const promiseGetInspectCarsConditionById = async (id: number) => {
   return makeInspectCarsConditionFront(inspectCarsCondition);
 };
 
-export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number }) => {
+export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number; }) => {
   const inspectCarsCondition: InspectCarsCondition = await promiseCreateInspection({
     base_id: payload.carsConditionId,
     company_id: payload.companyId,

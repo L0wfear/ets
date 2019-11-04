@@ -1,12 +1,12 @@
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import {
-    actionGetAndSetInStoreCarsTravelTime,
-    actionResetCarsTravelTime,
+  actionGetAndSetInStoreCarsTravelTime,
+  actionResetCarsTravelTime,
 } from 'redux-main/reducers/modules/some_uniq/cars_travel_time/actions';
 import {
-    actionGetAndSetInStoreTracksCaching,
-    actionResetTracksCaching,
+  actionGetAndSetInStoreTracksCaching,
+  actionResetTracksCaching,
 } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 

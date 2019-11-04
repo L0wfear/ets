@@ -13,8 +13,8 @@ const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
       window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV) || null,
     );
     return {
-      "Authorization": `Token ${token}`,
-      "Accept": 'application/json',
+      'Authorization': `Token ${token}`,
+      'Accept': 'application/json',
       'Access-Control-Expose-Headers': 'Content-Disposition',
     };
   },

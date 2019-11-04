@@ -6,7 +6,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
 export type TableInputTbodyTrTdProps = {
-  meta: TableMeta<any>[];
+  meta: Array<TableMeta<any>>;
   metaData: TableMeta<any>;
   value: any;
   error: string;

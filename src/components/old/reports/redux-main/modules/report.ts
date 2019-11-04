@@ -91,7 +91,7 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
           if (Array.isArray(value)) {
             newObj[`${key}__in`] = value;
           } else {
-            newObj = {
+            return {
               ...newObj,
               ...value,
             };
@@ -107,11 +107,11 @@ export const getReportData: ReduxTypes.IGetReportData = (serviceName, getOpts: a
       if (deepArr) {
         response.result.rows = response.result.rows.reduce((blockDataObj, blockData) => {
           blockDataObj.array.push({
-              ...blockData,
-              rows: blockData.rows.map((row, index) => {
-                row._uniq_field = index + blockDataObj.index + 1;
-                return row;
-              }),
+            ...blockData,
+            rows: blockData.rows.map((row, index) => {
+              row._uniq_field = index + blockDataObj.index + 1;
+              return row;
+            }),
           });
 
           blockDataObj.index = blockDataObj.index + blockData.rows.length;
@@ -201,12 +201,12 @@ const getReportDataWithSummerDataReducer = (state: IStateReport, { payload }) =>
 };
 
 export const setAllData: any = (response, props) => ({
-    type: GET_REPORT_DATA_WITH_SUMMER_DATA,
-    payload: {
-      data: response,
-      summerData: makeDataForSummerTable(response, props),
-    },
-  }
+  type: GET_REPORT_DATA_WITH_SUMMER_DATA,
+  payload: {
+    data: response,
+    summerData: makeDataForSummerTable(response, props),
+  },
+}
 );
 
 export const setReportDataWithSummerData: any = ({ data, props }) => ({

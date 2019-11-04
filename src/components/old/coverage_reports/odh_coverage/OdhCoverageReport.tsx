@@ -28,7 +28,7 @@ const page = 'odh_coverage_report';
 type OwnProps = {
 };
 type StateProps = {
-  odhCoverageReport: any[];
+  odhCoverageReport: Array<any>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;

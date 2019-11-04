@@ -23,13 +23,13 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     const hidden = !this.state.hidden;
 
     this.setState({ hidden });
-  }
+  };
 
   handleClickOut: React.MouseEventHandler<HTMLDivElement> = () => {
     if (!this.state.hidden) {
       this.setState({ hidden: true });
     }
-  }
+  };
 
   render() {
     return (
@@ -40,16 +40,15 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
               <div className="button-toggle" onClick={this.toggleHidden} >
                 <EtsBootstrap.Glyphicon glyph="search" />
               </div>
-                {
-                  this.state.hidden ?
-                  (
+              {
+                this.state.hidden
+                  ? (
                     <DivNone />
                   )
-                  :
-                  (
+                  :                  (
                     <CarFieldBytextInput />
                   )
-                }
+              }
             </div>
           </div>
         </ClickOutHandler>

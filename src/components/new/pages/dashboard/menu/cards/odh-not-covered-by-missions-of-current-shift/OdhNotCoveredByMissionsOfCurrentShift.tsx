@@ -9,7 +9,7 @@ import List from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-m
 import {
   dashboardLoadOdhNotCoveredByMissionsOfCurrentShift,
   dashboardSetInfoDataInOdhNotCoveredByMissionsOfCurrentShift,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import OdhNotCoveredByMissionsOfCurrentShiftInfo from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/info/OdhNotCoveredByMissionsOfCurrentShiftInfo';
 
 import {
@@ -28,7 +28,7 @@ class OdhNotCoveredByMissionsOfCurrentShift extends React.Component<PropsOdhNotC
         path.split('/').slice(-1)[0]
       ],
     );
-  }
+  };
 
   render() {
     const { items } = this.props;

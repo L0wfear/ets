@@ -90,7 +90,7 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
     const titleModal = `Заявка ЕДЦ №${request_number}`;
     const edcRequestInfoListItem = get(props, 'edcRequestInfoList.0', null); // !!!!Пустой!!!
     const registryKeyIndex = 'lastRequestMissionInfo';
-    // console.log('ChangeStatusRequesForm___ props', props);
+    // console.info('ChangeStatusRequesForm___ props', props);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide}>

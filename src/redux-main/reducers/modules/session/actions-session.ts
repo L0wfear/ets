@@ -67,7 +67,7 @@ export const sessionCahngeCompanyOnAnother: any = (
   };
 };
 
-export const sessionLogin = (user: { login: string; password: string }, meta: LoadingMeta) => async (dispatch) => {
+export const sessionLogin = (user: { login: string; password: string; }, meta: LoadingMeta) => async (dispatch) => {
   const { payload: userDataRaw, token } = await etsLoadingCounter(
     dispatch,
     AuthService.post(user, false, 'json'),

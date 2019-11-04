@@ -15,10 +15,10 @@ export type fuelTypeStructure = {
 };
 
 export type GetSessionCompanyOptionsAns = (
-  DefaultSelectOption<OneSessionCompany['asuods_id'], OneSessionCompany['name'], OneSessionCompany>[]
+  Array<DefaultSelectOption<OneSessionCompany['asuods_id'], OneSessionCompany['name'], OneSessionCompany>>
 );
 
-export const getSessionCompany: Selector<ReduxState, OneSessionCompany[]> = (state) => (
+export const getSessionCompany: Selector<ReduxState, Array<OneSessionCompany>> = (state) => (
   getSessionState(state).userData.companies
 );
 
@@ -27,7 +27,7 @@ export const getSessionCompanyIndex = createSelector(
   (companies) => keyBy(companies, 'asuods_id'),
 );
 
-export const getSessionCompanyOptions = createSelector<ReduxState, OneSessionCompany[], GetSessionCompanyOptionsAns>(
+export const getSessionCompanyOptions = createSelector<ReduxState, Array<OneSessionCompany>, GetSessionCompanyOptionsAns>(
   getSessionCompany,
   (companies) => companies.map((company) => ({
     value: company.asuods_id,
@@ -37,7 +37,7 @@ export const getSessionCompanyOptions = createSelector<ReduxState, OneSessionCom
 );
 
 export type GetSessionFuelTypeOptionsAns = (
-  DefaultSelectOption<fuelTypeStructure['id'], fuelTypeStructure['name'], fuelTypeStructure>[]
+  Array<DefaultSelectOption<fuelTypeStructure['id'], fuelTypeStructure['name'], fuelTypeStructure>>
 );
 
 export const getSessionUserStructureId: Selector<ReduxState, InitialStateSession['userData']['structure_id']> = (state) => (

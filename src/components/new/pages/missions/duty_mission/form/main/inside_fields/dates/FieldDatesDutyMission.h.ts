@@ -14,13 +14,13 @@ export type DispatchPropsFieldDatesDutyMission = {
 export type OwnPropsFieldDatesDutyMission = {
   isPermitted: boolean;
   plan_date_start: DutyMission['plan_date_start'];
-  error_plan_date_start: string,
+  error_plan_date_start: string;
   plan_date_end?: DutyMission['plan_date_end'];
-  error_plan_date_end?: string,
+  error_plan_date_end?: string;
   fact_date_start?: DutyMission['fact_date_start'];
-  error_fact_date_start?: string,
+  error_fact_date_start?: string;
   fact_date_end?: DutyMission['fact_date_end'];
-  error_fact_date_end?: string,
+  error_fact_date_end?: string;
 
   is_cleaning_norm?: DutyMission['is_cleaning_norm'];
   object_type_name?: DutyMission['object_type_name'];

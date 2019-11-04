@@ -15,7 +15,7 @@ export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 
-export type OwnRepairProps = WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap };
+export type OwnRepairProps = WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap; };
 
 export type PropsRepairWithForm = StatePropsRepair &
   OwnRepairProps;

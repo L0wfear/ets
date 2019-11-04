@@ -12,18 +12,18 @@ export type InitialStateSession = {
   userData: {
     structure_id: number | null;
     structure_name: string | null;
-    structures: OneSessionStructure[];
+    structures: Array<OneSessionStructure>;
     map_config: {
       zoom: number;
       coordinates: [number, number];
     };
-    permissions: string[];
+    permissions: Array<string>;
     permissionsSet: Set<string>;
     company_id: number | null;
     isOkrug: boolean;
     isKgh: boolean;
     isGlavControl: boolean;
-    companies: OneSessionCompany[] | null;
+    companies: Array<OneSessionCompany> | null;
     company_name: string | null;
     fio: string | null;
     default_path: string | null;
@@ -40,8 +40,8 @@ export type InitialStateSession = {
   token: string | null;
   appConfig: {
     env: string;
-    map_track_days: number,
-    api_versions: string[];
+    map_track_days: number;
+    api_versions: Array<string>;
     category_license: {
       category_drivers_license: [];
       category_special_license: [];
@@ -67,6 +67,6 @@ export type InitialStateSession = {
   };
   appConfigTracksCaching: {
     api_version_stable: number | null;
-    api_versions: number[];
+    api_versions: Array<number>;
   };
 };

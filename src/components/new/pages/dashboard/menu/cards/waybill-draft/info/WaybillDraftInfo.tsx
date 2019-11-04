@@ -62,16 +62,16 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
         { page: 'dashboard' },
       ),
     ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
-        }
-      });
+      if (waybill_data) {
+        this.setState({
+          showWaybillFormWrap: true,
+          elementWaybillFormWrap: waybill_data,
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not find waybill');
+      }
+    });
   };
 
   handleWaybillFormWrapHide = () => {
@@ -121,14 +121,13 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
           .map(this.mapInfoDataGroupByDate)
         }
         {
-          this.state.showWaybillFormWrap
-            && (
-              <WaybillFormWrap
-                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-                element={this.state.elementWaybillFormWrap}
-              />
-            )
+          this.state.showWaybillFormWrap && (
+            <WaybillFormWrap
+              onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
+              onCallback={this.handleWaybillFormWrapHideAfterSubmit}
+              element={this.state.elementWaybillFormWrap}
+            />
+          )
         }
       </InfoCard>
     );

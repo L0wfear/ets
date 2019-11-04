@@ -101,7 +101,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       id="modal-tech-inspection"
       show
       onHide={props.hideWithoutChanges}
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

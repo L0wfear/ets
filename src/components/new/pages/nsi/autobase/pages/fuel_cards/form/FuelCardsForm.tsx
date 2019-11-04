@@ -98,15 +98,15 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
 
     const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
-    const companiesDefaultValue =
-      IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
+    const companiesDefaultValue
+      = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -184,20 +184,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-            {
-              isPermitted
-                ? (
-                  <EtsBootstrap.Button
-                    disabled={!props.canSave}
-                    onClick={handleSubmit}
-                  >
+          {
+            isPermitted
+              ? (
+                <EtsBootstrap.Button
+                  disabled={!props.canSave}
+                  onClick={handleSubmit}
+                >
                     Сохранить
-                  </EtsBootstrap.Button>
-                ) : (
-                  <DivNone />
-                )
-            }
-            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
+                </EtsBootstrap.Button>
+              ) : (
+                <DivNone />
+              )
+          }
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
@@ -226,8 +226,8 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       const IS_CREATING = !get(props, 'element.id', null);
       const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
-      const companiesDefaultValue =
-        IS_CREATING && companiesFieldIsDisable
+      const companiesDefaultValue
+        = IS_CREATING && companiesFieldIsDisable
           ? userCompanyId
           : props.element.company_id;
 

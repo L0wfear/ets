@@ -10,5 +10,5 @@ export type Company = {
 };
 
 export type IStateCompany = {
-  companyList: Company[];
+  companyList: Array<Company>;
 };

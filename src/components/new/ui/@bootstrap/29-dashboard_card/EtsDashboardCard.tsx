@@ -2,12 +2,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 import themeDashboard from '../@themes/default/dashboard/themeDashboard';
 
-export const EtsDashboardCardContainerWrap = styled.div<{ block?: boolean; themeName?: keyof typeof themeDashboard }>`
+export const EtsDashboardCardContainerWrap = styled.div<{ block?: boolean; themeName?: keyof typeof themeDashboard; }>`
   transition: all 0.5s;
   width: ${({ block, theme, themeName }) => (
     block
-    ? '100%'
-    : `${100 / theme.dashboard[themeName || 'default'].countBlockInLine}%`
+      ? '100%'
+      : `${100 / theme.dashboard[themeName || 'default'].countBlockInLine}%`
   )};
   padding: 10px;
   position: relative;
@@ -19,7 +19,7 @@ export const EtsDashboardCardContainerWrap = styled.div<{ block?: boolean; theme
   }
 `;
 
-export const EtsDashboardCardContainer = styled.div<{ themeName?: keyof typeof themeDashboard }>`
+export const EtsDashboardCardContainer = styled.div<{ themeName?: keyof typeof themeDashboard; }>`
   transition: all 0.5s;
 
   background-color: ${({ theme, themeName }) => theme.dashboard[themeName || 'default'].backgroundColor};

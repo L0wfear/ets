@@ -10,10 +10,10 @@ export type SingleFiled<F> = {
     hidden?: keyof F;
     inline?: boolean;
     readOnly?: boolean;
-    options?: {
+    options?: Array<{
         value: string | number;
         label: string;
-    }[];
+    }>;
     sub_header?: string;
 };
-export type FiledToCheck<F> = SingleFiled<F>[];
+export type FiledToCheck<F> = Array<SingleFiled<F>>;

@@ -174,7 +174,7 @@ class CheckableElementsList<P extends any, S extends any> extends UNSAFE_Element
           }),
         );
       } catch (error) {
-        console.error(error); // tslint:disable-line:no-console
+        console.error(error); // eslint-disable-line
       }
       if (this.removeElementCallback) {
         this.removeElementCallback();

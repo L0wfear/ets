@@ -13,7 +13,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- TechMaintenance ---------- */
-export const autobaseSetTechMaintenance = (techMaintList: TechMaintenance[], techMaintExtra: TechMaintenanceExtra): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetTechMaintenance = (techMaintList: Array<TechMaintenance>, techMaintExtra: TechMaintenanceExtra): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       techMaintList,

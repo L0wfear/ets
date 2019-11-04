@@ -3,10 +3,10 @@ import {
 } from 'api/Services';
 import {
   MaintenanceRate,
- } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
+} from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { get } from 'lodash';
 
-export const getMaintenanceRate = (payload = {}): Promise<{ maintenanceRateList: MaintenanceRate[] }> => {
+export const getMaintenanceRate = (payload = {}): Promise<{ maintenanceRateList: Array<MaintenanceRate>; }> => {
   return MaintenanceRateService
     .get({ ...payload })
     .catch((error) => {

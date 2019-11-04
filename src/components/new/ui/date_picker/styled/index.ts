@@ -19,7 +19,7 @@ export const DividerDatePickerRange = styled.div<{ hasLabel: boolean; }>`
     }
   }
 `;
-export const DatePickerRangeContainer = styled(EtsBootstrap.Row)<{ allWidth?: boolean }>`
+export const DatePickerRangeContainer = styled(EtsBootstrap.Row)<{ allWidth?: boolean; }>`
   width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
   position: relative;

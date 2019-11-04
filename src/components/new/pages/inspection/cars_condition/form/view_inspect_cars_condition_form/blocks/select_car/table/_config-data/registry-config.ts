@@ -5,7 +5,7 @@ import inspectCarsConditionPermissions from 'components/new/pages/inspection/car
 
 export const registryKey = 'InspectCarsConditionsCarsRegistry';
 
-export const getConfig = (array: CarsConditionCars[]): TypeConfigData<CarsConditionCars> => ({
+export const getConfig = (array: Array<CarsConditionCars>): TypeConfigData<CarsConditionCars> => ({
   noInitialLoad: true,
   Service: {},
   registryKey,

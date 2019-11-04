@@ -124,7 +124,7 @@ export default class APIService {
   _path: string;
   serviceName: string;
   url: string;
-  addPath: string[];
+  addPath: Array<string>;
   /**
    * Creates APIService handler for backend service via provided url
    * @param {string} url - url path
@@ -148,7 +148,7 @@ export default class APIService {
     this.get = this.get.bind(this);
   }
   logFunction = (method) =>
-      console.info(`API SERVICE ${method} ${this.getUrl()}`);  // tslint:disable-line:no-console
+    console.info(`API SERVICE ${method} ${this.getUrl()}`);  // eslint-disable-line
 
   getUrlData() {
     const apiVersions = localStorage.getItem(global.API__KEY) || '{}';

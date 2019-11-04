@@ -70,7 +70,7 @@ export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 's
 export type EtsModalContainerProps = {
   id: string;                                       // ясно понятно
   show: boolean;                                    // ясно понятно
-  onHide?: (...arg: any[]) => any;                   // ясно понятно
+  onHide?: (...arg: Array<any>) => any;                   // ясно понятно
   bsSize?: 'large' | 'small' | 'medium';            // размер формы | small - дефолт
   themeName?: keyof typeof themeModal;
   noPadding?: boolean;

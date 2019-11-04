@@ -42,17 +42,17 @@ const InfoCard: React.FC<PropsInfoCard> = React.memo(
     <InfoCardWrapContainer>
       <CardInfoContainer>
         <EtsBootstrap.DashboardCard block>
-        <CardTitleContainer>
-          <CardTitleContainerWrap>
-            <div>{props.title}</div>
-            <CardInfoCloseBtn onClick={props.handleClose}>
+          <CardTitleContainer>
+            <CardTitleContainerWrap>
+              <div>{props.title}</div>
+              <CardInfoCloseBtn onClick={props.handleClose}>
               ×
-            </CardInfoCloseBtn>
-          </CardTitleContainerWrap>
-        </CardTitleContainer>
-        <CardBodyContainer>
-          { props.children }
-        </CardBodyContainer>
+              </CardInfoCloseBtn>
+            </CardTitleContainerWrap>
+          </CardTitleContainer>
+          <CardBodyContainer>
+            { props.children }
+          </CardBodyContainer>
         </EtsBootstrap.DashboardCard>
       </CardInfoContainer>
     </InfoCardWrapContainer>

@@ -54,8 +54,8 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
     );
 
     return (
-      isActive &&
-        <Component
+      isActive
+        && <Component
           id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
           key={props.fieldMeta.key}
           registryKey={props.registryKey}

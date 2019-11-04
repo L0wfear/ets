@@ -27,18 +27,18 @@ type PropsRouteCreatingMap = {
   disabled?: boolean;
   handleFeatureClick: any;
   handleDrawFeatureClick: any;
-  drawObjectList: {
-    object_id: number,
-    shape: object,
-    type: 'odh' | 'dt' | 'points',
-  }[],
-  objectsType: 'mixed' | 'simple_dt' | 'points',
-  objectList: {
-    frontId?: number,
+  drawObjectList: Array<{
+    object_id: number;
+    shape: object;
+    type: 'odh' | 'dt' | 'points';
+  }>;
+  objectsType: 'mixed' | 'simple_dt' | 'points';
+  objectList: Array<{
+    frontId?: number;
     object_id: number | void;
     shape: object;
-    type: 'odh' | 'dt' | 'points',
-  }[];
+    type: 'odh' | 'dt' | 'points';
+  }>;
   manual?: boolean;
   handleClickOnStartDraw: () => any;
   canDraw: boolean;
@@ -51,7 +51,7 @@ type StatePropsRouteCreatingMap = {
 class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StatePropsRouteCreatingMap> {
   handleClickOnRemove = () => {
     this.props.handleRemoveLastDrawFeature();
-  }
+  };
 
   handleEndDraw = (coordinatesArr, distance, type, lines) => {
     const { objectsType } = this.props;
@@ -98,7 +98,7 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
 
       this.props.handlePointAdd({ newPointObject });
     }
-  }
+  };
 
   render() {
     const { props } = this;
@@ -114,92 +114,92 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
     return (
       <MapEtsContainer>
         <MapEtsConsumer>
-        {
-          ({ setMapToContext, removeMapToContext }) => (
-            <MapEts
-              enableInteractions={!disabled}
-              disabledMouseSingleClick={disabled || manual}
-              setMapToContext={setMapToContext}
-              removeMapToContext={removeMapToContext}
-              mapKey="routeCreatingForm"
-            >
-              {
-                ({ map, centerOn }) => (
-                  <>
-                    {
-                      objectsType === 'mixed' || objectsType === 'simple_dt'
-                      ? (
-                        <LayerEditGeoobjRoute
-                          focusOnSelectedGeo={this.props.focusOnSelectedGeo}
-                          map={map}
-                          geoobjects={props.polys}
-                          centerOn={centerOn}
-                          handleFeatureClick={props.handleFeatureClick}
-                        />
-                      )
-                      : (
-                        <DivNone />
-                      )
-                    }
-                    {
-                      objectsType === 'points'
-                      ? (
-                        <LayerShowPointsRoute
-                          map={map}
-                          objectList={objectList}
-                          centerOn={centerOn}
-                          handleFeatureClick={props.handleFeatureClick}
-                        />
-                      )
-                      : (
-                        <DivNone />
-                      )
-                    }
-                    <LayerEditDrawRoute
-                      map={map}
-                      drawObjectList={drawObjectList}
-                      handleDrawFeatureClick={props.handleDrawFeatureClick}
-                    />
-                    {
-                      manual && objectsType === 'mixed' || objectsType === 'points'
-                      ? (
-                        <LayerDraw
-                          map={map}
-                          type={objectsType === 'mixed' ? 'LineString' : 'Point'}
-                          inDraw={manual}
-                          handleEndDraw={this.handleEndDraw}
-                          styled={CACHE_ROUTE_DRAW_STYLES.blue}
-                        />
-                      )
-                      : (
-                        <DivNone />
-                      )
-                    }
-                    {
-                      objectsType === 'mixed' && canDraw
-                      ? (
-                        <RouteDrawButtons
-                          disabledDraw={disabled}
-                          disabledRemove={disabled || !drawObjectList || !drawObjectList.length || manual}
-                          hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList || !objectList.length}
-                          handleClickOnStartDraw={this.props.handleClickOnStartDraw}
-                          handleClickOnRemove={this.handleClickOnRemove}
-                        />
-                      )
-                      : (
-                        <DivNone />
-                      )
-                    }
-                    <LayerBridgesRoute
-                      map={map}
-                      bridges={props.bridges}
-                    />
-                  </>
-                )
-              }
-            </MapEts>
-          )
-        }
+          {
+            ({ setMapToContext, removeMapToContext }) => (
+              <MapEts
+                enableInteractions={!disabled}
+                disabledMouseSingleClick={disabled || manual}
+                setMapToContext={setMapToContext}
+                removeMapToContext={removeMapToContext}
+                mapKey="routeCreatingForm"
+              >
+                {
+                  ({ map, centerOn }) => (
+                    <>
+                      {
+                        objectsType === 'mixed' || objectsType === 'simple_dt'
+                          ? (
+                            <LayerEditGeoobjRoute
+                              focusOnSelectedGeo={this.props.focusOnSelectedGeo}
+                              map={map}
+                              geoobjects={props.polys}
+                              centerOn={centerOn}
+                              handleFeatureClick={props.handleFeatureClick}
+                            />
+                          )
+                          : (
+                            <DivNone />
+                          )
+                      }
+                      {
+                        objectsType === 'points'
+                          ? (
+                            <LayerShowPointsRoute
+                              map={map}
+                              objectList={objectList}
+                              centerOn={centerOn}
+                              handleFeatureClick={props.handleFeatureClick}
+                            />
+                          )
+                          : (
+                            <DivNone />
+                          )
+                      }
+                      <LayerEditDrawRoute
+                        map={map}
+                        drawObjectList={drawObjectList}
+                        handleDrawFeatureClick={props.handleDrawFeatureClick}
+                      />
+                      {
+                        manual && objectsType === 'mixed' || objectsType === 'points'
+                          ? (
+                            <LayerDraw
+                              map={map}
+                              type={objectsType === 'mixed' ? 'LineString' : 'Point'}
+                              inDraw={manual}
+                              handleEndDraw={this.handleEndDraw}
+                              styled={CACHE_ROUTE_DRAW_STYLES.blue}
+                            />
+                          )
+                          : (
+                            <DivNone />
+                          )
+                      }
+                      {
+                        objectsType === 'mixed' && canDraw
+                          ? (
+                            <RouteDrawButtons
+                              disabledDraw={disabled}
+                              disabledRemove={disabled || !drawObjectList || !drawObjectList.length || manual}
+                              hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList || !objectList.length}
+                              handleClickOnStartDraw={this.props.handleClickOnStartDraw}
+                              handleClickOnRemove={this.handleClickOnRemove}
+                            />
+                          )
+                          : (
+                            <DivNone />
+                          )
+                      }
+                      <LayerBridgesRoute
+                        map={map}
+                        bridges={props.bridges}
+                      />
+                    </>
+                  )
+                }
+              </MapEts>
+            )
+          }
         </MapEtsConsumer>
       </MapEtsContainer>
     );

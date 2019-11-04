@@ -53,7 +53,7 @@ class BackToGorod extends React.Component<any, any> {
     } catch (e) {
       console.warn(e); // tslint:disable-line
     }
-  }
+  };
 
   render() {
     const {

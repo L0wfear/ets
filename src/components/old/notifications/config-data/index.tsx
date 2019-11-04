@@ -9,7 +9,7 @@ const notification_page_config: ConfigPageData = {
   path: '/notification-registry',
   title: (
     <div>
-     {'Уведомления '}<NotificationBage />
+      {'Уведомления '}<NotificationBage />
     </div>
   ),
   entyity: '',

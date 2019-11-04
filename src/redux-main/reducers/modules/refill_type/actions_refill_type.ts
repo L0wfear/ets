@@ -18,7 +18,7 @@ export const actionSetCleanCategories = (
   )
 );
 
-export const actionResetRefillTypeAndSetInStore = (): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
+export const actionResetRefillTypeAndSetInStore = (): EtsAction<Promise<Array<RefillType>>> => async (dispatch) => {
   const result = [];
 
   dispatch(
@@ -28,7 +28,7 @@ export const actionResetRefillTypeAndSetInStore = (): EtsAction<Promise<RefillTy
   return result;
 };
 
-export const actionLoadRefillType = (payload: any, meta: LoadingMeta): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
+export const actionLoadRefillType = (payload: any, meta: LoadingMeta): EtsAction<Promise<Array<RefillType>>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseLoadRefillType(payload),
@@ -38,7 +38,7 @@ export const actionLoadRefillType = (payload: any, meta: LoadingMeta): EtsAction
   return result;
 };
 
-export const actionLoadRefillTypeAndSetInStore = (payload: any, meta: LoadingMeta): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
+export const actionLoadRefillTypeAndSetInStore = (payload: any, meta: LoadingMeta): EtsAction<Promise<Array<RefillType>>> => async (dispatch) => {
   const result = await dispatch(
     actionLoadRefillType(
       payload,

@@ -2,7 +2,7 @@ import { get } from 'lodash';
 
 import { VectorObjectService } from 'api/Services';
 
-export const getVectorObject = async (payload: { coordinates: Array<Array<number>>}) => {
+export const getVectorObject = async (payload: { coordinates: Array<Array<number>>;}) => {
   let response = null;
 
   const badData = (

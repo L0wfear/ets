@@ -9,7 +9,7 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 export const getAvailableRouteTypesForDutyMission = (
-  municipalFacilityForMissionList: MunicipalFacility[],
+  municipalFacilityForMissionList: Array<MunicipalFacility>,
   municipal_facility_id: DutyMission['municipal_facility_id'],
 ) => {
   return get(
@@ -54,13 +54,13 @@ export const isPermittedEmployeeForDutyMission = (employee: Employee | null, str
 };
 
 export const makeOptionsByEmployee = memoize(
-  (employeeList: Employee[], structure_id: DutyMission['structure_id']) => {
+  (employeeList: Array<Employee>, structure_id: DutyMission['structure_id']) => {
     const FOREMANS = employeeList.reduce<
-      DefaultSelectOption<
+      Array<DefaultSelectOption<
         Employee['id'],
         string,
-        Employee & { active_for_brigade: boolean }
-      >[]
+        Employee & { active_for_brigade: boolean; }
+      >>
     >((newArr, employee) => {
       const isPermitted = isPermittedEmployeeForDutyMission(
         employee,
@@ -92,5 +92,5 @@ export const dutyMissionIsAssigned = (status) =>
 export const dutyMissionIsComplete = (status) =>
   status === DUTY_MISSION_STATUS.complete;
 export const dutyMissionIsClosed = (status) =>
-  status === DUTY_MISSION_STATUS.complete ||
-  status === DUTY_MISSION_STATUS.fail;
+  status === DUTY_MISSION_STATUS.complete
+  || status === DUTY_MISSION_STATUS.fail;

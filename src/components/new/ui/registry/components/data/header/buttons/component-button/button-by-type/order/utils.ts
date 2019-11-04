@@ -27,14 +27,14 @@ export const isDisabledForCreateDutyMission = (order: Order) => {
     return Boolean(
       isDisabledForCreateMission(order)
       || !technical_operations.some(
-          ({ num_exec, work_type_name }) => (
-            num_exec > 0
+        ({ num_exec, work_type_name }) => (
+          num_exec > 0
             && (
               (isString(work_type_name) && work_type_name.match(/^Ручн*/))
               || (isString(work_type_name) && work_type_name.match(/^Комбиниров*/))
             )
-          ),
         ),
+      ),
     );
   }
 
@@ -70,16 +70,16 @@ export const isDisabledForCreateDutyMissionByTO = (order: Order, technical_opera
     const dateTo = get(technical_operation, 'date_to') || get(order, 'date_to');
 
     return Boolean(
-      status === 'cancelled' ||
-      status === 'suspended' ||
-      !(
-        (work_type_name === null ||
-          (isString(work_type_name) && work_type_name.match(/^Ручн*/)) ||
-          work_type_name === 'Комбинированный') &&
-        num_exec > 0
-      ) ||
-      (num_exec <= 0 && status === 'partially_cancelled') ||
-      diffDates(new Date(), dateTo) > 0,
+      status === 'cancelled'
+      || status === 'suspended'
+      || !(
+        (work_type_name === null
+          || (isString(work_type_name) && work_type_name.match(/^Ручн*/))
+          || work_type_name === 'Комбинированный')
+        && num_exec > 0
+      )
+      || (num_exec <= 0 && status === 'partially_cancelled')
+      || diffDates(new Date(), dateTo) > 0,
     );
   }
 

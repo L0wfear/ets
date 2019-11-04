@@ -49,8 +49,8 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
               key !== 'no_order'
                 ? get(event, 'target.value', event)
                 : get(event, 'target.checked', event)
-              ),
-            },
+            ),
+          },
         });
       },
       [props.onChange, props.preparing_cars_check],

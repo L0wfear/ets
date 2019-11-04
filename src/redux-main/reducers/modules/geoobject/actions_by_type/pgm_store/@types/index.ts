@@ -3,7 +3,7 @@ export type PgmStore = {
   company_name: string;
   company_id: number | null;
   id: number | null;
-  liquid_pgm_volume: number | null
+  liquid_pgm_volume: number | null;
   name: string;
   pgm_stores_type_id: number;
   pgm_stores_type_name: string;

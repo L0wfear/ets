@@ -26,21 +26,21 @@ export type NormRegistrySensorTypes = {
 
 export type Norm = {
   asuods_id: number;
-  car_func_types: NormRegistryCarFuncTypes[];
-  car_func_types_ids: number[]
+  car_func_types: Array<NormRegistryCarFuncTypes>;
+  car_func_types_ids: Array<number>;
   car_func_types_text: string;
-  check_type_names: string
-  check_types: string[];
+  check_type_names: string;
+  check_types: Array<string>;
   conditions: string;
-  consumable_materials_names: string[];
-  elements: NormRegistryElement[];
-  elements_ids: number[];
+  consumable_materials_names: Array<string>;
+  elements: Array<NormRegistryElement>;
+  elements_ids: Array<number>;
   elements_names: string;
   elements_text: string;
   id: number;
   is_cleaning_norm: boolean;
-  kind_task_ids: number[];
-  kind_task_names: string[];
+  kind_task_ids: Array<number>;
+  kind_task_names: Array<string>;
   kind_task_names_text: string;
   max_speed: number;
   max_speed_text: string;
@@ -49,18 +49,18 @@ export type Norm = {
   norm_registry_id: number;
   norm_id: number;
   norm_period: number;
-  normatives: any[];
-  objects: NormRegistryObject[];
-  objects_ids: number[];
-  objects_names: string[];
-  objects_text_array: string[];
+  normatives: Array<any>;
+  objects: Array<NormRegistryObject>;
+  objects_ids: Array<number>;
+  objects_names: Array<string>;
+  objects_text_array: Array<string>;
   objects_text: string;
   period_interval_name: any;
-  route_types: string[];
+  route_types: Array<string>;
   season_id: number;
   season_name: string;
-  sensor_type_ids: number[];
-  sensor_types: NormRegistrySensorTypes[];
+  sensor_type_ids: Array<number>;
+  sensor_types: Array<NormRegistrySensorTypes>;
   sensor_types_text: string;
   technical_operation_id: number;
   type_oper_id: number;

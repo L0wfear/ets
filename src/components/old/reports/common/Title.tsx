@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-interface IPropsTitle {
+type IPropsTitle = {
   hint: string;
   text: string;
-}
+};
 
 const Title: React.FC<IPropsTitle> = (props) => {
   const popover = (
@@ -18,8 +18,8 @@ const Title: React.FC<IPropsTitle> = (props) => {
     <div style={{ display: 'flex' }}>
       <span>{props.text}</span>
       {
-        !!props.hint &&
-        <EtsBootstrap.OverlayTrigger
+        !!props.hint
+        && <EtsBootstrap.OverlayTrigger
           trigger={['hover', 'focus']}
           overlay={popover}
           placement="right"

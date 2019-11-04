@@ -69,21 +69,21 @@ const SelectCarsConditionCompany: React.FC<SelectCarsConditionCompanyProps> = (p
   return (
     <InstectionBlockSelect>
       <SelectLabel md={3} sm={2}>
-          <h5>
+        <h5>
             Организация
-          </h5>
-        </SelectLabel>
-        <SelectField md={9} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={companyId}
-            options={compnayOptions}
-            onChange={setCompanyId}
-            clearable={false}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={companyId}
+          options={compnayOptions}
+          onChange={setCompanyId}
+          clearable={false}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

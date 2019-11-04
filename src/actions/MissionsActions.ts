@@ -6,7 +6,7 @@ import { MissionService } from 'api/missions';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 
 export default class MissionsActions extends Actions {
-  createMissions(missionTemplates: MissionTemplate[], missionsCreationTemplate) {
+  createMissions(missionTemplates: Array<MissionTemplate>, missionsCreationTemplate) {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(
       missionsCreationTemplateCopy.date_start,

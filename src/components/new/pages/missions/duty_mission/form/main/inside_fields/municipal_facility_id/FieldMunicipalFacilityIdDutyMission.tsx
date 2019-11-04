@@ -175,7 +175,7 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
         object_type_name: '',
       });
     }
-  }
+  };
 
   render() {
     const {

@@ -24,7 +24,7 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
     if (element) {
       (element.querySelector('.form-control') as HTMLInputElement).focus();
     }
-  }
+  };
 
   render() {
     return (
@@ -38,23 +38,21 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
           placeholder="рег.номер/гар.номер/БНСО"
         />
         <div className="input_text_action-wrap">
-        {
-          this.props.carFilterText ?
-            <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
-              <EtsBootstrap.Glyphicon glyph="remove" />
-            </div>
-          :
-          <DivNone />
-        }
-        {
-          this.props.canFocusOnCar ?
-            <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
-              <EtsBootstrap.Glyphicon glyph="screenshot" />
-              <span>Показать</span>
-            </div>
-          :
-            <DivNone />
-        }
+          {
+            this.props.carFilterText
+              ? <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
+                <EtsBootstrap.Glyphicon glyph="remove" />
+              </div>
+              :          <DivNone />
+          }
+          {
+            this.props.canFocusOnCar
+              ? <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
+                <EtsBootstrap.Glyphicon glyph="screenshot" />
+                <span>Показать</span>
+              </div>
+              :            <DivNone />
+          }
         </div>
       </div>
     );

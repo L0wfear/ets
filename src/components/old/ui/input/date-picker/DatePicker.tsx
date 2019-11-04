@@ -7,7 +7,7 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 
 const DTPicker: any = DateTimePicker;
 
-export interface DatePickerProps {
+export type DatePickerProps = {
   date: any;
   onChange?: any;
   id?: string;
@@ -20,7 +20,7 @@ export interface DatePickerProps {
   preventDateTime?: boolean;
 
   style?: object;
-}
+};
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
   const {

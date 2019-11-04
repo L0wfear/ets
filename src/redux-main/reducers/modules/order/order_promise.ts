@@ -33,7 +33,7 @@ export const promiseLoadOrderBlob = async (id: Order['id'], eventName: typeof Ty
   if (eventName === TypeDownload.new) {
     payload.format = 'xls';
   }
-  const response: { blob: Blob; fileName: string } = await OrderService.path(id).getBlob(payload);
+  const response: { blob: Blob; fileName: string; } = await OrderService.path(id).getBlob(payload);
 
   return response;
 };
@@ -43,7 +43,7 @@ export const promiseLoadOrderBlobAndSave = (id: Order['id'], eventName: typeof T
     .then(({ blob, fileName }) => saveData(blob, fileName));
 };
 
-export const promiseGetMissionTemplatesCars = async (payload: { order_id: Order['id' ]}) => {
+export const promiseGetMissionTemplatesCars = async (payload: { order_id: Order['id' ];}) => {
   let responce = null;
 
   try {

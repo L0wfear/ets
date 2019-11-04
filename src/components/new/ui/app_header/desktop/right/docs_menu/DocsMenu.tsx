@@ -45,17 +45,17 @@ class PageMenu extends React.Component<any, any> {
     this.setState({
       showChildren: !this.state.showChildren,
     });
-  }
+  };
 
   hiddenChildren = () => {
     this.setState({ showChildren: false });
-  }
+  };
 
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState({ showChildren: false });
     }
-  }
+  };
 
   renderChildrenItem = ([keyName, data]) => {
     return (
@@ -67,7 +67,7 @@ class PageMenu extends React.Component<any, any> {
         hiddenChildren={this.hiddenChildren}
       />
     );
-  }
+  };
 
   render() {
     return (
@@ -82,16 +82,16 @@ class PageMenu extends React.Component<any, any> {
             </LinkFirstLvl>
             {
               this.state.showChildren
-              ? (
-                <SecondMenuContainer position="bottom_left">
-                  {
-                    Object.entries(docs.children).map(this.renderChildrenItem)
-                  }
-                </SecondMenuContainer>
-              )
-              : (
-                <DivNone />
-              )
+                ? (
+                  <SecondMenuContainer position="bottom_left">
+                    {
+                      Object.entries(docs.children).map(this.renderChildrenItem)
+                    }
+                  </SecondMenuContainer>
+                )
+                : (
+                  <DivNone />
+                )
             }
           </DefaultFirstDt>
         </ClickOutHandler>

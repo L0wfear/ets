@@ -75,13 +75,13 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
             body: ' При удалении даты начала задания будет очищена таблица расходных материалов. Продолжить?',
           });
         } catch {
-            // реакт виджет хранит своё состояние
-            // если не менять пропсов, то он показывает старое время
-            const { [field]: old } = this.props;
-            await this.props.onChange({ [field]: createValidDateTime(addSecond(old, 60)) });
+          // реакт виджет хранит своё состояние
+          // если не менять пропсов, то он показывает старое время
+          const { [field]: old } = this.props;
+          await this.props.onChange({ [field]: createValidDateTime(addSecond(old, 60)) });
 
-            setImmediate(() => this.props.onChange({ [field]: old }));
-            return;
+          setImmediate(() => this.props.onChange({ [field]: old }));
+          return;
         }
       }
 
@@ -130,7 +130,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
       }
     }
     this.props.onChange({ [field]: date });
-  }
+  };
 
   render() {
     const {

@@ -31,7 +31,7 @@ export const SpanRed = styled.span`
   color: ${UiConstants.colorError};
 `;
 
-export const ColorSpan = styled.span<{ color: string }>`
+export const ColorSpan = styled.span<{ color: string; }>`
   color: ${({ color }) => color};
 `;
 
@@ -71,7 +71,7 @@ export const EtsGreyPageWrap = styled.div<EtsPageWrapProps>`
   }
 `;
 
-export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string; alignItems?: string }>`
+export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string; alignItems?: string; }>`
   display: flex;
   flex-wrap: ${({ isWrap }) => (isWrap ? 'wrap' : 'initial')};
   flex-direction: ${({ direction }) => (direction ? direction : 'initial')};
@@ -119,7 +119,7 @@ export const DisplayFlexAlignCenterFooterForm = styled.div`
   width: 100%;
 `;
 
-export const FooterEnd = styled.div<{ margin?: number }>`
+export const FooterEnd = styled.div<{ margin?: number; }>`
   display: flex;
   justify-content: flex-end;
 

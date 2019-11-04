@@ -183,8 +183,8 @@ export const dashboardSetInfoDataInWaybillClosed = (infoData: WaybillClosedInfoD
 
 export const dashboardLoadCardData = (path: string, payloadAction: ConfigType['payloadAction']) => {
   const dashboardServiceWithParams = (
-      defAns.backEndKeys[path] || path
-    )
+    defAns.backEndKeys[path] || path
+  )
     .split('/')
     .reduce((ApiService, pathPart) => ApiService.path(pathPart), DashboardService);
 

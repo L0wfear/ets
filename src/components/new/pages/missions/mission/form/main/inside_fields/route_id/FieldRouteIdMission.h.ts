@@ -40,9 +40,9 @@ export type OwnPropsFieldRouteIdMission = {
 
   mission_id: Mission['id'];
 
-  structure_id: Mission['structure_id'],
-  structure_name: Mission['structure_name'],
-  consumable_materials?: Mission['consumable_materials'],
+  structure_id: Mission['structure_id'];
+  structure_name: Mission['structure_name'];
+  consumable_materials?: Mission['consumable_materials'];
 
   hiddenMapConfig: IPropsHiddenMapForPrint['hiddenMapConfig'];
 

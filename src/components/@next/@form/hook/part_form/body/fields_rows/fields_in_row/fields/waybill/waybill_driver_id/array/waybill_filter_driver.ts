@@ -8,14 +8,14 @@ import { hasMotohours } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 const makeEmployeeList = (
-  employeeBindedToCarList: EmployeeBindedToCar[],
-  medicalStatsAllowedDriversListData: MedicalStatsAllowedDriver[],
+  employeeBindedToCarList: Array<EmployeeBindedToCar>,
+  medicalStatsAllowedDriversListData: Array<MedicalStatsAllowedDriver>,
   employeeIndexData: Record<Employee['id'], Employee>,
 ) => {
   return (
     employeeBindedToCarList.length
-    ? employeeBindedToCarList.map(({ employee_id }) => employeeIndexData[employee_id])
-    : medicalStatsAllowedDriversListData.map(({ id }) => employeeIndexData[id])
+      ? employeeBindedToCarList.map(({ employee_id }) => employeeIndexData[employee_id])
+      : medicalStatsAllowedDriversListData.map(({ id }) => employeeIndexData[id])
   ).filter((v) => !!v);
 };
 
@@ -56,8 +56,8 @@ const validateEmployeeByLicense = (gov_number: Car['gov_number'], employeeData: 
 
 const waybillFilterDrivers = memoizeOne(
   (
-    employeeBindedToCarList: EmployeeBindedToCar[],
-    medicalStatsAllowedDriversListData: MedicalStatsAllowedDriver[],
+    employeeBindedToCarList: Array<EmployeeBindedToCar>,
+    medicalStatsAllowedDriversListData: Array<MedicalStatsAllowedDriver>,
     employeeIndexData: Record<Employee['id'], Employee>,
     gov_number: string,
     car_id: number,
@@ -71,7 +71,7 @@ const waybillFilterDrivers = memoizeOne(
       employeeIndexData,
     );
 
-    const driverWithSelectedCar = initialList.reduce<Employee[]>(
+    const driverWithSelectedCar = initialList.reduce<Array<Employee>>(
       (newArr, employeeData) => {
         if (employeeData.prefer_car || employeeData.secondary_car_text) {
           if (
@@ -110,14 +110,14 @@ const waybillFilterDrivers = memoizeOne(
               personnel_number
             }${
               employeeData.last_name || ''} ${
-                employeeData.first_name || ''
-              } ${
-                employeeData.middle_name || ''
-              }`,
-              rowData: {
-                ...employeeData,
-                isPrefer: employeeData.prefer_car === car_id,
-              },
+              employeeData.first_name || ''
+            } ${
+              employeeData.middle_name || ''
+            }`,
+            rowData: {
+              ...employeeData,
+              isPrefer: employeeData.prefer_car === car_id,
+            },
           });
         }
 

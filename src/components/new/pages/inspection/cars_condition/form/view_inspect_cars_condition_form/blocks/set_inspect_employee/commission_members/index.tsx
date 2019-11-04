@@ -55,12 +55,12 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
       setShowCommissionMembers(true);
     },
     [props.commission_members],
-  );
+    );
 
     const handleCloseCommissionMembers = React.useCallback( () => {
-        setShowCommissionMembers(false);
-      },
-      [props.commission_members],
+      setShowCommissionMembers(false);
+    },
+    [props.commission_members],
     );
 
     React.useEffect(() => {
@@ -107,8 +107,8 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
             }
           </CommissionMembersDataContainer>
           {
-            props.isPermittedChangeListParams &&
-              (
+            props.isPermittedChangeListParams
+              && (
                 <CommissionMembersAddBtn
                   disabled={showCommissionMembers}
                   onClick={handleShowCommissionMembers}

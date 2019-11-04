@@ -12,7 +12,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type FielNormsHeaderProps = {
   selectedRowIndex: number;
-  meta: any[];
+  meta: Array<any>;
   buttonWidth: number;
 
   formDataKey: FormKeys;

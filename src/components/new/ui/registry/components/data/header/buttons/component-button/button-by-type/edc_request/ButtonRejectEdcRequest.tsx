@@ -37,7 +37,7 @@ class ButtonRejectEdcRequest extends React.PureComponent<ButtonRejectEdcRequestP
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_reject,
     });
-  }
+  };
 
   render() {
     const { props } = this;

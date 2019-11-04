@@ -2,7 +2,7 @@ import { withHandlers, compose, withState, shouldUpdate } from 'recompose';
 import { isArray, isFunction } from 'util';
 
 type TypePropsOnChangeWithKeys = {
-  boundKeys?: any[];
+  boundKeys?: Array<any>;
   [key: string]: any;
 };
 

@@ -11,7 +11,7 @@ export const getFrontNorm = (normRaw: any, index) => {
   if (normRaw) {
     const norm: Norm = cloneDeep(normRaw);
 
-    const sensor_types: NormRegistrySensorTypes[] = get(norm, 'sensor_types', []);
+    const sensor_types: Array<NormRegistrySensorTypes> = get(norm, 'sensor_types', []);
 
     norm.sensor_types_text = sensor_types.reduce(
       (str, { sensor_type_name }: NormRegistrySensorTypes) => {
@@ -50,7 +50,7 @@ export const getBackNorm = (normRaw: any) => {
 type PromiseGetNormPayload = (
   {}
   | {
-    norm_ids: string[] | string;
+    norm_ids: Array<string> | string;
   }
 );
 
@@ -64,12 +64,12 @@ export const promiseGetNormsByParams = async (payload: PromiseGetNormPayload) =>
     console.error(error); // tslint:disable-line
   }
 
-  const result: Norm[] = get(response, 'result.rows', []);
+  const result: Array<Norm> = get(response, 'result.rows', []);
 
   return result;
 };
 
-export const promiseGetNormByIdAndDate = async (payload: { norm_id: Norm['id'], datetime: string | Date }) => {
+export const promiseGetNormByIdAndDate = async (payload: { norm_id: Norm['id']; datetime: string | Date; }) => {
   let response = null;
   try {
     response = await CleaningNormRegistryService.path(payload.norm_id).get({

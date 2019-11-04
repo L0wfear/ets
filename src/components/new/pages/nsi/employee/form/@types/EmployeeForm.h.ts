@@ -28,12 +28,12 @@ export type PropsEmployee = OutputWithFormProps<
   any
 >;
 export type StateEmployee = {
-  carList: Car[];
-  carOptions: DefaultSelectOption<Car['asuods_id'], string, Car>[];
+  carList: Array<Car>;
+  carOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
   positionOptions: DefaultSelectListMapper<Position>;
   companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear>;
-  isCommonOptions: { value: number; label: string }[];
-  driverStateOptions: { value: number; label: string }[];
-  categoryDriversLicenseOptions: { value: number; label: string }[];
-  categorySpecialLicenseOptions: { value: number; label: string }[];
+  isCommonOptions: Array<{ value: number; label: string; }>;
+  driverStateOptions: Array<{ value: number; label: string; }>;
+  categoryDriversLicenseOptions: Array<{ value: number; label: string; }>;
+  categorySpecialLicenseOptions: Array<{ value: number; label: string; }>;
 };

@@ -63,7 +63,7 @@ class FieldType extends React.PureComponent<PropsFieldType, StateFieldType> {
         type: value,
       });
     }
-  }
+  };
 
   render() {
     const {

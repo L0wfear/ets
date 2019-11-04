@@ -20,20 +20,20 @@ const ImgListFooter: React.FC<ImgListFooterProps> = React.memo(
         const testImgUrl = props.img_url;
         const base_image = new Image();
         let imageHref = '';
-        base_image.addEventListener("load", () => {
+        base_image.addEventListener('load', () => {
           canvasImg.width = base_image.width;
           canvasImg.height = base_image.height;
           const canvasContext: any = canvasImg.getContext('2d');
           canvasContext.drawImage(base_image, 0, 0);
           canvasContext.stroke();
           imageHref = canvasImg.toDataURL('image/png');
-          download.setAttribute("href", imageHref);
+          download.setAttribute('href', imageHref);
           setDisabledBtn(false);
         }, false);
 
         // base_image.src = props.img_url;
         base_image.src = testImgUrl;
-        base_image.crossOrigin = "anonymous";
+        base_image.crossOrigin = 'anonymous';
 
         const download = document.getElementById('download');
       } catch (error) {

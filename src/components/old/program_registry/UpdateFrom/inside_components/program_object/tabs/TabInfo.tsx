@@ -19,8 +19,8 @@ const TableMeta: ITableMetaInfo = [
     key: 'object_property_id',
     title: 'Элемент ДТ',
     style: (numRow, row, errors) => ({
-        minWidth: 200,
-      }),
+      minWidth: 200,
+    }),
     otherProps: (numRow, row, errors) => ({
       className: errors[`element_${numRow}_object_property_id`] ? 'has-error' : null,
     }),
@@ -168,20 +168,20 @@ class PlanTab extends React.Component<any, any> {
     });
 
     this.props.handleChange('elements', newElements);
-  }
+  };
 
   handleClickAddEl = () => {
     this.props.pushElement();
-  }
+  };
   handleClickOnRemove = () => {
     const newElement = this.props.state.elements.filter((d, i) => i !== this.state.selectedRow);
 
     this.props.handleChange('elements', newElement);
     this.setState({ selectedRow: null });
-  }
+  };
   handleRowClick = (index) => {
     this.setState({ selectedRow: index - 1 });
-  }
+  };
 
   getDataByTypeTab: any = () => {
     const {
@@ -232,7 +232,7 @@ class PlanTab extends React.Component<any, any> {
         fieldProps: {},
       };
     }
-  }
+  };
 
   render() {
     const { selectedRow } = this.state;

@@ -1,3 +1,16 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
+  "git.ignoreLimitWarning": true,
+  "editor.insertSpaces": false,
+	"editor.tabSize": 2,
+  "eslint.enable": true,
+  "eslint.workingDirectories": [
+    { "directory": "./packages/egip-client", "changeProcessCWD": true },
+  ],
+  "eslint.validate": [
+		{ "language": "typescript", "autoFix": false },
+		{ "language": "typescriptreact", "autoFix": false }
+  ],
+  "eslint.trace.server": "off",
+	"eslint.lintTask.enable": false
 }

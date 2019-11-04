@@ -24,7 +24,7 @@ const makeData = (front_cars_sensors_level: IStateMonitorPage['carInfo']['trackC
     const data = sensor[sensorRawData ? 'raw_data' : 'data'];
 
     if (sensor.data.length) {
-      newArr = [
+      return [
         ...newArr,
         {
           color: sensor.color,
@@ -51,7 +51,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
     this.setState({
       sensorRawData,
     });
-  }
+  };
 
   handleChartClick = ({ point: { x: timestamp } } ) => {
     const { track } = this.props;
@@ -68,7 +68,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
     });
 
     this.props.handleChartClick(selected_point);
-  }
+  };
 
   makeData = memoize(
     (front_cars_sensors_level, sensorRawData) => (
@@ -96,47 +96,45 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
       <div>
         {
           Boolean(isArray(this.props.track) ? this.props.track.length === 0 : true)
-          ? (
-            <div className="center-preloader">
-              <div>{NO_DATA_TEXT}</div>
-            </div>
-          )
-          : (
-            <div className="car_info-line_chart_wrap" >
-              {
-                !this.props.has_cars_sensors ?
-                (
-                  <div className="center-preloader">
-                    {NO_SENSORS_LEVEL_TEXT}
-                  </div>
-                )
-                :
-                (
-                  data.length === 0 ?
-                  (
-                    <div className="center-preloader">
-                      <div>{NO_DATA_TEXT}</div>
-                    </div>
-                  )
+            ? (
+              <div className="center-preloader">
+                <div>{NO_DATA_TEXT}</div>
+              </div>
+            )
+            : (
+              <div className="car_info-line_chart_wrap" >
+                {
+                  !this.props.has_cars_sensors
+                    ? (
+                      <div className="center-preloader">
+                        {NO_SENSORS_LEVEL_TEXT}
+                      </div>
+                    )
+                    :                (
+                      data.length === 0
+                        ? (
+                          <div className="center-preloader">
+                            <div>{NO_DATA_TEXT}</div>
+                          </div>
+                        )
 
-                  :
-                  <React.Fragment>
-                    <LineChart
-                      data={data}
-                      onClick={this.handleChartClick}
-                      name="fuel-chart"
-                      showX
-                    />
-                    <div className="chart-select_raw" onClick={this.handleClick}>
-                      <input readOnly type="checkbox" checked={this.state.sensorRawData} />
-                      <span>Исходные данные датчиков</span>
-                    </div>
-                  </React.Fragment>
-                )
-              }
-              <EventTable handleEventClick={this.props.handleEventClick} />
-            </div>
-          )
+                        :                  <React.Fragment>
+                          <LineChart
+                            data={data}
+                            onClick={this.handleChartClick}
+                            name="fuel-chart"
+                            showX
+                          />
+                          <div className="chart-select_raw" onClick={this.handleClick}>
+                            <input readOnly type="checkbox" checked={this.state.sensorRawData} />
+                            <span>Исходные данные датчиков</span>
+                          </div>
+                        </React.Fragment>
+                    )
+                }
+                <EventTable handleEventClick={this.props.handleEventClick} />
+              </div>
+            )
         }
       </div>
     );

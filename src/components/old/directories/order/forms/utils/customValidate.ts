@@ -1,23 +1,23 @@
 import { typeTemplate } from 'components/old/directories/order/forms/utils/constant';
 import { checkMissionsOnStructureIdBrigade } from 'components/new/pages/missions/duty_mission_template/form/creating/utils';
 
-interface IMission {
+type IMission = {
   structure_id: number | void;
-  car_ids: number[];
+  car_ids: Array<number>;
   number: number;
   route_type: string;
   is_cleaning_norm: boolean;
-}
+};
 
-interface ICar {
+type ICar = {
   company_structure_id: number | void;
   is_common: boolean;
-}
-interface ICarsIndex {
+};
+type ICarsIndex = {
   [asuods_id: number]: ICar;
-}
+};
 
-type ICheckMissionsOnStructureIdCar = (missionsArr: IMission[], carsIndex: ICarsIndex) => boolean;
+type ICheckMissionsOnStructureIdCar = (missionsArr: Array<IMission>, carsIndex: ICarsIndex) => boolean;
 
 export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (missionsArr, carsIndex) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);

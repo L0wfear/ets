@@ -34,7 +34,7 @@ const cssHasRightAddon = css`
     border-bottom-right-radius: 0;
   }
 `;
-const EtsGroup = styled.div<{ has_right_addon?: boolean }>`
+const EtsGroup = styled.div<{ has_right_addon?: boolean; }>`
   width: 100%;
   display: flex;
 

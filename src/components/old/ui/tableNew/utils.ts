@@ -72,7 +72,7 @@ const checkFilterByAdvancedNumber = (f_data, rowCol) =>
       case 'gt': return !(Number(filter_value) < Number(rowCol));
       case 'gte': return !(Number(filter_value) <= Number(rowCol));
       default: {
-        console.log(`no define filter for ${filter_type}`); // tslint:disable-line:no-console
+        console.info(`no define filter for ${filter_type}`); // eslint-disable-line
         return true;
       }
     }
@@ -89,7 +89,7 @@ const checkFilterByAdvancedString = (f_data, rowCol) =>
       case 'gt': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) < 0);
       case 'gte': return !(String(filter_value).toLowerCase().localeCompare(String(rowCol)) <= 0);
       default: {
-        console.log(`no define filter for ${filter_type}`); // tslint:disable-line:no-console
+        console.info(`no define filter for ${filter_type}`); // eslint-disable-line
         return true;
       }
     }
@@ -129,7 +129,7 @@ export const filterFunction = (data, { filterValues }) =>
     });
 
     if (isValid) {
-      newData = [
+      return [
         ...newData,
         row,
       ];
@@ -185,9 +185,9 @@ export const sortData = (data, props) => {
       }));
     } else {
       ansData = sortFunction(data, props).map((rowData) => ({
-          ...rowData,
-          children: sortData(rowData.children, props),
-        }));
+        ...rowData,
+        children: sortData(rowData.children, props),
+      }));
 
       if (props.sortAscending) {
         ansData.reverse().map((row) => ({

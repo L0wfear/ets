@@ -65,16 +65,16 @@ const renderers: ISchemaRenderer = {
 };
 
 const Table: React.FC<any> = (props) =>
-    <DataTable
-      title="Проставление процента выполнения работ"
-      noFilter={true}
-      results={props.data}
-      initialSort={props.selectField}
-      renderers={renderers}
-      tableMeta={tableMeta(props)}
-      className={'table-percent'}
-      enumerated={false}
-      {...props}
-    />;
+  <DataTable
+    title="Проставление процента выполнения работ"
+    noFilter={true}
+    results={props.data}
+    initialSort={props.selectField}
+    renderers={renderers}
+    tableMeta={tableMeta(props)}
+    className={'table-percent'}
+    enumerated={false}
+    {...props}
+  />;
 
 export default Table;

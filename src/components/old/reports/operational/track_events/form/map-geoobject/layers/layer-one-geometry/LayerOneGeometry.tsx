@@ -33,7 +33,7 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerOneGeometry , {}> {
 
   singleclick = () => {
     this.centerMapOnFeature();
-  }
+  };
 
   componentWillUnmount() {
     this.props.removeLayer();

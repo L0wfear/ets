@@ -22,8 +22,8 @@ function FluxContext(target) {
  */
 function staticProps(options) {
   // prettier-ignore
-  return function decorate(target) { // tslint:disable-line:no-console
-    target = Object.assign(target, options); // tslint:disable-line:no-console
+  return function decorate(target) { // eslint-disable-line
+    target = Object.assign(target, options); // eslint-disable-line
   };
 }
 

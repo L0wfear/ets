@@ -9,17 +9,17 @@ export const FORM_CHANGE_DATA = FORM`CHANGE_DATA`;
 
 export const initialState: IStateFormDataRecord = {};
 
-const formDataRecord = (state = initialState, { type, payload }: { type: string, payload: { formKey: FormKeys, formData?: OneFormDataByKey<any> }}) => {
+const formDataRecord = (state = initialState, { type, payload }: { type: string; payload: { formKey: FormKeys; formData?: OneFormDataByKey<any>; };}) => {
   switch (type) {
     case FORM_SET_DATA: {
-      console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey, payload.formData); // tslint:disable-line:no-console
+      console.info('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey, payload.formData); // eslint-disable-line
       return {
         ...state,
         [payload.formKey]: payload.formData,
       };
     }
     case FORM_REMOVE_DATA: {
-      console.log('❌❌❌❌❌❌❌❌❌❌', payload.formKey); // tslint:disable-line:no-console
+      console.info('❌❌❌❌❌❌❌❌❌❌', payload.formKey); // eslint-disable-line
       const {
         ...otherState
       } = state;
@@ -28,9 +28,9 @@ const formDataRecord = (state = initialState, { type, payload }: { type: string,
       return otherState;
     }
     case FORM_CHANGE_DATA: {
-      // console.log('✏️️️️️️️✏️✏️✏️✏️✏️✏️✏️✏️✏️', payload.formKey); // tslint:disable-line:no-console
-      // console.info(payload.formData.formState); // tslint:disable-line:no-console
-      // console.info(payload.formData.formErrors); // tslint:disable-line:no-console
+      // console.info('✏️️️️️️️✏️✏️✏️✏️✏️✏️✏️✏️✏️', payload.formKey); // eslint-disable-line
+      // console.info(payload.formData.formState); // eslint-disable-line
+      // console.info(payload.formData.formErrors); // eslint-disable-line
 
       return {
         ...state,

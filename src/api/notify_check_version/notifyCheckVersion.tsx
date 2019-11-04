@@ -2,10 +2,10 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
-interface IPropsNotifiVersionPopup {
+type IPropsNotifiVersionPopup = {
   currV: string;
   nextV: string;
-}
+};
 
 const NotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
   <div className="check-version-notification">

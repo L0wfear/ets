@@ -19,7 +19,7 @@ import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspec
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 import { IStateFormDataRecord } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
-export interface ReduxState {
+export type ReduxState = {
   dashboard: InitialStateDashboard;
   registry: InitialStateTypeRegistry;
   report: IStateReport;
@@ -43,4 +43,4 @@ export interface ReduxState {
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
   formDataRecord: IStateFormDataRecord;
-}
+};

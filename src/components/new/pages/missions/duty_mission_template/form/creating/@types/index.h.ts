@@ -22,7 +22,7 @@ export type OwnDutyMissionTemplateProps = (
     >
   >
   & {
-    dutyMissionTemplates: Record<DutyMissionTemplate['id'], DutyMissionTemplate>,
+    dutyMissionTemplates: Record<DutyMissionTemplate['id'], DutyMissionTemplate>;
   }
 );
 

@@ -37,7 +37,7 @@ const TableMissionsRequest: React.FC<TableMissionsRequestProps> = React.memo(
     const edc_date = get(props, 'edcRequestInfo.edc_date', null);
     const registryKeyIndex = get(props, 'registryKeyIndex', null);
 
-    // console.log('TableMissionsRequest props === ', props);
+    // console.info('TableMissionsRequest props === ', props);
 
     React.useEffect(
       () => {

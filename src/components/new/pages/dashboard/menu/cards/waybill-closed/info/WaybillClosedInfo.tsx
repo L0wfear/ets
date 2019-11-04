@@ -42,16 +42,16 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
         { page: 'dashboard' },
       ),
     ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
-        }
-      });
+      if (waybill_data) {
+        this.setState({
+          showWaybillFormWrap: true,
+          elementWaybillFormWrap: waybill_data,
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not find waybill');
+      }
+    });
   };
 
   handleWaybillFormWrapHide = () => {

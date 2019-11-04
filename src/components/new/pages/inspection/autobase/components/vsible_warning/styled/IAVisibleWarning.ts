@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const IAVisibleWarningInputContainer = styled.div<{ sub?: number }>`
+export const IAVisibleWarningInputContainer = styled.div<{ sub?: number; }>`
   margin-left: ${({ sub }) => sub ? `${sub}px` : 0};
   &&& {
     input[type="checkbox"] {

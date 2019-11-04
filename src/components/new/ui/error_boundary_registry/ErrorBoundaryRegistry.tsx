@@ -12,7 +12,7 @@ import { DivNone } from 'global-styled/global-styled';
 
 const STAND = process.env.STAND;
 
-class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, countLeft: number, intervalId: any }> {
+class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean; countLeft: number; intervalId: any; }> {
   state = {
     hasError: false,
     countLeft: 5,
@@ -26,8 +26,8 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
   }
 
   componentDidCatch(error, info) {
-    console.log(error); // tslint:disable-line:no-console
-    console.log(info); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
+    console.info(info); // eslint-disable-line
 
     Raven.captureException(new Error(error));
 
@@ -47,7 +47,7 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
       intervalId: null,
       countLeft: 5,
     });
-  }
+  };
 
   updateCountLeft = () => {
     this.setState((state) => {
@@ -66,7 +66,7 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
         countLeft,
       };
     });
-  }
+  };
 
   render() {
     const { countLeft } = this.state;

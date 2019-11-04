@@ -11,7 +11,7 @@ import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types
 
 type Props = PropsToTdReactComponent;
 
-export const getSeasonOptions = (normList: Norm[], technical_operation_id: number, municipal_facility_id: number) => (
+export const getSeasonOptions = (normList: Array<Norm>, technical_operation_id: number, municipal_facility_id: number) => (
   uniqBy(
     normList.filter((rowDataNorm) => (
       rowDataNorm.technical_operation_id === technical_operation_id

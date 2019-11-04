@@ -24,10 +24,10 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
       !name
         ? 'Поле "Наименование работ" должно быть заполнено'
         : (
-            name && isString(name) && name.length !== name.trim().length
-              ? getRequiredFieldNoTrim('Наименование работ')
-              : ''
-          )
+          name && isString(name) && name.length !== name.trim().length
+            ? getRequiredFieldNoTrim('Наименование работ')
+            : ''
+        )
     ),
     date_start: (
       !date_start
@@ -84,7 +84,7 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
           error={errors.name}
           modalKey="container_add_action"
         />
-          <ExtField
+        <ExtField
           id="date_start"
           type="date"
           time={false}

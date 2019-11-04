@@ -70,18 +70,18 @@ export function filterCars(car, formState) {
     norm = true;
   } else if (car.available_to_bind) {
     if (
-      formState &&
-      formState.drivers_license_date_end &&
-      diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
-      car.for_driver_license
+      formState
+      && formState.drivers_license_date_end
+      && diffDates(formState.drivers_license_date_end, new Date()) > 0
+      && car.for_driver_license
     ) {
       norm = true;
     }
     if (
-      formState.special_license &&
-      formState.special_license_date_end &&
-      diffDates(formState.special_license_date_end, new Date()) > 0 &&
-      car.for_special_license
+      formState.special_license
+      && formState.special_license_date_end
+      && diffDates(formState.special_license_date_end, new Date()) > 0
+      && car.for_special_license
     ) {
       norm = true;
     }

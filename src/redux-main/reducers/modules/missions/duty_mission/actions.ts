@@ -215,7 +215,7 @@ const actionUpdateDutyMission = (dutyDutyMissionOld: DutyMission, meta: LoadingM
 
   return payload;
 };
-const actionRemoveDutyMissions = (dutyDutyMissionOldArr: (Pick<DutyMission, 'id'> & Partial<DutyMission>)[], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissions>> => async (dispatch) => {
+const actionRemoveDutyMissions = (dutyDutyMissionOldArr: Array<Pick<DutyMission, 'id'> & Partial<DutyMission>>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissions>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissions(dutyDutyMissionOldArr.map(({ id }) => id)),
@@ -240,7 +240,7 @@ const actionRemoveDutyMission = (dutyDutyMissionOld: Pick<DutyMission, 'id'> & P
   return payload;
 };
 
-export const actionCompleteDutyMissionByIds = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionCompleteDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -280,7 +280,7 @@ export const actionCompleteDutyMissionById = (id: DutyMission['id'], meta: Loadi
   return false;
 };
 
-export const actionToArchiveDutyMissionByIds = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionToArchiveDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -322,7 +322,7 @@ export const actionFailDutyMissionByPartialData = (partialDutyMission: DutyMissi
   return false;
 };
 
-export const actionFromArchiveDutyMissionByIds = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionFromArchiveDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(

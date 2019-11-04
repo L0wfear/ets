@@ -114,8 +114,8 @@ const MissionFormWrap: React.FC<Props> = React.memo(
             />
           )
         }
-        { type_to === TypeCreateMissionByOrderTo.duty_mission &&
-          (
+        { type_to === TypeCreateMissionByOrderTo.duty_mission
+          && (
             <DutyMissionFormWithoutRegistry
               showForm
               handleHide={handleHide}

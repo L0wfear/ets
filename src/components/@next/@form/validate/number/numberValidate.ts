@@ -18,7 +18,7 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     title,
   } = fieldData;
 
-  if ( fieldData.required && (value === "" || isNullOrUndefined(value)) ) {
+  if ( fieldData.required && (value === '' || isNullOrUndefined(value)) ) {
     return getRequiredFieldMessage(title);
   }
 

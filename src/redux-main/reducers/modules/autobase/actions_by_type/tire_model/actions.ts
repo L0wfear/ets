@@ -11,7 +11,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- TireModel ---------- */
-export const autobaseSetTireModel = (tireModelList: TireModel[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetTireModel = (tireModelList: Array<TireModel>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       tireModelList,

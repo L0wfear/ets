@@ -92,7 +92,7 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
 };
 
 export default compose<ButtonRemoveDutyMissionProps, ButtonRemoveDutyMissionOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),

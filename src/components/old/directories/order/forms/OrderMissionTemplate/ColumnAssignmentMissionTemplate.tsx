@@ -28,14 +28,14 @@ type ColumnAssignmentMissionTemplateProps = {
   missions: {
     [id: string]: MissionTemplate;
   };
-  hideColumnAssignmentMissionTemplate: () => void,
-  ASSIGN_OPTIONS: any[],
-  handleChange: (key: string, data: any) => void,
-  handleSubmit: () => Promise<any>,
-  carsList: Car[],
+  hideColumnAssignmentMissionTemplate: () => void;
+  ASSIGN_OPTIONS: Array<any>;
+  handleChange: (key: string, data: any) => void;
+  handleSubmit: () => Promise<any>;
+  carsList: Array<Car>;
 };
 type ColumnAssignmentMissionTemplateState = {
-  showBackButton: boolean,
+  showBackButton: boolean;
 };
 
 class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignmentMissionTemplateProps, ColumnAssignmentMissionTemplateState> {
@@ -48,17 +48,17 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
       await this.props.handleSubmit();
       this.props.hideColumnAssignmentMissionTemplate();
     } catch (e) {
-      console.log(e); // tslint:disable-line:no-console
+      console.info(e); // eslint-disable-line
       this.setState({ showBackButton: true });
     }
-  }
+  };
 
   handleChange = (index, car_id, value) => {
     const assign_to_waybill = cloneDeep(this.props.assign_to_waybill);
 
     assign_to_waybill[index][car_id] = value;
     this.props.handleChange('assign_to_waybill', assign_to_waybill);
-  }
+  };
 
   render() {
     return (

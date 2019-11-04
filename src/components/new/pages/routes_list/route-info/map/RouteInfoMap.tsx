@@ -38,30 +38,30 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
     return (
       <MapEtsContainer width={props.width} height={props.height}>
         <MapEtsConsumer>
-        {
-          ({ setMapToContext, removeMapToContext }) => (
-            <MapEts
-              enableInteractions
-              setMapToContext={setMapToContext}
-              removeMapToContext={removeMapToContext}
-              mapKey={this.props.mapKey}
-              rotationAngle={this.props.rotationAngle}
-            >
-              {
-                ({ map, centerOn }) => (
-                  <>
-                    <LayerRouteInfoGeometry
-                      map={map}
-                      centerOn={centerOn}
-                      geoobjectsArr={objectList}
-                      inputLines={this.props.input_lines}
-                    />
-                  </>
-                )
-              }
-            </MapEts>
-          )
-        }
+          {
+            ({ setMapToContext, removeMapToContext }) => (
+              <MapEts
+                enableInteractions
+                setMapToContext={setMapToContext}
+                removeMapToContext={removeMapToContext}
+                mapKey={this.props.mapKey}
+                rotationAngle={this.props.rotationAngle}
+              >
+                {
+                  ({ map, centerOn }) => (
+                    <>
+                      <LayerRouteInfoGeometry
+                        map={map}
+                        centerOn={centerOn}
+                        geoobjectsArr={objectList}
+                        inputLines={this.props.input_lines}
+                      />
+                    </>
+                  )
+                }
+              </MapEts>
+            )
+          }
         </MapEtsConsumer>
       </MapEtsContainer>
     );

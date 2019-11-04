@@ -13,18 +13,18 @@ import { PedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions
 import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/@types';
 
 export type IStateGeoobject = {
-  carpoolList: Carpool[];
-  dtList: Dt[];
+  carpoolList: Array<Carpool>;
+  dtList: Array<Dt>;
   dtPolys: Record<Dt['yard_id'], Dt>;
-  odhList: Odh[];
-  sspList: Ssp[];
-  mspList: Msp[]
-  fuelingWaterList: FuelingWater[];
-  fountainsList: Fountains[];
-  bridgesList: Bridges[];
-  dangerZoneList: DangerZone[];
-  pgmStoreList: PgmStore[];
-  snowStorageList: SnowStorage[];
-  pedestrianTunnelsList: PedestrianTunnels[];
-  pedestrianTunnelExitsList: PedestrianTunnelExits[];
+  odhList: Array<Odh>;
+  sspList: Array<Ssp>;
+  mspList: Array<Msp>;
+  fuelingWaterList: Array<FuelingWater>;
+  fountainsList: Array<Fountains>;
+  bridgesList: Array<Bridges>;
+  dangerZoneList: Array<DangerZone>;
+  pgmStoreList: Array<PgmStore>;
+  snowStorageList: Array<SnowStorage>;
+  pedestrianTunnelsList: Array<PedestrianTunnels>;
+  pedestrianTunnelExitsList: Array<PedestrianTunnelExits>;
 };

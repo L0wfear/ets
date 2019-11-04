@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import themeModal from '../@themes/default/modal/themeModal';
 
-export const ModalBodyStyled = styled.div<{ themeName: keyof typeof themeModal }>`
+export const ModalBodyStyled = styled.div<{ themeName: keyof typeof themeModal; }>`
   transition: all 0.5s;
 
   position: relative;
@@ -11,7 +11,7 @@ export const ModalBodyStyled = styled.div<{ themeName: keyof typeof themeModal }
 `;
 
 export type EtsModalBodyProps = {
-  onHide?: (...arg: any[]) => any;
+  onHide?: (...arg: Array<any>) => any;
   themeName?: keyof typeof themeModal;
 };
 

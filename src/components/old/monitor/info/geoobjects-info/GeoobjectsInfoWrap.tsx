@@ -26,20 +26,20 @@ class GeoobjectsInfoWrap extends React.PureComponent<PropsGeoobjectsInfo, StateG
     this.setState({
       shortVersion: !this.state.shortVersion,
     });
-  }
+  };
   render() {
     return (
       !this.props.showSelectedGeoobjects
-      ? (
-        <DivNone />
-      )
-      : (
-        <React.Suspense fallback={<LoadingComponent />}>
-          <GeoobjectsInfo
-            centerOn={this.props.centerOn}
-          />
-        </React.Suspense>
-      )
+        ? (
+          <DivNone />
+        )
+        : (
+          <React.Suspense fallback={<LoadingComponent />}>
+            <GeoobjectsInfo
+              centerOn={this.props.centerOn}
+            />
+          </React.Suspense>
+        )
     );
   }
 }

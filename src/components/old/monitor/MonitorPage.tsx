@@ -111,14 +111,13 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
     );
 
     return (
-      props.token ?
-        <MonitorPageContainer>
+      props.token
+        ? <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
           <MonitorSearchParams />
         </MonitorPageContainer>
-      :
-        <div>загрузка...</div>
+        :        <div>загрузка...</div>
     );
   },
 );

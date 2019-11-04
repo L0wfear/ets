@@ -7,7 +7,7 @@ import BlockCarInfo from './BlockCarInfo';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type BlockCarInfoWrapOwnProps = {
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   handleHide: (isSubmitted: boolean) => void;
   type: keyof typeof INSPECT_TYPE_FORM;
   handleChangeData: (ownObj: Partial<InspectCarsCondition['data']>) => any;

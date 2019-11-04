@@ -45,7 +45,7 @@ type Props = (
 );
 
 type State = {
-  activeTypeArr: string[];
+  activeTypeArr: Array<string>;
   optionsType: any;
 };
 
@@ -99,7 +99,7 @@ class AdvancedNumberFilter extends React.PureComponent<Props, State> {
     this.setState({
       activeTypeArr: value,
     });
-  }
+  };
 
   handleChange = (value, index) => {
     const { props } = this;
@@ -108,16 +108,16 @@ class AdvancedNumberFilter extends React.PureComponent<Props, State> {
     const { activeTypeArr } = this.state;
 
     this.props.onChange(filterData.valueKey, activeTypeArr[index], value !== '' ? valueAsNumber : '');
-  }
+  };
 
   handleChangeFirst = ({ currentTarget: { value }}) => {
     this.handleChange(value, 0);
 
-  }
+  };
 
   handleChangeSecond = ({ currentTarget: { value }}) => {
     this.handleChange(value, 1);
-  }
+  };
 
   render() {
     const { props, state  } = this;
@@ -158,23 +158,23 @@ class AdvancedNumberFilter extends React.PureComponent<Props, State> {
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
           <AdvacedSecondLineContainer>
-          {
-            activeTypeArr.length > 1
-            ? (
-              <InputNumber
-                id={id_two}
-                value={filterValuesObj[activeTypeArr[1]].value}
-                onChange={this.handleChangeSecond}
-                noShowLabel
-                noShowError
-                disabled={this.props.filterData.disabled}
-                step={this.props.filterData.step}
-              />
-            )
-            : (
-              <DivNone />
-            )
-          }
+            {
+              activeTypeArr.length > 1
+                ? (
+                  <InputNumber
+                    id={id_two}
+                    value={filterValuesObj[activeTypeArr[1]].value}
+                    onChange={this.handleChangeSecond}
+                    noShowLabel
+                    noShowError
+                    disabled={this.props.filterData.disabled}
+                    step={this.props.filterData.step}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
       </EtsFilter>

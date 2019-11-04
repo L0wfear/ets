@@ -51,7 +51,9 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
    * @override
    */
   validate = (state, errors) => {
-    if (typeof this.schema === 'undefined') { return errors; }
+    if (typeof this.schema === 'undefined') {
+      return errors; 
+    }
 
     const schema = this.schema;
     const formState = { ...state };
@@ -84,7 +86,7 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
     }
 
     return newErrors;
-  }
+  };
 
   render() {
     const {

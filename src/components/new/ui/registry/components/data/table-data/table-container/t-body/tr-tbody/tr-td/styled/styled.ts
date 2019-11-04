@@ -35,7 +35,7 @@ export const EtsTdInnerWrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean, }>`
+export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; }>`
   &&& {
     padding: 8px;
     border: 1px solid white;

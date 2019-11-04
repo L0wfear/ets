@@ -14,7 +14,7 @@ export const actionChangeServiceActiveStatus = (slug: string, is_active: boolean
   return result;
 };
 
-export const actionChangeServiceFiles = (id: Service['id'], files: any[], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseChangeServiceActiveStatus>> => async (dispatch) => {
+export const actionChangeServiceFiles = (id: Service['id'], files: Array<any>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseChangeServiceActiveStatus>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseChangeServiceFiles(id, files),

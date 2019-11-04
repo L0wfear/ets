@@ -14,9 +14,9 @@ export type DispatchPropsFieldDatesMissionTemplateCreating = {
 export type OwnPropsFieldDatesMissionTemplateCreating = {
   isPermitted: boolean;
   date_start: MissionTemplateCreating['date_start'];
-  error_date_start: string,
+  error_date_start: string;
   date_end: MissionTemplateCreating['date_end'];
-  error_date_end: string,
+  error_date_end: string;
 
   onChange: PropsMissionTemplateCreatingForm['handleChange'];
 

@@ -22,14 +22,14 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
   geozone_type: string;
   element_type: string;
   car_func_types_groups: any;
   appConfig: InitialStateSession['appConfig'];
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
@@ -61,7 +61,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange('geozone_type', value);
-  }
+  };
   handleChangeElement = (field, value) => {
     const { element_type } = this.props;
 
@@ -70,7 +70,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange(field, value);
-  }
+  };
   handleSubmit = () => {
     const {
       date_start,
@@ -96,7 +96,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }]`;
 
     this.props.onClick(requestBody);
-  }
+  };
   render() {
     const { readOnly } = this.props;
     const {

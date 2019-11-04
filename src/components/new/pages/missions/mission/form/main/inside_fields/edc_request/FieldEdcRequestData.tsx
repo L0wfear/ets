@@ -21,24 +21,24 @@ const FieldEdcRequestData: React.FC<PropsFieldEdcRequestData> = (props) => {
 
   return request_id && edcRequest
     ? (
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
-            <ExtField
-              type="string"
-              label="Категория дефекта"
-              value={edcRequest.deffect_category_name}
-              disabled
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={6}>
-            <ExtField
-              type="string"
-              label="Наименование дефекта"
-              value={edcRequest.defect_name}
-              disabled
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
+          <ExtField
+            type="string"
+            label="Категория дефекта"
+            value={edcRequest.deffect_category_name}
+            disabled
+          />
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
+          <ExtField
+            type="string"
+            label="Наименование дефекта"
+            value={edcRequest.defect_name}
+            disabled
+          />
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     )
     : (
       <DivNone />

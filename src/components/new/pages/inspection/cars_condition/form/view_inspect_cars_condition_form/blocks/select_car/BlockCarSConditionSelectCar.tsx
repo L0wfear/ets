@@ -18,7 +18,7 @@ type BlockCarsConditionSelectCarOwnProps = {
   awaitCarsCnt: number;
   checked_cars_cnt: InspectCarsCondition['checked_cars_cnt'];
   error_checked_cars_cnt: string;
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   isActiveInspect: boolean;
   isPermitted: boolean;
   loadingPage?: string;
@@ -109,8 +109,8 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           />
         </ExtFieldContainer>
         {
-          monitoringKindSeasonReadiness.key !== monitoring_kind && showCreateBtn &&
-          (
+          monitoringKindSeasonReadiness.key !== monitoring_kind && showCreateBtn
+          && (
             <React.Fragment>
               <HrDelimiter />
               <GreyTextContainer>
@@ -123,8 +123,8 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           )
         }
         {
-          showCreateBtn &&
-          (
+          showCreateBtn
+          && (
             <EtsBootstrap.Button disabled={!props.isPermitted || disableCreateBtn} onClick={handleCreateNewCardCar}>
               Создать карточку
             </EtsBootstrap.Button>

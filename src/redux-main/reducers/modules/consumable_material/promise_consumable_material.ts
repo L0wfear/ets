@@ -4,7 +4,7 @@ import { ConsumableMaterial, ConsumableMaterialWrap } from './@types/consumableM
 import { ConsumableMaterialService } from 'api/Services';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
-export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
+export const makeConsumableMaterialFront = (array: Array<ConsumableMaterial>) => (
   (array).map(
     (rowData): ConsumableMaterialWrap => ({
       ...rowData,

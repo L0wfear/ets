@@ -12,7 +12,7 @@ import { WithFormRegistrySearchAddProps } from 'components/old/compositions/voki
 export type StatePropsTechInspection = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
-export type OwnTechInspectionProps = WithFormRegistrySearchAddProps<TechInspection> & { selectedCarData?: CarWrap };
+export type OwnTechInspectionProps = WithFormRegistrySearchAddProps<TechInspection> & { selectedCarData?: CarWrap; };
 
 export type PropsTechInspectionWithForm = (
   StatePropsTechInspection
@@ -26,9 +26,9 @@ export type PropsTechInspection = OutputWithFormProps<
   any
 >;
 export type StateTechInspection = {
-  carListOptions: DefaultSelectOption<
+  carListOptions: Array<DefaultSelectOption<
     Car['asuods_id'],
     Car['gov_number'],
     Car
-  >[];
+  >>;
 };

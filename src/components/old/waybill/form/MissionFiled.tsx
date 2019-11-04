@@ -77,7 +77,7 @@ class MissionField extends React.Component<Props, any> {
       }
     }
     this.props.handleChange('mission_id_list', newFormData);
-  }
+  };
 
   onMissionFormHide = (isSubmitted, result) => {
     if (isSubmitted) {
@@ -140,13 +140,13 @@ class MissionField extends React.Component<Props, any> {
     this.props.dispatch(
       actionLoadTimeMoscow({}, this.props),
     ).then((time) => {
-        const action_at = time.date;
-        this.setState({
-          showMissionRejectForm: true,
-          action_at,
-          rejectedMission,
-        });
-      })
+      const action_at = time.date;
+      this.setState({
+        showMissionRejectForm: true,
+        action_at,
+        rejectedMission,
+      });
+    })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
           global.NOTIFICATION_SYSTEM.notify(
@@ -181,7 +181,7 @@ class MissionField extends React.Component<Props, any> {
       showMissionRejectForm: false,
       rejectedMission: null,
     });
-  }
+  };
 
   render() {
     const {
@@ -252,15 +252,15 @@ class MissionField extends React.Component<Props, any> {
           onChange={this.handleMissionsChange}
           multiValueContainerReander={this.multiValueContainerReander}
         />
-        {new Date(origFormState.fact_arrival_date).getTime() >
-          new Date(state.fact_arrival_date).getTime() &&
-          state.status === 'active' && (
-            <div style={{ color: UiConstants.colorError }}>{`Задания: ${OUTSIDEMISSIONS.map(
-              (m) => `№${m.number}`,
-            ).join(
-              ', ',
-            )} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
-          )}
+        {new Date(origFormState.fact_arrival_date).getTime()
+          > new Date(state.fact_arrival_date).getTime()
+          && state.status === 'active' && (
+          <div style={{ color: UiConstants.colorError }}>{`Задания: ${OUTSIDEMISSIONS.map(
+            (m) => `№${m.number}`,
+          ).join(
+            ', ',
+          )} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
+        )}
         <EtsBootstrap.Button
           id="create-mission"
           style={{ marginTop: 10 }}
@@ -301,7 +301,7 @@ export default compose<any, any>(
   withRequirePermission({
     permissions: missionPermissions.read,
   }),
-  connect<null, { dispatch: EtsDispatch }, any, ReduxState>(
+  connect<null, { dispatch: EtsDispatch; }, any, ReduxState>(
     null,
   ),
 )(MissionField);

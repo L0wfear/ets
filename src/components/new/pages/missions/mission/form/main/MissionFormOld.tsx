@@ -77,7 +77,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       && !(
         IS_POST_CREATING_NOT_ASSIGNED
         || IS_POST_CREATING_ASSIGNED
-        )
+      )
     );
     const BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE = Boolean(props.formState.can_edit_car_and_route);
     const IS_DISABLED_ASSIGNED = (
@@ -231,13 +231,13 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     this.setState({
       assign_to_waybill: [...value],
     });
-  }
+  };
 
   hideColumnAssignment = () => {
     this.setState({
       showColumnAssignmentFormLazy: false,
     });
-  }
+  };
 
   handleSubmit = async () => {
     const response = await this.props.submitAction(
@@ -249,7 +249,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     }
 
     return response;
-  }
+  };
 
   handleSubmitWrap = async () => {
     const { formState: { for_column, car_ids } } = this.props;
@@ -262,7 +262,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     } else {
       return this.handleSubmit();
     }
-  }
+  };
 
   async printMission(payloadOwn, print_form_type) {
     const { page, path } = this.props;
@@ -350,7 +350,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       )
                       : (
                         <DivNone />
-                        )
+                      )
                   }
                   <EtsBootstrap.Col md={IS_CREATING && !notChangeCar ? 9 : 12}>
                     <FieldCarIdsMission
@@ -399,13 +399,13 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       page={page}
                       path={path}
-                      />
+                    />
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={6}>
                 <EtsBootstrap.Row>
-                {
+                  {
                     STRUCTURE_FIELD_VIEW
                       ? (
                         <EtsBootstrap.Col md={12}>
@@ -418,9 +418,9 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                             formDataKey={this.props.formDataKey}
                           />
                         </EtsBootstrap.Col>
-                    ) : (
-                      <DivNone />
-                    )
+                      ) : (
+                        <DivNone />
+                      )
                   }
                   <EtsBootstrap.Col md={MISSION_IS_ORDER_SOURCE ? 6 : 12}>
                     <FieldMissionSourceMission
@@ -535,8 +535,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED
-                            ||
-                            IS_DISPLAY
+                            ||                            IS_DISPLAY
                           )
                         )
                       }
@@ -548,8 +547,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED
-                            ||
-                            IS_DISPLAY
+                            ||                            IS_DISPLAY
                           )
                         )
                       )}
@@ -708,26 +706,26 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                     )
                 }
                 <EtsButtonsContainer>
-                {
-                  !state.for_column && !IS_CREATING
-                    ? (
-                      <React.Fragment>
-                        <EtsBootstrap.Dropdown
-                          id="waybill-print-dropdown"
-                          dropup
-                          disabled={!this.props.canSave}
-                          toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
-                        >
-                          <EtsBootstrap.DropdownMenu dropup>
-                            <EtsBootstrap.MenuItem eventKey={1} onSelect={this.handlePrint}>Экспорт в файл</EtsBootstrap.MenuItem>
-                            <EtsBootstrap.MenuItem eventKey={2} onSelect={this.handlePrint}>Печать</EtsBootstrap.MenuItem>
-                          </EtsBootstrap.DropdownMenu>
-                        </EtsBootstrap.Dropdown>
-                      </React.Fragment>
-                    )
-                    : (
-                      <React.Fragment></React.Fragment>
-                    )
+                  {
+                    !state.for_column && !IS_CREATING
+                      ? (
+                        <React.Fragment>
+                          <EtsBootstrap.Dropdown
+                            id="waybill-print-dropdown"
+                            dropup
+                            disabled={!this.props.canSave}
+                            toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
+                          >
+                            <EtsBootstrap.DropdownMenu dropup>
+                              <EtsBootstrap.MenuItem eventKey={1} onSelect={this.handlePrint}>Экспорт в файл</EtsBootstrap.MenuItem>
+                              <EtsBootstrap.MenuItem eventKey={2} onSelect={this.handlePrint}>Печать</EtsBootstrap.MenuItem>
+                            </EtsBootstrap.DropdownMenu>
+                          </EtsBootstrap.Dropdown>
+                        </React.Fragment>
+                      )
+                      : (
+                        <React.Fragment></React.Fragment>
+                      )
                   }
                   <EtsBootstrap.Button
                     id="mission_submit"

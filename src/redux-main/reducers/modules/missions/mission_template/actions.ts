@@ -168,8 +168,8 @@ export const actionUpdateMissionTemplate = (
   return payload;
 };
 export const actionRemoveMissionTemplates = (
-  missionTemplateOldArr: (Partial<MissionTemplate> &
-    Pick<MissionTemplate, 'id'>)[],
+  missionTemplateOldArr: Array<Partial<MissionTemplate> &
+    Pick<MissionTemplate, 'id'>>,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseRemoveMissionTemplates>> => async (dispatch) => {
   const { payload } = await dispatch({

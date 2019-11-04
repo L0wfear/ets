@@ -6,8 +6,8 @@ type CarData = Pick<Car, 'is_common' | 'company_structure_id' | 'company_structu
 type UserData = Pick<InitialStateSession['userData'], 'structure_id' | 'structure_name'> & Partial<InitialStateSession['userData']>;
 
 type StructureData = {
-  structure_id: CompanyStructure['id'],
-  structure_name: CompanyStructure['name'],
+  structure_id: CompanyStructure['id'];
+  structure_name: CompanyStructure['name'];
 };
 
 // тс не общая и пренадлежит подразделению

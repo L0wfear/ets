@@ -23,7 +23,7 @@ export const actionResetWorkKind = (): EtsAction<IStateSomeUniq['workKindList']>
   return workKindList;
 };
 
-export const actionGetWorkKind = (payload: any, meta: LoadingMeta): EtsAction<Promise<WorkKind[]>> => async (dispatch) => {
+export const actionGetWorkKind = (payload: any, meta: LoadingMeta): EtsAction<Promise<Array<WorkKind>>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetWorkKind(payload),
@@ -33,7 +33,7 @@ export const actionGetWorkKind = (payload: any, meta: LoadingMeta): EtsAction<Pr
   return response;
 };
 
-export const actionGetAndSetInStoreWorkKind = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<WorkKind[]>> => async (dispatch) => {
+export const actionGetAndSetInStoreWorkKind = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<Array<WorkKind>>> => async (dispatch) => {
   const workKindList = await dispatch(
     actionGetWorkKind(payloadOwn, meta),
   );

@@ -1,7 +1,7 @@
 export type CarDriversData = {
   car_id: number;
-  primary_drivers: number[];
-  secondary_drivers: number[];
+  primary_drivers: Array<number>;
+  secondary_drivers: Array<number>;
 };
 
 export type CarRegistrationData = {
@@ -53,7 +53,7 @@ export type CarGibddPasspost = {
   vin: string;
 
   disabled?: boolean;
-  files?: any[];
+  files?: Array<any>;
 };
 
 export type CarGtnPasspost = {
@@ -95,7 +95,7 @@ export type CarGtnPasspost = {
   vin: string;
 
   disabled?: boolean;
-  files?: any[];
+  files?: Array<any>;
 };
 
 export type CarPassporntData = (

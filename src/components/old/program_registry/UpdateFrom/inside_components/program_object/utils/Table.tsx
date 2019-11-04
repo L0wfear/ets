@@ -27,7 +27,7 @@ class TablePrev extends React.Component<any, any> {
     }
 
     this.props.handleChangeInTable(rowChange);
-  }
+  };
 
   handleClick = (e) => {
     const {
@@ -37,7 +37,7 @@ class TablePrev extends React.Component<any, any> {
     } = e;
 
     this.props.handleRowClick(rowIndex);
-  }
+  };
 
   render() {
     const {
@@ -60,8 +60,8 @@ class TablePrev extends React.Component<any, any> {
           </DataTableHeadLine>
         </Div>
         {
-          !!bodyData.length &&
-          <EtsBootstrap.TableOld>
+          !!bodyData.length
+          && <EtsBootstrap.TableOld>
             <EtsBootstrap.Grid.GridBootstrapThead.Thead>
               <EtsBootstrap.Grid.GridBootstrapThead.Tr className="ets_thead_tr">
                 {
@@ -84,18 +84,18 @@ class TablePrev extends React.Component<any, any> {
                   >
                     {
                       headerData.map(({ key, style, otherProps }, numOne) => (
-                          <EtsBootstrap.Grid.GridBootstrapTbody.Td key={numOne + 1} style={{ ...style(numRow, row, errors) }}>
-                            <ExtField
-                              {...mainPropsFields[key]}
-                              label={""}
-                              minHeightLabel={0}
-                              value={row[key]}
-                              onChange={this.props.handleChange}
-                              boundKeys={[numRow, key]}
-                              disabled={!isPermitted || mainPropsFields[key].disabled}
-                              {...otherProps(numRow, row, errors)}
-                            />
-                          </EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                        <EtsBootstrap.Grid.GridBootstrapTbody.Td key={numOne + 1} style={{ ...style(numRow, row, errors) }}>
+                          <ExtField
+                            {...mainPropsFields[key]}
+                            label={''}
+                            minHeightLabel={0}
+                            value={row[key]}
+                            onChange={this.props.handleChange}
+                            boundKeys={[numRow, key]}
+                            disabled={!isPermitted || mainPropsFields[key].disabled}
+                            {...otherProps(numRow, row, errors)}
+                          />
+                        </EtsBootstrap.Grid.GridBootstrapTbody.Td>
                       ))
                     }
                   </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
@@ -104,7 +104,7 @@ class TablePrev extends React.Component<any, any> {
             </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
           </EtsBootstrap.TableOld>
         }
-        </div>
+      </div>
     );
   }
 }

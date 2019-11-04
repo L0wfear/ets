@@ -42,7 +42,7 @@ class EtsLogout extends React.Component<any, {}> {
 
   handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     this.props.sessionResetData();
-  }
+  };
 
   render() {
     return (

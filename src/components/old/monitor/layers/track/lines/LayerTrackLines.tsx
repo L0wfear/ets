@@ -11,15 +11,15 @@ import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/moni
 import { ReduxState } from 'redux-main/@types/state';
 
 type PropsLayerTrackLines = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
+  zoom: number;
   lastPoint: any;
   forToday: boolean;
   mkad_speed_lim: number;

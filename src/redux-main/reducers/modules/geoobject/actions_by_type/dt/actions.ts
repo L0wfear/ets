@@ -11,7 +11,7 @@ import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseD
 import { defaultActions } from 'redux-main/default.actions';
 import { makeShape } from 'redux-main/reducers/modules/geoobject/promises';
 
-const actionSetDt = (obj: { data: Dt[] }): EtsAction<EtsActionReturnType<typeof geoobjectSetNewData>> => (dispatch) => (
+const actionSetDt = (obj: { data: Array<Dt>; }): EtsAction<EtsActionReturnType<typeof geoobjectSetNewData>> => (dispatch) => (
   dispatch(
     geoobjectSetNewData({
       dtList: obj.data,

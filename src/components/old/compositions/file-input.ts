@@ -20,9 +20,9 @@ export const fileFormatter = withHandlers({
       return;
     }
 
-    const newFiles: File[] = fromIterableListToArray(e.target.files);
+    const newFiles: Array<File> = fromIterableListToArray(e.target.files);
 
-    const fileArray: IFileWrapper[] = [];
+    const fileArray: Array<IFileWrapper> = [];
 
     newFiles.forEach((file) => {
       fileArray.push({
@@ -49,7 +49,7 @@ export const fileFormatter = withHandlers({
         base64PromiseList.push(readingPromise);
       });
     } catch (error) {
-      console.log('File reading error:', error); // tslint:disable-line:no-console
+      console.info('File reading error:', error); // eslint-disable-line
     }
 
     let base64List = [];
@@ -68,8 +68,8 @@ export const fileFormatter = withHandlers({
 
     if (!multiple) {
 
-    onChange(boundKeys, [...fileWrappers]);
-    return;
+      onChange(boundKeys, [...fileWrappers]);
+      return;
     }
 
     onChange(boundKeys, [...value, ...fileWrappers]);
@@ -97,7 +97,7 @@ export const fileCountLimiter = withHandlers({
       return;
     }
 
-    const newFiles: File[] = fromIterableListToArray(e.target.files);
+    const newFiles: Array<File> = fromIterableListToArray(e.target.files);
     const allFiles = [...value, ...newFiles];
 
     if (allFiles.length === 0) {

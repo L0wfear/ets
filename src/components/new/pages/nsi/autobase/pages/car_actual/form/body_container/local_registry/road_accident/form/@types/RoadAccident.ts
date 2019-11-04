@@ -5,7 +5,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { CarWrap } from '../../../../../@types/CarForm';
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
-export type PropsRoadAccidentWithForm = WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap };
+export type PropsRoadAccidentWithForm = WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap; };
 
 export type PropsRoadAccident = OutputWithFormProps<
   PropsRoadAccidentWithForm,

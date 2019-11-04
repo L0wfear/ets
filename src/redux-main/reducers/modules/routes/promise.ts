@@ -100,9 +100,9 @@ export const promiseLoadRoutes = async (payload: object) => {
   try {
     response = await RouteService.get({ ...payload });
   } catch (error) {
-      console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
-  const data: Route[] = get(response, ['result'], []);
+  const data: Array<Route> = get(response, ['result'], []);
   const dataIndex = keyBy(data, 'id');
 
   return {
@@ -210,13 +210,13 @@ export const promiseValidateRoute = async (route: Partial<Route> & Pick<Route, '
     response = await RouteValidateService.post(payload, false, 'json');
   } catch (error) {
     global.NOTIFICATION_SYSTEM.notify(getErrorNotificationFromBack('Произошла ошибка проверки маршрута'));
-    console.warn(error); // tslint:disable-line:no-console
+    console.warn(error); // eslint-disable-line
   }
 
   const odh_fail_count: number = get(response, ['result', 'odh_fail_count'], 0);
   const odh_success_count: number = get(response, ['result', 'odh_success_count'], 0);
   const odh_total_count: number = get(response, ['result', 'odh_total_count'], 0);
-  const odh_validate_result: OdhValidate[] = get(response, ['result', 'odh_validate_result'], []);
+  const odh_validate_result: Array<OdhValidate> = get(response, ['result', 'odh_validate_result'], []);
   const odh_visited_count: number = get(response, ['result', 'odh_visited_count'], 0);
 
   const route_validate = {

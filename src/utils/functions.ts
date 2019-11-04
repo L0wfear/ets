@@ -109,9 +109,9 @@ export function saveData(blob, fileName) {
 export function get_browser() {
   const ua = navigator.userAgent;
   let tem;
-  let M =
-    ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) ||
-    [];
+  let M
+    = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i)
+    || [];
 
   if (/trident/i.test(M[1])) {
     tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
@@ -188,9 +188,9 @@ export function hasMotohours(carStateNumber) {
  * @param opacity
  * @return {*}
  */
-export function hexToRgba(hex, opacity) {
+export function hexToRgba(hexOwn, opacity) {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+  const hex = hexOwn.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
@@ -228,7 +228,7 @@ export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
       res(canvas);
     };
 
-    image.crossOrigin = "anonymous";
+    image.crossOrigin = 'anonymous';
     image.src = url;
   });
 };
@@ -310,12 +310,12 @@ export function detectIE() {
  * @param style стиль ('font-size: 10px;color: '#e26240'')
  */
 export const getTextCanvas = async (text: string, style: string) => {
-  const temp = document.createElement("span");
+  const temp = document.createElement('span');
   temp.id = `${temp}_${Math.random()}`;
   temp.setAttribute('style', style);
   temp.innerHTML = text;
 
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   container.setAttribute('style', 'height:0px; position: absolute; z-index: -1; top:0');
   container.appendChild(temp);
   document.body.appendChild(container);
@@ -336,7 +336,7 @@ export const getCanvasOfElement = (element: HTMLElement) => {
 
 export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
   if (optionsObj) {
-  return Object.keys(optionsObj).reduce(
+    return Object.keys(optionsObj).reduce(
       (newObj, key ) => {
         const configOptionsByKeyList = Object.entries(optionsObj[key]).map(
           ([keyEntry, valueEntry]) => {
@@ -359,12 +359,12 @@ export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
   return null;
 };
 
-type objectDifferReturn = {
+type objectDifferReturn = Array<{
   type: string;
   field: string;
   whichOne: string;
   values: Record<string, any>;
-}[];
+}>;
 /**
  * Выявление различий между двумя объектами с учётом вложенности
  * @param obj1 объект 1
@@ -373,32 +373,32 @@ type objectDifferReturn = {
 export const objectDiffer = (obj1, obj2): objectDifferReturn => {
   const diffs = [];
   for (const prop in obj1) {
-      if (undefined === typeof obj2[prop]
+    if (undefined === typeof obj2[prop]
           || obj2[prop] !== obj1[prop]) {
-          diffs.push({
-              type: (obj2[prop] !== undefined ? "Not equal" : "Undefined"),
-              field: prop,
-              whichOne: "Object 2",
-              values: {
-                  object1: obj1[prop],
-                  object2: obj2[prop],
-              },
-          });
-      }
+      diffs.push({
+        type: (obj2[prop] !== undefined ? 'Not equal' : 'Undefined'),
+        field: prop,
+        whichOne: 'Object 2',
+        values: {
+          object1: obj1[prop],
+          object2: obj2[prop],
+        },
+      });
+    }
   }
   for (const prop in obj2) {
-      if (undefined === typeof obj1[prop]
+    if (undefined === typeof obj1[prop]
           || obj1[prop] !== obj2[prop]) {
-          diffs.push({
-              type: (obj1[prop] !== undefined ? "Not equal" : "Undefined"),
-              field: prop,
-              whichOne: "Object 1",
-              values: {
-                  object1: obj1[prop],
-                  object2: obj2[prop],
-              },
-          });
-      }
+      diffs.push({
+        type: (obj1[prop] !== undefined ? 'Not equal' : 'Undefined'),
+        field: prop,
+        whichOne: 'Object 1',
+        values: {
+          object1: obj1[prop],
+          object2: obj2[prop],
+        },
+      });
+    }
   }
   return diffs;
 };

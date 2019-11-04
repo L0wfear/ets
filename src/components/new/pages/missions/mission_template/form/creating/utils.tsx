@@ -87,7 +87,7 @@ export const getDefaultMissionTemplateElement = (element: Partial<MissionTemplat
   return newElement;
 };
 
-export const checkMissionsByRouteType = (missionsArr: MissionTemplate[], { date_start, date_end }: Pick<MissionTemplateCreating, 'date_start' | 'date_end'>) => {
+export const checkMissionsByRouteType = (missionsArr: Array<MissionTemplate>, { date_start, date_end }: Pick<MissionTemplateCreating, 'date_start' | 'date_end'>) => {
   let type = '';
   const missionList = missionsArr.filter(({ is_cleaning_norm }) => is_cleaning_norm.includes(true));
   const isDt = missionList.some(({ route_type }) => route_type === routeTypesBySlug.dt.key);
@@ -118,7 +118,7 @@ export const checkMissionsByRouteType = (missionsArr: MissionTemplate[], { date_
   return { error: false };
 };
 
-export const checkMissionsOnStructureIdCar = (missionsArr: MissionTemplate[], carsIndex: Record<string, Car>) => {
+export const checkMissionsOnStructureIdCar = (missionsArr: Array<MissionTemplate>, carsIndex: Record<string, Car>) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {
@@ -145,10 +145,10 @@ export const checkMissionsOnStructureIdCar = (missionsArr: MissionTemplate[], ca
 type MissionTemplateWithAssign = (
   MissionTemplate
   & {
-    assign_to_waybill: string[];
+    assign_to_waybill: Array<string>;
   }
 );
-export const makeMissionsByTemplate = (missionTemplates: Record<string, MissionTemplate>, assign_to_waybill: Record<string, string[]>): Record<string, MissionTemplateWithAssign[]> => {
+export const makeMissionsByTemplate = (missionTemplates: Record<string, MissionTemplate>, assign_to_waybill: Record<string, Array<string>>): Record<string, Array<MissionTemplateWithAssign>> => {
   return groupBy(
     Object.entries(missionTemplates).map(([key, missionTemplateData]) => {
       return {

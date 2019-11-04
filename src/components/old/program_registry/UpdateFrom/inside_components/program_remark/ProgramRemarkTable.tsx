@@ -79,8 +79,8 @@ const renderers: ISchemaRenderer = {
 const Table: React.FC<any> = (props) => {
   const showTable = checkPermittedTable(props.program_version_status, props.data.length, props.isСustomer, props.isSupervisor);
 
-  return showTable ?
-    <DataTable
+  return showTable
+    ? <DataTable
       title="Замечания"
       results={props.data}
       initialSort={props.selectField}
@@ -91,8 +91,7 @@ const Table: React.FC<any> = (props) => {
       className="program-remark"
       {...props}
     />
-    :
-    <div></div>;
+    :    <div></div>;
 };
 
 export default Table;

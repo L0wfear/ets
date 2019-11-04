@@ -1,6 +1,6 @@
 
 type ThemeDashboard = {
-  countBlockInLine: number,
+  countBlockInLine: number;
   backgroundColor: string;
   color: string;
 };

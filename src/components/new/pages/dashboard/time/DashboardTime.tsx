@@ -14,7 +14,7 @@ import {
 } from 'components/new/pages/dashboard/time/styled/styled';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 
-const DashboardTimeNew: React.FC<{ page: string }> = React.memo(
+const DashboardTimeNew: React.FC<{ page: string; }> = React.memo(
   (props) => {
     const [date, setDate] = React.useState(getDateWithMoscowTz());
 

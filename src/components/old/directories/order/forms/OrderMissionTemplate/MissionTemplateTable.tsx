@@ -27,19 +27,19 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 const forColumnLabelFunction = (for_column) => for_column ? 'Да' : 'Нет';
 
 type MissionTemplateOrderTableProps = {
-  data: any[];
+  data: Array<any>;
   order_id: Order['id'];
   page: string;
   path: string;
-  structures: OneSessionStructure[],
-  onRowSelected: (...props: any[]) => void;
-  onRowChecked: (...props: any[]) => void;
+  structures: Array<OneSessionStructure>;
+  onRowSelected: (...props: Array<any>) => void;
+  onRowChecked: (...props: Array<any>) => void;
   onAllRowsChecked: (...props: any) => void;
   selected: any | null;
   checked: object | null;
 };
 
-export function getTableMeta(props: MissionTemplateOrderTableProps, govNumberFilterOptions: any[]): IDataTableSchema {
+export function getTableMeta(props: MissionTemplateOrderTableProps, govNumberFilterOptions: Array<any>): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {

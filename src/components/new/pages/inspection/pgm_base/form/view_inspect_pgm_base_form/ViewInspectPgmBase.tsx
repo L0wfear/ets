@@ -127,9 +127,9 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
                 />
               </EtsBootstrap.Col>
             )
-            : (
-              <DivNone />
-            )
+              : (
+                <DivNone />
+              )
           }
           <EtsBootstrap.Col md={6} sm={12}>
             <BlockCarsConditionSetInspectEmployee

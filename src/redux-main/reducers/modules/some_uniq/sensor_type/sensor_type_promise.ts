@@ -11,7 +11,7 @@ export const promiseGetSensorType = async (payload: any) => {
     response = null;
   }
 
-  const data: SensorType[] = get(response, 'result.rows', []);
+  const data: Array<SensorType> = get(response, 'result.rows', []);
 
   return data;
 };

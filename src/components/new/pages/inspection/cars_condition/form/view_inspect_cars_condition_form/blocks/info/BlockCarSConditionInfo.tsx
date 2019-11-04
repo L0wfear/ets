@@ -9,12 +9,12 @@ import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectC
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarSConditionInfoProps = {
-  head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'],
-  head_operating_base: InspectCarsCondition['head_operating_base'],
-  company_short_name: InspectCarsCondition['company_short_name'],
-  monitoring_kind_text: InspectCarsCondition['monitoring_kind_text'],
-  checks_period_text: InspectCarsCondition['checks_period_text'],
-  checks_type_text: InspectCarsCondition['checks_type_text'],
+  head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'];
+  head_operating_base: InspectCarsCondition['head_operating_base'];
+  company_short_name: InspectCarsCondition['company_short_name'];
+  monitoring_kind_text: InspectCarsCondition['monitoring_kind_text'];
+  checks_period_text: InspectCarsCondition['checks_period_text'];
+  checks_type_text: InspectCarsCondition['checks_type_text'];
 
   error_head_balance_holder_base: FormErrorType<SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm>>;
   error_head_operating_base: FormErrorType<SchemaType<InspectCarsCondition['head_operating_base'], PropsViewInspectCarsConditionWithForm>>;

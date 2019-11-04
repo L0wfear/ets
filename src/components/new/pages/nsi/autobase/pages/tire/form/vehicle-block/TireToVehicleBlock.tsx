@@ -9,10 +9,10 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { tireAvailableCarGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_available_car/actions';
 
-interface IPropsTireToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
+type IPropsTireToVehicleBlock = {
   tireId: number;
   errors: any;
-}
+} & ISharedPropsDataTableInput & IExternalPropsDataTableInputWrapper;
 
 const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
   (props) => {
@@ -21,7 +21,7 @@ const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
 
     React.useEffect(
       () => {
-        const payload: { tire_id?: number } = {};
+        const payload: { tire_id?: number; } = {};
         if (props.tireId) {
           payload.tire_id = props.tireId;
         }

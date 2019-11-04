@@ -17,12 +17,10 @@ import {
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader
-  extends IPropsReportHeaderCommon,
-    IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_from: string;
   date_to: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 const validDateRange = (date_from, date_to): {} => {
   const diffDate = diffDates(date_to, date_from, 'days');

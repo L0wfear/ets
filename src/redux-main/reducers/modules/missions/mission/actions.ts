@@ -274,7 +274,7 @@ const actionLoadOrderAndTechnicalOperationByIdForMission = (
 
 const actionCreateMission = (
   missionRaw: Partial<Mission>,
-  assign_to_waybill: string[],
+  assign_to_waybill: Array<string>,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseCreateMission>> => (dispatch) => {
   return etsLoadingCounter(
@@ -301,7 +301,7 @@ const actionChangeArchiveMissionStatus = (
 };
 
 export const actionUpdateMission = (
-  missionOld: Mission & { action_at?: string },
+  missionOld: Mission & { action_at?: string; },
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseUpdateMission>> => async (dispatch) => {
   const { payload } = await dispatch({
@@ -316,7 +316,7 @@ export const actionUpdateMission = (
   return payload;
 };
 const actionRemoveMissions = (
-  missionOldArr: (Pick<Mission, 'id'> & Partial<Mission>)[],
+  missionOldArr: Array<Pick<Mission, 'id'> & Partial<Mission>>,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseRemoveMissions>> => async (dispatch) => {
   const { payload } = await dispatch({
@@ -346,7 +346,7 @@ const actionRemoveMission = (
   return payload;
 };
 
-export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionCompleteMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
   // формировать новый массив объектов
   return Promise.all(
@@ -388,14 +388,14 @@ export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta):
       ),
     );
 
-    // console.log('actionCompleteMissionById response == ', { response });
+    // console.info('actionCompleteMissionById response == ', { response });
     return response;
   }
 
   return false;
 };
 
-export const actionToArchiveMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionToArchiveMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -411,7 +411,7 @@ export const actionToArchiveMissionByIds = (id: Mission['id'] | Mission['id'][],
   );
 };
 
-export const actionFromArchiveMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionFromArchiveMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(

@@ -59,7 +59,7 @@ export const promiseUpdateMissionTemplate = async (
   };
 };
 
-export const promiseRemoveMissionTemplates = async (ids: number[]) => {
+export const promiseRemoveMissionTemplates = async (ids: Array<number>) => {
   return Promise.all(
     ids.map((idNumber) => promiseRemoveMissionTemplate(idNumber)),
   );

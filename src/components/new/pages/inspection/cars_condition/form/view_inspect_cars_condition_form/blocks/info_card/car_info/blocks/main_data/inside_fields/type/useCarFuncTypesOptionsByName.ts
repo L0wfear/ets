@@ -5,7 +5,7 @@ import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autoba
 import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 
 type UseCarFuncTypesOptionsByNameAns = {
-  carFuncTypeOptions: DefaultSelectOption<CarFuncTypes['short_name'], CarFuncTypes['short_name'], CarFuncTypes>[],
+  carFuncTypeOptions: Array<DefaultSelectOption<CarFuncTypes['short_name'], CarFuncTypes['short_name'], CarFuncTypes>>;
 };
 
 type UseCarFuncTypesOptionsByName = (
@@ -14,8 +14,8 @@ type UseCarFuncTypesOptionsByName = (
   path: string,
 ) => UseCarFuncTypesOptionsByNameAns;
 
-export const getCarFuncTypesOptionsByName = (data: CarFuncTypes[]) => {
-  return (data as CarFuncTypes[]).map((rowData) => ({
+export const getCarFuncTypesOptionsByName = (data: Array<CarFuncTypes>) => {
+  return (data as Array<CarFuncTypes>).map((rowData) => ({
     value: rowData.short_name,
     label: rowData.short_name,
     rowData,

@@ -10,7 +10,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- CarCategory ---------- */
-export const autobaseSetCarCategory = (carCategoryList: CarCategory[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetCarCategory = (carCategoryList: Array<CarCategory>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       carCategoryList,

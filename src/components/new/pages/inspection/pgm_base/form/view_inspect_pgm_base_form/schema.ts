@@ -43,7 +43,7 @@ const dataSchema: SchemaType<InspectPgmBase['data'], PropsViewInspectPgmBaseWith
       dependencies: [
         (value) => {
           if (!value.length) {
-              return 'Поле "Вид покрытия базы" должно быть заполнено';
+            return 'Поле "Вид покрытия базы" должно быть заполнено';
           }
           return '';
         },
@@ -116,7 +116,7 @@ const dataSchema: SchemaType<InspectPgmBase['data'], PropsViewInspectPgmBaseWith
       dependencies: [
         (value) => {
           if (!value.length) {
-              return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
+            return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
           }
           return '';
         },

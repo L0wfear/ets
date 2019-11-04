@@ -7,9 +7,9 @@ const Component = React.lazy(() => (
 ));
 
 export default (props) => (
-      <ErrorBoundaryRegistry>
-        <React.Suspense fallback={<TemplateRegistry />}>
-          <Component {...props}/>
-        </React.Suspense>
-      </ErrorBoundaryRegistry>
+  <ErrorBoundaryRegistry>
+    <React.Suspense fallback={<TemplateRegistry />}>
+      <Component {...props}/>
+    </React.Suspense>
+  </ErrorBoundaryRegistry>
 );

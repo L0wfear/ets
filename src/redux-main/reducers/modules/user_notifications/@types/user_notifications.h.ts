@@ -37,14 +37,14 @@ export type CommonNotification = {
   | DataByTypeCode.DataInsurancePolicy;
   description: 'string';
   front_type: 'common';
-  gov_number: null
+  gov_number: null;
   group: Group;
   id: number;
-  isChecked: undefined
-  isHighlighted: false
-  isSelected: false
-  is_read: true
-  priority: Priority
+  isChecked: undefined;
+  isHighlighted: false;
+  isSelected: false;
+  is_read: true;
+  priority: Priority;
   title: string;
   type_code: TypeCode;
   type_id: number;
@@ -76,10 +76,10 @@ export type OrderNotRead = CommonNotification;
 export type AdmNotReadNotifications = AdmNotification;
 
 export type IStateUserNotifications = {
-  commonNotificationList: CommonNotification[],
-  userNotificationList: UserNotification[],
-  admNotificationList: AdmNotification[],
-  orderNotReadList: OrderNotRead[],
-  admNotReadNotificationsList: AdmNotReadNotifications[],
-  countNotRead: number,
+  commonNotificationList: Array<CommonNotification>;
+  userNotificationList: Array<UserNotification>;
+  admNotificationList: Array<AdmNotification>;
+  orderNotReadList: Array<OrderNotRead>;
+  admNotReadNotificationsList: Array<AdmNotReadNotifications>;
+  countNotRead: number;
 };

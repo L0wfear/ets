@@ -13,7 +13,7 @@ import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/empl
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-export function getTableMeta(props: any = {}, employeesOptions: any[]): IDataTableSchema {
+export function getTableMeta(props: any = {}, employeesOptions: Array<any>): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
@@ -156,7 +156,7 @@ const Table: React.FC<any> = React.memo(
         checked={props.checked}
         selectField="frontId"
         initialSort="frontId"
-        />
+      />
     );
   },
 );

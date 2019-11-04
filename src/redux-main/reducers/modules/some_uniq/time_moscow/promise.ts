@@ -23,7 +23,7 @@ export const loadTimeMoscow = async (payload: object, double?: boolean) => {
   const default_time = getDateWithMoscowTz();
   const default_date = createValidDateTime(default_time);
 
-  const result: { timestamp: number; date: string } = {
+  const result: { timestamp: number; date: string; } = {
     timestamp: get(response, 'result.timestamp') || +default_time / 1000,
     date: get(response, 'result.date') ||  default_date,
   };

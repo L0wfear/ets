@@ -2,7 +2,7 @@ export type DrawData = {
   begin: {
     x_msk: number;
     y_msk: number;
-  },
+  };
   distance: number;
   end: {
     x_msk: number;
@@ -27,7 +27,7 @@ export type ObjectPointData = {
   object_id: number;
   object_name: string;
   shape: {
-    type: 'Point',
+    type: 'Point';
     coordinates: [number, number];
   };
   type: 'points' | null;
@@ -52,9 +52,9 @@ export type OdhValidate = {
 
 export type Route = {
   name: string;
-  draw_object_list: (DrawData | ObjectDtOdhData)[];
-  input_lines: DrawData[];
-  object_list: ObjectDtOdhData[] | ObjectPointData[];
+  draw_object_list: Array<DrawData | ObjectDtOdhData>;
+  input_lines: Array<DrawData>;
+  object_list: Array<ObjectDtOdhData> | Array<ObjectPointData>;
   comment: string;
   company_id: number | null;
   created_at: string;
@@ -65,16 +65,16 @@ export type Route = {
   municipal_facility_id: number | null;
   municipal_facility_name: string | null;
   norm_id: null;
-  seasons: SeasonData[];
+  seasons: Array<SeasonData>;
   structure_id: number | null;
   structure_name: string | null;
   technical_operation_id: number;
   technical_operation_name: string;
   type: 'mixed' | 'simple_dt' | 'points';
-  work_types: WorkTypeData[]
+  work_types: Array<WorkTypeData>;
 };
 
 export type IStateRoutes = {
-  routesList: Route[];
+  routesList: Array<Route>;
   routesIndex: Record<Route['id'], Route>;
 };

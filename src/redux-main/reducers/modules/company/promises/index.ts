@@ -27,10 +27,10 @@ export const promiseGetCompany = async (payload = {}) => {
   try {
     response = await CompanyService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
-  const data: Company[] = get(response, ['result'], [])
+  const data: Array<Company> = get(response, ['result'], [])
     .map((company) => {
       company.rgb_color = company.rgb_color || colors[Math.ceil(Math.random() * 4096)];
 

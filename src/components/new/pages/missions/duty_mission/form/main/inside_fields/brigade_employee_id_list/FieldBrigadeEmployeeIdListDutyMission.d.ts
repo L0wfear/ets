@@ -5,7 +5,7 @@ import employeeActions from 'redux-main/reducers/modules/employee/actions-employ
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export type StateFieldBrigadeEmployeeIdListDutyMission = {
-  BRIGADE: DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>[];
+  BRIGADE: Array<DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean; }>>;
 };
 
 export type StatePropsFieldBrigadeEmployeeIdListDutyMission = {

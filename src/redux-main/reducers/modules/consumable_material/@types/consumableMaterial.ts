@@ -23,9 +23,9 @@ export type ConsumableMaterial = {
 };
 
 export type ConsumableMaterialWrap = ConsumableMaterial & {
-  technical_operation_ids: Array<ValuesOf<ConsumableMaterial['norms']>['technical_operation_id']>
-  technical_operation_names: Array<ValuesOf<ConsumableMaterial['norms']>['technical_operation_name']>
-  municipal_facility_ids: Array<ValuesOf<ConsumableMaterial['norms']>['municipal_facility_id']>
-  municipal_facility_names: Array<ValuesOf<ConsumableMaterial['norms']>['municipal_facility_name']>
+  technical_operation_ids: Array<ValuesOf<ConsumableMaterial['norms']>['technical_operation_id']>;
+  technical_operation_names: Array<ValuesOf<ConsumableMaterial['norms']>['technical_operation_name']>;
+  municipal_facility_ids: Array<ValuesOf<ConsumableMaterial['norms']>['municipal_facility_id']>;
+  municipal_facility_names: Array<ValuesOf<ConsumableMaterial['norms']>['municipal_facility_name']>;
   to_element: Array<string>;
 };

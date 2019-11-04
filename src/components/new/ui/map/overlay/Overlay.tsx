@@ -85,7 +85,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
       console.warn('не могу скрыть попап');
     }
     this.props.hidePopup();
-  }
+  };
 
   render() {
     const {
@@ -107,10 +107,9 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
           <EtsOverlayTitle { ...props }>
             {title}
             {
-              this.props.hidePopup ?
-                <OverlayClose { ...props } onClick={this.hidePopup}>x</OverlayClose>
-              :
-                <DivNone />
+              this.props.hidePopup
+                ? <OverlayClose { ...props } onClick={this.hidePopup}>x</OverlayClose>
+                :                <DivNone />
             }
           </EtsOverlayTitle>
           <EtsOverlayBody { ...props } >

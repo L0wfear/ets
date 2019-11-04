@@ -31,11 +31,11 @@ class MainMenuItem extends React.Component<any, any> {
     this.setState({
       showChildren: !this.state.showChildren,
     });
-  }
+  };
 
   hiddenChildren = () => {
     this.setState({ showChildren: false });
-  }
+  };
 
   getItem = () => {
     const {
@@ -48,18 +48,18 @@ class MainMenuItem extends React.Component<any, any> {
         <LinkFirstLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultFirstLvlMenu>
             { __DEVELOPMENT__ && data.isNewRegistry && (
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={(
-                    <EtsBootstrap.Popover>
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
                       Формочка на редаксе
-                    </EtsBootstrap.Popover>
-                  )}
-                  placement="top"
-                >
-                  <MarkNewRegistry />
-                </EtsBootstrap.OverlayTrigger>
-              )
+                  </EtsBootstrap.Popover>
+                )}
+                placement="top"
+              >
+                <MarkNewRegistry />
+              </EtsBootstrap.OverlayTrigger>
+            )
             }
             <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
@@ -98,24 +98,24 @@ class MainMenuItem extends React.Component<any, any> {
         <DefaultFirstLvlMenu>
           <MenuTitleContainer>
             { __DEVELOPMENT__ && data.isNewRegistry && (
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={(
-                    <EtsBootstrap.Popover>
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
                       Формочка на редаксе
-                    </EtsBootstrap.Popover>
-                  )}
-                  placement="top"
-                >
-                  <MarkNewRegistry />
-                </EtsBootstrap.OverlayTrigger>
-              )}
+                  </EtsBootstrap.Popover>
+                )}
+                placement="top"
+              >
+                <MarkNewRegistry />
+              </EtsBootstrap.OverlayTrigger>
+            )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultFirstLvlMenu>
       </LinkFirstLvl>
     );
-  }
+  };
 
   renderChildrenItem = ([keyName, data]) => {
     return (
@@ -127,13 +127,13 @@ class MainMenuItem extends React.Component<any, any> {
         hiddenChildren={this.hiddenChildren}
       />
     );
-  }
+  };
 
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState({ showChildren: false });
     }
-  }
+  };
 
   render() {
     const {

@@ -12,12 +12,12 @@ import { geoJSON } from 'utils/ol';
 import { monitorPageSetFuelEventsLeakOverlayData } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 type PropsLayerFuelEventLeakPoint = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  zoom: number;
   map: Map;
 
   leakData: any;
@@ -56,7 +56,7 @@ class LayerFuelEventLeakPoint extends React.PureComponent<PropsLayerFuelEventLea
     if (leak) {
       this.props.monitorPageSetFuelEventsLeakOverlayData(leak);
     }
-  }
+  };
 
   drawFuelEventsLeakPoints(leakData) {
     for (const id in leakData) {

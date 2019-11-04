@@ -19,7 +19,7 @@ type TypeConfig = {
   cant_create?: boolean;                                  // может ли форма создать запись
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   add_path: FormKeys | string;                            // path для формы
-  replace_uniqKey_on?: string                             // имя уникального ключа для формы
+  replace_uniqKey_on?: string;                             // имя уникального ключа для формы
   search_which_need_to_remove?: Array<string>;            // Что удалить из search при закрытии формы
 };
 
@@ -46,7 +46,7 @@ export type WithFormRegistrySearchProps<F = any> = {
   path?: string;
 };
 
-const findRecondInDeepArray = <F extends any>(array: F[], uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
+const findRecondInDeepArray = <F extends any>(array: Array<F>, uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
   const children = [];
 
   const selectedItem = array.find((rowData) => {
@@ -77,7 +77,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
 
         const dispatch = etsUseDispatch();
 
-        const array: any[] = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
+        const array: Array<any> = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
         const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
@@ -236,8 +236,8 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
                   />
                 )
               }
-          </React.Suspense>
-        </ErrorBoundaryForm>
+            </React.Suspense>
+          </ErrorBoundaryForm>
         );
       },
     );

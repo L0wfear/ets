@@ -10,7 +10,7 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 
 type Props = {
-  value: MissionTemplate['structure_id']
+  value: MissionTemplate['structure_id'];
   name: MissionTemplate['structure_name'];
   disabled: boolean;
   error: string;

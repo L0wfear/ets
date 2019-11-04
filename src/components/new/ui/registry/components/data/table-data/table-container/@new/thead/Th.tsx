@@ -50,8 +50,8 @@ const Th: React.FC<Props> = React.memo(
     const isStickyTh = isEmpty(groupColumn);
 
     return (
-      isActive &&
-        <EtsBootstrap.Grid.GridBootstrapThead.Th
+      isActive
+        && <EtsBootstrap.Grid.GridBootstrapThead.Th
           width={width}
           canClick={sortable}
           onClick={handleClick}

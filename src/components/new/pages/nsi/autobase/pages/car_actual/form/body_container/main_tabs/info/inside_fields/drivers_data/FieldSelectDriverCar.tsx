@@ -19,7 +19,7 @@ type FieldSelectDriverCarDispatchProps = {
 
 type FieldSelectDriverCarOwnProps = {
   gov_number: CarWrap['gov_number'];
-  drivers_data: CarWrap['drivers_data']
+  drivers_data: CarWrap['drivers_data'];
   onChange: FormWithHandleChange<CarWrap>;
   isPermitted: boolean;
   page: string;

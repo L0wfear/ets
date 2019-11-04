@@ -12,7 +12,7 @@ import { DataContainer } from 'components/old/monitor/styled';
 export type StatePropsCarInfo = {};
 export type DispatchPropsCarInfo = {};
 export type OwnPropsCarInfo = {
-  map: Map,
+  map: Map;
   centerOn: any;
 };
 

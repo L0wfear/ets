@@ -78,7 +78,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   getOtherDataOnTrackPoint = (props) => {
     this.getObjectData(props);
     this.getMissionsData(props);
-  }
+  };
   getObjectData = async (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
@@ -109,7 +109,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         objectsString,
       },
     });
-  }
+  };
 
   getMissionsData = (props) => {
     const { asuods_id } = props;
@@ -124,14 +124,14 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         },
       ),
     ).then((result) => {
-        this.setState({
-          trackPoint: {
-            ...this.state.trackPoint,
-            missions: result.missions,
-          },
-        });
+      this.setState({
+        trackPoint: {
+          ...this.state.trackPoint,
+          missions: result.missions,
+        },
       });
-  }
+    });
+  };
 
   render() {
     const { trackPoint } = this.state;
@@ -183,47 +183,44 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         <OverlayLineObjectsStringContainer>
           {
             objectsString
-            ? objectsString
+              ? objectsString
               : <PreloadNew typePreloader="field" />
           }
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           {
-            missions === undefined ?
-            (
-              <PreloadNew typePreloader="field" />
-            )
-            :
-            (
-              missions.length === 0 ?
-              (
-                <div>Нет выполняемых заданий</div>
+            missions === undefined
+              ? (
+                <PreloadNew typePreloader="field" />
               )
-              :
-              (
-                missions.map(({ number }) => (
-                  <div key={number}>{`Задание №${number}`}</div>
-                ))
+              :            (
+                missions.length === 0
+                  ? (
+                    <div>Нет выполняемых заданий</div>
+                  )
+                  :              (
+                    missions.map(({ number }) => (
+                      <div key={number}>{`Задание №${number}`}</div>
+                    ))
+                  )
               )
-            )
           }
         </OverlayLineInfoContainer>
         {
-          !pointSensors.length ?
-          ( <DivNone /> )
-          :
-          (
-            <OverlayLineInfoContainer>
-              <div>Работающие датчики навесного оборудования</div>
-              <SensorsListContainer>
-                {
-                  pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
-                    <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
-                  ))
-                }
-              </SensorsListContainer>
-            </OverlayLineInfoContainer>
-          )
+          !pointSensors.length
+            ? ( <DivNone /> )
+            :          (
+              <OverlayLineInfoContainer>
+                <div>Работающие датчики навесного оборудования</div>
+                <SensorsListContainer>
+                  {
+                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
+                      <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
+                    ))
+                  }
+                </SensorsListContainer>
+              </OverlayLineInfoContainer>
+            )
         }
         <OverlayBoxInfoContainer>
           <OverlayLineInfoContainer>

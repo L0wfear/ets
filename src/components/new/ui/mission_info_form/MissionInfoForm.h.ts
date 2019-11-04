@@ -3,7 +3,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
-export interface IMIssionData {
+export type IMIssionData = {
   column_id: number | void;
   current_percentage: number;
   date_start: string | Date;
@@ -17,18 +17,18 @@ export interface IMIssionData {
   sensor_traveled_working: number;
   structure_id: void | number;
   traveled_percentage: number;
-}
+};
 
-export interface ICarData {
+export type ICarData = {
   driver_fio: string;
   driver_phone: string;
   gov_number: string;
   asuods_id: number;
   gps_code: string;
   car_func_type_id: number;
-}
+};
 
-export interface IRouteData {
+export type IRouteData = {
   id: number;
   check_unit: string;
   name: string;
@@ -36,10 +36,10 @@ export interface IRouteData {
   has_mkad: boolean;
   object_type_name: 'ОДХ' | 'ДТ' | 'ПН';
   has_object_list: boolean | null;
-}
+};
 
-export interface IReportData {
-  entries: any[];
+export type IReportData = {
+  entries: Array<any>;
   check_unit: string | void;
   check_value: number;
   estimated_finish_time: string | Date;
@@ -53,26 +53,26 @@ export interface IReportData {
   traveled_high_speed: number;
   traveled_percentage: number;
   traveled_raw: number;
-}
+};
 
-export interface ITechnicalOperationData {
+export type ITechnicalOperationData = {
   check_type: string;
   id: number;
   max_speed: number;
   name: string;
-}
+};
 
-export interface IWaybillData {
+export type IWaybillData = {
   fact_arrival_date: string | Date;
   fact_departure_date: string | Date;
-}
+};
 
-export interface ISpeedLimits {
+export type ISpeedLimits = {
   speed_lim: number;
   mkad_speed_lim: number;
-}
+};
 
-export interface IMissionInfoFormState {
+export type IMissionInfoFormState = {
   mission_data: IMIssionData;
   car_data: ICarData;
   route_data: IRouteData;
@@ -80,7 +80,7 @@ export interface IMissionInfoFormState {
   technical_operation_data: ITechnicalOperationData;
   waybill_data: IWaybillData;
   speed_limits: ISpeedLimits;
-}
+};
 
 export type DispatchPropsMissionInfoForm = {
   actionGetTracksCaching: HandleThunkActionCreator<typeof actionGetTracksCaching>;
@@ -99,10 +99,10 @@ export type PropsMissionInfoForm = DispatchPropsMissionInfoForm & {
 export type StateMissionInfoForm = {
   tooLongDates: boolean;
   polys: object;
-  inputLines: any[];
-  missionReport: any[];
+  inputLines: Array<any>;
+  missionReport: Array<any>;
   parkingCount: number | void;
-  track: any[];
-  front_parkings: any[];
+  track: Array<any>;
+  front_parkings: Array<any>;
   cars_sensors: object;
 };

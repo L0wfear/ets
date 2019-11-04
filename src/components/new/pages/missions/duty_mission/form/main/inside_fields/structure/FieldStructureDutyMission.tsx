@@ -43,7 +43,7 @@ class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureD
         });
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -60,22 +60,22 @@ class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureD
     return (
       STRUCTURE_FIELD_VIEW
         ? (
-            <ExtField
-              type="select"
-              id="structure_id"
-              modalKey={props.page}
-              label="Подразделение"
-              disabled={STRUCTURE_FIELD_READONLY || this.props.disabled}
-              clearable={STRUCTURE_FIELD_DELETABLE}
-              options={STRUCTURES}
-              emptyValue={null}
-              value={props.value}
-              error={props.error}
-              onChange={this.handleChange}
-            />
+          <ExtField
+            type="select"
+            id="structure_id"
+            modalKey={props.page}
+            label="Подразделение"
+            disabled={STRUCTURE_FIELD_READONLY || this.props.disabled}
+            clearable={STRUCTURE_FIELD_DELETABLE}
+            options={STRUCTURES}
+            emptyValue={null}
+            value={props.value}
+            error={props.error}
+            onChange={this.handleChange}
+          />
         )
         : (
-            <DivNone />
+          <DivNone />
         )
     );
   }

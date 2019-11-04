@@ -97,9 +97,9 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-      {
-        <EtsBootstrap.Button onClick={props.onFormHide}>Закрыть</EtsBootstrap.Button>
-      }
+        {
+          <EtsBootstrap.Button onClick={props.onFormHide}>Закрыть</EtsBootstrap.Button>
+        }
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

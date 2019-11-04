@@ -29,7 +29,7 @@ export namespace OverlayUtils {
 
   export type setMakerPosition = (
     marker: Overlay,
-    coordsMsk: number[],
+    coordsMsk: Array<number>,
   ) => void;
 
   export type makeOverlay = (

@@ -6,7 +6,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { makeUnixTime } from 'components/@next/@utils/dates/dates';
 import { TrackInfo } from 'redux-main/reducers/modules/some_uniq/track/@types';
 
-export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'], from_dt: Parameters<typeof makeUnixTime>[0], to_dt: Parameters<typeof makeUnixTime>[0] }) => {
+export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code']; from_dt: Parameters<typeof makeUnixTime>[0]; to_dt: Parameters<typeof makeUnixTime>[0]; }) => {
   let version = get(
     JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
     [config.tracksCaching],

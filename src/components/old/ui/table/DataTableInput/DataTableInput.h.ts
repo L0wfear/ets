@@ -4,8 +4,8 @@ import { ISchemaRenderer, IDataTableSchema } from 'components/old/ui/table/@type
 /**
  * Это пропсы оборачиваемого компонента, которые надо расшарить для обёртки.
  */
-export interface ISharedPropsDataTableInput {
-  inputList: any[];
+export type ISharedPropsDataTableInput = {
+  inputList: Array<any>;
   tableSchema: IDataTableSchema;
   isPermitted: boolean;
   renderers: any;
@@ -13,27 +13,27 @@ export interface ISharedPropsDataTableInput {
   addButtonLabel?: string;
   removeButtonLable?: string;
   selectField?: string;
-  typesListOpt?: any[];
+  typesListOpt?: Array<any>;
   page: string;
   path: string;
   tableTitle?: string;
   hideButtons?: boolean;
-}
+};
 
-export interface IStateDataTableInput {
+export type IStateDataTableInput = {
   selected: any;
-}
+};
 
 export type IPropsDataTableInput = ISharedPropsDataTableInput & TInjectedPropsDataTableInputWrapper;
 
-export interface IPropsDataTableInputRenderer {
+export type IPropsDataTableInputRenderer = {
   index: number;
   value: string | any;
   isPermitted: boolean;
-  outputListErrors: ETSCore.Types.IStringKeyHashTable<string>[];
+  outputListErrors: Array<ETSCore.Types.IStringKeyHashTable<string>>;
   onChange(index: number, key: string | object, value?: any): void;
   fieldKey?: string;
-}
+};
 
 export type TRendererFunction = (
   props: any,

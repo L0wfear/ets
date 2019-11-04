@@ -6,7 +6,7 @@ export const someUniqSetNewData = (newStateData: { [K in keyof IStateSomeUniq]?:
   payload: newStateData,
 });
 
-export const someUniqSetNewDataNew = (name: keyof IStateSomeUniq) => (newStateData: { data: IStateSomeUniq[keyof IStateSomeUniq]; [k: string]: any }) => (dispatch) => {
+export const someUniqSetNewDataNew = (name: keyof IStateSomeUniq) => (newStateData: { data: IStateSomeUniq[keyof IStateSomeUniq]; [k: string]: any; }) => (dispatch) => {
   return dispatch(
     someUniqSetNewData(
       {

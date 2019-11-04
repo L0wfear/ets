@@ -155,7 +155,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -198,8 +198,8 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               value={formState.structure_id}
               name={formState.structure_name}
               disabled={
-                !isPermitted ||
-                (hasMissionStructureId && !!formState.structure_id)
+                !isPermitted
+                || (hasMissionStructureId && !!formState.structure_id)
               }
               error={formErrors.structure_id}
               onChange={this.props.handleChange}
@@ -298,7 +298,7 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
         ),
     }),
   ),
-  withProps<StateRouteFormProps & { isPermittedToShowBridge: boolean }, any>(
+  withProps<StateRouteFormProps & { isPermittedToShowBridge: boolean; }, any>(
     (props) => ({
       ...props,
       isPermittedToShowBridge: validatePermissions(bridgesPermission.list, props.userData.permissionsSet),

@@ -12,7 +12,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* ---------- FuelCards ---------- */
-export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
+export const setFuelCards = (fuelCardsList: Array<FuelCard>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       fuelCardsList,
@@ -20,7 +20,7 @@ export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
   )
 );
 
-export const setFuelType = (fuelTypeList: FuelType[]) => (dispatch) => (
+export const setFuelType = (fuelTypeList: Array<FuelType>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       fuelTypeList,

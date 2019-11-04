@@ -42,7 +42,7 @@ class AppHeader extends React.Component<{}, any> {
       width: document.body.offsetWidth,
       mobi: document.body.offsetWidth < mobiSize,
     }));
-  }
+  };
 
   render() {
     const {
@@ -53,12 +53,12 @@ class AppHeader extends React.Component<{}, any> {
       <AppHeaderNav ref={this.node}>
         {
           this.state.mobi
-          ? (
-            <AppHeaderMobi width={width} />
-          )
-          : (
-            <AppHeaderDesktop width={width} />
-          )
+            ? (
+              <AppHeaderMobi width={width} />
+            )
+            : (
+              <AppHeaderDesktop width={width} />
+            )
         }
       </AppHeaderNav>
     );

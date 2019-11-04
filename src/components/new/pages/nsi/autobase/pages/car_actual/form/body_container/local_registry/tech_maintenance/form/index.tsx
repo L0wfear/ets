@@ -8,7 +8,7 @@ const TechMintenanceForm = React.lazy(() =>
   import(/* webpackChunkName: "tech_maint_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/TechMintenanceForm'),
 );
 
-const TechMaintenanceFormLazy: React.FC<WithFormRegistrySearchAddProps<TechMaintenance> & { selectedCarData?: CarWrap }> = React.memo(
+const TechMaintenanceFormLazy: React.FC<WithFormRegistrySearchAddProps<TechMaintenance> & { selectedCarData?: CarWrap; }> = React.memo(
   (props) => {
     const element = React.useMemo(
       () => {
@@ -34,6 +34,6 @@ const TechMaintenanceFormLazy: React.FC<WithFormRegistrySearchAddProps<TechMaint
   },
 );
 
-export default withFormRegistrySearch<WithFormRegistrySearchProps<TechMaintenance> & { selectedCarData?: CarWrap }, TechMaintenance>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<TechMaintenance> & { selectedCarData?: CarWrap; }, TechMaintenance>({
   add_path: 'tech_maintenance',
 })(TechMaintenanceFormLazy);

@@ -26,13 +26,13 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         action,
       ],
     });
-  }
+  };
 
   removeActionByIndex = (removeIndex: number) => {
     this.props.handleChange({
       actions: this.props.formState.actions.filter((_, index) => index !== removeIndex),
     });
-  }
+  };
 
   handleChangeData = (data) => {
     this.props.handleChange({
@@ -41,7 +41,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         ...data,
       },
     });
-  }
+  };
 
   render() {
     const {

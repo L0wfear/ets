@@ -9,9 +9,9 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
+type IPropsBatteryToVehicleBlock = {
   batteryId: number;
-}
+} & ISharedPropsDataTableInput & IExternalPropsDataTableInputWrapper;
 
 const BatteryToVehicleBlock: React.FC<IPropsBatteryToVehicleBlock> = React.memo(
   (props) => {
@@ -20,7 +20,7 @@ const BatteryToVehicleBlock: React.FC<IPropsBatteryToVehicleBlock> = React.memo(
 
     React.useEffect(
       () => {
-        const payload: { battery_id?: number } = {};
+        const payload: { battery_id?: number; } = {};
         if (props.batteryId) {
           payload.battery_id = props.batteryId;
         }

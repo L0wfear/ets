@@ -41,7 +41,7 @@ const CarpoolForm: React.FC<PropsCarpoolForm> = React.memo(
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <FlexContainer isWrap>
+          <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
               {
                 props.userData.isKgh || props.userData.isOkrug

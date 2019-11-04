@@ -11,74 +11,74 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 
 export type WaybillFormStoreType = {
   mission_reject_list: {
-    value: Mission[],
-    isLoading: boolean,
-  },
+    value: Array<Mission>;
+    isLoading: boolean;
+  };
   mission_list: {
-    value: Mission[],
-    isLoading: boolean,
-  },
+    value: Array<Mission>;
+    isLoading: boolean;
+  };
   structure_id: {
-    options: DefaultSelectListMapper<CompanyStructureLinear>,
-    isLoading: boolean,
-  },
+    options: DefaultSelectListMapper<CompanyStructureLinear>;
+    isLoading: boolean;
+  };
   employee: {
-    listIndex: Record<Employee['id'], Employee>,
-    options: {
+    listIndex: Record<Employee['id'], Employee>;
+    options: Array<{
       value: Employee['id'];
       label: Employee['full_name'];
       rowData: Employee;
-    }[],
-    isLoading: boolean,
-  },
+    }>;
+    isLoading: boolean;
+  };
   carActualList: {
-    options: {
+    options: Array<{
       value: Car['asuods_id'];
       label: string;
       rowData: Car;
-    }[],
-    isLoading: boolean,
-  },
+    }>;
+    isLoading: boolean;
+  };
   employeeBindedToCar: {
-    list: EmployeeBindedToCar[];
-    isLoading: boolean,
-  },
+    list: Array<EmployeeBindedToCar>;
+    isLoading: boolean;
+  };
   medicalStatsAllowedDrivers: {
-    list: MedicalStatsAllowedDriver[];
-    isLoading: boolean,
-  },
+    list: Array<MedicalStatsAllowedDriver>;
+    isLoading: boolean;
+  };
   workModeOptions: {
-    options: {
+    options: Array<{
       value: WorkMode['id'];
       label: string;
       rowData: WorkMode;
-    }[]
+    }>;
     isLoading: boolean;
   };
   refillTypeList: {
-    list: RefillType[],
+    list: Array<RefillType>;
     isLoading: boolean;
-  },
+  };
   refillTypeOptions: {
-    options: {
+    options: Array<{
       value: RefillType['id'];
       label: RefillType['name'];
       isNotVisible: boolean;
       rowData: RefillType;
-    }[]
+    }>;
     isLoading: boolean;
   };
   fuelCardsList: {
-    list: FuelCard[];
+    list: Array<FuelCard>;
     isLoading: boolean;
   };
   carRefillFuelCardsOptions: {
-    listIndex: Record<FuelCard['id'], FuelCard>,
-    options: {
+    listIndex: Record<FuelCard['id'], FuelCard>;
+    options: Array<{
       value: FuelCard['id'];
       label: FuelCard['number'];
       rowData: FuelCard;
-    }[]
+    }>;
     isLoading: boolean;
-  },
+  };
 };

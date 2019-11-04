@@ -8,7 +8,7 @@ import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@util
 
 export type GetDefaultMissionTemplateElement = (companyStructure: Partial<MissionTemplate> | null) => MissionTemplate;
 
-export const makeDefaultMissionTemplate = (...arg: any[]): MissionTemplate => ({
+export const makeDefaultMissionTemplate = (...arg: Array<any>): MissionTemplate => ({
   car_gov_numbers: [],
   car_gov_numbers_text: '',
   car_ids: [],

@@ -33,7 +33,7 @@ export type OwnPropsFieldRouteIdDutyMission = {
   municipal_facility_name: DutyMission['municipal_facility_name'];
   technical_operation_id: DutyMission['technical_operation_id'];
   technical_operation_name: DutyMission['technical_operation_name'];
-  consumable_materials?: DutyMission['consumable_materials'],
+  consumable_materials?: DutyMission['consumable_materials'];
   request_id?: DutyMission['request_id'];
   fromMission: boolean;
   fromMissionTemplate: boolean;

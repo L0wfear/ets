@@ -15,7 +15,7 @@ type Props = {
 
   exportType: number;
 
-  showForm: boolean
+  showForm: boolean;
 };
 type State = any;
 

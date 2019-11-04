@@ -12,9 +12,9 @@ type CarRefillTableHeaderProps = {
   id: string;
   selectedRowIndex: number;
   onChange: any;
-  array: any[];
+  array: Array<any>;
 
-  meta: any[];
+  meta: Array<any>;
   addName?: string;
   removeName?: string;
   visibleButtons?: boolean;

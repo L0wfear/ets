@@ -20,20 +20,20 @@ class OneMenu extends React.Component<any, any> {
     this.setState((state) => ({
       showChildren: !state.showChildren,
     }));
-  }
+  };
   handleMiddlewareClick = () => {
     this.setState((state) => ({
       showChildren: false,
     }));
     this.props.hiddenChildren();
-  }
+  };
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState((state) => ({
         showChildren: false,
       }));
     }
-  }
+  };
 
   getTitle = () => {
     const {
@@ -88,30 +88,30 @@ class OneMenu extends React.Component<any, any> {
         <DefaultSecondLvlMenuMobi>
           <MenuTitleContainer>
             { __DEVELOPMENT__ && data.isNewRegistry && (
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={(
-                    <EtsBootstrap.Popover>
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
                       Формочка на редаксе
-                    </EtsBootstrap.Popover>
-                  )}
-                  placement="top"
-                >
-                  <MarkNewRegistry />
-                </EtsBootstrap.OverlayTrigger>
-              )}
+                  </EtsBootstrap.Popover>
+                )}
+                placement="top"
+              >
+                <MarkNewRegistry />
+              </EtsBootstrap.OverlayTrigger>
+            )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultSecondLvlMenuMobi>
       </LinkSecontLvl>
     );
-  }
+  };
 
   mapRWithP = ([key, data]) => {
     return (
       <OneMenuWrap key={key} keyName={key} data={data} hiddenChildren={this.handleMiddlewareClick}/>
     );
-  }
+  };
 
   render() {
     const { showChildren } = this.state;

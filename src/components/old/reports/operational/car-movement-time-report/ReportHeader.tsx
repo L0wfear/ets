@@ -20,13 +20,13 @@ import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 const page = 'car-movement-time-report';
 
-interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsMissionProgressReportHeader = {
   date_start: string;
   date_end: any;
   company_id: null | number;
   actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany>;
   companyList: IStateCompany['companyList'];
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
   async componentDidMount() {
@@ -60,7 +60,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
   }
   handleChangeDateEnd = (field, value) => (
     this.props.handleChange(field, value ? createValidDateTime(value) : value)
-  )
+  );
 
   handleSubmit = () => {
     const {
@@ -74,7 +74,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       date_end: createValidDateTime(date_end),
       company_id,
     });
-  }
+  };
   render() {
     const {
       readOnly,
@@ -155,7 +155,7 @@ export default compose<any, any>(
     page,
     typePreloader: 'mainpage',
   }),
-  connect<any, { actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany> }, any, ReduxState>(
+  connect<any, { actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany>; }, any, ReduxState>(
     (state) => ({
       companyList: getCompanyState(state).companyList,
     }),

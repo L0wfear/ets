@@ -30,15 +30,15 @@ export type OwnMissionProps = (
     originalFormState: Mission;
     formState: Mission;
     formErrors: Partial<Record<keyof Mission, string>>;
-    updateFormErrors: () => any,
+    updateFormErrors: () => any;
     canSave: boolean;
     isPermitted: boolean;
     page: string;
     path: string;
     handleHide: (isSubmitted: any, result?: Mission | Partial<Mission> | any) => any;
-    hideWithoutChanges: (...arg: any[]) => any;
+    hideWithoutChanges: (...arg: Array<any>) => any;
     handleChange: (obj: Partial<Mission>) => any;
-    submitAction: (assign_to_waybill: string[]) => Promise<any>;
+    submitAction: (assign_to_waybill: Array<string>) => Promise<any>;
 
     formDataKey: FormKeys & 'mission';  // ключ к стору
   }

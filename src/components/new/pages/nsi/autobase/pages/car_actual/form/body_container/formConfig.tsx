@@ -23,7 +23,7 @@ export type OneTabDataCommon = {
 export type OneTabDataParent = (
   OneTabDataCommon
   & {
-    children: OneTabDataComponent[];
+    children: Array<OneTabDataComponent>;
   }
 );
 
@@ -149,7 +149,7 @@ export const techInspection: OneTabData = {
   isRegistry: true,
 };
 
-const carFormTabKey: OneTabData[] = [
+const carFormTabKey: Array<OneTabData> = [
   main,
   battaryInfo,
   tireInfo,
@@ -161,7 +161,7 @@ const carFormTabKey: OneTabData[] = [
 ];
 
 export const componentsInArray = carFormTabKey.reduce(
-  (newArr: OneTabDataComponent[], tabData) => {
+  (newArr: Array<OneTabDataComponent>, tabData) => {
     if ('children' in tabData) {
       tabData.children.forEach((tabDataChild) => {
         newArr.push(tabDataChild);

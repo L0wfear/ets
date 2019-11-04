@@ -16,7 +16,7 @@ import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cl
 type StateProps = {
 };
 type DispatchProps = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
 };
 
 type OwnProps = {

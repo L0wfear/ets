@@ -80,6 +80,6 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
         </Switch>
       </EtsBootstrap.Row>
     );
-});
+  });
 
 export default withSearch<CarFormBodyContainerOwnProps>(CarFormBodyContainer);

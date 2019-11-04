@@ -26,7 +26,7 @@ export const geoozonesLoadByType = <F extends any, ExtraData extends any = any>(
     //
   }
 
-  const data: F[] = get(response, 'result.rows', []).map(makeShape);
+  const data: Array<F> = get(response, 'result.rows', []).map(makeShape);
   const extraData: ExtraData = get(response, 'result.extra', {});
 
   return {
@@ -81,7 +81,7 @@ export const gormostLoadByType = <F extends any, ExtraData extends any = any>(ke
     //
   }
 
-  const data: F[] = get(response, 'result.rows', []).map(makeShape);
+  const data: Array<F> = get(response, 'result.rows', []).map(makeShape);
   const extraData: ExtraData = get(response, 'result.extra', {});
 
   return {

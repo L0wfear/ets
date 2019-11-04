@@ -6,7 +6,7 @@ import List from 'components/new/pages/dashboard/menu/cards/waybill-completed/li
 import {
   dashboardLoadWaybillCompleted,
   dashboardSetInfoDataInWaybillCompleted,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import WaybillCompletedInfo from 'components/new/pages/dashboard/menu/cards/waybill-completed/info/WaybillCompletedInfo';
 import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 
@@ -29,7 +29,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
     this.props.setInfoData(
       this.props.items[index],
     );
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -42,16 +42,15 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
       <div>
         <List items={firstTwoItem} handleClick={this.handleClick} addIndex={0} classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

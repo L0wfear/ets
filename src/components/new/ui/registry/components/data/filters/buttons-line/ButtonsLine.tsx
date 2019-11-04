@@ -78,19 +78,19 @@ export default compose<any, any>(
       ).some((valuesObj) =>
         Object.values(valuesObj).some(
           ({ value }: any) =>
-            isNumber(value) ||
-            isBoolean(value) ||
-            (isString(value) && !!value.length) ||
-            (value &&
-              (!Array.isArray(value) || (Array.isArray(value) && !!value.length))),
+            isNumber(value)
+            || isBoolean(value)
+            || (isString(value) && !!value.length)
+            || (value
+              && (!Array.isArray(value) || (Array.isArray(value) && !!value.length))),
         ),
       );
 
       return {
         canApply,
         canResetFilters:
-          canApply ||
-          Boolean(
+          canApply
+          || Boolean(
             Object.values(
               getListData(state.registry, registryKey).processed.filterValues,
             ).length,

@@ -14,11 +14,11 @@ import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapp
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: Date;
   date_end: Date;
   object_type: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
@@ -46,7 +46,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end: createValidDateTime(date_end),
       object_type,
     });
-  }
+  };
   render() {
     const { readOnly } = this.props;
     const {

@@ -117,7 +117,7 @@ const renderers: ISchemaRenderer<IUserNotification> = {
     </div>,
   gov_number: ({ data }) =>
     <div>
-        { data ? `Рег. номер: ${data}` : '' }
+      { data ? `Рег. номер: ${data}` : '' }
     </div>,
 };
 

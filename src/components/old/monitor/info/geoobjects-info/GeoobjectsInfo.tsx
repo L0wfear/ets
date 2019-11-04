@@ -68,5 +68,4 @@ export default connect<any, any, any, ReduxState>(
       )
     ),
   }),
-)
-(GeoobjectsInfo);
+)(GeoobjectsInfo);

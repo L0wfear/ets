@@ -11,7 +11,7 @@ export const promiseGetWorkKind = async (payload: any) => {
     response = null;
   }
 
-  const data: WorkKind[] = get(response, 'result.rows', []);
+  const data: Array<WorkKind> = get(response, 'result.rows', []);
 
   return data;
 };

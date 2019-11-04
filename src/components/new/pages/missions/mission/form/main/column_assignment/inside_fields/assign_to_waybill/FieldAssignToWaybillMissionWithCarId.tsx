@@ -14,7 +14,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const FieldAssignToWaybillMissionWithCarId: React.FC<PropsFieldAssignToWaybillMissionWithCarId> = (props) => {
   const handleChange = React.useCallback(
-    (value: string[]) => {
+    (value: Array<string>) => {
       props.onChange(
         props.index,
         value[0],

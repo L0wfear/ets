@@ -42,12 +42,11 @@ const InfoTableData: React.FC<Props> = React.memo(
     ]);
 
     const allRunWithWorkEquipment = (
-      mission_data.sensor_traveled_working !== null ?
-      getDataTraveledYet(
-        checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F'),
-      )
-      :
-      'Нет данных'
+      mission_data.sensor_traveled_working !== null
+        ? getDataTraveledYet(
+          checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F'),
+        )
+        :      'Нет данных'
     );
 
     return (

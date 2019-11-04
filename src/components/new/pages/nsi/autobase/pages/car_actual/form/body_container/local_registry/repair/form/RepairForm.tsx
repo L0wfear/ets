@@ -32,12 +32,12 @@ import { autobaseGetSetRepairType } from 'redux-main/reducers/modules/autobase/a
 import { autobaseCreateRepair, autobaseUpdateRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/actions';
 
 const statusOptions = Object.entries(AUTOBASE_REPAIR_STATUS)
-.filter(([, value]) => !value.disabled)
-.map(([key, value]) => ({
-  value: key,
-  label: value.name,
-  rowData: null,
-}));
+  .filter(([, value]) => !value.disabled)
+  .map(([key, value]) => ({
+    value: key,
+    label: value.name,
+    rowData: null,
+  }));
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
@@ -90,11 +90,11 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       ? this.props.isPermittedToUpdate
       : this.props.isPermittedToCreate;
 
-    const isPermitted =
-      ownIsPermitted &&
-      (isNullOrUndefined(state.company_id) ||
-        state.can_edit ||
-        state.company_id === this.props.userCompanyId);
+    const isPermitted
+      = ownIsPermitted
+      && (isNullOrUndefined(state.company_id)
+        || state.can_edit
+        || state.company_id === this.props.userCompanyId);
 
     const value_string_repair = get(AUTOBASE_REPAIR_STATUS[state.status], 'name') || null;
 
@@ -103,7 +103,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         id="modal-repair"
         show
         onHide={this.props.hideWithoutChanges}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-interface Props {
+type Props = {
   currentPage: number;
   maxPage: number;
   setPage: (pageNumber: number) => any;
-}
+};
 
 class Paginator extends React.Component<Props, any> {
   componentDidUpdate(prevProps) {

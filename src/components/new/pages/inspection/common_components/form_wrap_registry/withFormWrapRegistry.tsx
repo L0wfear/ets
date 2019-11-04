@@ -118,34 +118,34 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
   return isPermitted && createPortal(
     <WithformWrapRegistryWrapper z_index = {1001}>
       <PopupBottomForm show={showForm}>
-      {
-        <React.Fragment>
-          <TitleForm md={12} sm={12}>
-            <h4>{props.title}</h4>
-            <EtsBootstrap.Button onClick={onFormHide}>
-              <EtsBootstrap.Glyphicon glyph="remove" />
-            </EtsBootstrap.Button>
-          </TitleForm>
-          <ContainerForm>
-            <EtsBootstrap.Col md={12}>
-              <BoxContainer>
-                {props.registryComponent}
-              </BoxContainer>
-            </EtsBootstrap.Col>
-          </ContainerForm>
-          <FooterForm md={12} sm={12}>
-            <FooterEnd>
-              {
-                showSaveBtn &&
-                (
+        {
+          <React.Fragment>
+            <TitleForm md={12} sm={12}>
+              <h4>{props.title}</h4>
+              <EtsBootstrap.Button onClick={onFormHide}>
+                <EtsBootstrap.Glyphicon glyph="remove" />
+              </EtsBootstrap.Button>
+            </TitleForm>
+            <ContainerForm>
+              <EtsBootstrap.Col md={12}>
+                <BoxContainer>
+                  {props.registryComponent}
+                </BoxContainer>
+              </EtsBootstrap.Col>
+            </ContainerForm>
+            <FooterForm md={12} sm={12}>
+              <FooterEnd>
+                {
+                  showSaveBtn
+                && (
                   <EtsBootstrap.Button disabled={saveIsDisable} onClick={saveSelectedRow}>Сохранить выделенную запись</EtsBootstrap.Button>
                 )
-              }
-              <EtsBootstrap.Button onClick={onFormHide}>Закрыть форму</EtsBootstrap.Button>
-            </FooterEnd>
-          </FooterForm>
-        </React.Fragment>
-      }
+                }
+                <EtsBootstrap.Button onClick={onFormHide}>Закрыть форму</EtsBootstrap.Button>
+              </FooterEnd>
+            </FooterForm>
+          </React.Fragment>
+        }
       </PopupBottomForm>
     </WithformWrapRegistryWrapper>,
     document.getElementById('container'),

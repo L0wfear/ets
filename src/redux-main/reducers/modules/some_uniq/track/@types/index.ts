@@ -16,7 +16,7 @@ export type OneTrakData = {
     equipment: Array<{
       any: any;
     }>;
-  }
+  };
   speed_avg: number;
   speed_max: number | null;
   timestamp: number;

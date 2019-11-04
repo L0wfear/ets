@@ -9,7 +9,7 @@ import {
 
 import {
   FuelRate,
- } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+} from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 
 import {
   FUEL_RATES_SET_DATA,
@@ -20,7 +20,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export const fuelRatesSetNewData = (newStateData: Partial<{ fuelRatesList: FuelRate[]; fuelRateOperationsIsActiveList: FuelOperation[] }>) => ({
+export const fuelRatesSetNewData = (newStateData: Partial<{ fuelRatesList: Array<FuelRate>; fuelRateOperationsIsActiveList: Array<FuelOperation>; }>) => ({
   type: FUEL_RATES_SET_DATA,
   payload: newStateData,
 });
@@ -84,7 +84,7 @@ export const resetFuelOperations = (): EtsAction<EtsActionReturnType<typeof fuel
   )
 );
 
-export const fuelOperationsGetAndSetInStore = (payload: { is_active?: boolean }, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelOperationsGet>>  => async (dispatch) => {
+export const fuelOperationsGetAndSetInStore = (payload: { is_active?: boolean; }, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelOperationsGet>>  => async (dispatch) => {
   const result = await dispatch(
     fuelOperationsGet(payload, meta),
   );

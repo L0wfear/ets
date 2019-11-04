@@ -20,22 +20,22 @@ export type TableMeta<F> = {
   disabled?: boolean;
   default_value?: any;
   onChange?: (onChange: (partilaF: Partial<F>) => any) => (value, option?: any) => any;
-  disabledIf?: {
-    type: 'compare_with_value_in_option',
-    path_to_option: string,
-    compareItemPath: string,
-    match: any,
-  }[];
-  resetIf?: {
-    type: 'compare_with_value_in_option',
-    path_to_option: string,
-    compareItemPath: string,
-    match: any,
-  }[];
+  disabledIf?: Array<{
+    type: 'compare_with_value_in_option';
+    path_to_option: string;
+    compareItemPath: string;
+    match: any;
+  }>;
+  resetIf?: Array<{
+    type: 'compare_with_value_in_option';
+    path_to_option: string;
+    compareItemPath: string;
+    match: any;
+  }>;
 } & (
   {
     format: 'select';
-    options: any[];
+    options: Array<any>;
     placeholder?: string;
     uniqValueInCol?: boolean;
   } | {
@@ -43,7 +43,7 @@ export type TableMeta<F> = {
   } | {
     format: 'boolean';
   } | {
-    format: 'date',
+    format: 'date';
     time?: boolean;
   } | {
     format: 'string';
@@ -51,9 +51,9 @@ export type TableMeta<F> = {
 );
 
 export type TableInputProps = {
-  meta: TableMeta<any>[];
-  array: any[];
-  errors?: any[];
+  meta: Array<TableMeta<any>>;
+  array: Array<any>;
+  errors?: Array<any>;
   onChange: any;
 
   header: any;

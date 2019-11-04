@@ -18,7 +18,7 @@ const ServiceFilesTdTitle: React.FC<Props> = React.memo(
     const dispatch = etsUseDispatch();
 
     const handleChange = React.useCallback(
-      async (key, files: any[]) => {
+      async (key, files: Array<any>) => {
 
         if (props.isPermitted) {
           try {

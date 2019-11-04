@@ -6,13 +6,13 @@ import Div from 'components/old/ui/Div';
 
 import { makeTableMeta } from 'components/old/ui/tableNew/utils';
 
-interface DataTableProps {
+type DataTableProps = {
   [key: string]: any;
-}
+};
 
-interface DataTableState {
+type DataTableState = {
   [key: string]: any;
-}
+};
 
 const emptyFilter = {};
 
@@ -83,13 +83,13 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
 
   toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   saveFilter = (filterValues) => {
-    console.log('SAVE FILTER', filterValues); // tslint:disable-line:no-console
+    console.info('SAVE FILTER', filterValues); // eslint-disable-line
 
     this.setState({
       filterValues,
       activeFilter: !!Object.keys(filterValues).length,
     });
-  }
+  };
 
   render() {
     const {
@@ -107,8 +107,8 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
             <h4>{this.props.title}</h4>
           </div>
           <div className="buttons">
-            {!noFilter &&
-              <FilterButton
+            {!noFilter
+              && <FilterButton
                 show={filterModalIsOpen}
                 active={activeFilter}
                 onClick={this.toggleFilter}

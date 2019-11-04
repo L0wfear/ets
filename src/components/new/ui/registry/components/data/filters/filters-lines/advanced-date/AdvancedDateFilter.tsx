@@ -47,7 +47,7 @@ type Props = (
 );
 
 type State = {
-  activeTypeArr: string[];
+  activeTypeArr: Array<string>;
   optionsType: any;
 };
 
@@ -101,7 +101,7 @@ class AdvancedDateFilter extends React.PureComponent<Props, State> {
     this.setState({
       activeTypeArr: value,
     });
-  }
+  };
 
   handleChange = (value, index) => {
     const { props } = this;
@@ -109,33 +109,33 @@ class AdvancedDateFilter extends React.PureComponent<Props, State> {
     const { activeTypeArr } = this.state;
 
     this.props.onChange(filterData.valueKey, activeTypeArr[index], value);
-  }
+  };
 
   handleChangeFirst = (value) => {
     this.handleChange(
       value
         ? (
-            this.props.time
+          this.props.time
             ? createValidDateTime(value)
             : createValidDate(value)
         )
         : null,
       0,
     );
-  }
+  };
 
   handleChangeSecond = (value) => {
     this.handleChange(
       value
         ? (
-            this.props.time
+          this.props.time
             ? createValidDateTime(value)
             : createValidDate(value)
         )
         : null,
       1,
     );
-  }
+  };
 
   render() {
     const { props, state  } = this;
@@ -177,23 +177,23 @@ class AdvancedDateFilter extends React.PureComponent<Props, State> {
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
           <AdvacedSecondLineContainer>
-          {
-            activeTypeArr.length > 1
-            ? (
-              <InputDate
-                id={id_two}
-                value={filterValuesObj[activeTypeArr[1]].value}
-                onChange={this.handleChangeSecond}
-                noShowLabel
-                noShowError
-                disabled={this.props.filterData.disabled}
-                time={this.props.time}
-              />
-            )
-            : (
-              <DivNone />
-            )
-          }
+            {
+              activeTypeArr.length > 1
+                ? (
+                  <InputDate
+                    id={id_two}
+                    value={filterValuesObj[activeTypeArr[1]].value}
+                    onChange={this.handleChangeSecond}
+                    noShowLabel
+                    noShowError
+                    disabled={this.props.filterData.disabled}
+                    time={this.props.time}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
       </EtsFilterDate>

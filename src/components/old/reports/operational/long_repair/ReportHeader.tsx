@@ -8,10 +8,10 @@ import {
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => this.props.onClick({});

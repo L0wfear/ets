@@ -22,24 +22,24 @@ class AppHeader extends React.Component<any, any> {
     this.setState((state) => ({
       showChildren: !state.showChildren,
     }));
-  }
+  };
   hiddenChildren = () => {
     this.setState(() => ({
       showChildren: false,
     }));
-  }
+  };
   mapRWithP = ([key, data]) => {
     return (
       <OneMenuWrap key={key} keyName={key} data={data} hiddenChildren={this.hiddenChildren}/>
     );
-  }
+  };
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState(() => ({
         showChildren: false,
       }));
     }
-  }
+  };
   render() {
     const { showChildren } = this.state;
 

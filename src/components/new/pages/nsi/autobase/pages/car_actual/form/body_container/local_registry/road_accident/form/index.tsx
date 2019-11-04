@@ -8,7 +8,7 @@ const RoadAccidentFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "road_accident_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/RoadAccidentForm'),
 );
 
-const RoadAccidentFormLazy: React.FC<WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap }> = React.memo(
+const RoadAccidentFormLazy: React.FC<WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap; }> = React.memo(
   (props) => {
     const element = React.useMemo(
       () => {
@@ -34,6 +34,6 @@ const RoadAccidentFormLazy: React.FC<WithFormRegistrySearchAddProps<RoadAccident
   },
 );
 
-export default withFormRegistrySearch<WithFormRegistrySearchProps<RoadAccident> & { selectedCarData?: CarWrap }, RoadAccident>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<RoadAccident> & { selectedCarData?: CarWrap; }, RoadAccident>({
   add_path: 'road_accident',
 })(RoadAccidentFormLazy);

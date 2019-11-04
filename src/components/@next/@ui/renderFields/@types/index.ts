@@ -6,10 +6,10 @@ export type ExtFieldCommon<V = any> = {
   id?: any;
   label?: string | boolean;
   error?: string | boolean;
-  onChange?: (...arg: any[]) => void;
+  onChange?: (...arg: Array<any>) => void;
   disabled?: boolean;
-  value?: V,
-  boundKeys?: any | any[];
+  value?: V;
+  boundKeys?: any | Array<any>;
   className?: string;
   modalKey?: string;
   hidden?: boolean;
@@ -21,8 +21,8 @@ export type ExtFieldCommon<V = any> = {
 export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   type: 'select';
   clearable?: boolean;
-  multi?: boolean,
-  options: any[]; // DefaultSelectOption<V, any, any>[] | any[];
+  multi?: boolean;
+  options: Array<any>; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
 
   sortingFunction?: any;

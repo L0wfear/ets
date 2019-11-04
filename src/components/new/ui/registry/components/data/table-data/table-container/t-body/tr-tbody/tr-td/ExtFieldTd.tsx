@@ -71,7 +71,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     const handleChange = React.useCallback(
       (fieldValue) => {
         // OMG
-        if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry' && props.metaKey === "osago_not_required") {
+        if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry' && props.metaKey === 'osago_not_required') {
           ['osago', 'osago_finished_at'].forEach((elem) => {
             dispatch(
               registryChangeRenderSelectedRow(
@@ -117,8 +117,8 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
-          !isDisabled && isPermittedToUpdate && isPermittedToUpdateClose ?
-            (
+          !isDisabled && isPermittedToUpdate && isPermittedToUpdateClose
+            ? (
               <ExtField
                 id={`${props.registryKey}.${props.indexRow}.${props.metaKey}`}
                 type={renderParams.type}

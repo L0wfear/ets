@@ -141,9 +141,9 @@ type StateProps = {
   currentUser: InitialStateSession['userData'];
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: InitialStateSession['userData']['structure_id'];
-  fuelCardsList: FuelCard[],
-  refillTypeList: RefillType[]
-  carList: Car[],
+  fuelCardsList: Array<FuelCard>;
+  refillTypeList: Array<RefillType>;
+  carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
   employeeIndex: Record<Employee['id'], Employee>;
 };
@@ -155,7 +155,7 @@ type OwnProps = {
   path?: string;
   page: string;
 
-  onFormHide?: (...arg: any[]) => any;
+  onFormHide?: (...arg: Array<any>) => any;
 
   element: Partial<Waybill>;
 };
@@ -531,7 +531,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
-    console.log(field, value); // tslint:disable-line:no-console
+    console.info(field, value); // eslint-disable-line
 
     formState = calculateWaybillMetersDiff(formState, field, value);
 
@@ -587,7 +587,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
     delete formState.motohours_equip_start;
 
     // prettier-ignore
-    console.log( // tslint:disable-line:no-console
+    console.info( // eslint-disable-line
       'delete',
       '----->',
       'equipment_fuel_start',
@@ -602,7 +602,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
     let formState = cloneDeep(this.state.formState);
 
     Object.entries(fields).forEach(([field, value]) => {
-      console.log(field, value); // tslint:disable-line:no-console
+      console.info(field, value); // eslint-disable-line
 
       formState[field] = value;
       formState = calculateWaybillMetersDiff(formState, field, value);
@@ -646,7 +646,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
         )
         .then((respoce) => saveData(respoce.blob, respoce.fileName))
         .catch((error) => {
-          console.warn('waybillFormWrap saveData', error); // tslint:disable-line:no-console
+          console.warn('waybillFormWrap saveData', error); // eslint-disable-line
         });
     };
 
@@ -678,7 +678,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
       try {
         await this.updateWaybill(formState);
       } catch ({ error_text }) {
-        console.error(error_text); // tslint:disable-line:no-console
+        console.error(error_text); // eslint-disable-line
         return;
       }
 
@@ -742,7 +742,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
         try {
           await this.createWaybill(formState);
         } catch ({ error_text }) {
-          console.log(error_text); // tslint:disable-line:no-console
+          console.info(error_text); // eslint-disable-line
           return;
         }
       }
@@ -775,7 +775,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
       try {
         await this.updateWaybill(formState);
       } catch ({ error_text }) {
-        console.log(error_text); // tslint:disable-line:no-console
+        console.info(error_text); // eslint-disable-line
         return;
       }
       this.props.onCallback();
@@ -806,7 +806,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
             this.props.onCallback();
           })
           .catch((err) => {
-            console.error(err);  // tslint:disable-line:no-console
+            console.error(err);  // eslint-disable-line
             return;
           });
       })

@@ -26,7 +26,7 @@ type SelectPgmBaseCompanyProps = (
   & WithSearchProps
 );
 
-const filterCompanyByOkrug = (companyList: Company[], okrugId: number) => (
+const filterCompanyByOkrug = (companyList: Array<Company>, okrugId: number) => (
   companyList.filter(({ okrug_id }) => okrug_id === okrugId)
 );
 
@@ -95,22 +95,22 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
   return (
     <InstectionBlockSelect>
       <SelectLabel md={3} sm={1}>
-          <h5>
+        <h5>
             Организация
-          </h5>
-        </SelectLabel>
-        <SelectField md={9} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={companyId}
-            options={companyOptions}
-            onChange={setCompanyId}
-            clearable={false}
-            disabled={!okrugId}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={companyId}
+          options={companyOptions}
+          onChange={setCompanyId}
+          clearable={false}
+          disabled={!okrugId}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

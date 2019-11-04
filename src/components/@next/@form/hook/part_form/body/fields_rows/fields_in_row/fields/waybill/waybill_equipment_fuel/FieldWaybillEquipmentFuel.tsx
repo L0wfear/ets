@@ -44,24 +44,24 @@ const FieldWaybillEquipmentFuel: React.FC<FieldWaybillEquipmentFuelProps> = Reac
     );
 
     return (
-        <EtsBootstrap.Col md={props.md || 12}>
-          {
-            isSelectedCarId && (
-              <ExtField
-                id={`${path}_equipment_fuel`}
-                type="select"
-                clearable={false}
-                label="На ТС установлено спецоборудование"
-                value={equipment_fuel}
-                options={YES_NO_SELECT_OPTIONS_BOOL}
-                onChange={handleChangeWrap}
-                disabled={IS_CLOSED || !isPermitted}
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          isSelectedCarId && (
+            <ExtField
+              id={`${path}_equipment_fuel`}
+              type="select"
+              clearable={false}
+              label="На ТС установлено спецоборудование"
+              value={equipment_fuel}
+              options={YES_NO_SELECT_OPTIONS_BOOL}
+              onChange={handleChangeWrap}
+              disabled={IS_CLOSED || !isPermitted}
 
-                boundKeys="equipment_fuel"
-              />
-            )
-          }
-        </EtsBootstrap.Col>
+              boundKeys="equipment_fuel"
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -102,7 +102,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
     };
 
     return newFormErrors;
-  }
+  };
 
   updateObjectData = () => {
     this.props.updateObjectData().then((ans) => {
@@ -144,7 +144,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
     }
     if (error) {
       new Promise((res) => res()).then(() => {
-        console.log('нет типа объекта'); // tslint:disable-line
+        console.info('нет типа объекта'); // tslint:disable-line
         this.props.onFormHide();
       });
     }

@@ -7,8 +7,8 @@ const ETS_API_FACTORY = new ApiServiceFactory({
     const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
     return {
-      "Authorization": `Token ${token}`,
-      "Accept": 'application/json',
+      'Authorization': `Token ${token}`,
+      'Accept': 'application/json',
       'Access-Control-Expose-Headers': 'Content-Disposition',
     };
   },

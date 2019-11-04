@@ -4,14 +4,14 @@ export type OdhNotCoveredByMissionsOfCurrentShiftItemsSunItemsType = {
 };
 
 export type OdhNotCoveredByMissionsOfCurrentShiftItemsType = {
-  sub_items: OdhNotCoveredByMissionsOfCurrentShiftItemsSunItemsType[],
+  sub_items: Array<OdhNotCoveredByMissionsOfCurrentShiftItemsSunItemsType>;
   tooltip?: string;
   technical_operation_id: number;
   title: string;
 };
 
 export type OdhNotCoveredByMissionsOfCurrentShiftAnsType = {
-  items: OdhNotCoveredByMissionsOfCurrentShiftItemsType[];
+  items: Array<OdhNotCoveredByMissionsOfCurrentShiftItemsType>;
   tooltip?: string;
   title: string;
 };

@@ -11,7 +11,7 @@ export const promiseLoadMeasureUnit = async (payload: any) => {
     console.error(error); // tslint:disable-line
   }
 
-  const result: MeasureUnit[] = get(response, 'result.rows', []);
+  const result: Array<MeasureUnit> = get(response, 'result.rows', []);
 
   return {
     data: result,

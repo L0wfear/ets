@@ -8,7 +8,7 @@ import List from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-r
 import {
   dashboardLoadOdhNotCoveredByRoutes,
   dashboardSetInfoDataInOdhNotCoveredByRoutes,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import OdhNotCoveredByRoutesInfo from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo';
 
 import {
@@ -28,7 +28,7 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
     const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
     this.props.setInfoData(this.props.items[index]);
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -41,16 +41,15 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0}  classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

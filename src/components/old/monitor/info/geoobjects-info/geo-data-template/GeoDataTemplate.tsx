@@ -173,7 +173,7 @@ const FountainsInfo: React.FC<any> = ({ data, ...props }) =>
     <h5>Адресный ориентир</h5>{data.location}
     <h5>Ведомственная принадлежность</h5>{data.departmental_affiliation}
     <h5>График работы</h5>
-      <FountainWorkingHours data={data.working_hours} />
+    <FountainWorkingHours data={data.working_hours} />
     <h5>Балансодержатель</h5>{data.balance_holder_name}
     <h5>Телефон балансодержателя</h5>{data.balance_holder_phone}
     <h5>Электронная почта балансодержателя</h5>{data.balance_holder_email}

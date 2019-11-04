@@ -10,7 +10,7 @@ export type WithSearchProps<Params extends Record<string, string> = any, Search 
   setParams: (obj: Partial<Params>, typeAction?: 'replace' | 'push') => void;
   searchState: Search;
   setDataInSearch: (obj: Record<string, any>, type?: 'push' | 'replace') => void;
-  setParamsAndSearch: (any: { params: Partial<Params>, search: Record<keyof Search, string | number>}) => void;
+  setParamsAndSearch: (any: { params: Partial<Params>; search: Record<keyof Search, string | number>;}) => void;
 } & RouteComponentProps<Params>;
 
 const makeObjFromMemoise = memoizeOne(

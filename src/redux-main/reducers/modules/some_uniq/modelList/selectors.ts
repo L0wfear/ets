@@ -12,7 +12,7 @@ export const getModelsListState = (state: ReduxState) => (
 export type ModelsListStructure = ValuesOf<IStateSomeUniq['modelsList']>;
 
 export type GetModelsListOptionsAns = (
-  DefaultSelectOption<ModelsListStructure['id'], ModelsListStructure['full_name'], ModelsListStructure>[]
+  Array<DefaultSelectOption<ModelsListStructure['id'], ModelsListStructure['full_name'], ModelsListStructure>>
 );
 
 export const getSomeUniqModelsList: Selector<ReduxState, IStateSomeUniq['modelsList']> = (state) => (

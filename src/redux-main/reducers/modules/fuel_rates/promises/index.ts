@@ -6,11 +6,11 @@ import {
 } from 'api/Services';
 import {
   FuelRate,
- } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+} from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
 import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
-export const getFuelRates = (payload = {}): Promise<{ fuelRatesList: FuelRate[]}> => {
+export const getFuelRates = (payload = {}): Promise<{ fuelRatesList: Array<FuelRate>;}> => {
   return FuelConsumptionRateService.get(payload)
     .catch((error) => {
       // tslint:disable-next-line:no-console
@@ -88,7 +88,7 @@ export const deleteFuelRate = ( id: number ) => {
   );
 };
 
-export const getFuelOperations = (payload = {}): Promise<{ fuelRateOperations: FuelOperation[] }> => {
+export const getFuelOperations = (payload = {}): Promise<{ fuelRateOperations: Array<FuelOperation>; }> => {
   return FuelOperationsService
     .get(payload)
     .catch((error) => {

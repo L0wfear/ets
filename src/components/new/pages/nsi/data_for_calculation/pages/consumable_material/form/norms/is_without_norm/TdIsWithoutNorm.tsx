@@ -76,7 +76,7 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
         value={value}
         onChange={handleChangeWrap}
         disabled={disabled}
-    />
+      />
     );
   },
 );

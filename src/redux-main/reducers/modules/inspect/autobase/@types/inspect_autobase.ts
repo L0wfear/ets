@@ -13,7 +13,7 @@ type InspectAutobaseData = {
   is_not_protected: boolean;
   protection_is_carried: string;
   lack_of_video_surveillance: boolean;
-  is_hard_surface: string[];
+  is_hard_surface: Array<string>;
   surface_in_poor_condition: boolean;
   surface_area_of_destruction: number | null;
   presence_of_pits_potholes: boolean;
@@ -58,14 +58,14 @@ export type InspectAutobase = {
   close_employee_assignment: string;
   close_employee_assignment_date_start: string;
   action: string;
-  files: any[],
-  type: 'autobase',
+  files: Array<any>;
+  type: 'autobase';
 } & DefaultPartInspect;
 
 export type IStateInspectAutobase = {
-  companyList: Company[],
-  carpoolList: Carpool[],
-  inspectAutobaseList: InspectAutobase[];
+  companyList: Array<Company>;
+  carpoolList: Array<Carpool>;
+  inspectAutobaseList: Array<InspectAutobase>;
   lastConductingInspect: InspectAutobase;
   lastCompletedInspect: InspectAutobase;
 };

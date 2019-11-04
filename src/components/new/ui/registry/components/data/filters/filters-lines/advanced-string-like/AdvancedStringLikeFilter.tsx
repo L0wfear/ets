@@ -24,11 +24,11 @@ type PropsAdvancedStringLikeFilter = {
   registryKey: string;
   formatedTitle: string;
   filterValuesObj: any;
-  onChange: (valueKey: string, type: string, value: any[]) => any;
+  onChange: (valueKey: string, type: string, value: Array<any>) => any;
 };
 
 type StateAdvancedStringLikeFilter = {
-  array: any[];
+  array: Array<any>;
   filterData: {
     title: string;
     valueKey: string;
@@ -43,7 +43,7 @@ class AdvancedStringLikeFilter extends React.PureComponent<PropsAdvancedStringLi
     const { filterData } = props;
 
     this.props.onChange(filterData.valueKey, 'like', get(e, 'target.value', ''));
-  }
+  };
 
   render() {
     const { props } = this;

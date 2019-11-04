@@ -11,7 +11,7 @@ const getEstimatedFinishTime = (data) => {
   return getFormattedDateTime(data);
 };
 
-export const listData: any[] = [
+export const listData: Array<any> = [
   {
     path: ['mission_data', 'name'],
     title: 'Задание',
@@ -130,10 +130,9 @@ export const listData: any[] = [
 
       return (
         <li><b>Общий пробег с работающим оборудованием: </b>
-          {`${sensor_traveled_working ?
-            getDataTraveledYet(sensor_traveled_workingAndCheck_unit)
-            :
-            'Данные будут отображены после выполнения задания'
+          {`${sensor_traveled_working
+            ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit)
+            :            'Данные будут отображены после выполнения задания'
           }`}
         </li>
       );

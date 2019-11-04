@@ -19,14 +19,14 @@ import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, useMissionFor
 
 type Props = {
   selectedRowIndex: number;
-  meta: TableMeta<ValuesOf<Mission['consumable_materials']>>[];
+  meta: Array<TableMeta<ValuesOf<Mission['consumable_materials']>>>;
   buttonWidth: number;
 
   formDataKey: FormKeys & ('mission' | 'duty_mission');
   disabled: boolean;
 };
 
-const canAddConsumableMaterials = (consumable_materials: Mission['consumable_materials'], consumableMateriaForMission: ConsumableMaterialCountMission[]) => {
+const canAddConsumableMaterials = (consumable_materials: Mission['consumable_materials'], consumableMateriaForMission: Array<ConsumableMaterialCountMission>) => {
   const options = getConsumableMaterialIdOptions(consumable_materials, consumableMateriaForMission);
   return options.some(({ isNotVisible }) => !isNotVisible);
 };

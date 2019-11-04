@@ -56,8 +56,8 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
     } = this.props;
 
     const triggerOnUpdate = (
-      !disabled &&
-      (
+      !disabled
+      && (
         datetime !== prevProps.datetime
         || technical_operation_id !== prevProps.technical_operation_id
         || municipal_facility_id !== prevProps.municipal_facility_id
@@ -90,8 +90,8 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
       path,
     } = this.props;
 
-    const hasAllData =
-      datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
+    const hasAllData
+      = datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
 
     if (hasAllData) {
       const norms = (await Promise.all(

@@ -118,9 +118,9 @@ class CreatingMap extends React.PureComponent<
       changeObj = {
         ...changeObj,
         manual:
-          type &&
-          routeTypesByKey[type].slug &&
-          routeTypesByKey[type].slug === 'points',
+          type
+          && routeTypesByKey[type].slug
+          && routeTypesByKey[type].slug === 'points',
         hand: false,
         type,
       };
@@ -170,9 +170,9 @@ class CreatingMap extends React.PureComponent<
           needUpdateObjectData,
         );
       } else if (
-        prevType &&
-        prevMunicipalFacilityId &&
-        prevTechnicalOperationId
+        prevType
+        && prevMunicipalFacilityId
+        && prevTechnicalOperationId
       ) {
         setCacheDataForRoute(prevType, {
           object_list: prevProps.object_list,
@@ -256,8 +256,8 @@ class CreatingMap extends React.PureComponent<
 
       const triggerOnAddPoint = !object_list.some(
         ({ coordinates }) =>
-          coordinates[0] === newPointObject.coordinates[0] &&
-          coordinates[1] === newPointObject.coordinates[1],
+          coordinates[0] === newPointObject.coordinates[0]
+          && coordinates[1] === newPointObject.coordinates[1],
       );
 
       if (triggerOnAddPoint) {
@@ -327,7 +327,7 @@ class CreatingMap extends React.PureComponent<
       }
     }
   };
-  handleChangeSelectedObjectList = (objectListIdArr: number[]) => {
+  handleChangeSelectedObjectList = (objectListIdArr: Array<number>) => {
     if (this.props.isPermitted) {
       this.props.onChange({
         object_list: makeObjectListByObjectListIdArr(

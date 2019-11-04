@@ -9,7 +9,7 @@ export type CarWrap = (
   & {
     drivers_data: CarDriversData;
     registration_data: CarRegistrationData;
-    passport_data: CarPassporntData
+    passport_data: CarPassporntData;
   }
 );
 

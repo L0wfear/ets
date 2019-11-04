@@ -11,9 +11,9 @@ export type PropsBatteryRegistry = OutputWithFormProps<
   any
 >;
 export type StateBatteryRegistry = {
-  batteryBrandOptions: {
+  batteryBrandOptions: Array<{
     value: BatteryBrand['id'];
     label: BatteryBrand['name'];
     batteryBrand: BatteryBrand;
-  }[];
+  }>;
 };

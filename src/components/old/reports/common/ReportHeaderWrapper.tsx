@@ -37,7 +37,7 @@ React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {
       this.setState({
         [field]: value,
       });
-    }
+    };
     render() {
       return (
         <SourceHeader

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const InspectionTitle: React.FC<{ title: string }> = (props) => {
+const InspectionTitle: React.FC<{ title: string; }> = (props) => {
   return (
     <EtsBootstrap.Row>
       <EtsBootstrap.Col md={12}>

@@ -16,9 +16,9 @@ export type FutureMissionsItemsByTypeType = {
 };
 
 export type FutureMissionsAnsType = {
-  items: FutureMissionsItemsType[];
-  items_centralized: FutureMissionsItemsByTypeType[];
-  items_decentralized: FutureMissionsItemsByTypeType[];
+  items: Array<FutureMissionsItemsType>;
+  items_centralized: Array<FutureMissionsItemsByTypeType>;
+  items_decentralized: Array<FutureMissionsItemsByTypeType>;
   title: string;
   title_centralized: string;
   title_decentralized: string;

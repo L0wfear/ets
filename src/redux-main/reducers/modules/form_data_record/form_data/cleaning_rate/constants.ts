@@ -36,5 +36,5 @@ export const getCleaningRateProperties = (type: CleaningRate['type']) => {
     type === 'odh'
       ? odhPropertiesOptions
       : dtPropertiesOptions
-    );
+  );
 };

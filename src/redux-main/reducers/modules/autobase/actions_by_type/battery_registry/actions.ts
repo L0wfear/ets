@@ -11,7 +11,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- BatteryRegistry ---------- */
-export const autobaseSetBatteryRegistry = (batteryRegistryList: BatteryRegistry[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetBatteryRegistry = (batteryRegistryList: Array<BatteryRegistry>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       batteryRegistryList,

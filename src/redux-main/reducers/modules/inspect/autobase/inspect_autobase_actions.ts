@@ -120,7 +120,7 @@ const actionGetInspectAutobaseById = (id: Parameters<typeof promiseGetInspectAut
   return payload;
 };
 
-export const actionPushDataInInspectAutobaseList = (inspectionAutobase: InspectAutobase): EtsAction<InspectAutobase[]> => (dispatch, getState) => {
+export const actionPushDataInInspectAutobaseList = (inspectionAutobase: InspectAutobase): EtsAction<Array<InspectAutobase>> => (dispatch, getState) => {
   const { inspectAutobaseList } = getInspectAutobase(getState());
 
   const indexInArrayItem = inspectAutobaseList.findIndex(({ id }) => id === inspectionAutobase.id);

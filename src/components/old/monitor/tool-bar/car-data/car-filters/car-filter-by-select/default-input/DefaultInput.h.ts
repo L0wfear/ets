@@ -3,9 +3,9 @@ import {
 } from 'components/old/ui/@types/ReactSelect.h';
 
 export type PropsDefaultInput = {
-  value: number[];
+  value: Array<number>;
   keyField: string;
   changeFilter: any;
-  OPTIONS: IReactSelectOption[];
+  OPTIONS: Array<IReactSelectOption>;
   placeholder: string;
 };

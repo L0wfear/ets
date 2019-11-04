@@ -35,7 +35,7 @@ export const withSpecificPermissions = (user) => {
 
   /* end docs */
 
-  // console.log(permissions.push(...getFullAccess('your_permission')));
+  // console.info(permissions.push(...getFullAccess('your_permission')));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

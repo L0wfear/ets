@@ -8,7 +8,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- SpareAvailableCar ---------- */
-export const autobaseSetSpareAvailableCar = (spareAvailableCarList: SpareAvailableCar[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetSpareAvailableCar = (spareAvailableCarList: Array<SpareAvailableCar>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       spareAvailableCarList,

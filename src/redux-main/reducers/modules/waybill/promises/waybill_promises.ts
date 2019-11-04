@@ -225,7 +225,7 @@ export const promiseGetWaybillById = async (id: Waybill['id']) => {
   return getOneWaybillFront(waybill);
 };
 
-export const promiseGetBlobWaybilljournalReport = async (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues']) => {
+export const promiseGetBlobWaybilljournalReport = async (payload: { date: string; } | { month: number; year: number; }, filter: OneRegistryData['list']['processed']['filterValues']) => {
   let response = null;
   try {
     response = await WaybillJournalReportService.path(
@@ -252,7 +252,7 @@ export const promiseGetBlobWaybilljournalReport = async (payload: { date: string
   };
 };
 
-export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: string, date_end: string }, filter: OneRegistryData['list']['processed']['filterValues']) => {
+export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: string; date_end: string; }, filter: OneRegistryData['list']['processed']['filterValues']) => {
   let response = null;
   const payload: any = {
     ...payloadOwn,
@@ -277,7 +277,7 @@ export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: stri
   };
 };
 
-export const promiseGetLatestWaybillDriver = async (payload: {car_id?: number | null, driver_id?: number | null, road_accident_date?: string | null }) => {
+export const promiseGetLatestWaybillDriver = async (payload: {car_id?: number | null; driver_id?: number | null; road_accident_date?: string | null; }) => {
   let response = null;
   try {
     response = await LatestWaybillDriverService.get(payload);
@@ -319,7 +319,7 @@ export const submitWaybill = async (waybillRaw: Partial<Waybill>) => {
   return result;
 };
 
-export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asuods_id'] }) => {
+export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asuods_id']; }) => {
   const payload = {
     car_id: payloadOwn.car_id,
   };
@@ -337,8 +337,8 @@ export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asu
 };
 
 type PromisePrintWaybillPayload = {
-  type: 'plate_special',
-  waybill_id: Waybill['id'],
+  type: 'plate_special';
+  waybill_id: Waybill['id'];
 };
 export const promisePrintWaybill = (payload: PromisePrintWaybillPayload) => {
   return RootService.path(payload.type).getBlob({ waybill_id: payload.waybill_id });
@@ -350,11 +350,11 @@ const getMissionFilterStatus = (waybillStatus) => {
   return waybillStatus ? undefined : 'not_assigned';
 };
 type PromiseGetMissionsByCarAndDatesPayload = {
-  car_id: Waybill['car_id'],
-  date_from: Waybill['fact_departure_date'] | Waybill['plan_departure_date'],
-  date_to: Waybill['fact_arrival_date'] | Waybill['plan_arrival_date'],
-  status: Waybill['status'],
-  waybill_id: Waybill['id'],
+  car_id: Waybill['car_id'];
+  date_from: Waybill['fact_departure_date'] | Waybill['plan_departure_date'];
+  date_to: Waybill['fact_arrival_date'] | Waybill['plan_arrival_date'];
+  status: Waybill['status'];
+  waybill_id: Waybill['id'];
 };
 export const promiseGetMissionsByCarAndDates = async (payloadOwn: PromiseGetMissionsByCarAndDatesPayload) => {
   const payload: Dictionary<any> = {};

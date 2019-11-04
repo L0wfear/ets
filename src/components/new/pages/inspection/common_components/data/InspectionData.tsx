@@ -11,7 +11,7 @@ import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean }> {
+class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean; }> {
   state = {
     isLoaded: false,
   };
@@ -75,7 +75,7 @@ class InspectionData extends React.Component<InspectionDataProps, { isLoaded: bo
       //
     }
     this.setState({ isLoaded: true });
-  }
+  };
 
   render() {
     return (

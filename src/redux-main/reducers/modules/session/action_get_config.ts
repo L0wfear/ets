@@ -57,7 +57,7 @@ const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['a
     ),
   );
   if (versionFromLocalStorage !== api_version_stable) {
-    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
+    console.info(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // eslint-disable-line
 
     versions[config.tracksCaching] = api_version_stable.toString();
   }

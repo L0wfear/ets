@@ -18,7 +18,7 @@ export const promiseGetMunicipalFacility = async (payloadOwn) => {
     response = null;
   }
 
-  const result: MunicipalFacility[] = get(response, ['result', 'rows'], []);
+  const result: Array<MunicipalFacility> = get(response, ['result', 'rows'], []);
 
   return result;
 };
@@ -36,7 +36,7 @@ export const promiseGetMunicipalFacilityMeasureUnit = async (payloadOwn) => {
     response = null;
   }
 
-  const result: MunicipalFacilityMeasureUnit[] = get(response, ['result', 'rows'], []);
+  const result: Array<MunicipalFacilityMeasureUnit> = get(response, ['result', 'rows'], []);
 
   return result;
 };

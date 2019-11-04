@@ -14,8 +14,8 @@ export const autobaseLoadByType = <F extends any, ExtraData extends any = any>(k
   }
 
   const result: {
-    data: Array<F>,
-    extraData: ExtraData,
+    data: Array<F>;
+    extraData: ExtraData;
   } = {
     data: get(response, 'result.rows', []),
     extraData: get(response, 'result.extra', {}),
@@ -43,7 +43,7 @@ export const autobaseCreateByType = <F extends any>(keyType: keyof typeof AUTOBA
 
   return data;
 };
-export const autobaseUpdateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object & { id: number }) => {
+export const autobaseUpdateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object & { id: number; }) => {
   const payload = {
     ...ownPayload,
   };
@@ -79,10 +79,10 @@ export const autobaseLoadCars = async (payload = {}) => {
   try {
     response = await CarActualService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
-  const data: Car[] = get(response, ['result', 'rows'], []);
+  const data: Array<Car> = get(response, ['result', 'rows'], []);
 
   return {
     data,

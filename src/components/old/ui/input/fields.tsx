@@ -11,11 +11,11 @@ import BaseField from 'components/@next/@ui/renderFields/Field';
 // что-то не зашло
 const flow: any = flow_fp;
 
-const BaseFileField = withProps<{type: string}, any>({
+const BaseFileField = withProps<{type: string;}, any>({
   type: 'file',
 })(BaseField);
 
-export const FileField: React.ComponentType<{ boundKeys: string } & Record<string, any>> = flow(
+export const FileField: React.ComponentType<{ boundKeys: string; } & Record<string, any>> = flow(
   fileCountLimiter,
   fileFormatter,
 )(BaseFileField);

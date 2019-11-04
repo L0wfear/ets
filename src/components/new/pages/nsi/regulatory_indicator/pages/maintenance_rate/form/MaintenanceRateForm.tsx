@@ -35,7 +35,7 @@ import maintenanceRatePermissions from '../_config-data/permissions';
 import { actionResetMaintenanceWork, actionGetAndSetInStoreMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
 import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 
-const makeOptionsMemoList = (inputList: any[]) => {
+const makeOptionsMemoList = (inputList: Array<any>) => {
   const optionList = inputList.map(defaultSelectListMapper);
   return optionList;
 };

@@ -94,7 +94,7 @@ class SelectTechnicalOperation extends React.PureComponent<SelectTechnicalOperat
     };
 
     this.props.setDataInSearch(newPartialSearch);
-  }
+  };
 
   render() {
     const options = makeOptions(this.props.technicalOperationRegistryList);

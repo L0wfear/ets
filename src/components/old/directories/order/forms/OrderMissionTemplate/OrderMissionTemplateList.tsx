@@ -50,7 +50,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {
-  carList: Car[];
+  carList: Array<Car>;
   userData: InitialStateSession['userData'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
 };
@@ -85,7 +85,7 @@ export const makePayloadFromState = (formState, type_id) => ({
 
 export const getNormByMissionAndCar = async (
   dispatch: EtsDispatch,
-  missionArr: any[],
+  missionArr: Array<any>,
   metaLoading: LoadingMeta,
 ) => {
   const ans = await Promise.all(
@@ -177,14 +177,14 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
     const timeInterval = setInterval(this.checkMissionsList, 60 * 1000);
     const missionsList = old_missionsList.filter(({ date_to }) => diffDates(new Date(), date_to) < 0);
 
-    console.log('check on date end'); // tslint:disable-line:no-console
+    console.info('check on date end'); // eslint-disable-line
 
     this.setState({
       missionsList,
       missionsIndex: missionsList.reduce((newObj, mission) => ({ ...newObj, [mission.frontId]: mission }), {}),
       timeInterval,
     });
-  }
+  };
 
   getMissionsList() {
     const { typeClick } = this.props;
@@ -212,15 +212,15 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
 
   handleChangeTypePrint = (assign_to_waybill) => {
     this.setState({ assign_to_waybill });
-  }
+  };
 
-  getNormId = (missionArr: any[]) => {
+  getNormId = (missionArr: Array<any>) => {
     return getNormByMissionAndCar(
       this.props.dispatch,
       missionArr,
       meta,
     );
-  }
+  };
 
   handleSubmit = async () => {
     const {
@@ -316,11 +316,11 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
         });
       }
     }
-  }
+  };
 
   onRowSelected = ({ props: { data: { frontId } } }) => {
     this.setState({ selectedElement: this.state.missionsIndex[frontId] });
-  }
+  };
 
   onRowChecked = (frontId, state) => {
     const {
@@ -343,7 +343,7 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
         checkedElements,
       });
     }
-  }
+  };
 
   onAllChecked = (checkedElements: object, state) => {
     if (this.props.typeClick === typeTemplate.missionTemplate) {
@@ -354,27 +354,27 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
     }
 
     this.setState({ checkedElements: state ? checkedElements : {} });
-  }
+  };
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 
   onFormHide = () => {
     this.componentWillUnmount();
     this.props.onFormHide();
-  }
+  };
 
   handleChangeAssignToWaybillForColumn = (name, assign_to_waybill_for_column) => {
     this.setState({
       assign_to_waybill_for_column,
     });
-  }
+  };
 
   hideColumnAssignmentMissionTemplate = () => {
     this.setState({
       showColumnAssignment: false,
       assign_to_waybill_for_column: {},
     });
-  }
+  };
 
   handleSubmitFromAssignmentModal = async () => {
     const {
@@ -414,7 +414,7 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
       }
     }
     return Promise.reject(false);
-  }
+  };
 
   render() {
     const {

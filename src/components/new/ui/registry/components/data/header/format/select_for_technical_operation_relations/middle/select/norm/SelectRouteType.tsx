@@ -11,7 +11,7 @@ import { routeTypesByKey } from 'constants/route';
 
 type OwnProps = {
   registryKey: string;
-  normList: Norm[];
+  normList: Array<Norm>;
 };
 
 type Props = (
@@ -20,11 +20,11 @@ type Props = (
 );
 
 type State = {
-  options: any[];
+  options: Array<any>;
 };
 
 const makeOptions = memoizeOne(
-  (normList: Norm[], hasSelectedTo) => (
+  (normList: Array<Norm>, hasSelectedTo) => (
     hasSelectedTo
       ? (
         uniqBy(
@@ -112,7 +112,7 @@ class SelectRouteType extends React.PureComponent<Props, State> {
     };
 
     this.props.setDataInSearch(newPartialSearch);
-  }
+  };
 
   render() {
     const municipal_facility_id = getNumberValueFromSerch(this.props.searchState.municipal_facility_id);

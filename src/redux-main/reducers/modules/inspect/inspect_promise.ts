@@ -23,7 +23,7 @@ export const promiseGetInspectRegistry = async <T>(payload: object) => {
     console.error(error); // tslint:disable-line
   }
 
-  const data: T[] = get(response, ['result', 'rows'], []);
+  const data: Array<T> = get(response, ['result', 'rows'], []);
 
   return {
     data,
@@ -58,7 +58,7 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
   return inspectAutobase;
 };
 
-export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], payload: any) => {
+export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
   const newPayload = {
     ...payload,
   };
@@ -89,7 +89,7 @@ export const promiseGetBlobActInspection = async (inspection_id: number) => {
   return response;
 };
 
-export const promiseUpdatePreparePlan = async (id: number, payload: {types_cars: InspectCarsCondition['data']['types_cars'], types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit']}) => {
+export const promiseUpdatePreparePlan = async (id: number, payload: {types_cars: InspectCarsCondition['data']['types_cars']; types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];}) => {
   const newPayload = {
     ...payload,
   };

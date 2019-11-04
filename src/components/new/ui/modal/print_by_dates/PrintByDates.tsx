@@ -7,7 +7,7 @@ import DatePickerRange from '../../date_picker/DatePickerRange';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 export type IPropsPrintByDates = {
-  onHide: (...arg: any[]) => any;
+  onHide: (...arg: Array<any>) => any;
   onExport: (payload: any) => any;
   title: string;
 };

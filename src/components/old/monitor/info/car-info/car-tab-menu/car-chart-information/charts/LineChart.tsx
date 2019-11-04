@@ -4,7 +4,7 @@ import * as Highcharts from 'highcharts/highstock';
 import { makeTime, makeDate } from 'components/@next/@utils/dates/dates';
 
 type PropsLineChart = {
-  data: Highcharts.SeriesOptionsType[],
+  data: Array<Highcharts.SeriesOptionsType>;
   onClick: any;
   name: string;
   showX: boolean;

@@ -11,7 +11,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- PropulsionType ---------- */
-export const autobaseSetPropulsionType = (propulsionTypeList: PropulsionType[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetPropulsionType = (propulsionTypeList: Array<PropulsionType>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       propulsionTypeList,

@@ -19,7 +19,7 @@ type Props = {
   formDataKey: 'consumable_material';
 };
 
-const metaCarRefillRaw: TableMeta<ValuesOf<ConsumableMaterial['norms']>>[] = [
+const metaCarRefillRaw: Array<TableMeta<ValuesOf<ConsumableMaterial['norms']>>> = [
   metaTechnicalOperationId,
   metaMunicipalFacilityId,
   metaSeasonId,
@@ -51,9 +51,9 @@ const FieldNorms: React.FC<Props> = React.memo(
     );
 
     React.useEffect(() => {
-        dispatch(actionGetAndSetInStoreNormsByParams(null, meta));
-        dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
-      }, [],
+      dispatch(actionGetAndSetInStoreNormsByParams(null, meta));
+      dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
+    }, [],
     );
 
     return (

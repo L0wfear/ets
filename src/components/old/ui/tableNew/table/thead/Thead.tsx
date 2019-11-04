@@ -11,7 +11,7 @@ class Thead extends React.Component<any, any> {
       sortField={this.props.sortField}
       sortAscending={this.props.sortAscending}
     />
-  )
+  );
 
   render() {
     return (

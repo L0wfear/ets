@@ -39,7 +39,7 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="string"
                 label="Учреждение"
@@ -83,11 +83,11 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted && (
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-        }
+          {
+            isPermitted && (
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

@@ -24,8 +24,8 @@ export const config: TypeConfigData<Employee> = {
     buttons: [
       buttonsTypes.filter,
       {
-          id: 'open-create-form',
-          type: buttonsTypes.create,
+        id: 'open-create-form',
+        type: buttonsTypes.create,
       },
       buttonsTypes.read,
       buttonsTypes.export,

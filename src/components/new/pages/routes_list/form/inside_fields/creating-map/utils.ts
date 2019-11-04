@@ -20,7 +20,7 @@ export const routesToLoadByKeySet = new Set(
 );
 
 const mergeRestObjetRecordWithNew = (objectIndex: Record<ValuesOf<Route['object_list']>['object_id'], ValuesOf<Route['object_list']>>, newObjectList: Route['object_list']) => {
-  const newArr: Array<ValuesOf<Route['object_list']> & { is_invalid?: boolean }>  = [...newObjectList];
+  const newArr: Array<ValuesOf<Route['object_list']> & { is_invalid?: boolean; }>  = [...newObjectList];
 
   Object.values(objectIndex).forEach((rowData) => {
     newArr.push({
@@ -155,7 +155,7 @@ export const makeObjByGeo = (
 };
 
 export const makeObjectListByObjectListIdArr = (
-  ObjectListIdArr: number[],
+  ObjectListIdArr: Array<number>,
   object_list: PropsCreatingMap['object_list'],
   type: PropsCreatingMap['type'],
   geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],

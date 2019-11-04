@@ -4,22 +4,22 @@ import { get } from 'lodash';
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export interface IPropsExtendedInput {
+export type IPropsExtendedInput = {
   type: string;
   time?: boolean;
   interval?: boolean;
-  value: any[];
+  value: Array<any>;
   fieldName: string;
   filterType: string;
-  filterValueMaker?(value: any[], inputType: string): any;
+  filterValueMaker?(value: Array<any>, inputType: string): any;
   onChange(value: any): void;
   lang?: string;
   id?: string | number;
   modalKey?: string;
-}
+};
 
-interface IStateExtendedInput {
-}
+type IStateExtendedInput = {
+};
 
 class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedInput> {
   handleChange(index, event) {
@@ -50,8 +50,8 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
           onChange={this.handleFirstInput}
           time={time}
         />
-        {this.props.interval &&
-          <DatePicker
+        {this.props.interval
+          && <DatePicker
             id={idValueEnd}
             date={value[1]}
             onChange={this.handleSecondInput}
@@ -79,8 +79,8 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
             step="any"
           />
         </div>
-        {this.props.interval &&
-          <div className="form-group">
+        {this.props.interval
+          && <div className="form-group">
             <EtsBootstrap.FormControl
               id={idValueEnd}
               type="number"
@@ -109,8 +109,8 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
             onChange={this.handleFirstInput}
           />
         </div>
-        {this.props.interval &&
-          <div className="form-group">
+        {this.props.interval
+          && <div className="form-group">
             <EtsBootstrap.FormControl
               id={idValueEnd}
               type="text"

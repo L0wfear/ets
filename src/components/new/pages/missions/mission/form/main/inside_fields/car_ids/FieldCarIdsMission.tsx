@@ -417,7 +417,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         }
       }
     }
-  }
+  };
 
   render() {
     const {

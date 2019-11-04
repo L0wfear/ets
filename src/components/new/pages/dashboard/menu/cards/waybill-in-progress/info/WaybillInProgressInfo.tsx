@@ -37,13 +37,13 @@ const WaybillInProgressInfo: React.FC<Props> = React.memo(
             { page: 'dashboard' },
           ),
         ).then((waybill_data) => {
-            if (waybill_data) {
-              setWaybillElement(waybill_data);
-            } else {
-              // tslint:disable-next-line
-              console.warn('not find waybill');
-            }
-          });
+          if (waybill_data) {
+            setWaybillElement(waybill_data);
+          } else {
+            // tslint:disable-next-line
+            console.warn('not find waybill');
+          }
+        });
       },
       [],
     );

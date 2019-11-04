@@ -7,7 +7,7 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 
 export const getAvailableRouteTypes = (
-  municipalFacilityForMissionList: MunicipalFacility[],
+  municipalFacilityForMissionList: Array<MunicipalFacility>,
   municipal_facility_id: Mission['municipal_facility_id'] | MissionTemplate['municipal_facility_id'],
   for_column?: boolean,
 ) => {

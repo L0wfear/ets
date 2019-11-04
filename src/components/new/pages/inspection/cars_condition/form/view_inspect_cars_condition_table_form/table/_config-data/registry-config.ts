@@ -22,7 +22,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       entity: 'inspection/cars',
       payload: {
         inspection_id,
-        view: "extended",
+        view: 'extended',
       },
       format: 'cars_condition_extended',
     },

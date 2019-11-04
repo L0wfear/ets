@@ -291,7 +291,7 @@ export default class DataTable extends React.Component<Props, State> {
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
-      console.info('SAVE FILTER', filterValues);  // tslint:disable-line:no-console
+      console.info('SAVE FILTER', filterValues);  // eslint-disable-line
     } else {
       let filterAsString = '';
 
@@ -301,7 +301,7 @@ export default class DataTable extends React.Component<Props, State> {
         filterAsString = filterValues;
       }
 
-      console.info('SAVE FILTER', filterAsString);  // tslint:disable-line:no-console
+      console.info('SAVE FILTER', filterAsString);  // eslint-disable-line
     }
 
     if (this.props.externalFilter) {
@@ -324,7 +324,9 @@ export default class DataTable extends React.Component<Props, State> {
     const value = !this.props.checked[id];
     const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
-    if (value === false) { delete clonedData[id]; }
+    if (value === false) {
+      delete clonedData[id]; 
+    }
     this.props.onRowChecked(id, value);
     this.setState({
       globalCheckboxState:
@@ -494,7 +496,7 @@ export default class DataTable extends React.Component<Props, State> {
           } = cols.find((d) => d.name === key);
           isValid = filterFunction(value, obj);
         } catch (e) {
-          console.warn(  // tslint:disable-line:no-console
+          console.warn(  // eslint-disable-line
             `Ошибка при поиске кастомной функции фильтрации ${key}`,
             e,
           );
@@ -677,7 +679,9 @@ export default class DataTable extends React.Component<Props, State> {
     if (highlight.length > 0) {
       highlight.forEach((obj) => {
         const field = Object.keys(obj)[0];
-        if (el[field] === obj[field]) { el.isHighlighted = true; }
+        if (el[field] === obj[field]) {
+          el.isHighlighted = true; 
+        }
       });
     }
     return el;

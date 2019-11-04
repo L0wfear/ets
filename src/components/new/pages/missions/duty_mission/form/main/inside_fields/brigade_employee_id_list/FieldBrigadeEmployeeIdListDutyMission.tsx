@@ -121,7 +121,7 @@ class FieldBrigadeEmployeeIdListDutyMission extends React.PureComponent<PropsFie
         brigade_employee_id_list_fio: options.map((oneEmployeeOption) => oneEmployeeOption.label),
       });
     }
-  }
+  };
 
   render() {
     const {

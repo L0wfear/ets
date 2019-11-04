@@ -5,7 +5,7 @@ import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseD
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
-export const actionSetConsumableMaterialCountMission = (consumableMaterialCountMissionList: ConsumableMaterialCountMission[]): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
+export const actionSetConsumableMaterialCountMission = (consumableMaterialCountMissionList: Array<ConsumableMaterialCountMission>): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
     someUniqSetNewData({
       consumableMaterialCountMissionList,

@@ -46,9 +46,9 @@ const notValidStyle = css`
 export const MultiValue = styled(components.MultiValue)`
   &&& {
     ${({ data: { is_invalid } }) => (
-        is_invalid && notValidStyle
-      )
-    }
+    is_invalid && notValidStyle
+  )
+}
   }
 `;
 

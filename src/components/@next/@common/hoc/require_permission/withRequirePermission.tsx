@@ -5,7 +5,7 @@ import { validatePermissions } from 'components/@next/@utils/validate_permission
 
 type TypeConfig = {
   withIsPermittedProps?: boolean;                                           // true даёт isPermitted в пропсах оборачиваемого компонента
-  permissions?: Parameters<typeof validatePermissions>[0]                   // разрешения для проверки | можно прокинуть как пропсы
+  permissions?: Parameters<typeof validatePermissions>[0];                   // разрешения для проверки | можно прокинуть как пропсы
   every?: boolean;                                                          // все ли разрешения должы быть у пользователя?
   byEntity?: boolean;                                                       // даёт пермишен для проверки `${entity}.${type}`
   type?: string;                                                            // смотри выше

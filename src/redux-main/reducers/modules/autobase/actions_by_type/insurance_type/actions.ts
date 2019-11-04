@@ -8,7 +8,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- InsuranceType ---------- */
-export const autobaseSetInsuranceType = (insuranceTypeList: InsuranceType[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetInsuranceType = (insuranceTypeList: Array<InsuranceType>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       insuranceTypeList,

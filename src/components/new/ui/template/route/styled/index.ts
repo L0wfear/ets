@@ -20,7 +20,7 @@ export const TemplateRouteListTree = styled(EtsBootstrap.Col).attrs({ xs: 5, md:
 
 export const TemplateRouteData = styled(EtsBootstrap.Col).attrs({ xs: 7, md: 9 })``;
 
-export const MaintTemplateComponent = styled.div<{ width?: number; height?: number }>`
+export const MaintTemplateComponent = styled.div<{ width?: number; height?: number; }>`
   border-radius: 10px;
   border: 10px solid white;
   background-color: white;

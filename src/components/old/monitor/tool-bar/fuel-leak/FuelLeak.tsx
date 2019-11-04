@@ -52,7 +52,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
 
     this.props.monitorPageToggleFuelEvetnsLeakShow();
     event.stopPropagation();
-  }
+  };
 
   toggleIsOpen = () => {
     const isOpen = !this.state.isOpen;
@@ -60,7 +60,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     this.setState({
       isOpen,
     });
-  }
+  };
 
   handleChange = (field, date) => {
     const changedDates = {
@@ -75,7 +75,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     }
 
     this.props.changeFuelEventDate(field, date);
-  }
+  };
 
   render() {
     const {

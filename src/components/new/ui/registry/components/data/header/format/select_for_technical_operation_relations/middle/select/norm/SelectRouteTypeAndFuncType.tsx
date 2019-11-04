@@ -34,7 +34,7 @@ type SelectRouteTypeAndFuncTypeProps = (
 );
 
 type SelectRouteTypeAndFuncTypeState = {
-  normList: Norm[];
+  normList: Array<Norm>;
 };
 
 class SelectRouteTypeAndFuncType extends React.PureComponent<SelectRouteTypeAndFuncTypeProps, SelectRouteTypeAndFuncTypeState> {

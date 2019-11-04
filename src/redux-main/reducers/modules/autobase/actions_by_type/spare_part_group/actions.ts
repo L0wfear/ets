@@ -8,7 +8,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- SparePartGroup ---------- */
-export const autobaseSetSparePartGroup = (sparePartGroupList: SparePartGroup[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetSparePartGroup = (sparePartGroupList: Array<SparePartGroup>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       sparePartGroupList,

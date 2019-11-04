@@ -1,7 +1,7 @@
 import { isObject, isBoolean, isNumber } from 'util';
 import { get } from 'lodash';
 
-const widthByKey: Record<string, { width: number, sortable?: boolean; }> = {
+const widthByKey: Record<string, { width: number; sortable?: boolean; }> = {
   enumerated: {
     width: 50,
   },

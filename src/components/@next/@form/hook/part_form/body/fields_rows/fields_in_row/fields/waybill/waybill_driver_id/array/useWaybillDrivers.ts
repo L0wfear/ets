@@ -49,7 +49,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
 
       if (!isLoading) {
         if (employeeBindedToCarListData.list.length) {
-        options = waybillFilterDrivers(
+          options = waybillFilterDrivers(
             uniqBy(employeeBindedToCarListData.list, 'employee_id'),
             medicalStatsAllowedDriversListData.list,
             employeeListData.listIndex,

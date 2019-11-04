@@ -3,10 +3,10 @@ export namespace ActionsMonitorPage {
     serverName: string,
     id?: string,
   ) => ({
-    type: string,
+    type: string;
     payload: {
-      serverName: string,
-      id: string,
-    },
+      serverName: string;
+      id: string;
+    };
   });
 }

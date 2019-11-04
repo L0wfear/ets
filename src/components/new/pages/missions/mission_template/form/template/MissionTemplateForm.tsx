@@ -60,7 +60,7 @@ const hiddenMapConfig: IPropsHiddenMapForPrint['hiddenMapConfig'] = [
 
 class MissionTemplateForm extends React.PureComponent<
   PropsMissionTemplateForm,
-  { date_start: string }
+  { date_start: string; }
 > {
   state = {
     date_start: createValidDateTime(getDateWithMoscowTz()),
@@ -174,21 +174,21 @@ class MissionTemplateForm extends React.PureComponent<
             </EtsBootstrap.Col>
             {
               STRUCTURE_FIELD_VIEW
-              ? (
-                <EtsBootstrap.Col md={6}>
-                  <FieldStructureMission
-                    value={state.structure_id}
-                    name={state.structure_name}
-                    disabled={!isPermitted}
-                    error={errors.structure_id}
-                    handleChange={this.props.handleChange}
-                    page={page}
-                    path={path}
-                  />
-                </EtsBootstrap.Col>
-            ) : (
-              <DivNone />
-            )
+                ? (
+                  <EtsBootstrap.Col md={6}>
+                    <FieldStructureMission
+                      value={state.structure_id}
+                      name={state.structure_name}
+                      disabled={!isPermitted}
+                      error={errors.structure_id}
+                      handleChange={this.props.handleChange}
+                      page={page}
+                      path={path}
+                    />
+                  </EtsBootstrap.Col>
+                ) : (
+                  <DivNone />
+                )
             }
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>

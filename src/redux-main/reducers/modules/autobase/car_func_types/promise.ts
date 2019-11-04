@@ -7,10 +7,10 @@ export const promiseLoadCarFuncTypess = async (payload = {}) => {
   try {
     result = await TypesService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
-  const data: CarFuncTypes[] = get(result, ['result', 'rows'], []);
+  const data: Array<CarFuncTypes> = get(result, ['result', 'rows'], []);
   return {
     data,
   };

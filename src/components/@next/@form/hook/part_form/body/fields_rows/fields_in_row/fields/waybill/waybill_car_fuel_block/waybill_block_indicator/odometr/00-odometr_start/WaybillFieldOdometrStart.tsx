@@ -55,7 +55,7 @@ const WaybillFieldOdometrStart: React.FC<WaybillFieldOdometrStartProps> = React.
 
     return (
       <EtsBootstrap.Col md={props.md || 12}>
-          <ExtField
+        <ExtField
           id={`${path}_odometr_start`}
           type="number"
           label="Выезд из гаража, км"

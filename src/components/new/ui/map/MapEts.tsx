@@ -89,18 +89,18 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
       },
       200,
     );
-  }
+  };
 
   mouseSingleClick = (olEvent) => {
     mouseSingleClick(
       olEvent,
       this.state.enableInteractions && !this.props.disabledMouseSingleClick,
     );
-  }
+  };
 
   mouseMovestart = () => {
     this.state.map.getViewport().classList.remove('pointer');
-  }
+  };
 
   mouseMoveend = (event) => {
     const zoom = event.map.getView().getZoom();
@@ -109,7 +109,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
     this.setState({ zoom, center });
     // tslint:disable-next-line
     console.info(`Центр карты: [${center}], зум: ${zoom}`);
-  }
+  };
 
   centerOn = (fitProps, noCheckDisabledCenterOn = false) => {
     return centerOn(
@@ -118,7 +118,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
       fitProps,
       noCheckDisabledCenterOn,
     );
-  }
+  };
   setContainer: React.LegacyRef<HTMLDivElement> = (node) => this._container = node;
 
   render() {

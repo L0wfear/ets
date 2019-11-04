@@ -40,7 +40,7 @@ export const FooterForm = styled(EtsBootstrap.Col)`
   flex-shrink: 0;
 `;
 
-export const HiddenPageEtsContainer = styled.div<{z_index?: number}>`
+export const HiddenPageEtsContainer = styled.div<{z_index?: number;}>`
   position: absolute;
   width: 100%;
   top: 0;
@@ -53,7 +53,7 @@ export const HiddenPageEtsContainer = styled.div<{z_index?: number}>`
   z-index: ${ ({z_index}) => z_index ? z_index : 1000 };
 `;
 
-export const PopupBottomForm = styled.form<{ show: boolean }>`
+export const PopupBottomForm = styled.form<{ show: boolean; }>`
   pointer-events: ${({ show }) => show ? 'all' : 'none'};
   height: 100%;
 
@@ -77,7 +77,7 @@ export const CheckContainerTd = styled.div`
   justify-content: center;
 `;
 
-export const CheckContainerRow = styled.div<{ was_resaved: boolean }>`
+export const CheckContainerRow = styled.div<{ was_resaved: boolean; }>`
   display: flex;
   justify-content: space-between;
   align-items: center;

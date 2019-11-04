@@ -3,7 +3,7 @@ import useAutobaseEngineTypeList from '../useList/useAutobaseEngineTypeList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EngineType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getAutobaseEngineTypeOptions = (listData: { list: EngineType[], isLoading?: boolean }, keyValue: string) => {
+export const getAutobaseEngineTypeOptions = (listData: { list: Array<EngineType>; isLoading?: boolean; }, keyValue: string) => {
   return {
     options: listData.list.map((rowData) => ({
       value: rowData[keyValue],

@@ -20,7 +20,7 @@ export default class User extends Model {
   structures: string;
   map_config: any;
   fio: string;
-  permissions: string[];
+  permissions: Array<string>;
   permissionsSet: Set<string>;
   okrug_id: number;
   okrug_name: string;

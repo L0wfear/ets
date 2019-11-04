@@ -8,8 +8,8 @@ import {
 import { get } from 'lodash';
 
 type ColumnAssignmentFormWrapProps = {
-  missionTemplates: MissionTemplateCreating['missionTemplates'],
-  assign_to_waybill: MissionTemplateCreating['assign_to_waybill'],
+  missionTemplates: MissionTemplateCreating['missionTemplates'];
+  assign_to_waybill: MissionTemplateCreating['assign_to_waybill'];
   showColumnAssignmentFormWrap: boolean;
   onChange: PropsMissionTemplateCreatingForm['handleChange'];
   handleSubmit: any;

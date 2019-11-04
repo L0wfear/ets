@@ -4,7 +4,7 @@ import { FileField } from 'components/old/ui/input/fields';
 import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
 
 type BlockCarsConditionCarSelectPhotoDefectProps = {
-  files: CarsConditionCars['files'],
+  files: CarsConditionCars['files'];
   isPermitted: boolean;
   onChange: BlockCarInfoProps['handleChange'];
 };

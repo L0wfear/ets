@@ -5,7 +5,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type BlockDataFilesProps = {
   isPermittedListPhotosOfSupportingDocuments: boolean;
   isPermittedListPhotosDefect: boolean;
-  files: any[];
+  files: Array<any>;
   onChange: (obj: Partial<object>) => any;
 };
 
@@ -56,7 +56,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
             <EtsBootstrap.Col md={6}>
               <FileField
                 id="file"
-                label={"Фотографии подтверждающих\nдокументов"}
+                label={'Фотографии подтверждающих\nдокументов'}
                 multiple
                 value={valuePhotosOfSupportingDocuments}
                 onChange={onChangeDataFile}
@@ -82,7 +82,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
           )
         }
       </React.Fragment>
-      );
+    );
   },
 );
 

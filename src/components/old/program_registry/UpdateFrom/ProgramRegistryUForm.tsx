@@ -67,36 +67,36 @@ type OwnProps = {
 
   formErrors: any;
   isPermitted: boolean;
-  isPermittedByStatus: boolean
-  isPermittetForContractorL: boolean
+  isPermittedByStatus: boolean;
+  isPermittetForContractorL: boolean;
   RepairOptions: {
     stateProgramOptions: any;
     contractorOptions: any;
   };
-  versionOptions: any[],
+  versionOptions: Array<any>;
   permissionForButton: any;
   show?: boolean;
-  onHide: (...arg: any[]) => any;
+  onHide: (...arg: Array<any>) => any;
   isPermittetForObjectFact: boolean;
   canSave: boolean;
 
   isPermittedPercentByStatus: any;
 
-  changeVersion: (...arg: any[]) => Promise<any>
-  canselVersion: (...arg: any[]) => Promise<any>
-  onSubmitAndContinue: (...arg: any[]) => Promise<any>
-  handleExportVersion: (...arg: any[]) => Promise<any>
-  onSubmit: (...arg: any[]) => Promise<any>
-  applyVersion: (...arg: any[]) => Promise<any>
-  closeVersion: (...arg: any[]) => Promise<any>
+  changeVersion: (...arg: Array<any>) => Promise<any>;
+  canselVersion: (...arg: Array<any>) => Promise<any>;
+  onSubmitAndContinue: (...arg: Array<any>) => Promise<any>;
+  handleExportVersion: (...arg: Array<any>) => Promise<any>;
+  onSubmit: (...arg: Array<any>) => Promise<any>;
+  applyVersion: (...arg: Array<any>) => Promise<any>;
+  closeVersion: (...arg: Array<any>) => Promise<any>;
 
   fromCreating: any;
   activeVersionId: number;
-  onSubmitFiles: (...arg: any[]) => Promise<any>;
-  sendToApply: (...arg: any[]) => Promise<any>;
+  onSubmitFiles: (...arg: Array<any>) => Promise<any>;
+  sendToApply: (...arg: Array<any>) => Promise<any>;
   updateVersionOuter: (...arg: any) => any;
 
-  makeVersion: () => Promise<any>
+  makeVersion: () => Promise<any>;
 
   handleFormChange: (...arg: any) => any;
   handleMultipleChange?: (...arg: any) => any;

@@ -8,8 +8,8 @@ export type WaybillPrintJournalForm = {
 };
 
 export type PropsWaybillByDatePrintWithForm = {
-  element: null,
-  handleHide: (isSubmitted: boolean, result?: any) => void
+  element: null;
+  handleHide: (isSubmitted: boolean, result?: any) => void;
   registryKey: string;
   page: string;
   path?: string;

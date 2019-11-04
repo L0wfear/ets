@@ -164,7 +164,7 @@ class FieldCarMissionIdDutyMission extends React.PureComponent<PropsFieldCarMiss
         car_mission_name: get(option, 'label', ''),
       });
     }
-  }
+  };
 
   render() {
     const {

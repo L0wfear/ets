@@ -12,11 +12,11 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 type Props = {};
 
 export type GlobalFormSchemaType = {
-  dataInSearchKeyList: { // То, что мы записываем в URL через метод SetDataInSearch
+  dataInSearchKeyList: Array<{ // То, что мы записываем в URL через метод SetDataInSearch
     type: 'string' | 'number'; // Тип значения по ключу key(ниже), нужен для корректного извлечения значения, если это число
     key: string; // ключ, по которому можно взять значение, из URL
     required?: boolean; // обязателен ли параметр для отображения формы
-  }[];
+  }>;
   permissions?: any; // значения в url обнуляются и окно не открываается, если значение не соответствует пермишену, по умолчанию
 };
 
@@ -30,7 +30,7 @@ const GlobalForms: React.FC<Props> = React.memo(
           <InspectionCarsConditionTableFormLazy
             registryConfig={InspectionCarsConditionTableConfig}
             {...props}
-            title={"Форма заполнения данных ТС"}
+            title={'Форма заполнения данных ТС'}
             globalFormShema={globalFormShema}
             registryComponent={<CarsConditionTableEdit />}
             permissions={Object.values(inspectCarsConditionPermissions)}

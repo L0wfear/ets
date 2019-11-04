@@ -52,15 +52,15 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
     );
 
     const handleShowGbu = React.useCallback( () => {
-        setShowGbu(true);
-      },
-      [props.agents_from_gbu],
+      setShowGbu(true);
+    },
+    [props.agents_from_gbu],
     );
 
     const handleCloseGbu = React.useCallback( () => {
-        setShowGbu(false);
-      },
-      [props.agents_from_gbu],
+      setShowGbu(false);
+    },
+    [props.agents_from_gbu],
     );
 
     React.useEffect(() => {
@@ -105,8 +105,8 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
           </CommissionMembersDataContainer>
         )}
         {
-          props.isPermittedChangeListParams &&
-            (
+          props.isPermittedChangeListParams
+            && (
               <AgentsFromGbuAddBtn
                 disabled={showGbu}
                 onClick={handleShowGbu}

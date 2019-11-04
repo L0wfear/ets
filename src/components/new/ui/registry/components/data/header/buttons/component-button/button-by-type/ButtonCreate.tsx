@@ -60,7 +60,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
 
 export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   withSearch,
-  connect<{ permissions: OneRegistryData['list']['permissions']['create'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{ permissions: OneRegistryData['list']['permissions']['create']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),

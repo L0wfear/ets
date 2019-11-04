@@ -20,7 +20,7 @@ export const promiseChangeServiceActiveStatus = async (slug: string, is_active: 
   return result;
 };
 
-export const promiseChangeServiceFiles = async (id: Service['id'], files: any[]) => {
+export const promiseChangeServiceFiles = async (id: Service['id'], files: Array<any>) => {
   let response = null;
 
   try {

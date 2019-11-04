@@ -4,9 +4,9 @@ import TableInputTbodyTr from './tr/TableInputTbodyTr';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type TableInputTbodyProps = {
-  meta: TableMeta<any>[];
-  array: any[];
-  errors: any[];
+  meta: Array<TableMeta<any>>;
+  array: Array<any>;
+  errors: Array<any>;
   onChange: any;
   selectedRowIndex: number;
   setSelectedRowIndex: (indexRow: number) => any;

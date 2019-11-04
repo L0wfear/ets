@@ -37,7 +37,7 @@ class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeo
       feature.get('serverName'),
       (feature as any).getId(),
     );
-  }
+  };
 
   render() {
     return <div></div>;

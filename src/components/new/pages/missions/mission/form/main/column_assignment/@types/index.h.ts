@@ -5,9 +5,9 @@ export type PropsColumnAssignmentFormLazy = {
 } & PropsColumnAssignmentForm;
 
 export type PropsColumnAssignmentForm = {
-  assign_to_waybill: string[];
+  assign_to_waybill: Array<string>;
   car_ids: Mission['car_ids'];
-  handleChangeAssignToWaybill: (assign_to_waybill: string[]) => void;
+  handleChangeAssignToWaybill: (assign_to_waybill: Array<string>) => void;
   hideColumnAssignment: () => void;
   handleSubmit: () => Promise<Mission | void>;
 

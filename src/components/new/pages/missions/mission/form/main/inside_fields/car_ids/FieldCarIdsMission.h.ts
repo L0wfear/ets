@@ -22,7 +22,7 @@ export type OwnPropsFieldCarIdsMission = {
   error: string;
   disabled: boolean;
   isPermitted: boolean;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 
   for_column: Mission['for_column'];
   car_gov_numbers: Mission['car_gov_numbers'];

@@ -6,7 +6,7 @@ import ListNumber from 'components/new/pages/dashboard/menu/cards/_default-card-
 import {
   dashboardLoadWaybillInProgress,
   dashboardSetInfoDataInWaybillInProgress,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import WaybillInProgressInfo from 'components/new/pages/dashboard/menu/cards/waybill-in-progress/info/WaybillInProgressInfo';
 

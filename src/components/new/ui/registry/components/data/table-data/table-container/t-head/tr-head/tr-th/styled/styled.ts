@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { lighten } from 'polished';
 
-export const EtsTheadTh = styled.th<{ canClick?: boolean, width?: number, widthUnits?: string, alignCenter?: boolean, isStickyTh?: boolean, }>`
+export const EtsTheadTh = styled.th<{ canClick?: boolean; width?: number; widthUnits?: string; alignCenter?: boolean; isStickyTh?: boolean; }>`
     vertical-align: middle;
     background-color: #eee;
     padding: 8px;

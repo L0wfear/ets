@@ -96,25 +96,25 @@ const ThGroupSpoiler: React.FC<Props> = React.memo(
     return (
       <ThGroupSpoilerStyled>
         {
-          groupColumn && metaField.groupOpt.firstElem &&
-            (
+          groupColumn && metaField.groupOpt.firstElem
+            && (
               <ThGroupSpoilerFirstStyled  onClick={changeGroupActiveColumn}>
                 {
                   isActive
-                  ? (
-                    <EtsBootstrap.Glyphicon glyph='plus' />
-                  )
-                  : (
-                    <EtsBootstrap.Glyphicon glyph='minus' />
-                  )
+                    ? (
+                      <EtsBootstrap.Glyphicon glyph='plus' />
+                    )
+                    : (
+                      <EtsBootstrap.Glyphicon glyph='minus' />
+                    )
                 }
                 {get(groupColumn, `${metaField.groupOpt.key}.label`, 'Определи key в groupOpt')}
               </ThGroupSpoilerFirstStyled>
             )
         }
         {
-          metaField.groupOpt && !metaField.groupOpt.firstElem &&
-          (
+          metaField.groupOpt && !metaField.groupOpt.firstElem
+          && (
             <React.Fragment>
               <ThGroupDelimeter />
             </React.Fragment>

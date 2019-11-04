@@ -47,8 +47,8 @@ type OwnProps = {
   isWaybillForm?: boolean;
 
   show: boolean;
-  onReject?: (needUpdate: boolean, edcRequestIds?: State['edcRequestIds']) => any
-  onRejectForWaybill?: (obj: { payload: any; handlerName: 'actionPostMissionReassignationParameters' | 'updateMission' | 'actionPutMissionReassignationParameters'}) => any;
+  onReject?: (needUpdate: boolean, edcRequestIds?: State['edcRequestIds']) => any;
+  onRejectForWaybill?: (obj: { payload: any; handlerName: 'actionPostMissionReassignationParameters' | 'updateMission' | 'actionPutMissionReassignationParameters';}) => any;
 };
 
 type Props = (
@@ -58,14 +58,14 @@ type Props = (
 );
 
 type State = {
-  missionList: Array<Mission>,
+  missionList: Array<Mission>;
   mIndex: number;
   mission_id: Mission['id'];
-  date_start: Mission['date_start'],
-  date_end: Mission['date_end'],
+  date_start: Mission['date_start'];
+  date_end: Mission['date_end'];
   comment: string;
-  car_id: number,
-  car_func_types: Array<number>,
+  car_id: number;
+  car_func_types: Array<number>;
   needUpdateParent: boolean;
   reason_id: number;
   edcRequestIds: Array<{
@@ -242,12 +242,12 @@ class MissionRejectForm extends React.Component<Props, State> {
     let handlerName = 'actionPostMissionReassignationParameters'; // имя хендлера для ПЛ
 
     const status = get(
-        this.props.missionCancelReasonsList.find(
-          (reason) => reason.id === reason_id,
-        ),
-        'status',
-        null,
-      );
+      this.props.missionCancelReasonsList.find(
+        (reason) => reason.id === reason_id,
+      ),
+      'status',
+      null,
+    );
 
     if (!this.state.data) {
       let mission = null;

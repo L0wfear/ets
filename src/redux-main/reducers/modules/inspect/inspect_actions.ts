@@ -38,7 +38,7 @@ export const actionCreateInspect = (payload: any, company_id: number, type: Type
   return result;
 };
 
-export const actionUpdateInspect = (id: number, data: any, files: any[], meta: LoadingMeta, payload: any ): EtsAction<any> => async (dispatch) => {
+export const actionUpdateInspect = (id: number, data: any, files: Array<any>, meta: LoadingMeta, payload: any ): EtsAction<any> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdateInspection(
@@ -53,7 +53,7 @@ export const actionUpdateInspect = (id: number, data: any, files: any[], meta: L
   return result;
 };
 
-export const actionUpdatePreparePlan = (id: number, meta: LoadingMeta, payload: {types_cars: InspectCarsCondition['data']['types_cars'], types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit']} ): EtsAction<any> => async (dispatch) => {
+export const actionUpdatePreparePlan = (id: number, meta: LoadingMeta, payload: {types_cars: InspectCarsCondition['data']['types_cars']; types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];} ): EtsAction<any> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdatePreparePlan(

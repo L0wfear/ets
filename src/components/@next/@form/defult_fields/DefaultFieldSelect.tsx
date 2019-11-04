@@ -14,7 +14,7 @@ type Props<F extends Record<string, any>> = {
   disabled?: boolean;
   formDataKey: FormKeys;
 
-  hookGetOptionsData: (meta: LoadingMeta) => { isLoading: boolean; options: Array<{ value: number; label: string; }>}
+  hookGetOptionsData: (meta: LoadingMeta) => { isLoading: boolean; options: Array<{ value: number; label: string; }>;};
   clearable?: boolean;
   multi?: boolean;
 };

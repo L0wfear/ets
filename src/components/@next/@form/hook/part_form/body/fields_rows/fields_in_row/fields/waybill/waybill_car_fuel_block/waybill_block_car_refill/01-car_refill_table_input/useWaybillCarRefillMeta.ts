@@ -50,7 +50,7 @@ export const useWaybillCarRefillMeta = (formDataKey: any) => {
 
   return React.useMemo(
     () => {
-      const meta: TableMeta<ValuesOf<Waybill['car_refill']>>[] = [
+      const meta: Array<TableMeta<ValuesOf<Waybill['car_refill']>>> = [
         {
           ...metaTypeId,
           options: store.refillTypeOptions.options,

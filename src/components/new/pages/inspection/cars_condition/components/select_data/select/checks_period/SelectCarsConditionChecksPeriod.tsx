@@ -102,23 +102,23 @@ const SelectCarsConditionChecksPeriod: React.FC<SelectCarsConditionChecksPeriodP
   return (
     <InstectionBlockSelect disabled={notSelect}>
       <SelectLabel md={3} sm={2}>
-          <h5>
+        <h5>
             Период проверки
-          </h5>
-        </SelectLabel>
-        <SelectField md={9} sm={6}>
-          <ExtField
-            type="select"
-            placeholder={notSelect ? '' : undefined}
-            label={false}
-            value={checksPeriod}
-            options={checksPeriodOptions}
-            onChange={setChecksPeriodId}
-            clearable={false}
-            disabled={notSelect || status !== INSPECT_STATUS.noToday}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          placeholder={notSelect ? '' : undefined}
+          label={false}
+          value={checksPeriod}
+          options={checksPeriodOptions}
+          onChange={setChecksPeriodId}
+          clearable={false}
+          disabled={notSelect || status !== INSPECT_STATUS.noToday}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

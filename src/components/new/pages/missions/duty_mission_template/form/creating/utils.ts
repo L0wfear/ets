@@ -25,7 +25,7 @@ export const getDefaultDutyMissionTemplateElement = (element?: Partial<Pick<Duty
   return newElement;
 };
 
-export const checkMissionsOnStructureIdBrigade = (missionsArr: DutyMissionTemplate[], employeeIndex: Record<Employee['id'], Employee>) => {
+export const checkMissionsOnStructureIdBrigade = (missionsArr: Array<DutyMissionTemplate>, employeeIndex: Record<Employee['id'], Employee>) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {

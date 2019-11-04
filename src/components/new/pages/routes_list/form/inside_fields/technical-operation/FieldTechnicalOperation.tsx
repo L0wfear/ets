@@ -9,12 +9,12 @@ import { actionGetTechnicalOperationRegistry } from 'redux-main/reducers/modules
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type State = {
-  TECHNICAL_OPERATION_OPTIONS: any[];
+  TECHNICAL_OPERATION_OPTIONS: Array<any>;
 };
 
 type StateProps = {};
 type DispatchProps = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
 };
 
 type OwnProps = {
@@ -22,7 +22,7 @@ type OwnProps = {
   name: string | void;
   disabled: boolean;
   error: string;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
   page: string;
   path: string;
 };
@@ -105,7 +105,7 @@ class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOpe
         normatives: option.toData.normatives,
       });
     }
-  }
+  };
 
   render() {
     const {

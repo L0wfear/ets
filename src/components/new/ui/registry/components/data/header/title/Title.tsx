@@ -50,7 +50,7 @@ const Title: React.FC<HeaderProps> = React.memo(
             }
           </Flex>
         </FlexContainerWrap>
-        </EtsHeaderTitle>
+      </EtsHeaderTitle>
     );
   },
 );

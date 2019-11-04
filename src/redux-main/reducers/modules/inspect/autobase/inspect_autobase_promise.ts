@@ -60,13 +60,13 @@ const makeInspectAutobase = (inspect: any): InspectAutobase => {
   return inspectAutobase;
 };
 
-export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) => {
+export const promiseGetInspectAutobase = async (payload: { carpoolId: number; }) => {
   const response = await promiseGetInspectRegistry<InspectAutobase>({
     base_id: payload.carpoolId,
     type: 'autobase',
   });
 
-  const data: InspectAutobase[] = response.data.map((inspectAutobase: InspectAutobase) => {
+  const data: Array<InspectAutobase> = response.data.map((inspectAutobase: InspectAutobase) => {
     return makeInspectAutobase(inspectAutobase);
   }).sort((a, b) => a.id - b.id);
 
@@ -91,7 +91,7 @@ export const promiseGetInspectAutobaseById = async (id: number) => {
   return inspectAutobase;
 };
 
-export const promiseCreateInspectionAutobase = async (payload: { carpoolId: number; companyId: number }) => {
+export const promiseCreateInspectionAutobase = async (payload: { carpoolId: number; companyId: number; }) => {
   let inspectAutobase: InspectAutobase = await promiseCreateInspection({
     base_id: payload.carpoolId,
     company_id: payload.companyId,

@@ -27,10 +27,10 @@ type ConfigWithForm<P, F> = {
   getRecordAction?: any;              // Экшен загрузки записи по uniqField
   mergeElement?: (props: P) => F;     // Получение дефолтного элемента
   noMessage?: boolean;                // Не показывать уведомление после сабмита
-  schema: SchemaType<F, P>,           // Схема валиадции
+  schema: SchemaType<F, P>;           // Схема валиадции
   permissions: {                      // Разрешения
-    create: string | string[];
-    update: string | string[];
+    create: string | Array<string>;
+    update: string | Array<string>;
     [k: string]: any;
   };
   askBeforeCloseIfChanged?: {         // спрашивать перед закрытие формы
@@ -40,7 +40,7 @@ type ConfigWithForm<P, F> = {
 };
 
 type WithFormConfigProps = {
-  element: any,
+  element: any;
   handleHide?: (isSubmitted: boolean, result?: any) => any;
   readOnly?: boolean;
 
@@ -50,7 +50,7 @@ type WithFormConfigProps = {
 
 type WithFormState<F, P> = {
   formState: F;
-  originalFormState: F,
+  originalFormState: F;
   formErrors: FormErrorType<SchemaType<F, P>>;
   canSave: boolean;
 
@@ -63,7 +63,7 @@ type StateProps = {
   userData: InitialStateSession['userData'];
 };
 
-type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch } & {
+type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch; } & {
   IS_CREATING: boolean;
   isPermitted: boolean;
   isPermittedToUpdate: boolean;
@@ -72,7 +72,7 @@ type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch } & {
 
 export type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
 export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
-type FormWithSubmitAction = (...arg: any[]) => Promise<any>;
+type FormWithSubmitAction = (...arg: Array<any>) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
 export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> = (
@@ -84,7 +84,7 @@ export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> 
     handleChangeBoolean: FormWithHandleChangeBoolean<F>;
     submitAction: FormWithSubmitAction;
     defaultSubmit: FormWithDefaultSubmit;
-    hideWithoutChanges: (...arg: any[]) => void;
+    hideWithoutChanges: (...arg: Array<any>) => void;
 
     actionWrap: <PromiseAns extends any>(promiseFunc: () => Promise<PromiseAns>) => Promise<PromiseAns>;
   }
@@ -115,7 +115,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         userData: getSessionState(state).userData,
       }),
     ),
-    withProps<StateProps & { isPermittedToCreate: boolean, isPermittedToUpdate: boolean }, any>(
+    withProps<StateProps & { isPermittedToCreate: boolean; isPermittedToUpdate: boolean; }, any>(
       (props) => ({
         ...props,
         isPermittedToCreate: validatePermissions(config.permissions.create, props.userData.permissionsSet),
@@ -250,13 +250,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
       validate = (formState: F) => {
         return validate(config.schema, formState, this.props, formState);
-      }
+      };
       canSave = (state: WithFormState<F, P>) => {
         return canSaveTest(state.formErrors);
-      }
+      };
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
         this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
-      }
+      };
       /**
        * @todo 1 сделать, чтобы шагал вглубь (по свойствам/массивам свойств)
        */
@@ -270,7 +270,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         this.setState(({ formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             formState[key] = getFormatedValue(config.schema.properties[key], value);
-            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
+            console.info('FORM CHANGE STATE', key, formState[key]); // eslint-disable-line
           });
 
           const formErrors = this.validate(formState);
@@ -280,7 +280,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             canSave: this.state.canSave,
           };
 
-          console.log('ERROR CHANGE STATE', formErrors); // tslint:disable-line:no-console
+          console.info('ERROR CHANGE STATE', formErrors); // eslint-disable-line
           return {
             ...newState,
             canSave: this.canSave({
@@ -289,7 +289,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             }),
           };
         });
-      }
+      };
 
       actionWrap = async <T extends any>(promiseFunc: () => Promise<T>): Promise<T> => {
         let result = null;
@@ -317,11 +317,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             inSubmit: false,
           });
         } else {
-          console.log('i want more request'); // tslint:disable-line
+          console.info('i want more request'); // tslint:disable-line
         }
 
         return result;
-      }
+      };
 
       createAction = async (...payload) => {
         const {
@@ -354,7 +354,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
       updateAction = async (...payload) => {
         const {
@@ -383,9 +383,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
-      submitAction = async (...payload: any[]) => {
+      submitAction = async (...payload: Array<any>) => {
         const uniqValue = (
           !isBoolean(config.uniqField)
             ? get(this.state.formState, config.uniqField, null)
@@ -414,7 +414,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           }
           return null;
         }
-      }
+      };
 
       defaultSubmit: FormWithDefaultSubmit = async () => {
         const formatedFormState = cloneDeep(this.state.formState);
@@ -438,7 +438,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
       hideWithoutChanges = async () => {
         if (config.askBeforeCloseIfChanged) {
@@ -456,7 +456,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           }
         }
         this.props.handleHide(false);
-      }
+      };
 
       render() {
         const IS_CREATING = !Boolean(get(this.state.formState, `${config.uniqField}`, !config.uniqField));

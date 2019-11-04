@@ -7,7 +7,7 @@ import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/old/ui/input/Filt
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
-interface IPropsFilterInput {
+type IPropsFilterInput = {
   fieldName: string;
   filterValue: string | object;
   filterType?: string;
@@ -17,13 +17,13 @@ interface IPropsFilterInput {
   lang?: string;
   entity?: string;
   modalKey?: string;
-}
+};
 
-interface IStateFilterInput {
+type IStateFilterInput = {
   type: string;
-  value: any[];
+  value: Array<any>;
   hasFilterValue: boolean;
-}
+};
 
 const InputFilter = filterTypeHandler(Input);
 
@@ -73,12 +73,12 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
 
   handleTypeChange = (newType) => {
     this.setState({ type: newType });
-  }
+  };
   handleFilterValueChange = ({ value, filterValue}) => {
     this.setState({ value });
 
     this.props.onChange(filterValue);
-  }
+  };
   filterValueMaker = (inputValue, inputType) => {
     if (DateTypeSet.has(this.props.inputType)) {
       return datetimeFilterValueMaker(inputValue, inputType);

@@ -10,7 +10,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type BlockCarsConditionCarsUseProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
   cars_use: InspectCarsCondition['data']['cars_use'];
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   error_cars_use: FormErrorType<SchemaType<InspectCarsCondition['data']['cars_use'], PropsViewInspectCarsConditionWithForm>>;
   isPermitted: boolean;
   isActiveInspect: boolean;

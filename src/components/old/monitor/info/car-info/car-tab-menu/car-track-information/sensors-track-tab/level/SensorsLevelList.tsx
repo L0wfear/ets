@@ -17,7 +17,7 @@ type PropsSensorsLevelList = {
   isPermitted: boolean;
   front_cars_sensors_level: {
     [key: string]: {
-      data: any[];
+      data: Array<any>;
       show: boolean;
     };
   };
@@ -31,40 +31,37 @@ const SensorsLevelList: React.FC<PropsSensorsLevelList> = (props) => {
   return (
     <div className="sensors-list">
       {
-        !track || Array.isArray(track) && track.length === 0 ?
-        (
-          <div>{NO_DATA_TEXT}</div>
-        )
-        :
-        (
-          sensors_level.length === 0 ?
-          (
-            <div>{NO_SENSORS_LEVEL_TEXT}</div>
+        !track || Array.isArray(track) && track.length === 0
+          ? (
+            <div>{NO_DATA_TEXT}</div>
           )
-          :
-          (
-            sensors_level.map(([key, data]) => (
-              <div className={cx('sensor-option', { disabled: data.data.length === 0 })} data-key={key} key={key} onClick={props.toggleSensorOnMap}>
-                {
-                  isPermitted
-                  ? (
-                    <input readOnly disabled={data.data.length === 0} type="checkbox" checked={data.show} />
-                  )
-                  : (
-                    <DivNone />
-                  )
-                }
-                <span>{` ДУТ №${key}` }</span>
-                {
-                  data.data.length === 0 ?
-                    <span> (Нет данных)</span>
-                  :
-                    ( <DivNone /> )
-                }
-              </div>
-            ))
+          :        (
+            sensors_level.length === 0
+              ? (
+                <div>{NO_SENSORS_LEVEL_TEXT}</div>
+              )
+              :          (
+                sensors_level.map(([key, data]) => (
+                  <div className={cx('sensor-option', { disabled: data.data.length === 0 })} data-key={key} key={key} onClick={props.toggleSensorOnMap}>
+                    {
+                      isPermitted
+                        ? (
+                          <input readOnly disabled={data.data.length === 0} type="checkbox" checked={data.show} />
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
+                    <span>{` ДУТ №${key}` }</span>
+                    {
+                      data.data.length === 0
+                        ? <span> (Нет данных)</span>
+                        :                    ( <DivNone /> )
+                    }
+                  </div>
+                ))
+              )
           )
-        )
       }
     </div>
   );

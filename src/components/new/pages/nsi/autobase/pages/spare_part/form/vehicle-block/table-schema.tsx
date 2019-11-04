@@ -63,9 +63,9 @@ export const meta: IDataTableSchema = {
   ],
 };
 
-interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: SpareAvailableCar[];
-}
+type IPropsCarIdRenderer = {
+  vehicleList: Array<SpareAvailableCar>;
+} & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   value,

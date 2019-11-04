@@ -42,7 +42,7 @@ export const meta = {
 };
 type Props = {
   data: TechnicalOperationRelations['routes'];
-  onRowClick: ({ props: { data } }: { props: { data: ValuesOf<TechnicalOperationRelations['routes']>} }) => any;
+  onRowClick: ({ props: { data } }: { props: { data: ValuesOf<TechnicalOperationRelations['routes']>;}; }) => any;
   selected: ValuesOf<TechnicalOperationRelations['routes']>;
 };
 

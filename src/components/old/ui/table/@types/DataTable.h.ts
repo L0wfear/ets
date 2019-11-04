@@ -1,13 +1,13 @@
 import { IDataTableSchema, ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 
-type IFilterValue = string | number | string[] | number[];
+type IFilterValue = string | number | Array<string> | Array<number>;
 
-export interface IFilterValues {
+export type IFilterValues = {
   [key: string]: IFilterValue;
-}
+};
 
-export interface IPropsDataTable<TResultObject> {
-  results: TResultObject[];
+export type IPropsDataTable<TResultObject> = {
+  results: Array<TResultObject>;
   title?: string;
   tableMeta?: IDataTableSchema;
   renderers?: ISchemaRenderer;
@@ -36,4 +36,4 @@ export interface IPropsDataTable<TResultObject> {
   normInitialData?: boolean;
   highlightClassMapper?: any;
   customId?: number;
-}
+};

@@ -56,7 +56,7 @@ class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap
 
     return (
       this.props.fields.length
-       ? (
+        ? (
           <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
             <EtsBootstrap.PanelCollapse>
               <PanelBodyWrap>

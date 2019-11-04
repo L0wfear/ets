@@ -33,7 +33,7 @@ import { isNullOrUndefined } from 'util';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
-    const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
+    const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<Array<CarsConditionCars>>([]);
     const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
     const [awaitCarsCnt, setAwaitCarsCnt] = React.useState(0);
     const [prevSearchState, setPrevSearchState] = React.useState(props.searchState);

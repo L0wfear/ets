@@ -26,9 +26,9 @@ type DispatchProps = {
   dispatch: EtsDispatch;
 };
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper, StateProps, DispatchProps {
+type IPropsReportHeader = {
   technical_operations_ids: any;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper & StateProps & DispatchProps;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   componentDidMount() {
@@ -51,8 +51,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
     const { technical_operations_ids } = this.getState();
 
-    const techOpIdsArray =
-      typeof technical_operations_ids === 'string'
+    const techOpIdsArray
+      = typeof technical_operations_ids === 'string'
         ? [technical_operations_ids]
         : technical_operations_ids;
 

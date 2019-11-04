@@ -37,8 +37,8 @@ const ThDefault: React.FC<Props> = React.memo(
     return (
       <ThDefaultWrapper>
         {
-          groupOpt &&
-          (<ThGroupSpoiler
+          groupOpt
+          && (<ThGroupSpoiler
             metaField={metaField}
             registryKey={props.registryKey}
           />)

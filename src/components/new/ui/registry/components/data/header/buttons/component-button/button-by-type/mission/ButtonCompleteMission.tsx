@@ -24,7 +24,7 @@ export type ButtonCompleteMissionStateProps = {
 type ButtonCompleteMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionCompleteMissionByIds: HandleThunkActionCreator<typeof actionCompleteMissionByIds>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonCompleteMissionOwnProps = CommonTypesForButton & {};
 type ButtonCompleteMissionMergeProps = {};
@@ -117,7 +117,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 };
 
 export default compose<ButtonCompleteMissionProps, ButtonCompleteMissionOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),

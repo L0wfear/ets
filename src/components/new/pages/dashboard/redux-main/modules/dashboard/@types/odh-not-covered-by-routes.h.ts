@@ -1,14 +1,14 @@
 export type OdhNotCoveredByRoutesItemsSubItemsType = string;
 
 export type OdhNotCoveredByRoutesItemsType = {
-  subItems: OdhNotCoveredByRoutesItemsSubItemsType[],
+  subItems: Array<OdhNotCoveredByRoutesItemsSubItemsType>;
   tooltip?: string;
   title: string;
   technical_operation_id: number;
 };
 
 export type OdhNotCoveredByRoutesAnsType = {
-  items: OdhNotCoveredByRoutesItemsType[];
+  items: Array<OdhNotCoveredByRoutesItemsType>;
   tooltip?: string;
   title: string;
 };

@@ -15,10 +15,10 @@ import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapp
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   report_date: Date;
   geozone_type: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   componentDidUpdate() {
@@ -54,11 +54,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       geozone_type,
       report_date,
     });
-  }
+  };
 
   handleChangeShowGovNumber = (event: object | boolean) => {
     this.props.setLocalState({ show_gov_numbers: get(event, 'target.checked', event) });
-  }
+  };
 
   render() {
     const { readOnly } = this.props;
@@ -103,7 +103,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
                 </FieldLabel>
                 <ExtField
                   type="boolean"
-                  label={"Вывести с рег.номерами"}
+                  label={'Вывести с рег.номерами'}
                   value={show_gov_numbers}
                   className="checkbox-input flex-reverse"
                   onChange={this.handleChangeShowGovNumber}

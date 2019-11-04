@@ -9,7 +9,7 @@ import ImgListFooter from './footer/ImgListFooter';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 
 type ImgListPortalProps = {
-  images: any[];
+  images: Array<any>;
   indexToShow?: number;
   onClose: () => any;
 };

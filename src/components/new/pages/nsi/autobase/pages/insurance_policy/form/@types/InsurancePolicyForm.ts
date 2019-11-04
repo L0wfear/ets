@@ -11,7 +11,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { CarWrap } from '../../../car_actual/form/@types/CarForm';
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
-export type PropsInsurancePolicyWithForm = WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap };
+export type PropsInsurancePolicyWithForm = WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap; };
 
 export type PropsInsurancePolicy = OutputWithFormProps<
   PropsInsurancePolicyWithForm,
@@ -21,9 +21,9 @@ export type PropsInsurancePolicy = OutputWithFormProps<
 >;
 export type StateInsurancePolicy = {
   insuranceTypeOptions: DefaultSelectListMapper<InsuranceType>;
-  carListOptions: DefaultSelectOption<
+  carListOptions: Array<DefaultSelectOption<
     Car['asuods_id'],
     Car['gov_number'],
     Car
-  >[];
+  >>;
 };

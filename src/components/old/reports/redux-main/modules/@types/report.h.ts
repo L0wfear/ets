@@ -1,64 +1,64 @@
 import { IResponseData } from 'api/@types/rest.h';
 
-interface IReportMetaFieldDetails {
+type IReportMetaFieldDetails = {
   /**
    * Table header full name
    */
   name: string;
   filter_field?: string;
   is_row?: boolean;
-}
+};
 
-export interface IReportMetaField {
+export type IReportMetaField = {
   [headerName: string]: IReportMetaFieldDetails;
-}
+};
 
-export interface IReportTableMeta {
-  fields?: IReportMetaField[];
-}
+export type IReportTableMeta = {
+  fields?: Array<IReportMetaField>;
+};
 
-interface IReportMetaLevelDetails {
+type IReportMetaLevelDetails = {
   level?: string;
   // Table row selector id
   pk_field?: string;
   // New row selector ids
-  filter?: string[];
-}
+  filter?: Array<string>;
+};
 
-interface IReportMetaLevels {
+type IReportMetaLevels = {
   current?: IReportMetaLevelDetails;
   higher?: IReportMetaLevelDetails;
   lower?: IReportMetaLevelDetails;
   summary?: IReportMetaLevelDetails;
-}
+};
 
-export interface IReportMeta {
+export type IReportMeta = {
   description?: string;
-  fields?: IReportMetaField[];
+  fields?: Array<IReportMetaField>;
   levels?: IReportMetaLevels;
   name?: string;
   [field: string]: any;
-}
+};
 
-interface ISummaryTableData {
-  summaryList: object[];
+type ISummaryTableData = {
+  summaryList: Array<object>;
   summaryMeta: IReportMeta;
-  summaryTableMetaInfo: IReportMetaField[];
-}
+  summaryTableMetaInfo: Array<IReportMetaField>;
+};
 
-export interface IReportStateProps extends ISummaryTableData {
+export type IReportStateProps = {
   data: any;
-  list: object[];
+  list: Array<object>;
   meta: IReportMeta;
   tableMetaInfo: IReportTableMeta;
 
-  prevList: object[];
+  prevList: Array<object>;
   prevMeta: IReportMeta;
   prevTableMetaInfo: IReportTableMeta;
 
   reportMetaFetching: boolean;
   reportDataFetching: boolean;
-}
+} & ISummaryTableData;
 
 export type ReportDataPromise = Promise<IResponseData<any, IReportMeta>>;
 

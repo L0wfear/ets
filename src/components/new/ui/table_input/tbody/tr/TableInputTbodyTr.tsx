@@ -8,7 +8,7 @@ import { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { isObject } from 'util';
 
 export type TableInputTbodyTrProps = {
-  meta: TableMeta<any>[];
+  meta: Array<TableMeta<any>>;
   rowData: any;
   errors: any;
   onChange: any;

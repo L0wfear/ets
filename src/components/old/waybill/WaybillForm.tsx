@@ -208,20 +208,20 @@ const setEmptyFieldByKey = (shema) => {
 const modalKey = 'waybill';
 
 type StateProps = {
-  appConfig: InitialStateSession['appConfig'],
+  appConfig: InitialStateSession['appConfig'];
   userStructureId: InitialStateSession['userData']['structure_id'];
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructures: InitialStateSession['userData']['structures'];
   userPermissionsSet: InitialStateSession['userData']['permissionsSet'];
-  fuelCardsList: FuelCard[];
-  workModeList: WorkMode[];
+  fuelCardsList: Array<FuelCard>;
+  workModeList: Array<WorkMode>;
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
-  carList: Car[],
+  carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
-  uniqEmployeesBindedOnCarList: EmployeeBindedToCar[];
-  employeeList: Employee[];
+  uniqEmployeesBindedOnCarList: Array<EmployeeBindedToCar>;
+  employeeList: Array<Employee>;
   employeeIndex: Record<Employee['id'], Employee>;
-  waybillDriverList: WaybillDriver[];
+  waybillDriverList: Array<WaybillDriver>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -231,17 +231,17 @@ type OwnProps = {
   handleFormChange: (field: string, e: any) => any;
   handleMultipleChange: (object: Record<string, any>) => any;
   onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
-  onSubmit: (...arg: any[]) => any;
+  onSubmit: (...arg: Array<any>) => any;
   clearSomeData: () => any;
 
   handleClose: (...arg: any) => any;
 
-  handlePrint: (...arg: any[]) => any;
-  handlePrintFromMiniButton: (...arg: any[]) => any;
+  handlePrint: (...arg: Array<any>) => any;
+  handlePrintFromMiniButton: (...arg: Array<any>) => any;
 
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
 
-  formErrors: Record<string, any>,
+  formErrors: Record<string, any>;
   entity: string;
   isPermittedByKey: {
     update: boolean;
@@ -253,7 +253,7 @@ type OwnProps = {
   page: string;
   path?: string;
 
-  show: boolean
+  show: boolean;
   onHide: any;
 };
 
@@ -264,20 +264,20 @@ type Props = (
 );
 
 type State = {
-  operations: any[],
-  equipmentOperations: any[],
-  fuelRates: any[],
-  equipmentFuelRates: any[],
-  fuel_correction_rate: number,
-  canEditIfClose: boolean,
-  loadingFields: Record<string, any>,
-  fuelRateAllList: any[],
-  tooLongFactDates: boolean,
-  missionsList: any[];
-  origMissionsList: any[];
+  operations: Array<any>;
+  equipmentOperations: Array<any>;
+  fuelRates: Array<any>;
+  equipmentFuelRates: Array<any>;
+  fuel_correction_rate: number;
+  canEditIfClose: boolean;
+  loadingFields: Record<string, any>;
+  fuelRateAllList: Array<any>;
+  tooLongFactDates: boolean;
+  missionsList: Array<any>;
+  origMissionsList: Array<any>;
 
-  notAvailableMissions: any[];
-  rejectMissionList: any[];
+  notAvailableMissions: Array<any>;
+  rejectMissionList: Array<any>;
 
   origFormState: Props['formState'];
 };
@@ -397,7 +397,7 @@ class WaybillForm extends React.Component<Props, State> {
           }),
         )
         .catch((e) => {
-          console.error(e);  // tslint:disable-line:no-console
+          console.error(e);  // eslint-disable-line
           this.setState({
             fuelRateAllList: [],
           });
@@ -417,7 +417,7 @@ class WaybillForm extends React.Component<Props, State> {
           });
         })
         .catch((e) => {
-          console.error(e);  // tslint:disable-line:no-console
+          console.error(e);  // eslint-disable-line
           this.setState({
             canEditIfClose: false,
             origFormState: formState,
@@ -534,7 +534,7 @@ class WaybillForm extends React.Component<Props, State> {
           },
         )
         .catch((e) => {
-          console.error(e);  // tslint:disable-line:no-console
+          console.error(e);  // eslint-disable-line
 
           this.setState({
             fuelRates: [],
@@ -1180,7 +1180,7 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange(changeObj);
         return true;
       } catch (e) {
-        console.error(e);  // tslint:disable-line:no-console
+        console.error(e);  // eslint-disable-line
         return false;
       }
     } else {
@@ -1315,7 +1315,7 @@ class WaybillForm extends React.Component<Props, State> {
             return get(response, 'id', null);
           }
         } catch (errorData) {
-          console.warn('rejectMissionHandler:', errorData);  // tslint:disable-line:no-console
+          console.warn('rejectMissionHandler:', errorData);  // eslint-disable-line
 
           rejectMissionSubmitError = true;
           const missionId = get(rejectMission.payload, 'mission_id', '');

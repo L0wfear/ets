@@ -388,7 +388,7 @@ class ProgramRegistryFormWrap extends React.Component<Props, State> {
     const { formState } = this.state;
     const newState: any = {};
 
-    console.info('Form changed', field, value);   // tslint:disable-line:no-console
+    console.info('Form changed', field, value);   // eslint-disable-line
     formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);

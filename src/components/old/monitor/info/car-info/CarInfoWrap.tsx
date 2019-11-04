@@ -6,7 +6,7 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { OwnPropsCarInfo } from 'components/old/monitor/info/car-info/CarInfo';
 
 type PropsCarInfoWrap = {
-  map: Map,
+  map: Map;
   centerOn: any;
 };
 type StateCarInfoWrap = {

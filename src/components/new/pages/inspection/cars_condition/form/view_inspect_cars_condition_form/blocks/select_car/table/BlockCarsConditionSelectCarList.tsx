@@ -13,7 +13,7 @@ import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_cond
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
 };
 
 const BlockCarsConditionSelectCarList: React.FC<Props> = (props) => {

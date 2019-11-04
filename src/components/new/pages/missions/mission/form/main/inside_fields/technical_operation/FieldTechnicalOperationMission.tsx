@@ -137,7 +137,7 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
         object_type_name: '',
       });
     }
-  }
+  };
 
   render() {
     const {

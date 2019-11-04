@@ -14,7 +14,7 @@ export type FuelCard = {
 };
 
 export type StateFuelCards = {
-  fuelCardsList: FuelCard[];
+  fuelCardsList: Array<FuelCard>;
 };
 
 export type FuelType = {

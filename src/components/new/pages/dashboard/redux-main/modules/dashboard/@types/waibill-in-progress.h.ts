@@ -13,13 +13,13 @@ export type WaybillInProgressItemsSubItemsType = {
 };
 
 export type WaybillInProgressItemsType = {
-  subItems: WaybillInProgressItemsSubItemsType[],
+  subItems: Array<WaybillInProgressItemsSubItemsType>;
   tooltip?: string;
   value: string;
 };
 
 export type WaybillInProgressAnsType = {
-  items: WaybillInProgressItemsType[];
+  items: Array<WaybillInProgressItemsType>;
   tooltip?: string;
   title: string;
 };

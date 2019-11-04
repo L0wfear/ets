@@ -29,7 +29,7 @@ const shortCss = css`
   white-space: normal;
 `;
 
-export const UserFio = styled(UserHeaderData)<{ short: boolean }>`
+export const UserFio = styled(UserHeaderData)<{ short: boolean; }>`
   opacity: 1;
   ${({ short }) => short ? shortCss : ''}
 `;

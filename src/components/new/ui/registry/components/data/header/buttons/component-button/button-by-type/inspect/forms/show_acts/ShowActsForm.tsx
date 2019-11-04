@@ -29,8 +29,8 @@ const InspectActFileFormContext = React.lazy(() => (
 ));
 
 type Props = {
-  element: { id: number };
-  handleHide: (...arg: any[]) => any;
+  element: { id: number; };
+  handleHide: (...arg: Array<any>) => any;
 
   page: string;
   path: string;

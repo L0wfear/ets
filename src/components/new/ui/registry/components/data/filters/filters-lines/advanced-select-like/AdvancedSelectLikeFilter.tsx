@@ -36,14 +36,14 @@ type PropsAdvancedSelectLikeFilterFilter = {
   wasFirstOpen: boolean;
   formatedTitle: string;
   filterValuesObj: any;
-  array: any[];
-  onChange: (valueKey: string, type: string, value: any[], option: object) => any;
+  array: Array<any>;
+  onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
 
   dispatch: EtsDispatch;
 };
 
 type StateAdvancedSelectLikeFilterFilter = {
-  array: any[];
+  array: Array<any>;
   filterData: {
     title: string;
     valueKey: string;
@@ -52,7 +52,7 @@ type StateAdvancedSelectLikeFilterFilter = {
     disabled?: boolean;
     getRegistryData: any;
   };
-  options: any[];
+  options: Array<any>;
   disabled: boolean;
   isLoading: boolean;
 };
@@ -64,7 +64,7 @@ const getOption = (value, label) => {
   return null;
 };
 
-const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey?: string | number) => (
+const makeOptionsFromArray = (array: Array<any>, valueKey: string | number, labelKey?: string | number) => (
   array.reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
     if (isArray(value)) {
       value.forEach((oneValue) => {
@@ -94,7 +94,7 @@ const makeOptions = (props: PropsAdvancedSelectLikeFilterFilter) => (
   )
 );
 
-const makeObjByKey = (array: any[], valueKey: string) => {
+const makeObjByKey = (array: Array<any>, valueKey: string) => {
   return Object.values(array.reduce((newObj, { [valueKey]: value }) => {
     if (isArray(value)) {
       value.forEach((valueItem) => {
@@ -108,7 +108,7 @@ const makeObjByKey = (array: any[], valueKey: string) => {
   }, {}));
 };
 
-const checkOnNewValuewInArray = (array: any[], filterData: StateAdvancedSelectLikeFilterFilter['filterData'], options: StateAdvancedSelectLikeFilterFilter['options']) => {
+const checkOnNewValuewInArray = (array: Array<any>, filterData: StateAdvancedSelectLikeFilterFilter['filterData'], options: StateAdvancedSelectLikeFilterFilter['options']) => {
   const objArray = Object.values(makeObjByKey(array, filterData.valueKey));
 
   return options.length !== objArray.length;
@@ -156,7 +156,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
     const triggerToUpdate = (
       this.props.wasFirstOpen
       && (
-       !prevProps.wasFirstOpen
+        !prevProps.wasFirstOpen
         || (
           prevState.array !== this.state.array
           && checkOnNewValuewInArray(this.state.array, this.state.filterData, this.state.options)
@@ -181,7 +181,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
             ),
           );
         } catch (error) {
-          console.error(error); // tslint:disable-line:no-console
+          console.error(error); // eslint-disable-line
 
           this.setState({
             isLoading: false,
@@ -235,7 +235,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
     const { filterData } = props;
 
     this.props.onChange(filterData.valueKey, 'like', value || [], options);
-  }
+  };
 
   render() {
     const { state, props } = this;

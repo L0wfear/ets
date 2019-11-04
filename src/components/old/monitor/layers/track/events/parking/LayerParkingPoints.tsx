@@ -12,12 +12,12 @@ import OverlayParkingPoint from 'components/old/monitor/layers/track/events/park
 import { carInfoSetParkingPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 type PropsLayerParkingPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  zoom: number;
   map: Map;
 
   front_parkings: any;
@@ -52,7 +52,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   drawTrackPoints(front_parkings) {
     for (let index = 0, length = front_parkings.length; index < length; index++) {

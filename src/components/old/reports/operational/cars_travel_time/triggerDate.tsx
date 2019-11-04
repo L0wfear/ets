@@ -5,8 +5,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 // types
 export type TriggerDateProps = {
-  events: string[],
-  date: string,
+  events: Array<string>;
+  date: string;
 };
 
 // style
@@ -69,11 +69,11 @@ export const TriggerDate: React.FC<TriggerDateProps> = (props) => {
         showEvents && (
           <TriggerCarpoolEvents>
             {
-              props.events.length === 0 ?
-                <span> Нет данных</span>
-              : (
-                props.events.join(', ')
-              )
+              props.events.length === 0
+                ? <span> Нет данных</span>
+                : (
+                  props.events.join(', ')
+                )
             }
           </TriggerCarpoolEvents>
         )

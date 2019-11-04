@@ -5,7 +5,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 export type MissionTemplateCreating = (
   {
     missionTemplates: Record<string, MissionTemplate>;
-    assign_to_waybill: Record<string, string[]>
+    assign_to_waybill: Record<string, Array<string>>;
   } & Partial<
     Pick<
       Mission,

@@ -15,7 +15,7 @@ type StateCollapse = {
 class Collapse extends React.Component<PropsCollapse, StateCollapse> {
   onToggle = (e) => {
     // toggle
-  }
+  };
 
   render() {
     return (

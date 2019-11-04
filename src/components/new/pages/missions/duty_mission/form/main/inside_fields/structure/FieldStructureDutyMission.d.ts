@@ -1,14 +1,10 @@
-import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import {
-  OneSessionStructure,
   InitialStateSession,
 } from 'redux-main/reducers/modules/session/@types/session';
-import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import {
   getSessionStructuresParams,
   getSessionStructuresOptions,
 } from 'redux-main/reducers/modules/session/selectors';
-import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StateFieldStructureDutyMission = {};

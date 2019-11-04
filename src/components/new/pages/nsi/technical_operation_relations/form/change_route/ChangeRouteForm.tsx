@@ -99,7 +99,7 @@ const ChangeRouteForm: React.FC<Props> = (props) => {
         await dispatch(routesActions.actionRemoveRoute(routeSelected.id, props));
         reloadRegistry();
       } catch (error) {
-        console.log(error); // tslint:disable-line
+        console.info(error); // tslint:disable-line
       }
     },
     [reloadRegistry, routeSelected],
@@ -114,7 +114,7 @@ const ChangeRouteForm: React.FC<Props> = (props) => {
           route_data,
         );
       } catch (error) {
-        console.log(error); // tslint:disable-line
+        console.info(error); // tslint:disable-line
       }
     },
     [routeSelected],
@@ -128,51 +128,51 @@ const ChangeRouteForm: React.FC<Props> = (props) => {
         onHide={props.handleHide}
         bsSize="large"
       >
-          <EtsBootstrap.ModalHeader closeButton>
-            <EtsBootstrap.ModalTitle>Маршруты</EtsBootstrap.ModalTitle>
-          </EtsBootstrap.ModalHeader>
-          <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-            <ChangeRouteTable
-              data={element.routes}
-              onRowClick={onRowClick}
-              selected={routeSelected}
-            >
-              <EtsBootstrap.Button onClick={handleCreateNewRouteNew} permissions={routePermissions.create}>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Маршруты</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <ChangeRouteTable
+            data={element.routes}
+            onRowClick={onRowClick}
+            selected={routeSelected}
+          >
+            <EtsBootstrap.Button onClick={handleCreateNewRouteNew} permissions={routePermissions.create}>
                 Создать новый маршрут
-              </EtsBootstrap.Button>
-              <EtsBootstrap.Button
-                disabled={!routeSelected}
-                onClick={removeRoute}
-                permissions={routePermissions.delete}
-              >
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button
+              disabled={!routeSelected}
+              onClick={removeRoute}
+              permissions={routePermissions.delete}
+            >
                 Удалить маршрут
-              </EtsBootstrap.Button>
-            </ChangeRouteTable>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={3} mdOffset={9}>
-                <EtsBootstrap.Button
-                  block
-                  id="change-route"
-                  bsClass="btn all-width"
-                  disabled={!routeSelected}
-                  onClick={handleChangeRoute}
-                  permissions={routePermissions.update}
-                >
+            </EtsBootstrap.Button>
+          </ChangeRouteTable>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={3} mdOffset={9}>
+              <EtsBootstrap.Button
+                block
+                id="change-route"
+                bsClass="btn all-width"
+                disabled={!routeSelected}
+                onClick={handleChangeRoute}
+                permissions={routePermissions.update}
+              >
                   Изменить
-                </EtsBootstrap.Button>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-          </ModalBodyPreloader>
-        </EtsBootstrap.ModalContainer>
-        <RouteFormWrap
-          element={routeElement}
-          handleHide={onRouteFormHide}
-          showForm={Boolean(routeElement)}
+              </EtsBootstrap.Button>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </ModalBodyPreloader>
+      </EtsBootstrap.ModalContainer>
+      <RouteFormWrap
+        element={routeElement}
+        handleHide={onRouteFormHide}
+        showForm={Boolean(routeElement)}
 
-          page={page}
-          path={path}
-        />
-      </React.Fragment>
+        page={page}
+        path={path}
+      />
+    </React.Fragment>
   );
 };
 

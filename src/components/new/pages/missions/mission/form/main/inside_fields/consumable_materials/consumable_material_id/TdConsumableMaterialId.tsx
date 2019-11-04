@@ -14,7 +14,7 @@ import { useMissionFormDataIsNoCompleted, mergeConsumableMaterials } from 'compo
 type Props = PropsToTdReactComponent;
 
 export const getConsumableMaterialIdOptions = memoizeOne(
-  (consumable_materials: Mission['consumable_materials'], consumableMateriaForMission: ConsumableMaterialCountMission[]) => {
+  (consumable_materials: Mission['consumable_materials'], consumableMateriaForMission: Array<ConsumableMaterialCountMission>) => {
     const consumable_materials_index = keyBy(consumable_materials, 'consumable_material_id');
     const options = consumableMateriaForMission.map(
       (rowData) => {

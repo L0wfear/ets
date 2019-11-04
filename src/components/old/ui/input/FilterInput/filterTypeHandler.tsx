@@ -10,8 +10,8 @@ function singleFilterTypeHandler(SourcerFilterInput) {
   return class FilterInputHOC extends React.Component<IPropsExtendedInput, any> {
     componentDidUpdate(prevProps: IPropsExtendedInput) {
       if (
-        !isEqual(prevProps.filterType, this.props.filterType) ||
-        !isEqual(prevProps.value, this.props.value)
+        !isEqual(prevProps.filterType, this.props.filterType)
+        || !isEqual(prevProps.value, this.props.value)
       ) {
         this.handleChange(this.props.value, this.props.filterType);
       }
@@ -88,7 +88,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
         value,
         filterValue,
       });
-    }
+    };
     render() {
       return (
         <SourcerFilterInput

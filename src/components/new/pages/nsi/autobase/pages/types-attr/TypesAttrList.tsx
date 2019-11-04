@@ -16,7 +16,7 @@ const TypesAttrList: React.FC<OwnProps> = React.memo(
   () => {
     return (
       <Registry registryKey={registryKey} />
-   );
+    );
   },
 );
 

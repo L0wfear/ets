@@ -4,11 +4,7 @@ import { IReportProps } from 'components/old/reports/@types/common.h';
 import * as ReduxTypes from 'components/old/reports/redux-main/modules/@types/report.h';
 import { RouteComponentProps } from 'react-router-dom';
 
-export interface IPropsReportContainer
-  extends IExportableTableList,
-    RouteComponentProps,
-    IReportProps,
-    ReduxTypes.IReportStateProps {
+export type IPropsReportContainer = {
   /**
    * AC. Gets report meta info and report data
    */
@@ -24,9 +20,9 @@ export interface IPropsReportContainer
   setAllData(data: any, func: any): any;
   setReportDataWithSummerData(payload: any): any;
   setDateRange?: any;
-}
+} & IExportableTableList & RouteComponentProps & IReportProps & ReduxTypes.IReportStateProps;
 
-export interface IStateReportContainer {
+export type IStateReportContainer = {
   fetchedBySubmitButton: boolean;
   fetchedByMoveDownButton: boolean;
   selectedRow: IDataTableSelectedRowPropsData;
@@ -35,4 +31,4 @@ export interface IStateReportContainer {
   uniqName: string;
 
   localState: Record<string, any>;
-}
+};

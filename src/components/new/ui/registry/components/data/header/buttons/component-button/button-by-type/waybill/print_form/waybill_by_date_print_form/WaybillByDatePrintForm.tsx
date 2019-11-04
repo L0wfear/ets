@@ -140,15 +140,15 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
               {
                 state.formationPeriod === 'day'
                 && (
-                    <ExtField
-                      type="date"
-                      time={false}
-                      label="Дата"
-                      value={state.date}
-                      error={errors.date}
-                      onChange={props.handleChange}
-                      boundKeys="date"
-                    />
+                  <ExtField
+                    type="date"
+                    time={false}
+                    label="Дата"
+                    value={state.date}
+                    error={errors.date}
+                    onChange={props.handleChange}
+                    boundKeys="date"
+                  />
                 )
               }
             </EtsBootstrap.Col>

@@ -86,10 +86,10 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         municipalFacilityForDutyMissionList,
       } = this.props;
 
-      const triggerOnGetRouteList =
-        technical_operation_id &&
-        municipal_facility_id &&
-        (DUTY_MISSION_IS_ORDER_SOURCE
+      const triggerOnGetRouteList
+        = technical_operation_id
+        && municipal_facility_id
+        && (DUTY_MISSION_IS_ORDER_SOURCE
           ? dependeceTechnicalOperation
           : municipalFacilityForDutyMissionList.length);
 
@@ -117,17 +117,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         DUTY_MISSION_IS_ORDER_SOURCE,
       } = this.props;
 
-      const triggerOne =
-        ((technical_operation_id !== prevProps.technical_operation_id ||
-          municipal_facility_id !== prevProps.municipal_facility_id) &&
-          (DUTY_MISSION_IS_ORDER_SOURCE
+      const triggerOne
+        = ((technical_operation_id !== prevProps.technical_operation_id
+          || municipal_facility_id !== prevProps.municipal_facility_id)
+          && (DUTY_MISSION_IS_ORDER_SOURCE
             ? dependeceTechnicalOperation
-            : municipalFacilityForDutyMissionList.length)) ||
-        (DUTY_MISSION_IS_ORDER_SOURCE
-          ? !dependeceTechnicalOperation &&
-            prevProps.dependeceTechnicalOperation
-          : !municipalFacilityForDutyMissionList.length &&
-            prevProps.municipalFacilityForDutyMissionList.length);
+            : municipalFacilityForDutyMissionList.length))
+        || (DUTY_MISSION_IS_ORDER_SOURCE
+          ? !dependeceTechnicalOperation
+            && prevProps.dependeceTechnicalOperation
+          : !municipalFacilityForDutyMissionList.length
+            && prevProps.municipalFacilityForDutyMissionList.length);
 
       if (triggerOne) {
         if (technical_operation_id && municipal_facility_id) {
@@ -174,9 +174,9 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         type: (DUTY_MISSION_IS_ORDER_SOURCE
           ? get(dependeceTechnicalOperation, 'route_types', [])
           : getAvailableRouteTypesMemo(
-              this.props.municipalFacilityForDutyMissionList,
-              municipal_facility_id,
-            )
+            this.props.municipalFacilityForDutyMissionList,
+            municipal_facility_id,
+          )
         ).toString(),
       },
       { page, path },
@@ -396,9 +396,9 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
             missionAvailableRouteTypes={(DUTY_MISSION_IS_ORDER_SOURCE
               ? get(dependeceTechnicalOperation, 'route_types', [])
               : getAvailableRouteTypesMemo(
-                  this.props.municipalFacilityForDutyMissionList,
-                  municipal_facility_id,
-                )
+                this.props.municipalFacilityForDutyMissionList,
+                municipal_facility_id,
+              )
             )}
             fromMission={fromMission}
             fromMissionTemplate={fromMissionTemplate}

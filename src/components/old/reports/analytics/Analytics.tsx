@@ -29,7 +29,7 @@ const page = 'analytics';
 type OwnProps = {
 };
 type StateProps = {
-  companyList: Company[];
+  companyList: Array<Company>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;

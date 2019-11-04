@@ -2,7 +2,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 
 export type EdcRequestCancel = {
-  id: EdcRequest['id'],
+  id: EdcRequest['id'];
   cancel_reason_id: number;
   cancel_reason_name: string;
 };

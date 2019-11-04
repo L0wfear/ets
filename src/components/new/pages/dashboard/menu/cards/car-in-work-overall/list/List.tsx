@@ -7,7 +7,7 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
 
 type PropsList = {
-  items: CarInWorkOverallItemsType[];
+  items: Array<CarInWorkOverallItemsType>;
   handleClick: React.MouseEventHandler<HTMLLIElement>;
   classNameContainer?: string;
   addIndex: number;
@@ -23,7 +23,7 @@ class List extends React.PureComponent<PropsList, {}> {
     if (subItemsLength) {
       this.props.handleClick(event);
     }
-  }
+  };
   render() {
     const { props } = this;
 

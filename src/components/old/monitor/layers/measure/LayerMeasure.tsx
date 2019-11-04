@@ -28,12 +28,12 @@ import { ButtonContainer } from '../polygon_buffer/styled/styled';
 import GeometryType from 'ol/geom/GeometryType';
 
 type PropsLayerParkingPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
   map: Map;
 
   monitorPageToggleMeasureActive: any;
@@ -44,11 +44,11 @@ type PropsLayerParkingPoints = {
 
 type OneLine = {
   length: number;
-  points: any[];
+  points: Array<any>;
 };
 
 type StateLayerParkingPoints = {
-  lines: OneLine[];
+  lines: Array<OneLine>;
   interactionDraw: Draw | void;
   activeDraw: boolean;
 };
@@ -91,7 +91,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
       this.props.map.removeInteraction(this.state.interactionDraw);
       this.setState({ interactionDraw: null });
     }
-  }
+  };
 
   drawEnd = () => {
     const { lines } = this.state;
@@ -122,7 +122,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         };
       }),
     });
-  }
+  };
 
   setOnForDraw = (interactionDraw) => {
     interactionDraw.on(
@@ -163,7 +163,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
 
     this.props.map.addInteraction(interactionDraw);
     this.setState({ interactionDraw });
-  }
+  };
 
   handleChangeLastFeature = (event, feature) => {
     const { lines } = this.state;
@@ -185,7 +185,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         };
       }),
     });
-  }
+  };
 
   handleClickRemove = () => {
     if (!this.state.activeDraw) {
@@ -256,7 +256,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         this.state.interactionDraw.removeLastPoint();
       }
     }
-  }
+  };
 
   checkRemoveFromActiveDraw = () => {
     if (this.state.activeDraw) {
@@ -264,7 +264,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
     } else {
       return !this.state.lines.some(({ hidden }) => !hidden);
     }
-  }
+  };
 
   render() {
     return (

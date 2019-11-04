@@ -29,7 +29,7 @@ const byPosition = {
   `,
 };
 
-export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right' }>`
+export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right'; }>`
   position: relative;
   ${({ position }) => get(byPosition, position) || get(byPosition, 'default')};
   position: absolute;

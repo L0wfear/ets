@@ -42,7 +42,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
     !IS_CREATING
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
-    );
+  );
 
   React.useEffect(
     () => {

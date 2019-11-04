@@ -6,7 +6,7 @@ import IconMeasureAndZoom from 'components/old/monitor/info/icon-measure-and-zoo
 import { MapInfoContainer } from './styled';
 
 type PropsMapInfo = {
-  map: Map,
+  map: Map;
   centerOn: any;
 };
 

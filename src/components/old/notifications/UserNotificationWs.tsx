@@ -62,7 +62,7 @@ class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUs
   getNotifications = () => {
     this.props.getOrderNotRead();
     this.props.getAdmNotReadNotifications();
-  }
+  };
 
   closeIntervalNotifications() {
     clearInterval(this.state.getNotReadInterval);
@@ -77,7 +77,7 @@ class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUs
 
       this.ws.onopen = (event) => {
         // tslint:disable-next-line
-        console.log(`API SERVICE OPEN WS ${config.notification_ws}`);
+        console.info(`API SERVICE OPEN WS ${config.notification_ws}`);
       };
 
       this.ws.onmessage = ({ data }) => {
@@ -86,7 +86,7 @@ class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUs
 
       this.ws.onclose = (event) => {
         // tslint:disable-next-line
-        console.log(`API SERVICE CLOSE WS ${config.notification_ws}`);
+        console.info(`API SERVICE CLOSE WS ${config.notification_ws}`);
 
         if (event.code === 1006) {
           Raven.captureException(new Error('1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.'));
@@ -100,7 +100,7 @@ class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUs
       };
     } catch (e) {
       // tslint:disable-next-line
-      console.warn(e)
+      console.warn(e);
     }
   }
 

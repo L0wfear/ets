@@ -6,7 +6,7 @@ type FuelTypeProps = {
   modalKey: string;
   error: string;
   disabled: boolean;
-  options: any[];
+  options: Array<any>;
   handleChange: any;
 
 } & (

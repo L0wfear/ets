@@ -4,7 +4,7 @@ import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeOptionsMissionsForCarMissionId = (
   memoize(
-    (availableMissionsToBind: Mission[]) => (
+    (availableMissionsToBind: Array<Mission>) => (
       availableMissionsToBind
         .map<DefaultSelectOption<Mission['id'], string, Mission>>((mission) => ({
           value: mission.id,

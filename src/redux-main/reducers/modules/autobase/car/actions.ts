@@ -20,7 +20,7 @@ import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 
 /* ---------- Car ---------- */
-export const autobaseSetCar = (carList: Car[], carIndex: Record<Car['asuods_id'], Car>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetCar = (carList: Array<Car>, carIndex: Record<Car['asuods_id'], Car>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       carList,

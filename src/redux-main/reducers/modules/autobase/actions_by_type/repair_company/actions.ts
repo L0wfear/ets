@@ -11,7 +11,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- RepairCompany ---------- */
-export const autobaseSetRepairCompany = (repairCompanyList: RepairCompany[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetRepairCompany = (repairCompanyList: Array<RepairCompany>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       repairCompanyList,

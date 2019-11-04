@@ -1,13 +1,13 @@
 import { isString, isNumber } from 'lodash';
 
 export type DefaultSelectOption<V, L, R> = {
-  value: V,
-  label: L,
-  rowData?: Partial<R>,
+  value: V;
+  label: L;
+  rowData?: Partial<R>;
   [k: string]: any;
 };
 
-export type DefaultSelectListMapper<R extends any> = DefaultSelectOption<R['id'], R['name'], R>[];
+export type DefaultSelectListMapper<R extends any> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
 
 export const defaultSelectListMapper = <R extends any>(rowData: R): DefaultSelectOption<R['id'], R['name'], R> => ({ value: rowData.id, label: rowData.name, rowData });
 

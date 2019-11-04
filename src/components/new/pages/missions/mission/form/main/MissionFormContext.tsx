@@ -9,7 +9,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 const formKey: FormKeys = 'mission';
 
 // new withForm
-const MissionFormContext: React.FC<WithFormRegistrySearchAddProps<Partial<Mission>> & { notChangeCar?: boolean }> = React.memo(
+const MissionFormContext: React.FC<WithFormRegistrySearchAddProps<Partial<Mission>> & { notChangeCar?: boolean; }> = React.memo(
   (props) => {
     const {
       hasData,

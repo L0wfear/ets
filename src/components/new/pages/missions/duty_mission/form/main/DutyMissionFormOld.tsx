@@ -101,8 +101,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 
       if (isPermitted) {
         if (
-          DUTY_MISSION_IS_ORDER_SOURCE &&
-          !DUTY_MISSION_IS_DISPLAY
+          DUTY_MISSION_IS_ORDER_SOURCE
+          && !DUTY_MISSION_IS_DISPLAY
         ) {
           if (!dependeceOrder) {
             await this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
@@ -167,9 +167,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     this.props.employeeEmployeeResetSetEmployee();
 
     if (
-      isPermitted &&
-      DUTY_MISSION_IS_ORDER_SOURCE &&
-      !DUTY_MISSION_IS_DISPLAY
+      isPermitted
+      && DUTY_MISSION_IS_ORDER_SOURCE
+      && !DUTY_MISSION_IS_DISPLAY
     ) {
       if (dependeceOrder) {
         this.props.actionSetDependenceOrderDataForDutyMission(null, null);
@@ -194,7 +194,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
           path,
         });
       } catch (error) {
-        console.warn('Ошибка загрузки ПФ наряд-задания', result.id); // tslint:disable-line:no-console
+        console.warn('Ошибка загрузки ПФ наряд-задания', result.id); // eslint-disable-line
       }
 
       if (!DUTY_MISSION_IS_DISPLAY) {
@@ -270,14 +270,14 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 value={state.technical_operation_id}
                 name={state.technical_operation_name}
                 disabled={
-                  !isPermitted ||
-                  DUTY_MISSION_IS_DISPLAY ||
-                  DUTY_MISSION_IS_ORDER_SOURCE
+                  !isPermitted
+                  || DUTY_MISSION_IS_DISPLAY
+                  || DUTY_MISSION_IS_ORDER_SOURCE
                 }
                 isPermitted={
-                  isPermitted &&
-                  !DUTY_MISSION_IS_DISPLAY &&
-                  !DUTY_MISSION_IS_ORDER_SOURCE
+                  isPermitted
+                  && !DUTY_MISSION_IS_DISPLAY
+                  && !DUTY_MISSION_IS_ORDER_SOURCE
                 }
                 error={errors.technical_operation_id}
                 onChange={this.props.handleChange}
@@ -299,10 +299,10 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                   || state.request_id
                 }
                 isPermitted={
-                  isPermitted &&
-                  !DUTY_MISSION_IS_DISPLAY &&
-                  !DUTY_MISSION_IS_ORDER_SOURCE &&
-                  Boolean(state.request_id)
+                  isPermitted
+                  && !DUTY_MISSION_IS_DISPLAY
+                  && !DUTY_MISSION_IS_ORDER_SOURCE
+                  && Boolean(state.request_id)
                 }
 
                 request_id={state.request_id}
@@ -341,16 +341,16 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 value={state.municipal_facility_id}
                 name={state.municipal_facility_name}
                 disabled={
-                  !state.technical_operation_id ||
-                  !isPermitted ||
-                  DUTY_MISSION_IS_DISPLAY ||
-                  DUTY_MISSION_IS_ORDER_SOURCE
+                  !state.technical_operation_id
+                  || !isPermitted
+                  || DUTY_MISSION_IS_DISPLAY
+                  || DUTY_MISSION_IS_ORDER_SOURCE
                 }
                 error={errors.municipal_facility_id}
                 isPermitted={
-                  isPermitted &&
-                  !DUTY_MISSION_IS_DISPLAY &&
-                  !DUTY_MISSION_IS_ORDER_SOURCE
+                  isPermitted
+                  && !DUTY_MISSION_IS_DISPLAY
+                  && !DUTY_MISSION_IS_ORDER_SOURCE
                 }
                 onChange={this.props.handleChange}
                 technical_operation_id={state.technical_operation_id}
@@ -474,9 +474,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             path={path}
           />
           {
-             state.technical_operation_id && state.municipal_facility_id && state.route_id && state.norm_id && (
-                <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
-              )
+            state.technical_operation_id && state.municipal_facility_id && state.route_id && state.norm_id && (
+              <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+            )
           }
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>

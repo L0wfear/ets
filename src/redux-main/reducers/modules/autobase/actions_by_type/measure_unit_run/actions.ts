@@ -8,7 +8,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- MeasureUnitRun ---------- */
-export const autobaseSetMeasureUnitRun = (measureUnitRunList: MeasureUnitRun[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetMeasureUnitRun = (measureUnitRunList: Array<MeasureUnitRun>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       measureUnitRunList,

@@ -30,7 +30,7 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
 
   setMapToContext = (key: string, map: Map) => {
     setTimeout(() => {
-      console.log('SET MAP INTO CONTEXT', key); // tslint:disable-line:no-console
+      console.info('SET MAP INTO CONTEXT', key); // eslint-disable-line
 
       this.setState({
         mapByKeys: {
@@ -39,17 +39,17 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
         },
       });
     }, 100);
-  }
+  };
 
   removeMapToContext = (key: string) => {
-    console.log('REMOVE MAP FROM CONTEXT', key); // tslint:disable-line:no-console
+    console.info('REMOVE MAP FROM CONTEXT', key); // eslint-disable-line
 
     const { mapByKeys: { ...mapByKeys } } = this.state;
 
     delete mapByKeys[key];
 
     this.setState({ mapByKeys });
-  }
+  };
 
   getMapImageInBase64ByKey: any = (key: string): Promise<object> => {
     return new Promise((res, rej) => {
@@ -70,12 +70,12 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
         rej(new Error(`not gind map by key = ${key}`));
       }
     });
-  }
+  };
 
   render() {
     return (
       <MapEtsContext.Provider value={this.state}>
-      { this.props.children }
+        { this.props.children }
       </MapEtsContext.Provider>
     );
   }

@@ -52,7 +52,7 @@ const makeFilesToBackendOne = (formState: Employee) => {
 
 export const getSetEmployee = async (...payload) => {
   const { data: rawData } = await getEmployee(...payload);
-  const data: Employee[] = rawData.map(getFrontEmployee);
+  const data: Array<Employee> = rawData.map(getFrontEmployee);
 
   return {
     data,
@@ -89,7 +89,7 @@ export const removeSetEmployee = (id) => {
   );
 };
 
-export const promsieGetEmployeeBindedToCarService = async (payload: { asuods_id: Car['asuods_id'] }) => {
+export const promsieGetEmployeeBindedToCarService = async (payload: { asuods_id: Car['asuods_id']; }) => {
   let response = null;
 
   try {
@@ -98,6 +98,6 @@ export const promsieGetEmployeeBindedToCarService = async (payload: { asuods_id:
     //
   }
 
-  const result: EmployeeBindedToCar[] = get(response, 'result.rows') || [];
+  const result: Array<EmployeeBindedToCar> = get(response, 'result.rows') || [];
   return result;
 };

@@ -26,7 +26,7 @@ export const actionGetWaybillById = (
   return payload;
 };
 
-export const actionGetBlobWaybillJournalReport = (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
+export const actionGetBlobWaybillJournalReport = (payload: { date: string; } | { month: number; year: number; }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobWaybilljournalReport(payload, filter),
@@ -36,7 +36,7 @@ export const actionGetBlobWaybillJournalReport = (payload: { date: string } | { 
   return result;
 };
 
-export const actionGetBlobWaybillReport = (payload: { date_start: string, date_end: string }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
+export const actionGetBlobWaybillReport = (payload: { date_start: string; date_end: string; }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobWaybillReport(payload, filter),

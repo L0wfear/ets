@@ -43,11 +43,11 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, {}
       type: null,
       parent_id,
     });
-  }
+  };
 
   makeOptionFromTechMaintTypeList = (
     memoize(
-      (companyStructureLinearList: CompanyStructureLinear[]) => (
+      (companyStructureLinearList: Array<CompanyStructureLinear>) => (
         companyStructureLinearList
           .filter((companyStructure) => (
             companyStructure.type !== STRUCTURE_TYPE_DEY.value
@@ -149,15 +149,15 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, {}
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          {
+            isPermitted // либо обновление, либо создание
+              ? (
+                <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

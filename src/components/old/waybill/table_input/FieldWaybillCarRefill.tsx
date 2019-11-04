@@ -15,7 +15,7 @@ import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseD
 
 type Props = {
   id: string;
-  errors: any[];
+  errors: Array<any>;
   title: string;
   handleChange: TableInputProps['onChange'];
 
@@ -130,7 +130,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
     const metaCarRefillRaw = React.useMemo(
       () => {
-        const meta: TableMeta<ValuesOf<Waybill['car_refill']>>[] = [
+        const meta: Array<TableMeta<ValuesOf<Waybill['car_refill']>>> = [
           {
             ...metaTypeId,
             options: typeIdOptions,
@@ -166,15 +166,15 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               props.fuel_type,
               userCompanyId,
               userStructureId,
-            ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[])
-          .reduce(
-            (newSet, { rowData }) => {
-              newSet.add(rowData.id);
+            ) as Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>)
+            .reduce(
+              (newSet, { rowData }) => {
+                newSet.add(rowData.id);
 
-              return newSet;
-            },
-            new Set(),
-          );
+                return newSet;
+              },
+              new Set(),
+            );
 
           props.handleChange(
             props.array.map(

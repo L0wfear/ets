@@ -14,8 +14,8 @@ export const selectorGetMissionSourceOptionsWithoutOrder = createSelector<ReduxS
   getSomeUniqMissionSourceList,
   (missionSourceList) => (
     missionSourceList
-    .filter(({ auto }) => !auto) // auto как slug order
-    .map(defaultSelectListMapper)
+      .filter(({ auto }) => !auto) // auto как slug order
+      .map(defaultSelectListMapper)
   ),
 );
 
@@ -23,6 +23,6 @@ export const selectorGetMissionSourceOptions = createSelector<ReduxState, Return
   getSomeUniqMissionSourceList,
   (missionSourceList) => (
     missionSourceList
-    .map(defaultSelectListMapper)
+      .map(defaultSelectListMapper)
   ),
 );

@@ -39,20 +39,20 @@ const ButtonCarsConditionTableDefectsForm: React.FC<Props> = React.memo(
           <EtsBootstrap.Glyphicon glyph="search" />
           Детализация дефектов
         </EtsBootstrap.Button>
-      {
-        showForm && (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <CarsConditionTableDefectsFormLazy
-                element={null}
-                page={props.registryKey}
-                registryKey={props.registryKey}
-                onFormHide={onFormHide}
-              />
-            </React.Suspense>
-        </ErrorBoundaryForm>
-        )
-      }
+        {
+          showForm && (
+            <ErrorBoundaryForm>
+              <React.Suspense fallback={<LoadingComponent />}>
+                <CarsConditionTableDefectsFormLazy
+                  element={null}
+                  page={props.registryKey}
+                  registryKey={props.registryKey}
+                  onFormHide={onFormHide}
+                />
+              </React.Suspense>
+            </ErrorBoundaryForm>
+          )
+        }
       </React.Fragment>
     );
   },

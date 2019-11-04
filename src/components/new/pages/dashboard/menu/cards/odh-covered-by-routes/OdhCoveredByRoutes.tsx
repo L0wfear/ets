@@ -10,7 +10,7 @@ import List from 'components/new/pages/dashboard/menu/cards/odh-covered-by-route
 import {
   dashboardLoadOdhCoveredByRoutes,
   dashboardSetInfoDataInOdhCoveredByRoutes,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import OdhCoveredByRoutesInfo from 'components/new/pages/dashboard/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo';
 
 import {
@@ -21,7 +21,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { OdhCoveredByRoutesItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/odh-covered-by-routes.h';
 
 type StateProps = {
-  items: OdhCoveredByRoutesItemsType[];
+  items: Array<OdhCoveredByRoutesItemsType>;
 };
 
 type DispatchProps = {
@@ -43,7 +43,7 @@ class OdhCoveredByRoutes extends React.PureComponent<Props, {}> {
         path.split('/').slice(-1)[0]
       ],
     );
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -56,16 +56,15 @@ class OdhCoveredByRoutes extends React.PureComponent<Props, {}> {
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0}  classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

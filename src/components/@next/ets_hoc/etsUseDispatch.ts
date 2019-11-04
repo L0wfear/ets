@@ -1,10 +1,10 @@
 import { useDispatch, useSelector, HandleThunkActionCreator, TypedUseSelectorHook } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
-export type EtsDispatch = <F extends ((...args: any[]) => any) | object>(
+export type EtsDispatch = <F extends ((...args: Array<any>) => any) | object>(
   f: F,
 ) => (
-  F extends (...args: any[]) => any
+  F extends (...args: Array<any>) => any
     ? ReturnType<F>
     : F
 );

@@ -198,7 +198,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList<Props, State> {
       checkedItems = checkedElements || {};
     }
 
-    const checkedItemsAsArray: any[] = Object.values(checkedItems);
+    const checkedItemsAsArray: Array<any> = Object.values(checkedItems);
 
     return (
       !checkedItemsAsArray.length

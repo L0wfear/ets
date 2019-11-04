@@ -76,7 +76,7 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
         structure_name: value ? options.label : null,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -108,24 +108,24 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
     }
 
     return STRUCTURE_FIELD_VIEW
-    ? (
-      <Flex grow={1} shrink={1} basis={100}>
-        <ExtField
-          id="structure-id"
-          type="select"
-          label="Подразделение"
-          options={state.STRUCTURE_OPTIONS}
-          value={props.value}
-          onChange={this.handleChange}
-          disabled={STRUCTURE_FIELD_READONLY || props.disabled}
-          clearable={STRUCTURE_FIELD_DELETABLE}
-          error={props.error}
-        />
-      </Flex>
-    )
-    : (
-      <DivNone />
-    );
+      ? (
+        <Flex grow={1} shrink={1} basis={100}>
+          <ExtField
+            id="structure-id"
+            type="select"
+            label="Подразделение"
+            options={state.STRUCTURE_OPTIONS}
+            value={props.value}
+            onChange={this.handleChange}
+            disabled={STRUCTURE_FIELD_READONLY || props.disabled}
+            clearable={STRUCTURE_FIELD_DELETABLE}
+            error={props.error}
+          />
+        </Flex>
+      )
+      : (
+        <DivNone />
+      );
   }
 }
 

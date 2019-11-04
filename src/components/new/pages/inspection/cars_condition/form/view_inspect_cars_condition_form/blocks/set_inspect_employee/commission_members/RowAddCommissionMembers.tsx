@@ -12,7 +12,7 @@ import { FooterEnd } from 'global-styled/global-styled';
 type RowAddCommissionMembersProps = {
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
   commission_members: InspectCarsCondition['commission_members'];
-  company_id: InspectCarsCondition['company_id']
+  company_id: InspectCarsCondition['company_id'];
   handleCloseCommissionMembers: any;
   showCloseBtn: boolean;
 
@@ -59,7 +59,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <AgentsFromGbuMemberDataContainer>
-            {
+              {
                 props.showCloseBtn && (
                   <FooterEnd>
                     <AgentsFromGbuCloseBtn onClick={props.handleCloseCommissionMembers}>
@@ -83,9 +83,9 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
                 disabled={!selectedEmployee}
                 onClick={handleClickAddCommissionEmployee}
               >
-              {'Сохранить'}
-            </EtsBootstrap.Button>
-          </AgentsFromGbuMemberDataContainer>
+                {'Сохранить'}
+              </EtsBootstrap.Button>
+            </AgentsFromGbuMemberDataContainer>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </RowAddCommissionMembersWrapper>

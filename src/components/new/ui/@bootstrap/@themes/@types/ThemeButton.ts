@@ -27,9 +27,9 @@ export type ThemeButtonColor = {
 };
 
 export type ThemeButtonOpacity = {
-  default: number,
-  disabled: number,
-  disabledFocus: number,
+  default: number;
+  disabled: number;
+  disabledFocus: number;
 };
 
 type ThemeButton = {
@@ -37,7 +37,7 @@ type ThemeButton = {
   borderRadius: ThemeButtonBorderRadius;
   border: ThemeButtonBorder;
   boxShadow: ThemeButtonBoxShadow;
-  color: ThemeButtonColor,
+  color: ThemeButtonColor;
   opacity: ThemeButtonOpacity;
 };
 

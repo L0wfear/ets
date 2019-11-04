@@ -23,7 +23,7 @@ export const ModalHeaderCloseButtonStyled = styled.button`
 `;
 
 export type ModalHeaderCloseButtonProps = {
-  onHide: (...arg: any[]) => any;
+  onHide: (...arg: Array<any>) => any;
 };
 
 const ModalHeaderCloseButton: React.FC<ModalHeaderCloseButtonProps> = React.memo(

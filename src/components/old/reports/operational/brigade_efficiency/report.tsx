@@ -52,10 +52,10 @@ class BrigadeEfficiencyReport extends React.Component<PropsBrigadeEfficiencyRepo
       // tslint:disable-next-line
       console.warn(error_text);
     }
-  }
+  };
   handleDutyMissionFormVisibility = () => {
     this.setState({ dutyMissionFormVisibility: false });
-  }
+  };
   render() {
     const dutyNumberForm = (
       <DutyMissionFormWithoutRegistry

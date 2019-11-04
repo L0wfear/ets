@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const RouteGeoListContainer = styled.div<{ height?: string }>`
+export const RouteGeoListContainer = styled.div<{ height?: string; }>`
   max-height: ${({ height }) => height ? height : '500px'};
   overflow: auto;
 `;
@@ -21,6 +21,6 @@ const notValidStyle = css`
   color: white!important;
 `;
 
-export const LiRouteManual = styled.li<{ isInvalid: boolean }>`
+export const LiRouteManual = styled.li<{ isInvalid: boolean; }>`
   ${({ isInvalid }) => isInvalid && notValidStyle};
 `;

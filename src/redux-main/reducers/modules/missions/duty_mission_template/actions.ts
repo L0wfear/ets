@@ -78,7 +78,7 @@ export const actionUpdateDutyMissionTemplate = (dutyDutyMissionTemplateOld: Part
 
   return payload;
 };
-export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: (Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>)[], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissionTemplates>> => async (dispatch) => {
+export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: Array<Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissionTemplates>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissionTemplates(dutyDutyMissionTemplateOldArr.map(({ id }) => id)),

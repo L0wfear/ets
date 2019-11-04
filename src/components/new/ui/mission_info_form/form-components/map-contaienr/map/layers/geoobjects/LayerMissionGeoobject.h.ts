@@ -4,21 +4,21 @@ import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.
 import { Company } from 'redux-main/reducers/modules/company/@types';
 
 export type PropsLayerLayerMissionGeoobject = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
   geoobjects: any;
   inputLines: any;
   centerOn: any;
 };
 
-interface TypeGeoObjectDataIndex {
+type TypeGeoObjectDataIndex = {
   [id: string]: GeozonesDataByIndex;
-}
+};
 
 export type TypeGeoObjectData = {
   show: boolean;
@@ -35,7 +35,7 @@ export namespace InjectetLayerProps {
 
 export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
-    addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
+    addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
     companiesIndex?: Record<Company['id'], Company>;
   };
 
@@ -44,7 +44,7 @@ export namespace LayerGeoobjectsUtilsTypes {
   };
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
-    getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
+    getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
     companiesIndex?: Record<Company['id'], Company>;
   };
 
@@ -56,22 +56,22 @@ export namespace LayerGeoobjectsUtilsTypes {
   export type checkShowTrueFunc = (
     serverName: string,
     id: string,
-    geoobj: GeozonesDataByIndex & { state: number },
-    geoobj_old: GeozonesDataByIndex & { state: number },
+    geoobj: GeozonesDataByIndex & { state: number; },
+    geoobj_old: GeozonesDataByIndex & { state: number; },
     oldFeature: Feature,
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
-    geoobj: GeozonesDataByIndex & { state: number },
-    geoobj_old: GeozonesDataByIndex & { state: number },
+    geoobj: GeozonesDataByIndex & { state: number; },
+    geoobj_old: GeozonesDataByIndex & { state: number; },
     oldFeature: Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (
     serverName: string,
     id: string,
-    geoobj: GeozonesDataByIndex & { state: number },
+    geoobj: GeozonesDataByIndex & { state: number; },
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 }

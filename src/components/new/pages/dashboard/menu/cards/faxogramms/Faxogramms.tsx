@@ -10,7 +10,7 @@ import FaxogrammsInfo from 'components/new/pages/dashboard/menu/cards/faxogramms
 import {
   dashboardLoadOrders,
   dashboardSetInfoDataInFaxogramms,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import {
   PropsFaxogramms,
@@ -30,7 +30,7 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
         path.split('/').slice(-1)[0]
       ],
     );
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -43,16 +43,15 @@ class Faxogramms extends React.Component<PropsFaxogramms, StateFaxogramms> {
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0} classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow} classNameContainer="line_data" />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow} classNameContainer="line_data" />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

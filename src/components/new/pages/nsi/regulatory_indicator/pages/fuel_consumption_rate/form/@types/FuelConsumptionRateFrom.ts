@@ -20,7 +20,7 @@ import { WithFormRegistrySearchAddProps } from 'components/old/compositions/voki
 export type StatePropsFuelRate = {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
   modelsList: IStateSomeUniq['modelsList'];
-  fuelRateOperationsIsActiveList?: FuelOperation[];
+  fuelRateOperationsIsActiveList?: Array<FuelOperation>;
   specialModelOptions: ReturnType<typeof getSomeUniqSpecialModelOptions>;
   modelsListOptions: ReturnType<typeof getModelsListOptions>;
   fuelRateOperationsIsActiveOptions: ReturnType<

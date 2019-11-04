@@ -7,12 +7,12 @@ import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeFuelCardStrickOptions = memoizeOne(
   (
-    fuelCardsList: FuelCard[],
+    fuelCardsList: Array<FuelCard>,
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
     userStructureId: InitialStateSession['userData']['structure_id'],
   ) => {
-    return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
+    return fuelCardsList.reduce<Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>>(
       (newArr, rowData) => {
         const triggerOnShow = (
           !rowData.is_archive
@@ -48,13 +48,13 @@ export const makeFuelCardStrickOptions = memoizeOne(
 
 export const makeFuelCardIdOptions = memoizeOne(
   (
-    fuelCardsList: FuelCard[],
+    fuelCardsList: Array<FuelCard>,
     car_refill: Waybill['car_refill'] | Waybill['equipment_refill'],
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
     userStructureId: InitialStateSession['userData']['structure_id'],
   ) => {
-    return fuelCardsList.reduce<{ value: FuelCard['id'], label: FuelCard['number'], rowData: FuelCard }[]>(
+    return fuelCardsList.reduce<Array<{ value: FuelCard['id']; label: FuelCard['number']; rowData: FuelCard; }>>(
       (newArr, rowData) => {
         const triggerOnShow = (
           (

@@ -37,7 +37,7 @@ class ButtonCancelEdcRequest extends React.PureComponent<ButtonCancelEdcRequestP
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_cancel,
     });
-  }
+  };
 
   render() {
     const { props } = this;

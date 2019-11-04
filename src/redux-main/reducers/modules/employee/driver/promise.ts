@@ -42,7 +42,7 @@ export const getSetDriver = async (...payload) => {
 
 type PayloadToGetWaybillDrivers = {
   company_id: Company['company_id'];
-  type?: 'before' | 'after',
+  type?: 'before' | 'after';
   date_from: Parameters<typeof createValidDateTime>[0];
   date_to: Parameters<typeof createValidDateTime>[0];
 };
@@ -62,7 +62,7 @@ export const promiseGetWaybillDriver = async (payloadOwn: PayloadToGetWaybillDri
     //
   }
 
-  const result: WaybillDriver[] = get(response, 'result.rows') || [];
+  const result: Array<WaybillDriver> = get(response, 'result.rows') || [];
 
   return result;
 };

@@ -3,15 +3,15 @@ export type PropsCarLegendStatus = {
   toggleShowStatus: React.MouseEventHandler<HTMLDivElement>;
 
   carsByStatus: {
-    in_move: number,
-    stop: number,
-    parking: number,
-    not_in_touch: number,
+    in_move: number;
+    stop: number;
+    parking: number;
+    not_in_touch: number;
   };
-  in_move: boolean,
-  stop: boolean,
-  parking: boolean,
-  not_in_touch: boolean,
+  in_move: boolean;
+  stop: boolean;
+  parking: boolean;
+  not_in_touch: boolean;
 };
 
 type OneStatus = {
@@ -21,4 +21,4 @@ type OneStatus = {
   storeName: string;
 };
 
-export type ListStatusType = OneStatus[];
+export type ListStatusType = Array<OneStatus>;

@@ -27,9 +27,9 @@ type WithInspectFormWrapCheckConfig = {
   loadInpectById: any;
   inspectPermissions: (
     {
-      update: string | string[];
-      update_closed: string | string[];
-    } & Record<string, string | string[]>
+      update: string | Array<string>;
+      update_closed: string | Array<string>;
+    } & Record<string, string | Array<string>>
   );
   title: React.ReactNode;
 };
@@ -39,8 +39,8 @@ type InspectionFormWrapStateProps = {
 };
 type InspectionFormWrapDispatchProps = {
   actionGetInspectById: any;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
-  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type InspectionFormWrapOwnProps = {
   loadingPage: string;
@@ -201,7 +201,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
     return createPortal(
       <HiddenPageEtsContainer>
         <PopupBottomForm show={Boolean(selectedInspect) && Boolean(inspectId) && inspectType}>
-        {
+          {
             inspectId && selectedInspect && inspectType
               ? (
                 <React.Fragment>
@@ -226,7 +226,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
               : (
                 <DivNone />
               )
-            }
+          }
         </PopupBottomForm>
       </HiddenPageEtsContainer>,
       document.getElementById('container'),
@@ -265,7 +265,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       permissions: config.inspectPermissions.update,
       withIsPermittedProps: true,
     }),
-    withProps<InspectionFormWrapStateProps & { isPermittedToUpdateClose: boolean }, any>(
+    withProps<InspectionFormWrapStateProps & { isPermittedToUpdateClose: boolean; }, any>(
       (props) => ({
         ...props,
         isPermittedToUpdateClose: validatePermissions(config.inspectPermissions.update_closed, props.userData.permissionsSet),

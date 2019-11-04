@@ -39,7 +39,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_create_duty_mission,
     });
-  }
+  };
 
   render() {
     const { props } = this;

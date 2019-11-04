@@ -66,10 +66,10 @@ export const getCountNotRead = () => (
 );
 
 export type NotifyAns = {
-  notify: any[];
+  notify: Array<any>;
 };
 
-export const getNotify = (ownPayload: { is_read?: boolean; type_id?: number }): any => {
+export const getNotify = (ownPayload: { is_read?: boolean; type_id?: number; }): any => {
   const payload: typeof ownPayload = {};
 
   if (isBoolean(ownPayload.is_read)) {

@@ -38,7 +38,7 @@ type SelectMunicipalFacilityState = {
 };
 
 const makeOptions = memoizeOne(
-  (municipalFacility: MunicipalFacility[], hasSelectedTo) => (
+  (municipalFacility: Array<MunicipalFacility>, hasSelectedTo) => (
     hasSelectedTo
       ? (
         municipalFacility.map((rowData) => ({
@@ -149,7 +149,7 @@ class SelectMunicipalFacility extends React.PureComponent<SelectMunicipalFacilit
     };
 
     this.props.setDataInSearch(newPartialSearch);
-  }
+  };
 
   render() {
     const technical_operation_id = getNumberValueFromSerch(this.props.searchState.technical_operation_id);

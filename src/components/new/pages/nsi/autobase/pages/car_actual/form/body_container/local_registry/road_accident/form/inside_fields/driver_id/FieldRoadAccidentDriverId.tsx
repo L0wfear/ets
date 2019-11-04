@@ -64,11 +64,11 @@ const FieldRoadAccidentDriverId: React.FC<Props> = React.memo(
                   car_gov_number,
                 );
               })
-              .map((driver) => ({
-                value: driver.id,
-                label: driver.fio_license,
-                rowData: driver,
-              })),
+                .map((driver) => ({
+                  value: driver.id,
+                  label: driver.fio_license,
+                  rowData: driver,
+                })),
             }),
           );
         };
@@ -129,18 +129,18 @@ const FieldRoadAccidentDriverId: React.FC<Props> = React.memo(
         etsIsLoading={optionData.isLoading || optionData.isLoadingLastDriver}
       />
     )
-    : (
-      <ExtField
-        id="driver_id"
-        type="string"
-        label="Водитель"
-        value={makeDriverFioLicenceLabel(props.driver_fio, props.employee_position_name, props.drivers_license, props.special_license)}
-        emptyValue={null}
-        boundKeys="driver_id"
-        disabled
-        modalKey={page}
-      />
-    );
+      : (
+        <ExtField
+          id="driver_id"
+          type="string"
+          label="Водитель"
+          value={makeDriverFioLicenceLabel(props.driver_fio, props.employee_position_name, props.drivers_license, props.special_license)}
+          emptyValue={null}
+          boundKeys="driver_id"
+          disabled
+          modalKey={page}
+        />
+      );
   },
 );
 

@@ -18,16 +18,16 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/
 import { ReduxState } from 'redux-main/@types/state';
 
 type StateProps = {
-  token: InitialStateSession['token'],
-  points_ws: InitialStateSession['appConfig']['points_ws'],
+  token: InitialStateSession['token'];
+  points_ws: InitialStateSession['appConfig']['points_ws'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
 };
 type OwnProps = {
-  okStatus: boolean,
+  okStatus: boolean;
   gps_code: string;
-  is_bnso_broken: boolean
+  is_bnso_broken: boolean;
   handleChange: (...arg: any) => any;
 
   page: string;
@@ -154,7 +154,7 @@ class BsnoStaus extends React.Component<Props, any> {
     const carsTrackState = {
       ...this.state.carsTrackState,
       ...Object.values(data).reduce(
-        (newObj, value: { id: number; timestamp: number }) =>
+        (newObj, value: { id: number; timestamp: number; }) =>
           Object.assign(newObj, { [value.id]: value.timestamp }),
         {},
       ),

@@ -114,7 +114,7 @@ class BatteryRegistryForm extends React.PureComponent<
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -137,12 +137,12 @@ class BatteryRegistryForm extends React.PureComponent<
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <ExtField
-                  id="manufacturer_name"
-                  type={'string'}
-                  label={'Изготовитель'}
-                  value={state.manufacturer_name}
-                  disabled
-                  modalKey={page}
+                id="manufacturer_name"
+                type={'string'}
+                label={'Изготовитель'}
+                value={state.manufacturer_name}
+                disabled
+                modalKey={page}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
@@ -230,8 +230,8 @@ class BatteryRegistryForm extends React.PureComponent<
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </EtsBootstrap.Button>
-          )
-        }
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

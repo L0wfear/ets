@@ -7,14 +7,14 @@ import {
 
 import {
   MaintenanceRate,
- } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
+} from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-export const maintenanceRateSetNewData = (newStateData: { maintenanceRateList: MaintenanceRate[] }) => ({
+export const maintenanceRateSetNewData = (newStateData: { maintenanceRateList: Array<MaintenanceRate>; }) => ({
   type: MAINTENANCE_RATE_SET_DATA,
   payload: newStateData,
 });

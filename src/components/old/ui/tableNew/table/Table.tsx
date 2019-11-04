@@ -9,13 +9,13 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const PaginatorTsx: any = Paginator;
 
-interface DataTableProps {
+type DataTableProps = {
   [key: string]: any;
-}
+};
 
-interface DataTableState {
+type DataTableState = {
   [key: string]: any;
-}
+};
 
 class DataTable extends React.Component<DataTableProps, DataTableState> {
   constructor(props) {
@@ -69,8 +69,8 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     prevState: DataTableState,
   ) {
     if (
-      nextProps.data !== prevState.originalData ||
-      nextProps.filterValues !== prevState.filterValues
+      nextProps.data !== prevState.originalData
+      || nextProps.filterValues !== prevState.filterValues
     ) {
       const changesState: any = {};
       changesState.data = makeData({
@@ -90,16 +90,16 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
         totalCount: changesState.data.length,
       };
       changesState.pagination.maxPage = Math.ceil(
-        changesState.pagination.totalCount /
-          changesState.pagination.perPageCount,
+        changesState.pagination.totalCount
+          / changesState.pagination.perPageCount,
       );
 
       if (
-        changesState.pagination.maxPage - 1 <
-        changesState.pagination.offset
+        changesState.pagination.maxPage - 1
+        < changesState.pagination.offset
       ) {
-        changesState.pagination.offset =
-          changesState.pagination.maxPage === 0
+        changesState.pagination.offset
+          = changesState.pagination.maxPage === 0
             ? 0
             : changesState.pagination.maxPage - 1;
       }

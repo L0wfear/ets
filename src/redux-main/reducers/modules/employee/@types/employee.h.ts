@@ -3,32 +3,32 @@ import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@type
 
 export type Employee = {
   active: boolean;
-  additional_companies: {
+  additional_companies: Array<{
     company_id: number;
     name: string;
     short_name: string;
-  }[];
+  }>;
   birthday: string;
-  can_duty_mission: boolean
-  category_drivers_license: string[];
+  can_duty_mission: boolean;
+  category_drivers_license: Array<string>;
   category_drivers_license_text: string;
-  category_special_license: string[];
+  category_special_license: Array<string>;
   category_special_license_text: string;
   company_id: number;
   company_name: string;
-  company_structure_id: null
+  company_structure_id: null;
   company_structure_name: string;
   drivers_license: string;
   drivers_license_date_end: string;
   first_name: string;
   full_name: string;
-  files: any[];
-  driver_license_files?: any[];
-  medical_certificate_files?: any[];
-  has_car: null
+  files: Array<any>;
+  driver_license_files?: Array<any>;
+  medical_certificate_files?: Array<any>;
+  has_car: null;
   id: number;
-  is_brigade: boolean
-  is_common: boolean
+  is_brigade: boolean;
+  is_common: boolean;
   is_driver?: boolean;
   last_name: string;
   medical_certificate: string;
@@ -39,7 +39,7 @@ export type Employee = {
   position_name: string;
   prefer_car: number;
   prefer_car_text: string;
-  secondary_car: number[]
+  secondary_car: Array<number>;
   secondary_car_text: string;
   snils: string;
   special_license: string;
@@ -48,7 +48,7 @@ export type Employee = {
   assignment: string;
   assignment_date_start: string;
   assignment_date_end: string;
-  assignment_files?: any[];
+  assignment_files?: Array<any>;
 };
 export type Driver = {
   active: boolean;
@@ -77,14 +77,14 @@ export type Position = {
 };
 
 export type IStateEmployee = {
-  employeeList: Employee[];
+  employeeList: Array<Employee>;
   employeeIndex: Record<Employee['id'], Employee>;
-  driverList: Driver[];
+  driverList: Array<Driver>;
   driverIndex: Record<Driver['id'], Driver>;
-  positionList: Position[];
+  positionList: Array<Position>;
   positionIndex: Record<Position['id'], Position>;
-  employeeBindedToCarList: EmployeeBindedToCar[];
-  uniqEmployeesBindedOnCarList: EmployeeBindedToCar[];
+  employeeBindedToCarList: Array<EmployeeBindedToCar>;
+  uniqEmployeesBindedOnCarList: Array<EmployeeBindedToCar>;
 
-  waybillDriverList: WaybillDriver[];
+  waybillDriverList: Array<WaybillDriver>;
 };

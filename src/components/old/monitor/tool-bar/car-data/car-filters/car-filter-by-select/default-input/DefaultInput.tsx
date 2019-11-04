@@ -39,4 +39,4 @@ const mapDispatchToProps = (dispatch, { keyField }) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
- )(DefaultInput);
+)(DefaultInput);

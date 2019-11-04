@@ -7,16 +7,16 @@ import { validatePermissions } from 'components/@next/@utils/validate_permission
 export type FilterOptionType<F> = {
   value: F[keyof F];
   label: string | number;
-  [k: string]: any
+  [k: string]: any;
 };
 
 export type TypeFieldsRegistry<F extends Record<string, any>, Title extends any> = (
   TypeFields<F, Title>
 );
-export type CommonTypeField<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
+export type CommonTypeField<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = {
   hidden?: boolean;
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  displayIfPermission?: string | string[];
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
+  displayIfPermission?: string | Array<string>;
   sortable?: boolean;
   width?: number;
   dashIfEmpty?: boolean;
@@ -46,7 +46,7 @@ export type TypeFieldsAvalibaleKey<F> = (
   | 'show_edc_comments'
 );
 
-export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = (
   CommonTypeField<F, Title>
  ) & (
   {
@@ -81,23 +81,23 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
   }
 );
 
-export type TypeFields<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+export type TypeFields<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = (
   TypeFieldsWithoutDeep<F, Title>
   | CommonTypeField<F, Title> & {
-    childrenFields?: TypeFields<F, Title>[];
+    childrenFields?: Array<TypeFields<F, Title>>;
   }
 );
 
 export type DisplayIfTitle = {
-  displayIf: TypeOneDisplayIf | TypeOneDisplayIf[];
+  displayIf: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   title: string;
 };
 
 export type OneFilterType<F> = {
   valueKey: Extract<keyof F, string>;
-  title: string | DisplayIfTitle[];
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  options?: FilterOptionType<F>[];
+  title: string | Array<DisplayIfTitle>;
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
+  options?: Array<FilterOptionType<F>>;
   disabled?: boolean;
 } & (
   {
@@ -110,11 +110,11 @@ export type OneFilterType<F> = {
   } | {
     type: 'multiselect';
     labelKey?: Extract<keyof F, string>;
-    options?: FilterOptionType<F>[];
+    options?: Array<FilterOptionType<F>>;
     getRegistryData?: {
       entity: string;
       payload?: object;
-      typeAns?: 'result.rows' | 'result',
+      typeAns?: 'result.rows' | 'result';
       valueKey: string;
       labelKey?: string;
       mergeWithArray?: boolean;
@@ -122,14 +122,14 @@ export type OneFilterType<F> = {
         'short_employee_name'
         | 'work_mode_label'
       );
-    }
+    };
   } | {
-    type: 'advanced-select-like',
-    options: any[];
+    type: 'advanced-select-like';
+    options: Array<any>;
   }
 );
 
-export interface OneRegistryData<F = any> {
+export type OneRegistryData<F = any> = {
   idRequestTime: number;                      // id запроса. Нужен, чтобы старый (долгий) запрос не перетёр новые данные
   isLoading: boolean;
   Service: {
@@ -154,15 +154,15 @@ export interface OneRegistryData<F = any> {
       typeAns?: 'result.rows' | 'result';     // путь до массива в ответе
       typeExtra?: 'result.extra';             // путь до экстры
       userServerFilters?: boolean;            // используется ли серверная фильтрация/ пагинация
-    },
+    };
     removeOneData?: {
       entity: string;
       uniqKeyLikeQueryString?: boolean;       // true - `${entity}/${id}` | false - `${entity}?id=${id}`
-    },
+    };
     getBlobData?: {
       entity: string;
       payload?: Record<string, any>;
-    },
+    };
   };
   path: string;
   header: {
@@ -193,15 +193,15 @@ export interface OneRegistryData<F = any> {
           key: string;
           path: string;
           permissions?: Parameters<typeof validatePermissions>[0];
-        }
+        };
         [k: string]: any;
       };
     }>;
   };
   list: {
     data: {
-      array: F[];
-      objectExtra: Record<string, any> // use lodash.get
+      array: Array<F>;
+      objectExtra: Record<string, any>; // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
       uniqKeyForParams: string;
@@ -210,8 +210,8 @@ export interface OneRegistryData<F = any> {
       fixedWidth: boolean;
       proxyCheckData?: (
         'mission_template'
-      )
-    },
+      );
+    };
     permissions: {
       list: Parameters<typeof validatePermissions>[0];
       create: Parameters<typeof validatePermissions>[0];
@@ -230,58 +230,58 @@ export interface OneRegistryData<F = any> {
       is_render_field: boolean;
       selected_row_in_params: boolean;
       fields: Array<TypeFieldsRegistry<F, string>>;
-      fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
-      rowFields: TypeFieldsWithoutDeep<F, string>[],
+      fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>;
+      rowFields: Array<TypeFieldsWithoutDeep<F, string>>;
       row_fields_table_width: number;
-      treeFields: object,
+      treeFields: object;
       groupColumn?: {
         [key: string]: {
-          label: string,
-          isActive?: boolean,
-        },
-      },
-    },
+          label: string;
+          isActive?: boolean;
+        };
+      };
+    };
     paginator?: {
       currentPage?: number;
       perPage?: number;
-    },
+    };
     processed?: {
       filterValues?: {
         [k: string]: any;
-      },
-      processedArray?: F[],
+      };
+      processedArray?: Array<F>;
       sort?: {
         field?: Extract<keyof F, string>;
-        reverse?: boolean,
-      },
-      total_count?: number,
-    },
+        reverse?: boolean;
+      };
+      total_count?: number;
+    };
     rendersFields?: { // для расширенного реестра Excel
       errors: { // для вывода ошибок в реестре
         [key: string]: any; // key - уникаальный ключ строки
-      },
-      values: F, // тоже что и в selectedRow
+      };
+      values: F; // тоже что и в selectedRow
       options: {
         [key: string]: {
           value: any;
           label: string;
         };
-      },
+      };
     };
   };
   filter: {
     isOpen?: boolean;
-    fields: OneFilterType<F>[],
+    fields: Array<OneFilterType<F>>;
     rawFilterValues?: {
       [key in OneFilterType<F>['valueKey']]?: {
         in: {
-          value: any[];
+          value: Array<any>;
         };
       };
-    },
-    displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+    };
+    displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   };
-}
+};
 
 export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
@@ -293,7 +293,7 @@ export type TypeConfigData<F> = {
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
     is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
-    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | typeof buttonsTypes[keyof typeof buttonsTypes]>,
+    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | typeof buttonsTypes[keyof typeof buttonsTypes]>;
   };
   filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {
@@ -312,7 +312,7 @@ export type TypeConfigData<F> = {
       is_render_field?: OneRegistryData<F>['list']['meta']['is_render_field'];
       renderFieldsSchema?: OneRegistryData<F>['list']['meta']['renderFieldsSchema'];
       groupColumn?: OneRegistryData<F>['list']['meta']['groupColumn'];
-      fields?: Array<TypeFieldsRegistry<F, string | DisplayIfTitle[]>>;
+      fields?: Array<TypeFieldsRegistry<F, string | Array<DisplayIfTitle>>>;
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
     rendersFields?: Partial<OneRegistryData<F>['list']['rendersFields']>;

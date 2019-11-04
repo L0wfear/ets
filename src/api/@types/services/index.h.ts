@@ -1,6 +1,6 @@
 import { IResponseRowObject } from 'api/@types/rest.h';
 
-export interface IUserNotification extends IResponseRowObject<number> {
+export type IUserNotification = {
   type_id: number;
   is_read: boolean;
   type_name: string;
@@ -12,4 +12,4 @@ export interface IUserNotification extends IResponseRowObject<number> {
   data: {};
   additional_info: string;
   gov_number: string;
-}
+} & IResponseRowObject<number>;

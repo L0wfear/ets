@@ -37,9 +37,9 @@ export type ConfigFormData<F extends Record<string, any>> = {
   bsSizeForm?: EtsModalContainerProps['bsSize'];                                // размер формы
   getDefaultElement: (reduxState: ReduxState) => F;                             // дефолтный элемент
   getOneRecordPromise?: (id: number) => Promise<F>;                             // получение formState по id
-  handleSubmitPromise: (formState: F, ...any: any[]) => Promise<Partial<F>>,    // сабмит
+  handleSubmitPromise: (formState: F, ...any: Array<any>) => Promise<Partial<F>>;    // сабмит
 } & (
-  F extends { structure_id: number; structure_name: string }
+  F extends { structure_id: number; structure_name: string; }
     ? {
       user_structure_on_new?: boolean;                                          // Вставлять подразделение пользователя при создании
     }

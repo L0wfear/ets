@@ -64,15 +64,16 @@ export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
 
-export function makeUnixTime(time) {
+export function makeUnixTime(timeOwn) {
+  let time = timeOwn;
   if (typeof time === 'string') {
     time = moment(time).toDate();
   }
   return Math.floor(time / 1000);
 }
 
-export function makeTime(date: string | Date, withSeconds?: boolean) {
-  date = new Date(date);
+export function makeTime(dateOwn: string | Date, withSeconds?: boolean) {
+  let date = new Date(dateOwn);
   return moment(date).format(
     `${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`,
   );

@@ -15,12 +15,12 @@ import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { OBJECT_TYPE_OPTION } from 'constants/dictionary';
 
-interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsMissionProgressReportHeader = {
   date_from: string;
   date_to: string;
   object_type: string;
   with_working_idle: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
   getState() {
@@ -58,7 +58,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       object_type,
       with_working_idle,
     });
-  }
+  };
   render() {
     const { readOnly } = this.props;
 

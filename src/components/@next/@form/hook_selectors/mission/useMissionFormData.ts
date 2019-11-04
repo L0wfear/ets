@@ -12,9 +12,9 @@ import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
-export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>, is_mission_progress_countable: Mission['is_mission_progress_countable'], ) => {
+export const mergeConsumableMaterials = (consumable_materials_old: Array<ConsumableMaterialCountMission>, consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>, is_mission_progress_countable: Mission['is_mission_progress_countable'], ) => {
 
-  return consumable_materials_old.reduce<ConsumableMaterialCountMission[]>(
+  return consumable_materials_old.reduce<Array<ConsumableMaterialCountMission>>(
     (newArr, rowData) => {
       const rowDataInIndex = consumable_materials_new_index[rowData.consumable_material_id];
 
@@ -65,7 +65,7 @@ export const checkIsMissionNotComplete = (status: Mission['status']) => {
   );
 };
 export const checkIsMissionComplete = (status: Mission['status']) => {
-    return (
+  return (
     status === MISSION_STATUS.complete
     || status === MISSION_STATUS.fail
     || status === MISSION_STATUS.canceled

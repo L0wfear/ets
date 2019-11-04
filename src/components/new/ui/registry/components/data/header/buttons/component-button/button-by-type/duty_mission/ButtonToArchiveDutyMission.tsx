@@ -24,7 +24,7 @@ type ButtonToArchiveDutyMissionStateProps = {
 type ButtonToArchiveDutyMissionDispatchProps = {
   actionToArchiveDutyMissionByIds: HandleThunkActionCreator<typeof actionToArchiveDutyMissionByIds>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonToArchiveDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonToArchiveDutyMissionMergeProps = {};
@@ -111,7 +111,7 @@ const ButtonToArchiveDutyMission: React.FC<ButtonToArchiveDutyMissionProps> = (p
 };
 
 export default compose<ButtonToArchiveDutyMissionProps, ButtonToArchiveDutyMissionOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),

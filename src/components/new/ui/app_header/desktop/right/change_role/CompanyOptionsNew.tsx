@@ -48,7 +48,7 @@ class CompanyOptionsNew extends React.Component<any, any> {
         console.warn(e); // tslint:disable-line
       }
     }
-  }
+  };
 
   render() {
     const {

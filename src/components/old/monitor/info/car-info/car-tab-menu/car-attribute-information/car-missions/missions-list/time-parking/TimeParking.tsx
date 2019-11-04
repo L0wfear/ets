@@ -7,7 +7,7 @@ import { compose } from 'recompose';
 type PropsTimeParking = {
   date_start: number;
   date_end: number;
-  parkings: any[];
+  parkings: Array<any>;
 };
 
 class TimeParking extends React.PureComponent<PropsTimeParking, {}> {

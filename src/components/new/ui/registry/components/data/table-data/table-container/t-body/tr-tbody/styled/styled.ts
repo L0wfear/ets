@@ -7,7 +7,7 @@ import { getColorTd } from 'components/new/ui/@bootstrap/grid_bootstrap/tbody/ut
 import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 
-export const EtsTrTbody = styled.tr<{ enable?: boolean, isSelected?: boolean, rowData?: any, checkData?: any, registryKey: string, borderedTd?: boolean, }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: any; registryKey: string; borderedTd?: boolean; }>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};

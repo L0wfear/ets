@@ -15,7 +15,7 @@ const EtsTbodyTd = styled.div`
   word-break: break-word;
 `;
 
-const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: Record<string, any>; registryKey?: string}>`
+const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: Record<string, any>; registryKey?: string;}>`
   ${CommonDisplayContent};
 
   cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
@@ -24,29 +24,29 @@ const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?:
   :nth-of-type(odd) {
     ${EtsTbodyTd} {
       background-color: ${(props) => (
-        props.isSelected
-          ? constantColor.colorGreen
-          : getColorTd(props.rowData, props.checkData, props.registryKey)
-      )};
+    props.isSelected
+      ? constantColor.colorGreen
+      : getColorTd(props.rowData, props.checkData, props.registryKey)
+  )};
     }
   }
   :nth-of-type(even) {
     ${EtsTbodyTd} {
       background-color: ${(props) => (
-        props.isSelected
-          ? constantColor.colorGreen
-          : darken(0.03, getColorTd(props.rowData, props.checkData, props.registryKey))
-      )};
+    props.isSelected
+      ? constantColor.colorGreen
+      : darken(0.03, getColorTd(props.rowData, props.checkData, props.registryKey))
+  )};
     }
   }
 
   :hover {
     ${EtsTbodyTd} {
       background-color: ${(props) => (
-        props.isSelected
-          ? constantColor.colorGreen
-          : darken(0.08, getColorTd(props.rowData, props.checkData, props.registryKey))
-      )};
+    props.isSelected
+      ? constantColor.colorGreen
+      : darken(0.08, getColorTd(props.rowData, props.checkData, props.registryKey))
+  )};
 
       a {
         :hover {

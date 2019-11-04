@@ -5,7 +5,7 @@ import { PropulsionType } from 'redux-main/reducers/modules/autobase/@types/auto
 import { defaultSelectListMapper, DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 type UsePropulsionTypeOptionsAns = {
-  propulsionTypeOptions: DefaultSelectListMapper<PropulsionType>,
+  propulsionTypeOptions: DefaultSelectListMapper<PropulsionType>;
 };
 
 type UsePropulsionTypeOptions = (

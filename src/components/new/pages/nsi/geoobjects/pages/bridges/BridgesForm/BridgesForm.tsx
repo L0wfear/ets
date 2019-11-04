@@ -39,7 +39,7 @@ const BridgesForm: React.FC<PropsBridgesForm> = React.memo(
         show
         onHide={props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

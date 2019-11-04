@@ -13,7 +13,7 @@ class TrBody extends React.Component<any, any> {
       render={tableMeta.render}
       indexRow={this.props.indexRow}
     />
-  )
+  );
 
   handleClick = () => this.props.handleClick(this.props.rowData);
   handleDoubleClick = () => this.props.handleDoubleClick(this.props.rowData);

@@ -15,7 +15,7 @@ export const getCompanyStructure = async <F extends any = CompanyStructure>(payl
     //
   }
 
-  const data: F[] = get(response, 'result', []);
+  const data: Array<F> = get(response, 'result', []);
   return {
     data,
     dataIndex: keyBy(data, 'id'),

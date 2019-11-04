@@ -70,106 +70,106 @@ export const mergeFilter = <F extends Record<string, any>>(filter: TypeConfigDat
 
 export const mergeHeader = <F extends Record<string, any>>(header: TypeConfigData<F>['header']): any => (
   header
-  ? (
-    Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
-      if (key === 'buttons') {
-        if (isArray(header[key])) {
-          newObj[key] = header[key].map(
-            (buttonData) => {
-              if (isObject(buttonData)) {
-                return buttonData;
-              }
+    ? (
+      Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
+        if (key === 'buttons') {
+          if (isArray(header[key])) {
+            newObj[key] = header[key].map(
+              (buttonData) => {
+                if (isObject(buttonData)) {
+                  return buttonData;
+                }
 
-              return {
-                type: buttonData,
-              };
-            },
-          );
-        } else {
-          newObj[key] = value;
+                return {
+                  type: buttonData,
+                };
+              },
+            );
+          } else {
+            newObj[key] = value;
+          }
         }
-      }
 
-      if (key === 'title') {
-        newObj[key] = isString(header[key]) ? header[key] : value;
-      }
+        if (key === 'title') {
+          newObj[key] = isString(header[key]) ? header[key] : value;
+        }
 
-      if (key === 'titlePopover') {
-        newObj[key] = isString(header[key]) ? header[key] : value;
-      }
+        if (key === 'titlePopover') {
+          newObj[key] = isString(header[key]) ? header[key] : value;
+        }
 
-      if (key === 'format') {
-        newObj[key] = isString(header[key]) ? header[key] : value;
-      }
+        if (key === 'format') {
+          newObj[key] = isString(header[key]) ? header[key] : value;
+        }
 
-      if (key  === 'is_current_structure_popover') {
-        newObj[key] = isString(header[key]) ? header[key] : value;
-      }
+        if (key  === 'is_current_structure_popover') {
+          newObj[key] = isString(header[key]) ? header[key] : value;
+        }
 
-      return newObj;
-    }, {})
-  )
-  : (
-    registryDefaultObj.header
-  )
+        return newObj;
+      }, {})
+    )
+    : (
+      registryDefaultObj.header
+    )
 );
 
 export const mergeListData = <F extends Record<string, any>>(data: TypeConfigData<F>['list']['data']): any => (
   data
-  ? (
-    Object.entries(registryDefaultObj.list.data).reduce((newObj, [key, value]) => {
-      if (key === 'fixedWidth') {
-        newObj[key] = isBoolean(data[key]) ? data[key] : value;
-      }
-
-      if (key === 'proxyCheckData') {
-        newObj[key] = isString(data[key]) ? data[key] : value;
-      }
-      if (key === 'array') {
-        newObj[key] = isArray(data[key]) ? data[key] : value;
-      }
-      if (key === 'objectExtra') {
-        newObj[key] = isObject(data[key]) ? data[key] : value;
-      }
-      if (key === 'total_count') {
-        if (isArray(data.array)) {
-          newObj[key] = data.array.length;
-        } else {
-          newObj[key] = isNumber(data[key]) ? data[key] : value;
+    ? (
+      Object.entries(registryDefaultObj.list.data).reduce((newObj, [key, value]) => {
+        if (key === 'fixedWidth') {
+          newObj[key] = isBoolean(data[key]) ? data[key] : value;
         }
-      }
-      if (key === 'uniqKey') {
-        newObj[key] = isString(data[key]) ? data[key] : value;
-      }
 
-      if (key === 'uniqKeyForParams') {
-        if (isString(data[key])) {
-          newObj[key] = data[key];
-        } else if (isString(data.uniqKey)) {
-          newObj[key] = data.uniqKey;
-        } else {
-          newObj[key] = value;
+        if (key === 'proxyCheckData') {
+          newObj[key] = isString(data[key]) ? data[key] : value;
         }
-        newObj[key] = isString(data[key]) ? data[key] : value;
-      }
+        if (key === 'array') {
+          newObj[key] = isArray(data[key]) ? data[key] : value;
+        }
+        if (key === 'objectExtra') {
+          newObj[key] = isObject(data[key]) ? data[key] : value;
+        }
+        if (key === 'total_count') {
+          if (isArray(data.array)) {
+            newObj[key] = data.array.length;
+          } else {
+            newObj[key] = isNumber(data[key]) ? data[key] : value;
+          }
+        }
+        if (key === 'uniqKey') {
+          newObj[key] = isString(data[key]) ? data[key] : value;
+        }
 
-      if (key === 'selectedRow') {
-        newObj[key] = isObject(data[key]) ? data[key] : value;
-      }
-      if (key === 'selectedUniqKey') {
-        newObj[key] = isObject(data[key]) ? data[key] : value;
-      }
+        if (key === 'uniqKeyForParams') {
+          if (isString(data[key])) {
+            newObj[key] = data[key];
+          } else if (isString(data.uniqKey)) {
+            newObj[key] = data.uniqKey;
+          } else {
+            newObj[key] = value;
+          }
+          newObj[key] = isString(data[key]) ? data[key] : value;
+        }
 
-      if (key === 'checkedRows') {
-        newObj[key] = isObject(data[key]) ? data[key] : value;
-      }
+        if (key === 'selectedRow') {
+          newObj[key] = isObject(data[key]) ? data[key] : value;
+        }
+        if (key === 'selectedUniqKey') {
+          newObj[key] = isObject(data[key]) ? data[key] : value;
+        }
 
-      return newObj;
-    }, {})
-  )
-  : (
-    registryDefaultObj.list.data
-  )
+        if (key === 'checkedRows') {
+          newObj[key] = isObject(data[key]) ? data[key] : value;
+        }
+
+        return newObj;
+      }, {})
+    )
+    : (
+      registryDefaultObj.list.data
+    )
 );
 
 export const mergeListPermissions = <F extends Record<string, any>>(permissions: TypeConfigData<F>['list']['permissions']) => {
@@ -247,21 +247,21 @@ export const mergeListMeta = <F extends Record<string, any>>(meta: Partial<TypeC
 
 export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator']) => (
   paginator
-  ? (
-    Object.entries(registryDefaultObj.list.paginator).reduce((newObj, [key, value]) => {
-      if (key === 'currentPage') {
-        newObj[key] = isString(paginator[key]) ? paginator[key] : value;
-      }
-      if (key === 'perPage') {
-        newObj[key] = isString(paginator[key]) ? paginator[key] : value;
-      }
+    ? (
+      Object.entries(registryDefaultObj.list.paginator).reduce((newObj, [key, value]) => {
+        if (key === 'currentPage') {
+          newObj[key] = isString(paginator[key]) ? paginator[key] : value;
+        }
+        if (key === 'perPage') {
+          newObj[key] = isString(paginator[key]) ? paginator[key] : value;
+        }
 
-      return newObj;
-    }, {})
-  )
-  : (
-    registryDefaultObj.list.paginator
-  )
+        return newObj;
+      }, {})
+    )
+    : (
+      registryDefaultObj.list.paginator
+    )
 );
 
 export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['processed']>) => {

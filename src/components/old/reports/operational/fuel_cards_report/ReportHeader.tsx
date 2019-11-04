@@ -18,12 +18,12 @@ import { compose } from 'recompose';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
   actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>;
   appConfig: InitialStateSession['appConfig'];
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   componentDidMount() {
@@ -57,7 +57,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
     });
-  }
+  };
   render() {
     const {
       date_start = this.props.appConfig.shift.shift_start,
@@ -100,7 +100,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 }
 
 export default compose<any, any>(
-  connect<any, { actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>}, any, ReduxState>(
+  connect<any, { actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>;}, any, ReduxState>(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
     }),

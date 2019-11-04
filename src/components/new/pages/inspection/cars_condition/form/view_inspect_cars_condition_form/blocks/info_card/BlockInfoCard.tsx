@@ -8,7 +8,7 @@ import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/glob
 // import { Switch } from 'react-router-dom';
 
 type BlockInfoCardOwnProps = {
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   type: keyof typeof INSPECT_TYPE_FORM;
   callBackToLoadCars: () => Promise<void>;
   page: string;

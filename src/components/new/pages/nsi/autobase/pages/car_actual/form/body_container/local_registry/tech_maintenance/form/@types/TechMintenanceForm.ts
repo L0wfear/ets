@@ -11,7 +11,7 @@ export type StatePropsTechMaintenance = {
   repairCompanyList: IStateAutobase['repairCompanyList'];
   techMaintOrderList: IStateAutobase['techMaintOrderList'];
 };
-export type OwnTechMaintenanceProps = WithFormRegistrySearchAddProps<TechMaintenance> & { selectedCarData?: CarWrap };
+export type OwnTechMaintenanceProps = WithFormRegistrySearchAddProps<TechMaintenance> & { selectedCarData?: CarWrap; };
 
 export type PropsTechMaintenanceWithForm = (
   StatePropsTechMaintenance

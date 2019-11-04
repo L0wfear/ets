@@ -23,7 +23,7 @@ export const actionResetNormList = (): EtsAction<IStateSomeUniq['normList']> => 
   return normList;
 };
 
-export const actionGetNormsByParams = (payload: Parameters<typeof promiseGetNormsByParams>[0], meta: LoadingMeta): EtsAction<Promise<Norm[]>> => async (dispatch) => {
+export const actionGetNormsByParams = (payload: Parameters<typeof promiseGetNormsByParams>[0], meta: LoadingMeta): EtsAction<Promise<Array<Norm>>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetNormsByParams(payload),
@@ -33,7 +33,7 @@ export const actionGetNormsByParams = (payload: Parameters<typeof promiseGetNorm
   return response;
 };
 
-export const actionGetAndSetInStoreNormsByParams = (payload: Parameters<typeof promiseGetNormsByParams>[0], meta: LoadingMeta): EtsAction<Promise<Norm[]>> => async (dispatch) => {
+export const actionGetAndSetInStoreNormsByParams = (payload: Parameters<typeof promiseGetNormsByParams>[0], meta: LoadingMeta): EtsAction<Promise<Array<Norm>>> => async (dispatch) => {
   const response = await dispatch(actionGetNormsByParams(payload, meta));
 
   dispatch(actionSetSensorType(response));

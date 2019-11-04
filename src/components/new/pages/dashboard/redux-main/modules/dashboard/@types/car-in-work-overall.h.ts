@@ -4,13 +4,13 @@ export type CarInWorkOverallItemsSubItemsType = {
 };
 
 export type CarInWorkOverallItemsType = {
-  subItems?: CarInWorkOverallItemsSubItemsType[],
+  subItems?: Array<CarInWorkOverallItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CarInWorkOverallAnsType = {
-  items: CarInWorkOverallItemsType[];
+  items: Array<CarInWorkOverallItemsType>;
   title: string;
 };
 

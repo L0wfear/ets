@@ -11,7 +11,7 @@ import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types
 
 type Props = PropsToTdReactComponent;
 
-export const getTechnicalOperaionOptions = (normList: Norm[]) => (
+export const getTechnicalOperaionOptions = (normList: Array<Norm>) => (
   uniqBy(
     normList.map((rowData) => ({
       value: rowData.technical_operation_id,

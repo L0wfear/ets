@@ -5,7 +5,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export const actionSetMeasureUnit = (measureUnitList: MeasureUnit[]): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
+export const actionSetMeasureUnit = (measureUnitList: Array<MeasureUnit>): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
     someUniqSetNewData({
       measureUnitList,

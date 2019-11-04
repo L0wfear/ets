@@ -95,7 +95,7 @@ class SimpleGriddle extends React.Component<any, any> {
       this.state.shortResult,
       e,
     );
-  }
+  };
 
   getGlobalCheckboxState = (shortResult) => shortResult.length && !shortResult.some((item) => !item.isChecked);
 
@@ -118,14 +118,13 @@ class SimpleGriddle extends React.Component<any, any> {
       <EtsBootstrap.Grid.GridBootstrapThead.Th key={columnName} canClick={field.sortable} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
-          this.state.initialSort === sortByName ?
-            <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
-          :
-            <span></span>
+          this.state.initialSort === sortByName
+            ? <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
+            :            <span></span>
         }
       </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
-  }
+  };
 
   mapTbodyTr = (rowData, index) => (
     <TrTable
@@ -147,7 +146,7 @@ class SimpleGriddle extends React.Component<any, any> {
     />
   );
 
-  reduceTbodyTrFuelCardsReport = (objData: { array: any[], index: number }, rowData, indexArr) => {
+  reduceTbodyTrFuelCardsReport = (objData: { array: Array<any>; index: number; }, rowData, indexArr) => {
     objData.array.push(
       <TrTableFuelCardsReport
         key={rowData._uniq_field}
@@ -168,7 +167,7 @@ class SimpleGriddle extends React.Component<any, any> {
     objData.index = objData.index + rowData.rows.length;
 
     return objData;
-  }
+  };
 
   onRowDoubleClick: any = (rowData, index) => {
     const { onRowDoubleClick } = this.props;
@@ -184,7 +183,7 @@ class SimpleGriddle extends React.Component<any, any> {
       } = rowData;
       onRowDoubleClick({ props: { data }});
     }
-  }
+  };
   handleClickTbodyTr: any = (rowData, index) => {
     const numberIndex = index;
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
@@ -243,7 +242,7 @@ class SimpleGriddle extends React.Component<any, any> {
         shortResult,
       });
     }
-  }
+  };
 
   handleThClick: any = ({ currentTarget: { dataset: { title } } }) => {
     if (this.props.enableSort) {
@@ -252,7 +251,7 @@ class SimpleGriddle extends React.Component<any, any> {
       if (fieldMeta && fieldMeta.sortable) {
         const initialSortAscending = fieldMeta.sortByName === this.state.initialSort ? !this.state.initialSortAscending : true;
 
-        console.log('CHANGE SORT', fieldMeta.sortByName, initialSortAscending); // tslint:disable-line:no-console
+        console.info('CHANGE SORT', fieldMeta.sortByName, initialSortAscending); // eslint-disable-line
 
         this.props.externalChangeSort(fieldMeta.sortByName, initialSortAscending);
         this.setState({
@@ -261,7 +260,7 @@ class SimpleGriddle extends React.Component<any, any> {
         });
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -294,12 +293,12 @@ class SimpleGriddle extends React.Component<any, any> {
                 <tbody>
                   {
                     !shortResult.length
-                    ? (
-                      <tr>
-                        <td colSpan={99999}>{this.props.noDataMessage}</td>
-                      </tr>
-                    )
-                    : tbodyData
+                      ? (
+                        <tr>
+                          <td colSpan={99999}>{this.props.noDataMessage}</td>
+                        </tr>
+                      )
+                      : tbodyData
                   }
                 </tbody>
               </table>

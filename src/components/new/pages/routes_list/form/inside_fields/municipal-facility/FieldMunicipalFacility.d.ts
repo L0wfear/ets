@@ -3,7 +3,7 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 
 export type StatePropsMunicipalFacilityField = {};
 export type DispatchPropsMunicipalFacilityField = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsMunicipalFacilityField = {
@@ -13,10 +13,10 @@ export type OwnPropsMunicipalFacilityField = {
   name?: string | void;
   clearable?: boolean;
   modalKey?: string;
-  normatives: any[];
-  missionAvailableRouteTypes?: string[];
+  normatives: Array<any>;
+  missionAvailableRouteTypes?: Array<string>;
 
-  onChange: (changeObj: { [key: string]: any }) => any;
+  onChange: (changeObj: { [key: string]: any; }) => any;
 
   page: string;
   path: string;
@@ -29,10 +29,10 @@ export type PropsMunicipalFacilityField = (
 );
 
 export type StateMunicipalFacilityField = {
-  MUNICIPAL_FACILITY_OPTIONS: {
+  MUNICIPAL_FACILITY_OPTIONS: Array<{
     value: number;
     label: string;
     mfData: MunicipalFacility;
-  }[];
+  }>;
   myDisable: boolean;
 };

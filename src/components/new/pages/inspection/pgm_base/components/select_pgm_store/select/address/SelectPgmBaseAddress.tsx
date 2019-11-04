@@ -31,7 +31,7 @@ type SelectPgmBaseProps = (
   & WithSearchProps
 );
 
-const filterPgmBaseByCompany = (pgmBaseList: PgmStore[], companyId: number) => (
+const filterPgmBaseByCompany = (pgmBaseList: Array<PgmStore>, companyId: number) => (
   pgmBaseList.filter(({ company_id }) => company_id === companyId)
 );
 

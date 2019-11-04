@@ -116,7 +116,7 @@ class CarInWorkOverall extends React.Component<Props, State> {
     const countNotInTouch = Object.values(carsTrackState).reduce(
       (count: number, value: any) => {
         if (value.status === 4 && carActualGpsNumberIndex[value.id]) {
-          count++;
+          return count + 1;
         }
         return count;
       },

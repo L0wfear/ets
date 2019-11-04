@@ -15,13 +15,13 @@ type PropsBarCompanyColor = {
 
 type StateBarCompanyColor = {
   isOpen: boolean;
-  companiesOption: {
+  companiesOption: Array<{
     company_id: number;
     short_name: string;
     style: {
       backgroundColor: string;
     };
-  }[];
+  }>;
 };
 
 class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarCompanyColor> {
@@ -40,7 +40,7 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
     this.setState({
       isOpen: !this.state.isOpen,
     })
-  )
+  );
 
   render() {
     const { companiesOption } = this.state;

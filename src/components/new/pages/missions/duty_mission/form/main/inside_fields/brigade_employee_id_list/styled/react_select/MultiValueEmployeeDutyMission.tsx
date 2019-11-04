@@ -16,8 +16,8 @@ const pathToActiveStatus = ['data', 'rowData', 'active_for_brigade'];
 const MultiValueWithCheckActive = styled(components.MultiValue)<MultiValueProps<any>>`
   &&& {
     ${(props) => (
-      !get(props, pathToActiveStatus, true) && NotActiveEmployeeStyle
-    )}
+    !get(props, pathToActiveStatus, true) && NotActiveEmployeeStyle
+  )}
   }
 `;
 

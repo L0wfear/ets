@@ -39,7 +39,7 @@ import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 type CurrentMissionInfoDispatchProps = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
   actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;
   actionUpdateMission: HandleThunkActionCreator<typeof missionsActions.actionUpdateMission>;
 } & Record<any, any>;
@@ -67,17 +67,17 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   refreshCard = () => (
     this.props.loadData()
-  )
+  );
   openMissiomInfoForm = () => {
     this.setState({ showMissionInfoForm: true });
-  }
+  };
   handleFormHide = () => {
     this.setState({ showMissionInfoForm: false });
-  }
+  };
 
   handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
     this.props.handleClose();
-  }
+  };
 
   completeMission = async () => {
 
@@ -85,11 +85,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
     const time = await this.props.dispatch(
       actionLoadTimeMoscow(
-      {},
-      {
-        page: 'dashboard',
-      },
-    ));
+        {},
+        {
+          page: 'dashboard',
+        },
+      ));
     action_at = time.date;
 
     let mission = null;
@@ -118,42 +118,42 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     this.props.handleClose();
     this.refreshCard();
     this.props.loadDataAfterCloseMission();
-  }
+  };
 
   rejectMission = () => {
     this.props.dispatch(
       actionLoadTimeMoscow(
-      {},
-      {
-        page: 'dashboard',
-      },
-    )).then(async (time) => {
-        const action_at = time.date;
+        {},
+        {
+          page: 'dashboard',
+        },
+      )).then(async (time) => {
+      const action_at = time.date;
 
-        let mission = null;
-        try {
-          mission = await this.props.actionGetMissionById(
-            this.props.infoData.mission_data.id,
-            {
-              page: 'dashboard',
-            },
-          );
-        } catch (error) {
-          console.error(error); // tslint:disable-line
-        }
-        if (mission) {
-          this.setState({
-            missionRejectForm: mission,
-            action_at,
-          });
-        }
-      })
+      let mission = null;
+      try {
+        mission = await this.props.actionGetMissionById(
+          this.props.infoData.mission_data.id,
+          {
+            page: 'dashboard',
+          },
+        );
+      } catch (error) {
+        console.error(error); // tslint:disable-line
+      }
+      if (mission) {
+        this.setState({
+          missionRejectForm: mission,
+          action_at,
+        });
+      }
+    })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
           global.NOTIFICATION_SYSTEM.notify(getWarningNotification('Произошла непредвиденная ошибка!'));
         }
       });
-  }
+  };
 
   onReject = (refresh) => {
     this.setState({ missionRejectForm: null });
@@ -161,7 +161,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       this.props.handleClose();
       this.refreshCard();
     }
-  }
+  };
 
   render() {
     const { infoData } = this.props;
@@ -171,17 +171,16 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         <ul>
           {
             listData.map(({ RenderComponent, ...line}, index) => (
-              RenderComponent ?
-              (
-                <RenderComponent key={line.path.join('/')} {...this.props} />
-              )
-              :
-              (
-                <li key={line.path.join('/')}>
-                  <b>{`${line.title}: `}</b>
-                  <span>{get(infoData, line.path, '---') || '---'}</span>
-                </li>
-              )
+              RenderComponent
+                ? (
+                  <RenderComponent key={line.path.join('/')} {...this.props} />
+                )
+                :              (
+                  <li key={line.path.join('/')}>
+                    <b>{`${line.title}: `}</b>
+                    <span>{get(infoData, line.path, '---') || '---'}</span>
+                  </li>
+                )
             ))
           }
         </ul>

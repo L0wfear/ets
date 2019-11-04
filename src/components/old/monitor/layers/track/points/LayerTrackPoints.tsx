@@ -14,15 +14,15 @@ import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsLayerTrackPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
+  zoom: number;
   lastPoint: any;
   mkad_speed_lim: number;
   speed_lim: number;
@@ -33,7 +33,7 @@ type PropsLayerTrackPoints = {
 };
 
 type StateLayerTrackPoints = {
-  zoomMore8: boolean,
+  zoomMore8: boolean;
   lastPoint: any;
   trackLineIsDraw: boolean;
   SHOW_TRACK: boolean;
@@ -103,7 +103,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   drawTrackPoints(track, SHOW_TRACK) {
     for (let index = 0, length = track.length; index < length; index++) {

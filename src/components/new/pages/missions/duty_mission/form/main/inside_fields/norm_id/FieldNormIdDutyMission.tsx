@@ -55,11 +55,11 @@ class FieldNormIdDutyMission extends React.PureComponent<Props, {}> {
     } = this.props;
 
     const triggerOnUpdate = (
-      !disabled &&
-      (datetime !== prevProps.datetime ||
-        technical_operation_id !== prevProps.technical_operation_id ||
-        municipal_facility_id !== prevProps.municipal_facility_id ||
-        route_type !== prevProps.route_type
+      !disabled
+      && (datetime !== prevProps.datetime
+        || technical_operation_id !== prevProps.technical_operation_id
+        || municipal_facility_id !== prevProps.municipal_facility_id
+        || route_type !== prevProps.route_type
       )
     );
 

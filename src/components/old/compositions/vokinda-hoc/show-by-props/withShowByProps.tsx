@@ -6,10 +6,10 @@ import PreloadNew, { Props } from 'components/old/ui/new/preloader/PreloadNew';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type TypeConfigToShow = {
-  path: string | string[],                                                  // path.to.проверяемое.свойство
-  checkErrorPath?: string[];                                                // path.to.error
+  path: string | Array<string>;                                                  // path.to.проверяемое.свойство
+  checkErrorPath?: Array<string>;                                                // path.to.error
   canNull?: boolean;                                                        // может ли значение быть нуловом после ответа
-  type?: Props['typePreloader'] | 'none',                                   // что отображать вместо (прелоадер/ ничего)
+  type?: Props['typePreloader'] | 'none';                                   // что отображать вместо (прелоадер/ ничего)
   isObj?: boolean;                                                          // может ли значение быть объектом после ответа
 };
 

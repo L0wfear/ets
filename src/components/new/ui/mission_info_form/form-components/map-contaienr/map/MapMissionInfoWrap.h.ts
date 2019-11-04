@@ -6,8 +6,8 @@ export type PropsMapMissionInfoWrap = {
 
   speed_lim: number;
   mkad_speed_lim: number;
-  track: any[];
-  parkings: any[];
+  track: Array<any>;
+  parkings: Array<any>;
   cars_sensors: object;
   missionNumber: string | number;
 };

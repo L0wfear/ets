@@ -8,22 +8,22 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
   handleFeatureClick = ({ id }) => {
     this.props.handleFeatureClick({ id });
     return;
-  }
+  };
   startDraw = () => {
     // this.props.startDraw();
-  }
+  };
   handlePointAdd = ({ newPointObject }) => {
     /* Смотри routeCreating */
-  }
+  };
   handleAddDrawLines = (newInputLines) => {
     this.props.handleAddDrawLines(newInputLines);
-  }
+  };
   handleDrawFeatureClick = ({ index, state }) => {
     this.props.handleDrawFeatureClick({ index, state });
-  }
+  };
   handleRemoveLastDrawFeature = () => {
     this.props.handleRemoveLastDrawFeature();
-  }
+  };
 
   setManualOnTrue = () => {
     const { isPermitted } = this.props;
@@ -34,20 +34,20 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
         this.props.setManualOnTrue();
       }
     }
-  }
+  };
 
   setIsDrawAllObjectOnFalse = () => {
     const { isPermitted } = this.props;
     if (isPermitted) {
       this.props.setIsDrawAllObjectOnFalse();
     }
-  }
+  };
   setIsDrawAllObjectOnTrue = () => {
     const { isPermitted } = this.props;
     if (isPermitted) {
       this.props.setIsDrawAllObjectOnTrue();
     }
-  }
+  };
 
   render() {
     const {

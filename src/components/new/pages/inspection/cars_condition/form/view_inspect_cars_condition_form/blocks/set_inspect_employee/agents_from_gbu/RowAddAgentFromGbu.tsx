@@ -59,27 +59,27 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                 )
               }
               <EtsBootstrap.Row>
-                  <EtsBootstrap.Col md={6}>
-                    <ExtField
-                      type="string"
-                      label="Должность"
-                      error={!newAgentPosition ? 'Поле "Должность" должно быть заполнено' : ''}
-                      value={newAgentPosition}
-                      onChange={handleChangeNewAgent}
-                      boundKeys="position"
-                    />
-                  </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={6}>
-                    <ExtField
-                      type="string"
-                      label="ФИО"
-                      error={!newAgentFio ? 'Поле "ФИО" должно быть заполнено' : ''}
-                      value={newAgentFio}
-                      onChange={handleChangeNewAgent}
-                      boundKeys="fio"
-                    />
-                  </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    type="string"
+                    label="Должность"
+                    error={!newAgentPosition ? 'Поле "Должность" должно быть заполнено' : ''}
+                    value={newAgentPosition}
+                    onChange={handleChangeNewAgent}
+                    boundKeys="position"
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    type="string"
+                    label="ФИО"
+                    error={!newAgentFio ? 'Поле "ФИО" должно быть заполнено' : ''}
+                    value={newAgentFio}
+                    onChange={handleChangeNewAgent}
+                    boundKeys="fio"
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={12}>
                   <EtsBootstrap.Button
                     disabled={!newAgentFio || !newAgentPosition}
                     onClick={handleClickAddAgentFromGbu}

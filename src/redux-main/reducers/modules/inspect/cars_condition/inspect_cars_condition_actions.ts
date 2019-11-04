@@ -233,7 +233,8 @@ export const actionCreateCarsConditionsCar = (carsConditionsCarRaw: Partial<Cars
   return response;
 };
 
-export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+export const actionUpdateCarsConditionsCar = (carsConditionsCarRawOwn: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+  let carsConditionsCarRaw = carsConditionsCarRawOwn;
   if (isNullOrUndefined(carsConditionsCarRaw.data)) {
     const defaultCarsConditionCarDataKeys = Object.keys(defaultCarsConditionCar.data);
     const CarsConditionCarData: Partial<CarsConditionCars['data']> = defaultCarsConditionCarDataKeys.reduce((newElem, currentElemKey) => {
@@ -246,7 +247,7 @@ export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: any, meta: L
     }, {});
 
     carsConditionsCarRaw = {
-      ...carsConditionsCarRaw,
+      ...carsConditionsCarRawOwn,
       data: {
         ...CarsConditionCarData,
       },

@@ -5,7 +5,7 @@ import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_mode
 import { actionLoadSpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/actions';
 
 type UseSpecialModelOptionsByNameAns = {
-  specialModelOptions: DefaultSelectOption<SpecialModel['name'], SpecialModel['name'], SpecialModel>[],
+  specialModelOptions: Array<DefaultSelectOption<SpecialModel['name'], SpecialModel['name'], SpecialModel>>;
 };
 
 type UseSpecialModelOptionsByName = (
@@ -14,7 +14,7 @@ type UseSpecialModelOptionsByName = (
   path: string,
 ) => UseSpecialModelOptionsByNameAns;
 
-export const getSpecialModelOptions = (data: SpecialModel[]) => {
+export const getSpecialModelOptions = (data: Array<SpecialModel>) => {
   return data.map((rowData) => ({
     value: rowData.name,
     label: rowData.name,

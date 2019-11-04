@@ -5,7 +5,7 @@ import { Flex } from 'global-styled/global-styled';
 type PropsFieldIsMain = {
   value: string | void;
   error: string;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 };
 
 class FieldIsMain extends React.PureComponent<PropsFieldIsMain, {}> {
@@ -13,7 +13,7 @@ class FieldIsMain extends React.PureComponent<PropsFieldIsMain, {}> {
     this.props.onChange({
       name: value,
     });
-  }
+  };
 
   render() {
     const { props } = this;

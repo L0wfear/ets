@@ -71,17 +71,17 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
 
   makeOptionFromTechMaintTypeList = (
     memoize(
-      (techMaintTypeList: TechMaintType[]) => techMaintTypeList.map(defaultSelectListMapper),
+      (techMaintTypeList: Array<TechMaintType>) => techMaintTypeList.map(defaultSelectListMapper),
     )
   );
   makeOptionFromSpecialModelsList = (
     memoize(
-      (specialModelList: SpecialModel[]) => specialModelList.map(defaultSelectListMapper),
+      (specialModelList: Array<SpecialModel>) => specialModelList.map(defaultSelectListMapper),
     )
   );
   makeOptionFromMeasureUnitRunList = (
     memoize(
-      (measureUnitRunList: MeasureUnitRun[]) => measureUnitRunList.map(defaultSelectListMapper),
+      (measureUnitRunList: Array<MeasureUnitRun>) => measureUnitRunList.map(defaultSelectListMapper),
     )
   );
 
@@ -95,7 +95,7 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
         measure_unit_run_id: null,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -255,15 +255,15 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          {
+            isPermitted // либо обновление, либо создание
+              ? (
+                <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

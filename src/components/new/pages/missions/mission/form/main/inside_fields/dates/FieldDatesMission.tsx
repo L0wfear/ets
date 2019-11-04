@@ -32,9 +32,9 @@ type DispatchProps = {
 type OwnProps = {
   isPermitted: boolean;
   date_start: Mission['date_start'];
-  error_date_start: string,
+  error_date_start: string;
   date_end: Mission['date_end'];
-  error_date_end: string,
+  error_date_end: string;
 
   onChange: (obj: Partial<Mission>) => void;
 
@@ -209,7 +209,7 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
     } else {
       this.props.onChange({ date_start });
     }
-  }
+  };
 
   handleChangeHoursDateEnd = (countHours) => {
     const { date_start } = this.props;

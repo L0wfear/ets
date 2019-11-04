@@ -40,7 +40,7 @@ const makeData = ({
     },
     ...Object.values(
       front_cars_sensors_equipment,
-    ).reduce<any[]>(
+    ).reduce<Array<any>>(
       (newArr, sensor, index) => [
         ...newArr,
         {
@@ -51,7 +51,7 @@ const makeData = ({
             timestamp,
             value
               ? sensorsMapOptions(index, onMkad ? mkad_speed_lim : speed_lim)
-                  .value
+                .value
               : null,
           ]),
           name: sensor.name,
@@ -155,8 +155,8 @@ class CarSpeedChart extends React.Component<
 
     track.some((track_point, index) => {
       if (
-        Math.abs(timestamp - selected_point.timestamp) >=
-        Math.abs(timestamp - track_point.timestamp)
+        Math.abs(timestamp - selected_point.timestamp)
+        >= Math.abs(timestamp - track_point.timestamp)
       ) {
         selected_point = track_point;
         return false;
@@ -213,8 +213,8 @@ export default compose<PropsCarSpeedChart, OwnPropsCarSpeedChart>(
     mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
     speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
     lastPoint:
-      state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) ||
-      state.monitorPage.carInfo.trackCaching.track === -1
+      state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
+      || state.monitorPage.carInfo.trackCaching.track === -1
         ? false
         : state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null,
   })),

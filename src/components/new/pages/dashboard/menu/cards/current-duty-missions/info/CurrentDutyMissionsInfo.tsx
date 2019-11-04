@@ -44,8 +44,8 @@ type PropsCurrentMissionInfo = (
   & OwnProps
 );
 type StateCurrentMissionInfo = {
-  showRouteInfoForm: boolean,
-  showMissionRejectForm: boolean,
+  showRouteInfoForm: boolean;
+  showMissionRejectForm: boolean;
 };
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
@@ -56,27 +56,27 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   refreshCard = () => (
     this.props.dispatch(dashboardLoadCurrentDutyMissions())
-  )
+  );
   openRouteInfoForm = () => {
     this.setState({
       showRouteInfoForm: true,
     });
-  }
+  };
   handleRouteInfoFormHide = () => {
     this.setState({
       showRouteInfoForm: false,
     });
-  }
+  };
 
   handleClose = () => {
     this.props.dispatch(
       dashboardLoadMissionDataForCurrentMission(null),
     );
-  }
+  };
 
   completeDutyMission = () => {
     this.updateDutyMission({ status: 'complete' });
-  }
+  };
 
   rejectDutyMission = () => {
     this.props.dispatch(
@@ -85,29 +85,29 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         { page: 'dashboard' },
       ),
     ).then((duty_mission) => {
-        // надо уйти от этого
-        // react 16 Portal
-        return global.confirmDialog({
-          title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
-          body: (self) => (
-            <ExtField
-              type="string"
-              label="Причина"
-              value={self.state.comment}
-              onChange={({ target: { value: comment } }) => self.setState({ comment })}
-            />
-          ),
-          defaultState: {
-            comment: '',
-          },
-          checkOnOk: ({ state }) => {
-            if (!state.comment) {
-              global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
-              return false;
-            }
-            return true;
-          },
-        })
+      // надо уйти от этого
+      // react 16 Portal
+      return global.confirmDialog({
+        title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
+        body: (self) => (
+          <ExtField
+            type="string"
+            label="Причина"
+            value={self.state.comment}
+            onChange={({ target: { value: comment } }) => self.setState({ comment })}
+          />
+        ),
+        defaultState: {
+          comment: '',
+        },
+        checkOnOk: ({ state }) => {
+          if (!state.comment) {
+            global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
+            return false;
+          }
+          return true;
+        },
+      })
         .then(({ comment }) => (
           this.updateDutyMission({
             ...duty_mission,
@@ -118,10 +118,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         .catch(() => {
           //
         });
-      }).catch((e) => {
-        console.log(e); // tslint:disable-line:no-console
-      });
-  }
+    }).catch((e) => {
+      console.info(e); // eslint-disable-line
+    });
+  };
 
   updateDutyMission = (newProps) => (
     (
@@ -134,25 +134,25 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           ),
         )
     ).then((duty_mission) => {
-        if (duty_mission) {
-          this.props.dispatch(
-            missionsActions.actionUpdateDutyMission(
-              {
-                ...duty_mission,
-                ...newProps,
-              },
-              { page: 'dashboard' },
-            ),
-          ).then(() => {
-            this.refreshCard();
-            this.handleClose();
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not found duty mission');
-        }
-      })
-  )
+      if (duty_mission) {
+        this.props.dispatch(
+          missionsActions.actionUpdateDutyMission(
+            {
+              ...duty_mission,
+              ...newProps,
+            },
+            { page: 'dashboard' },
+          ),
+        ).then(() => {
+          this.refreshCard();
+          this.handleClose();
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not found duty mission');
+      }
+    })
+  );
 
   render() {
     const {
@@ -168,17 +168,16 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         <ul>
           {
             listData.map(({ RenderComponent, ...line}, index) => (
-              RenderComponent ?
-              (
-                <RenderComponent key={line.path.join('/')} {...this.props} />
-              )
-              :
-              (
-                <li key={line.path.join('/')}>
-                  <b>{`${line.title}: `}</b>
-                  <span>{get(infoData, line.path, '---') || '---'}</span>
-                </li>
-              )
+              RenderComponent
+                ? (
+                  <RenderComponent key={line.path.join('/')} {...this.props} />
+                )
+                :              (
+                  <li key={line.path.join('/')}>
+                    <b>{`${line.title}: `}</b>
+                    <span>{get(infoData, line.path, '---') || '---'}</span>
+                  </li>
+                )
             ))
           }
         </ul>

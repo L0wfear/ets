@@ -12,10 +12,10 @@ import { getDatesByShift, createValidDateTime } from 'components/@next/@utils/da
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   mission_date_start_from: string;
   mission_date_end_to: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
@@ -29,7 +29,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       mission_date_start_from: createValidDateTime(mission_date_start_from),
       mission_date_end_to: createValidDateTime(mission_date_end_to),
     });
-  }
+  };
   render() {
     const timeShift = getDatesByShift();
     const {

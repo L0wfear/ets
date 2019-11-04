@@ -63,12 +63,12 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     const hidden = !this.state.hidden;
 
     this.setState({ hidden });
-  }
+  };
   handleClickOut: any = () => {
     if (!this.state.hidden) {
       this.setState({ hidden: true });
     }
-  }
+  };
 
   render() {
     return (
@@ -79,13 +79,12 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
               <div className="button-toggle" onClick={this.toggleHidden} >
                 <EtsBootstrap.Glyphicon glyph="filter" />
               </div>
-                {
-                  this.state.hidden ?
-                  (
+              {
+                this.state.hidden
+                  ? (
                     <DivNone />
                   )
-                  :
-                  (
+                  :                  (
                     <div className="car_text_filter-container multi">
                       <div>
                         {
@@ -102,23 +101,22 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                           ))
                         }
                         {
-                          this.props.isOkrug ?
-                          (
-                            <DefaultInput
-                              keyField={'carFilterMultyOwner'}
-                              OPTIONS={this.state.carFilterMultyOwnerOptions}
-                              placeholder={placeholder.carFilterMultyOwner}
-                            />
-                          )
-                          :
-                          (
-                            <DivNone />
-                          )
+                          this.props.isOkrug
+                            ? (
+                              <DefaultInput
+                                keyField={'carFilterMultyOwner'}
+                                OPTIONS={this.state.carFilterMultyOwnerOptions}
+                                placeholder={placeholder.carFilterMultyOwner}
+                              />
+                            )
+                            :                          (
+                              <DivNone />
+                            )
                         }
                       </div>
                     </div>
                   )
-                }
+              }
             </div>
           </div>
         </ClickOutHandler>
@@ -136,4 +134,4 @@ export default connect<any, any, any, ReduxState>(
       state.monitorPage.filters.data[key].length
     )),
   }),
- )(CarFilterByText);
+)(CarFilterByText);

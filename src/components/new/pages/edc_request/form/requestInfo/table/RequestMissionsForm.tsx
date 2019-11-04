@@ -11,7 +11,7 @@ import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_reques
 import { isNullOrUndefined } from 'util';
 
 type OwnProps = {
-  edcRequestInfoList: EdcRequestInfo[];
+  edcRequestInfoList: Array<EdcRequestInfo>;
 };
 type Props = OwnProps & WithSearchProps;
 

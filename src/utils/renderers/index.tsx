@@ -7,7 +7,7 @@ function floatFixed3({ data }) {
   try {
     value = !isEmpty(data) ? parseFloat(data).toFixed(3) : null;
   } catch (e) {
-    console.log(e); // tslint:disable-line:no-console
+    console.info(e); // eslint-disable-line
     value = 'Ошибка при обработке данных';
   }
   return <div>{value}</div>;
@@ -18,7 +18,7 @@ function floatFixed1Percentage({ data }) {
   try {
     value = !isEmpty(data) ? `${parseFloat(data).toFixed(1)}%` : null;
   } catch (e) {
-    console.log(e); // tslint:disable-line:no-console
+    console.info(e); // eslint-disable-line
     value = 'Ошибка при обработке данных';
   }
   return <div>{value}</div>;

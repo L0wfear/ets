@@ -2,7 +2,7 @@
 import { InspectOneActScan } from './@types/inspect_act_scan';
 import { InspectionService, FilesService } from 'api/Services';
 
-export const makeInspectActScanFilesFront = (array: InspectOneActScan[]) => (
+export const makeInspectActScanFilesFront = (array: Array<InspectOneActScan>) => (
   array.reduce(
     (newArr, inspection) => {
       const { files = [] } = inspection;

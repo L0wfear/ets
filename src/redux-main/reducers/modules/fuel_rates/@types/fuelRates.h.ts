@@ -30,7 +30,7 @@ export type FuelRate = {
 };
 
 export type IStateFuelRates = {
-  fuelRatesList: FuelRate[],
-  fuelRateOperationsList: FuelOperation[],
-  fuelRateOperationsIsActiveList: FuelOperation[],
+  fuelRatesList: Array<FuelRate>;
+  fuelRateOperationsList: Array<FuelOperation>;
+  fuelRateOperationsIsActiveList: Array<FuelOperation>;
 };

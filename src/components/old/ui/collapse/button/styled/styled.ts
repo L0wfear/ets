@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const GlyphiconCollapseButtonWrap = styled.div<{ isOpen: boolean }>`
+export const GlyphiconCollapseButtonWrap = styled.div<{ isOpen: boolean; }>`
   display: flex;
   justify-content: center;
   padding: 10px 0;

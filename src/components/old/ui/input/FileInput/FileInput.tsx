@@ -84,10 +84,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       [],
     );
     this.props.onChange(newFileList);
-  }
+  };
   handleFilePick = () => {
     this.fileInputNode.click();
-  }
+  };
 
   setRef = (fileInputNode) => this.fileInputNode = fileInputNode;
 
@@ -140,28 +140,28 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     return (
       <div>
         { showFileList && <EtsBootstrap.Row id={ID}>{fileList}</EtsBootstrap.Row> }
-          {
-            !this.props.disabled && (
-              <EtsBootstrap.Button
-                disabled={this.props.disabled || disabledIfSingleFile}
-                onClick={this.handleFilePick}
-                id={button_id}
-                children={buttonName}
-              />
-            )
-          }
-          <input
-            id={id}
-            type="file"
-            value={''}
-            style={inputStyle}
-            className={inputClass}
-            ref={this.setRef}
-            accept={this.props.formats}
-            disabled={this.props.disabled}
-            onChange={this.props.onChange}
-            multiple={multiple}
-          />
+        {
+          !this.props.disabled && (
+            <EtsBootstrap.Button
+              disabled={this.props.disabled || disabledIfSingleFile}
+              onClick={this.handleFilePick}
+              id={button_id}
+              children={buttonName}
+            />
+          )
+        }
+        <input
+          id={id}
+          type="file"
+          value={''}
+          style={inputStyle}
+          className={inputClass}
+          ref={this.setRef}
+          accept={this.props.formats}
+          disabled={this.props.disabled}
+          onChange={this.props.onChange}
+          multiple={multiple}
+        />
       </div>
     );
   }

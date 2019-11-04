@@ -102,7 +102,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),

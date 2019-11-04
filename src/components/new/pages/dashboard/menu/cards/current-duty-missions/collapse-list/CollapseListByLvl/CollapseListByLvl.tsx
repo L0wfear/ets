@@ -10,7 +10,7 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 type Props = {
-  collapsetItems: CurrentDutyMissionsItemsType[];
+  collapsetItems: Array<CurrentDutyMissionsItemsType>;
   handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsSubItemsType) => any;
   classNameContainer?: string;
 };

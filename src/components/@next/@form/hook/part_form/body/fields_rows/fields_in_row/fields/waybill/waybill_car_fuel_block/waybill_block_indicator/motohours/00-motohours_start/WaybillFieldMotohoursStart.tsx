@@ -54,7 +54,7 @@ const WaybillFieldMotohoursStart: React.FC<WaybillFieldMotohoursStartProps> = Re
 
     return (
       <EtsBootstrap.Col md={props.md || 12}>
-          <ExtField
+        <ExtField
           id={`${path}_motohours_start`}
           type="number"
           label="Выезд из гаража, м/ч"

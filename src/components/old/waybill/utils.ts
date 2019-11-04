@@ -40,17 +40,17 @@ export const getFuelRatesBySeason = (
 /** без типизации */
 
 // declarative functional approach
-const vehicleFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+const vehicleFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Array<Car>) =>
   array.filter(
     (c) =>
-      c.asuods_id === car_id ||
-      ((!structure_id ||
-        c.is_common ||
-        c.company_structure_id === structure_id) &&
-        c.available_to_bind),
+      c.asuods_id === car_id
+      || ((!structure_id
+        || c.is_common
+        || c.company_structure_id === structure_id)
+        && c.available_to_bind),
   );
 
-const carFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+const carFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Array<Car>) =>
   vehicleFilter(structure_id, car_id)(array).filter(
     (c) => (
       !c.is_trailer
@@ -59,10 +59,10 @@ const carFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id
     ),
   );
 
-const trailerFilter = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Car[]) =>
-    vehicleFilter(structure_id, trailer_id)(array).filter((c) => c.is_trailer);
+const trailerFilter = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Array<Car>) =>
+  vehicleFilter(structure_id, trailer_id)(array).filter((c) => c.is_trailer);
 
-export const vehicleMapper = (array: (Pick<Car, 'asuods_id' | 'model_id' | 'model_name' | 'gov_number' | 'special_model_name' | 'type_name'> & Partial<Car>)[]) => array.map(
+export const vehicleMapper = (array: Array<Pick<Car, 'asuods_id' | 'model_id' | 'model_name' | 'gov_number' | 'special_model_name' | 'type_name'> & Partial<Car>>) => array.map(
   (c) => {
     return ({
       value: c.asuods_id,
@@ -73,10 +73,10 @@ export const vehicleMapper = (array: (Pick<Car, 'asuods_id' | 'model_id' | 'mode
     });
   });
 
-export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Array<Car>) =>
   vehicleMapper(carFilter(structure_id, car_id)(array));
 
-export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Car[]) => (
+export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Array<Car>) => (
   vehicleMapper(trailerFilter(structure_id, trailer_id)(array))
 );
 
@@ -85,16 +85,16 @@ export const driverHasLicenseWithActiveDate = ({
   drivers_license,
   drivers_license_date_end,
 }) =>
-  (isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end)) ||
-  (isNotEmpty(drivers_license_date_end) &&
-    diffDates(new Date(), drivers_license_date_end) < 0);
+  (isNotEmpty(drivers_license) && !isNotEmpty(drivers_license_date_end))
+  || (isNotEmpty(drivers_license_date_end)
+    && diffDates(new Date(), drivers_license_date_end) < 0);
 export const driverHasSpecialLicenseWithActiveDate = ({
   special_license,
   special_license_date_end,
 }) =>
-  (isNotEmpty(special_license) && !isNotEmpty(special_license_date_end)) ||
-  (isNotEmpty(special_license_date_end) &&
-    diffDates(new Date(), special_license_date_end) < 0);
+  (isNotEmpty(special_license) && !isNotEmpty(special_license_date_end))
+  || (isNotEmpty(special_license_date_end)
+    && diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = (gov_number) => !hasMotohours(gov_number);
 
@@ -120,7 +120,7 @@ export const getDrivers = (state, employeeIndex, driversList) => {
         return false;
       }
 
-      let whatCarIWantDrive: boolean | number[] = false;
+      let whatCarIWantDrive: boolean | Array<number> = false;
 
       if (Boolean(driverData.prefer_car)) {
         whatCarIWantDrive = [driverData.prefer_car];
@@ -155,10 +155,10 @@ export const getDrivers = (state, employeeIndex, driversList) => {
       }
 
       return (
-        (!state.structure_id ||
-          (driverData.is_common ||
-            state.structure_id === driverData.company_structure_id)) &&
-        driverFilter(driverData)
+        (!state.structure_id
+          || (driverData.is_common
+            || state.structure_id === driverData.company_structure_id))
+        && driverFilter(driverData)
       );
     })
     .map(({ id, employee_id }) => {
@@ -170,8 +170,8 @@ export const getDrivers = (state, employeeIndex, driversList) => {
         : '';
       return {
         value: key,
-        label: `${personnel_number}${driverData.last_name ||
-          ''} ${driverData.first_name || ''} ${driverData.middle_name || ''}`,
+        label: `${personnel_number}${driverData.last_name
+          || ''} ${driverData.first_name || ''} ${driverData.middle_name || ''}`,
         isPrefer: driverData.prefer_car === state.car_id,
       };
     });
@@ -199,15 +199,15 @@ export function checkDateMission({
   dateWaybill: { plan_departure_date, plan_arrival_date },
 }) {
   return (
-    diffDates(date_end, plan_departure_date) < 0 ||
-    diffDates(plan_arrival_date, date_start) < 0
+    diffDates(date_end, plan_departure_date) < 0
+    || diffDates(plan_arrival_date, date_start) < 0
   );
 }
 
 export const getDatesToByOrderOperationId = (order: Order, order_operation_id) => {
-  const { date_from = '', date_to = '' } =
-    order.technical_operations.find(({ id }) => id === order_operation_id) ||
-    {};
+  const { date_from = '', date_to = '' }
+    = order.technical_operations.find(({ id }) => id === order_operation_id)
+    || {};
   const date_start = date_from || order.order_date;
   const date_end = date_to || order.order_date_to;
 
@@ -284,8 +284,8 @@ export const checkMissionSelectBeforeClose = (
               diffDates(
                 fact_departure_date || plan_departure_date,
                 mission.date_start_mission,
-              ) <= 0 &&
-              diffDates(
+              ) <= 0
+              && diffDates(
                 mission.date_end_mission,
                 fact_arrival_date || plan_arrival_date,
               ) <= 0
@@ -295,16 +295,16 @@ export const checkMissionSelectBeforeClose = (
               if (status === 'complete' || status === 'fail') {
                 errors.fromOrder.cf_list.push(number);
               } else if (
-                status === 'assigned' ||
-                status === 'expired' ||
-                status === 'in_progress'
+                status === 'assigned'
+                || status === 'expired'
+                || status === 'in_progress'
               ) {
                 if (
                   diffDates(
                     mission.date_to,
                     fact_departure_date || plan_departure_date,
-                  ) <= 0 ||
-                  diffDates(
+                  ) <= 0
+                  || diffDates(
                     fact_arrival_date || plan_arrival_date,
                     mission.date_from,
                   ) <= 0

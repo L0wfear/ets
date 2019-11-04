@@ -8,7 +8,7 @@ const RepareFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "repare_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/RepairForm'),
 );
 
-const RepareFormLazy: React.FC<WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap }> = React.memo(
+const RepareFormLazy: React.FC<WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap; }> = React.memo(
   (props) => {
     const element = React.useMemo(
       () => {
@@ -34,6 +34,6 @@ const RepareFormLazy: React.FC<WithFormRegistrySearchAddProps<Repair> & { select
   },
 );
 
-export default withFormRegistrySearch<WithFormRegistrySearchProps<Repair> & { selectedCarData?: CarWrap }, Repair>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Repair> & { selectedCarData?: CarWrap; }, Repair>({
   add_path: 'repair',
 })(RepareFormLazy);

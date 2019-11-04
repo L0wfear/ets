@@ -52,10 +52,10 @@ export const routeFormSchema: SchemaType<
       type: 'string',
       dependencies: [
         (value, formState) => {
-          const triggerOnError =
-            isNumber(formState.technical_operation_id) &&
-            isNumber(formState.municipal_facility_id) &&
-            !value;
+          const triggerOnError
+            = isNumber(formState.technical_operation_id)
+            && isNumber(formState.municipal_facility_id)
+            && !value;
 
           if (triggerOnError) {
             return 'Поле "Тип объекта" должно быть заполнено';
@@ -72,16 +72,16 @@ export const routeFormSchema: SchemaType<
         (value, formState, props) => {
           const { draw_object_list, type } = formState;
           if (
-            type &&
-            !draw_object_list.length &&
-            !value.length &&
-            type !== 'mixed'
+            type
+            && !draw_object_list.length
+            && !value.length
+            && type !== 'mixed'
           ) {
             const title = get(routeTypesByKey, `${type}.title`, null);
             if (title) {
               return `Поле "Список выбранных "${
-                  title
-                }" должно быть заполнено`;
+                title
+              }" должно быть заполнено`;
             }
           }
 
@@ -99,8 +99,8 @@ export const routeFormSchema: SchemaType<
             const title = get(routeTypesByKey, `${type}.title`, null);
             if (title) {
               return `Поле "Список выбранных "${
-                  title
-                }" должно быть заполнено`;
+                title
+              }" должно быть заполнено`;
             }
           }
 
@@ -118,8 +118,8 @@ export const routeFormSchema: SchemaType<
             const title = get(routeTypesByKey, `${type}.title`, null);
             if (title) {
               return `Поле "Список выбранных "${
-                  title
-                }" должно быть заполнено, либо построен маршрут вручную`;
+                title
+              }" должно быть заполнено, либо построен маршрут вручную`;
             }
           }
 

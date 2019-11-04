@@ -1,25 +1,25 @@
-interface IOneHeadTableMetaStyle {
+type IOneHeadTableMetaStyle = {
   minWidth?: number | string;
   maxWidth?: number | string;
   backgroundColor?: string | void;
-}
+};
 
-interface IOneHeadTableMetaOtherProps {
+type IOneHeadTableMetaOtherProps = {
   className?: string | void;
-}
+};
 
-type styleFunc = (numRow: number | string, row: any[], errors: any[]) => IOneHeadTableMetaStyle | void;
-type otherPropsFunc = (numRow: number | string, row: any[], errors: any[]) => IOneHeadTableMetaOtherProps | void;
+type styleFunc = (numRow: number | string, row: Array<any>, errors: Array<any>) => IOneHeadTableMetaStyle | void;
+type otherPropsFunc = (numRow: number | string, row: Array<any>, errors: Array<any>) => IOneHeadTableMetaOtherProps | void;
 
-interface IOneTableOrigin {
+type IOneTableOrigin = {
   key: string;
   title: string;
   style: styleFunc;
   otherProps?: otherPropsFunc;
-}
-interface IOneTableMeta extends IOneTableOrigin {
-  tabIncludes?: string[];
-}
+};
+type IOneTableMeta = {
+  tabIncludes?: Array<string>;
+} & IOneTableOrigin;
 
-export type ITableMetaInfo = IOneTableMeta[];
-export type ITableMetaPercent = IOneTableOrigin[];
+export type ITableMetaInfo = Array<IOneTableMeta>;
+export type ITableMetaPercent = Array<IOneTableOrigin>;

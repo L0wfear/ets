@@ -11,7 +11,7 @@ export const getSetPosition = async (payload: object) => {
     //
   }
 
-  const result: Position[] = get(response, 'result.rows', []);
+  const result: Array<Position> = get(response, 'result.rows', []);
 
   return {
     data: result,

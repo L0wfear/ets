@@ -6,10 +6,10 @@ export type Dt = {
   bti_okrug_id: number | null;
   clean_area: number | null;
   company_name: string;
-  company_structures: {
+  company_structures: Array<{
     id: number;
     name: string;
-  }[];
+  }>;
   developer: string;
   district_id: number | null;
   dt_id: number | null;

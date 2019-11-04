@@ -15,7 +15,7 @@ import waybillList from 'components/new/pages/waybill/_config-data';
 import administration from 'components/new/pages/administration/_config-data';
 import { ConfigPageData, ConfigParentData } from 'components/@next/@types/config_data';
 
-const routerAndPermission: { [k: string]: ConfigPageData | ConfigParentData } = {
+const routerAndPermission: { [k: string]: ConfigPageData | ConfigParentData; } = {
   monitor,
   coverageReports,
   dashboard,
@@ -41,7 +41,7 @@ const getRouterToPermission = (rAp, level) => {
           lvl: level,
         };
       } else {
-        rtp = {
+        return {
           ...rtp,
           ...getRouterToPermission(val.children, level + 1),
         };

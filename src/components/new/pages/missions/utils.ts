@@ -15,8 +15,8 @@ export const isOrderSource = (
   )
 );
 
-export const validateMissionsByCheckedElements = (checkedElements: object, noneCheckDate: boolean) => {
-  checkedElements = cloneDeep(checkedElements);
+export const validateMissionsByCheckedElements = (checkedElementsOwn: object, noneCheckDate: boolean) => {
+  const checkedElements = cloneDeep(checkedElementsOwn);
 
   Object.keys(checkedElements).forEach(
     (id) => {

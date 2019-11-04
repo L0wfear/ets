@@ -12,12 +12,12 @@ const requireAuth = (permissionsSet: InitialStateSession['userData']['permission
   });
 
   if (somePageData) {
-    const someRouteData = somePageData[1];
+    const someRouteData: any = somePageData[1];
     if (!validatePermissions(someRouteData.p, permissionsSet)) {
-      const routeVal = Object.entries(routToPer).reduce((obj: any, [key, rTp]) => {
+      const routeVal = Object.entries(routToPer).reduce((obj: any, [key, rTp]: any) => {
         if (!obj.lvl || obj.lvl > rTp.lvl) {
           if (validatePermissions(rTp.p, permissionsSet)) {
-            obj = {
+            return {
               lvl: rTp.lvl,
               path: key,
             };

@@ -67,8 +67,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
         JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [keyTracksCachingForTest],
         null,
-      ) ||
-      get(
+      )
+      || get(
         JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [config.tracksCaching],
         null,
@@ -87,8 +87,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     if (!versions) {
       versions = {};
     }
-    versions[config.backend] =
-      serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
+    versions[config.backend]
+      = serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
     localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       serviceValue: serviceValue === -1 || !serviceValue ? '' : serviceValue,
@@ -103,8 +103,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     if (!versions) {
       versions = {};
     }
-    versions[keyTracksCachingForTest] =
-      tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
+    versions[keyTracksCachingForTest]
+      = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
     localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,
@@ -157,7 +157,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
         id="modal-battery-brand"
         show
         onHide={this.props.onHide}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Изменить версию API</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

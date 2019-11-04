@@ -32,8 +32,8 @@ export const filterAdmNotReadNotifyByIdArr = (admNotReadNotificationsList, notif
 
 export const mapAdmNotifyToSetReadByIdArr = (admNotificationList, notifyIdsAsArr) => (
   admNotificationList
-  .map((common) => ({
-    ...common,
-    is_read: notifyIdsAsArr.includes(common.id) || common.is_read,
-  }))
+    .map((common) => ({
+      ...common,
+      is_read: notifyIdsAsArr.includes(common.id) || common.is_read,
+    }))
 );

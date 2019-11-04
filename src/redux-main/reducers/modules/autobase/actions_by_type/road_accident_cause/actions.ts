@@ -8,7 +8,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- RoadAccidentCause ---------- */
-export const autobaseSetRoadAccidentCause = (roadAccidentCauseList: RoadAccidentCause[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetRoadAccidentCause = (roadAccidentCauseList: Array<RoadAccidentCause>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       roadAccidentCauseList,

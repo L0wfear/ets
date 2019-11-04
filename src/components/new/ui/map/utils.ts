@@ -184,7 +184,7 @@ export const centerOn: MapUtils.centerOnFunc = (map: Map, disabledCenterOn, fitP
         map.getView().fit(extent, opt_options);
       }, 100);
     } catch (e) {
-      console.log('no fit'); // tslint:disable-line:no-console
+      console.info('no fit'); // eslint-disable-line
     }
     return true;
   }

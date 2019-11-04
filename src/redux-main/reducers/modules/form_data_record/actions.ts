@@ -135,7 +135,7 @@ export const actionUpdateFormErrors = <F extends Record<string, any>>(formKey: F
   }
 };
 
-export const actionSubmitFormState = <F extends Record<string, any>>(formKey: FormKeys, ...arg: any[]): EtsAction<Promise<any>> => async (dispatch, getState) => {
+export const actionSubmitFormState = <F extends Record<string, any>>(formKey: FormKeys, ...arg: Array<any>): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;
   const formData = getFormDataByKey<F>(getState(), formKey);
 
@@ -253,9 +253,9 @@ export const actionGetInitialFormState = <F extends Record<string, any>>(formKey
     }
   }
 
-  if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string }>).user_structure_on_new) {
+  if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string; }>).user_structure_on_new) {
     const userData = getSessionState(getState()).userData;
-    const formStateExtends = formState as F & { structure_id: number; structure_name: string };
+    const formStateExtends = formState as F & { structure_id: number; structure_name: string; };
     if (!id) {
       formStateExtends.structure_id = formState.structure_id || userData.structure_id;
       formStateExtends.structure_name = formState.structure_name || userData.structure_name;

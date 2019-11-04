@@ -48,9 +48,9 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
   );
 
   return (
-      <EtsBootstrap.Button id={`${props.registryKey}.open-create_duty_mission_by_template-form`}bsSize="small" onClick={handleClick} disabled={disabled}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-create_duty_mission_by_template-form`}bsSize="small" onClick={handleClick} disabled={disabled}>
         Сформировать наряд-задание
-      </EtsBootstrap.Button>
+    </EtsBootstrap.Button>
   );
 };
 

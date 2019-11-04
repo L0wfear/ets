@@ -163,9 +163,9 @@ const PreparePlan: React.FC<Props> = (props) => {
   );
 
   React.useEffect(() => {
-      props.canSavePreparePlanHandler(canSaveTypesCars && canSaveTypesHarvestingUnit);
-    },
-    [canSaveTypesCars, canSaveTypesHarvestingUnit],
+    props.canSavePreparePlanHandler(canSaveTypesCars && canSaveTypesHarvestingUnit);
+  },
+  [canSaveTypesCars, canSaveTypesHarvestingUnit],
   );
 
   return(
@@ -214,8 +214,8 @@ const PreparePlan: React.FC<Props> = (props) => {
       </CustomTableWrapper>
       <FooterEnd>
         {
-          props.isPermitted &&
-            <EtsBootstrap.Button disabled={ props.isPermitted && (!canSaveTypesCars || !canSaveTypesHarvestingUnit) } onClick={handleSave}>
+          props.isPermitted
+            && <EtsBootstrap.Button disabled={ props.isPermitted && (!canSaveTypesCars || !canSaveTypesHarvestingUnit) } onClick={handleSave}>
               Сохранить
             </EtsBootstrap.Button>
         }

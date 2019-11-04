@@ -11,9 +11,9 @@ import { getToday0am, createValidDate } from 'components/@next/@utils/dates/date
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   start_date: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
@@ -34,7 +34,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     this.props.onClick({
       start_date: createValidDate(start_date),
     });
-  }
+  };
   render() {
     const {
       start_date,

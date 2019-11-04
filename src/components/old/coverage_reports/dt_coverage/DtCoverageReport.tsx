@@ -25,7 +25,7 @@ const page = 'dt_coverage_report';
 type OwnProps = {
 };
 type StateProps = {
-  dtCoverageReport: any[];
+  dtCoverageReport: Array<any>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;

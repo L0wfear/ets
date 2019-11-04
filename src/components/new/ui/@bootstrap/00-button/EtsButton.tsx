@@ -14,7 +14,7 @@ export type EtsButtonProps = WithRequirePermissionProps & {
   className?: string;
   disabled?: boolean;
   id?: string;
-  onClick?: (...arg: any[]) => void;
+  onClick?: (...arg: Array<any>) => void;
   title?: string;
   type?: 'submit' | 'button';
   whiteSpace?: 'normal';
@@ -72,94 +72,94 @@ export const ButtonStyled = styled.button<EtsButtonPropsWrap>`
     }
 
     background-color: ${({ theme, disabled, active, themeName }) => (
-      !disabled
+    !disabled
       ? (
-          !active
-            ? theme.button[themeName || 'default'].backgroundColor.default
-            : theme.button[themeName || 'default'].backgroundColor.focus
-        )
-        : (
-          !active
-            ? theme.button[themeName || 'default'].backgroundColor.disabled
-            : theme.button[themeName || 'default'].backgroundColor.disabledFocus
-        )
-    )};
+        !active
+          ? theme.button[themeName || 'default'].backgroundColor.default
+          : theme.button[themeName || 'default'].backgroundColor.focus
+      )
+      : (
+        !active
+          ? theme.button[themeName || 'default'].backgroundColor.disabled
+          : theme.button[themeName || 'default'].backgroundColor.disabledFocus
+      )
+  )};
     color: ${({ theme, disabled, active, themeName }) => (
-      !disabled
-        ? (
-          !active
-            ? theme.button[themeName || 'default'].color.default
-            : theme.button[themeName || 'default'].color.focus
-        )
-        : (
-          !active
-            ? theme.button[themeName || 'default'].color.disabled
-            : theme.button[themeName || 'default'].color.disabledFocus
-        )
-    )};
+    !disabled
+      ? (
+        !active
+          ? theme.button[themeName || 'default'].color.default
+          : theme.button[themeName || 'default'].color.focus
+      )
+      : (
+        !active
+          ? theme.button[themeName || 'default'].color.disabled
+          : theme.button[themeName || 'default'].color.disabledFocus
+      )
+  )};
     opacity: ${({ theme, disabled, active, themeName }) => (
-      !disabled
-        ? theme.button[themeName || 'default'].opacity.default
-        : (
-          !active
-            ? theme.button[themeName || 'default'].opacity.disabled
-            : theme.button[themeName || 'default'].opacity.disabledFocus
-        )
-    )};
+    !disabled
+      ? theme.button[themeName || 'default'].opacity.default
+      : (
+        !active
+          ? theme.button[themeName || 'default'].opacity.disabled
+          : theme.button[themeName || 'default'].opacity.disabledFocus
+      )
+  )};
 
     &:hover {
       background-color: ${({ theme, disabled, active, themeName }) => (
-        !disabled
-          ? theme.button[themeName || 'default'].backgroundColor.hover
-          : (
-            !active
-              ? theme.button[themeName || 'default'].backgroundColor.disabled
-              : theme.button[themeName || 'default'].backgroundColor.disabledFocus
-          )
-      )};
+    !disabled
+      ? theme.button[themeName || 'default'].backgroundColor.hover
+      : (
+        !active
+          ? theme.button[themeName || 'default'].backgroundColor.disabled
+          : theme.button[themeName || 'default'].backgroundColor.disabledFocus
+      )
+  )};
       color: ${({ theme, disabled, active, themeName }) => (
-        !disabled
-          ? theme.button[themeName || 'default'].color.hover
-          : (
-            !active
-              ? theme.button[themeName || 'default'].color.disabled
-              : theme.button[themeName || 'default'].color.disabledFocus
-          )
-      )};
+    !disabled
+      ? theme.button[themeName || 'default'].color.hover
+      : (
+        !active
+          ? theme.button[themeName || 'default'].color.disabled
+          : theme.button[themeName || 'default'].color.disabledFocus
+      )
+  )};
     }
 
     &:focus {
       background-color: ${({ theme, disabled, themeName }) => (
-        !disabled
-          ? theme.button[themeName || 'default'].backgroundColor.focus
-          : theme.button[themeName || 'default'].backgroundColor.disabled
-      )};
+    !disabled
+      ? theme.button[themeName || 'default'].backgroundColor.focus
+      : theme.button[themeName || 'default'].backgroundColor.disabled
+  )};
       color: ${({ theme, disabled, themeName }) => (
-        !disabled
-          ? theme.button[themeName || 'default'].color.focus
-          : theme.button[themeName || 'default'].color.disabled
-      )};
+    !disabled
+      ? theme.button[themeName || 'default'].color.focus
+      : theme.button[themeName || 'default'].color.disabled
+  )};
       outline: 5px auto -webkit-focus-ring-color;
     }
 
     ${({ block }) => (
-      block && widthCssDefault
-    )}
+    block && widthCssDefault
+  )}
 
 
     ${({ whiteSpace }) => (
-      whiteSpace === 'normal' && whiteSpaceCssNormal
-    )}
+    whiteSpace === 'normal' && whiteSpaceCssNormal
+  )}
 
     ${({ bsSize }) => (
-      bsSize === 'small'
-        ? bsSizeCssSmall
-        : (
-            bsSize === 'input'
-              ? bsSizeCssInput
-              : bsSizeCssDefault
-        )
-    )}
+    bsSize === 'small'
+      ? bsSizeCssSmall
+      : (
+        bsSize === 'input'
+          ? bsSizeCssInput
+          : bsSizeCssDefault
+      )
+  )}
   }
 `;
 

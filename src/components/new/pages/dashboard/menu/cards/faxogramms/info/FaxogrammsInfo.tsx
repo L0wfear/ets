@@ -44,11 +44,11 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
       showFaxogrammMissionsFormWrap: false,
       elementFaxogrammMissionsFormWrap: null,
     })
-  )
+  );
 
   seclectDownload = (event) => {
     promiseLoadOrderBlobAndSave(this.props.infoData.data.id, event);
-  }
+  };
 
   showPDFViewModal = () => {
     promiseLoadOrderBlob(this.props.infoData.data.id, TypeDownload.old)
@@ -61,16 +61,16 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
         }
       })
       .catch((error) => {
-        console.log(error); // tslint:disable-line:no-console
+        console.info(error); // eslint-disable-line
       });
-  }
+  };
 
   handleHidePDFViewModal = () => {
     this.setState({
       showPDFViewModal: false,
       blob: null,
     });
-  }
+  };
 
   render() {
     const {
@@ -97,17 +97,16 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           }
         </ul>
         {
-          order_info ?
-          (
-            <div>
-              <div className="line_data"><b>Доп. информация</b></div>
-              <div>{order_info}</div>
-            </div>
-          )
-          :
-          (
-            <DivNone />
-          )
+          order_info
+            ? (
+              <div>
+                <div className="line_data"><b>Доп. информация</b></div>
+                <div>{order_info}</div>
+              </div>
+            )
+            :          (
+              <DivNone />
+            )
         }
         <RightButtonBlockContainer needMarginBottom>
           <EtsBootstrap.Dropdown

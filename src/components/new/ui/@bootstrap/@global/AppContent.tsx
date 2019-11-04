@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import themeAppContent from '../@themes/default/app_content/themeAppContent';
 
-export const AppContentContainer = styled.div<{ themeName?: keyof typeof themeAppContent }>`
+export const AppContentContainer = styled.div<{ themeName?: keyof typeof themeAppContent; }>`
   transition: all 0.5s;
 
   background-color: ${({ theme, themeName }) => theme.app_content[themeName || 'default'].backgroundColor};

@@ -12,8 +12,8 @@ type PropsCollapseText= {
   title: any;
   classNameContainer?: string;
   components?: {
-    CollapseContainer?: any,
-    CollapseTitleContainer?: any,
+    CollapseContainer?: any;
+    CollapseTitleContainer?: any;
   };
   noClickOnTitle?: boolean;
 };
@@ -30,7 +30,7 @@ class CollapseText extends React.Component<PropsCollapseText, StateCollapseText>
     this.setState({
       isOpen: !this.state.isOpen,
     });
-  }
+  };
 
   render() {
     const { props, state } = this;

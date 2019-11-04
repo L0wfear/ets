@@ -15,11 +15,11 @@ class NotificationSystem extends React.Component {
 
   notifyWithObject: typeof global.NOTIFICATION_SYSTEM.notifyWithObject  = (notification) => {
     this.node.current.addNotification(notification);
-  }
+  };
 
   removeNotification: typeof global.NOTIFICATION_SYSTEM.removeNotification = (uid) => {
     this.node.current.removeNotification(uid);
-  }
+  };
 
   notify: typeof global.NOTIFICATION_SYSTEM.notify = (text: string | object, type = 'success', position = 'tc') => {
     if (typeof this.node.current === 'undefined') {
@@ -35,7 +35,7 @@ class NotificationSystem extends React.Component {
       level: type,
       position,
     });
-  }
+  };
 
   render() {
     return (

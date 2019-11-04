@@ -12,12 +12,12 @@ export function swapCoords(props: Array<number>) {
   }
 }
 
-export function unwrapCoords({ x, y }: { x: number, y: number }) {
+export function unwrapCoords({ x, y }: { x: number; y: number; }) {
   return [x, y];
 }
 
-export function roundCoordinates(coords: Array<number> | { x: number, y: number }, level = 4) {
-  let result: number[] = null;
+export function roundCoordinates(coords: Array<number> | { x: number; y: number; }, level = 4) {
+  let result: Array<number> = null;
   if (!isArray(coords)) {
     result = unwrapCoords(coords);
   } else {

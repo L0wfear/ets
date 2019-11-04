@@ -6,7 +6,7 @@ export const DutyMissionFormContextLazyReact = React.lazy(() =>
   import(/* webpackChunkName: "duty_mission_form" */ 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormContext'),
 );
 
-export default withFormRegistrySearch<WithFormRegistrySearchProps<DutyMission> & { readOnly?: boolean }, DutyMission>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<DutyMission> & { readOnly?: boolean; }, DutyMission>({
   add_path: 'duty_mission',
   no_find_in_arr: true,
   replace_uniqKey_on: 'id',

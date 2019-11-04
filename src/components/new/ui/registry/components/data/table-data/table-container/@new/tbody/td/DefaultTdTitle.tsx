@@ -85,8 +85,8 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     if (format === 'efficiencySource') {
       value = (
         value
-        ? 'Справочник показателей норм на содержание ОДХ'
-        : 'Реестр ОДХ'
+          ? 'Справочник показателей норм на содержание ОДХ'
+          : 'Реестр ОДХ'
       );
     }
     if (format === 'floor') {

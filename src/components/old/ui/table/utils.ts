@@ -14,14 +14,14 @@ export const getFilterTypeByKey = (key, tableMeta) => {
 };
 
 export const isStringArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
-  typeof filterValue === 'string' &&
-  Array.isArray(fieldValue) &&
-  getFilterTypeByKey(fieldKey, tableMeta) === 'string';
+  typeof filterValue === 'string'
+  && Array.isArray(fieldValue)
+  && getFilterTypeByKey(fieldKey, tableMeta) === 'string';
 
 export const isNumberSelectArrayData = (filterValue, fieldValue, fieldKey, tableMeta) =>
-  typeof filterValue === 'number' &&
-  Array.isArray(fieldValue) &&
-  getFilterTypeByKey(fieldKey, tableMeta) === 'select';
+  typeof filterValue === 'number'
+  && Array.isArray(fieldValue)
+  && getFilterTypeByKey(fieldKey, tableMeta) === 'select';
 
 export const stringArrayDataMatching = (filterValue: string, fieldValueArray: Array<string>) =>
   fieldValueArray.join().includes(filterValue.split(', ').join());
@@ -143,14 +143,14 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
 
 export const sortData = (data, { initialSort, initialSortAscending, ...other }) => (
   initialSort
-  ? (
-    data.sort((a, b) => (
-      sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
+    ? (
+      data.sort((a, b) => (
+        sortFunction(initialSortAscending ? a : b, initialSortAscending ? b : a, initialSort, other)),
+      )
     )
-  )
-  : (
-    data
-  )
+    : (
+      data
+    )
 );
 
 export const makeData = (data, prevProps, nextProps) => {
@@ -158,8 +158,8 @@ export const makeData = (data, prevProps, nextProps) => {
 
   if (deepArr) {
     return data.map((dataBlock) => ({
-        ...dataBlock,
-        rows: makeData(dataBlock.rows, prevProps, nextProps),
+      ...dataBlock,
+      rows: makeData(dataBlock.rows, prevProps, nextProps),
     }));
   }
 
@@ -176,7 +176,7 @@ export const makeData = (data, prevProps, nextProps) => {
   return returnData;
 };
 
-export const DataTableInputOutputListErrors = (inputList: any[], outputListErrors: any[], validationSchema: IValidationSchema, ) =>
+export const DataTableInputOutputListErrors = (inputList: Array<any>, outputListErrors: Array<any>, validationSchema: IValidationSchema, ) =>
   inputList.map((rowData, i) => {
     const errors = outputListErrors[i] ? { ...outputListErrors[i] } : {};
 
@@ -187,7 +187,7 @@ export const DataTableInputOutputListErrors = (inputList: any[], outputListError
     return errors;
   });
 
-export const isValidDataTableInput = ( outputListErrors: any[]): boolean =>
+export const isValidDataTableInput = ( outputListErrors: Array<any>): boolean =>
   !outputListErrors.map((errorItem) => {
     return toArray(errorItem)
       .map((v) => !!v)

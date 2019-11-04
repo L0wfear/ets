@@ -14,7 +14,7 @@ export const TemplateMonitorWrap = styled.div`
   height: 100%;
 `;
 
-export const MaintTemplateComponent = styled.div<{ width?: number; height?: number }>`
+export const MaintTemplateComponent = styled.div<{ width?: number; height?: number; }>`
   border-radius: 10px;
   border: 10px solid white;
   background-color: white;

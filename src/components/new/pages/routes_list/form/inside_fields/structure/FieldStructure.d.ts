@@ -2,7 +2,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldStructure = {
-  STRUCTURE_OPTIONS: any[];
+  STRUCTURE_OPTIONS: Array<any>;
 };
 
 export type StatePropsFieldStructure = {
@@ -21,7 +21,7 @@ export type OwnPropsFieldStructure = {
   error: string;
   page: string;
   path: string;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 };
 
 export type PropsFieldStructure = (

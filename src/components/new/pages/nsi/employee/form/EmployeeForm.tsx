@@ -128,7 +128,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         [type]: value,
       },
     });
-  }
+  };
   handleChangeWithValidate = (field, e) => {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
@@ -163,7 +163,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
+  };
   handleChangePositionId = (field, value) => {
     if (value !== this.props.formState.position_id) {
       const changeObject: any = {
@@ -182,7 +182,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
+  };
   handleChangeCar = (field, value) => {
     const { formState } = this.props;
 
@@ -193,7 +193,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
+  };
   updateCarOptions(formState: PropsEmployee['formState']) {
     this.setState({
       carOptions: this.state.carList
@@ -624,11 +624,11 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted && (
-            <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-        }
+          {
+            isPermitted && (
+              <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

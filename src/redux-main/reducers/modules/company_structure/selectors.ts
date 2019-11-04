@@ -8,7 +8,7 @@ import { getCompanyStructureState } from 'redux-main/reducers/selectors';
 export type CompanyStructureLinearStructure = ValuesOf<IStateCompanyStructure['companyStructureLinearList']>;
 
 export type GetCompanyStructureLinearOptionsAns = (
-  DefaultSelectOption<CompanyStructureLinearStructure['id'], CompanyStructureLinearStructure['name'], CompanyStructureLinearStructure>[]
+  Array<DefaultSelectOption<CompanyStructureLinearStructure['id'], CompanyStructureLinearStructure['name'], CompanyStructureLinearStructure>>
 );
 
 export const getSomeUniqCompanyStructureLinear: Selector<ReduxState, IStateCompanyStructure['companyStructureLinearList']> = (state) => (

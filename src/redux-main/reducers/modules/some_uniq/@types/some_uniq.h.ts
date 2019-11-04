@@ -34,44 +34,44 @@ export type CancelReasons = {
 };
 
 export type IStateSomeUniq = {
-  specialModelList: SpecialModel[];
-  modelsList: ModelElement[];
-  technicalOperationRegistryList: TechnicalOperationRegistry[];
-  technicalOperationRegistryForMissionList: TechnicalOperationRegistry[];
-  technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[];
-  municipalFacilityList: MunicipalFacility[];
-  municipalFacilityMeasureUnitList: MunicipalFacilityMeasureUnit[];
-  municipalFacilityForMissionList: MunicipalFacility[];
-  municipalFacilityForDutyMissionList: MunicipalFacility[];
+  specialModelList: Array<SpecialModel>;
+  modelsList: Array<ModelElement>;
+  technicalOperationRegistryList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForMissionList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForDutyMissionList: Array<TechnicalOperationRegistry>;
+  municipalFacilityList: Array<MunicipalFacility>;
+  municipalFacilityMeasureUnitList: Array<MunicipalFacilityMeasureUnit>;
+  municipalFacilityForMissionList: Array<MunicipalFacility>;
+  municipalFacilityForDutyMissionList: Array<MunicipalFacility>;
   missionSource: {
-    list: MissionSource[];
+    list: Array<MissionSource>;
     order_mission_source_id: number | null;
   };
-  maintenanceWorkList: MaintenanceWork[];
-  cleanCategoriesList: CleanCategories[];
-  missionCancelReasonsList: CancelReasons[];
+  maintenanceWorkList: Array<MaintenanceWork>;
+  cleanCategoriesList: Array<CleanCategories>;
+  missionCancelReasonsList: Array<CancelReasons>;
   geozoneMunicipalFacility: {
-    list: GeozoneMunicipalFacility[];
+    list: Array<GeozoneMunicipalFacility>;
     byId: GeozoneMunicipalFacilityById | null;
   };
-  workKindList: WorkKind[];
-  technicalOperationObjectsList: TechnicalOperationObjects[];
-  technicalOperationTypesList: TechnicalOperationTypes[];
-  sensorTypeList: SensorType[];
-  measureUnitList: MeasureUnit[];
+  workKindList: Array<WorkKind>;
+  technicalOperationObjectsList: Array<TechnicalOperationObjects>;
+  technicalOperationTypesList: Array<TechnicalOperationTypes>;
+  sensorTypeList: Array<SensorType>;
+  measureUnitList: Array<MeasureUnit>;
 
-  refillTypeList: RefillType[];
+  refillTypeList: Array<RefillType>;
 
-  carsTravelTimeList: CarsTravelTime[];
-  edcRequestInfoList: EdcRequestInfo[];
+  carsTravelTimeList: Array<CarsTravelTime>;
+  edcRequestInfoList: Array<EdcRequestInfo>;
   tracksCaching: TracksCaching;
 
-  workModeList: WorkMode[];
-  normList: Norm[];
+  workModeList: Array<WorkMode>;
+  normList: Array<Norm>;
 
   inspectionConfig: {
-    [key: string]: {},
+    [key: string]: {};
   } | null;
 
-  consumableMaterialCountMissionList: ConsumableMaterialCountMission[];
+  consumableMaterialCountMissionList: Array<ConsumableMaterialCountMission>;
 };

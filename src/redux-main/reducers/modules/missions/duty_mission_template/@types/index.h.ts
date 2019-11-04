@@ -1,10 +1,10 @@
 export type DutyMissionTemplate = {
-  brigade_employee_id_list: {
+  brigade_employee_id_list: Array<{
     employee_fio: string;
     employee_id: number;
-  }[];
-  brigade_employee_id_list_id: number[];
-  brigade_employee_id_list_fio: string[];
+  }>;
+  brigade_employee_id_list_id: Array<number>;
+  brigade_employee_id_list_fio: Array<string>;
   brigade_id: number | null;
   comment: string;
   date_create: string | null;
@@ -13,7 +13,7 @@ export type DutyMissionTemplate = {
   foreman_id: number | null;
   id: number | null;
   is_actual: boolean;
-  kind_task_ids: number[];
+  kind_task_ids: Array<number>;
   municipal_facility_id: number | null;
   municipal_facility_name: string;
   norm_id: number | null;

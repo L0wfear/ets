@@ -350,8 +350,8 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
     const pathToIsMain = routeData.is_main ? 'main' : 'other';
     const pathTo_type = pathToIsMain + getTypeRoute(routeData.type);
-    const pathTo_structure_name =
-      pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
+    const pathTo_structure_name
+      = pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
     const pathTo_technical_operation_name_arr = [];
     routeData.work_types.forEach((elem) => {
       const pathToStructureWorkType = `${pathTo_structure_name}${

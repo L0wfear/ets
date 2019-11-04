@@ -276,7 +276,7 @@ class UserNotificationForm extends UNSAFE_Form<any, any> {
       return {};
     }
 
-    console.warn('addTypeDate in userNotificationForm'); // tslint:disable-line:no-console
+    console.warn('addTypeDate in userNotificationForm'); // eslint-disable-line
     return {};
   }
 

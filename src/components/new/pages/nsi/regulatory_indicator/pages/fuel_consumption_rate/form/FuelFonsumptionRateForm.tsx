@@ -104,7 +104,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
       id="modal-fuel-rate"
       show
       onHide={props.hideWithoutChanges}
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>
           {!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива

@@ -36,14 +36,14 @@ type PropsMultiselectRegistryFilter = {
   wasFirstOpen: boolean;
   formatedTitle: string;
   filterValuesObj: any;
-  array: any[];
-  onChange: (valueKey: string, type: string, value: any[], option: object) => any;
+  array: Array<any>;
+  onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
 
   dispatch: EtsDispatch;
 };
 
 type StateMultiselectRegistryFilter = {
-  array: any[];
+  array: Array<any>;
   filterData: {
     title: string;
     valueKey: string;
@@ -53,7 +53,7 @@ type StateMultiselectRegistryFilter = {
     getRegistryData: any;
     format?: string;
   };
-  options: any[];
+  options: Array<any>;
   disabled: boolean;
   isLoading: boolean;
 };
@@ -101,8 +101,8 @@ const getOption = (value, label) => {
   return null;
 };
 
-const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey: string | number, format: string) => (
-  array.reduce<any[]>((newArr, rowData) => {
+const makeOptionsFromArray = (array: Array<any>, valueKey: string | number, labelKey: string | number, format: string) => (
+  array.reduce<Array<any>>((newArr, rowData) => {
     const { [valueKey]: value, [labelKey || valueKey]: label } = rowData;
 
     if (isArray(value)) {
@@ -144,7 +144,7 @@ const makeOptions = (props: PropsMultiselectRegistryFilter) => (
   )
 );
 
-const makeObjByKey = (array: any[], valueKey: string) => {
+const makeObjByKey = (array: Array<any>, valueKey: string) => {
   return Object.values(array.reduce((newObj, { [valueKey]: value }) => {
     if (isArray(value)) {
       value.forEach((valueItem) => {
@@ -158,7 +158,7 @@ const makeObjByKey = (array: any[], valueKey: string) => {
   }, {}));
 };
 
-const checkOnNewValuewInArray = (array: any[], filterData: StateMultiselectRegistryFilter['filterData'], options: StateMultiselectRegistryFilter['options']) => {
+const checkOnNewValuewInArray = (array: Array<any>, filterData: StateMultiselectRegistryFilter['filterData'], options: StateMultiselectRegistryFilter['options']) => {
   const objArray = Object.values(makeObjByKey(array, filterData.valueKey));
 
   return options.length !== objArray.length;
@@ -206,7 +206,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
     const triggerToUpdate = (
       this.props.wasFirstOpen
       && (
-       !prevProps.wasFirstOpen
+        !prevProps.wasFirstOpen
         || (
           prevState.array !== this.state.array
           && checkOnNewValuewInArray(this.state.array, this.state.filterData, this.state.options)
@@ -231,7 +231,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
             ),
           );
         } catch (error) {
-          console.error(error); // tslint:disable-line:no-console
+          console.error(error); // eslint-disable-line
 
           this.setState({
             isLoading: false,
@@ -289,7 +289,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
     const { filterData } = props;
 
     this.props.onChange(filterData.valueKey, 'in', value || [], options);
-  }
+  };
 
   render() {
     const { state, props } = this;

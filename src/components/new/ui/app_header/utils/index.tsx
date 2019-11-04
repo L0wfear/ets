@@ -6,7 +6,7 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
-export const isActivemenu = (url: string, path: string | null | undefined, childrenPath: string[] | null | undefined) => {
+export const isActivemenu = (url: string, path: string | null | undefined, childrenPath: Array<string> | null | undefined) => {
   const pathArr = [];
 
   if (path) {
@@ -21,10 +21,10 @@ export const isActivemenu = (url: string, path: string | null | undefined, child
 
 type CheckShowFunc = (
   data: {
-    hiddenNav?: boolean,
+    hiddenNav?: boolean;
     divider?: boolean;
-    checkHidden?: (isShow: boolean, userData: InitialStateSession['userData']) => boolean,
-    permissions: { list: Parameters<typeof validatePermissions>[0] },
+    checkHidden?: (isShow: boolean, userData: InitialStateSession['userData']) => boolean;
+    permissions: { list: Parameters<typeof validatePermissions>[0]; };
   },
   userData: InitialStateSession['userData'],
 ) => boolean;

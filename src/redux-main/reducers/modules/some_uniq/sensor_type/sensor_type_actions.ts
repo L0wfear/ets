@@ -23,7 +23,7 @@ export const actionResetSensorType = (): EtsAction<IStateSomeUniq['sensorTypeLis
   return sensorTypeList;
 };
 
-export const actionGetSensorType = (payload: any, meta: LoadingMeta): EtsAction<Promise<SensorType[]>> => async (dispatch) => {
+export const actionGetSensorType = (payload: any, meta: LoadingMeta): EtsAction<Promise<Array<SensorType>>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetSensorType(payload),
@@ -33,7 +33,7 @@ export const actionGetSensorType = (payload: any, meta: LoadingMeta): EtsAction<
   return response;
 };
 
-export const actionGetAndSetInStoreSensorType = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<SensorType[]>> => async (dispatch) => {
+export const actionGetAndSetInStoreSensorType = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<Array<SensorType>>> => async (dispatch) => {
   const sensorTypeList = await dispatch(
     actionGetSensorType(payloadOwn, meta),
   );

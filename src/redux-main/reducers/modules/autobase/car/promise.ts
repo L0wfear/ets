@@ -141,8 +141,8 @@ export const promiseLoadCarPassport = async (car_id: Car['asuods_id']) => {
 };
 
 type Paylaod = (
-  { car_id: Car['asuods_id'], point_timestamp: number }
-  | { car_id: Car['asuods_id'], date_start: string; date_end: string }
+  { car_id: Car['asuods_id']; point_timestamp: number; }
+  | { car_id: Car['asuods_id']; date_start: string; date_end: string; }
 );
 
 export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {

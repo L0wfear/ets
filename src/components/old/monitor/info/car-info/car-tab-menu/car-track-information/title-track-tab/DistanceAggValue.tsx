@@ -15,9 +15,9 @@ export const getDistanceValue = (distance) => {
 };
 
 const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
-    <span>
-      <span>{getDistanceValue(distance)}</span>
-    </span>
+  <span>
+    <span>{getDistanceValue(distance)}</span>
+  </span>
 );
 
 export default compose<PropsDistanceAggValue, {}>(

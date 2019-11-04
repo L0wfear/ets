@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getFormattedDateTimeSeconds } from 'components/@next/@utils/dates/dates';
 
-export const listData: any[] = [
+export const listData: Array<any> = [
   {
     path: ['duty_mission_data', 'duty_mission_number'],
     title: '№ Задания',

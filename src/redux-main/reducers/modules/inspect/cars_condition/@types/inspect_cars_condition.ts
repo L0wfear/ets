@@ -25,12 +25,12 @@ export type CarsUse = {
   waybill_issue_log_exists: string;
   waybill_issue_log_used: string;
   comment: string;
-  comment_detected: string
+  comment_detected: string;
 };
 
 export type PreparingCarsCheck = {
   order_issued_at: string;
-  order_number: string,
+  order_number: string;
   master_plan_approved: string;
   named_plan_approved: string;
   no_order: boolean;
@@ -56,7 +56,7 @@ export type TypesHarvestingUnit = {
 };
 
 export type InspectCarsCondition = {
-  agents_from_gbu: AgentsFromGbu[];
+  agents_from_gbu: Array<AgentsFromGbu>;
   fio: string;
   position: string;
   cars_cnt: number;
@@ -70,7 +70,7 @@ export type InspectCarsCondition = {
   close_employee_fio: string;
   close_employee_id: number;
   close_employee_position: string;
-  commission_members: CommissionMembers[];
+  commission_members: Array<CommissionMembers>;
   company_id: number;
   company_name: string;
   company_short_name: string;
@@ -94,19 +94,19 @@ export type InspectCarsCondition = {
   status_text: string;
   type: 'cars_condition';
   data?: {
-    types_cars: TypesСar[],
-    types_harvesting_unit: TypesHarvestingUnit[],
+    types_cars: Array<TypesСar>;
+    types_harvesting_unit: Array<TypesHarvestingUnit>;
     preparing_cars_check: PreparingCarsCheck;
-    headcount: HeadcountList,
-    cars_use: CarsUse,
+    headcount: HeadcountList;
+    cars_use: CarsUse;
   };
-  files: any[];
+  files: Array<any>;
   action: string;
 } & DefaultPartInspect;
 
 export type IStateInspectCarsCondition = {
-  companyList: Company[],
-  inspectCarsConditionList: InspectCarsCondition[];
+  companyList: Array<Company>;
+  inspectCarsConditionList: Array<InspectCarsCondition>;
   lastConductingInspect: InspectCarsCondition;
   lastCompletedInspect: InspectCarsCondition;
 };
@@ -205,7 +205,7 @@ export type CarsConditionCars = {
     not_maintenance_and_repair?: boolean;
     own_tech_maintenance?: boolean;
   };
-  files: any[];
+  files: Array<any>;
 };
 
 export type CarsConditionTableDefects = CarsConditionCars & CarsConditionCars['data'];

@@ -46,12 +46,12 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     ? props.isPermittedToUpdate
     : props.isPermittedToCreate;
 
-  const isPermitted =
-    ownIsPermitted &&
-    (isNullOrUndefined(state.company_id) ||
-      state.company_id === userCompanyId);
+  const isPermitted
+    = ownIsPermitted
+    && (isNullOrUndefined(state.company_id)
+      || state.company_id === userCompanyId);
 
-  const roadAccidentCauseOptionsLoad = React.useCallback (async () => {
+  const roadAccidentCauseOptionsLoad = React.useCallback(async () => {
     try {
       setRoadAccidentCauseIsLoading(true);
       const { data } = await dispatch(

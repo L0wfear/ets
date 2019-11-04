@@ -42,15 +42,15 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCols, aggr_fields, filedsRule) => {
+export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
         .reduce((newArrTemp, rows) =>
           makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule),
-          [],
+        [],
         ),
-      );
+    );
   } else {
     const firstItem = data[0] || {};
 
@@ -125,7 +125,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
 
     const deepArr = rows.some((blockData) => isArray(blockData.rows));
     if (deepArr) {
-      rows = rows.reduce((newArr: any[], blockData) => {
+      rows = rows.reduce((newArr: Array<any>, blockData) => {
         newArr.push(...blockData.rows);
 
         return newArr;

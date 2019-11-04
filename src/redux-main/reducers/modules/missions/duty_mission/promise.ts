@@ -46,7 +46,7 @@ export const promiseGetDutyMission = async (payloadOwn: any) => {
     response = null;
   }
 
-  const data: DutyMission[] = get(response, ['result', 'rows'], []).map((dutyMission) => (
+  const data: Array<DutyMission> = get(response, ['result', 'rows'], []).map((dutyMission) => (
     getFrontDutyMission(dutyMission)
   ));
 
@@ -147,7 +147,7 @@ export const promiseChangeArchiveDutuMissionStatus = async (id: DutyMission['id'
   return get(responce, 'result.rows.0', null);
 };
 
-export const promiseRemoveDutyMissions = async (ids: number[]) => {
+export const promiseRemoveDutyMissions = async (ids: Array<number>) => {
   return Promise.all(
     ids.map((idNumber) => (
       promiseRemoveDutyMission(idNumber)

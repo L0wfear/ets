@@ -65,7 +65,7 @@ export default class Table extends React.Component<any, any> {
     this.setState({
       currentPage: num,
     });
-  }
+  };
 
   renderHeader() {
     return (

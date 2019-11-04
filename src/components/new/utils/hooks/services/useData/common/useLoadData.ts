@@ -3,7 +3,7 @@ import LoadingContext from 'components/new/utils/context/loading/LoadingContext'
 import { LoadingServiceGeneric } from 'components/new/utils/context/loading/@types/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export type ListData<ApiConfig extends LoadingServiceGeneric<any, any, any>> = { data: ApiConfig['result'], isLoading: boolean };
+export type ListData<ApiConfig extends LoadingServiceGeneric<any, any, any>> = { data: ApiConfig['result']; isLoading: boolean; };
 
 const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>(apiUrl: ApiConfig['url'], payload: ApiConfig['payload'], page: LoadingMeta['page'], path: LoadingMeta['path']) => {
   const [list, setList] = React.useState<ListData<ApiConfig>>({ data: null, isLoading: true });

@@ -11,7 +11,7 @@ import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseD
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- TypesAttr ---------- */
-export const autobaseSetTypesAttr = (typesAttrList: TypesAttr[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetTypesAttr = (typesAttrList: Array<TypesAttr>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       typesAttrList,

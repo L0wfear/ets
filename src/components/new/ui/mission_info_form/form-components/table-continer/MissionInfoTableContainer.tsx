@@ -6,7 +6,7 @@ import MissionReportByPoints from 'components/new/ui/mission_info_form/form-comp
 
 type PropsMissionInfoTableContainer = {
   type: 'mixed' | 'simple_dt' | 'points';
-  missionReport: any[];
+  missionReport: Array<any>;
   handleSelectedElementChange: (id: number) => any;
 };
 

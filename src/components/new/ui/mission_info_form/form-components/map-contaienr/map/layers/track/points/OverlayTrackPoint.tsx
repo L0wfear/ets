@@ -77,7 +77,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     this.setState({
       objectsString,
     });
-  }
+  };
 
   render() {
     const { objectsString } = this.state;
@@ -129,21 +129,20 @@ class OverlayTrackPoint extends React.Component<Props, any> {
           <div>{`Задание №${missionNumber}`}</div>
         </OverlayLineInfoContainer>
         {
-          !pointSensors.length ?
-          ( <DivNone /> )
-          :
-          (
-            <OverlayLineInfoContainer>
-              <div>Работающие датчики навесного оборудования</div>
-              <SensorsListContainer>
-                {
-                  pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
-                    <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
-                  ))
-                }
-              </SensorsListContainer>
-            </OverlayLineInfoContainer>
-          )
+          !pointSensors.length
+            ? ( <DivNone /> )
+            :          (
+              <OverlayLineInfoContainer>
+                <div>Работающие датчики навесного оборудования</div>
+                <SensorsListContainer>
+                  {
+                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
+                      <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
+                    ))
+                  }
+                </SensorsListContainer>
+              </OverlayLineInfoContainer>
+            )
         }
         <OverlayBoxInfoContainer>
           <OverlayLineInfoContainer>

@@ -170,20 +170,20 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
           || for_column !== prevProps.for_column
           || (
             MISSION_IS_ORDER_SOURCE
-            ? (
-              dependeceTechnicalOperation
+              ? (
+                dependeceTechnicalOperation
               && !prevProps.dependeceTechnicalOperation
-            )
-            : (
-              municipalFacilityForMissionList.length
+              )
+              : (
+                municipalFacilityForMissionList.length
               && !prevProps.municipalFacilityForMissionList.length
-            )
+              )
           )
         )
         && (
           MISSION_IS_ORDER_SOURCE
             ? (
-                dependeceTechnicalOperation
+              dependeceTechnicalOperation
                 || (
                   dependeceTechnicalOperation
                   && !prevProps.dependeceTechnicalOperation
@@ -253,14 +253,14 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         type: (
           MISSION_IS_ORDER_SOURCE
             ? getDependeceTechnicalOperationRouteType(
-                dependeceTechnicalOperation,
-                for_column,
-              )
+              dependeceTechnicalOperation,
+              for_column,
+            )
             : getAvailableRouteTypesMemo(
-                this.props.municipalFacilityForMissionList,
-                municipal_facility_id,
-                for_column,
-              )
+              this.props.municipalFacilityForMissionList,
+              municipal_facility_id,
+              for_column,
+            )
         ).toString(),
       },
       { page, path },
@@ -303,7 +303,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       object_type_id,
       object_type_name,
     });
-  }
+  };
 
   handleRouteIdChange = async (route_id: Mission['route_id'], route?: ValuesOf<StateFieldRouteIdMission['ROUTE_OPTIONS']>) => {
     const route_name = get(route, 'rowData.name', null);
@@ -333,7 +333,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       object_type_id,
       object_type_name,
     });
-  }
+  };
 
   async loadSelectedRoute(route_id: Route['id'] | null) {
     if (route_id) {
@@ -399,7 +399,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         draw_object_list: [],
       },
     });
-  }
+  };
 
   render() {
     const {
@@ -493,10 +493,10 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
                         for_column,
                       )
                       : getAvailableRouteTypesMemo(
-                          this.props.municipalFacilityForMissionList,
-                          municipal_facility_id,
-                          for_column,
-                        )
+                        this.props.municipalFacilityForMissionList,
+                        municipal_facility_id,
+                        for_column,
+                      )
                   )
                 }
                 fromMission={fromMission}

@@ -120,7 +120,7 @@ const actionGetInspectPgmBaseById = (id: Parameters<typeof promiseGetInspectPgmB
   return payload;
 };
 
-export const actionPushDataInInspectPgmBaseList = (inspectionPgmBase: InspectPgmBase): EtsAction<InspectPgmBase[]> => (dispatch, getState) => {
+export const actionPushDataInInspectPgmBaseList = (inspectionPgmBase: InspectPgmBase): EtsAction<Array<InspectPgmBase>> => (dispatch, getState) => {
   const { inspectPgmBaseList } = getInspectPgmBase(getState());
 
   const indexInArrayItem = inspectPgmBaseList.findIndex(({ id }) => id === inspectionPgmBase.id);
@@ -193,40 +193,40 @@ export const actionCreateInspectPgmBase = (payloadOwn: Parameters<typeof promise
 };
 
 export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateInspectionPgmBase>> => async (dispatch) => {
-    const data = cloneDeep(inspectPgmBase.data);
+  const data = cloneDeep(inspectPgmBase.data);
 
-    const agents_from_gbu = get(inspectPgmBase, 'agents_from_gbu', defaultInspectPgmBase.agents_from_gbu);
-    const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
-    const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
-    const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
+  const agents_from_gbu = get(inspectPgmBase, 'agents_from_gbu', defaultInspectPgmBase.agents_from_gbu);
+  const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
+  const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
+  const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
 
-    const payload = {
+  const payload = {
+    data,
+    agents_from_gbu,
+    commission_members,
+    resolve_to,
+    head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
+    head_operating_base: inspectPgmBase.head_operating_base,
+    action,
+  };
+
+  const inspectionPgmBase = await dispatch(
+    actionUpdateInspect(
+      inspectPgmBase.id,
       data,
-      agents_from_gbu,
-      commission_members,
-      resolve_to,
-      head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
-      head_operating_base: inspectPgmBase.head_operating_base,
-      action,
-    };
+      inspectPgmBase.files,
+      meta,
+      payload,
+    ),
+  );
 
-    const inspectionPgmBase = await dispatch(
-      actionUpdateInspect(
-        inspectPgmBase.id,
-        data,
-        inspectPgmBase.files,
-        meta,
-        payload,
-      ),
-    );
+  dispatch(
+    actionPushDataInInspectPgmBaseList(
+      inspectionPgmBase,
+    ),
+  );
 
-    dispatch(
-      actionPushDataInInspectPgmBaseList(
-        inspectionPgmBase,
-      ),
-    );
-
-    return inspectionPgmBase;
+  return inspectionPgmBase;
 };
 
 const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): EtsAction<any> => async (dispatch, getState) => {

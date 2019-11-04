@@ -24,7 +24,7 @@ type ButtonFailMissionStateProps = {
 };
 type ButtonFailMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonFailMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailMissionMergeProps = {};
@@ -117,7 +117,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
 };
 
 export default compose<ButtonFailMissionProps, ButtonFailMissionOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),

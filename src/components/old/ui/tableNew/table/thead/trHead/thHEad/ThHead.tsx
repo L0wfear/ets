@@ -12,7 +12,7 @@ class ThHead extends React.Component<any, any> {
     }
 
     e.preventDefault();
-  }
+  };
 
   render() {
     const { thData } = this.props;
@@ -29,8 +29,8 @@ class ThHead extends React.Component<any, any> {
           <Div>
             <Div>{thData.displayName}</Div>
           </Div>
-          { !thData.notAvailableSort &&
-            <Div className={className}>
+          { !thData.notAvailableSort
+            && <Div className={className}>
               <EtsBootstrap.Glyphicon glyph={this.props.sortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
             </Div>
           }

@@ -26,19 +26,19 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
       selected: {...selected.props.data, rowNumber },
     });
     this.props.onRowSelected(selected); // DataTableInputWrapper.tsx handleRowSelected()
-  }
+  };
   handleAddVehicle = () => {
     this.props.onItemAdd();
     this.setState({
       selected: null,
     });
-  }
+  };
   handleRemoveVehicle = () => {
     this.props.onItemRemove(this.state.selected.rowNumber - 1);
     this.setState({
       selected: null,
     });
-  }
+  };
   render() {
     const {
       addButtonLabel = 'Добавить',
@@ -53,8 +53,8 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
             <EtsHeaderTitle>{this.props.tableTitle ? this.props.tableTitle : ''}</EtsHeaderTitle>
             <EtsButtonsContainer marginContainerY={5}>
               {
-                !this.props.hideButtons &&
-                  <React.Fragment>
+                !this.props.hideButtons
+                  && <React.Fragment>
                     <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
                     <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
                   </React.Fragment>

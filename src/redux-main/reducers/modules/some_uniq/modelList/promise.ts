@@ -10,7 +10,7 @@ export const promiseGetModelList = async (payload) => {
     //
   }
 
-  const data: ModelElement[] = get(response, ['result', 'rows'], []);
+  const data: Array<ModelElement> = get(response, ['result', 'rows'], []);
 
   return {
     data,

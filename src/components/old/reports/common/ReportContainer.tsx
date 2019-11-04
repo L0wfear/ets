@@ -152,7 +152,7 @@ class ReportContainer extends React.Component<
       let rows = get(old_data, ['result', 'rows'], null);
       const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
       if (deepArr) {
-        rows = rows.reduce((newArr: any[], blockData) => {
+        rows = rows.reduce((newArr: Array<any>, blockData) => {
           newArr.push(...blockData.rows);
 
           return newArr;
@@ -192,7 +192,7 @@ class ReportContainer extends React.Component<
         let rows = get(old_data, ['result', 'rows'], null);
         const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
         if (deepArr) {
-          rows = rows.reduce((newArr: any[], blockData) => {
+          rows = rows.reduce((newArr: Array<any>, blockData) => {
             newArr.push(...blockData.rows);
 
             return newArr;
@@ -243,8 +243,8 @@ class ReportContainer extends React.Component<
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
-          const prevFields =
-            get(this.props.prevTableMetaInfo, 'fields', []) || [];
+          const prevFields
+            = get(this.props.prevTableMetaInfo, 'fields', []) || [];
 
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
@@ -573,7 +573,7 @@ class ReportContainer extends React.Component<
         ...obj,
       },
     }));
-  }
+  };
 
   render() {
     const {
@@ -608,20 +608,20 @@ class ReportContainer extends React.Component<
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
 
-    const preloader = (this.props.reportMetaFetching ||
-      this.props.reportDataFetching ||
-      this.state.exportFetching) && <PreloadNew typePreloader="mainpage" />;
+    const preloader = (this.props.reportMetaFetching
+      || this.props.reportDataFetching
+      || this.state.exportFetching) && <PreloadNew typePreloader="mainpage" />;
     const moveUpButton = moveUpIsPermitted && (
       <EtsBootstrap.Button bsSize="small" onClick={this.handleMoveUp}>
         На уровень выше
       </EtsBootstrap.Button>
     );
 
-    const isSummaryEnable =
-      'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+    const isSummaryEnable
+      = 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
-    const summaryTable =
-      (this.props.notUseServerSummerTable && isSummaryEnable ? (
+    const summaryTable
+      = (this.props.notUseServerSummerTable && isSummaryEnable ? (
         <DataTableNew
           title={this.props.summaryTitle || 'Итого'}
           tableMeta={summaryTableMeta}
@@ -631,8 +631,8 @@ class ReportContainer extends React.Component<
           uniqName={this.state.uniqName}
           noFilter
         />
-      ) : ( isSummaryEnable &&
-        <Table
+      ) : ( isSummaryEnable
+        && <Table
           className="data-other"
           title={'Итого'}
           tableMeta={summaryTableMeta}

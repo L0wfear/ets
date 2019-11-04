@@ -19,7 +19,7 @@ export type StatePropsDutyMission = {
 };
 
 export type DispatchPropsDutyMission = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
   employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
   employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
   actionPrintFormDutyMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormDutyMission>;
@@ -38,7 +38,7 @@ export type OwnDutyMissionProps = (
     formErrors: Partial<Record<keyof DutyMission, string>>;
     canSave: boolean;
     isPermitted: boolean;
-    updateFormErrors: () => any,
+    updateFormErrors: () => any;
     submitAction: (mission: DutyMission) => Promise<any>;
     defaultSubmit: () => Promise<any>;
 

@@ -5,7 +5,7 @@ import { get } from 'lodash';
 export const employeeLoadEmployee = (payload = {}) => (
   EmployeeService.get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+      console.info(error); // eslint-disable-line
 
       return {
         result: {
@@ -52,7 +52,7 @@ export const employeeDeleteEmployee = (id) => {
 export const employeeLoadDriver = (payload = {}) => (
   DriverService.get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+      console.info(error); // eslint-disable-line
 
       return {
         result: [],

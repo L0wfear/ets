@@ -16,9 +16,9 @@ export type PropsLayerGeooobjects = {
   monitorPageAddToSelectedGeoobjects: any;
 };
 
-interface TypeGeoObjectDataIndex {
+type TypeGeoObjectDataIndex = {
   [id: string]: GeozonesDataByIndex;
-}
+};
 
 export type TypeGeoObjectData = {
   show: boolean;

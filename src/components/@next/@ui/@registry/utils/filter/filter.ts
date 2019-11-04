@@ -107,7 +107,7 @@ const filterArrayByLt = <F extends any>(row_value: any, filter_value: any, field
 
 type FiltersValidate = Array<{
   type: string;
-  filterFunc: <F extends any>(row_value: any, filter_value: any, field_data: ValuesOf<FilterFields<F>>) => boolean
+  filterFunc: <F extends any>(row_value: any, filter_value: any, field_data: ValuesOf<FilterFields<F>>) => boolean;
 }>;
 const filtersValidate: FiltersValidate = [
   {
@@ -161,7 +161,7 @@ export const filterArray = <F extends any>(array: ArrayRegisrty<F>, filter_value
           return dataForFilter.filterFunc(row_value, value, field_data);
         }
 
-        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // tslint:disable-line:no-console
+        console.info('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // eslint-disable-line
         return false;
       });
     });

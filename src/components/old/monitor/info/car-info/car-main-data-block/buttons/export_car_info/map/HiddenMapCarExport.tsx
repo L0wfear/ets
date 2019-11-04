@@ -10,7 +10,7 @@ import LayerFuelEventPoint from 'components/old/monitor/layers/track/events/fuel
 
 import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 
-const Container = styled.div<{ width?: number; height?: number}>`
+const Container = styled.div<{ width?: number; height?: number;}>`
   position: absolute;
   z-index: -1;
   width: ${({ width }) => `${width || 1920}px`};
@@ -28,30 +28,30 @@ const HiddenMapCarExport: React.FC<PropsMapWrap> = React.memo(
   (props) => (
     <Container width={props.width} height={props.height}>
       <MapEtsConsumer>
-      {
-        ({ setMapToContext, removeMapToContext }) => (
-          <MapEts
-            enableInteractions
-            disabledCenterOn={false}
-            disabledMouseSingleClick={false}
-            setMapToContext={setMapToContext}
-            removeMapToContext={removeMapToContext}
-            mapKey={props.mapKey}
-          >
-            {
-              ({ map, centerOn }) => (
-                <div>
-                  <LayerTrackLines map={map} needCenterOnAfterUpdate centerOn={centerOn} />
-                  {/* <LayerTrackPoints map={map} /> */}
-                  <LayerTrackLinesBySensor map={map} />
-                  <LayerParkingPoints map={map} />
-                  <LayerFuelEventPoint map={map} />
-                </div>
-              )
-            }
-          </MapEts>
-        )
-      }
+        {
+          ({ setMapToContext, removeMapToContext }) => (
+            <MapEts
+              enableInteractions
+              disabledCenterOn={false}
+              disabledMouseSingleClick={false}
+              setMapToContext={setMapToContext}
+              removeMapToContext={removeMapToContext}
+              mapKey={props.mapKey}
+            >
+              {
+                ({ map, centerOn }) => (
+                  <div>
+                    <LayerTrackLines map={map} needCenterOnAfterUpdate centerOn={centerOn} />
+                    {/* <LayerTrackPoints map={map} /> */}
+                    <LayerTrackLinesBySensor map={map} />
+                    <LayerParkingPoints map={map} />
+                    <LayerFuelEventPoint map={map} />
+                  </div>
+                )
+              }
+            </MapEts>
+          )
+        }
       </MapEtsConsumer>
     </Container>
   ),

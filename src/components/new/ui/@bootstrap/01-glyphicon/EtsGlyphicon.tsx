@@ -9,7 +9,7 @@ export type EtsGlyphiconProps = {
   className?: string;
   fontSize?: string;
   color?: string;
-  glyph: keyof typeof glyphMap,
+  glyph: keyof typeof glyphMap;
 };
 
 const spin = keyframes`

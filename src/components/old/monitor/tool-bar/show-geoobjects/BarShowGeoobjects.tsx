@@ -45,10 +45,10 @@ class BarShowGeoobjects extends React.Component<any, any> {
         showGeoObjList: !this.state.showGeoObjList,
       });
     }
-  }
+  };
   toggleShowStatus: any = ({ currentTarget: { dataset: { type } } }) => {
     this.props.toggleShowStatus([type]);
-  }
+  };
 
   toggleAllStatus = (event) => {
     if (this.props.companiesIndex !== -1) {
@@ -71,7 +71,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
         );
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -160,5 +160,4 @@ export default compose(
     null,
     mergedPropd,
   ),
-)
-(BarShowGeoobjects);
+)(BarShowGeoobjects);

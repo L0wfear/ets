@@ -9,7 +9,7 @@ type Props = {
   value: MissionTemplate['for_column'];
   error: string;
   disabled: boolean;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 
   page: string;
   path: string;

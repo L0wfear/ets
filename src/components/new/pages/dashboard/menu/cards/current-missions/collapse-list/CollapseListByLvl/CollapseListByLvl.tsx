@@ -10,7 +10,7 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
 type Props = {
-  collapsetItems: CurrentMissionsItemsType[];
+  collapsetItems: Array<CurrentMissionsItemsType>;
   handleClick: (lastSubItem: ValuesOf<ValuesOf<CurrentMissionsItemsType['subItems']>['subItems']>) => any;
   classNameContainer?: string;
 };

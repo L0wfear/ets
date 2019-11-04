@@ -9,7 +9,7 @@ export type OnFormHideType = (isSubmitted: any, result?: any) => void;
 
 export type ViewInspectCarsConditionTableStateProps = {};
 export type ViewInspectCarsConditionTableDispatchProps = {
-  autobaseGetCarsConditionCars: HandleThunkActionCreator<typeof inspectionCarsConditionActions.autobaseGetCarsConditionCars>,
+  autobaseGetCarsConditionCars: HandleThunkActionCreator<typeof inspectionCarsConditionActions.autobaseGetCarsConditionCars>;
 };
 export type ViewInspectCarsConditionTableOwnProps = {
   element: InspectCarsCondition;

@@ -6,7 +6,7 @@ import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_reques
 
 // export type EdcRequestInfoData = (Mission | DutyMission)[];
 
-export const promiseGetEdcRequestInfo = async (payload: {id: number, original: boolean}) => {
+export const promiseGetEdcRequestInfo = async (payload: {id: number; original: boolean;}) => {
   let response = null;
 
   const id = get(payload, 'id', null);
@@ -18,7 +18,7 @@ export const promiseGetEdcRequestInfo = async (payload: {id: number, original: b
     response = null;
   }
 
-  const data: EdcRequestInfo[] = get(response, 'result.rows', []).reduce(
+  const data: Array<EdcRequestInfo> = get(response, 'result.rows', []).reduce(
     (newData, currentRequest) => {
       const missions = get(currentRequest, 'missions', []).map((mission, index) => {
         const number = get(mission, 'number', '');

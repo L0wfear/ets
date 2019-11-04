@@ -8,7 +8,7 @@ const InsurancePolicyFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "insurance_policy_form" */ 'components/new/pages/nsi/autobase/pages/insurance_policy/form/InsurancePolicyForm'),
 );
 
-const InsurancePolicyFormLazy: React.FC<WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap }> = React.memo(
+const InsurancePolicyFormLazy: React.FC<WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap; }> = React.memo(
   (props) => {
     const element = React.useMemo(
       () => {
@@ -34,6 +34,6 @@ const InsurancePolicyFormLazy: React.FC<WithFormRegistrySearchAddProps<Insurance
   },
 );
 
-export default withFormRegistrySearch<WithFormRegistrySearchProps<InsurancePolicy> & { selectedCarData?: CarWrap }, InsurancePolicy>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<InsurancePolicy> & { selectedCarData?: CarWrap; }, InsurancePolicy>({
   add_path: 'insurance-policy',
 })(InsurancePolicyFormLazy);

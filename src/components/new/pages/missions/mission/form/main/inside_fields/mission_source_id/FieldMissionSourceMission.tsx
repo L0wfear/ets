@@ -36,7 +36,7 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
       mission_source_name: get(option, ['rowData', 'name'], ''),
       mission_source_text: get(option, ['rowData', 'name'], ''),
     })
-  )
+  );
 
   render() {
     const {

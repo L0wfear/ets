@@ -109,16 +109,16 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
         });
       }
     }
-  }
+  };
 
   makeOptionFromTireSizeList = (
     memoize(
-      (tireSizeList: TireSize[]) => tireSizeList.map(defaultSelectListMapper),
+      (tireSizeList: Array<TireSize>) => tireSizeList.map(defaultSelectListMapper),
     )
   );
   makeOptionFromTireModelList = (
     memoize(
-      (tireModelList: TireModel[]) => tireModelList.map(defaultSelectListMapper),
+      (tireModelList: Array<TireModel>) => tireModelList.map(defaultSelectListMapper),
     )
   );
 
@@ -139,8 +139,8 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     const isPermitterToUpdateInitialMileage = !IS_CREATING
-    ? (this.props.isPermitterToUpdateInitialMileage && isGivenAway)
-    : this.props.isPermitterToUpdateInitialMileage;
+      ? (this.props.isPermitterToUpdateInitialMileage && isGivenAway)
+      : this.props.isPermitterToUpdateInitialMileage;
 
     const isPermitted = !IS_CREATING
       ? (this.props.isPermittedToUpdate && isGivenAway)
@@ -240,7 +240,7 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
                     </EtsBootstrap.Col>
                   </React.Fragment>
                 )
-              }
+            }
             <EtsBootstrap.Col md={12}>
               <TireToVehicleBlock
                 onChange={this.props.handleChange}

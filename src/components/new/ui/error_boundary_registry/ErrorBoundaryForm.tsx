@@ -3,7 +3,7 @@ import * as Raven from 'raven-js';
 import { DivNone } from 'global-styled/global-styled';
 import { getErrorNotificationFromBack } from 'utils/notifications';
 
-class ErrorBoundaryForm extends React.Component<any, { hasError: boolean }> {
+class ErrorBoundaryForm extends React.Component<any, { hasError: boolean; }> {
   state = {
     hasError: false,
   };
@@ -15,8 +15,8 @@ class ErrorBoundaryForm extends React.Component<any, { hasError: boolean }> {
   }
 
   componentDidCatch(error, info) {
-    console.log(error); // tslint:disable-line:no-console
-    console.log(info); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
+    console.info(info); // eslint-disable-line
     global.NOTIFICATION_SYSTEM.notify(getErrorNotificationFromBack('Произошла непредвиденная ошибка'));
     Raven.captureException(new Error(error));
   }

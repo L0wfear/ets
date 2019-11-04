@@ -75,10 +75,10 @@ export default class ReactSelect extends React.Component<any, any> {
       } else {
         openMenuIds[key] = true;
       }
-      console.log('%cСлушаюсь', 'font-size: 18px; background: #222; color: #bada55'); // tslint:disable-line:no-console
+      console.info('%cСлушаюсь', 'font-size: 18px; background: #222; color: #bada55'); // eslint-disable-line
       this.forceUpdate();
     }
-  }
+  };
 
   handleChange = (objectValue) => {
     const {
@@ -98,18 +98,18 @@ export default class ReactSelect extends React.Component<any, any> {
       ),
       !multi
         ? objectValue
-        : objectValue ?
-          objectValue
+        : objectValue
+          ? objectValue
           : [],
     );
-  }
+  };
 
   menuListRender = (props: any) => {
     if (props.children.length > 500 && !detectIE()) {
       return <VirtualizedSelectList {...props} />;
     }
     return <MenuList {...props} />;
-  }
+  };
 
   multiValueContainerReander = (props: any) => {
     if (this.props.multiValueContainerReander) {
@@ -117,7 +117,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <components.MultiValueContainer {...props} />;
-  }
+  };
 
   optionRenderer = ({ innerProps, ...props }: any) => {
     const { components: propsComponents } = this.props;
@@ -132,7 +132,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <components.Option innerProps={newInnerProps} {...props} />;
-  }
+  };
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
 
@@ -151,21 +151,21 @@ export default class ReactSelect extends React.Component<any, any> {
       )
       && (
         isArray(value)
-        ? (
-          !value.includes(valueOpt)
-        )
-        : (
-          !isNullOrUndefined(value)
-            ? (
-              value !== valueOpt
-            )
-            : (
-              true
-            )
-        )
+          ? (
+            !value.includes(valueOpt)
+          )
+          : (
+            !isNullOrUndefined(value)
+              ? (
+                value !== valueOpt
+              )
+              : (
+                true
+              )
+          )
       )
     );
-  }
+  };
 
   singleValueRender = ({ innerProps, ...props }: SingleValueProps<any>) => {
     const {
@@ -189,7 +189,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <SingleValue innerProps={newInnerProps} {...props}  />;
-  }
+  };
 
   multiValueRender = ({ innerProps, ...props }: MultiValueProps<any>) => {
     const { components: propsComponents } = this.props;
@@ -211,7 +211,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <MultiValue innerProps={newInnerProps} {...props} />;
-  }
+  };
   makeOptions = memoizeOne(
     (options, sortingFunction) => options.sort(sortingFunction),
   );
@@ -237,13 +237,11 @@ export default class ReactSelect extends React.Component<any, any> {
     let value = props.value;
 
     if (legacy) {
-      value = value !== null && value !== undefined ?
-          multi ?
-              sortedOptions.filter(({ value: op_value }) => value.includes(op_value))
-            :
-              sortedOptions.find(({ value: op_value }) => op_value === value)
-        :
-          null;
+      value = value !== null && value !== undefined
+        ? multi
+          ? sortedOptions.filter(({ value: op_value }) => value.includes(op_value))
+          :              sortedOptions.find(({ value: op_value }) => op_value === value)
+        :          null;
     }
 
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;

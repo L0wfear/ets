@@ -17,7 +17,7 @@ export type PropsLayerCarMarker = {
 
   carActualGpsNumberIndex: any;
   lastPoint: any;
-  odh_mkad: any[];
+  odh_mkad: Array<any>;
   statusShow: any;
   filters: any;
 
@@ -31,22 +31,22 @@ export type PropsLayerCarMarker = {
 
 export type OneWsDataCardata = {
   company_id: number | void;
-  contract_type_ids: string[] | void;
-  contractor_ids: number[] | void;
-  customer_ids: number[] | void;
+  contract_type_ids: Array<string> | void;
+  contractor_ids: Array<number> | void;
+  customer_ids: Array<number> | void;
   gov_number: string;
   gps_code: string;
   model_id: number | void;
   owner_id: number | void;
-  provider_ids: number[] | void;
+  provider_ids: Array<number> | void;
   type_id: number | void;
 };
 
 export type OneWsData = {
   car: OneWsDataCardata;
   connection_status_date: number | void;
-  coords: number[];
-  coords_msk: number[];
+  coords: Array<number>;
+  coords_msk: Array<number>;
   direction: number | void;
   distance: number;
   id: string;

@@ -29,7 +29,7 @@ export const promiseLoadCountry = async () => {
     console.error('Error', error); // tslint:disable-line
   }
 
-  const result: Country[] = get(response, 'result.rows', []);
+  const result: Array<Country> = get(response, 'result.rows', []);
 
   return {
     list: result,
@@ -45,7 +45,7 @@ export const promiseLoadAutobaseEngineType = async () => {
     console.error('Error', error); // tslint:disable-line
   }
 
-  const result: EngineType[] = get(response, 'result.rows', []);
+  const result: Array<EngineType> = get(response, 'result.rows', []);
 
   return {
     list: result,

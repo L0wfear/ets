@@ -29,13 +29,13 @@ type DispatchProps = {
   dispatch: EtsDispatch;
 };
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper, StateProps, DispatchProps {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
   geozone_type: string;
   element_type: string;
   car_func_types_ids: any;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper & StateProps & DispatchProps;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   componentDidMount() {
@@ -75,7 +75,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange('geozone_type', value);
-  }
+  };
   handleSubmit = () => {
     const {
       date_start,
@@ -99,7 +99,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       ? requestBody
       : omit(requestBody, 'car_func_types_ids'),
     );
-  }
+  };
   render() {
     const {
       date_start,

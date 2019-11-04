@@ -9,10 +9,10 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { spareAvailableCarGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_available_car/actions';
 
-interface IPropsSpareToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
+type IPropsSpareToVehicleBlock = {
   spareId: number;
   errors: any;
-}
+} & ISharedPropsDataTableInput & IExternalPropsDataTableInputWrapper;
 
 const SpareToVehicleBlock: React.FC<IPropsSpareToVehicleBlock> = React.memo(
   (props) => {
@@ -21,7 +21,7 @@ const SpareToVehicleBlock: React.FC<IPropsSpareToVehicleBlock> = React.memo(
 
     React.useEffect(
       () => {
-        const payload: { spare_id?: number } = {};
+        const payload: { spare_id?: number; } = {};
         if (props.spareId) {
           payload.spare_id = props.spareId;
         }

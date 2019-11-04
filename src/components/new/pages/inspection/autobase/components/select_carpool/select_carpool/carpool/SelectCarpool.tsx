@@ -27,7 +27,7 @@ type SelectCarpoolProps = (
   & WithSearchProps
 );
 
-const filterPgmBaseByCompany = (carpoolList: Carpool[], companyId: number) => (
+const filterPgmBaseByCompany = (carpoolList: Array<Carpool>, companyId: number) => (
   carpoolList.filter(({ contractor_id }) => contractor_id === companyId)
 );
 

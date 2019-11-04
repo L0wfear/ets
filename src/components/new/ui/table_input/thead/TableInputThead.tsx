@@ -3,7 +3,7 @@ import { TableMeta } from '../TableInput';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type TableInputTheadProps = {
-  meta: TableMeta<any>[];
+  meta: Array<TableMeta<any>>;
 };
 
 const TableInputThead: React.FC<TableInputTheadProps> = React.memo(

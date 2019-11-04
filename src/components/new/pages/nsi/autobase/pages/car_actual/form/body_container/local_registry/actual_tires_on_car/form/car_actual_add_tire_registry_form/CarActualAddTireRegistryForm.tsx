@@ -61,7 +61,7 @@ const CarActualAddTireRegistryForm: React.FC<Props> = (props) => {
       onHide={props.handleHide}
       show
       bsSize="large"
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{`Добавить запись`}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

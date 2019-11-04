@@ -19,5 +19,5 @@ export type MaintenanceRate = {
 };
 
 export type IStateMaintenanceRate = {
-  maintenanceRateList: MaintenanceRate[],
+  maintenanceRateList: Array<MaintenanceRate>;
 };

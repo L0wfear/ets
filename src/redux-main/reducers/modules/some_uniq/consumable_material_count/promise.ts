@@ -5,7 +5,7 @@ import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
 type PayloadMission = {
-  type: 'duty_mission' | 'mission',
+  type: 'duty_mission' | 'mission';
   norm_id: number;
   municipal_facility_id: number;
   date: string;
@@ -27,7 +27,7 @@ export const promiseLoadConsumableMaterialCountMission = async ({ type, ...paylo
     console.error(error); // tslint:disable-line
   }
 
-  const result: ConsumableMaterialCountMission[] = get(response, 'result.rows', []);
+  const result: Array<ConsumableMaterialCountMission> = get(response, 'result.rows', []);
 
   return {
     data: result,

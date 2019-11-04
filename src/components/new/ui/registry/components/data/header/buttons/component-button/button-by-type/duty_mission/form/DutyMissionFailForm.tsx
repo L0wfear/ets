@@ -49,7 +49,7 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
         id="modal-duty-mission-reject"
         onHide={props.handleHide}
         show
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{`Введите причину для наряд-задания №${element.number}`}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

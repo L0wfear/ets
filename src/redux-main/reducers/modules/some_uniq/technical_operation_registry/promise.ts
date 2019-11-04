@@ -11,7 +11,7 @@ export const promiseGetTechnicalOperationRegistry = async (payload) => {
     response = null;
   }
 
-  const data: TechnicalOperationRegistry[] = get(response, ['result', 'rows'], []);
+  const data: Array<TechnicalOperationRegistry> = get(response, ['result', 'rows'], []);
 
   return {
     data,

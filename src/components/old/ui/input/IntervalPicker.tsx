@@ -11,10 +11,6 @@ type Props = {
 };
 
 export default class IntervalPicker extends React.Component<Props, any> {
-  constructor(props) {
-    super(props);
-  }
-
   getInterval() {
     return this.props.interval || this.props.defDate || [null, null];
   }

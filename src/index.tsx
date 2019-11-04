@@ -9,7 +9,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
- /* 3rd party js */
+/* 3rd party js */
 import './assets/main.scss';
 /* Вспомогательные утилиты,
  * требующие постоянного нахождения в специфичном элементе в DOM

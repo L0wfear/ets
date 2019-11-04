@@ -48,20 +48,18 @@ class Tbody extends React.Component<any, any> {
     }
 
     return summObj;
-  }
+  };
 
   render() {
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
-      {
-        this.props.hasData
-        ?
-          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 1 }).arr
-        :
-          <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey="none">
-            <EtsBootstrap.Grid.GridBootstrapTbody.Td colSpan={9999}>{'Нет данных'}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-          </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
-      }
+        {
+          this.props.hasData
+            ?          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 1 }).arr
+            :          <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey="none">
+              <EtsBootstrap.Grid.GridBootstrapTbody.Td colSpan={9999}>{'Нет данных'}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+            </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+        }
       </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
     );
   }

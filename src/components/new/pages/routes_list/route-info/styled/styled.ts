@@ -5,7 +5,7 @@ export const RouteInfoContainerDiv = styled(EtsBootstrap.Row)`
   margin: 10px -15px;
 `;
 
-export const RouteName = styled.div<{ isDisplay?: boolean }>`
+export const RouteName = styled.div<{ isDisplay?: boolean; }>`
   margin-bottom: 10px;
   display: ${({ isDisplay }) => !isDisplay ? 'none' : 'initial'}
 `;

@@ -205,7 +205,7 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
               onChange={props.handleChange}
               page={page}
               path={path}
-              />
+            />
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
                 <FieldMissionSourceMission

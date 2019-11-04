@@ -9,7 +9,7 @@ import Map from 'ol/Map';
 type PropsLayerProps = {
   map: Map;
   center?: [number, number];
-  zoom?: number,
+  zoom?: number;
   centerOn?: any;
   [key: string]: any;
 };
@@ -21,7 +21,7 @@ type StateLayerProps = {
 
 type TypeConfig = {
   zoom?: boolean;
-  centerOn?: boolean,
+  centerOn?: boolean;
   map?: boolean;
 };
 
@@ -57,7 +57,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
         this.props.map.addLayer(olLayer);
         this.setState({ vectorSource, olLayer }, () => res(id));
       });
-    }
+    };
     removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer = () => {
       return new Promise((res) => {
         const { olLayer } = this.state;
@@ -66,7 +66,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
           this.setState({ olLayer: null, vectorSource: null }, res);
         }
       });
-    }
+    };
 
     getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource = () => this.state.vectorSource;
     getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer = () => this.state.olLayer;
@@ -79,10 +79,10 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
           this.state.vectorSource.addFeature(feature)
         ));
       }
-    }
+    };
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById = (id) => {
       return this.state.vectorSource.getFeatureById(id);
-    }
+    };
 
     removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource = (features, all) => {
       const { vectorSource } = this.state;
@@ -90,7 +90,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
         if (all) {
           vectorSource.clear();
         } else {
-          const featureArr: Feature[] = Array.isArray(features) ? features : [features as Feature];
+          const featureArr: Array<Feature> = Array.isArray(features) ? features : [features as Feature];
           try {
             featureArr.forEach((feature) => this.state.vectorSource.removeFeature(feature));
           } catch (e) {
@@ -99,17 +99,17 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
           }
         }
       }
-    }
+    };
 
     setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer = (name, value) => {
       if (this.state.olLayer) {
         this.state.olLayer.set(name, value);
       }
-    }
+    };
 
     getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures = () => (
       this.state.vectorSource.getFeatures()
-    )
+    );
 
     render() {
       const { map, zoom, center, centerOn, ...props } = this.props;
@@ -128,7 +128,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
           map={config.map ? map : undefined}
           centerOn={config.centerOn ? centerOn : undefined}
           { ...props }
-          />
+        />
       );
     }
   }

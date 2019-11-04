@@ -85,7 +85,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
    * Дополнительная инициализация после componentDidMount
    * может быть переопределена в дочерних классах
    */
-  init(...arg: any[]) {
+  init(...arg: Array<any>) {
     //
   }
 
@@ -152,7 +152,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  onFormHide = (...arg: any[]) => {
+  onFormHide = (...arg: Array<any>) => {
     this.setState({
       showForm: false,
       selectedElement: null,

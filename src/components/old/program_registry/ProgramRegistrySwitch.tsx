@@ -70,7 +70,7 @@ const validate = (state, errors) => {
     formErrors[key] = validateField(prop, formState[key], formState, schema, {});
     return formErrors;
   },
-    { ...errors },
+  { ...errors },
   );
 };
 

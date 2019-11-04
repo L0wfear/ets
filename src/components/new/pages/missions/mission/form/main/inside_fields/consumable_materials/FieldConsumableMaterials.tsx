@@ -45,7 +45,7 @@ type Props = {
   formDataKey: FormKeys & ('mission' | 'duty_mission');
 };
 
-const metaConsumableMaterialsRaw: TableMeta<ValuesOf<Mission['consumable_materials']>>[] = [
+const metaConsumableMaterialsRaw: Array<TableMeta<ValuesOf<Mission['consumable_materials']>>> = [
   metaConsumableMaterialId,
   metaNormValue,
   metaPlanValue,
@@ -111,7 +111,7 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
           }
           if (!is_mission_progress_countable || props.formDataKey === 'duty_mission') {
             if (d.key === 'mission_progress_fact_value') {
-             return false;
+              return false;
             }
           }
 
@@ -123,9 +123,9 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
 
     // const dispatch = etsUseDispatch();
     React.useEffect(() => {
-        // dispatch(actionGetAndSetInStoreNormsByParams(null, meta));
-        // dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
-      }, [],
+      // dispatch(actionGetAndSetInStoreNormsByParams(null, meta));
+      // dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
+    }, [],
     );
 
     return (

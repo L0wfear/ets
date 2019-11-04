@@ -249,8 +249,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           {
-            !isCustomUserCard &&
-              <EtsBootstrap.Col md={6}>
+            !isCustomUserCard
+              && <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="VIN (из системы):"
@@ -264,8 +264,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               </EtsBootstrap.Col>
           }
           {
-            !isCustomUserCard &&
-              <EtsBootstrap.Col md={6}>
+            !isCustomUserCard
+              && <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="boolean"
                   label="Некорректный VIN:"
@@ -290,8 +290,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             />
           </EtsBootstrap.Col>
           {
-            !isCustomUserCard &&
-              <EtsBootstrap.Col md={6}>
+            !isCustomUserCard
+              && <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="Заводской номер (из системы):"
@@ -305,8 +305,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               </EtsBootstrap.Col>
           }
           {
-            !isCustomUserCard &&
-              <EtsBootstrap.Col md={6}>
+            !isCustomUserCard
+              && <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="boolean"
                   label="Некорректный заводской номер:"
@@ -344,8 +344,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 Доп. информация
               </EtsBootstrap.Button>
               {
-                additionalInfoMainShow &&
-                  <AdditionalInfoBlock>
+                additionalInfoMainShow
+                  && <AdditionalInfoBlock>
                     <EtsBootstrap.Row>
                       <EtsBootstrap.Col md={6}>
                         <ExtField
@@ -428,7 +428,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           error={errors.data.classifier}
                           clearable={false}
                           disabled={!props.isPermitted}
-                          boundKeys={"classifier"}
+                          boundKeys={'classifier'}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Row>
@@ -477,7 +477,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.osago}
               boundKeys="osago"
               disabled={!props.isPermitted || state.data.osago_not_required}
-          />
+            />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
@@ -701,8 +701,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 }
               </EtsBootstrap.Button>
               {
-                defectShow &&
-                  <AdditionalInfoBlock>
+                defectShow
+                  && <AdditionalInfoBlock>
                     <EtsBootstrap.Row>
                       <EtsBootstrap.Col md={6}>
                         <h5>Выявленные дефекты ТС при внешнем осмотре:</h5>
@@ -857,29 +857,29 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
-              <ExtField
-                type="string"
-                label="Пробег на дату проведения последнего ТО:"
-                value={state.odometr_fact}
-                onChange={props.handleChange}
-                error={errors.odometr_fact}
-                boundKeys="odometr_fact"
-                disabled={!props.isPermitted}
-                inline
-              />
-            </EtsBootstrap.Col>
+            <ExtField
+              type="string"
+              label="Пробег на дату проведения последнего ТО:"
+              value={state.odometr_fact}
+              onChange={props.handleChange}
+              error={errors.odometr_fact}
+              boundKeys="odometr_fact"
+              disabled={!props.isPermitted}
+              inline
+            />
+          </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-              <ExtField
-                type="string"
-                label="Наработка м/ч на дату проведения последнего ТО:"
-                value={state.motohours_fact}
-                onChange={props.handleChange}
-                error={errors.motohours_fact}
-                boundKeys="motohours_fact"
-                disabled={!props.isPermitted}
-                inline
-              />
-            </EtsBootstrap.Col>
+            <ExtField
+              type="string"
+              label="Наработка м/ч на дату проведения последнего ТО:"
+              value={state.motohours_fact}
+              onChange={props.handleChange}
+              error={errors.motohours_fact}
+              boundKeys="motohours_fact"
+              disabled={!props.isPermitted}
+              inline
+            />
+          </EtsBootstrap.Col>
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>

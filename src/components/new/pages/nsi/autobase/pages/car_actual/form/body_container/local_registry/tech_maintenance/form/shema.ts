@@ -91,9 +91,9 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
           const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
 
           if (
-            (fact_date_start || fact_date_end) &&
-            !value &&
-            !hasMotohours(gov_number)
+            (fact_date_start || fact_date_end)
+            && !value
+            && !hasMotohours(gov_number)
           ) {
             return getRequiredFieldMessage('Пробег на момент ТО, км');
           }
@@ -112,9 +112,9 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
           const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
 
           if (
-            (fact_date_start || fact_date_end) &&
-            !value &&
-            hasMotohours(gov_number)
+            (fact_date_start || fact_date_end)
+            && !value
+            && hasMotohours(gov_number)
           ) {
             return getRequiredFieldMessage('Счетчик м/ч на момент ТО, м/ч');
           }

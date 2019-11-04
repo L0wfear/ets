@@ -19,23 +19,23 @@ export const getCarTabInfo = (carInfoData: any) => {
 export const getMaxSpeeds = (missions) =>
   missions.length
     ? missions.reduce(
-        (maxSpeeds, mission) => {
-          const { speed_limits } = mission;
-          maxSpeeds.mkad_speed_lim = Math.min(
-            speed_limits.mkad_speed_lim,
-            maxSpeeds.mkad_speed_lim,
-          );
-          maxSpeeds.speed_lim = Math.min(
-            speed_limits.speed_lim,
-            maxSpeeds.speed_lim,
-          );
-          return maxSpeeds;
-        },
-        {
-          mkad_speed_lim: missions[0].speed_limits.mkad_speed_lim,
-          speed_lim: missions[0].speed_limits.speed_lim,
-        },
-      )
+      (maxSpeeds, mission) => {
+        const { speed_limits } = mission;
+        maxSpeeds.mkad_speed_lim = Math.min(
+          speed_limits.mkad_speed_lim,
+          maxSpeeds.mkad_speed_lim,
+        );
+        maxSpeeds.speed_lim = Math.min(
+          speed_limits.speed_lim,
+          maxSpeeds.speed_lim,
+        );
+        return maxSpeeds;
+      },
+      {
+        mkad_speed_lim: missions[0].speed_limits.mkad_speed_lim,
+        speed_lim: missions[0].speed_limits.speed_lim,
+      },
+    )
     : { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed };
 
 export const checkOnMkad = ({ coords_msk }, odh_mkad) =>
@@ -75,7 +75,7 @@ export const checkAndModifyTrack = async (
         color: sensorsMapOptions(indexLevel).color,
         show: false,
       }),
-        (indexLevel += 1);
+      (indexLevel += 1);
     }
 
     return newObj;
@@ -160,7 +160,7 @@ export const checkAndModifyTrack = async (
   );
 
   const front_events_list = Object.values(events)
-    .reduce<any[]>((newArr, eventData: any[]) => {
+    .reduce<Array<any>>((newArr, eventData: Array<any>) => {
       newArr.push(
         ...eventData.map((event) => {
           return {

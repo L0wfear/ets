@@ -9,8 +9,8 @@ import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/empl
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 type UseCarDriversListAns = {
-  primaryDriverOptions: DefaultSelectOption<number, string, Employee>[],
-  secondaryDriverOptions: DefaultSelectOption<number, string, Employee>[],
+  primaryDriverOptions: Array<DefaultSelectOption<number, string, Employee>>;
+  secondaryDriverOptions: Array<DefaultSelectOption<number, string, Employee>>;
 };
 type UseCarDriversList = (
   drivers_data: CarWrap['drivers_data'],
@@ -23,7 +23,7 @@ type UseCarDriversList = (
 
 const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, path, employeePromise, driverPromise) => {
   const [employeeIndex, setEmployeeIndex] = React.useState<Record<Employee['id'], Employee>>({});
-  const [driverList, setDriverList] = React.useState<Driver[]>([]);
+  const [driverList, setDriverList] = React.useState<Array<Driver>>([]);
 
   React.useEffect(
     () => {

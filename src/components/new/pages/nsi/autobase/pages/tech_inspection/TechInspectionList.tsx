@@ -37,7 +37,7 @@ const TechInspectionList: React.FC<Props> = (props) => {
       <TechInspectionFormLazy
         registryKey={registryKey}
         selectedCarData={selectedCarData}
-        />
+      />
     </Registry>
   );
 };

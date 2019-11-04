@@ -1,4 +1,4 @@
 export type IStateOldReport = {
-  odhCoverageReport: any[],
-  dtCoverageReport: any[],
+  odhCoverageReport: Array<any>;
+  dtCoverageReport: Array<any>;
 };

@@ -54,7 +54,7 @@ import { makeConsumableMaterialFront } from 'redux-main/reducers/modules/consuma
 import { registryIsPermitedByKey } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Tr';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
-const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: any[]) => any[]> = {
+const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: Array<any>) => Array<any>> = {
   dutyMissionTemplate: (array) => array.map(getFrontDutyMission),
   employee: (array) => array.map(getFrontEmployee),
   typesAttr: (array) => array.map(getFrontTypesAttr),
@@ -290,7 +290,7 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
   return result;
 };
 
-export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: F[] = []): EtsAction<Promise<void>> => async (dispatch, getState) => {
+export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const idRequestTime = +(new Date());
 
   dispatch(actionSetLoadingStatus(registryKey, true));
@@ -323,7 +323,7 @@ export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey
     const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
     // сплющивание массивов
-    const arrayRawResult: any[] = get(result, typeAns) || [];
+    const arrayRawResult: Array<any> = get(result, typeAns) || [];
     const newDataObj: object = keyBy(responseDataList, uniqKey);
     arrayRaw = arrayRawResult.map(
       (resultElem) => {
@@ -407,7 +407,7 @@ export const registryChangeServiceData = (registryKey: string, Service: OneRegis
   },
 });
 
-export const registryChangeData = <F extends Record<string, any>>(registryKey: string, arrayRaw: F[], total_count: number, objectExtra: any): EtsAction<any> => (dispatch, getState) => {
+export const registryChangeData = <F extends Record<string, any>>(registryKey: string, arrayRaw: Array<F>, total_count: number, objectExtra: any): EtsAction<any> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const Service = get(registryData, 'Service');
   const getRegistryData = get(Service, 'getRegistryData');
@@ -567,7 +567,7 @@ export const applyFilterValues = (registryKey: string, filterValues: OneRegistry
   };
 
   if (__DEVELOPMENT__) {
-    console.log('SAVE FILTER', processed.filterValues); // tslint:disable-line:no-console
+    console.info('SAVE FILTER', processed.filterValues); // eslint-disable-line
   } else {
     let filterAsString: string | object = '';
 
@@ -577,7 +577,7 @@ export const applyFilterValues = (registryKey: string, filterValues: OneRegistry
       filterAsString = processed.filterValues;
     }
 
-    console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
+    console.info('SAVE FILTER', filterAsString); // eslint-disable-line
   }
 
   dispatch(
@@ -837,7 +837,7 @@ export const registryGlobalCheck = (registryKey: string): EtsAction<void> => (di
   );
 };
 
-export const registryChangeGroupActiveColumn = (registryKey: string, payload: {key: string, value: any}): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeGroupActiveColumn = (registryKey: string, payload: {key: string; value: any;}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const list = get(registryData, 'list');
 
@@ -859,7 +859,7 @@ export const registryChangeGroupActiveColumn = (registryKey: string, payload: {k
 };
 
 // добавление новой строки в реестре, по кнопкке ButtonAddNewRowTable
-export const registryAddNewRow = (registryKey: string, payload: { defaultRowValue: any }): EtsAction<void> => (dispatch, getState) => {
+export const registryAddNewRow = (registryKey: string, payload: { defaultRowValue: any; }): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const list = get(registryData, 'list');
 
@@ -1009,7 +1009,7 @@ export const actionUnselectSelectedRowToShow = <F extends Record<string, any>>(r
   }
 };
 
-export const registryRemoveSelectedRows = <F extends Record<string, any>>(registryKey: string, rows?: F[]): EtsAction<Promise<boolean>> => async (dispatch, getState) => {
+export const registryRemoveSelectedRows = <F extends Record<string, any>>(registryKey: string, rows?: Array<F>): EtsAction<Promise<boolean>> => async (dispatch, getState) => {
   let itemToRemove = rows;
 
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
@@ -1193,7 +1193,7 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
       let putRes = get(response, 'result.rows.0');
 
       if (!putRes) {
-        throw new Error("Неверный формат даанных с сервера, или пустое значение");
+        throw new Error('Неверный формат даанных с сервера, или пустое значение');
       }
 
       if (registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
@@ -1232,7 +1232,7 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
   );
 };
 
-export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string, value: any }): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
 
@@ -1255,7 +1255,7 @@ export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(r
   );
 };
 
-export const registryChangeRenderOptions = <F extends Record<string, any>>(registryKey: string, payload: {options: any}): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeRenderOptions = <F extends Record<string, any>>(registryKey: string, payload: {options: any;}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
 

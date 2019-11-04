@@ -44,34 +44,34 @@ const CarForm: React.FC<PropsCar> = React.memo(
     return (
       <CarActualRegistryFormContext.Provider value={contextValue}>
         <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
-        <EtsBootstrap.ModalHeader closeButton>
-          <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <CarFormBodyHeader isPermitted={isPermitted} />
-          <CarFormBodyContainer
-            isPermitted={isPermitted}
-            formState={state}
-            formErrors={errors}
-            onChange={props.handleChange}
-            onChangeBoolean={props.handleChangeBoolean}
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
+          <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+            <CarFormBodyHeader isPermitted={isPermitted} />
+            <CarFormBodyContainer
+              isPermitted={isPermitted}
+              formState={state}
+              formErrors={errors}
+              onChange={props.handleChange}
+              onChangeBoolean={props.handleChangeBoolean}
 
-            page={props.page}
-            path={props.path}
-          />
-        </ModalBodyPreloader>
-        <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+              page={props.page}
+              path={props.path}
+            />
+          </ModalBodyPreloader>
+          <EtsBootstrap.ModalFooter>
+            {
+              isPermitted // либо обновление, либо создание
+                ? (
+                  <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
       </CarActualRegistryFormContext.Provider>
     );
   },

@@ -3,7 +3,7 @@ import { List } from 'react-virtualized';
 import { VirtualizedOption } from './styled/styled';
 
 type Props = {
-  children: any[]; // Возможно реакт
+  children: Array<any>; // Возможно реакт
   [k: string]: any;
 };
 

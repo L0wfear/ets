@@ -26,7 +26,7 @@ type ButtonFailDutyMissionStateProps = {
 type ButtonFailDutyMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionFailDutyMissionByPartialData: HandleThunkActionCreator<typeof actionFailDutyMissionByPartialData>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonFailDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailDutyMissionMergeProps = {};
@@ -39,7 +39,7 @@ type ButtonFailDutyMissionProps = (
 );
 
 const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
-  const [missionsFail, setMissionsFail] = React.useState<DutyMission[]>([]);
+  const [missionsFail, setMissionsFail] = React.useState<Array<DutyMission>>([]);
   const [edcRequestIds, setEdcRequestIds] = React.useState(null);
   const requestFormHide = React.useCallback(
     () => {
@@ -144,7 +144,7 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
 };
 
 export default compose<ButtonFailDutyMissionProps, ButtonFailDutyMissionOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),

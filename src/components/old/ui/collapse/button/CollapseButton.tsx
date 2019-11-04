@@ -20,7 +20,7 @@ class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseB
     this.setState({
       isOpen: !this.state.isOpen,
     });
-  }
+  };
 
   render() {
     const { isOpen } = this.state;

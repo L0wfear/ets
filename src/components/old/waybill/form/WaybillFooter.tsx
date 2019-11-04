@@ -12,7 +12,7 @@ const savePermissions = [
   waybillPermissions.departure_and_arrival_values,
 ];
 
-interface IPropsWaybillFooter {
+type IPropsWaybillFooter = {
   isCreating: boolean;
   isDraft: boolean;
   canSave: boolean;
@@ -31,13 +31,13 @@ interface IPropsWaybillFooter {
     update: boolean;
     departure_and_arrival_values: boolean;
   };
-}
+};
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
 
 const popoverHoverFocus = (
   <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
-   {message}
+    {message}
   </EtsBootstrap.Popover>
 );
 

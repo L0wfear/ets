@@ -91,22 +91,22 @@ const SelectCarsConditionChecksType: React.FC<SelectCarsConditionChecksTypeProps
   return (
     <InstectionBlockSelect>
       <SelectLabel md={3} sm={2}>
-          <h5>
+        <h5>
             Тип проверки
-          </h5>
-        </SelectLabel>
-        <SelectField md={9} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={checksType}
-            options={checksTypeOptions}
-            onChange={setChecksTypeId}
-            clearable={false}
-            disabled={status !== INSPECT_STATUS.noToday}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={checksType}
+          options={checksTypeOptions}
+          onChange={setChecksTypeId}
+          clearable={false}
+          disabled={status !== INSPECT_STATUS.noToday}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

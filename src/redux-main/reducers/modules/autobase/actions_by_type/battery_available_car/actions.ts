@@ -8,7 +8,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- BatteryAvailableCar ---------- */
-export const autobaseSetBatteryAvailableCar = (batteryAvailableCarList: BatteryAvailableCar[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
+export const autobaseSetBatteryAvailableCar = (batteryAvailableCarList: Array<BatteryAvailableCar>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       batteryAvailableCarList,

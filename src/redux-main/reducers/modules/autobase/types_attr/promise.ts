@@ -13,10 +13,10 @@ export const promiseLoadTypesAttr = async (payload = {}) => {
   try {
     result = await TypesAttrService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
-  const data: TypesAttr[] = get(result, 'result.rows', []);
+  const data: Array<TypesAttr> = get(result, 'result.rows', []);
 
   return {
     data,

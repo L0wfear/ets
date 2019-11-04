@@ -12,8 +12,8 @@ export type dependenciesDisableFieldFunc<K, F, P> = (
   props: P,
 ) => any;
 
-export type DependenciesField<K, F, P> = DependenciesFieldFunc<K, F, P>[];
-export type dependenciesDisableField<K, F, P> = dependenciesDisableFieldFunc<K, F, P>[];
+export type DependenciesField<K, F, P> = Array<DependenciesFieldFunc<K, F, P>>;
+export type dependenciesDisableField<K, F, P> = Array<dependenciesDisableFieldFunc<K, F, P>>;
 
 export type CommonPropertie<K, F, P> = {
   title: string;
@@ -44,7 +44,7 @@ export type CommonPropertie<K, F, P> = {
         reverse?: boolean;
       }
     )>
-  )
+  );
 
   dependencies?: DependenciesField<K, F, P>;
   dependenciesDisable?: dependenciesDisableField<K, F, P>;
@@ -94,7 +94,7 @@ export type ObjectProperty<K, P> = {
   schema: SchemaType<K, P>;
 };
 export type AnyProperty<K, F, P> = CommonPropertie<K, F, P> & {
-  title?: string
+  title?: string;
   type: 'any';
 };
 
@@ -127,5 +127,5 @@ export type PropertieType<F, P> = {
 };
 
 export type SchemaType<F, P> = {
-  properties: PropertieType<F, P>,
+  properties: PropertieType<F, P>;
 };

@@ -12,7 +12,7 @@ type Props = {
 const OrdetToInstruction: React.FC<Props> = React.memo(
   (props) => {
     const objectExtra = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.objectExtra);
-    const array: Array<{ instruction: string }> = get(objectExtra, 'array');
+    const array: Array<{ instruction: string; }> = get(objectExtra, 'array');
 
     const arrayData = React.useMemo(
       () => {
@@ -34,20 +34,20 @@ const OrdetToInstruction: React.FC<Props> = React.memo(
         <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
           {
             arrayData && arrayData.length
-            ? (
-              <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
-                {
-                  arrayData.map((rowData) => (
-                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{rowData.instruction}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-                  ))
-                }
-              </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
-            )
-            : (
-              <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
-                <EtsBootstrap.Grid.GridBootstrapTbody.Td>Нет данных</EtsBootstrap.Grid.GridBootstrapTbody.Td>
-              </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
-            )
+              ? (
+                <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
+                  {
+                    arrayData.map((rowData) => (
+                      <EtsBootstrap.Grid.GridBootstrapTbody.Td>{rowData.instruction}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                    ))
+                  }
+                </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+              )
+              : (
+                <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Td>Нет данных</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+              )
           }
         </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
       </EtsBootstrap.Grid.GridTable>

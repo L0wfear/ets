@@ -10,7 +10,7 @@ import BlockCommentData from './blocks/commet/BlockCommentData';
 
 type EdcRequestCommentsProps = {
   element: Pick<EdcRequest, 'id'> & Partial<EdcRequest>;
-  handleHide: (...arg: any[]) => any;
+  handleHide: (...arg: Array<any>) => any;
 
   page: string;
   path: string;
@@ -40,24 +40,24 @@ const EdcRequestComments: React.FC<EdcRequestCommentsProps> = (props) => {
               edcRequestComments.isLoading ? (
                 <PreloadNew typePreloader="field" />
               )
-              : (
-                !edcRequestComments.list.length
-                  ? (
-                    <h4>Отсутствуют</h4>
-                  )
-                  : (
-                    edcRequestComments.list.map(
-                      (rowData, index) => (
-                        <BlockCommentData
-                          key={index + 1}
-                          date={rowData.date}
-                          fio={rowData.user_fio}
-                          comment={rowData.comment}
-                        />
-                      ),
+                : (
+                  !edcRequestComments.list.length
+                    ? (
+                      <h4>Отсутствуют</h4>
                     )
-                  )
-              )
+                    : (
+                      edcRequestComments.list.map(
+                        (rowData, index) => (
+                          <BlockCommentData
+                            key={index + 1}
+                            date={rowData.date}
+                            fio={rowData.user_fio}
+                            comment={rowData.comment}
+                          />
+                        ),
+                      )
+                    )
+                )
             }
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

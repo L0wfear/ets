@@ -5,7 +5,7 @@ import { FutureMissionsItemsByTypeType } from 'components/new/pages/dashboard/re
 
 type Props = {
   handleClick: (id: number) => any;
-  collapsetItems: FutureMissionsItemsByTypeType[];
+  collapsetItems: Array<FutureMissionsItemsByTypeType>;
 };
 
 const CollapseListFutureMission: React.FC<Props> = React.memo(

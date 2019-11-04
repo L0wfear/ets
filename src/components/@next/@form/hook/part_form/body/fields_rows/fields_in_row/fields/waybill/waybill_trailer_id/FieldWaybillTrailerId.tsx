@@ -16,15 +16,15 @@ const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
       IS_DRAFT
         ? (
           <FieldWaybillTrailerIdArray
-              formDataKey={props.formDataKey}
-              md={props.md}
-            />
+            formDataKey={props.formDataKey}
+            md={props.md}
+          />
         )
         : (
-            <FieldWaybillTrailerIdString
-              formDataKey={props.formDataKey}
-              md={props.md}
-            />
+          <FieldWaybillTrailerIdString
+            formDataKey={props.formDataKey}
+            md={props.md}
+          />
         )
     );
   },

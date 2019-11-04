@@ -62,7 +62,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jsx|js|ts|tsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: [
           "thread-loader",

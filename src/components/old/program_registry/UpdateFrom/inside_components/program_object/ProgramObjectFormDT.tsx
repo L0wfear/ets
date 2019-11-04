@@ -31,6 +31,8 @@ import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import { polyState } from 'constants/polygons';
 import memoizeOne from 'memoize-one';
 import { isNullOrUndefined } from 'util';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -42,7 +44,7 @@ const getObjectsType = (slug) => {
       return 'simple_dt';
   }
 };
-const log = {};
+const log: any = {};
 
 const makeSelector = memoizeOne((dtPolys) =>
   Object.entries(dtPolys).reduce((newObj, [key, data]) => {
@@ -55,11 +57,19 @@ const makeSelector = memoizeOne((dtPolys) =>
   }, {}),
 );
 
-class ProgramObjectFormDT extends UNSAFE_Form {
-  static defaultProps = {
-    tabKey: OBJ_TAB_INDEX.PLAN,
-  };
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
+type Props = (
+  DispatchProps
+  & OwnProps
+);
+type State = any;
 
+class ProgramObjectFormDT extends UNSAFE_Form<Props, State> {
   constructor(props) {
     super(props);
 
@@ -99,12 +109,12 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           : isNotDrawAllObjectOuter;
 
         if (!IS_CREATING) {
-          const changesState = {
+          const changesState: any = {
             manual,
             isNotDrawAllObject,
           };
 
-          const changesFormState = {};
+          const changesFormState: any = {};
           if (isNotDrawAllObject) {
             changesFormState.draw_object_list = draw_object_list;
             changesFormState.objectsType = getObjectsType('mixed');
@@ -148,8 +158,16 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetAndSetInStoreDt().then(({ dtList: data }) => {
-            const changesState = { manual, isNotDrawAllObject };
+          this.props.dispatch(
+            actionsDt.getArrayAndSetInStore(
+              {},
+              {
+                page: null,
+                path: null,
+              },
+            ),
+          ).then(({ data }) => {
+            const changesState: any = { manual, isNotDrawAllObject };
             changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
@@ -266,7 +284,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     if (IS_CREATING) {
       const { dtPolys } = this.state;
 
-      const plan_shape_json = {
+      const plan_shape_json: any = {
         isNotDrawAllObject,
       };
 
@@ -405,7 +423,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         {
           name: object_address,
           object_id: asuods_id,
-          asuods_id: asuods_id,
+          asuods_id,
           state: dtPolys[asuods_id].state,
           type: type_slug,
         },
@@ -428,7 +446,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const {
       formState: state,
       formErrors: errors,
-      tabKey,
+      tabKey = OBJ_TAB_INDEX.PLAN,
       contractorList = [],
       isPermittedByPermission,
       isPermitted: isPermittedDefault,
@@ -710,21 +728,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
 export default compose(
   tabable,
-  connect(
+  connect<any, any, any, ReduxState>(
     (state) => ({
       dtPolys: makeSelector(getGeoobjectState(state).dtPolys),
     }),
-    (dispatch) => ({
-      actionGetAndSetInStoreDt: () =>
-        dispatch(
-          actionsDt.getArrayAndSetInStore(
-            {},
-            {
-              page: null,
-              path: null,
-            },
-          ),
-        ),
-    }),
   ),
-)(connectToStores(ProgramObjectFormDT, ['repair']));
+)(connectToStores(ProgramObjectFormDT, ['repair'])) as any;

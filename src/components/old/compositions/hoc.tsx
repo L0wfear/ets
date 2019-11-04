@@ -42,7 +42,7 @@ export const onChangeWithKeys = compose<any, any>(
   }),
 );
 
-export const tabable = compose(
+export const tabable = compose<any, any>(
   withState('tabKey', 'setTabKey', undefined),
   withHandlers({ handleTabSelect: ({ setTabKey }) => (key1, key2) => setTabKey(typeof key1 === 'string' ? key1 : key2) }),
 );

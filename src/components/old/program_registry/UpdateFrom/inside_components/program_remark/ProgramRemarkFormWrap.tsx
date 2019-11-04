@@ -5,7 +5,12 @@ import ProgramRemarkForm from 'components/old/program_registry/UpdateFrom/inside
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-class ProgramRemarkFormWrap extends UNSAFE_FormWrap {
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+class ProgramRemarkFormWrap extends UNSAFE_FormWrap<Props, State> {
   constructor(props, context) {
     super(props);
     this.schema = formValidationSchema;
@@ -60,4 +65,4 @@ class ProgramRemarkFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default withRequirePermission()(ProgramRemarkFormWrap);
+export default withRequirePermission<any>()(ProgramRemarkFormWrap);

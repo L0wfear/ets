@@ -1,16 +1,17 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 import ModalBody from 'components/old/ui/Modal';
-// import Div from 'components/old/ui/Div';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { connectToStores } from 'utils/decorators';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { actionGetAndSetInStoreTechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
-import { connect } from 'react-redux';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 const PermittedSlug = ['dt', 'odh'];
 const setTypeOptionsBySlug = (slug, allOptions) => {
@@ -24,8 +25,13 @@ const setTypeOptionsBySlug = (slug, allOptions) => {
   }
 };
 
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
 @connectToStores(['repair'])
-class ProgramRegistryForm extends UNSAFE_Form {
+class ProgramRegistryForm extends UNSAFE_Form<Props, State> {
   state = { REPAIR_TYPES_OPTIONS: [] };
   componentDidMount() {
     const { flux } = this.context;
@@ -183,7 +189,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
   }
 }
 
-export default connect((state) => ({
+export default connect((state: ReduxState) => ({
   technicalOperationObjectsList: getSomeUniqState(state)
     .technicalOperationObjectsList,
 }))(ProgramRegistryForm);

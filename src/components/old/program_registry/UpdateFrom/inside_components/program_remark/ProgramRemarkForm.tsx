@@ -7,7 +7,12 @@ import Div from 'components/old/ui/Div';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
-export default class SparePartForm extends UNSAFE_Form {
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+class ProgramRemarkForm extends UNSAFE_Form<Props, State> {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
@@ -94,3 +99,5 @@ export default class SparePartForm extends UNSAFE_Form {
     return null;
   }
 }
+
+export default ProgramRemarkForm;

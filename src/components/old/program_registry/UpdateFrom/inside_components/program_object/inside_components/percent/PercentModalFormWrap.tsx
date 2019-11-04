@@ -9,11 +9,18 @@ import PercentModalForm from 'components/old/program_registry/UpdateFrom/inside_
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-class PercentModalFormWrap extends UNSAFE_FormWrap {
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
+  schema = formValidationSchema;
+  preventDefaultNotification = true;
+  defaultElement: any;
+
   constructor(props) {
     super(props);
-    this.schema = formValidationSchema;
-    this.preventDefaultNotification = true;
 
     const { object_id } = props;
 
@@ -43,8 +50,8 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
   /**
    * @override
    */
-  validate(state, errors) {
-    if (typeof this.schema === 'undefined') return errors;
+  validate = (state, errors) => {
+    if (typeof this.schema === 'undefined') { return errors; }
 
     const schema = this.schema;
     const formState = { ...state };
@@ -57,13 +64,14 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
           formState[key],
           formState,
           this.schema,
+          this.props,
         );
         return formErrors;
       },
       { ...errors },
     );
 
-    const { other: { minPercent, minReviewedAt } = {} } = this.props;
+    const { other: { minPercent, minReviewedAt } = {} as any } = this.props;
 
     if (state.percent < minPercent) {
       newErrors.percent
@@ -105,4 +113,4 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default withRequirePermission()(PercentModalFormWrap);
+export default withRequirePermission<any>()(PercentModalFormWrap);

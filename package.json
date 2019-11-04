@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.534",
+    "version": "2.32.537",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -112,8 +112,6 @@
         "openurl": "^1.1.1",
         "path-to-regexp": "^3.1.0",
         "polished": "^3.4.2",
-        "prettier": "^1.18.2",
-        "prettier-standard": "^15.0.1",
         "react-hot-loader": "^4.12.15",
         "reconnectingwebsocket": "^1.0.0",
         "redux-devtools-extension": "^2.13.8",
@@ -155,7 +153,6 @@
         "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "bump": "node webpack/utils/updateVersion.js",
-        "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
         "test": "cross-env JEST_JUNIT_OUTPUT_DIR='./coverageDirectory' jest",
         "lint-staged": "lint-staged",
         "log-version": "node webpack/utils/logVersion.js"
@@ -166,11 +163,6 @@
         }
     },
     "lint-staged": {
-        "src/**/*.{js,jsx}": [
-            "prettier --write",
-            "eslint --quiet --fix",
-            "git add"
-        ],
         "src/**/*.{ts,tsx}": [
             "tslint --project tsconfig.json -c tslint.json --fix",
             "git add"

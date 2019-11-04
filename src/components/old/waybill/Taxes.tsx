@@ -57,7 +57,7 @@ export default class Taxes extends React.Component<any, any> {
     const result = data.reduce(
       (res, cur) => {
         if (typeof cur.RESULT !== 'undefined') {
-          res += parseFloat(cur.RESULT); // eslint-disable-line
+          res += parseFloat(cur.RESULT); // tslint:disable-line:no-console
         }
         return res;
       },
@@ -73,7 +73,7 @@ export default class Taxes extends React.Component<any, any> {
     const result = data.reduce(
       (res, cur) => {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
-          res += parseFloat(cur.FACT_VALUE); // eslint-disable-line
+          res += parseFloat(cur.FACT_VALUE); // tslint:disable-line:no-console
         }
         return res;
       },

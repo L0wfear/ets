@@ -11,12 +11,14 @@ import {
 } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-class ProgramObjectFormWrap extends UNSAFE_FormWrap {
-  constructor(props) {
-    super(props);
-    this.schema = formValidationSchema;
-    this.preventDefaultNotification = true;
-  }
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
+  schema = formValidationSchema;
+  preventDefaultNotification = true;
 
   createAction = (formState) =>
     this.context.flux.getActions('repair').programObject('post', formState);
@@ -27,12 +29,12 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   handleMultiChange = (fields) => {
     let formErrors = { ...this.state.formErrors };
     const formState = { ...this.state.formState };
-    const newState = {};
+    const newState: any = {};
 
-    Object.entries(fields).forEach(([field, e]) => {
+    Object.entries(fields).forEach(([field, e]: any) => {
       const value
         = e !== undefined && e !== null && !!e.target ? e.target.value : e;
-      console.info('Form changed', field, value);
+      console.info('Form changed', field, value);  // tslint:disable-line
       formState[field] = value;
     });
 
@@ -49,8 +51,10 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
     this.setState(newState);
   };
 
-  validate(state, errors) {
-    if (typeof this.schema === 'undefined') return errors;
+  validate = (state, errors) => {
+    if (typeof this.schema === 'undefined') {
+      return errors;
+    }
 
     const schema = this.schema;
     const formState = { ...state };
@@ -69,6 +73,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
           formState[key],
           formState,
           this.schema,
+          this.props,
         );
         return formErrors;
       },
@@ -87,6 +92,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
               el[key],
               el,
               elementsValidationSchema,
+              this.props,
             );
             return elErrors;
           }, {}),
@@ -138,7 +144,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
     }
     if (error) {
       new Promise((res) => res()).then(() => {
-        console.log('нет типа объекта'); // eslint-disable-line
+        console.log('нет типа объекта'); // tslint:disable-line
         this.props.onFormHide();
       });
     }
@@ -186,4 +192,4 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default withRequirePermission()(ProgramObjectFormWrap);
+export default withRequirePermission<any>()(ProgramObjectFormWrap);

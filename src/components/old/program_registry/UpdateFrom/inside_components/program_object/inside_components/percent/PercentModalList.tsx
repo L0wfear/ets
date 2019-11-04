@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as moment from 'moment';
-import { isEmpty } from 'lodash';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import UNSAFE_ElementsList from 'components/old/program_registry/UNSAFE_ElementsList';
@@ -16,9 +17,18 @@ import {
 import PercentModalTable from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
 import PercentModalFormWrap from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
 import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+
+type Props = {
+  updateObjectData: any;
+  object_id: any;
+  isPermittedPercentByStatus: any;
+
+  onHide: any;
+};
+type State = any;
 
 @connectToStores(['repair'])
 @staticProps({
@@ -29,7 +39,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
   formComponent: PercentModalFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
 })
-class PercentModalList extends UNSAFE_ElementsList {
+class PercentModalList extends UNSAFE_ElementsList<Props, State> {
   constructor(props) {
     super(props);
     this.keyPressDisabled = true;
@@ -85,11 +95,11 @@ class PercentModalList extends UNSAFE_ElementsList {
   /**
    * @override
    */
-  getButtons(propsButton = {}) {
+  getButtons(propsButton: any = {}) {
     const { isPermittedPercentByStatus } = this.props;
 
     // Операции, заданные в статической переменной operations класса-наследника
-    const entity = this.constructor.entity;
+    const entity = (this.constructor as any).entity;
     const buttons = [];
 
     const {
@@ -103,7 +113,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         buttonName={BCbuttonName}
         key={buttons.length}
         onClick={this.createElement}
-        permissions={`${entity}.create`}
+        permission={`${entity}.create`}
         disabled={!isPermittedPercentByStatus}
       />,
     );
@@ -113,7 +123,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         key={buttons.length}
         onClick={this.showForm}
         disabled={this.checkDisabledRead() || !isPermittedPercentByStatus}
-        permissions={`${entity}.read`}
+        permission={`${entity}.read`}
       />,
     );
     buttons.push(
@@ -122,7 +132,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         key={buttons.length}
         onClick={this.removeElement}
         disabled={this.checkDisabledDelete() || !isPermittedPercentByStatus}
-        permissions={`${entity}.delete`}
+        permission={`${entity}.delete`}
       />,
     );
 
@@ -146,7 +156,7 @@ class PercentModalList extends UNSAFE_ElementsList {
    * @override
    */
   getForms() {
-    const FormComponent = this.constructor.formComponent;
+    const FormComponent = (this.constructor as any).formComponent;
     const forms = [];
 
     if (!FormComponent) {
@@ -163,8 +173,8 @@ class PercentModalList extends UNSAFE_ElementsList {
         setNewSelectedElement={this.setNewSelectedElement}
         entity={this.entity}
         onCallback={this.formCallback}
-        meta={this.constructor.formMeta}
-        renderers={this.constructor.formRenderers}
+        meta={(this.constructor as any).formMeta}
+        renderers={(this.constructor as any).formRenderers}
         permissions={[`${this.entity}.read`]}
         other={other}
         checkMinVals={this.checkMinVals}
@@ -198,8 +208,8 @@ class PercentModalList extends UNSAFE_ElementsList {
   }
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<any, any, any, ReduxState>(
+  (state) => ({
     userData: getSessionState(state).userData,
-  })),
+  }),
 )(PercentModalList);

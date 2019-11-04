@@ -7,7 +7,12 @@ import Div from 'components/old/ui/Div';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
-export default class PercentModalForm extends UNSAFE_Form {
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+export default class PercentModalForm extends UNSAFE_Form<Props, State> {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
@@ -23,7 +28,9 @@ export default class PercentModalForm extends UNSAFE_Form {
     const IS_CREATING = !state.id;
 
     let title = 'Просмотр записи';
-    if (IS_CREATING) title = 'Добавление записи';
+    if (IS_CREATING) {
+      title = 'Добавление записи';
+    }
 
     return (
       <EtsBootstrap.ModalContainer

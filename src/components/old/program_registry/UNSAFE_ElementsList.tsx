@@ -85,7 +85,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
    * Дополнительная инициализация после componentDidMount
    * может быть переопределена в дочерних классах
    */
-  init() {
+  init(...arg: any[]) {
     //
   }
 
@@ -185,7 +185,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
         })
     );
 
-    global.confirmDialog({
+    return global.confirmDialog({
       title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })

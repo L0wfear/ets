@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
@@ -11,12 +13,12 @@ import {
 import ProgramRemarkTable from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
 import ProgramRemarkFormWrap from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 export const ButtonChangeStatus = ({
-  permissions,
+  permission,
   onClick,
   disabled,
   buttonName,
@@ -24,7 +26,7 @@ export const ButtonChangeStatus = ({
   <EtsBootstrap.Button
     bsSize="small"
     onClick={onClick}
-    permissions={permissions}
+    permissions={permission}
     disabled={disabled}>
     {buttonName}
   </EtsBootstrap.Button>
@@ -66,6 +68,14 @@ const notifyTexts = {
   },
 };
 
+type Props = {
+  program_version_id: any;
+  program_version_status: any;
+
+  programRemarkRegistryList: any[];
+};
+type State = any;
+
 @connectToStores(['repair'])
 @staticProps({
   entity: 'repair_program_version',
@@ -75,7 +85,11 @@ const notifyTexts = {
   tableComponent: ProgramRemarkTable,
   operations: [],
 })
-class ProgramRemarkList extends UNSAFE_CheckableElementsList {
+class ProgramRemarkList extends UNSAFE_CheckableElementsList<Props, State> {
+  updateAction: any;
+  rejectRemarksAction: any;
+  fixRemarksAction: any;
+
   constructor(props, context) {
     super(props);
     const { program_version_id } = props;
@@ -97,7 +111,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       .removeProgramRemark(id, { program_version_id });
   };
 
-  removeCheckedElements = () => {
+  removeCheckedElements = async () => {
     this.defActionFunc({
       bodyConfirmDialog: bodyConfirmDialogs.remove,
       callbackForCheckedElement: this.removeElementAction,
@@ -108,8 +122,8 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
   /**
    * @override
    */
-  removeElement = () => {
-    return confirmDialog({
+  removeElement = async () => {
+    return global.confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
@@ -121,7 +135,9 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
         }),
       )
-      .catch(() => {});
+      .catch(() => {
+        //
+      });
   };
 
   rejectRemarksCheckedElements = () => {
@@ -133,7 +149,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     });
   };
   rejectRemarksElement = () => {
-    return confirmDialog({
+    return global.confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.reject(1),
     })
@@ -145,7 +161,9 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.reject(1));
         }),
       )
-      .catch(() => {});
+      .catch(() => {
+        //
+      });
   };
 
   fixRemarksCheckedElements = () => {
@@ -157,7 +175,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     });
   };
   fixRemarksElement = () => {
-    return confirmDialog({
+    return global.confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.fix(1),
     })
@@ -169,7 +187,9 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.fix(1));
         }),
       )
-      .catch(() => {});
+      .catch(() => {
+        //
+      });
   };
 
   defActionFunc = ({
@@ -184,7 +204,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     const countCheckEl = checkElList.length;
 
     if (countCheckEl !== 0) {
-      confirmDialog({
+      global.confirmDialog({
         title: 'Внимание',
         body: bodyConfirmDialog(countCheckEl),
       })
@@ -202,7 +222,9 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
             selectedElement: null,
           });
         })
-        .catch(() => {});
+        .catch(() => {
+          //
+        });
     } else {
       callBackForOneElement().then(() => this.updateAction());
     }
@@ -212,7 +234,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
    * @override
    */
   getButtons = () => {
-    const entity = this.constructor.entity;
+    const entity = (this.constructor as any).entity;
     const { program_version_status } = this.props;
 
     const buttons = [
@@ -224,7 +246,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           this.checkDisabledDelete()
           || program_version_status !== 'sent_on_review'
         }
-        permissions="route.review"
+        permission="route.review"
       />,
       <ButtonChangeStatus
         buttonName={'Отклонено'}
@@ -233,7 +255,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         disabled={
           this.checkDisabledDelete() || program_version_status !== 'rejected'
         }
-        permissions={[`${entity}.update`]}
+        permission={`${entity}.update`}
       />,
       <ButtonChangeStatus
         buttonName={'Исправлено'}
@@ -242,13 +264,13 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         disabled={
           this.checkDisabledDelete() || program_version_status !== 'rejected'
         }
-        permissions={[`${entity}.update`]}
+        permission={`${entity}.update`}
       />,
       <ButtonCreateNew
         buttonName={'Добавить'}
         key={3}
         onClick={this.createElement}
-        permissions="route.review"
+        permission="route.review"
         disabled={program_version_status !== 'sent_on_review'}
       />,
     ];
@@ -269,8 +291,8 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
   });
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<any, any, any, ReduxState>(
+  (state) => ({
     userData: getSessionState(state).userData,
-  })),
+  }),
 )(ProgramRemarkList);

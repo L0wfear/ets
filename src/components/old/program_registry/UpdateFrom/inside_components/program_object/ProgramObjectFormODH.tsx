@@ -1,9 +1,12 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 import connectToStores from 'flummox/connect';
 import * as moment from 'moment';
 import { cloneDeep, keyBy, isEmpty } from 'lodash';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   OBJ_TAB_INDEX,
@@ -23,11 +26,9 @@ import MapInfo from 'components/old/program_registry/UpdateFrom/inside_component
 
 import { PercentModalList } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
-
 import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -40,13 +41,25 @@ const getObjectsType = (slug) => {
       return 'simple_dt';
   }
 };
-const log = {};
+const log: any = {};
 
-class ProgramObjectFormodh extends UNSAFE_Form {
-  static defaultProps = {
-    tabKey: OBJ_TAB_INDEX.PLAN,
-  };
+type StateProps = {};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
 
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+type State = any;
+
+class ProgramObjectFormodh extends UNSAFE_Form<Props, State> {
   constructor(props) {
     super(props);
     const {
@@ -84,9 +97,9 @@ class ProgramObjectFormodh extends UNSAFE_Form {
         } = this.props;
 
         if (!IS_CREATING) {
-          const changesState = { manual };
+          const changesState: any = { manual };
 
-          const changesFormState = {};
+          const changesFormState: any = {};
           if (manual) {
             changesFormState.draw_object_list = draw_object_list;
             changesFormState.objectsType = getObjectsType('mixed');
@@ -124,8 +137,16 @@ class ProgramObjectFormodh extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetAndSetInStoreOdh().then(({ odhList: data }) => {
-            const changesState = { manual };
+          this.props.dispatch(
+            actionsOdh.getArrayAndSetInStore(
+              null,
+              {
+                page: null,
+                path: null,
+              },
+            ),
+          ).then(({ data }) => {
+            const changesState: any = { manual };
             changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
@@ -204,7 +225,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
     if (IS_CREATING) {
       const { odhPolys } = this.state;
 
-      const plan_shape_json = {
+      const plan_shape_json: any = {
         manual,
       };
 
@@ -352,7 +373,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
     const {
       formState: state,
       formErrors: errors,
-      tabKey,
+      tabKey = OBJ_TAB_INDEX.PLAN,
       contractorList = [],
       isPermitted,
     } = this.props;
@@ -584,16 +605,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
 
 export default compose(
   tabable,
-  connect(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     null,
-    (dispatch) => ({
-      actionGetAndSetInStoreOdh: () =>
-        dispatch(
-          actionsOdh.getArrayAndSetInStore(null, {
-            page: null,
-            path: null,
-          }),
-        ),
-    }),
   ),
 )(connectToStores(ProgramObjectFormodh, ['repair']));

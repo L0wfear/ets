@@ -14,7 +14,12 @@ const firstStepFields = [
   'plan_date_end',
 ];
 
-class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap {
+type Props = {
+  [k: string]: any;
+};
+type State = any;
+
+class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap<Props, State> {
   componentDidMount() {
     this.state = {
       ...this.state,

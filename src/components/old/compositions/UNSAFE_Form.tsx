@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import { FluxContext } from 'utils/decorators';
 
@@ -9,15 +8,6 @@ import { FluxContext } from 'utils/decorators';
  */
 @FluxContext
 class Form<P extends any, S extends any> extends React.Component<P, S> {
-  static get propTypes() {
-    return {
-      handleFormChange: PropTypes.func.isRequired,
-      handleMultipleChange: PropTypes.func,
-      onSubmit: PropTypes.func.isRequired,
-      formState: PropTypes.object.isRequired,
-    };
-  }
-
   static defaultProps() {
     return {
       handleMultipleChange: (v) => v,

@@ -12,6 +12,8 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { isNullOrUndefined } from 'util';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { ReduxState } from 'redux-main/@types/state';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -31,10 +33,11 @@ const ButtonInFormDefPermission = ButtonInFormList.reduce(
   {},
 );
 
-const ProgramRegistryForm = withRequirePermission({
+const ProgramRegistryForm = withRequirePermission<any>({
   byEntity: true,
   type: 'read',
 })(ProgramRegistryFormBase);
+
 const checkIsPermittedByStatus = (status) => {
   switch (status) {
     case 'sent_on_review':
@@ -64,11 +67,30 @@ const checkIsPermittedByStatusForContractorLine = (status) => {
   }
 };
 
+type StateProps = {
+  userPermissionsSet: Set<string>;
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+type State = any;
+
 @FluxContext
-class ProgramRegistryFormWrap extends React.Component {
+class ProgramRegistryFormWrap extends React.Component<Props, State> {
+  preventDefaultNotification = true;
+  defaultElement: any;
+
   constructor(props) {
     super(props);
-    this.preventDefaultNotification = true;
 
     this.state = {
       isLoading: false,
@@ -77,7 +99,7 @@ class ProgramRegistryFormWrap extends React.Component {
       formState: {},
       formErrors: {},
       permissionForButton: { ...ButtonInFormDefPermission },
-    };
+    } as any;
   }
 
   componentDidMount() {
@@ -93,7 +115,6 @@ class ProgramRegistryFormWrap extends React.Component {
 
     const data = {
       id,
-      activeVersionIdprops: false,
       additionalState: { permissionForButton },
     };
 
@@ -134,7 +155,7 @@ class ProgramRegistryFormWrap extends React.Component {
    */
   validate = (state, errors) => this.props.validate(state, errors);
 
-  updateVersionList({ id, additionalState, percentUpdate }) {
+  updateVersionList({ id, additionalState, percentUpdate }: any) {
     this.setState({ isLoading: true });
     return this.context.flux
       .getActions('repair')
@@ -198,7 +219,7 @@ class ProgramRegistryFormWrap extends React.Component {
   };
 
   makeVersion = () => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionCreateVersion;
@@ -224,13 +245,14 @@ class ProgramRegistryFormWrap extends React.Component {
         this.props.setParams({
           program_registry_registry_id: this.props.element.id,
         });
-        !errorIsShow
-          && global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
+        }
       });
   };
 
   sendToApply = () => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionSendToReview;
@@ -247,18 +269,19 @@ class ProgramRegistryFormWrap extends React.Component {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow
-          && global.NOTIFICATION_SYSTEM.notify(
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify(
             'Запрос на согласование не отправлен',
             'error',
           );
+        }
       });
   };
 
   onSubmitAndContinue = () => this.onSubmitWithouContinue(false);
 
   onSubmitWithouContinue = (close = true) => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions('repair').programVersionPut;
     payload.outFormState = { ...this.state.formState };
 
@@ -271,7 +294,7 @@ class ProgramRegistryFormWrap extends React.Component {
   };
 
   onSubmitFiles = (fileState) => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionPutOnlyFiles;
@@ -284,7 +307,7 @@ class ProgramRegistryFormWrap extends React.Component {
   };
 
   applyVersion = () => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionSendToApply;
@@ -298,16 +321,14 @@ class ProgramRegistryFormWrap extends React.Component {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow
-          && global.NOTIFICATION_SYSTEM.notify(
-            'Ошибка согласования версии',
-            'error',
-          );
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify('Ошибка согласования версии', 'error');
+        }
       });
   };
 
   canselVersion = () => {
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionSendToCansel;
@@ -321,8 +342,9 @@ class ProgramRegistryFormWrap extends React.Component {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow
-          && global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify('Ошибка отмены версии', 'error');
+        }
       });
   };
 
@@ -339,7 +361,7 @@ class ProgramRegistryFormWrap extends React.Component {
       return;
     }
 
-    const payload = {};
+    const payload: any = {};
     payload.callback = this.context.flux.getActions(
       'repair',
     ).programVersionSendToClose;
@@ -353,8 +375,9 @@ class ProgramRegistryFormWrap extends React.Component {
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
-        !errorIsShow
-          && global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
+        if (!errorIsShow) {
+          global.NOTIFICATION_SYSTEM.notify('Ошибка закрытия версии', 'error');
+        }
       });
   };
 
@@ -363,9 +386,9 @@ class ProgramRegistryFormWrap extends React.Component {
       = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
-    const newState = {};
+    const newState: any = {};
 
-    console.info('Form changed', field, value);
+    console.info('Form changed', field, value);   // tslint:disable-line:no-console
     formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);
@@ -451,8 +474,10 @@ class ProgramRegistryFormWrap extends React.Component {
 
 export default compose(
   withSearch,
-  connect((state) => ({
-    userPermissionsSet: getSessionState(state).userData.permissionsSet,
-  })),
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+    (state) => ({
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    }),
+  ),
   withRequirePermission(),
 )(ProgramRegistryFormWrap);

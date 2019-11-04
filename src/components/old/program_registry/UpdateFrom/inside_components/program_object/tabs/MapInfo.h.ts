@@ -11,7 +11,7 @@ export interface IPropsMapInfo {
   isPermitted: boolean;
   isPermittedMap: boolean;
   manual: boolean;
-  isNotDrawAllObject: boolean;
+  isNotDrawAllObject?: boolean;
   polys: any;
   objectsType: 'simple_dt' | 'mixed';
   objectList: any;
@@ -19,8 +19,8 @@ export interface IPropsMapInfo {
   startDraw: IStartDraw;
   setManualOnTrue: ISetManualOnTrue;
   setManualOnFalse: ISetManualOnFalse;
-  setIsDrawAllObjectOnTrue: ISetManualOnTrue;
-  setIsDrawAllObjectOnFalse: ISetManualOnFalse;
+  setIsDrawAllObjectOnTrue?: ISetManualOnTrue;
+  setIsDrawAllObjectOnFalse?: ISetManualOnFalse;
   handleFeatureClick: iHandleFeatureClick;
   handleAddDrawLines: IHandleDrawFeatureAdd;
   handleDrawFeatureClick: IHandleDrawFeatureClick;

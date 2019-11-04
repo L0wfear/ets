@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -21,6 +20,8 @@ import MakeVersionFrom from 'components/old/program_registry/UpdateFrom/MakeVers
 
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { ReduxState } from 'redux-main/@types/state';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
@@ -55,21 +56,74 @@ const getTitleByStatus = (status) => {
   }
 };
 
+type StateProps = {
+  userPermissionsSet: Set<string>;
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  formState: any;
+
+  formErrors: any;
+  isPermitted: boolean;
+  isPermittedByStatus: boolean
+  isPermittetForContractorL: boolean
+  RepairOptions: {
+    stateProgramOptions: any;
+    contractorOptions: any;
+  };
+  versionOptions: any[],
+  permissionForButton: any;
+  show?: boolean;
+  onHide: (...arg: any[]) => any;
+  isPermittetForObjectFact: boolean;
+  canSave: boolean;
+
+  isPermittedPercentByStatus: any;
+
+  changeVersion: (...arg: any[]) => Promise<any>
+  canselVersion: (...arg: any[]) => Promise<any>
+  onSubmitAndContinue: (...arg: any[]) => Promise<any>
+  handleExportVersion: (...arg: any[]) => Promise<any>
+  onSubmit: (...arg: any[]) => Promise<any>
+  applyVersion: (...arg: any[]) => Promise<any>
+  closeVersion: (...arg: any[]) => Promise<any>
+
+  fromCreating: any;
+  activeVersionId: number;
+  onSubmitFiles: (...arg: any[]) => Promise<any>;
+  sendToApply: (...arg: any[]) => Promise<any>;
+  updateVersionOuter: (...arg: any) => any;
+
+  makeVersion: () => Promise<any>
+
+  handleFormChange: (...arg: any) => any;
+  handleMultipleChange?: (...arg: any) => any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+type State = any;
+
 @connectToStores(['repair'])
-class ProgramRegistryForm extends UNSAFE_Form {
+class ProgramRegistryForm extends UNSAFE_Form<Props, State> {
   constructor(props) {
     super(props);
     const { entity } = props;
 
-    const isSupervisor = this.props.userPermissionsSet.has(`${entity}.review`);
-    const isСustomer = this.props.userPermissionsSet.has(`${entity}.create`);
+    const isSupervisor = props.userPermissionsSet.has(`${entity}.review`);
+    const isСustomer = props.userPermissionsSet.has(`${entity}.create`);
 
     this.state = {
       isSupervisor,
       isСustomer,
       makeVersionIsVisible: false,
       mainButtonEnable: true,
-    };
+    } as any;
   }
 
   componentDidMount() {
@@ -505,8 +559,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
   }
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
-  })),
-)(ProgramRegistryForm);
+  }),
+)(ProgramRegistryForm as any);

@@ -42,7 +42,10 @@ const ArcGisSource = new TileImage({
   // tilePixelRatio: 2,
 });
 
-export const ArcGisLayer = new TileLayer({
-  source: ArcGisSource,
-  extent: EXTENT,
-});
+export const getArcGisLayer = () => (
+  new TileLayer({
+    source: ArcGisSource,
+    extent: EXTENT,
+  })
+);
+

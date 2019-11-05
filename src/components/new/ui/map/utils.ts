@@ -1,4 +1,4 @@
-import { PROJECTION, ArcGisLayer } from 'components/new/ui/map/config/MskAdapter';
+import { PROJECTION, getArcGisLayer } from 'components/new/ui/map/config/MskAdapter';
 import { MapUtils } from 'components/new/ui/map/MapEts.h';
 import View from 'ol/View';
 import Map from 'ol/Map';
@@ -28,7 +28,7 @@ export const getMap: MapUtils.getMapFunc = (center, zoom) => (
   new Map({
     view: getMapView(center, zoom),
     controls: [],
-    layers: [ArcGisLayer],
+    layers: [getArcGisLayer()],
   })
 );
 

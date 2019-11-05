@@ -17,7 +17,7 @@ const cacheTimeout = {};
  * @todo свои кнопки зума на styled-components чтобы убрать импорт css
  */
 class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
-  _container: HTMLDivElement;
+  _container = React.createRef<HTMLDivElement>();
 
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
 
   componentDidMount() {
     const { rotationAngle } = this.props;
-    this.state.map.setTarget(this._container);
+    this.state.map.setTarget(this._container.current);
 
     this.state.map.on('pointermove', this.mousePointerMove);
     this.state.map.on('singleclick', this.mouseSingleClick);
@@ -119,12 +119,11 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
       noCheckDisabledCenterOn,
     );
   };
-  setContainer: React.LegacyRef<HTMLDivElement> = (node) => this._container = node;
 
   render() {
     return (
       <div className="olmap">
-        <div ref={this.setContainer} className="openlayers-container" />
+        <div ref={this._container} className="openlayers-container" />
         { this.props.children(this.state) }
       </div>
     );

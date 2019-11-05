@@ -26,7 +26,7 @@ const defaultState = { list: null, currentIndex: 1, isOpen: false };
 const OrderHistoryList: React.FC<Props> = React.memo(
   (props) => {
     const [orderHistroyData, setOrderHistoryData] = React.useState<{ list: Array<OrderHistory>; currentIndex: number; isOpen: boolean; }>(defaultState);
-    const order_id = getNumberValueFromSerch(props.match.params[orderGetToConfig(null, null).list.data.uniqKeyForParams]);
+    const order_id = getNumberValueFromSerch(props.match.params[orderGetToConfig().list.data.uniqKeyForParams]);
     const dispatch = etsUseDispatch();
 
     const selectedOrderHistroyTo: OrderHistory = React.useMemo(

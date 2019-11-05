@@ -37,10 +37,7 @@ const OrderList: React.FC<Props> = React.memo(
       () => {
         dispatch(
           registryAddInitialData(
-            getToConfig(
-              date_start || createValidDateTime(getToday0am()),
-              date_end || createValidDateTime(getToday2359()),
-            ),
+            getToConfig(),
           ),
         );
         return () => {
@@ -48,6 +45,18 @@ const OrderList: React.FC<Props> = React.memo(
             registryRemoveData(orderRegistryKey),
           );
         };
+      },
+      [],
+    );
+
+    React.useEffect(
+      () => {
+        if (!date_start || !date_end) {
+          props.setDataInSearch({
+            date_from: date_start || createValidDateTime(getToday0am()),
+            date_to:date_end || createValidDateTime(getToday2359()),
+          });
+        }
       },
       [],
     );
@@ -66,6 +75,7 @@ const OrderList: React.FC<Props> = React.memo(
             actionChangeGlobalPaylaodInServiceData(orderRegistryKey, payload),
           );
         }
+
       },
       [date_start, date_end],
     );

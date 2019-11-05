@@ -6,15 +6,14 @@ import { ORDER_STATUS_LABELS } from 'constants/dictionary';
 
 export const orderRegistryKey = 'order';
 
-export const getToConfig = (date_start: string, date_end: string): TypeConfigData<Order> => {
+export const getToConfig = (): TypeConfigData<Order> => {
   return {
+    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'order',
         typeAns: 'result',
         payload: {
-          date_start,
-          date_end,
         },
         userServerFilters: true,
       },

@@ -207,9 +207,12 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
   async componentDidUpdate(prevProps, prevState) {
     const triggerToUpdate = (
-      this.props.needUpdateFiltersOptions
-      && prevProps.total_count !== this.props.total_count
-      && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
+      (this.props.needUpdateFiltersOptions && !prevProps.needUpdateFiltersOptions)
+      || (
+        this.props.needUpdateFiltersOptions
+        && prevProps.total_count !== this.props.total_count
+        && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
+      )
     );
 
     if (triggerToUpdate) {
@@ -238,10 +241,10 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
               return ans;
             });
-          }
 
-          if (groupName) {
-            cache[groupName] = groupName;
+            if (groupName) {
+              cache[groupName] = promise;
+            }
           }
 
           response = await promise;

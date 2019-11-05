@@ -157,9 +157,12 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
   async componentDidUpdate(prevProps, prevState) {
     const triggerToUpdate = (
-      this.props.needUpdateFiltersOptions
-      && prevProps.total_count !== this.props.total_count
-      && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
+      (this.props.needUpdateFiltersOptions && !prevProps.needUpdateFiltersOptions)
+      || (
+        this.props.needUpdateFiltersOptions
+        && prevProps.total_count !== this.props.total_count
+        && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
+      )
     );
 
     if (triggerToUpdate) {
@@ -188,10 +191,6 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
               return ans;
             });
-          }
-
-          if (groupName) {
-            cache[groupName] = groupName;
           }
 
           response = await promise;

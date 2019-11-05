@@ -62,48 +62,49 @@ class FieldNormIdMission extends React.PureComponent<
       type_ids,
       page,
       path,
+      MISSION_IS_ORDER_SOURCE,
     } = this.props;
 
     const hasAllData =
       datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
 
-    if (hasAllData) {
-      const norms = await Promise.all(
-        type_ids.map((func_type_id) => (
-          this.props.actionLoadCleaningOneNorm(
-            {
-              datetime: createValidDateTime(datetime),
-              technical_operation_id,
-              municipal_facility_id,
-              route_type,
-              needs_brigade: false,
-              func_type_id,
-              kind_task_ids: this.props.MISSION_IS_ORDER_SOURCE ? [1, 2] : 3,
-            },
-            {
-              page,
-              path,
-            },
-          )
-        )),
-      );
+    // Дит гарантирует, что проверка на is_cleaning_norm не нужна (по факсограмме)
+    if (!MISSION_IS_ORDER_SOURCE) {
+      if (hasAllData) {
+        const norms = await Promise.all(
+          type_ids.map((func_type_id) => (
+            this.props.actionLoadCleaningOneNorm(
+              {
+                datetime: createValidDateTime(datetime),
+                technical_operation_id,
+                municipal_facility_id,
+                route_type,
+                needs_brigade: false,
+                func_type_id,
+                kind_task_ids: 3,                           // для децентрализованных заданий
+              },
+              {
+                page,
+                path,
+              },
+            )
+          )),
+        );
 
-      const normObj = this.props.MISSION_IS_ORDER_SOURCE
-        ? {
-          is_cleaning_norm: norms.some(({ is_cleaning_norm }) => is_cleaning_norm),
-        } : {
+        const normObj = {
           norm_ids: norms.map(({ norm_id }) => norm_id),
           norm_text: norms.map(({ name }) => name).toString(),
           is_cleaning_norm: norms.some(({ is_cleaning_norm }) => is_cleaning_norm),
         };
 
-      this.props.onChange(normObj);
-    } else if (value.length) {
-      this.props.onChange({
-        norm_ids: [],
-        norm_text: null,
-        is_cleaning_norm: false,
-      });
+        this.props.onChange(normObj);
+      } else if (value.length) {
+        this.props.onChange({
+          norm_ids: [],
+          norm_text: null,
+          is_cleaning_norm: false,
+        });
+      }
     }
   }
 

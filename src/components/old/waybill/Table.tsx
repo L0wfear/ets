@@ -6,7 +6,12 @@ import { EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export default class Table extends React.Component<any, any> {
+type Props = {
+  id: string;
+  [k: string]: any;
+};
+
+class Table extends React.Component<Props, any> {
   static get propTypes() {
     return {
       headerRenderers: PropTypes.any,
@@ -106,7 +111,7 @@ export default class Table extends React.Component<any, any> {
       <EtsBootstrap.Row>
         <EtsTableDataContainer>
           <EtsTableWrapNoScroll className="ets_table_wrap">
-            <EtsBootstrap.Grid.GridTable fixedWidth>
+            <EtsBootstrap.Grid.GridTable fixedWidth id={`${this.props.id}_table`}>
               {this.renderHeader()}
               <tbody>{rows}</tbody>
             </EtsBootstrap.Grid.GridTable>
@@ -176,3 +181,5 @@ const TrRow = (props) => {
     </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
   );
 };
+
+export default Table;

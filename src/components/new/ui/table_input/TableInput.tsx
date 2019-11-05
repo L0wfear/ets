@@ -51,6 +51,7 @@ export type TableMeta<F> = {
 );
 
 export type TableInputProps = {
+  id: string;
   meta: Array<TableMeta<any>>;
   array: Array<any>;
   errors?: Array<any>;
@@ -98,7 +99,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
               && (
                 <EtsTableDataContainer>
                   <EtsTableWrapNoScroll className="ets_table_wrap">
-                    <EtsTable fixedWidth>
+                    <EtsTable fixedWidth id={`${props.id || 'default'}_table`}>
                       <TableInputThead
                         meta={props.meta}
                       />

@@ -378,6 +378,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         {!(fuelRates.length || !!hasTaxes) && <h5>{noDataMessage}</h5>}
         <Div hidden={!hasTaxes}>
           <Table
+            id={'e_tax_data'}
             title="Расчет топлива по норме"
             columnCaptions={this.tableCaptions}
             data={taxes}

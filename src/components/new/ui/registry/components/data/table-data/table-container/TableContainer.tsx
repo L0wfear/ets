@@ -44,8 +44,8 @@ const TableContainer: React.FC<Props> = React.memo(
     return (
       <EtsBootstrap.Row margin={10}>
         <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
-          <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} isGroupColumn={ isGroupColumn }>
-            <EtsBootstrap.Grid.GridTable fixedWidth={fixedWidth}>
+          <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} isGroupColumn={ isGroupColumn } id={`${props.registryKey}_column_config_table`}>
+            <EtsBootstrap.Grid.GridTable fixedWidth={fixedWidth} id={`${props.registryKey}_table`}>
               <Thead registryKey={registryKey}/>
               <Tbody registryKey={registryKey}/>
             </EtsBootstrap.Grid.GridTable>

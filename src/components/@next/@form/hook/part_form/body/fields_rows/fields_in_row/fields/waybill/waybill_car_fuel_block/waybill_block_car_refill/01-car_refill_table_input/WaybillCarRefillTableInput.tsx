@@ -43,6 +43,7 @@ const WaybillCarRefillTableInput: React.FC<WaybillCarRefillTableInputProps> = Re
 
     return (
       <TableInput
+        id="car_refill"
         meta={tableMeta}
         array={car_refill}
         onChange={handleChangeWrap}

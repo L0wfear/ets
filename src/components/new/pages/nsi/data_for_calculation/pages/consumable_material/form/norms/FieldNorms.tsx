@@ -58,6 +58,7 @@ const FieldNorms: React.FC<Props> = React.memo(
 
     return (
       <TableInput
+        id="norms"
         array={norms}
         errors={errors}
         meta={metaCarRefillRaw}

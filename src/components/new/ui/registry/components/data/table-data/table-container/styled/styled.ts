@@ -11,7 +11,7 @@ export const EtsTableWrap = styled(EtsTableWrapNoScroll)<{ addToMinusHeight?: nu
   padding-top: ${({ isGroupColumn }) => isGroupColumn ? '50px' : '0px' };
 `;
 
-export const EtsTable = styled.table<{ fixedWidth: boolean; }>`
+export const EtsTable = styled.table<{ fixedWidth: boolean; id: string; }>`
   margin: 0;
   border-collapse: separate;
   table-layout: ${({ fixedWidth }) => fixedWidth ? 'fixed' : 'auto'};

@@ -90,7 +90,7 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
       </EtsHeaderContainerWrap>
       <EtsTableDataContainer>
         <EtsTableWrap>
-          <EtsBootstrap.Grid.GridTable fixedWidth={true}>
+          <EtsBootstrap.Grid.GridTable fixedWidth={true} id={'inspect_countainer_registry'}>
             <EtsBootstrap.Grid.GridBootstrapThead.Thead>
               <EtsBootstrap.Grid.GridBootstrapThead.Tr>
                 <EtsBootstrap.Grid.GridBootstrapThead.Th width={30}>№</EtsBootstrap.Grid.GridBootstrapThead.Th>

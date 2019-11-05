@@ -25,7 +25,7 @@ const OrdetToInstruction: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridTable fixedWidth={false}>
+      <EtsBootstrap.Grid.GridTable fixedWidth={false} id={`${props.registryKey}_table`}>
         <EtsBootstrap.Grid.GridBootstrapThead.Thead>
           <EtsBootstrap.Grid.GridBootstrapThead.Tr className="ets_thead_tr">
             <EtsBootstrap.Grid.GridBootstrapThead.Th>Дополнительная информация</EtsBootstrap.Grid.GridBootstrapThead.Th>

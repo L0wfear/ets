@@ -192,6 +192,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     return (
       <div>
         <TableInput
+          id={props.id}
           array={props.array}
           errors={props.errors}
           meta={metaCarRefillRaw}

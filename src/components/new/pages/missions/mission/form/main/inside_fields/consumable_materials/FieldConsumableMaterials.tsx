@@ -131,6 +131,7 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
     return (
       <React.Fragment>
         <TableInput
+          id="consumable_materials"
           array={consumable_materials}
           errors={errors}
           meta={metaConsumableMaterials}

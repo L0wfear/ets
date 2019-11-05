@@ -92,7 +92,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               });
             }
           } catch (error) {
-            console.error(error); //tslint:disable-line
+            console.error(error);
           }
         };
 

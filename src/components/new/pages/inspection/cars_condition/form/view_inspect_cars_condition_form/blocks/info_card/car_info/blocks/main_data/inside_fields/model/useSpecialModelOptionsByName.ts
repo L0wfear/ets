@@ -34,7 +34,7 @@ const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpec
           )
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

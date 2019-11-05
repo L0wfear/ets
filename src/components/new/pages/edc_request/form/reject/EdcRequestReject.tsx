@@ -24,8 +24,6 @@ import edcRequestPermissions from '../../_config-data/permissions';
 import { makeDate } from 'components/@next/@utils/dates/dates';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
-import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
-import { get } from 'lodash';
 
 const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
   const [rejectionReasonOptions, setRejectionReasonOptions] = React.useState([]);
@@ -41,8 +39,12 @@ const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
       if (props.isPermittedToUpdate) {
         props.actionLoadRejectionReason(
           { page, path },
-        ).then((refusalReason) => {
-          setRejectionReasonOptions(refusalReason.map(defaultSelectListMapper));
+        ).then((cancelReason) => {
+          setRejectionReasonOptions(cancelReason.map((rowData) => ({
+            value: rowData.edc_id,
+            name: rowData.name,
+            rowData,
+          })));
         });
       }
     },
@@ -53,7 +55,7 @@ const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
     (value, option) => {
       props.handleChange({
         rejection_reason_id: value,
-        rejection_reason_name: get(option, 'label', ''),
+        rejection_reason_name: option?.label,
       });
     },
     [],

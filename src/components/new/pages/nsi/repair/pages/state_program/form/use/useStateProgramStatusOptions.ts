@@ -20,7 +20,7 @@ const useStateProgramStatusOptions = (meta: LoadingMeta) => {
           )
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

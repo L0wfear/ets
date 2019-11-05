@@ -30,7 +30,7 @@ const useMedicalStatsAllowedDriverList = (company_id: number, date_from: string,
               isLoading: false,
             });
           } catch (error) {
-            console.error(error); //tslint:disable-line
+            console.error(error);
           }
         } else {
           setList({

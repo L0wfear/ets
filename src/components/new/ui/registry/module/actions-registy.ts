@@ -1219,7 +1219,7 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
       list_new.data.selectedRow = list_new.data.selectedRow;
 
     } catch (error) {
-      console.error(error); //tslint:disable-line
+      console.error(error);
       return;
     }
   }

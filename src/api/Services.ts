@@ -390,8 +390,8 @@ export const EdcRequestImportService = ETS_API_FACTORY.createApiServiceAdapter(
 export const EdcRequestChangeStatusService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc/request',
 );
-export const EdcRefusalReasonService = ETS_API_FACTORY.createApiServiceAdapter(
-  'edc/refusal_reason',
+export const EdcCancelReasonService = ETS_API_FACTORY.createApiServiceAdapter(
+  'edc/cancel_reason',
 );
 export const EdcRejectionReasonService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc/rejection_reason',

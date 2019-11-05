@@ -32,7 +32,7 @@ const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelLis
           setModelOptions(getModelOptionsByTitle(data))
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

@@ -98,7 +98,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         loadContainerList();
         setSelectedContainer(null);
       } catch (error) {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       }
     },
     [],

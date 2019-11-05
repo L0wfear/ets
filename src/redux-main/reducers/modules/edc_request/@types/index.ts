@@ -90,3 +90,30 @@ export type EdcRequest = {
 export type IStateEdcRequest = {
   EdcRequestList: Array<EdcRequest>;
 };
+
+export type EdcCancelReason = {
+  code: any;
+  edc_id: number;
+  end_date: string | null;
+  id: number;
+  is_active: boolean;
+  is_last: boolean;
+  name: string;
+  root_id: number;
+  start_date: string;
+};
+
+export type EdcRejectionReason = {
+  attribute: {
+    name: string;
+    attribute: any;
+    reason_type_id: number;
+  };
+  create_date: string;
+  deleted_at: any;
+  edc_id: number;
+  end_date: string;
+  id: number;
+  is_deleted: boolean;
+  name: string;
+};

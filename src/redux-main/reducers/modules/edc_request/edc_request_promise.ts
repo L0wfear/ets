@@ -1,6 +1,6 @@
-import { EdcRequestService, EdcRequestChangeStatusService, EdcRefusalReasonService, EdcRejectionReasonService, EdcRequestImportService } from 'api/Services';
+import { EdcRequestService, EdcRequestChangeStatusService, EdcCancelReasonService, EdcRejectionReasonService, EdcRequestImportService } from 'api/Services';
 import { get } from 'lodash';
-import { EdcRequest } from './@types';
+import { EdcRequest, EdcCancelReason, EdcRejectionReason } from './@types';
 import { EdcRequestCancel } from 'components/new/pages/edc_request/form/cancel/@types/EdcRequestCancel';
 import { EdcRequestReject } from 'components/new/pages/edc_request/form/reject/@types/EdcRequestReject';
 
@@ -161,16 +161,16 @@ export const promiseCloseEdcRequestById = async (id: number) => {
   return response;
 };
 
-export const loadRefusalReason = async () => {
+export const loadCancelReason = async () => {
   let response = null;
   try {
-    response  = await EdcRefusalReasonService.get();
+    response  = await EdcCancelReasonService.get();
   } catch (error) {
-    console.error(error); //tslint:disable-line
+    console.error(error);
   }
 
-  const refusalReasonList: Array<any> = get(response, 'result.rows', []);
-  return refusalReasonList;
+  const cancelReasonList: Array<EdcCancelReason> = get(response, 'result.rows', []);
+  return cancelReasonList;
 };
 
 export const loadRejectionReason = async () => {
@@ -178,9 +178,9 @@ export const loadRejectionReason = async () => {
   try {
     response  = await EdcRejectionReasonService.get();
   } catch (error) {
-    console.error(error); //tslint:disable-line
+    console.error(error);
   }
 
-  const refusalReasonList: Array<any> = get(response, 'result.rows', []);
-  return refusalReasonList;
+  const cancelReasonList: Array<EdcRejectionReason> = get(response, 'result.rows', []);
+  return cancelReasonList;
 };

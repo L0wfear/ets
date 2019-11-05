@@ -32,7 +32,7 @@ const useCarFuncTypesOptionsByName: UseCarFuncTypesOptionsByName = (loadCarFuncT
           setCarFuncTypeOptions(getCarFuncTypesOptionsByName(data))
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

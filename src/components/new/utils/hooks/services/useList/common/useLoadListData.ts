@@ -40,7 +40,7 @@ const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>
             isLoading: false,
           });
         } catch (error) {
-          console.error(error); //tslint:disable-line
+          console.error(error);
         }
       };
 

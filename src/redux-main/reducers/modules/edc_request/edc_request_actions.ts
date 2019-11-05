@@ -4,7 +4,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import {
   promiseLoadEdcRequestById,
   promiseCloseEdcRequestById,
-  loadRefusalReason,
+  loadCancelReason,
   promiseRejectEdcRequest,
   promiseCancelEdcRequest,
   loadRejectionReason,
@@ -52,10 +52,10 @@ const actionCloseEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<Ets
   );
 };
 
-const actionLoadRefusalReason = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof loadRefusalReason>> => (dispatch) => {
+const actionLoadCancelReason = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof loadCancelReason>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
-    loadRefusalReason(),
+    loadCancelReason(),
     meta,
   );
 };
@@ -71,7 +71,7 @@ const actionLoadRejectionReason = (meta: LoadingMeta): EtsAction<EtsActionReturn
 const edcRequestActions = {
   actionRejectEdcRequest,
   actionCancelEdcRequest,
-  actionLoadRefusalReason,
+  actionLoadCancelReason,
   actionLoadRejectionReason,
   actionLoadEdcRequestById,
   actionCloseEdcRequestById,

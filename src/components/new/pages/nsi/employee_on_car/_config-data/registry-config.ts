@@ -61,6 +61,7 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
         uniqKeyForParams: id,
       },
       meta: {
+        row_double_click: false,
         fields: [
           {
             key: 'enumerated',

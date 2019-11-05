@@ -956,7 +956,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     }
   }
 
-  const children = get(selectedRow, 'children', null);
+  const children = selectedRow?.children || null;
 
   if (children && children.length) {
     const listNew = getListData(getRegistryState(getState()), registryKey);
@@ -989,8 +989,8 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
 };
 
 export const actionUnselectSelectedRowToShow = <F extends Record<string, any>>(registryKey: string, allReset: boolean): EtsAction<void> => (dispatch, getState) => {
-  const registryData = get(getRegistryState(getState()), registryKey);
-  const list = get(registryData, 'list') as OneRegistryData<F>['list'];
+  const registryData: OneRegistryData<F> = get(getRegistryState(getState()), registryKey);
+  const list = registryData?.list;
 
   if (list) {
     dispatch(
@@ -1013,23 +1013,25 @@ export const registryRemoveSelectedRows = <F extends Record<string, any>>(regist
   let itemToRemove = rows;
 
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
-  const Service = get(registryData, 'Service');
-  const list = get(registryData, 'list');
-  const data = get(list, 'data');
-  const uniqKey: string = get(data, 'uniqKey');
+  const Service = registryData?.Service;
+  const list = registryData?.list;
+  const data = list?.data;
+  const uniqKey= data?.uniqKey;
 
   const removeOneData = (
-    get(Service, 'removeOneData')
-    || get(Service, 'getRegistryData')
+    Service?.removeOneData
+    || Service?.getRegistryData
   );
 
-  const pathToLoadingMeta = get(registryData, 'path');
+  const pathToLoadingMeta = registryData?.path;
 
   if (!itemToRemove) {
-    const checkedRowsCurrent = get(data, 'checkedRows') || {};
-    const selectedRowCurrent = get(data, 'selectedRow');
+    const checkedRowsCurrent = data?.checkedRows;
+    const selectedRowCurrent = data?.selectedRow;
 
-    itemToRemove = Object.values(checkedRowsCurrent);
+    if (checkedRowsCurrent) {
+      itemToRemove = Object.values(checkedRowsCurrent);
+    }
 
     if (!itemToRemove.length && selectedRowCurrent) {
       itemToRemove.push(selectedRowCurrent);

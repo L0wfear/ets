@@ -33,7 +33,7 @@ const routerAndPermission: { [k: string]: ConfigPageData | ConfigParentData; } =
 };
 
 const getRouterToPermission = (rAp, level) => {
-  return Object.values(rAp).reduce((rtp, val: any) => {
+  return Object.values(rAp).reduce((rtp: any, val: any) => {
     if (!val.divider) {
       if (!val.children) {
         rtp[val.routePath || val.path] = {

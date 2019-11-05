@@ -153,7 +153,7 @@ class BsnoStaus extends React.Component<Props, any> {
   handleUpdatePoints = (data) => {
     const carsTrackState = {
       ...this.state.carsTrackState,
-      ...Object.values(data).reduce(
+      ...Object.values(data).reduce<any>(
         (newObj, value: { id: number; timestamp: number; }) =>
           Object.assign(newObj, { [value.id]: value.timestamp }),
         {},

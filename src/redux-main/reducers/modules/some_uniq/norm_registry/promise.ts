@@ -1,5 +1,4 @@
 import { cloneDeep, get } from 'lodash';
-import { isString } from 'util';
 
 import {
   Norm, NormRegistrySensorTypes,
@@ -7,7 +6,7 @@ import {
 import { CleaningNormRegistryService } from 'api/Services';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
-export const getFrontNorm = (normRaw: any, index) => {
+export const getFrontNorm = (normRaw: any, index: number) => {
   if (normRaw) {
     const norm: Norm = cloneDeep(normRaw);
 
@@ -24,7 +23,7 @@ export const getFrontNorm = (normRaw: any, index) => {
     norm.objects_ids = norm.objects.map(({ id }) => id);
     norm.car_func_types_ids = norm.car_func_types.map(({ asuods_id }) => asuods_id);
 
-    norm.objects_text_array = isString(norm.objects_text) ? norm.objects_text.split(', ') : [],
+    norm.objects_text_array = norm.objects_text?.split(', ') || [];
 
     norm.norm_registry_id = index + 1;
     return norm;

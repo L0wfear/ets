@@ -227,7 +227,7 @@ class MissionInfoForm extends React.Component<
       this.setState({
         polys: {
           [slug]: Object.entries(polys[slug]).reduce(
-            (newObj, [geoId, geoData]) => {
+            (newObj, [geoId, geoData]: any) => {
               newObj[geoId] = { ...geoData };
               newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
 

@@ -100,11 +100,11 @@ class UserNotificationList extends UNSAFE_CheckableElementsList<Props, State> {
   /**
    * @override
    */
-  getButtons() {
+  getButtonsNew = () => {
     const { userNotificationList = [] } = this.props;
     const { checkedElements = {} } = this.state;
 
-    const baseButtons = super.getButtons();
+    const baseButtons = this.getButtons();
     const checkedItems = Object.entries(checkedElements).reduce(
       (obj, [key, el]: any) => {
         if (!el.is_read) {
@@ -140,6 +140,23 @@ class UserNotificationList extends UNSAFE_CheckableElementsList<Props, State> {
     buttons.push(...baseButtons);
 
     return buttons;
+  };
+
+  getTable() {
+    const TableComponent = (this.constructor as any).tableComponent;
+
+    if (!TableComponent) {
+      return <div />;
+    }
+
+    return (
+      <TableComponent
+        {...this.getTableProps()}
+        {...this.props}
+        flux={this.context.flux}>
+        {this.getButtonsNew()}
+      </TableComponent>
+    );
   }
 
   /**

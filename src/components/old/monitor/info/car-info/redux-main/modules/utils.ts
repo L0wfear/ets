@@ -65,7 +65,7 @@ export const checkAndModifyTrack = async (
     cars_sensors as IStateMonitorPage['carInfo']['trackCaching']['cars_sensors'],
   ).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'level') {
-      (newObj[key] = {
+      newObj[key] = {
         name: `ДУТ №${indexLevel + 1}`,
         connectNulls: false,
         sensor,
@@ -74,8 +74,8 @@ export const checkAndModifyTrack = async (
         index: indexLevel,
         color: sensorsMapOptions(indexLevel).color,
         show: false,
-      }),
-      (indexLevel += 1);
+      };
+      indexLevel += 1;
     }
 
     return newObj;

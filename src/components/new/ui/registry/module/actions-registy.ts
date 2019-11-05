@@ -201,7 +201,7 @@ export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payl
   const ServiceData = get(registryData, 'Service', null);
 
   const ServiceDataNew = Object.entries(ServiceData).reduce(
-    (newObj, [key, value]) => {
+    (newObj, [key, value]: any) => {
       if (payload[key]) {
         const lastPayload = get(value, 'payload', {});
 
@@ -234,12 +234,12 @@ export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payl
 
 const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']) => {
   const userServerFilters = get(getRegistryData, 'userServerFilters');
-  const processed = get(list, 'processed');
+  const processed = list?.processed;
 
   let payload = makePayloadFromObject(getRegistryData.payload);
 
   if (userServerFilters) {
-    const paginator = get(list, 'paginator');
+    const paginator = list?.paginator;
     const perPage = get(paginator, 'perPage', 0);
     const offset = get(paginator, 'currentPage', 0);
     const filterValues = get(processed, 'filterValues') || {};
@@ -1126,17 +1126,17 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
 // Да простят меня боги v.2
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
 export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields'], permissionsProps: ReturnType<typeof isPermittedUpdateCarContidion> ): EtsAction<any> => async (dispatch) => {
-  const meta = get(list_new, 'meta');
-  const rowRequestActions = get(meta, 'rowRequestActions');
-  const actionCreate = get(rowRequestActions, 'actionCreate');
-  const rowRequestActionCreate = get(actionCreate, 'action');
-  const rowRequestActionCreatePayload = get(actionCreate, 'payload');
-  const actionUpdate = get(rowRequestActions, 'actionUpdate');
-  const rowRequestActionUpdate = get(actionUpdate, 'action');
-  const rowRequestActionUpdatePayload = get(actionUpdate, 'payload');
+  const meta = list_new?.meta;
+  const actionCreate = meta?.rowRequestActions?.actionCreate;
+  const actionUpdate = meta?.rowRequestActions?.actionUpdate;
 
-  const rendersFieldsValues = get(prevRendersFields, 'values');
-  const isNewRow = get(rendersFieldsValues, 'isNewRow', false);
+  const rowRequestActionCreate = actionCreate?.action;
+  const rowRequestActionCreatePayload = actionCreate?.payload;
+  const rowRequestActionUpdate = actionUpdate?.action;
+  const rowRequestActionUpdatePayload = actionUpdate?.payload;
+
+  const rendersFieldsValues = prevRendersFields?.values;
+  const isNewRow = rendersFieldsValues?.isNewRow || false;
 
   if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate))) {
     const listMetaFields = get(meta, 'fields', []);

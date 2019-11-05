@@ -95,7 +95,7 @@ class PercentModalList extends UNSAFE_ElementsList<Props, State> {
   /**
    * @override
    */
-  getButtons(propsButton: any = {}) {
+  getButtons = (propsButton: any = {}) => {
     const { isPermittedPercentByStatus } = this.props;
 
     // Операции, заданные в статической переменной operations класса-наследника
@@ -137,7 +137,7 @@ class PercentModalList extends UNSAFE_ElementsList<Props, State> {
     );
 
     return buttons;
-  }
+  };
 
   /**
    * @override

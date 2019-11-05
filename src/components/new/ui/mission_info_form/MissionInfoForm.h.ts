@@ -1,4 +1,3 @@
-import { IMissionInfoFormState } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';

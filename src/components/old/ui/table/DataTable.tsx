@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import { isPlainObject, cloneDeep } from 'lodash';
 import cx from 'classnames';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
@@ -322,18 +322,14 @@ export default class DataTable extends React.Component<Props, State> {
 
   handleRowCheck = (id) => {
     const value = !this.props.checked[id];
-    const clonedData = _.cloneDeep(this.props.checked);
+    const clonedData = cloneDeep(this.props.checked);
     clonedData[id] = value;
     if (value === false) {
       delete clonedData[id]; 
     }
     this.props.onRowChecked(id, value);
     this.setState({
-      globalCheckboxState:
-        Object.keys(clonedData).length
-        === _(this.props.results)
-          .filter((r) => this.shouldBeRendered(r))
-          .value().length,
+      globalCheckboxState: Object.keys(clonedData).length === this.props.results.filter((r) => this.shouldBeRendered(r)).length,
     });
   };
 
@@ -641,11 +637,11 @@ export default class DataTable extends React.Component<Props, State> {
           isNumberSelectArrayData(value, obj[key], key, this.props.tableMeta)
         ) {
           isValid = isValid && numberArrayDataMatching(value, obj[key]);
-        } else if (_.isPlainObject(value) && Object.keys(value).length > 0) {
+        } else if (isPlainObject(value) && Object.keys(value).length > 0) {
           const metaCol = this.props.tableMeta.cols.find(
             (item) => item.name === key,
           );
-          const filterType = _.get(metaCol, 'filter.type', '');
+          const filterType = metaCol?.filter?.type || '';
           isValid
             = isValid && parseAdvancedFilter(value, key, obj[key], filterType);
         } else if (typeof obj[key] === 'string') {

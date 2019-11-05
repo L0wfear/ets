@@ -31,7 +31,7 @@ module.exports = {
     'curly': 'error',                                                     // всегда оборачиваем в фигурные скобки
     'eqeqeq': 'error',                                                    // только строгое сравнение | @todo - error
     'indent': ['error', 2, { 'SwitchCase': 1 }],                          // таб - 2 пробела, в switch case отделяется 1 табом (2 пробела)
-
+    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true, "allowTaggedTemplates": true }],
     // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin
     '@typescript-eslint/adjacent-overload-signatures': ['error'],         // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],  // предпочитаемый формат описание definitions - type

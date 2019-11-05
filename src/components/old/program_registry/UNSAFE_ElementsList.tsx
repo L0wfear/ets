@@ -240,7 +240,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
    */
-  getButtons(propsButton: any = {}) {
+  getButtons = (propsButton: any = {}) => {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = (this.constructor as any).operations || [];
     const buttons = [];
@@ -300,7 +300,7 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
       );
     }
     return buttons;
-  }
+  };
 
   processExport = async (exportPayload = this.exportPayload) => {
     try {
@@ -362,9 +362,9 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
    * Метод для переопределения в дочерних компонентах
    * используется для передачи дополнительных свойств в компонент таблицы
    */
-  getAdditionalProps() {
+  getAdditionalProps = () => {
     return {};
-  }
+  };
 
   /**
    * Получение всех props, которые будут переданы в компонент таблицы

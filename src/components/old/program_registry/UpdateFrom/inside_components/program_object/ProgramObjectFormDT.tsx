@@ -47,7 +47,7 @@ const getObjectsType = (slug) => {
 const log: any = {};
 
 const makeSelector = memoizeOne((dtPolys) =>
-  Object.entries(dtPolys).reduce((newObj, [key, data]) => {
+  Object.entries(dtPolys).reduce((newObj, [key, data]: any) => {
     newObj[key] = {
       ...data,
       state: polyState.ENABLE,

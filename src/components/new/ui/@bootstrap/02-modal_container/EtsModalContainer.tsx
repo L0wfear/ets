@@ -111,7 +111,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
                       props.children,
                       (child: any) => (
                         React.isValidElement(child) && React.cloneElement(child, {
-                          ...child.props,
+                          ...(child.props as any),
                           onHide: props.onHide,
                           themeName: props.themeName || 'default',
                         })

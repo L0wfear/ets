@@ -60,7 +60,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
       this.setState({
         bridges: Object.entries(data).reduce(
-          (newBridges: any, [key, value]) => ({
+          (newBridges: any, [key, value]: any) => ({
             ...newBridges,
             [key]: {
               ...value,

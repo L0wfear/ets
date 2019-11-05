@@ -72,7 +72,7 @@ class CheckableElementsList<P extends any, S extends any> extends UNSAFE_Element
   /**
    * @override
    */
-  getButtons(propsButton: any = {}) {
+  getButtons = (propsButton: any = {}) => {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = (this.constructor as any).operations || [];
     const buttons = [];
@@ -126,7 +126,7 @@ class CheckableElementsList<P extends any, S extends any> extends UNSAFE_Element
       );
     }
     return buttons;
-  }
+  };
 
   /**
    * Определяет, есть ли на текущий момент выбранные элементы

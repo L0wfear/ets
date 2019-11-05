@@ -22,6 +22,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.fuel_card_from_archive,
+      buttonsTypes.export,
     ];
   }
 
@@ -33,6 +34,13 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           is_archive,
         },
       },
+      getBlobData: {
+        entity: 'fuel_cards',
+        payload: {
+          format: 'xls',
+          is_archive,
+        },
+      }
     },
     registryKey,
     header: {

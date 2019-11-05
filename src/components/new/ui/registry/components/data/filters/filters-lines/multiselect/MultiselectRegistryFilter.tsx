@@ -238,6 +238,10 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
               return ans;
             });
+
+            if (groupName) {
+              cache[groupName] = promise;
+            }
           }
 
           response = await promise;

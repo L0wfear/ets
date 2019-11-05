@@ -186,6 +186,10 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
               return ans;
             });
+
+            if (groupName) {
+              cache[groupName] = promise;
+            }
           }
 
           response = await promise;

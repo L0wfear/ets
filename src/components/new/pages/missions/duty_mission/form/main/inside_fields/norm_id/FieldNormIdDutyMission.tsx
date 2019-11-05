@@ -58,45 +58,45 @@ class FieldNormIdDutyMission extends React.PureComponent<
 
     const hasAllData = datetime && technical_operation_id && municipal_facility_id && route_type;
 
-    if (hasAllData) {
-      const payload = {
-        datetime: createValidDateTime(datetime),
-        technical_operation_id,
-        municipal_facility_id,
-        route_type,
-        needs_brigade: true,
-        kind_task_ids: DUTY_MISSION_IS_ORDER_SOURCE ? [1, 2] : 3,
-      };
+    // Дит гарантирует, что проверка на is_cleaning_norm не нужна (по факсограмме)
+    if (!DUTY_MISSION_IS_ORDER_SOURCE) {
+      if (hasAllData) {
+        const payload = {
+          datetime: createValidDateTime(datetime),
+          technical_operation_id,
+          municipal_facility_id,
+          route_type,
+          needs_brigade: true,
+          kind_task_ids: 3,                           // для децентрализованных заданий
+        };
 
-      try {
-        const oneNorm = await this.props.actionLoadCleaningOneNorm(payload, {
-          page,
-          path,
-        });
+        try {
+          const oneNorm = await this.props.actionLoadCleaningOneNorm(payload, {
+            page,
+            path,
+          });
 
-        const normObj = this.props.DUTY_MISSION_IS_ORDER_SOURCE
-          ? {
-            is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
-          } : {
+          const normObj = {
             norm_id: get(oneNorm, 'norm_id', null),
             norm_text: get(oneNorm, 'name', null),
             is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
           };
 
-        this.props.onChange(normObj);
-      } catch (error) {
+          this.props.onChange(normObj);
+        } catch (error) {
+          this.props.onChange({
+            norm_id: null,
+            norm_text: null,
+            is_cleaning_norm: false,
+          });
+        }
+      } else if (value) {
         this.props.onChange({
           norm_id: null,
           norm_text: null,
           is_cleaning_norm: false,
         });
       }
-    } else if (value) {
-      this.props.onChange({
-        norm_id: null,
-        norm_text: null,
-        is_cleaning_norm: false,
-      });
     }
   }
 

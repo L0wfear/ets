@@ -227,7 +227,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
           if (groupName && groupName in cache) {
             promise = cache[groupName];
           } else {
-            this.props.actionFetchWithCount(
+            promise = this.props.actionFetchWithCount(
               getJSON(
                 `${configStand.backend}/${getRegistryData.entity}`,
                 payload,
@@ -238,10 +238,6 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
               return ans;
             });
-          }
-
-          if (groupName) {
-            cache[groupName] = groupName;
           }
 
           response = await promise;

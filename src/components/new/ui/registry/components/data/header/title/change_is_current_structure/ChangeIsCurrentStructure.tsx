@@ -34,6 +34,7 @@ const Title: React.FC<Props> = React.memo(
         const value = get(event, 'target.checked', event);
 
         const filterKey = `${props.registryKey}_filters`;
+        const timeKey = `${props.registryKey}_time`;
         dispatch(
           registryResetAllTypeFilter(props.registryKey),
         );
@@ -41,6 +42,7 @@ const Title: React.FC<Props> = React.memo(
         props.setDataInSearch({
           is_current_structure: value ? value : null,
           [filterKey]: null,
+          [timeKey]: null,
           [`${props.registryKey}_page`]: null,
         });
       },

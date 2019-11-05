@@ -280,7 +280,7 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
         `${configStand.backend}/${getRegistryData.entity}`,
         payload,
       ),
-      { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true, path },
+      { page: registryKey, noTimeout: true, path },
     );
   } catch (error) {
     console.error(error); // tslint:disable-line

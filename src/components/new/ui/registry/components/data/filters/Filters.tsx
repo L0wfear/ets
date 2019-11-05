@@ -36,10 +36,12 @@ const Filters: React.FC<FiltersProps> = React.memo(
     const hanleClickApplyRawFilters = React.useCallback(
       (event) => {
         event.preventDefault();
+        const timeKey = `${props.registryKey}_time`;
         const filterKey = `${props.registryKey}_filters`;
 
         props.setDataInSearch({
           [filterKey]: encodeURIComponent(JSON.stringify(applyFilterFromRaw(props.rawFilterValues.rawFilterValues))),
+          [timeKey]: (new Date()).toString(),
         });
       },
       [props.rawFilterValues, props.setDataInSearch, props.registryKey],

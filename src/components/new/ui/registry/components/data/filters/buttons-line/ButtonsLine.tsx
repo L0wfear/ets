@@ -35,8 +35,10 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
     const resetAllTypeFilter = React.useCallback(
       () => {
         const filterKey = `${props.registryKey}_filters`;
+        const timeKey = `${props.registryKey}_time`;
         props.setDataInSearch({
           [filterKey]: null,
+          [timeKey]: null
         });
 
         dispatch(registryResetAllTypeFilter(props.registryKey));

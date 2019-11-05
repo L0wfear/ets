@@ -80,9 +80,11 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
         }), {});
       }
       const filterKey = `${props.registryConfig.registryKey}_filters`;
+      const timeKey = `${props.registryConfig.registryKey}_time`;
       props.setDataInSearch({
         ...resetObj,
         [filterKey]: null,
+        [timeKey]: null,
       });
 
       dispatch(registryResetAllTypeFilter(props.registryConfig.registryKey));

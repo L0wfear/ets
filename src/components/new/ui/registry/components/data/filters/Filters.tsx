@@ -20,7 +20,7 @@ type FiltersStateProps = {
 type FiltersDispatchProps = {
 };
 type FiltersOwnProps = {
-  wasFirstOpen: boolean;
+  needUpdateFiltersOptions: boolean;
   registryKey: string;
 };
 type FiltersProps = (
@@ -49,7 +49,7 @@ const Filters: React.FC<FiltersProps> = React.memo(
       <React.Fragment>
         <EtsFilterCntainer onSubmit={hanleClickApplyRawFilters}>
           <ButtonsLine registryKey={registryKey} />
-          <FiltersLines registryKey={registryKey} wasFirstOpen={props.wasFirstOpen} />
+          <FiltersLines registryKey={registryKey} needUpdateFiltersOptions={props.needUpdateFiltersOptions} />
         </EtsFilterCntainer>
         <EtsFilterCheckSearch registryKey={registryKey} />
       </React.Fragment>

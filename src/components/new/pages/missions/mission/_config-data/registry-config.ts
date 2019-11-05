@@ -4,6 +4,7 @@ import missionPermissions from './permissions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_INT, MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { MissionCarService } from 'api/Services';
 
 export const registryKey = 'Mission';
 
@@ -104,7 +105,8 @@ export const config: TypeConfigData<Mission> = {
         title: 'Рег. номер ТС',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/mission/cars',
+          entity: MissionCarService._path,
+          groupName: MissionCarService._path,
           valueKey: 'asuods_id',
           labelKey: 'gov_number',
         },
@@ -114,7 +116,8 @@ export const config: TypeConfigData<Mission> = {
         title: 'Тип техники',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/mission/cars',
+          entity: MissionCarService._path,
+          groupName: MissionCarService._path,
           valueKey: 'type_id',
           labelKey: 'type_name',
         },

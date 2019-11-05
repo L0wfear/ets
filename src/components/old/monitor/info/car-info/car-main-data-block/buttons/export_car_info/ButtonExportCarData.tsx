@@ -514,7 +514,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               doc.addImage(
                 canvas_createAt.toDataURL('image/png'),
                 'JPEG',
-                10,
+                leftOffset - 10 - canvas_createAt.width / editParam,
                 15,
                 canvas_createAt.width / editParam,
                 canvas_createAt.height / editParam,

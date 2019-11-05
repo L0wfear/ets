@@ -84,9 +84,7 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
   }
 
   componentWillUnmount() {
-    if (this.props.isPermitted) {
-      this.props.actionResetTechnicalOperationRegistryForMission();
-    }
+    this.props.actionResetTechnicalOperationRegistryForMission();
   }
 
   async getTechnicalOperations(car_ids: Mission['car_ids'], for_column: Mission['for_column']) {

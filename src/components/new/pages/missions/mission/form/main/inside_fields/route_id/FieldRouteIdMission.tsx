@@ -226,9 +226,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
   }
 
   componentWillUnmount() {
-    if (this.props.isPermitted) {
-      this.props.actionResetSetRoutes();
-    }
+    this.props.actionResetSetRoutes();
   }
 
   async getRoutesWithCheckCurrent(technical_operation_id, municipal_facility_id, for_column) {

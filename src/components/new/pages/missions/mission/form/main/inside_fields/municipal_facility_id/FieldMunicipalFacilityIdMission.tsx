@@ -110,9 +110,7 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
   }
 
   componentWillUnmount() {
-    if (this.props.isPermitted) {
-      this.props.actionResetMunicipalFacilityForMission();
-    }
+    this.props.actionResetMunicipalFacilityForMission();
   }
 
   async getMunicipalFacilitys(selectedToData: TechnicalOperationRegistry, date_start: Mission['date_start']) {

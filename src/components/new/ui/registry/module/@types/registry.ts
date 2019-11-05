@@ -64,12 +64,12 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'link'
       | 'workOrNot'
       | 'yesOrNot'
+      | 'floor'
       | 'road_accident_driver_fio'
       | 'AUTOBASE_REPAIR_STATUS'
       | 'TIME_MEASURES'
       | 'checkOrExpect'
       | 'efficiencySource'
-      | 'floor'
       | 'company_structure_actions'
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
@@ -113,6 +113,7 @@ export type OneFilterType<F> = {
     options?: Array<FilterOptionType<F>>;
     getRegistryData?: {
       entity: string;
+      groupName?: string;                           // для группировки запросов
       payload?: object;
       typeAns?: 'result.rows' | 'result';
       valueKey: string;

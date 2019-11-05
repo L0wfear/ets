@@ -23,6 +23,8 @@ import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoad
 import { isNumber, isBoolean, isArray } from 'util';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
+const cache: Record<string, Promise<any>> = {};
+
 type PropsAdvancedSelectLikeFilterFilter = {
   filterData: {
     title: string;
@@ -33,17 +35,18 @@ type PropsAdvancedSelectLikeFilterFilter = {
     getRegistryData: any;
   };
   registryKey: string;
-  wasFirstOpen: boolean;
+  needUpdateFiltersOptions: boolean;
   formatedTitle: string;
   filterValuesObj: any;
   array: Array<any>;
+  total_count: number;
   onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
 
   dispatch: EtsDispatch;
 };
 
 type StateAdvancedSelectLikeFilterFilter = {
-  array: Array<any>;
+  total_count: number;
   filterData: {
     title: string;
     valueKey: string;
@@ -116,19 +119,19 @@ const checkOnNewValuewInArray = (array: Array<any>, filterData: StateAdvancedSel
 
 class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSelectLikeFilterFilter, StateAdvancedSelectLikeFilterFilter> {
   state = {
-    array: this.props.array,
+    total_count: this.props.total_count,
     filterData: this.props.filterData,
     options: makeOptions(this.props),
-    disabled: this.props.wasFirstOpen,
+    disabled: this.props.needUpdateFiltersOptions,
     isLoading: Boolean(get(this.props.filterData, 'getRegistryData', false)),
   };
 
   static getDerivedStateFromProps(nextProps: PropsAdvancedSelectLikeFilterFilter, prevState: StateAdvancedSelectLikeFilterFilter) {
-    const { array, filterData } = nextProps;
+    const { total_count, filterData } = nextProps;
 
-    if (array !== prevState.array || filterData !== prevState.filterData) {
+    if (total_count !== prevState.total_count || filterData !== prevState.filterData) {
       const changeObj: Partial<StateAdvancedSelectLikeFilterFilter> = {
-        array,
+        total_count,
         filterData,
       };
       const getRegistryData = get(nextProps.filterData, 'getRegistryData', null);
@@ -139,7 +142,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
       return changeObj;
     }
 
-    if (nextProps.wasFirstOpen && prevState.disabled) {
+    if (nextProps.needUpdateFiltersOptions && prevState.disabled) {
       const getRegistryData = get(nextProps.filterData, 'getRegistryData', null);
 
       if (!getRegistryData) {
@@ -154,32 +157,44 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
   async componentDidUpdate(prevProps, prevState) {
     const triggerToUpdate = (
-      this.props.wasFirstOpen
-      && (
-        !prevProps.wasFirstOpen
-        || (
-          prevState.array !== this.state.array
-          && checkOnNewValuewInArray(this.state.array, this.state.filterData, this.state.options)
-        )
-      )
+      this.props.needUpdateFiltersOptions
+      && prevProps.total_count !== this.props.total_count
+      && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
     );
+
     if (triggerToUpdate) {
       const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
 
       if (getRegistryData) {
         let response = null;
         const payload = get(getRegistryData, 'payload', {});
+        const groupName = get(getRegistryData, 'groupName', null);
 
         try {
-          response = await this.props.dispatch(
-            actionFetchWithCount(
-              getJSON(
-                `${configStand.backend}/${getRegistryData.entity}`,
-                payload,
-              ),
-              { page: '' },
-            ),
-          );
+          let promise = null;
+          if (groupName && groupName in cache) {
+            promise = cache[groupName];
+          } else {
+            promise = this.props.dispatch(
+              actionFetchWithCount(
+                getJSON(
+                  `${configStand.backend}/${getRegistryData.entity}`,
+                  payload,
+                ),
+                { page: '' },
+              )
+            ).then((ans) => {
+              delete cache[groupName];
+
+              return ans;
+            });
+          }
+
+          if (groupName) {
+            cache[groupName] = groupName;
+          }
+
+          response = await promise;
         } catch (error) {
           console.error(error); // eslint-disable-line
 
@@ -279,6 +294,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
 export default connect<any, any, any, ReduxState>(
   (state, { registryKey, filterData }) => ({
+    total_count: getListData(state.registry, registryKey).data.total_count,
     array: getListData(state.registry, registryKey).data.array,
     filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
   }),

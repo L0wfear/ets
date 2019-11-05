@@ -19,7 +19,7 @@ import AdvancedSelectLikeFilter from './advanced-select-like/AdvancedSelectLikeF
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type OwnProps = {
-  wasFirstOpen: boolean;
+  needUpdateFiltersOptions: boolean;
   registryKey: string;
 };
 
@@ -76,7 +76,7 @@ const FiltersLines: React.FC<Props> = React.memo(
                 <MultiselectRegistryFilter
                   formatedTitle={formatedTitle}
                   filterData={otherFilterData}
-                  wasFirstOpen={props.wasFirstOpen}
+                  needUpdateFiltersOptions={props.needUpdateFiltersOptions}
                   registryKey={props.registryKey}
                   onChange={handleChange}
                 />
@@ -89,7 +89,7 @@ const FiltersLines: React.FC<Props> = React.memo(
                 <AdvancedSelectLikeFilter
                   formatedTitle={formatedTitle}
                   filterData={otherFilterData}
-                  wasFirstOpen={props.wasFirstOpen}
+                  needUpdateFiltersOptions={props.needUpdateFiltersOptions}
                   registryKey={props.registryKey}
                   onChange={handleChange}
                 />
@@ -142,7 +142,7 @@ const FiltersLines: React.FC<Props> = React.memo(
           );
         }
       },
-      [userData, STRUCTURES, props.wasFirstOpen],
+      [userData, STRUCTURES, props.needUpdateFiltersOptions],
     );
 
     return (

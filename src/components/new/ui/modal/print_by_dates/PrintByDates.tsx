@@ -6,17 +6,19 @@ import { getToday9am, diffDates, getTomorrow9am, addTime, createValidDateTime } 
 import DatePickerRange from '../../date_picker/DatePickerRange';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
-export type IPropsPrintByDates = {
+type Props = {
+  initial_date_from?: string;
+  initial_date_to?: string;
   onHide: (...arg: Array<any>) => any;
   onExport: (payload: any) => any;
   title: string;
 };
 
-const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
+const PrintByDates: React.FC<Props> = React.memo(
   (props) => {
     const [datesData, setDatesData] = React.useState({
-      date_from: createValidDateTime(getToday9am()),
-      date_to: createValidDateTime(getTomorrow9am()),
+      date_from: props.initial_date_from || createValidDateTime(getToday9am()),
+      date_to: props.initial_date_to || createValidDateTime(getTomorrow9am()),
       error_date_from: '',
       error_date_to: '',
     });

@@ -5,6 +5,7 @@ import PrintByDates from 'components/new/ui/modal/print_by_dates/PrintByDates';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getToday0am, createValidDateTime, getToday2359 } from 'components/@next/@utils/dates/dates';
 
 type PropsButtonExportMission = CommonTypesForButton & {};
 
@@ -44,6 +45,9 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
     [],
   );
 
+  const initial_date_from = React.useMemo(() => createValidDateTime(getToday0am()), []);
+  const initial_date_to = React.useMemo(() => createValidDateTime(getToday2359()), []);
+
   return (
     <React.Fragment>
       <EtsBootstrap.Button
@@ -56,6 +60,8 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
       {
         isOpenModalRemove && (
           <PrintByDates
+            initial_date_from={initial_date_from}
+            initial_date_to={initial_date_to}
             onHide={handleClickCloseForm}
             onExport={handleExport}
             title="Печать журнала заданий"

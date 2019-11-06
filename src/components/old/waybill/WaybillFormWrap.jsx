@@ -124,7 +124,7 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) => {
       const triggerOnSaveError
         = isPermittedByKey.update
         || (isPermittedByKey.departure_and_arrival_values
-          && checkDataForDepartureAndArrivalValues.includes(key))
+          && checkDataForDepartureAndArrivalValues.has(key))
         || (isPermittedByKey.refill && checkDataForRefill.has(key));
 
       return triggerOnSaveError;

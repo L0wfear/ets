@@ -246,6 +246,7 @@ type OwnProps = {
   isPermittedByKey: {
     update: boolean;
     departure_and_arrival_values: boolean;
+    refill: boolean;
   };
   canClose: boolean;
   canSave: boolean;
@@ -1757,7 +1758,7 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
                   disabled={
-                    IS_CLOSED
+                    (IS_CLOSED && !this.state.canEditIfClose)
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -1781,7 +1782,7 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
                   disabled={
-                    IS_CLOSED
+                    (IS_CLOSED && !this.state.canEditIfClose)
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -2288,7 +2289,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_end}
                               value={state.motohours_equip_end}
                               hidden={
-                                !(IS_ACTIVE || IS_CLOSED)
+                                (IS_CLOSED && !this.state.canEditIfClose)
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }

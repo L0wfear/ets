@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { isNullOrUndefined } from 'util';
+
 import ButtonCreateFuelCard from './fuel_card/ButtonCreateFuelCard';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
@@ -6,7 +8,6 @@ import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/heade
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { isNullOrUndefined } from 'util';
 
 type CarRefillTableHeaderProps = {
   id: string;
@@ -59,7 +60,11 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
         <EtsHeaderContainerWrap>
           <EtsHeaderContainer>
             <EtsHeaderTitle>
-              {props.title}
+              {
+                props.visibleButtons
+                  && props.array.length
+                  && props.title
+              }
             </EtsHeaderTitle>
             <EtsButtonsContainer>
               {

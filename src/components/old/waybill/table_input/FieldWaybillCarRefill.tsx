@@ -12,6 +12,7 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 type Props = {
   id: string;
@@ -91,6 +92,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
 
+    const isPermittedWaybillRefill = etsUseSelector((state) => getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill));
     const fuelCardsList = etsUseSelector((state) => getAutobaseState(state).fuelCardsList);
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList);
     const userCompanyId = etsUseSelector((state) => getSessionState(state).userData.company_id);
@@ -206,7 +208,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               array={props.array}
               meta={metaCarRefillRaw}
               onChange={props.handleChange}
-              visibleButtons={props.IS_DRAFT_OR_ACTIVE || props.canEditIfClose}
+              visibleButtons={(props.IS_DRAFT_OR_ACTIVE || props.canEditIfClose) && isPermittedWaybillRefill}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
@@ -221,7 +223,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           selectedRowIndex={selectedRowIndex}
           setSelectedRowIndex={setSelectedRowIndex}
 
-          disabled={props.disabled}
+          disabled={props.disabled || isPermittedWaybillRefill}
         />
         <DisplayFlexAlignCenterFooterForm>
           {

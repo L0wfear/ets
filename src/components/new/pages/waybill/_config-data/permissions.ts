@@ -7,6 +7,7 @@ const waybillPermissions = {
   plate: 'waybill.plate',
   delete: 'waybill.delete',
   departure_and_arrival_values: 'waybill.departure_and_arrival_values',
+  refill: 'waybill.refill',
 };
 
 export default waybillPermissions;

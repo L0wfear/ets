@@ -182,28 +182,6 @@ export function hasMotohours(carStateNumber) {
   return null;
 }
 
-/**
- * преобразовывает hex цвет в rgba с нужной прозрачностью
- * @param hex
- * @param opacity
- * @return {*}
- */
-export function hexToRgba(hexOwn, opacity) {
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const hex = hexOwn.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  if (!result) {
-    return null;
-  }
-
-  const red = parseInt(result[1], 16);
-  const green = parseInt(result[2], 16);
-  const blue = parseInt(result[3], 16);
-  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-}
-
 export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
   return new Promise((res) => {
     const canvas = document.createElement('canvas');

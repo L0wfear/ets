@@ -65,6 +65,7 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
             onHide={handleClickCloseForm}
             onExport={handleExport}
             title="Печать журнала заданий"
+            helpText="В выгрузке будут задания, у которых дата начала или дата окончания попадает в указанный период"
           />
         )
       }

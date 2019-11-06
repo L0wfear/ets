@@ -12,6 +12,7 @@ type Props = {
   onHide: (...arg: Array<any>) => any;
   onExport: (payload: any) => any;
   title: string;
+  helpText?: string;
 };
 
 const PrintByDates: React.FC<Props> = React.memo(
@@ -100,6 +101,7 @@ const PrintByDates: React.FC<Props> = React.memo(
 
             onChange={handleChange}
           />
+          <span>{props.helpText}</span>
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
           <EtsButtonsContainer>

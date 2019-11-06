@@ -223,9 +223,16 @@ export function getToday0am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
 }
 
+export function setDateTime2359(dateOwn) {
+  const date = moment(dateOwn);
+  date.hours(23);
+  date.minutes(59);
+
+  return date.toDate();
+}
+
 export function getToday2359() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
+  return setDateTime2359(new Date());
 }
 
 export function getTomorrow9am(seconds = 0) {

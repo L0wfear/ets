@@ -32,6 +32,7 @@ interface IPropsWaybillFooter {
   handlePrint(is: boolean): void;
   message: string;
   isPermittedByKey: {
+    refill: boolean;
     update: boolean;
     departure_and_arrival_values: boolean;
   };
@@ -101,7 +102,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           <Div
             permissions={savePermissions}
             className={'inline-block'}
-            hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
+            hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
           >
             <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</EtsBootstrap.Button>
           </Div>

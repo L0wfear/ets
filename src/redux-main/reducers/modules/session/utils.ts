@@ -1,6 +1,6 @@
-import createFio from 'utils/create-fio';
 
 import requireAuth from 'utils/auth';
+import { createFio } from 'utils/labelFunctions';
 
 const OPERATIONS = {
   L: 'list',

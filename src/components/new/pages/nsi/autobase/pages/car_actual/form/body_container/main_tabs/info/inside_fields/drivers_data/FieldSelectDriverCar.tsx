@@ -1,23 +1,13 @@
 import * as React from 'react';
+
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { CarWrap } from '../../../../../@types/CarForm';
 import { FormWithHandleChange } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { compose } from 'recompose';
-import { componentsToDriver } from './component_to_select';
-import { ReduxState } from 'redux-main/@types/state';
-import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
-import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
-import useCarDriversList from './useCarDriversList';
+import useCarDriversList from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/drivers_data/useCarDriversList';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { componentsToDriver } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/drivers_data/component_to_select';
 
-type FieldSelectDriverCarStateProps = {};
-type FieldSelectDriverCarDispatchProps = {
-  employeeEmployeeGetSetEmployee: HandleThunkActionCreator<typeof employeeEmployeeGetSetEmployee>;
-  employeeDriverGetSetDriver: HandleThunkActionCreator<typeof employeeDriverGetSetDriver>;
-};
-
-type FieldSelectDriverCarOwnProps = {
+type Props = {
   gov_number: CarWrap['gov_number'];
   drivers_data: CarWrap['drivers_data'];
   onChange: FormWithHandleChange<CarWrap>;
@@ -26,21 +16,11 @@ type FieldSelectDriverCarOwnProps = {
   path: string;
 };
 
-type FieldSelectDriverCarMergedProps = (
-  FieldSelectDriverCarStateProps
-  & FieldSelectDriverCarDispatchProps
-  & FieldSelectDriverCarOwnProps
-);
-
-type FieldSelectDriverCarProps = FieldSelectDriverCarMergedProps;
-
-const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
+const FieldSelectDriverCar: React.FC<Props> = React.memo(
   (props) => {
     const {
       drivers_data,
       gov_number,
-
-      page, path,
     } = props;
 
     const {
@@ -49,10 +29,7 @@ const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
     } = useCarDriversList(
       drivers_data,
       gov_number,
-      page,
-      path,
-      props.employeeEmployeeGetSetEmployee,
-      props.employeeDriverGetSetDriver,
+      props,
     );
 
     const onChange = React.useCallback(
@@ -102,20 +79,4 @@ const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
   },
 );
 
-export default compose<FieldSelectDriverCarProps, FieldSelectDriverCarOwnProps>(
-  connect<FieldSelectDriverCarStateProps, FieldSelectDriverCarDispatchProps, FieldSelectDriverCarOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      employeeEmployeeGetSetEmployee: (...arg) => (
-        dispatch(
-          employeeEmployeeGetSetEmployee(...arg),
-        )
-      ),
-      employeeDriverGetSetDriver: (...arg) => (
-        dispatch(
-          employeeDriverGetSetDriver(...arg),
-        )
-      ),
-    }),
-  ),
-)(FieldSelectDriverCar);
+export default FieldSelectDriverCar;

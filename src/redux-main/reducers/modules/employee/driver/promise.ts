@@ -2,7 +2,7 @@ import {
   employeeLoadDriver,
 } from 'redux-main/reducers/modules/employee/promises';
 import { keyBy, get } from 'lodash';
-import createFio from 'utils/create-fio';
+import { createFio } from 'utils/labelFunctions';
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { WaybillDriverService } from 'api/Services';

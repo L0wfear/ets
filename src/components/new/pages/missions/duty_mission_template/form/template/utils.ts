@@ -8,7 +8,7 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import createFio from 'utils/create-fio';
+import { createFio } from 'utils/labelFunctions';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';
 import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';
 

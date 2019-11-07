@@ -153,16 +153,11 @@ export const filterArray = <F extends any>(array: ArrayRegisrty<F>, filter_value
           (filterData) => valueKeyType.match(new RegExp(`${filterData.type}$`)),
         );
 
-        if (dataForFilter) {
-          const valueKey = valueKeyType.replace(new RegExp(`${dataForFilter.type}$`), '');
-          const row_value = row[valueKey];
-          const field_data = fieldsAsObj[valueKey];
+        const valueKey = valueKeyType.replace(new RegExp(`${dataForFilter.type}$`), '');
+        const row_value = row[valueKey];
+        const field_data = fieldsAsObj[valueKey];
 
-          return dataForFilter.filterFunc(row_value, value, field_data);
-        }
-
-        console.info('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // eslint-disable-line
-        return false;
+        return dataForFilter.filterFunc(row_value, value, field_data);
       });
     });
   }

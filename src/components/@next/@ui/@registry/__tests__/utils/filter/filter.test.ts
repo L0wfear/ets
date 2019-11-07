@@ -24,23 +24,6 @@ describe('Тестирование функции фильтрации реес�
     expect(filterArray(array, filter_values, filter_fields)).not.toBe(array);
   });
 
-  test('фильтрация по отсутствующемеу типу', () => {
-    const array: ArrayRegisrty<any> = [
-      {
-        field_key: 1,
-      },
-    ];
-    const filter_fields: any = [
-      {
-        valueKey: 'field_key',
-        title: 'Тест фильтрации мультиселекта',
-        type: 'qqq',
-      },
-    ];
-
-    expect(filterArray(array, { field_key__qqq: 2 }, filter_fields).length).toBe(array.length);
-  });
-
   describe('фильтрация массива по __in', () => {
     test('фильтрация по отсутствующемеу типу', () => {
       const array: ArrayRegisrty<any> = [

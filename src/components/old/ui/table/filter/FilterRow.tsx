@@ -99,7 +99,7 @@ class FilterRow extends React.Component<Props, {}> {
               value: typeof d[name] === 'boolean' ? +d[name] : d[name],
               label: labelFunction(d[byLabel || name]),
             }))
-            .filter((d) => d.label !== null)
+            .filter((d) => d.label && d.label !== 0)
             .value();
         }
 

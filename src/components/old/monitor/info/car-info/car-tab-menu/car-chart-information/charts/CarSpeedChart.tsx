@@ -65,15 +65,15 @@ const makeData = ({
 const addPointToSeries = (
   data,
   {
-    lastPoint: {
-      timestamp,
-      speed_avg,
-      checkCoordsMsk: { onMkad = false } = {},
-    },
+    lastPoint,
     mkad_speed_lim,
     speed_lim,
   },
 ) => {
+  const timestamp = lastPoint?.timestamp;
+  const speed_avg = lastPoint?.speed_avg;
+  const onMkad = lastPoint?.checkCoordsMsk?.onMkad || false;
+
   return data.map(({ ...seria }, index) => {
     if (index === 0) {
       seria.data.push([timestamp, speed_avg]);

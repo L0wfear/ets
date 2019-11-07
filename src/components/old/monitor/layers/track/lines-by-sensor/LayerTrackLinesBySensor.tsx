@@ -86,34 +86,39 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 
   drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK) {
     if (Object.values(front_cars_sensors_equipment).some(({ show }) => show)) {
-      let linePoints = [
-        track[0],
-      ];
+      let linePoints = [];
+      let lastStatus = null;
 
-      let lastStatus = countWorkSensor(linePoints[0], front_cars_sensors_equipment);
-
-      for (let index = 1, length = track.length; index < length; index++) {
-        const currPoint = track[index];
-        const currStatus = countWorkSensor(currPoint, front_cars_sensors_equipment);
-
-        if (currStatus !== lastStatus) {
-          linePoints.push(currPoint);
-
-          const feature = new Feature({
-            geometry: new LineString(
-              linePoints.map(({ coords_msk }) => coords_msk),
-            ),
-          });
-
-          feature.set('notSelected', true);
-          feature.set('status', lastStatus);
-          feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK));
-          this.props.addFeaturesToSource(feature);
-
-          linePoints = [currPoint];
-          lastStatus = currStatus;
+      for (let index = 0, length = track.length; index < length; index++) {
+        if (index === 0) {
+          linePoints = [
+            track[0],
+          ];
+  
+          lastStatus = countWorkSensor(linePoints[0], front_cars_sensors_equipment);
         } else {
-          linePoints.push(currPoint);
+          const currPoint = track[index];
+          const currStatus = countWorkSensor(currPoint, front_cars_sensors_equipment);
+
+          if (currStatus !== lastStatus) {
+            linePoints.push(currPoint);
+
+            const feature = new Feature({
+              geometry: new LineString(
+                linePoints.map(({ coords_msk }) => coords_msk),
+              ),
+            });
+
+            feature.set('notSelected', true);
+            feature.set('status', lastStatus);
+            feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK));
+            this.props.addFeaturesToSource(feature);
+
+            linePoints = [currPoint];
+            lastStatus = currStatus;
+          } else {
+            linePoints.push(currPoint);
+          }
         }
       }
 

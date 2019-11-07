@@ -4,6 +4,7 @@ import LineString from 'ol/geom/LineString';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForTrackLine } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/track/lines/feature-style';
+import { get } from 'lodash';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -21,7 +22,9 @@ type StateLayerTrackLines = {
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
-  const { checkCoordsMsk: { onMkad = false } = {}, speed_avg } = trackPoint;
+  const onMkad =  get(trackPoint, 'checkCoordsMsk.onMkad', false);
+  const speed_avg = get(trackPoint, 'speed_avg');
+
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;
 };
@@ -49,33 +52,37 @@ class LayerTrackLines extends React.Component<PropsLayerTrackLines, StateLayerTr
   }
 
   drawTrackLines(track) {
-    let linePoints = [
-      track[0],
-    ];
+    let linePoints = [];
+    let lastStatus = null;
 
-    let lastStatus = isMoreThenPermitted(linePoints[0], this.props);
-
-    for (let index = 1, length = track.length; index < length; index++) {
-      const currPoint = track[index];
-      const currStatus = isMoreThenPermitted(currPoint, this.props);
-
-      if (currStatus !== lastStatus) {
-        linePoints.push(currPoint);
-
-        const feature = new Feature({
-          geometry: new LineString(
-            linePoints.map(({ coords_msk }) => coords_msk),
-          ),
-        });
-
-        feature.set('notSelected', true);
-        feature.setStyle(getStyleForTrackLine(lastStatus));
-        this.props.addFeaturesToSource(feature);
-
-        linePoints = [currPoint];
-        lastStatus = currStatus;
+    for (let index = 0, length = track.length; index < length; index++) {
+      if (index === 0) {
+        linePoints = [
+          track[0],
+        ];
+        lastStatus = isMoreThenPermitted(linePoints[0], this.props);
       } else {
-        linePoints.push(currPoint);
+        const currPoint = track[index];
+        const currStatus = isMoreThenPermitted(currPoint, this.props);
+
+        if (currStatus !== lastStatus) {
+          linePoints.push(currPoint);
+
+          const feature = new Feature({
+            geometry: new LineString(
+              linePoints.map(({ coords_msk }) => coords_msk),
+            ),
+          });
+
+          feature.set('notSelected', true);
+          feature.setStyle(getStyleForTrackLine(lastStatus));
+          this.props.addFeaturesToSource(feature);
+
+          linePoints = [currPoint];
+          lastStatus = currStatus;
+        } else {
+          linePoints.push(currPoint);
+        }
       }
     }
 

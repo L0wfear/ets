@@ -106,34 +106,40 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
   }
 
   drawTrackLines(track, SHOW_TRACK, equipmentChecked?: boolean) {
-    let linePoints = [
-      track[0],
-    ];
-    let lastStatus = isMoreThenPermitted(linePoints[0], this.props);
-    let lastTimestatmp = linePoints[0].timestamp;
+    let linePoints = [];
+    let lastStatus = null;
+    let lastTimestatmp = 0;
 
-    for (let index = 1, length = track.length; index < length; index++) {
-      const currPoint = track[index];
-      const currStatus = isMoreThenPermitted(currPoint, this.props);
-
-      if (currStatus !== lastStatus) {
-        linePoints.push(currPoint);
-        const feature = new Feature({
-          geometry: new LineString(
-            linePoints.map(({ coords_msk }) => coords_msk),
-          ),
-        });
-
-        feature.set('notSelected', true);
-        feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
-        this.props.addFeaturesToSource(feature);
-        feature.setId(lastTimestatmp);
-        feature.set('status', lastStatus);
-        linePoints = [currPoint];
-        lastStatus = currStatus;
+    for (let index = 0, length = track.length; index < length; index++) {
+      if (index === 0) {
+        linePoints = [
+          track[0],
+        ];
+        lastStatus = isMoreThenPermitted(linePoints[0], this.props);
         lastTimestatmp = linePoints[0].timestamp;
       } else {
-        linePoints.push(currPoint);
+        const currPoint = track[index];
+        const currStatus = isMoreThenPermitted(currPoint, this.props);
+
+        if (currStatus !== lastStatus) {
+          linePoints.push(currPoint);
+          const feature = new Feature({
+            geometry: new LineString(
+              linePoints.map(({ coords_msk }) => coords_msk),
+            ),
+          });
+
+          feature.set('notSelected', true);
+          feature.setStyle(getStyleForTrackLine(lastStatus, SHOW_TRACK, equipmentChecked));
+          this.props.addFeaturesToSource(feature);
+          feature.setId(lastTimestatmp);
+          feature.set('status', lastStatus);
+          linePoints = [currPoint];
+          lastStatus = currStatus;
+          lastTimestatmp = linePoints[0].timestamp;
+        } else {
+          linePoints.push(currPoint);
+        }
       }
     }
 

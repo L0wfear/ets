@@ -15,6 +15,7 @@ import {
   StateCarSpeedChart,
 } from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 import { ReduxState } from 'redux-main/@types/state';
+import { get } from 'lodash';
 
 const makeData = ({
   track,
@@ -65,15 +66,15 @@ const makeData = ({
 const addPointToSeries = (
   data,
   {
-    lastPoint: {
-      timestamp,
-      speed_avg,
-      checkCoordsMsk: { onMkad = false } = {},
-    },
+    lastPoint,
     mkad_speed_lim,
     speed_lim,
   },
 ) => {
+  const timestamp = get(lastPoint, 'timestamp');
+  const speed_avg = get(lastPoint, 'speed_avg');
+  const onMkad = get(lastPoint, 'checkCoordsMsk.onMkad', false);
+
   return data.map(({ ...seria }, index) => {
     if (index === 0) {
       seria.data.push([timestamp, speed_avg]);

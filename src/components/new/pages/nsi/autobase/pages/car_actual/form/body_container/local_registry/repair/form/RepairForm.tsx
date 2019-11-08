@@ -2,7 +2,6 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { isNullOrUndefined } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
@@ -81,20 +80,11 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
 
       page,
       path,
+      IS_CREATING,
+      isPermitted,
     } = this.props;
 
-    const IS_CREATING = !state.id;
-
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
-
-    const isPermitted
-      = ownIsPermitted
-      && (isNullOrUndefined(state.company_id)
-        || state.can_edit
-        || state.company_id === this.props.userCompanyId);
 
     const value_string_repair = get(AUTOBASE_REPAIR_STATUS[state.status], 'name') || null;
 

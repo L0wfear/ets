@@ -46,16 +46,12 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     repairCompanyList,
     techMaintOrderList,
     selectedCarData,
+
+    IS_CREATING,
+    isPermitted,
   } = props;
 
-  const IS_CREATING = !state.id;
-
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-  const isPermitted = (
-    !IS_CREATING
-      ? props.isPermittedToUpdate
-      : props.isPermittedToCreate
-  );
 
   React.useEffect(
     () => {

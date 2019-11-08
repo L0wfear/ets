@@ -13,6 +13,8 @@ type Props = {
   onExport: (payload: any) => any;
   title: string;
   helpText?: string;
+
+  time?: boolean;
 };
 
 const PrintByDates: React.FC<Props> = React.memo(
@@ -96,8 +98,8 @@ const PrintByDates: React.FC<Props> = React.memo(
             date_end_id="date_to"
             date_end_value={datesData.date_to}
             date_end_error={datesData.error_date_to}
-            date_start_time={false}
-            date_end_time={false}
+            date_start_time={Boolean(props.time)}
+            date_end_time={Boolean(props.time)}
 
             onChange={handleChange}
           />

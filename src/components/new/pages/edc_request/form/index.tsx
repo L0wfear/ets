@@ -127,7 +127,7 @@ const EdcRequestFormLazy: React.FC<Props> = (props) => {
 
   React.useEffect(
     () => {
-      if (!edc_form_permitted_type_reverse[type]) {
+      if (!edc_form_permitted_type_reverse[type] && (type !== 'comments')) {
         props.handleHide(false);
       }
       if (props.element) {

@@ -42,7 +42,7 @@ const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
         ).then((cancelReason) => {
           setRejectionReasonOptions(cancelReason.map((rowData) => ({
             value: rowData.edc_id,
-            name: rowData.name,
+            label: rowData.name,
             rowData,
           })));
         });

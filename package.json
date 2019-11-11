@@ -151,9 +151,10 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm --no-git-tag-version version patch && git add package.json && git add package-lock.json"
+          "pre-commit": "npm --no-git-tag-version version patch"
         }
     },
+    
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
             "npm run lint:fix",

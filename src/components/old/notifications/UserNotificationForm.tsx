@@ -26,7 +26,6 @@ import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 import { getSessionCompanyIndex } from 'redux-main/reducers/modules/session/selectors';
 import { actionsGetCarByAsuodsId as actionsGetCarByAsuodsIdOr } from 'redux-main/reducers/modules/autobase/car/actions';
-import { getErrorNotification } from 'utils/notifications';
 import { ReduxState } from 'redux-main/@types/state';
 
 const TYPE_CODE = {
@@ -60,9 +59,7 @@ const MainVehicleDesc = ({
           isPermitted = true;
         } else {
           global.NOTIFICATION_SYSTEM.notify(
-            getErrorNotification(
-              'Операция запрещена. ТС перенесено в другую организацию',
-            ),
+            'Операция запрещена. ТС перенесено в другую организацию', 'error', 'tr',
           );
         }
       } catch {

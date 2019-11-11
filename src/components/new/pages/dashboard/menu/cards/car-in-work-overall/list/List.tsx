@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as cx from 'classnames';
-import { get } from 'lodash';
 
 import {
   CarInWorkOverallItemsType,
@@ -13,44 +12,49 @@ type PropsList = {
   addIndex: number;
 };
 
-class List extends React.PureComponent<PropsList, {}> {
-  handleClick: React.MouseEventHandler<HTMLLIElement> = (event) => {
-    const { currentTarget: { dataset: { path } } } = event;
-    const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
+const List: React.FC<PropsList> = React.memo(
+  (props) => {
+    const handleClick = React.useCallback(
+      (event) => {
+        const { currentTarget: { dataset: { path } } } = event;
+        const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
-    const subItemsLength = get(this.props.items, [index, 'subItems', 'length'], 0);
+        const subItemsLength = props.items?.[index]?.subItems?.some?.((rowData) => rowData?.subItems?.length);
 
-    if (subItemsLength) {
-      this.props.handleClick(event);
-    }
-  };
-  render() {
-    const { props } = this;
+        if (subItemsLength) {
+          props.handleClick(event);
+        }
+      },
+      [props.items, props.handleClick],
+    );
 
     return (
       <ul>
         {
-          props.items.map(({ subItems = [], title, ...item } , index) => (
-            <li
-              key={index + props.addIndex}
-              data-path={index}
-              title={item.tooltip || title}
-              className={cx(
-                {
-                  pointer: subItems.length,
-                  default_cursor: !subItems.length,
-                },
-                props.classNameContainer,
-              )}
-              onClick={this.handleClick}
-            >
-              {title}
-            </li>
-          ))
+          props.items.map(({ subItems = [], title, ...item } , index) => {
+            const canClick = subItems?.some?.((rowData) => rowData?.subItems?.length);
+            return (
+              <li
+                key={index + props.addIndex}
+                data-path={index + props.addIndex}
+                title={item.tooltip || title}
+                className={cx(
+                  {
+                    pointer: canClick,
+                    default_cursor: !canClick,
+                  },
+                  props.classNameContainer,
+                )}
+                onClick={handleClick}
+              >
+                {title}
+              </li>
+            );
+          })
         }
       </ul>
     );
-  }
-}
+  },
+);
 
 export default List;

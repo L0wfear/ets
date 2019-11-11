@@ -115,13 +115,6 @@ class Analytics extends React.Component<Props, any> {
       }
 
       this.setState({ report_ids });
-    } else if (field === 'companies_ids') {
-      let { companies_ids, transcript } = this.state;
-      companies_ids = value;
-      if (companies_ids.length > 1) {
-        transcript = false;
-      }
-      this.setState({ companies_ids, transcript });
     } else {
       this.setState({ [field]: value });
     }
@@ -181,7 +174,6 @@ class Analytics extends React.Component<Props, any> {
               <input
                 style={{ marginRight: '5px', marginLeft: '10px' }}
                 type="checkbox"
-                disabled={this.state.companies_ids.length > 1}
                 checked={this.state.transcript}
                 onChange={this.handleChange.bind(
                   this,
@@ -189,11 +181,8 @@ class Analytics extends React.Component<Props, any> {
                   !this.state.transcript,
                 )}
               />
-              <span
-                style={{
-                  color: this.state.companies_ids.length > 1 ? 'grey' : 'black',
-                }}>
-                c расшифровкой
+              <span>
+                с расшифровкой
               </span>
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>

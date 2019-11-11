@@ -4,7 +4,7 @@ export type CarInWorkOverallItemsSubItemsSubItemsType = {
 
 export type CarInWorkOverallItemsSubItemsType = {
   title: string;
-  subItems: Array<CarInWorkOverallItemsSubItemsSubItemsType>
+  subItems: Array<CarInWorkOverallItemsSubItemsSubItemsType>;
 };
 
 export type CarInWorkOverallItemsType = {

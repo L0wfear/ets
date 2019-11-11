@@ -11,6 +11,10 @@ import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,
+  getMultiValueId,
+  getInstanceId,
+  geContainertId,
+  getValueId,
 } from 'components/old/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
@@ -29,6 +33,7 @@ const formatStr = (str) => (
     ? str.trim().toLocaleLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ')
     : ''
 );
+
 
 /**
  * @todo уйти от легаси
@@ -112,7 +117,7 @@ export default class ReactSelect extends React.Component<any, any> {
 
   menuListRender = (props: any) => {
     if (props.children.length > 500 && !detectIE()) {
-      return <VirtualizedSelectList {...props} />;
+      return <VirtualizedSelectList {...props} id={this.props.id} modalKey={this.props.modalKey} />;
     }
     return <MenuList {...props} />;
   };
@@ -179,7 +184,7 @@ export default class ReactSelect extends React.Component<any, any> {
       components: propsComponents ,
     } = this.props;
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
+    const id = getValueId(this.props.id, modalKey);
 
     const newInnerProps = {
       ...innerProps,
@@ -201,11 +206,10 @@ export default class ReactSelect extends React.Component<any, any> {
     const { components: propsComponents } = this.props;
 
     const {
-      selectProps: { instanceId },
       data: { value },
     } = props;
 
-    const id = instanceId ? `${instanceId}-value-${value}` : undefined;
+    const id = getMultiValueId(this.props.id, this.props.modalKey, value);
 
     const newInnerProps = {
       ...innerProps,
@@ -238,7 +242,7 @@ export default class ReactSelect extends React.Component<any, any> {
     } = this.props;
 
     const sortedOptions = this.makeOptions(options, sortingFunction);
-    const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
+    const instanceId = getInstanceId(this.props.id, modalKey);
 
     let value = props.value;
 
@@ -250,7 +254,7 @@ export default class ReactSelect extends React.Component<any, any> {
         :          null;
     }
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;
+    const id = geContainertId(this.props.id, modalKey);
 
     return (
       <DivRelative>

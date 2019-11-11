@@ -44,3 +44,17 @@ export const defaultSortingFunction = (a, b) => {
 
   return a.label - b.label;
 };
+
+export const geContainertId = (id: string, modalKey?: string, ) => {
+  return id ? `${modalKey ? `${modalKey}-` : ''}${id}-container` : undefined;
+};
+export const getValueId = (id: string, modalKey?: string, ) => {
+  return id ? `${modalKey ? `${modalKey}-` : ''}${id}-value` : undefined;
+};
+export const getInstanceId = (id: string, modalKey?: string, ) => {
+  return modalKey ? `${modalKey}-${id}` : id;
+};
+export const getMultiValueId = (id: string, modalKey: string, value: any) => {
+  const instanceId = getInstanceId(id, modalKey);
+  return instanceId ? `${instanceId}-value-${value}` : undefined;
+};

@@ -25,9 +25,13 @@ import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
 import { isArray } from 'util';
+import { renderCarData } from 'components/old/ui/table/legacy';
 
 type Props = {
   [k: string]: any;
+  localState?: {
+    show_gov_numbers?: boolean;
+  };
 };
 type State = {
   [k: string]: any;
@@ -365,7 +369,9 @@ export default class DataTable extends React.Component<Props, State> {
           : col.displayName,
         sortable: typeof col.sortable === 'boolean' ? col.sortable : true,
       };
-      if (col.type === 'string') {
+      if (col.make_str_gov_number_format) {
+        metaObject.customComponent = (props) => renderCarData(props, this.props);
+      } else if (col.type === 'string') {
         const callbackF
           = (typeof renderers[col.name] === 'function' && renderers[col.name])
           || false;
@@ -525,34 +531,10 @@ export default class DataTable extends React.Component<Props, State> {
         } else if (
           key.indexOf('date') > -1
           && IS_ARRAY
-          && this.getFilterTypeByKey(key) !== 'date_interval'
         ) {
           if (
             value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT))
             === -1
-          ) {
-            isValid = false;
-          }
-        } else if (
-          key.indexOf('date') > -1
-          && IS_ARRAY
-          && this.getFilterTypeByKey(key) === 'date_interval'
-        ) {
-          const intervalPickerDate1
-            = moment(value[0])
-              .toDate()
-              .getTime() || 0;
-          const intervalPickerDate2
-            = moment(value[1])
-              .toDate()
-              .getTime() || Infinity;
-          const valueDate = moment(obj[key])
-            .toDate()
-            .getTime();
-          if (
-            !(
-              intervalPickerDate1 < valueDate && valueDate < intervalPickerDate2
-            )
           ) {
             isValid = false;
           }

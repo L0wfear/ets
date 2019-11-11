@@ -5,7 +5,6 @@ import { isArray } from 'util';
 
 import Div from 'components/old/ui/Div';
 import FilterInput from 'components/old/ui/input/FilterInput/FilterInput';
-import IntervalPicker from 'components/old/ui/input/IntervalPicker';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 import { ColFilter } from 'components/old/ui/tableNew/filter/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -73,11 +72,7 @@ class FilterRow extends React.Component<Props, {}> {
     );
 
     if (type) {
-      if (
-        type === 'select'
-        || type === 'multiselect'
-        || type === 'advanced-select-like'
-      ) {
+      if (type === 'multiselect') {
         let options = availableOptions;
         let tableDataForOption = tableData || [];
 
@@ -117,25 +112,7 @@ class FilterRow extends React.Component<Props, {}> {
           options = _.uniqBy(options, 'value');
         }
 
-        if (type === 'select' || type === 'advanced-select-like') {
-          if (!!value && !_.find(options, (o) => o.value === value)) {
-            value = null;
-          }
-          if (name === 'operation_id') {
-            options = options.sort((a, b) =>
-              a.label.toLowerCase().localeCompare(b.label.toLowerCase()),
-            );
-          }
-          input = (
-            <ReactSelect
-              modalKey={entity}
-              id={name}
-              options={options}
-              value={value}
-              onChange={onChange}
-            />
-          );
-        } else if (type === 'multiselect') {
+        if (type === 'multiselect') {
           if (value && !!value.length) {
             value = value.filter((v) => _.find(options, (o) => o.value === v));
           }
@@ -167,30 +144,6 @@ class FilterRow extends React.Component<Props, {}> {
           />
         );
       }
-      if (type === 'advanced-string') {
-        input = (
-          <FilterInput
-            entity={entity}
-            filterValue={value}
-            fieldName={name}
-            inputType="string"
-            onChange={onChange}
-          />
-        );
-      }
-      if (type === 'advanced-string-like') {
-        input = (
-          <FilterInput
-            entity={entity}
-            filterValue={value}
-            fieldName={name}
-            inputType="string"
-            onChange={onChange}
-            single
-            filterType="like"
-          />
-        );
-      }
       if (type === 'advanced-date') {
         input = (
           <FilterInput
@@ -198,17 +151,6 @@ class FilterRow extends React.Component<Props, {}> {
             filterValue={value}
             fieldName={name}
             inputType="date"
-            onChange={onChange}
-          />
-        );
-      }
-      if (type === 'advanced-datetime') {
-        input = (
-          <FilterInput
-            entity={entity}
-            filterValue={value}
-            fieldName={name}
-            inputType="datetime"
             onChange={onChange}
           />
         );
@@ -234,14 +176,6 @@ class FilterRow extends React.Component<Props, {}> {
             inputType="datetime"
             onChange={onChange}
             single
-          />
-        );
-      }
-      if (type === 'date_interval') {
-        input = (
-          <IntervalPicker
-            interval={value}
-            onChange={onChange}
           />
         );
       }

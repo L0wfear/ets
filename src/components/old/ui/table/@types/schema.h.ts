@@ -18,13 +18,11 @@ export type IDataTableSelectedRow<
 
 type FieldTypes =
   | 'multiselect'
-  | 'multiselect-boolean'
   | 'select'
   | 'string'
   | 'date'
   | 'datetime'
   | 'advanced-number'
-  | 'advanced-string'
   | 'advanced-date'
   | 'number'
   | 'customFilter';

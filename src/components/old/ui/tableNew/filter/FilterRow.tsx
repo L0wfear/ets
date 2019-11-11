@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 import FilterInput from 'components/old/ui/input/FilterInput/FilterInput';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
-import IntervalPicker from 'components/old/ui/input/IntervalPicker';
 import Div from 'components/old/ui/Div';
 import { ColFilter } from 'components/old/ui/tableNew/filter/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -69,12 +68,7 @@ export default class FilterRow extends React.Component<Props, {}> {
       </div>
     );
     if (type) {
-      if (
-        type === 'select'
-        || type === 'multiselect'
-        || type === 'multiselect-boolean'
-        || type === 'advanced-select-like'
-      ) {
+      if (type === 'multiselect') {
         let options
           = availableOptions
           || _(data)
@@ -85,38 +79,20 @@ export default class FilterRow extends React.Component<Props, {}> {
             }))
             .filter((d) => !!d.label)
             .value();
-        if (type === 'select' || type === 'advanced-select-like') {
-          if (!!value && !_.find(options, (o) => o.value === value)) {
-            value = null;
-          }
-          if (name === 'operation_id') {
-            options = options.sort((a, b) =>
-              a.label.toLowerCase().localeCompare(b.label.toLowerCase()),
-            );
-          }
-          input = (
+        if (value && !!value.length) {
+          value = value.filter((v) => _.find(options, (o) => o.value === v));
+        }
+        input = (
+          <Div className="filter-multiselect-container">
             <ReactSelect
               options={options}
+              multi
+              delimiter={'$'}
               value={value}
-              onChange={this.onChange}
+              onChange={this.onMultiChange}
             />
-          );
-        } else if (type === 'multiselect' || type === 'multiselect-boolean') {
-          if (value && !!value.length) {
-            value = value.filter((v) => _.find(options, (o) => o.value === v));
-          }
-          input = (
-            <Div className="filter-multiselect-container">
-              <ReactSelect
-                options={options}
-                multi
-                delimiter={'$'}
-                value={value}
-                onChange={this.onMultiChange}
-              />
-            </Div>
-          );
-        }
+          </Div>
+        );
       }
       if (type === 'advanced-number') {
         input = (
@@ -128,44 +104,12 @@ export default class FilterRow extends React.Component<Props, {}> {
           />
         );
       }
-      if (type === 'advanced-string') {
-        input = (
-          <FilterInput
-            filterValue={value}
-            fieldName={name}
-            inputType="string"
-            onChange={this.onChange}
-          />
-        );
-      }
-      if (type === 'advanced-string-like') {
-        input = (
-          <FilterInput
-            filterValue={value}
-            fieldName={name}
-            inputType="string"
-            onChange={this.onChange}
-            single
-            filterType="like"
-          />
-        );
-      }
       if (type === 'advanced-date') {
         input = (
           <FilterInput
             filterValue={value}
             fieldName={name}
             inputType="date"
-            onChange={this.onChange}
-          />
-        );
-      }
-      if (type === 'advanced-datetime') {
-        input = (
-          <FilterInput
-            filterValue={value}
-            fieldName={name}
-            inputType="datetime"
             onChange={this.onChange}
           />
         );
@@ -191,9 +135,6 @@ export default class FilterRow extends React.Component<Props, {}> {
             single
           />
         );
-      }
-      if (type === 'date_interval') {
-        input = <IntervalPicker interval={value} onChange={this.onChange} />;
       }
     }
 

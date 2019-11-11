@@ -83,8 +83,6 @@ export default class Filter extends React.Component<Props, State> {
   // переделать
   getName = (name, type) => {
     switch (type) {
-      case 'advanced-select-like':
-        return `${name}__like`;
       default:
         return name;
     }

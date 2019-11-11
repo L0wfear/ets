@@ -523,7 +523,7 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sort_by }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sortable = true, sort_by, make_str_gov_number_format }]] = Object.entries(
           field,
         );
 
@@ -535,6 +535,8 @@ class ReportContainer extends React.Component<
             displayName,
             display,
             sort_by,
+            sortable,
+            make_str_gov_number_format,
           };
           if (filter) {
             initialSchema.filter = {
@@ -555,7 +557,10 @@ class ReportContainer extends React.Component<
             initialSchema.filter = false;
           }
 
-          const renderer = schemaMakers[fieldName] || identity;
+          let renderer: any = identity;
+          if (schemaMakers[fieldName]) {
+            renderer = schemaMakers[fieldName];
+          }
           tableMeta.push(renderer(initialSchema, this.props));
         }
         return tableMeta;

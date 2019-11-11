@@ -68,8 +68,6 @@ class Fiter extends React.Component<any, any> {
 
   getName(name, type) {
     switch (type) {
-      case 'advanced-select-like':
-        return `${name}__like`;
       default:
         return name;
     }

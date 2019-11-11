@@ -24,6 +24,12 @@ require('components/old/ui/input/ReactSelect/ReactSelect.scss');
 
 const openMenuIds = {};
 
+const formatStr = (str) => (
+  isString(str)
+    ? str.trim().toLocaleLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ')
+    : ''
+);
+
 /**
  * @todo уйти от легаси
  */
@@ -146,8 +152,8 @@ export default class ReactSelect extends React.Component<any, any> {
     const { value } = this.props;
 
     return !isNotVisible && (
-      label.toLocaleLowerCase().trim().replace(/ё/g, 'е').includes(
-        filterValue.trim().toLocaleLowerCase().replace(/ё/g, 'е'),
+      formatStr(label).includes(
+        formatStr(filterValue),
       )
       && (
         isArray(value)

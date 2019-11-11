@@ -151,7 +151,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && npm --no-git-tag-version version patch && git add package.json && git add package-lock.json"
+            "pre-commit": "npm --no-git-tag-version version patch && git add package.json && git add package-lock.json"
         }
     },
     "lint-staged": {

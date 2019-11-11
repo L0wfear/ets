@@ -16,5 +16,4 @@ stats.json
 yarn.lock
 coverage
 coverageDirectory
-.vscode
 junit.xml

@@ -5,7 +5,7 @@
 	"editor.tabSize": 2,
   "eslint.enable": true,
   "eslint.workingDirectories": [
-    { "directory": "./packages/egip-client", "changeProcessCWD": true },
+    { "directory": "./src", "changeProcessCWD": true },
   ],
   "eslint.validate": [
 		{ "language": "typescript", "autoFix": false },

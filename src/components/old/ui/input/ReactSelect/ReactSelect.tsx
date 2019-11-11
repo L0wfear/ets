@@ -34,7 +34,6 @@ const formatStr = (str) => (
     : ''
 );
 
-
 /**
  * @todo уйти от легаси
  */

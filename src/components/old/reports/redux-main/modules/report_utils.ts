@@ -63,7 +63,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
     });
 
     filedsRule.forEach(({ key, value: { force_value }}) => {
-      if (!isNullOrUndefined(force_value)) {
+      if (!isNullOrUndefined(force_value) && isNullOrUndefined(newItem[key])) {
         newItem[key] = force_value;
       }
     });

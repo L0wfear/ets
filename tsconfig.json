@@ -26,6 +26,15 @@
     "typeRoots": [
       "node_modules/@types",
       "src/@types"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "tags": [
+          "styled",
+          "css"
+        ]
+      }
     ]
   },
   "include": [
@@ -35,14 +44,5 @@
   "exclude": [
     "node_modules",
     "static"
-  ],
-  "plugins": [
-    {
-      "name": "typescript-styled-plugin",
-      "tags": [
-        "styled",
-        "css"
-      ]
-    }
   ]
 }

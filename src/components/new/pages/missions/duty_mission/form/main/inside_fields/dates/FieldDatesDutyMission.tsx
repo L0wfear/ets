@@ -101,7 +101,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
           payload.order_operation_id = order_operation_id;
         }
 
-        const { data: consumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));
+        const { data: consumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, { ...this.props, noTimeout: true, }));
         const consumableMaterialCountMissionListIndex = keyBy(consumableMaterialCountMissionList, 'consumable_material_id');
 
         const triggerOnAsk = (

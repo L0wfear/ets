@@ -28,7 +28,7 @@ const ButtonPrev: React.FC<Props> = React.memo(
         dispatch(
           registryChangeDataPaginatorCurrentPage(
             props.registryKey,
-            props.currentPage + 1,
+            props.currentPage ? props.currentPage - 1 : 0,
           ),
         );
       },

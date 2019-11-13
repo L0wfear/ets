@@ -82,7 +82,7 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'model_name',
+        valueKey: 'full_model_name',
         title: 'Марка шасси ТС',
         type: 'multiselect',
       },

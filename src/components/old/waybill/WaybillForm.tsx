@@ -1758,9 +1758,10 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
                   disabled={
-                    (IS_CLOSED && !this.state.canEditIfClose)
+                    IS_CLOSED
                     || (!isPermittedByKey.update
-                      && !isPermittedByKey.departure_and_arrival_values)
+                      && !isPermittedByKey.departure_and_arrival_values
+                      && !this.state.canEditIfClose)
                   }
                   onChange={this.handleChange}
                   boundKeys="fact_departure_date"
@@ -1782,9 +1783,10 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
                   disabled={
-                    (IS_CLOSED && !this.state.canEditIfClose)
+                    IS_CLOSED
                     || (!isPermittedByKey.update
-                      && !isPermittedByKey.departure_and_arrival_values)
+                      && !isPermittedByKey.departure_and_arrival_values
+                      && !this.state.canEditIfClose)
                   }
                   onChange={this.handleChange}
                   boundKeys="fact_arrival_date"
@@ -2054,9 +2056,10 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.motohours_end}
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled={
-                              (IS_CLOSED && !this.state.canEditIfClose)
+                              IS_CLOSED
                               || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values)
+                                && !isPermittedByKey.departure_and_arrival_values
+                                && !this.state.canEditIfClose)
                             }
                             onChange={this.handleChange}
                             boundKeys="motohours_end"

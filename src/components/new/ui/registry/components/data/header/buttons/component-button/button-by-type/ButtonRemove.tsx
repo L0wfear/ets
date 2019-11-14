@@ -69,6 +69,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.onClick, props.selectedRow, props.checkedRows],
   );
   const checkedRowsAsArray = Object.values(props.checkedRows);
+  const checkedRowsLength = checkedRowsAsArray.length;
 
   const data = React.useMemo(
     () => (
@@ -89,9 +90,9 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleSubmit={handleClickRemoveSelectedRows}
 
         message={
-          Boolean(checkedRowsAsArray[1])
-            ? data.message_multi || 'Вы уверены, что хотите удалить выбранные элементы?'
-            : data.message_single || 'Вы уверены, что хотите удалить выбранный элемент?'
+          checkedRowsLength === 1
+            ? data.message_multi || 'Вы уверены, что хотите удалить выбранный элемент?'
+            : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
         }
 
         titleOk={data.format === 'yesno' ? 'Да' : null}

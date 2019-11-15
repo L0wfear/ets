@@ -1760,8 +1760,7 @@ class WaybillForm extends React.Component<Props, State> {
                   disabled={
                     IS_CLOSED
                     || (!isPermittedByKey.update
-                      && !isPermittedByKey.departure_and_arrival_values
-                      && !this.state.canEditIfClose)
+                      && !isPermittedByKey.departure_and_arrival_values)
                   }
                   onChange={this.handleChange}
                   boundKeys="fact_departure_date"
@@ -1785,8 +1784,7 @@ class WaybillForm extends React.Component<Props, State> {
                   disabled={
                     IS_CLOSED
                     || (!isPermittedByKey.update
-                      && !isPermittedByKey.departure_and_arrival_values
-                      && !this.state.canEditIfClose)
+                      && !isPermittedByKey.departure_and_arrival_values)
                   }
                   onChange={this.handleChange}
                   boundKeys="fact_arrival_date"
@@ -2292,7 +2290,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_end}
                               value={state.motohours_equip_end}
                               hidden={
-                                (IS_CLOSED && !this.state.canEditIfClose)
+                                !(IS_ACTIVE || IS_CLOSED)
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }

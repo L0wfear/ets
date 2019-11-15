@@ -15,7 +15,7 @@ test.only('Проверка diffDates', () => {
   addDayDate.setDate(addDayDate.getDay() + 15);
   addMounthDate.setMonth(addMounthDate.getMonth() + 6);
 
-  expect(diffDates() === 0).toBeTruthy();
+  expect(diffDates(newDate, newDate) === 0).toBeTruthy();
   expect(diffDates(newDate) <= 0).toBeTruthy();
   expect(diffDates(addSecondDate) >= 0).toBeTruthy();
 

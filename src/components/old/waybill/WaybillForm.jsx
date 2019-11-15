@@ -1565,7 +1565,7 @@ class WaybillForm extends UNSAFE_Form {
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
                   disabled={
-                    (IS_CLOSED && !this.state.canEditIfClose)
+                    IS_CLOSED
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -1589,7 +1589,7 @@ class WaybillForm extends UNSAFE_Form {
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
                   disabled={
-                    (IS_CLOSED && !this.state.canEditIfClose)
+                    IS_CLOSED
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -2091,7 +2091,7 @@ class WaybillForm extends UNSAFE_Form {
                               error={errors.motohours_equip_end}
                               value={state.motohours_equip_end}
                               hidden={
-                                (IS_CLOSED && !this.state.canEditIfClose)
+                                !(IS_ACTIVE || IS_CLOSED)
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }

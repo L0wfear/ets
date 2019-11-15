@@ -17,3 +17,7 @@ export const getRequiredFieldNumberMoreThenZero = (field = 'Название п�
 export const getRequiredFieldNoTrim = (field = 'Название по умолчанию') => {
   return `Поле "${field}" не должно начинаться и заканчиваться пробелом`;
 };
+
+export const getRequiredFieldMoreEqualThen = (field1 = 'Название по умолчанию', field2 = 'Название по умолчанию') => {
+  return `Поле "${field1}" должно быть меньше либо равно поля "${field2}"`;
+};

@@ -3,6 +3,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
 import { INSPECT_TYPE_FORM } from '../../global_constants';
+import { getRequiredFieldMoreEqualThen } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWithForm> = {
   properties: {
@@ -82,22 +83,10 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       type: 'boolean',
     },
     cnt_defective_light: {
-      title: 'Количество неисправных мачт освещения (шт.)',
+      title: 'Количество неисправных опор освещения (шт.)',
       type: 'number',
       minNotEqual: -1,
       integer: true,
-
-      dependencies: [
-        (value, { lack_of_lighting }, { type }) => {
-          if (type === INSPECT_TYPE_FORM.list) {
-            if (!lack_of_lighting && !value && value !== 0) {
-              return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
-            }
-          }
-
-          return '';
-        },
-      ],
     },
     lack_control_room: {
       title: 'Отсутствие помещения для оформления путевых листов (диспетчерской)',
@@ -131,6 +120,17 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       type: 'number',
       minNotEqual: -1,
       integer: true,
+      dependencies: [
+        (value, { cnt_repair_posts }, { type }) => {
+          if (type === INSPECT_TYPE_FORM.list) {
+            if ((!value && cnt_repair_posts ) || value > cnt_repair_posts) {
+              return getRequiredFieldMoreEqualThen('Постов в неудовлетворительном состоянии (шт.)', 'Количество постов для обслуживания, ремонта техники (шт.)');
+            }
+          }
+
+          return '';
+        },
+      ]
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',

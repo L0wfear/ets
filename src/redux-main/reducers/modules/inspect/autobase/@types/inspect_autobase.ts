@@ -3,6 +3,7 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {
+  is_coating_defects: boolean;
   is_under_construction: boolean;
   is_less_than_two_entrances: boolean;
   absence_of_a_shield_with_a_scheme_of_movement: boolean;

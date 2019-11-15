@@ -8,6 +8,7 @@ import { get, keyBy, cloneDeep } from 'lodash';
 import { isNullOrUndefined } from 'util';
 
 export const defaultInspectAutobaseData: InspectAutobase['data'] = {
+  is_coating_defects: false,
   is_under_construction: false,
   is_less_than_two_entrances: false,
   absence_of_a_shield_with_a_scheme_of_movement: false,

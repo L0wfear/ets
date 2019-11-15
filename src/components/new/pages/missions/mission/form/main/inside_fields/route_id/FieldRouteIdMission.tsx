@@ -111,7 +111,6 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
             ? dependeceTechnicalOperation
             : municipalFacilityForMissionList.length
         )
-        || mission_id
       );
 
       if (triggerOnGetRouteList) {

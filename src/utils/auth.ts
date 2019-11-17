@@ -1,4 +1,4 @@
-import * as pathToRegexp from 'path-to-regexp';
+import { pathToRegexp } from 'path-to-regexp';
 
 import { routToPer } from 'constants/routerAndPermission';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';

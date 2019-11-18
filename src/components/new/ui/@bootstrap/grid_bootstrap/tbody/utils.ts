@@ -8,18 +8,25 @@ import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/re
 import { orderRegistryKey } from 'components/new/pages/nsi/order/_config-data/registry-config';
 import { ORDER_STATUS_KEYS, ORDER_ASSIGNMENTS_STATUS_KEYS } from 'constants/dictionary';
 import { orderTechnicaOperationRegistryKey } from 'components/new/pages/nsi/order/order_technical_operation/_config-data/registry-config';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
+import { lighten } from 'polished';
 
 export const getColorTd = <F extends any>(rowData: F, checkData: Record<string, F>, registryKey: string) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
     return constantColor.orange;
   }
 
-  if (registryKey === registryWaybillKey && get(rowData, 'status', null) === WAYBILL_STATUSES_KEY.active) {
-    return constantColor.colorChildRegistry;
+  if (registryKey === registryWaybillKey) {
+    if(rowData?.delete) {
+      return lighten(0.25, UiConstants.colorError);
+    }
+    if(rowData?.status === WAYBILL_STATUSES_KEY.active) {
+      return constantColor.colorChildRegistry;
+    }
   }
 
   if (registryKey === orderRegistryKey) {
-    const status = get(rowData, 'status');
+    const status = rowData?.status;
     if (status === ORDER_STATUS_KEYS.cancelled || status === ORDER_STATUS_KEYS.suspended) {
       return constantColor.simpleRed;
     }

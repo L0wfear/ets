@@ -42,6 +42,7 @@ export type Waybill = {
   driver_id: number;
   driver_fio: string;
   driver_name: string;
+  delete: boolean;
   equipment_fact_fuel_end: number;
   equipment_fuel: boolean;
   equipment_fuel_end: number;
@@ -77,6 +78,7 @@ export type Waybill = {
   plan_departure_date: string;
   sensor_consumption: number;
   status: 'draft' | any;
+  status_text: string;
   structure_id: number;
   structure_name: string;
   tax_data: Array<{

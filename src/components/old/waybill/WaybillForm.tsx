@@ -1560,9 +1560,10 @@ class WaybillForm extends React.Component<Props, State> {
     }));
 
     const IS_CREATING = !state.status;
-    const IS_ACTIVE = state.status && state.status === 'active';
-    const IS_DRAFT = state.status && state.status === 'draft';
-    const IS_CLOSED = state.status && state.status === 'closed';
+    const IS_ACTIVE = state?.status === 'active';
+    const IS_DRAFT = state?.status === 'draft';
+    const IS_CLOSED = state?.status === 'closed';
+    const IS_DELETE = state?.delete;
 
     const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
@@ -1671,7 +1672,8 @@ class WaybillForm extends React.Component<Props, State> {
                     label="Подразделение"
                     error={errors.structure_id}
                     disabled={
-                      STRUCTURE_FIELD_READONLY
+                      IS_DELETE
+                      || STRUCTURE_FIELD_READONLY
                       || !(IS_CREATING || IS_DRAFT)
                       || !isPermittedByKey.update
                     }
@@ -1689,7 +1691,7 @@ class WaybillForm extends React.Component<Props, State> {
                   label="Сопровождающий"
                   error={errors.accompanying_person_id}
                   clearable
-                  disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
+                  disabled={IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                   options={EMPLOYEES}
                   value={state.accompanying_person_id}
                   onChange={this.handleChange}
@@ -1707,7 +1709,7 @@ class WaybillForm extends React.Component<Props, State> {
                   date={state.plan_departure_date}
                   onChange={this.handlePlanDepartureDates}
                   boundKeys="plan_departure_date"
-                  disabled={!isPermittedByKey.update}
+                  disabled={IS_DELETE || !isPermittedByKey.update}
                 />
               </EtsBootstrap.Col>
             </Div>
@@ -1722,7 +1724,7 @@ class WaybillForm extends React.Component<Props, State> {
                   min={state.plan_departure_date}
                   onChange={this.handlePlanDepartureDates}
                   boundKeys="plan_arrival_date"
-                  disabled={!isPermittedByKey.update}
+                  disabled={ IS_DELETE || !isPermittedByKey.update}
                 />
               </EtsBootstrap.Col>
             </Div>
@@ -1734,7 +1736,7 @@ class WaybillForm extends React.Component<Props, State> {
                 error={errors.work_mode_id}
                 clearable
                 hidden={!(IS_CREATING || IS_DRAFT)}
-                disabled={IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
+                disabled={IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                 options={workModeOptions}
                 value={state.work_mode_id}
                 onChange={this.handleChange}
@@ -1758,7 +1760,7 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_departure_date}
                   date={state.fact_departure_date}
                   disabled={
-                    IS_CLOSED
+                    IS_DELETE || IS_CLOSED
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -1782,7 +1784,7 @@ class WaybillForm extends React.Component<Props, State> {
                   error={errors.fact_arrival_date}
                   date={state.fact_arrival_date}
                   disabled={
-                    IS_CLOSED
+                    IS_DELETE || IS_CLOSED
                     || (!isPermittedByKey.update
                       && !isPermittedByKey.departure_and_arrival_values)
                   }
@@ -1808,7 +1810,7 @@ class WaybillForm extends React.Component<Props, State> {
                     options={CARS}
                     value={state.car_id}
                     onChange={this.onCarChange}
-                    disabled={!isPermittedByKey.update}
+                    disabled={IS_DELETE || !isPermittedByKey.update}
                   />
 
                   <ExtField
@@ -1838,7 +1840,7 @@ class WaybillForm extends React.Component<Props, State> {
                     value={state.trailer_id}
                     onChange={this.handleChange}
                     boundKeys="trailer_id"
-                    disabled={!isPermittedByKey.update}
+                    disabled={IS_DELETE || !isPermittedByKey.update}
                   />
                   <ExtField
                     id="trailer-gov-number"
@@ -1901,7 +1903,7 @@ class WaybillForm extends React.Component<Props, State> {
                 value={state.driver_id}
                 onChange={this.handleChange}
                 boundKeys="driver_id"
-                disabled={!isPermittedByKey.update}
+                disabled={IS_DELETE || !isPermittedByKey.update}
               />
 
               <ExtField
@@ -1938,7 +1940,7 @@ class WaybillForm extends React.Component<Props, State> {
                   value={state.equipment_fuel}
                   options={YES_NO_SELECT_OPTIONS_BOOL}
                   onChange={this.handleEquipmentFuel}
-                  disabled={IS_CLOSED || !isPermittedByKey.update}
+                  disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                   clearable={false}
                   modalKey={modalKey}
                 />
@@ -1953,7 +1955,7 @@ class WaybillForm extends React.Component<Props, State> {
                       value={state.is_one_fuel_tank}
                       options={YES_NO_SELECT_OPTIONS_BOOL}
                       onChange={this.handleIsOneFuelTank}
-                      disabled={IS_CLOSED || !isPermittedByKey.update}
+                      disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                       clearable={false}
                       modalKey={modalKey}
                     />
@@ -1999,7 +2001,7 @@ class WaybillForm extends React.Component<Props, State> {
                             error={errors.odometr_start}
                             value={state.odometr_start}
                             disabled={
-                              IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
                             }
                             onChange={this.handleChange}
                             boundKeys="odometr_start"
@@ -2012,7 +2014,7 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.odometr_end}
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled={
-                              (IS_CLOSED && !this.state.canEditIfClose)
+                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                               || (!isPermittedByKey.update
                                 && !isPermittedByKey.departure_and_arrival_values)
                             }
@@ -2040,7 +2042,7 @@ class WaybillForm extends React.Component<Props, State> {
                             error={errors.motohours_start}
                             value={state.motohours_start}
                             disabled={
-                              IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
                             }
                             onChange={this.handleChange}
                             boundKeys="motohours_start"
@@ -2054,7 +2056,7 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.motohours_end}
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled={
-                              IS_CLOSED
+                              IS_DELETE || IS_CLOSED
                               || (!isPermittedByKey.update
                                 && !isPermittedByKey.departure_and_arrival_values
                                 && !this.state.canEditIfClose)
@@ -2086,7 +2088,7 @@ class WaybillForm extends React.Component<Props, State> {
                               keyField="fuel_type"
                               value={state.fuel_type}
                               error={errors.fuel_type}
-                              disabled={IS_CLOSED || !isPermittedByKey.update}
+                              disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                               options={FUEL_TYPES}
                               handleChange={this.props.handleMultipleChange}
                             />
@@ -2117,7 +2119,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.fuel_start}
                               value={state.fuel_start}
                               disabled={
-                                IS_ACTIVE
+                                IS_DELETE || IS_ACTIVE
                                 || IS_CLOSED
                                 || !isPermittedByKey.update
                               }
@@ -2137,7 +2139,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   value={state.fact_fuel_end}
                                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                                   disabled={
-                                    !(IS_ACTIVE || this.state.canEditIfClose)
+                                    IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
                                     || !isPermittedByKey.update
                                   }
                                   onChange={this.handleChange}
@@ -2200,7 +2202,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE
                               }
                               disabled={
-                                (IS_CLOSED && !this.state.canEditIfClose)
+                                IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                                 || !isPermittedByKey.update
                               }
                               canEditIfClose={this.state.canEditIfClose}
@@ -2229,7 +2231,7 @@ class WaybillForm extends React.Component<Props, State> {
                               && state.tax_data.length === 0)
                             || (IS_CLOSED && !state.tax_data)
                           }
-                          readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                          readOnly={IS_DELETE || !IS_ACTIVE && !this.state.canEditIfClose}
                           IS_CLOSED={IS_CLOSED}
                           title="Расчет топлива по норме"
                           taxes={tax_data}
@@ -2276,7 +2278,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_start}
                               value={state.motohours_equip_start}
                               disabled={
-                                IS_ACTIVE
+                                IS_DELETE || IS_ACTIVE
                                 || IS_CLOSED
                                 || !isPermittedByKey.update
                               }
@@ -2294,7 +2296,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }
-                              disabled={IS_CLOSED && !this.state.canEditIfClose}
+                              disabled={IS_DELETE || IS_CLOSED && !this.state.canEditIfClose}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_end"
                             />
@@ -2322,7 +2324,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     value={state.equipment_fuel_type}
                                     error={errors.equipment_fuel_type}
                                     disabled={
-                                      IS_CLOSED || !isPermittedByKey.update
+                                      IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                     }
                                     options={FUEL_TYPES}
                                     handleChange={
@@ -2351,7 +2353,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     error={errors.equipment_fuel_start}
                                     value={state.equipment_fuel_start}
                                     disabled={
-                                      IS_CLOSED || !isPermittedByKey.update
+                                      IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                     }
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"
@@ -2368,7 +2370,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                                     disabled={
                                       !(
-                                        IS_ACTIVE || this.state.canEditIfClose
+                                        IS_DELETE || IS_ACTIVE || this.state.canEditIfClose
                                       ) || !isPermittedByKey.update
                                     }
                                     onChange={this.handleChange}
@@ -2429,7 +2431,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     IS_CREATING || IS_DRAFT || IS_ACTIVE
                                   }
                                   disabled={
-                                    (IS_CLOSED && !this.state.canEditIfClose)
+                                    IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                                     || !isPermittedByKey.update
                                   }
                                   page={this.props.page}
@@ -2459,7 +2461,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || (IS_CLOSED && !state.equipment_tax_data)
                               }
                               readOnly={
-                                !IS_ACTIVE && !this.state.canEditIfClose
+                                IS_DELETE || !IS_ACTIVE && !this.state.canEditIfClose
                               }
                               IS_CLOSED={IS_CLOSED}
                               taxes={equipment_tax_data}
@@ -2491,6 +2493,7 @@ class WaybillForm extends React.Component<Props, State> {
                 missionsList={missionsList}
                 notAvailableMissions={notAvailableMissions}
                 IS_CLOSED={IS_CLOSED}
+                IS_DELETE={IS_DELETE}
                 isPermittedByKey={isPermittedByKey}
                 origFormState={origFormState}
                 handleChange={this.handleChange}
@@ -2517,7 +2520,7 @@ class WaybillForm extends React.Component<Props, State> {
                   id="waybill-comment"
                   type="text"
                   label="Комментарий"
-                  disabled={IS_CLOSED || !isPermittedByKey.update}
+                  disabled={(IS_CLOSED && !IS_DELETE) || !isPermittedByKey.update}
                   value={state.comment}
                   onChange={this.handleChange}
                   boundKeys="comment"
@@ -2563,7 +2566,7 @@ class WaybillForm extends React.Component<Props, State> {
                         type="number"
                         label="Работа"
                         disabled={
-                          (IS_CLOSED && !this.state.canEditIfClose)
+                          IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                           || !isPermittedByKey.update
                         }
                         value={state.downtime_hours_work}
@@ -2578,7 +2581,7 @@ class WaybillForm extends React.Component<Props, State> {
                         type="number"
                         label="Дежурство"
                         disabled={
-                          (IS_CLOSED && !this.state.canEditIfClose)
+                          IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                           || !isPermittedByKey.update
                         }
                         value={state.downtime_hours_duty}
@@ -2599,7 +2602,7 @@ class WaybillForm extends React.Component<Props, State> {
                         type="number"
                         label="Обед"
                         disabled={
-                          (IS_CLOSED && !this.state.canEditIfClose)
+                          IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                           || !isPermittedByKey.update
                         }
                         value={state.downtime_hours_dinner}
@@ -2614,7 +2617,7 @@ class WaybillForm extends React.Component<Props, State> {
                         type="number"
                         label="Ремонт"
                         disabled={
-                          (IS_CLOSED && !this.state.canEditIfClose)
+                          IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                           || !isPermittedByKey.update
                         }
                         value={state.downtime_hours_repair}

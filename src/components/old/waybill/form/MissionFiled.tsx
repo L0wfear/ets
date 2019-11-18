@@ -18,9 +18,21 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
-import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import styled from 'styled-components';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+
+const MissionFieldStyled = styled.div`
+  margin-bottom: 15px;
+  ${FieldLabel} {
+    display: none;
+  }
+  h4 {
+    margin-bottom: -10px;
+  }
+`;
 
 type Props = {
   dispatch: EtsDispatch;
@@ -190,6 +202,7 @@ class MissionField extends React.Component<Props, any> {
       missionsList,
       notAvailableMissions,
       IS_CLOSED,
+      IS_DELETE,
       isPermittedByKey,
       origFormState,
     } = this.props;
@@ -233,8 +246,16 @@ class MissionField extends React.Component<Props, any> {
       [],
     );
 
+    const errorIntervalShow = new Date(origFormState?.fact_arrival_date)?.getTime()
+      > new Date(state?.fact_arrival_date)?.getTime()
+      && state.status === 'active';
+
+    const errorIntervalText = `Задания:
+      ${OUTSIDEMISSIONS.map((m) => `№${m.number}`,).join(', ',)}
+      не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`;
+
     return (
-      <>
+      <MissionFieldStyled>
         <h4>Задание</h4>
         <ExtField
           id="mission-id-list"
@@ -246,28 +267,24 @@ class MissionField extends React.Component<Props, any> {
           options={missionOptions}
           value={state.mission_id_list}
           disabled={
-            isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
+            IS_DELETE || isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
           }
           clearable={false}
           onChange={this.handleMissionsChange}
           multiValueContainerReander={this.multiValueContainerReander}
         />
-        {new Date(origFormState.fact_arrival_date).getTime()
-          > new Date(state.fact_arrival_date).getTime()
-          && state.status === 'active' && (
-          <div style={{ color: UiConstants.colorError }}>{`Задания: ${OUTSIDEMISSIONS.map(
-            (m) => `№${m.number}`,
-          ).join(
-            ', ',
-          )} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
-        )}
+        <ErrorsBlock
+          hidden={!errorIntervalShow}
+          error={errorIntervalText}
+        />
+
         <EtsBootstrap.Button
           id="create-mission"
           style={{ marginTop: 10 }}
           onClick={this.createMission}
           permissions={missionPermissions.create}
           disabled={
-            isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
+            IS_DELETE || isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
           }>
           Создать задание
         </EtsBootstrap.Button>
@@ -292,7 +309,7 @@ class MissionField extends React.Component<Props, any> {
             isWaybillForm
           />
         )}
-      </>
+      </MissionFieldStyled>
     );
   }
 }

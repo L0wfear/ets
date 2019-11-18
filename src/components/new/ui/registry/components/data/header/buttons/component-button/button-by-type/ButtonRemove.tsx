@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -78,9 +79,16 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
+  const disableBtnByRegistry = React.useMemo(() => {
+    return props.registryKey === registryWaybillKey
+      && ( !Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
+      ? true
+      : false;
+  }, [ props.selectedRow, props.registryKey, checkedRowsAsArray, ]);
+
   return (
     <>
-      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry}>
         <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>

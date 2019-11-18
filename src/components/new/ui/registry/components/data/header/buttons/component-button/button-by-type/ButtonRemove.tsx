@@ -90,7 +90,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleSubmit={handleClickRemoveSelectedRows}
 
         message={
-          checkedRowsLength === 1
+          checkedRowsLength === 1 || checkedRowsLength === 0
             ? data.message_multi || 'Вы уверены, что хотите удалить выбранный элемент?'
             : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
         }

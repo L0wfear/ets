@@ -37,7 +37,7 @@ export const config: TypeConfigData<Employee> = {
         title: [
           {
             displayIf: displayIfContant.isKgh,
-            title: 'Наименование ГБУ',
+            title: 'Организация',
           },
           {
             displayIf: displayIfContant.isOkrug,
@@ -155,7 +155,7 @@ export const config: TypeConfigData<Employee> = {
           title: [
             {
               displayIf: displayIfContant.isKgh,
-              title: 'Наименование ГБУ',
+              title: 'Организация',
             },
             {
               displayIf: displayIfContant.isOkrug,

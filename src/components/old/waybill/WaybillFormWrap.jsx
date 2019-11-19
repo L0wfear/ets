@@ -108,27 +108,29 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   return waybill;
 }
 
-const checkDataForDepartureAndArrivalValues = [
+const checkDataForDepartureAndArrivalValues = new Set([
   'fact_departure_date',
   'fact_arrival_date',
   'odometr_end',
   'motohours_end',
   'motohours_equip_end',
-];
+]);
 
-const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
-  Object.entries(formErrors).reduce((newFormError, [key, value]) => {
-    if (isPermittedByKey.update) {
-      newFormError[key] = value;
-    } else if (
-      isPermittedByKey.departure_and_arrival_values
-      && checkDataForDepartureAndArrivalValues.includes(key)
-    ) {
-      newFormError[key] = value;
-    }
+const checkDataForRefill = new Set(['car_refill', 'equipment_refill']);
 
-    return newFormError;
-  }, {});
+const filterFormErrorByPerission = (isPermittedByKey, formErrors) => {
+  return Object.fromEntries(
+    Object.entries(formErrors).filter(([key]) => {
+      const triggerOnSaveError
+        = isPermittedByKey.update
+        || (isPermittedByKey.departure_and_arrival_values
+          && checkDataForDepartureAndArrivalValues.has(key))
+        || (isPermittedByKey.refill && checkDataForRefill.has(key));
+
+      return triggerOnSaveError;
+    }),
+  );
+};
 
 // избавиться
 // добавил из-за перерендера
@@ -150,8 +152,11 @@ class WaybillFormWrap extends React.Component {
       canPrint: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
-        update: false,
-        departure_and_arrival_values: false,
+        update: props.currentUser.permissionsSet.has(waybillPermissions.update),
+        departure_and_arrival_values: props.currentUser.permissionsSet.has(
+          waybillPermissions.departure_and_arrival_values,
+        ),
+        refill: props.currentUser.permissionsSet.has(waybillPermissions.refill),
       },
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
@@ -186,17 +191,6 @@ class WaybillFormWrap extends React.Component {
       () => this.checkError(),
       (60 - currentDate.getSeconds()) * 1000,
     );
-
-    this.setState({
-      isPermittedByKey: {
-        update: this.props.currentUser.permissions.includes(
-          waybillPermissions.update,
-        ),
-        departure_and_arrival_values: this.props.currentUser.permissions.includes(
-          waybillPermissions.departure_and_arrival_values,
-        ),
-      },
-    });
 
     if (this.props.element === null) {
       const defaultBill = getDefaultBill({
@@ -289,7 +283,8 @@ class WaybillFormWrap extends React.Component {
             canPrint: false,
             canSave:
               (this.state.isPermittedByKey.update
-                || this.state.isPermittedByKey.departure_and_arrival_values)
+                || this.state.isPermittedByKey.departure_and_arrival_values
+                || this.state.isPermittedByKey.refill)
               && canSaveTestWrap(formErrors)
               && !(
                 (formErrors.fact_arrival_date
@@ -318,7 +313,8 @@ class WaybillFormWrap extends React.Component {
           canPrint: true,
           canSave:
             (this.state.isPermittedByKey.update
-              || this.state.isPermittedByKey.departure_and_arrival_values)
+              || this.state.isPermittedByKey.departure_and_arrival_values
+              || this.state.isPermittedByKey.refill)
             && canSaveTestWrap(this.state.formErrors),
           canClose: this.state.isPermittedByKey.update && formErrors.length,
           formErrors,

@@ -14,8 +14,10 @@ import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 type FieldWaybillCarRefillStateProps = {
+  isPermittedWaybillRefill: boolean;
   fuelCardsList: IStateAutobase['fuelCardsList'];
   refillTypeList: IStateSomeUniq['refillTypeList'],
   userCompanyId: InitialStateSession['userData']['company_id'];
@@ -211,7 +213,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
               array={props.array}
               meta={metaCarRefillRaw}
               onChange={props.handleChange}
-              visibleButtons={props.IS_DRAFT_OR_ACTIVE || props.canEditIfClose}
+              visibleButtons={(props.IS_DRAFT_OR_ACTIVE || props.canEditIfClose) && props.isPermittedWaybillRefill}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
@@ -226,7 +228,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           selectedRowIndex={selectedRowIndex}
           setSelectedRowIndex={setSelectedRowIndex}
 
-          disabled={props.disabled}
+          disabled={props.disabled || props.isPermittedWaybillRefill}
         />
         <DisplayFlexAlignCenterFooterForm>
           {
@@ -249,6 +251,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
 export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDispatchProps, FieldWaybillCarRefillOwnProps, ReduxState>(
   (state) => ({
+    isPermittedWaybillRefill: getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill),
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
     userCompanyId: getSessionState(state).userData.company_id,

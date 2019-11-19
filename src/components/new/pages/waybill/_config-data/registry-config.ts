@@ -57,6 +57,12 @@ export const config: TypeConfigData<Waybill> = {
         })),
       },
       {
+        valueKey: 'delete',
+        title: 'Удален',
+        type: 'multiselect',
+        options: YES_NO_SELECT_OPTIONS_BOOL,
+      },
+      {
         valueKey: 'all_missions_status',
         title: 'Статус заданий',
         type: 'multiselect',
@@ -271,12 +277,6 @@ export const config: TypeConfigData<Waybill> = {
           { value: '%after%', label: 'послерейсовый' },
           { value: '%line%', label: 'внеплановый' },
         ],
-      },
-      {
-        valueKey: 'delete',
-        title: 'Удален',
-        type: 'multiselect',
-        options: YES_NO_SELECT_OPTIONS_BOOL,
       },
     ],
   },

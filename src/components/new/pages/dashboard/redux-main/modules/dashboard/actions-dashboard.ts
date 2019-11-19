@@ -236,12 +236,13 @@ export const dashboardLoadCarInWorkOverall = (payloadAction?: ConfigType['payloa
   dashboardLoadCardDataByPath('car_in_work_overall', payloadAction)
 );
 
-export const dashboardLoadOrders = () => (
+export const dashboardLoadOrders = (payloadAction?: ConfigType['payloadAction']) => (
   dashboardLoadCardDataByPath(
     'faxogramms',
     {
       payload: {
         status: 2,
+        ...get(payloadAction, 'payload'),
       },
     },
   )

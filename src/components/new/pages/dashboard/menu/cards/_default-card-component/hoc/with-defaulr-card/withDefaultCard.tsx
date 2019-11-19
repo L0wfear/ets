@@ -59,7 +59,10 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
       };
 
       componentDidMount() {
-        this.loadData();
+
+        setTimeout(() => {
+          this.loadData();
+        }, this.props.timeDelay * 150);
 
         this.setState({
           timerId: setTimeout(() => {
@@ -70,7 +73,7 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                 }
               }, (this.props.timeInterval || 2 * 60) * 1000),
             });
-          }, this.props.timeDelay * 100 || 0),
+          }, this.props.timeDelay * 5000 || 0),
         });
       }
 

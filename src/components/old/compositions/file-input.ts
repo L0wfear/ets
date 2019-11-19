@@ -16,10 +16,6 @@ export const fileFormatter = withHandlers({
       return;
     }
 
-    if (e.target.files.length === 0) {
-      return;
-    }
-
     const newFiles: File[] = fromIterableListToArray(e.target.files);
 
     const fileArray: IFileWrapper[] = [];
@@ -66,11 +62,6 @@ export const fileFormatter = withHandlers({
       base64: base64List[i],
     }));
 
-    if (!multiple) {
-      onChange([...fileWrappers]);
-      return;
-    }
-
     onChange([...value, ...fileWrappers]);
   },
 });
@@ -87,7 +78,6 @@ export const fileCountLimiter = withHandlers({
   onChange: ({
     maxCount = MAX_FILE_COUNT,
     maxSize = mbToBytes(MAX_SUM_FILE_SIZE_MB),
-    maxSizePerFile = mbToBytes(MAX_SIZE_PER_FILE_MB),
     onChange,
     value = [],
   }) => (e) => {
@@ -99,21 +89,12 @@ export const fileCountLimiter = withHandlers({
     const newFiles: File[] = fromIterableListToArray(e.target.files);
     const allFiles = [...value, ...newFiles];
 
-    if (allFiles.length === 0) {
-      return;
-    }
-
     if (allFiles.length > maxCount) {
       global.NOTIFICATION_SYSTEM.notify(`Максимальное количество файлов для загрузки не должо превышать ${maxCount}`, 'warning');
       return;
     }
 
     const sumFileSize = allFiles.reduce((prev, curr) => prev + getFileSize(curr), 0);
-
-    // if (file.size > maxSizePerFile) {
-    //   global.NOTIFICATION_SYSTEM.notify(`Максимальный объём отдельно взятого файла для загрузки не должен быть больше ${MAX_SIZE_PER_FILE_MB} Мб`, 'warning');
-    //   return;
-    // }
 
     if (sumFileSize > maxSize) {
       global.NOTIFICATION_SYSTEM.notify(`Максимальный суммарный объём всех файлов для загрузки не должен превышать ${MAX_SUM_FILE_SIZE_MB} Мб`, 'warning');

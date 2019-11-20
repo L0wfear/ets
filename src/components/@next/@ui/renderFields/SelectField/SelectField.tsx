@@ -8,6 +8,10 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { SelectFieldUi } from 'components/@next/@ui/renderFields/SelectField/styled';
 import { ExtFieldSelect } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
+
+export const SpaceWrapper = styled.span`
+`;
 
 const SelectField: React.FC<ExtFieldSelect> = React.memo(
   (props) => {
@@ -27,7 +31,10 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
         {
           isString(label) && (
             <React.Fragment>
-              <FieldLabel id={id}>{label}</FieldLabel>&nbsp;
+              <FieldLabel id={id}>{label}</FieldLabel>
+              <SpaceWrapper>
+                &nbsp;
+              </SpaceWrapper>
               {
                 props.hint && (
                   <EtsBootstrap.OverlayTrigger

@@ -53,7 +53,7 @@ import {
   getEmployeeState,
 } from 'redux-main/reducers/selectors';
 
-import { BorderDash } from 'global-styled/global-styled';
+import { BorderDash, InfoBlock } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
@@ -2168,9 +2168,13 @@ class WaybillForm extends React.Component<Props, State> {
                               disabled
                             />
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={8}>
-                            {Boolean(IS_ACTIVE || IS_CLOSED)
-                              && 'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}
+                          <EtsBootstrap.Col md={4}>
+                            {
+                              Boolean(IS_ACTIVE || IS_CLOSED)
+                              && <InfoBlock>
+                                Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+                              </InfoBlock>
+                            }
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
@@ -2463,8 +2467,7 @@ class WaybillForm extends React.Component<Props, State> {
                 path={this.props.path}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={4}>
-              <h4>&nbsp;</h4>
+            <EtsBootstrap.Col md={4} style={{marginTop: '14px',}}>
               <ExtField
                 type="number"
                 label="Общий расход топлива, л"

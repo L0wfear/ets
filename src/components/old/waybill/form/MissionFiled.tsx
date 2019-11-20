@@ -29,9 +29,9 @@ const MissionFieldStyled = styled.div`
   ${FieldLabel} {
     display: none;
   }
-  h4 {
+  /* h4 {
     margin-bottom: -10px;
-  }
+  } */
 `;
 
 type Props = {
@@ -260,7 +260,7 @@ class MissionField extends React.Component<Props, any> {
         <ExtField
           id="mission-id-list"
           type="select"
-          label="&nbsp;"
+          label={false}
           error={errors.mission_id_list}
           multi
           className="task-container"

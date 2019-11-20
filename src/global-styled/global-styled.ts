@@ -99,6 +99,7 @@ export const BorderDash = styled.div<{
     return `${width}px ${borderStyle} ${color}`;
   }};
   padding: 5px 0;
+  padding-bottom: 15px;
 `;
 
 export const DisplayFlexAlignCenter = styled.div`
@@ -153,4 +154,8 @@ export const HrDelimiter = styled.div`
 export const SlimH4 = styled.h4`
   font-weight: 500!important;
   margin-top: 25px;
+`;
+
+export const InfoBlock = styled.div`
+  color: #007eff;
 `;

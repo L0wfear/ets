@@ -5,7 +5,7 @@ export const ErrorField = styled.div`
   white-space: pre-wrap;
   color: ${UiConstants.colorError};
   font-size: 12px;
-  padding: 2px 5px;
+  padding: 2px 0px;
   margin-top: 0px;
   transition: background-color .3s ease, color .3s ease;
   border-radius: 0 0 3px 3px;

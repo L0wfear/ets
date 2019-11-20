@@ -6,7 +6,7 @@ export const SelectFieldUi = styled(ReactSelect)`
   &&& {
     border-radius: ${UiConstants.borderFieldRadius};
     &.has-error {
-      border-radius: ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} 0
+      border-radius: ${UiConstants.borderFieldRadius};
     }
   }
 `;

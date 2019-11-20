@@ -7,7 +7,7 @@ export const NumberFieldUi = styled(EtsFormControl)`
   padding-left: 0px!important;
   text-indent: 12px;
   &.has-error {
-    border-radius: ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} 0
+    border-radius: ${UiConstants.borderFieldRadius};
   }
   &&& {
     &:focus {

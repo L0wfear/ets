@@ -82,6 +82,11 @@ export const HrLine = styled.hr`
   border-top: 1px solid #706b77 !important;
 `;
 
+export const HrLineWaybill = styled.hr`
+  border-top: 1px dashed #394349 !important;
+  margin: 20px -15px;
+`;
+
 export const DitLogo = styled.div`
   background: url(${jkh});
   background-position: center;

@@ -6,6 +6,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
+import { InfoBlock } from 'global-styled/global-styled';
 
 type WaybillFactFuelEndProps = {
   formDataKey: any;
@@ -50,7 +51,12 @@ const WaybillFactFuelEnd: React.FC<WaybillFactFuelEndProps> = React.memo(
           />
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={props.md || 12}>
-          Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+          {
+            Boolean(IS_ACTIVE || IS_CLOSED)
+            && <InfoBlock>
+              Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+            </InfoBlock>
+          }
         </EtsBootstrap.Col>
       </React.Fragment>
     );

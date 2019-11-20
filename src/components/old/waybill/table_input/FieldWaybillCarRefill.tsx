@@ -13,7 +13,7 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
-import { HrLine } from 'components/new/pages/login/styled/styled';
+import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
 
 type Props = {
   id: string;
@@ -208,7 +208,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
     return showBlock && (
       <div>
-        <HrLine />
+        <HrLineWaybill />
         <TableInput
           id={props.id}
           array={props.array}

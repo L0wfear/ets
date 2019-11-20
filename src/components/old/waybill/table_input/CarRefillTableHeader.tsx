@@ -57,11 +57,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
       <EtsBootstrap.Row>
         <EtsHeaderContainer>
           <EtsHeaderTitle>
-            {
-              props.visibleButtons
-                && props.array.length
-                && props.title
-            }
+            {props.title}
           </EtsHeaderTitle>
           <EtsButtonsContainer>
             {

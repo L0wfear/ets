@@ -27,6 +27,8 @@ type Props = {
   path?: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
+  is_one_fuel_tank?: boolean;
+  boundKey: string;
 
   canEditIfClose: boolean;
 } & (
@@ -191,7 +193,19 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       [previosFuelType, props.fuel_type, fuelCardsList, userCompanyId, userStructureId, props.array, props.handleChange, props.structure_id],
     );
 
-    return (
+    const showForEquipmentCarRefil = !props.is_one_fuel_tank
+      && (props.array.length
+          || (!props.array.length && !(props.disabled && !props.isPermittedWaybillRefill))); // если массив пустой и мы можем добавить строку
+    const showForCarRefil = props.array.length
+      || (!props.array.length && !(props.disabled && !props.isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
+
+    const showBlock = props.boundKey === 'equipment_refill'
+      ? showForEquipmentCarRefil
+      : props.boundKey === 'car_refill'
+        ? showForCarRefil
+        : false;
+
+    return showBlock && (
       <div>
         <TableInput
           id={props.id}

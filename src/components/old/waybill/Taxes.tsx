@@ -18,6 +18,7 @@ import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { HrLine } from 'components/new/pages/login/styled/styled';
 
 /**
  * Компонент таксировки ТС
@@ -353,6 +354,7 @@ export default class Taxes extends React.Component<any, any> {
 
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
+        <HrLine />
         <EtsBootstrap.Row>
           <EtsHeaderContainerWrap>
             <EtsHeaderContainer>

@@ -63,7 +63,7 @@ import FuelType from './form/FuelType';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
-import { HrLine } from 'components/new/pages/login/styled/styled';
+
 import {
   actionPostMissionReassignationParameters,
   actionPutMissionReassignationParameters,
@@ -2175,10 +2175,10 @@ class WaybillForm extends React.Component<Props, State> {
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
                     <EtsBootstrap.Col md={12} zIndex={2}>
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
+                          id="car_refill"
                           array={state.car_refill}
                           errors={get(
                             errors,
@@ -2201,7 +2201,6 @@ class WaybillForm extends React.Component<Props, State> {
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes
@@ -2380,10 +2379,10 @@ class WaybillForm extends React.Component<Props, State> {
                             </EtsBootstrap.Col>
                           )}
                         </EtsBootstrap.Col>
-                        <br />
                         <EtsBootstrap.Col md={12} zIndex={2}>
                           <EtsBootstrap.Col md={12}>
                             <FieldWaybillCarRefill
+                              id="equipment_refill"
                               array={state.equipment_refill}
                               errors={get(
                                 errors,

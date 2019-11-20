@@ -85,6 +85,7 @@
 // <<< в 33 добавить
 // - https://gost-jira.atlassian.net/browse/DITETSSUP-1844
 // - https://gost-jira.atlassian.net/browse/DITETS19-1168
+// - https://gost-jira.atlassian.net/browse/DITETS19-1345
 
 import * as React from 'react';
 

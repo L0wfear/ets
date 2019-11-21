@@ -353,7 +353,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
                   <React.Fragment>
                     <ButtonTableInput
                       width={160}
-                      id="add-operation"
+                      id="equipment-taxes-add-operation"
                       block
                       onClick={this.addOperation}
                       disabled={this.state.operations.length === taxes.length}>

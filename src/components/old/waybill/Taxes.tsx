@@ -368,7 +368,7 @@ export default class Taxes extends React.Component<any, any> {
                   <React.Fragment>
                     <ButtonTableInput
                       width={160}
-                      id="add-operation"
+                      id="taxes-add-operation"
                       block
                       onClick={this.addOperation}
                       disabled={this.state.operations.length === taxes.length}>

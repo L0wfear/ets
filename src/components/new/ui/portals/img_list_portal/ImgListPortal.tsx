@@ -65,6 +65,7 @@ const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
           indexImage={indexImage}
           countImages={countImages}
           setIndexImage={setIndexImage}
+          onClose={props.onClose}
         />
         <ImgListFooter
           img_url={img_url}

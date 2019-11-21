@@ -43,7 +43,6 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
       );
   } else {
     const firstItem = data[0] || {};
-
     const newItem = {
       ...allCols.reduce((newObj, { keyName }) => {
         newObj[keyName] = firstItem[keyName];
@@ -62,15 +61,20 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
       newItem[key] = removeRedundantNumbers(newItem[key]);
     });
 
+    let forceValueByKey = '-';
     filedsRule.forEach(({ key, value: { force_value }}) => {
       if (!isNullOrUndefined(force_value) && isNullOrUndefined(newItem[key])) {
+        forceValueByKey = force_value;
         newItem[key] = force_value;
       }
     });
 
     allCols.filter(({ keyName, abs, percent }) => {
-      if (abs) {
-        newItem[keyName] = Math.abs(newItem[keyName]);
+      if (abs) { // 2й вариант регшения -- убрать abs если в значении '-'
+        const absVal = Math.abs(newItem[keyName]);
+        newItem[keyName] = isNaN(absVal)
+          ? forceValueByKey
+          : absVal;
       }
       if (percent) {
         const numerator: number = get(newItem, get(percent, '0'));

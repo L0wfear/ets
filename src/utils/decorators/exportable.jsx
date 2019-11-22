@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { saveData } from 'utils/functions';
-import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
 import _, { get } from 'lodash';
+import { postBlob, getBlob } from 'api/adapterBlob';
+import { processResponse } from 'api/APIService';
 
 // TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
@@ -29,10 +30,7 @@ export default function exportable(options) {
         this.path = path;
       }
 
-      exportFunction = (payloadOwn = {}, useRouteParams) => {
-        const token = JSON.parse(
-          window.localStorage.getItem(global.SESSION_KEY),
-        );
+      exportFunction = async (payloadOwn = {}, useRouteParams) => {
         let id = '';
         if (useRouteParams) {
           id = this.props.routeParams.id;
@@ -61,27 +59,17 @@ export default function exportable(options) {
             }/${id}`,
             payload,
           );
-        // TODO blob
-        return fetch(URL, {
-          method: 'get',
-          headers: {
-            'Authorization': `Token ${token}`,
-            'Access-Control-Expose-Headers': 'Content-Disposition',
-          },
-        }).then(async (r) => {
-          const fileName = parseFilename(r.headers.get('Content-Disposition'));
-          const blob = await r.blob();
-          return {
-            blob,
-            fileName,
-          };
-        });
+        const result = await getBlob(URL, null);
+        processResponse(result);
+        const blob = get(result, 'blob', null);
+        const fileName = get(result, 'fileName', '');
+
+        if (blob && fileName) {
+          saveData(blob, fileName);
+        }
       };
 
-      exportByPostFunction = (bodyPayload = {}, urlPayload = {}) => {
-        const token = JSON.parse(
-          window.localStorage.getItem(global.SESSION_KEY),
-        );
+      exportByPostFunction = async (bodyPayload = {}, urlPayload = {}) => {
         const version = get(
           JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
           [config.backend],
@@ -107,31 +95,21 @@ export default function exportable(options) {
               ...urlPayload,
             },
           );
-        // TODO blob
-        return fetch(URL, {
-          method: 'post',
-          body: JSON.stringify(bodyPayload),
-          headers: {
-            'Authorization': `Token ${token}`,
-            'Access-Control-Expose-Headers': 'Content-Disposition',
-          },
-        }).then(async (r) => {
-          const fileName = parseFilename(r.headers.get('Content-Disposition'));
-          const blob = await r.blob();
-          return {
-            blob,
-            fileName,
-          };
-        });
+
+        const result = await postBlob(URL, bodyPayload);
+        processResponse(result);
+        const blob = get(result, 'blob', null);
+        const fileName = get(result, 'fileName', '');
+
+        if (blob && fileName) {
+          saveData(blob, fileName);
+        }
       };
 
       export = (payload = {}, useRouteParams = false) => {
         if (typeof this.exportFunction === 'function') {
-          return this.exportFunction(payload, useRouteParams).then(
-            ({ blob, fileName }) => {
-              saveData(blob, fileName);
-            },
-          );
+          this.exportFunction(payload, useRouteParams);
+          return Promise.resolve(true);
         }
 
         return Promise.resolve(false);
@@ -139,11 +117,8 @@ export default function exportable(options) {
 
       exportByPostData = (bodyPayload, urlPayload) => {
         if (typeof this.exportByPostFunction === 'function') {
-          return this.exportByPostFunction(bodyPayload, urlPayload).then(
-            ({ blob, fileName }) => {
-              saveData(blob, fileName);
-            },
-          );
+          this.exportByPostFunction(bodyPayload, urlPayload);
+          return Promise.resolve(true);
         }
 
         return Promise.resolve(false);

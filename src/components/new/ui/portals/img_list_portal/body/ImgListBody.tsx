@@ -22,7 +22,7 @@ const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
         imgNew.onload = () => setImg(imgNew);
         imgNew.onerror = () => {
           props.onClose();
-          return global.NOTIFICATION_SYSTEM.notify('Ошибка открытия файла', 'error', 'tr');
+          return global.NOTIFICATION_SYSTEM.notify('Файл не найден', 'error', 'tr');
         };
         imgNew.src = props.img_url;
       },

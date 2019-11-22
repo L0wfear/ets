@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getBooleanValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { actionChangeGlobalPaylaodInServiceData, actionUnselectSelectedRowToShow, registryResetAllTypeFilter } from 'components/new/ui/registry/module/actions-registy';
+import { actionChangeGlobalPaylaodInServiceData, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
@@ -35,9 +35,6 @@ const Title: React.FC<Props> = React.memo(
 
         const filterKey = `${props.registryKey}_filters`;
         const timeKey = `${props.registryKey}_time`;
-        dispatch(
-          registryResetAllTypeFilter(props.registryKey),
-        );
 
         props.setDataInSearch({
           is_current_structure: value ? value : null,

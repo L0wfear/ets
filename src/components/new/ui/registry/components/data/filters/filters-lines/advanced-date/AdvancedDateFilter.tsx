@@ -114,7 +114,7 @@ export const AdvancedDateFilter: React.FC<Props> = React.memo(
       handleChange(
         value
           ? (
-              props.time
+            props.time
               ? createValidDateTime(value)
               : createValidDate(value)
           )
@@ -128,7 +128,7 @@ export const AdvancedDateFilter: React.FC<Props> = React.memo(
       handleChange(
         value
           ? (
-              props.time
+            props.time
               ? createValidDateTime(value)
               : createValidDate(value)
           )
@@ -141,13 +141,13 @@ export const AdvancedDateFilter: React.FC<Props> = React.memo(
     React.useEffect(() => {
       if ( !userChangeFilter ) {
         const newActiveTypeArr = Object.entries(filterValuesObj)
-        .reduce((newArr, [key, value]) => {
+          .reduce((newArr, [key, value]) => {
             const val = get(value, 'value', null);
             if (val && val.toString().length) {
               return [...newArr, key];
             }
             return newArr;
-        }, []);
+          }, []);
 
         if (newActiveTypeArr.length && activeTypeArr.toString() !== newActiveTypeArr.toString()) {
           handleChangeType(newActiveTypeArr);
@@ -183,23 +183,23 @@ export const AdvancedDateFilter: React.FC<Props> = React.memo(
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
           <AdvacedSecondLineContainer>
-          {
-            activeTypeArr.length > 1
-            ? (
-              <InputDate
-                id={id_two}
-                value={filterValuesObj[activeTypeArr[1]].value}
-                onChange={handleChangeSecond}
-                noShowLabel
-                noShowError
-                disabled={props.filterData.disabled}
-                time={props.time}
-              />
-            )
-            : (
-              <DivNone />
-            )
-          }
+            {
+              activeTypeArr.length > 1
+                ? (
+                  <InputDate
+                    id={id_two}
+                    value={filterValuesObj[activeTypeArr[1]].value}
+                    onChange={handleChangeSecond}
+                    noShowLabel
+                    noShowError
+                    disabled={props.filterData.disabled}
+                    time={props.time}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
       </EtsFilterDate>

@@ -156,23 +156,23 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
           <AdvacedSecondLineContainer>
-          {
-            activeTypeArr.length > 1
-            ? (
-              <InputNumber
-                id={id_two}
-                value={props.filterValuesObj[activeTypeArr[1]].value}
-                onChange={handleChangeSecond}
-                noShowLabel
-                noShowError
-                disabled={props.filterData.disabled}
-                step={props.filterData.step}
-              />
-            )
-            : (
-              <DivNone />
-            )
-          }
+            {
+              activeTypeArr.length > 1
+                ? (
+                  <InputNumber
+                    id={id_two}
+                    value={props.filterValuesObj[activeTypeArr[1]].value}
+                    onChange={handleChangeSecond}
+                    noShowLabel
+                    noShowError
+                    disabled={props.filterData.disabled}
+                    step={props.filterData.step}
+                  />
+                )
+                : (
+                  <DivNone />
+                )
+            }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
       </EtsFilter>

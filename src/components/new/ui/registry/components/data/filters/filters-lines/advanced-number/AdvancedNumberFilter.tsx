@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
 
 import {
   getFilterData,
@@ -15,20 +14,10 @@ import {
   AdvacedFirstInputContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import InputNumber from 'components/new/ui/field/InputNumber';
-import { DivNone } from 'global-styled/global-styled';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
-import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { get } from 'lodash';
-import { isArray } from 'util';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type StateProps = {
-  filterValuesObj: OneRegistryData['filter']['rawFilterValues'][any];
-};
-type DispatchProps = {
-  dispatch: DispatchProp['dispatch'];
-};
-type OwnProps = {
+type Props = {
   registryKey: string;
   filterData: {
     title: string;
@@ -40,16 +29,35 @@ type OwnProps = {
   formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
 };
-type Props = (
-  StateProps
-  & DispatchProps
-  & OwnProps
-);
+
+const eq = ['eq'];
+
+const optionsType = [
+  {
+    value: eq,
+    label: 'равно',
+  },
+  {
+    value: ['gt'],
+    label: 'больше',
+  },
+  {
+    value: ['lt'],
+    label: 'меньше',
+  },
+  {
+    value: ['neq'],
+    label: 'не равно',
+  },
+  {
+    value: ['gt', 'lt'],
+    label: 'диапазон',
+  },
+];
 
 export const AdvancedNumberFilter: React.FC<Props> = React.memo(
   (props) => {
-
-    const eq = ['eq'];
+    const filterValuesObj = etsUseSelector((state) => getFilterData(state.registry, props.registryKey).rawFilterValues[props.filterData.valueKey]);
 
     const id = `filter_r:${props.registryKey.toLocaleLowerCase()}_p:${props.filterData.valueKey}`;
     const id_select = `${id}_n:select`;
@@ -58,43 +66,20 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
     const [activeTypeArr, setActiveTypeArr] = React.useState(eq);
     const [userChangeFilter, setUserChangeFilter] = React.useState(false); // если пользак изменил поле вручную DITETS19-1340
 
-    const optionsType = [
-      {
-        value: eq.join(','),
-        label: 'равно',
-      },
-      {
-        value: ['gt'].join(','),
-        label: 'больше',
-      },
-      {
-        value: ['lt'].join(','),
-        label: 'меньше',
-      },
-      {
-        value: ['neq'].join(','),
-        label: 'не равно',
-      },
-      {
-        value: ['gt', 'lt'].join(','),
-        label: 'диапазон',
-      },
-    ];
-
-    const handleChangeType = React.useCallback((value) => {
+    const handleChangeType = React.useCallback((valueList) => {
       setUserChangeFilter(true);
-      const valueList = !isArray(value) ? value.split(',') : value;
+
       activeTypeArr.forEach((type) => {
         props.onChange(props.filterData.valueKey, type, null);
       });
 
-      const firstFilterValue = props.filterValuesObj[activeTypeArr[0]].value;
+      const firstFilterValue = filterValuesObj[activeTypeArr[0]].value;
 
       if (firstFilterValue) {
         props.onChange(props.filterData.valueKey, valueList[0], firstFilterValue);
       }
       setActiveTypeArr(valueList);
-    }, [activeTypeArr, props.onChange, props.filterData, props.filterValuesObj, ]);
+    }, [activeTypeArr, props.onChange, props.filterData, filterValuesObj, ]);
 
     const handleChange = React.useCallback((value, index) => {
       const { filterData } = props;
@@ -113,20 +98,20 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
 
     React.useEffect(() => {
       if ( !userChangeFilter ) {
-        const newActiveTypeArr = Object.entries(props.filterValuesObj)
-        .reduce((newArr, [key, value]) => {
-            const val = get(value, 'value', null);
+        const newActiveTypeArr = Object.entries(filterValuesObj)
+          .reduce((newArr, [key, value]) => {
+            const val = value?.value ?? null;
             if (val && val.toString().length) {
               return [...newArr, key];
             }
             return newArr;
-        }, []);
+          }, []);
 
         if (newActiveTypeArr.length && activeTypeArr.toString() !== newActiveTypeArr.toString()) {
           handleChangeType(newActiveTypeArr);
         }
       }
-    }, [props.filterValuesObj, ]);
+    }, [filterValuesObj, ]);
 
     return (
       <EtsFilter>
@@ -136,7 +121,7 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
             <AdvacedSelectContainer>
               <ReactSelect
                 id={id_select}
-                value={activeTypeArr ? activeTypeArr.toString() : activeTypeArr}
+                value={activeTypeArr}
                 options={optionsType}
                 onChange={handleChangeType}
                 clearable={false}
@@ -146,7 +131,7 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
             <AdvacedFirstInputContainer>
               <InputNumber
                 id={id_one}
-                value={props.filterValuesObj[activeTypeArr[0]].value}
+                value={filterValuesObj[activeTypeArr[0]].value}
                 onChange={handleChangeFirst}
                 noShowLabel
                 noShowError
@@ -157,21 +142,17 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
           </AdvacedFirstLineContainer>
           <AdvacedSecondLineContainer>
             {
-              activeTypeArr.length > 1
-                ? (
-                  <InputNumber
-                    id={id_two}
-                    value={props.filterValuesObj[activeTypeArr[1]].value}
-                    onChange={handleChangeSecond}
-                    noShowLabel
-                    noShowError
-                    disabled={props.filterData.disabled}
-                    step={props.filterData.step}
-                  />
-                )
-                : (
-                  <DivNone />
-                )
+              Boolean(activeTypeArr[1]) && (
+                <InputNumber
+                  id={id_two}
+                  value={filterValuesObj[activeTypeArr[1]].value}
+                  onChange={handleChangeSecond}
+                  noShowLabel
+                  noShowError
+                  disabled={props.filterData.disabled}
+                  step={props.filterData.step}
+                />
+              )
             }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
@@ -180,8 +161,4 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
   },
 );
 
-export default connect<StateProps, DispatchProps, any, ReduxState>(
-  (state, { registryKey, filterData }) => ({
-    filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
-  }),
-)(AdvancedNumberFilter);
+export default AdvancedNumberFilter;

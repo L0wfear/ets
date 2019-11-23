@@ -19,6 +19,8 @@ import { DivNone } from 'global-styled/global-styled';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { ReduxState } from 'redux-main/@types/state';
+import { get } from 'lodash';
+import { isArray } from 'util';
 
 type StateProps = {
   filterValuesObj: OneRegistryData['filter']['rawFilterValues'][any];
@@ -44,110 +46,106 @@ type Props = (
   & OwnProps
 );
 
-type State = {
-  activeTypeArr: string[];
-  optionsType: any;
-};
+export const AdvancedNumberFilter: React.FC<Props> = React.memo(
+  (props) => {
 
-class AdvancedNumberFilter extends React.PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
     const eq = ['eq'];
-    const activeTypeArr: State['activeTypeArr'] = eq;
 
-    this.state = {
-      activeTypeArr,
-      optionsType: [
-        {
-          value: eq,
-          label: '=',
-        },
-        {
-          value: ['gt'],
-          label: '>',
-        },
-        {
-          value: ['lt'],
-          label: '<',
-        },
-        {
-          value: ['neq'],
-          label: '≠',
-        },
-        {
-          value: ['gt', 'lt'],
-          label: '><',
-        },
-      ],
-    };
-  }
+    const [activeTypeArr, setActiveTypeArr] = React.useState(eq);
+    const [userChangeFilter, setUserChangeFilter] = React.useState(false); // если пользак изменил поле вручную DITETS19-1340
 
-  handleChangeType = (value) => {
-    const {
-      activeTypeArr,
-    } = this.state;
-    activeTypeArr.forEach((type) => {
-      this.props.onChange(this.props.filterData.valueKey, type, null);
-    });
+    const optionsType = [
+      {
+        value: eq.join(','),
+        label: '=',
+      },
+      {
+        value: ['gt'].join(','),
+        label: '>',
+      },
+      {
+        value: ['lt'].join(','),
+        label: '<',
+      },
+      {
+        value: ['neq'].join(','),
+        label: '≠',
+      },
+      {
+        value: ['gt', 'lt'].join(','),
+        label: '><',
+      },
+    ];
 
-    const firstFilterValue = this.props.filterValuesObj[activeTypeArr[0]].value;
+    const handleChangeType = React.useCallback((value) => {
+      setUserChangeFilter(true);
+      const valueList = !isArray(value) ? value.split(',') : value;
+      activeTypeArr.forEach((type) => {
+        props.onChange(props.filterData.valueKey, type, null);
+      });
 
-    if (firstFilterValue) {
-      this.props.onChange(this.props.filterData.valueKey, value[0], firstFilterValue);
-    }
+      const firstFilterValue = props.filterValuesObj[activeTypeArr[0]].value;
 
-    this.setState({
-      activeTypeArr: value,
-    });
-  }
+      if (firstFilterValue) {
+        props.onChange(props.filterData.valueKey, valueList[0], firstFilterValue);
+      }
+      setActiveTypeArr(valueList);
+    }, [activeTypeArr, props.onChange, props.filterData, props.filterValuesObj, ]);
 
-  handleChange = (value, index) => {
-    const { props } = this;
-    const { filterData } = props;
-    const valueAsNumber = Number(value);
-    const { activeTypeArr } = this.state;
+    const handleChange = React.useCallback((value, index) => {
+      const { filterData } = props;
+      const valueAsNumber = Number(value);
+      setUserChangeFilter(true);
+      props.onChange(filterData.valueKey, activeTypeArr[index], value !== '' ? valueAsNumber : '');
+    }, [props.filterData, activeTypeArr, ]);
 
-    this.props.onChange(filterData.valueKey, activeTypeArr[index], value !== '' ? valueAsNumber : '');
-  }
+    const handleChangeFirst = React.useCallback(({ currentTarget: { value }}) => {
+      handleChange(value, 0);
+    }, [handleChange]);
 
-  handleChangeFirst = ({ currentTarget: { value }}) => {
-    this.handleChange(value, 0);
+    const handleChangeSecond = React.useCallback(({ currentTarget: { value }}) => {
+      handleChange(value, 1);
+    }, [handleChange]);
 
-  }
+    React.useEffect(() => {
+      if ( !userChangeFilter ) {
+        const newActiveTypeArr = Object.entries(props.filterValuesObj)
+        .reduce((newArr, [key, value]) => {
+            const val = get(value, 'value', null);
+            if (val && val.toString().length) {
+              return [...newArr, key];
+            }
+            return newArr;
+        }, []);
 
-  handleChangeSecond = ({ currentTarget: { value }}) => {
-    this.handleChange(value, 1);
-  }
-
-  render() {
-    const { props, state  } = this;
-    const { activeTypeArr } = state;
-    const {
-      filterValuesObj,
-    } = props;
+        if (newActiveTypeArr.length && activeTypeArr.toString() !== newActiveTypeArr.toString()) {
+          handleChangeType(newActiveTypeArr);
+        }
+      }
+    }, [props.filterValuesObj, ]);
 
     return (
       <EtsFilter>
-        <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
+        <EtsFilterTitle>{props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
             <AdvacedSelectContainer>
               <ReactSelect
-                value={activeTypeArr}
-                options={state.optionsType}
-                onChange={this.handleChangeType}
+                value={activeTypeArr ? activeTypeArr.toString() : activeTypeArr}
+                options={optionsType}
+                onChange={handleChangeType}
                 clearable={false}
-                disabled={this.props.filterData.disabled}
+                disabled={props.filterData.disabled}
               />
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
               <InputNumber
-                value={filterValuesObj[activeTypeArr[0]].value}
-                onChange={this.handleChangeFirst}
+                value={props.filterValuesObj[activeTypeArr[0]].value}
+                onChange={handleChangeFirst}
                 noShowLabel
                 noShowError
-                disabled={this.props.filterData.disabled}
-                step={this.props.filterData.step}
+                disabled={props.filterData.disabled}
+                step={props.filterData.step}
               />
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
@@ -156,12 +154,12 @@ class AdvancedNumberFilter extends React.PureComponent<Props, State> {
             activeTypeArr.length > 1
             ? (
               <InputNumber
-                value={filterValuesObj[activeTypeArr[1]].value}
-                onChange={this.handleChangeSecond}
+                value={props.filterValuesObj[activeTypeArr[1]].value}
+                onChange={handleChangeSecond}
                 noShowLabel
                 noShowError
-                disabled={this.props.filterData.disabled}
-                step={this.props.filterData.step}
+                disabled={props.filterData.disabled}
+                step={props.filterData.step}
               />
             )
             : (
@@ -172,8 +170,8 @@ class AdvancedNumberFilter extends React.PureComponent<Props, State> {
         </EtsFilterInputAdvacedContainer>
       </EtsFilter>
     );
-  }
-}
+  },
+);
 
 export default connect<StateProps, DispatchProps, any, ReduxState>(
   (state, { registryKey, filterData }) => ({

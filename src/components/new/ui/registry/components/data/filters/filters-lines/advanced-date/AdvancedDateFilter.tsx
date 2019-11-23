@@ -20,6 +20,8 @@ import InputDate from 'components/new/ui/field/InputDate';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { ReduxState } from 'redux-main/@types/state';
+import { get } from 'lodash';
+import { isArray } from 'util';
 
 type StateProps = {
   filterValuesObj: OneRegistryData['filter']['rawFilterValues'][any];
@@ -45,129 +47,133 @@ type Props = (
   & OwnProps
 );
 
-type State = {
-  activeTypeArr: string[];
-  optionsType: any;
-};
-
-class AdvancedDateFilter extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
+export const AdvancedDateFilter: React.FC<Props> = React.memo(
+  (props) => {
     const eq = ['eq'];
-    const activeTypeArr: State['activeTypeArr'] = eq;
 
-    this.state = {
-      activeTypeArr,
-      optionsType: [
-        {
-          value: eq,
-          label: '=',
-        },
-        {
-          value: ['gt'],
-          label: '>',
-        },
-        {
-          value: ['lt'],
-          label: '<',
-        },
-        {
-          value: ['neq'],
-          label: '≠',
-        },
-        {
-          value: ['gt', 'lt'],
-          label: '><',
-        },
-      ],
-    };
-  }
+    const [activeTypeArr, setActiveTypeArr] = React.useState(eq);
+    const [userChangeFilter, setUserChangeFilter] = React.useState(false); // если пользак изменил поле вручную DITETS19-1340
 
-  handleChangeType = (value) => {
-    const {
-      activeTypeArr,
-    } = this.state;
-    activeTypeArr.forEach((type) => {
-      this.props.onChange(this.props.filterData.valueKey, type, null);
-    });
+    const optionsType = [
+      {
+        value: eq.join(','),
+        label: '=',
+      },
+      {
+        value: ['gt'].join(','),
+        label: '>',
+      },
+      {
+        value: ['lt'].join(','),
+        label: '<',
+      },
+      {
+        value: ['neq'].join(','),
+        label: '≠',
+      },
+      {
+        value: ['gt', 'lt'].join(','),
+        label: '><',
+      },
+    ];
 
-    const firstFilterValue = this.props.filterValuesObj[activeTypeArr[0]].value;
-
-    if (firstFilterValue) {
-      this.props.onChange(this.props.filterData.valueKey, value[0], firstFilterValue);
-    }
-
-    this.setState({
-      activeTypeArr: value,
-    });
-  }
-
-  handleChange = (value, index) => {
-    const { props } = this;
-    const { filterData } = props;
-    const { activeTypeArr } = this.state;
-
-    this.props.onChange(filterData.valueKey, activeTypeArr[index], value);
-  }
-
-  handleChangeFirst = (value) => {
-    this.handleChange(
-      value
-        ? (
-            this.props.time
-            ? createValidDateTime(value)
-            : createValidDate(value)
-        )
-        : null,
-      0,
-    );
-  }
-
-  handleChangeSecond = (value) => {
-    this.handleChange(
-      value
-        ? (
-            this.props.time
-            ? createValidDateTime(value)
-            : createValidDate(value)
-        )
-        : null,
-      1,
-    );
-  }
-
-  render() {
-    const { props, state  } = this;
-    const { activeTypeArr } = state;
     const {
       filterValuesObj,
     } = props;
 
     const id = `filter_${props.filterData.valueKey}`;
 
+    const handleChangeType = React.useCallback((value) => {
+      setUserChangeFilter(true);
+      const valueList = !isArray(value) ? value.split(',') : value;
+      activeTypeArr.forEach((type) => {
+        props.onChange(props.filterData.valueKey, type, null);
+      });
+
+      const firstFilterValue = props.filterValuesObj[activeTypeArr[0]].value;
+
+      if (firstFilterValue) {
+        props.onChange(props.filterData.valueKey, valueList[0], firstFilterValue);
+      }
+
+      setActiveTypeArr(valueList);
+    }, [activeTypeArr, props.onChange, props.filterData, props.filterValuesObj, ]);
+
+    const handleChange = React.useCallback((value, index) => {
+      const { filterData } = props;
+
+      props.onChange(filterData.valueKey, activeTypeArr[index], value);
+      setUserChangeFilter(true);
+    }, [props.filterData, activeTypeArr, ]);
+
+    const handleChangeFirst = React.useCallback((value) => {
+      handleChange(
+        value
+          ? (
+              props.time
+              ? createValidDateTime(value)
+              : createValidDate(value)
+          )
+          : null,
+        0,
+      );
+      setUserChangeFilter(true);
+    }, [handleChange, props.time, ]);
+
+    const handleChangeSecond = React.useCallback((value) => {
+      handleChange(
+        value
+          ? (
+              props.time
+              ? createValidDateTime(value)
+              : createValidDate(value)
+          )
+          : null,
+        1,
+      );
+      setUserChangeFilter(true);
+    }, [handleChange, props.time, ]);
+
+    React.useEffect(() => {
+      if ( !userChangeFilter ) {
+        const newActiveTypeArr = Object.entries(filterValuesObj)
+        .reduce((newArr, [key, value]) => {
+            const val = get(value, 'value', null);
+            if (val && val.toString().length) {
+              return [...newArr, key];
+            }
+            return newArr;
+        }, []);
+
+        if (newActiveTypeArr.length && activeTypeArr.toString() !== newActiveTypeArr.toString()) {
+          handleChangeType(newActiveTypeArr);
+        }
+      }
+    }, [filterValuesObj, ]);
+
     return (
       <EtsFilter htmlFor={id}>
-        <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
+        <EtsFilterTitle>{props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
             <AdvacedSelectContainer>
               <ReactSelect
-                value={activeTypeArr}
-                options={state.optionsType}
-                onChange={this.handleChangeType}
+                value={activeTypeArr ? activeTypeArr.toString() : activeTypeArr}
+                options={optionsType}
+                onChange={handleChangeType}
                 clearable={false}
-                disabled={this.props.filterData.disabled}
+                disabled={props.filterData.disabled}
               />
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
               <InputDate
                 id={id}
                 value={filterValuesObj[activeTypeArr[0]].value}
-                onChange={this.handleChangeFirst}
+                onChange={handleChangeFirst}
                 noShowLabel
                 noShowError
-                disabled={this.props.filterData.disabled}
-                time={this.props.time}
+                disabled={props.filterData.disabled}
+                time={props.time}
               />
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
@@ -177,11 +183,11 @@ class AdvancedDateFilter extends React.PureComponent<Props, State> {
             ? (
               <InputDate
                 value={filterValuesObj[activeTypeArr[1]].value}
-                onChange={this.handleChangeSecond}
+                onChange={handleChangeSecond}
                 noShowLabel
                 noShowError
-                disabled={this.props.filterData.disabled}
-                time={this.props.time}
+                disabled={props.filterData.disabled}
+                time={props.time}
               />
             )
             : (
@@ -192,8 +198,8 @@ class AdvancedDateFilter extends React.PureComponent<Props, State> {
         </EtsFilterInputAdvacedContainer>
       </EtsFilter>
     );
-  }
-}
+
+  });
 
 export default connect<StateProps, DispatchProps, any, ReduxState>(
   (state, { registryKey, filterData }) => ({

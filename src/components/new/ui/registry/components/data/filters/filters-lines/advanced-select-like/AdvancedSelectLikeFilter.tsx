@@ -239,7 +239,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
     const { state, props } = this;
     const {
       filterValuesObj: {
-        in: {
+        like: {
           value,
         },
       },

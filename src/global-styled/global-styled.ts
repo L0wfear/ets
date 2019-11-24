@@ -157,5 +157,21 @@ export const SlimH4 = styled.h4`
 `;
 
 export const InfoBlock = styled.div`
-  color: #007eff;
+  color: #fff;
+  background: ${UiConstants.colorBlue};
+  padding: 10px 15px;
+  border-radius: 3px;
+  box-shadow: 0 0.125em 0.375em 0 rgba(0,0,0,.27);
+  position: relative;
+  font-size: 12px;
+  &:before {
+    content: '';
+    border-width: 11px;
+    border-style: solid;
+    border-color: transparent transparent rgb(0, 125, 255);
+    border-image: initial;
+    position: absolute;
+    top: -19px;
+    left: 27px;
+  }
 `;

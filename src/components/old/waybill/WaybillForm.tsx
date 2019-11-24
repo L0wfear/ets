@@ -2375,9 +2375,11 @@ class WaybillForm extends React.Component<Props, State> {
                                     disabled
                                   />
                                 </EtsBootstrap.Col>
-                                <EtsBootstrap.Col md={8}>
+                                <EtsBootstrap.Col md={4}>
                                   {Boolean(IS_ACTIVE || IS_CLOSED)
-                                    && 'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}
+                                    && <InfoBlock>
+                                      Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+                                    </InfoBlock> }
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                             </EtsBootstrap.Col>

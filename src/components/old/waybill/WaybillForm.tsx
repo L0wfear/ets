@@ -102,6 +102,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { EmployeeBindedToCar } from 'components/new/utils/context/loading/@types/by_service/employee_binded_to_car';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@types';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -1867,7 +1868,7 @@ class WaybillForm extends React.Component<Props, State> {
                 </EtsBootstrap.Col>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 7 : 12}>
+            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 6 : 12}>
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}
                 is_bnso_broken={state.is_bnso_broken}
@@ -1878,7 +1879,7 @@ class WaybillForm extends React.Component<Props, State> {
               />
             </EtsBootstrap.Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-              <EtsBootstrap.Col md={5}>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="distance-by-glonass"
                   type="string"
@@ -1985,15 +1986,15 @@ class WaybillForm extends React.Component<Props, State> {
           <Div hidden={!state.car_id}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                <h3>Транспортное средство</h3>
+                <h3 style={{ marginBottom: '20px' }} >Транспортное средство</h3>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
                 <BorderDash
-                  width={2}
-                  borderStyle="dashed"
-                  color="rgba(0, 0, 0, 0.5)">
+                  width={1}
+                  borderStyle="solid"
+                  color={UiConstants.colorGrey}>
                   <EtsBootstrap.Row>
                     <EtsBootstrap.Col md={12}>
                       <Div hidden={!CAR_HAS_ODOMETER}>
@@ -2251,9 +2252,9 @@ class WaybillForm extends React.Component<Props, State> {
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
                     <BorderDash
-                      width={2}
-                      borderStyle="dashed"
-                      color="rgba(0, 0, 0, 0.5)">
+                      width={1}
+                      borderStyle="solid"
+                      color={UiConstants.colorGrey}>
                       <EtsBootstrap.Row>
                         <EtsBootstrap.Col md={12}>
                           <EtsBootstrap.Col md={4}>

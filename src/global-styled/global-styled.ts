@@ -98,8 +98,10 @@ export const BorderDash = styled.div<{
     const { width = 1, borderStyle = 'solid', color = 'black' } = props;
     return `${width}px ${borderStyle} ${color}`;
   }};
+  border-radius: 3px;
   padding: 5px 0;
   padding-bottom: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 15px 0px;
 `;
 
 export const DisplayFlexAlignCenter = styled.div`

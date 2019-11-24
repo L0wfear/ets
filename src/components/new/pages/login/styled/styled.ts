@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const background = require('components/new/pages/login/styled/bg.jpg');
 const jkh = require('components/new/pages/login/styled/jkh.png');
@@ -83,7 +84,7 @@ export const HrLine = styled.hr`
 `;
 
 export const HrLineWaybill = styled.hr`
-  border-top: 1px dashed #394349 !important;
+  border-top: 1px solid ${UiConstants.colorGrey} !important;
   margin: 20px -15px;
 `;
 

@@ -8,6 +8,13 @@ import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/heade
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
+
+export const CarRefillTableHeaderStyled = styled(EtsBootstrap.Row)`
+  ${EtsHeaderContainerWrap} {
+    padding: 0px 11px 0px 11px;
+  }
+`;
 
 type CarRefillTableHeaderProps = {
   id: string;
@@ -56,7 +63,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Row>
+      <CarRefillTableHeaderStyled>
         <EtsHeaderContainerWrap>
           <EtsHeaderContainer>
             <EtsHeaderTitle>
@@ -92,7 +99,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
             </EtsButtonsContainer>
           </EtsHeaderContainer>
         </EtsHeaderContainerWrap>
-      </EtsBootstrap.Row>
+      </CarRefillTableHeaderStyled>
     );
   },
 );

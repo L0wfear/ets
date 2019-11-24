@@ -124,7 +124,7 @@ module.exports = {
     ],
     'no-console': [                                                         // не забываем удалять лишние логи
       'error',
-      { allow: ['warn', 'info', 'error'] },
+      { allow: ['warn', 'info', 'error', 'table'] },
     ],
     
     'no-tabs': 'error',

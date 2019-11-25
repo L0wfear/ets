@@ -29,7 +29,7 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
     } = this.props;
 
     const inputClassName = cx({ 'has-error': error });
-    const { value = null } = this.props;
+    const { value } = this.props;
 
     return (
       !this.props.hidden

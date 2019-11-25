@@ -238,12 +238,14 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const current = tableData[index];
     const oldCurrVal = current.FACT_VALUE;
     current.FACT_VALUE = e.target.value === '' ? '' : Math.abs(e.target.value);
+
     const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
       current.FACT_VALUE,
     ); // есть 3 знака после запятой
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'
+      && current.FACT_VALUE !== ''
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }

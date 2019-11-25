@@ -13,6 +13,7 @@ import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 /**
  * Компонент таксировки ТС
@@ -152,9 +153,7 @@ export default class Taxes extends React.Component {
               value={row.uniqKey}
               onChange={this.handleOperationChange.bind(this, index)}
             />
-            <div className="error" style={{ marginTop: '5px' }}>
-              {errorsMsg}
-            </div>
+            <ErrorsBlock hidden={!errorsMsg} error={errorsMsg} />
           </div>
         );
       },
@@ -188,9 +187,7 @@ export default class Taxes extends React.Component {
               {...factValueProps}
               onChange={this.handleFactValueChange.bind(this, index)}
             />
-            <div className="error" style={{ marginTop: '5px' }}>
-              {errorsMsg}
-            </div>
+            <ErrorsBlock hidden={!errorsMsg} error={errorsMsg} />
           </div>
         );
       },

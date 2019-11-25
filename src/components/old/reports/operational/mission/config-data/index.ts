@@ -3,7 +3,7 @@ import component from 'components/old/reports/operational/mission/config-data/co
 
 export default {
   path: '/mission-reports',
-  title: 'Прохождение заданий',
+  title: 'Отчет по прохождению заданий',
   entyity: 'car_travel_report',
 
   component,

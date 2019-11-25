@@ -15,7 +15,7 @@ const schemaMakers = {};
 const renderers = {};
 
 const reportProps: IReportProps = {
-  title: 'Прохождение заданий',
+  title: 'Отчет по прохождению заданий',
   serviceName,
   reportUrl,
   serviceUrl,
@@ -23,6 +23,11 @@ const reportProps: IReportProps = {
   renderers,
   enumerated: true,
   schemaMakers,
+  summaryTitle: 'Итого',
+  notUseServerSummerTable: true,
+  tableProps: {
+    reportKey: serviceUrl,
+  },
 };
 
 const ExportableReportContainer = exportable({

@@ -24,7 +24,7 @@ const MultiValueWithCheckActive = styled(components.MultiValue)<MultiValueProps<
 const MultiValueEmployeeDutyMission = (props) => (
   <MultiValueWithCheckActive {...props}>
     {
-      `${props.children}${!get(props, pathToActiveStatus, true) ? ` (Неактивный сотрудник)` : ''}`
+      `${props.children}${!get(props, pathToActiveStatus, true) ? ` (Не работает)` : ''}`
     }
   </MultiValueWithCheckActive>
 );

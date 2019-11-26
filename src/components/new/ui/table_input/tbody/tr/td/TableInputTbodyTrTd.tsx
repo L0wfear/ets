@@ -24,11 +24,9 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     const handleChange = React.useCallback(
       (valueRaw, option?) => {
         let value = get(valueRaw, 'target.value', valueRaw);
-        switch (metaData.format) {
-          case 'number': {
-            value = value ? Number(value) : null;
-            break;
-          }
+
+        if( metaData.format === 'number' || metaData.format === 'toFixed3' ) {
+          value = value ? Number(value) : null;
         }
 
         if (metaData.onChange) {
@@ -90,7 +88,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
-          metaData.format === 'number'
+          metaData.format === 'number' || metaData.format === 'toFixed3'
             && (
               <ExtField
                 type="number"
@@ -100,6 +98,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 error={props.error}
                 onChange={handleChange}
                 disabled={disabled || metaData.disabled || props.disabled}
+                format={metaData?.format}
               />
             )
         }

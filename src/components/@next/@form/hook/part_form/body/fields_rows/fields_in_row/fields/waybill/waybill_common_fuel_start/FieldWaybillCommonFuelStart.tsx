@@ -27,10 +27,11 @@ const FieldWaybillCommonFuelStart: React.FC<FieldWaybillCommonFuelStartProps> = 
           isShowField && (
             <ExtField
               id={`${path}_common_fuel_start`}
-              type="string"
+              type="number"
               label="Общее топливо при выезде, л"
-              value={(equipment_fuel_start + fuel_start).toFixed(3)}
+              value={equipment_fuel_start + fuel_start}
               disabled
+              format="toFixed3"
             />
           )
         }

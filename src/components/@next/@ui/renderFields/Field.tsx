@@ -24,6 +24,9 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
   ({ boundKeys, ...props }) => {
     const Component = ComponentByType[props.type] || ComponentByType.string;
 
+    const [ isFocus, setIsFocus ] = React.useState(false);
+    const [ localStateValue, setLocalStateValue ] = React.useState(props.value);
+
     const onChange = React.useCallback(
       (...arg) => {
         if (props.onChange) {
@@ -34,9 +37,54 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
             props.onChange(...addKeys, ...arg);
           }
         }
+        setLocalStateValue(props.value);
       },
-      [boundKeys, props.onChange],
+      [boundKeys, props.onChange, props.value,],
     );
+
+    const onFocus = React.useCallback( (...arg) => {
+      setIsFocus(true);
+    }, [isFocus]);
+
+    const onBlur = React.useCallback(
+      () => {
+        setIsFocus(false);
+        setLocalStateValue(props.value);
+      },
+      [boundKeys, props.onBlur, props.format, props.value],
+    );
+
+    React.useEffect( () => {
+      setLocalStateValue(props.value);
+    }, [isFocus, props.type, props.value]);
+
+    // выводить 3 знака после запятой { format === 'toFixed3', type === 'number', }
+    React.useEffect( () => {
+      if (!isFocus
+        && props.format === 'toFixed3'
+        && props.type === 'number'
+        && !isNullOrUndefined(props.value)
+        && (props.value || props.value === 0)
+      ){
+        const newVal = Number(props.value).toFixed(3);
+        if(Number(props.value).toString()?.split('.')?.[1]?.length <= 3) { // Если пользак ввел больше 3x знаков, то не перетираем state
+          setLocalStateValue(newVal);
+        }
+      }
+    }, [isFocus, props.format, props.type, props.value]);
+
+    // меняем точку на запятую во всех полях type === 'number'
+    React.useEffect( () => {
+      if (!isFocus
+        && !props.format
+        && props.type === 'number'
+        && !isNullOrUndefined(props.value)
+        && (props.value || props.value === 0)
+      ){
+        const newVal = Number(props.value).toString().replace('.', ',');
+        setLocalStateValue(newVal);
+      }
+    }, [isFocus, props.format, props.type, props.value]);
 
     if (props.disabled && props.value_string) {
       return (
@@ -49,7 +97,7 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
     }
 
     return (
-      <Component {...props as any} onChange={onChange} />
+      <Component {...props as any} value={isFocus ? props.value : localStateValue} onChange={onChange} onBlur={onBlur} onFocus={onFocus} />
     );
   },
 );

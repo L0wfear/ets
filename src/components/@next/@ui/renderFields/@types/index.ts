@@ -7,6 +7,8 @@ export type ExtFieldCommon<V = any> = {
   label?: string | boolean;
   error?: string | boolean;
   onChange?: (...arg: Array<any>) => void;
+  onBlur?: (...arg) => void;
+
   disabled?: boolean;
   value?: V;
   boundKeys?: any | Array<any>;
@@ -15,6 +17,9 @@ export type ExtFieldCommon<V = any> = {
   hidden?: boolean;
   readOnly?: boolean;
   value_string?: string | number;
+  format?: 'toFixed1'
+            | 'toFixed2'
+            | 'toFixed3';
 
   emptyValue?: any; // надо ли
 };

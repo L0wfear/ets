@@ -43,7 +43,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     if (isEmpty(FACT_VALUE) || isEmpty(FUEL_RATE)) {
       return 0;
     }
-    return parseFloat((FUEL_RATE * FACT_VALUE).toString()).toFixed(3);
+    return parseFloat((FUEL_RATE * FACT_VALUE).toString()).toFixed(3)?.replace('.', ',');
   }
 
   static calculateFinalResult(data) {
@@ -59,7 +59,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3);
+    return parseFloat(result).toFixed(3)?.replace('.', ',');
   }
 
   static calculateFinalFactValue(data) {
@@ -75,7 +75,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3);
+    return parseFloat(result).toFixed(3)?.replace('.', ',');
   }
 
   tableCaptions: Array<any>;
@@ -159,7 +159,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          value: FACT_VALUE,
+          value: parseFloat(FACT_VALUE),
           id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
@@ -310,7 +310,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
     const value
       = baseFactValue || baseFactValue === 0
-        ? (baseFactValue - overallValue).toFixed(3)
+        ? (baseFactValue - overallValue).toFixed(3)?.replace('.', ',')
         : null;
     tableData.push({ FACT_VALUE: value });
     this.setState({ tableData, errorsAll });
@@ -341,8 +341,8 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const finalResult = EquipmentTaxes.calculateFinalResult(taxes);
     const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes);
     const finalFactValueEqualsBaseValue
-      = parseFloat(baseFactValue).toFixed(3)
-      === parseFloat(finalFactValue.toString()).toFixed(3);
+      = parseFloat(baseFactValue).toFixed(3)?.replace('.', ',')
+      === parseFloat(finalFactValue.toString()).toFixed(3)?.replace('.', ',');
 
     return (
       <TaxiCalcBlock hidden={hidden}>

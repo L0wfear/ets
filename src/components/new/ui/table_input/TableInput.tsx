@@ -47,6 +47,10 @@ export type TableMeta<F> = {
     time?: boolean;
   } | {
     format: 'string';
+  } | {
+    format: 'toFixed3';
+  } | {
+    format: 'toFixed2';
   }
 );
 

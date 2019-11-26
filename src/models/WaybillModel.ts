@@ -10,6 +10,11 @@ import { get } from 'lodash';
 import { isArray, isNumber } from 'util';
 import memoizeOne from 'memoize-one';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
+import { getRequiredFieldToFixed } from 'components/@next/@utils/getErrorString/getErrorString';
+
+export const isValidToFixed3 = (data) => {
+  return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
+};
 
 const validateFuelCardId = (
   rowData,
@@ -88,8 +93,8 @@ const checkCarRefill = memoizeOne(
         value:
           !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
-            : rowData.value < 0
-              ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+            : !isValidToFixed3(rowData.value)
+              ? getRequiredFieldToFixed('Выдано, л', 3)
               : '',
       };
     });
@@ -431,6 +436,9 @@ export const waybillSchema = {
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Топливо.Выезд', 3);
+          }
         },
       },
     ],
@@ -444,6 +452,9 @@ export const waybillSchema = {
             && (!value && value !== 0)
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }
         },
       },
@@ -459,6 +470,9 @@ export const waybillSchema = {
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Возврат фактический, л', 3);
+          }
         },
       },
     ],
@@ -472,6 +486,9 @@ export const waybillSchema = {
             && (!value && value !== 0)
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Возврат фактический, л', 3);
           }
         },
       },

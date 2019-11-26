@@ -23,9 +23,9 @@ const reportProps: IReportProps = {
   renderers,
   enumerated: true,
   schemaMakers,
-  notUseServerSummerTable: true,
   summaryTitle: 'Итого по топливным картам:',
-  tableProps: {
+  notUseServerSummerTable: true, // for custom summary
+  tableProps: {  // for custom summary
     reportKey: serviceUrl,
   },
 };

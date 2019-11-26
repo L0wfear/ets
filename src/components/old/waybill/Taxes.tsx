@@ -52,7 +52,7 @@ export default class Taxes extends React.Component<any, any> {
     ) {
       return '0';
     }
-    return parseFloat((FUEL_RATE * fuel_correction_rate * FACT_VALUE).toString()).toFixed(3);
+    return parseFloat((FUEL_RATE * fuel_correction_rate * FACT_VALUE).toString()).toFixed(3)?.replace('.', ',');
   }
 
   static calculateFinalResult(data) {
@@ -68,7 +68,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3);
+    return parseFloat(result).toFixed(3)?.replace('.', ',');
   }
 
   static calculateFinalFactValue(data) {
@@ -84,7 +84,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3);
+    return parseFloat(result).toFixed(3).replace('.', ',')?.replace('.', ',');
   }
 
   tableCaptions: Array<any>;
@@ -171,17 +171,19 @@ export default class Taxes extends React.Component<any, any> {
       measure_unit_name: (measure_unit_name) => measure_unit_name || '-',
       RESULT: (RESULT) => `${RESULT ? `${RESULT} л` : ''}`,
       fuel_correction_rate: (fuel_correction_rate) =>
-        fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1,
+        fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3)?.replace('.', ',') : 1,
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          value: FACT_VALUE,
+          value: parseFloat(FACT_VALUE),
           id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
             || typeof OPERATION === 'undefined'
             || this.props.readOnly,
         };
+
+        console.log('factValueProps === ', { factValueProps });
 
         const errors = get(this.state, 'errorsAll.tax_data_rows', []);
         const errorsMsg = errors.length
@@ -322,7 +324,7 @@ export default class Taxes extends React.Component<any, any> {
 
     const value
       = baseFactValue || baseFactValue === 0
-        ? (baseFactValue - overallValue).toFixed(3)
+        ? (baseFactValue - overallValue).toFixed(3)?.replace('.', ',')
         : null;
     tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
     this.setState({ tableData, errorsAll });
@@ -353,8 +355,8 @@ export default class Taxes extends React.Component<any, any> {
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes);
     const finalFactValueEqualsBaseValue
-      = parseFloat(baseFactValue).toFixed(3)
-      === parseFloat(finalFactValue.toString()).toFixed(3);
+      = parseFloat(baseFactValue).toFixed(3).replace('.', ',')
+      === parseFloat(finalFactValue.toString()).toFixed(3).replace('.', ',');
 
     return (
       <TaxiCalcBlock hidden={hidden}>

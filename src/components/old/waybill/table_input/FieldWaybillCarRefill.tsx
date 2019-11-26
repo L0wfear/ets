@@ -88,7 +88,7 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
   key: 'value',
   title: 'Выдано, л',
   width: 100,
-  format: 'number',
+  format: 'toFixed3',
 };
 
 const FieldWaybillCarRefill: React.FC<Props> = React.memo(

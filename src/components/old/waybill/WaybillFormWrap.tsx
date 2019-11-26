@@ -277,19 +277,19 @@ class WaybillFormWrap extends React.Component<Props, State> {
         );
 
         if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
-          waybill.fuel_end = +(fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+          waybill.fuel_end = +(fuelStart + fuelGiven - fuelTaxes);
           waybill.equipment_fuel_end = +(
             equipmentFuelStart
             + equipmentFuelGiven
             - equipmentFuelTaxes
-          ).toFixed(3);
+          );
         } else {
           waybill.fuel_end = +(
             fuelStart
             + fuelGiven
             - fuelTaxes
             - equipmentFuelTaxes
-          ).toFixed(3);
+          );
           waybill.equipment_fuel_end = null;
         }
 
@@ -415,6 +415,19 @@ class WaybillFormWrap extends React.Component<Props, State> {
     let { formErrors } = this.state;
     const newState: Partial<State>  = {};
 
+    formState.fuel_start = formState.fuel_start
+      ? parseFloat(formState.fuel_start)
+      : formState.fuel_start;
+    formState.fuel_given = formState.fuel_given
+      ? parseFloat(formState.fuel_given)
+      : formState.fuel_given;
+    formState.equipment_fuel_start = formState.equipment_fuel_start
+      ? parseFloat(formState.equipment_fuel_start)
+      : formState.equipment_fuel_start;
+    formState.equipment_fuel_given = formState.equipment_fuel_given
+      ? parseFloat(formState.equipment_fuel_given)
+      : formState.equipment_fuel_given;
+
     const fuelStart = formState.fuel_start
       ? parseFloat(formState.fuel_start)
       : 0;
@@ -433,19 +446,19 @@ class WaybillFormWrap extends React.Component<Props, State> {
     );
 
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
-      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-      formState.equipment_fuel_end = (
+      formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes);
+      formState.equipment_fuel_end = ( // Возврат по таксировке, л
         equipmentFuelStart
         + equipmentFuelGiven
         - equipmentFuelTaxes
-      ).toFixed(3);
+      );
     } else {
       formState.fuel_end = (
         fuelStart
         + fuelGiven
         - fuelTaxes
         - equipmentFuelTaxes
-      ).toFixed(3);
+      );
     }
 
     if (

@@ -21,3 +21,7 @@ export const getRequiredFieldNoTrim = (field = 'Название по умолч
 export const getRequiredFieldMoreEqualThen = (field1 = 'Название по умолчанию', field2 = 'Название по умолчанию') => {
   return `Поле "${field1}" должно быть меньше либо равно поля "${field2}"`;
 };
+
+export const getRequiredFieldToFixed = (field = 'Название по умолчанию', countMark) => {
+  return `Поле "${field}" должно быть неотрицательным числом с ${countMark} знаками после запятой`;
+};

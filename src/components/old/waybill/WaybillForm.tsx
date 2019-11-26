@@ -1617,10 +1617,10 @@ class WaybillForm extends React.Component<Props, State> {
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
-        ? parseFloat((state.track_length / 1000).toString()).toFixed(3)
+        ? parseFloat((state.track_length / 1000).toString())?.toFixed(3).replace('.', ',')
         : 'Нет данных';
     } else {
-      distanceOrTrackOrNodata /= 1000;
+      distanceOrTrackOrNodata = (Number(distanceOrTrackOrNodata) / 1000)?.toFixed(3).replace('.', ',');
     }
 
     const disableEquipmentFieldWaybillCarRefill
@@ -1969,12 +1969,13 @@ class WaybillForm extends React.Component<Props, State> {
                   {!state.is_one_fuel_tank && (
                     <EtsBootstrap.Col md={4}>
                       <ExtField
-                        type="string"
+                        type="number"
                         label="Общее топливо при выезде, л"
-                        value={(
+                        value={
                           Number(state.equipment_fuel_start)
                           + Number(state.fuel_start)
-                        ).toFixed(3)}
+                        }
+                        format="toFixed3"
                         disabled
                       />
                     </EtsBootstrap.Col>
@@ -2109,6 +2110,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     label="Возврат по таксировке, л"
                                     error={errors.fuel_end}
                                     value={state.fuel_end}
+                                    format="toFixed3"
                                     disabled
                                   />
                                 )}
@@ -2131,6 +2133,7 @@ class WaybillForm extends React.Component<Props, State> {
                               }
                               onChange={this.handleChange}
                               boundKeys="fuel_start"
+                              format="toFixed3"
                             />
                           </EtsBootstrap.Col>
                           <EtsBootstrap.Col md={8}>
@@ -2153,6 +2156,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   showRedBorder={
                                     state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
                                   }
+                                  format="toFixed3"
                                 />
                               </EtsBootstrap.Col>
                             </EtsBootstrap.Row>
@@ -2327,6 +2331,7 @@ class WaybillForm extends React.Component<Props, State> {
                                       type="number"
                                       label="Возврат по таксировке, л"
                                       value={state.equipment_fuel_end}
+                                      format="toFixed3"
                                       disabled
                                     />
                                   )}
@@ -2345,6 +2350,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     }
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"
+                                    format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>
                                 <EtsBootstrap.Col md={4}>
@@ -2363,6 +2369,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     }
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fact_fuel_end"
+                                    format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
@@ -2501,6 +2508,7 @@ class WaybillForm extends React.Component<Props, State> {
                     error={errors.consumption}
                     value={state.consumption || state.sensor_consumption}
                     isLoading={loadingFields.consumption}
+                    format="toFixed3"
                     disabled
                   />
                 </Div>

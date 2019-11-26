@@ -8,7 +8,7 @@ const pathToActiveStatus = ['data', 'rowData', 'active_for_brigade'];
 const MultiValueForemanDutyMission = (props) => (
   <components.SingleValue {...props}>
     {
-      `${props.children}${!get(props, pathToActiveStatus, true) ? ` (Неактивный сотрудник)` : ''}`
+      `${props.children}${!get(props, pathToActiveStatus, true) ? ` (Не работает)` : ''}`
     }
   </components.SingleValue>
 );

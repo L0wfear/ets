@@ -246,7 +246,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             Boolean(props.array && props.array[0]) && (
               <FooterEnd margin={30}>
                 <div><b>{'Итого '}</b></div>
-                <div><b>{props.fuel_given.toFixed(3)}</b></div>
+                <div><b>{props.fuel_given.toFixed(3).replace('.', ',')}</b></div>
               </FooterEnd>
             )
           }

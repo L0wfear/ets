@@ -183,8 +183,6 @@ export default class Taxes extends React.Component<any, any> {
             || this.props.readOnly,
         };
 
-        console.log('factValueProps === ', { factValueProps });
-
         const errors = get(this.state, 'errorsAll.tax_data_rows', []);
         const errorsMsg = errors.length
           ? get(errors, `${index}.FACT_VALUE`)

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isNumber, isArray } from 'util';
+import { isNumber, isArray, isNullOrUndefined } from 'util';
 
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';
@@ -115,6 +115,10 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
 
   if ('dashIfEmpty' in fieldMeta && fieldMeta.dashIfEmpty) {
     value = !value && value !== 0 ? '-' : value;
+  }
+
+  if(value && !isNullOrUndefined(value) && isNumber(value)){
+    value = value.toString().replace('.', ',');
   }
 
   return value;

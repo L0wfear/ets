@@ -4,6 +4,7 @@ export type DefaultSelectOption<V, L, R> = {
   value: V;
   label: L;
   rowData?: Partial<R>;
+  isNotVisible?: boolean;
   [k: string]: any;
 };
 

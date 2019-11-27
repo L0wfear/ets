@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
+import { darken } from 'polished';
 
 type EtsPageWrapProps = {
   inheritDisplay?: boolean;
@@ -175,5 +176,23 @@ export const InfoBlock = styled.div`
     position: absolute;
     top: -19px;
     left: 27px;
+  }
+`;
+
+export const RedOptionsStyle = css`
+  background-color: ${UiConstants.colorError};
+  border: none!important;
+  color: white!important;
+  .react-select__multi-value__remove{
+    border: solid 1px!important;
+    border-color: ${darken(0.1, UiConstants.colorError)}!important;
+    &:hover {
+      background: ${darken(0.1, UiConstants.colorError)}!important;
+    }
+  }
+  .react-select__multi-value__label {
+    border: solid 1px!important;
+    border-color: ${darken(0.1, UiConstants.colorError)}!important;
+    border-left: none!important;
   }
 `;

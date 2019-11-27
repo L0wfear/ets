@@ -4,6 +4,7 @@ import { CarWrap } from './@types/CarForm';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isFourDigitGovNumber } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { get } from 'lodash';
 
 export const getDefaultCar = (): CarWrap => ({
   asuods_id: null,
@@ -165,11 +166,11 @@ export const memoizeMergeElement = memoizeOne(
  * @param employeeData данные по водителю из employee
  * @param gov_number номер ТС
  */
-export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number']) => {
+export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number'], payload?: { includeNotActive: boolean, }) => {
   if (employeeData) {
     const isFourInGovNumver = isFourDigitGovNumber(gov_number);
 
-    if (employeeData.active) {                                                  // сотрудник активен
+    if (employeeData.active || get(payload, 'includeNotActive')) {                                                  // сотрудник активен
       if (isFourInGovNumver) {
         return (
           employeeData.special_license                                          // есть специальное удостоверение

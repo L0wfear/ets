@@ -1,25 +1,26 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { components } from 'react-select';
-import { DivNone } from 'global-styled/global-styled';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
+import styled from 'styled-components';
+import { RedOptionsStyle } from 'global-styled/global-styled';
 
-class MultiValueForDriver extends React.PureComponent<MultiValueProps<any>, {}> {
-  render() {
-    const { innerProps, ...props } = this.props;
+const pathToActiveStatus = 'data.rowData.active';
 
-    const { data } = props;
-
-    const isActive = get(data, 'rowData.active', true);
-
-    return isActive
-      ? (
-        <components.MultiValue innerProps={innerProps} {...props} />
-      )
-      : (
-        <DivNone />
-      );
+const MultiValueWithCheckActive = styled(components.MultiValue)<MultiValueProps<any>>`
+  &&& {
+    ${(props) => (
+    !get(props, pathToActiveStatus, true) && RedOptionsStyle
+  )}
   }
-}
+`;
 
-export default MultiValueForDriver;
+const MultiValueForDriver = (props) => (
+  <MultiValueWithCheckActive {...props}>
+    {
+      `${props.children}${!get(props, pathToActiveStatus, true) ? ` (Не работает)` : ''}`
+    }
+  </MultiValueWithCheckActive>
+);
+
+export default React.memo(MultiValueForDriver);

@@ -9,6 +9,7 @@ import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form
 import { filterDriver } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { get } from 'lodash';
 
 type UseCarDriversListAns = {
   primaryDriverOptions: Array<DefaultSelectOption<number, string, Employee>>;
@@ -48,6 +49,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
           return filterDriver(
             employeeIndex[driver.id],
             gov_number,
+            { includeNotActive: true, },
           );
         },
       ).map(
@@ -55,6 +57,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
           value: driver.id,
           label: createFio(employeeIndex[driver.id]),
           rowData: employeeIndex[driver.id],
+          isNotVisible: !driver.active,
         }),
       );
     },
@@ -74,6 +77,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
             value: id,
             label: createFio(employeeIndex[id]),
             rowData: employeeIndex[id],
+            isNotVisible: !get(employeeIndex[id], 'active'),
           });
         }
       });
@@ -96,6 +100,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
             value: id,
             label: createFio(employeeIndex[id]),
             rowData: employeeIndex[id],
+            isNotVisible: !get(employeeIndex[id], 'active'),
           });
         }
       });

@@ -163,6 +163,15 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             }
           });
 
+          if (reportKey === 'car_travel_report') {
+            const onePercentVal = (child.route_left_percentage + child.route_traveled_percentage) / 100;
+            return {
+              ...child,
+              route_left_percentage: (child.route_left_percentage / onePercentVal).toFixed(2),
+              route_traveled_percentage: (child.route_traveled_percentage / onePercentVal).toFixed(2),
+            };
+          }
+
           return child;
         });
 

@@ -157,7 +157,13 @@ class ReportContainer extends React.Component<
   }
 
   getReportData(query): ReportDataPromise {
-    const payload: any = { ...query };
+    const payload: any = query.okrug_id === ''
+      ? {
+        ...query,
+        okrug_id: 0,
+      } : {
+        ...query,
+      };
 
     return new Promise(async (resolve, reject) => {
       try {

@@ -67,13 +67,13 @@ export type Waybill = {
   is_bnso_broken: boolean;
   is_one_fuel_tank: boolean;
   mission_id_list: Array<Mission['id']>;
-  motohours_end: number;
-  motohours_equip_end: number;
-  motohours_equip_start: number;
-  motohours_start: number;
+  motohours_end: string;
+  motohours_equip_end: string;
+  motohours_equip_start: string; // num
+  motohours_start: string; // num
   number: number | string;
-  odometr_end: number;
-  odometr_start: number;
+  odometr_end: string; // num
+  odometr_start: string; // num
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;

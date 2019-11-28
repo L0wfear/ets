@@ -49,7 +49,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
   static calculateFinalResult(data) {
     if (!data || (data && !data.length)) {
-      return 0;
+      return '0';
     }
     const result = data.reduce(
       (res, cur) => {

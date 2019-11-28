@@ -24,7 +24,7 @@ const WaybillFieldMotohoursDiff: React.FC<WaybillFieldMotohoursDiffProps> = Reac
     const motohours_diff = React.useMemo(
       () => {
         if (isNumber(motohours_end)) {
-          return motohours_end - motohours_start;
+          return parseFloat(motohours_end) - parseFloat(motohours_start);
         }
 
         return null;

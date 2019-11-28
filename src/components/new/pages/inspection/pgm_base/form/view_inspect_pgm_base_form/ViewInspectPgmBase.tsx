@@ -82,6 +82,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               errors_head_balance_holder_base={errors.head_balance_holder_base}
               head_operating_base={state.head_operating_base}
               errors_head_operating_base={errors.head_operating_base}
+              inspectionState={state}
 
               onChange={props.handleChange}
 

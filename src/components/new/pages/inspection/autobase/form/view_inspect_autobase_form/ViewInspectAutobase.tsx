@@ -19,6 +19,7 @@ import { inspectAutobaseSchema } from './schema';
 import { getDefaultInspectAutobaseElement } from './utils';
 import BlockCarsConditionSetInspectEmployee from '../../../cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import IAVisibleWarningContainer from '../../../container/filed_to_check/IAVisibleWarningContainer';
+import { makeDate } from 'components/@next/@utils/dates/dates';
 
 const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
   (props) => {
@@ -73,20 +74,61 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
         <ContainerForm>
           <EtsBootstrap.Col md={6} sm={6}>
             <BoxContainer>
-              <ExtField
-                type="string"
-                label="Организация:"
-                value={state.company_short_name}
-                readOnly
-                inline
-              />
-              <ExtField
-                type="string"
-                label="Адрес базы:"
-                value={state.base_address}
-                readOnly
-                inline
-              />
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Организация:"
+                    value={state.company_short_name}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Адрес базы:"
+                    value={state.base_address}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Статус проверки:"
+                    value={state.status_text}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Проверка открыта:"
+                    value={makeDate(state.date_start)}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              {
+                state.date_end && (
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={6} sm={6}>
+                      <ExtField
+                        type="string"
+                        label="Проверка завершена:"
+                        value={makeDate(state.date_end)}
+                        readOnly
+                        inline
+                      />
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                )
+              }
             </BoxContainer>
             <BoxContainer>
               <h4>

@@ -7,6 +7,7 @@ import { get } from 'lodash';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { makeDate } from 'components/@next/@utils/dates/dates';
 
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'];
@@ -21,6 +22,7 @@ type BlockCarSConditionInfoProps = {
 
   isPermitted: boolean;
   isActiveInspect: boolean;
+  inspectionState: InspectCarsCondition;
 
   onChange: any;
 };
@@ -32,6 +34,7 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
       isActiveInspect,
       error_head_balance_holder_base,
       error_head_operating_base,
+      inspectionState,
     } = props;
     const handleChangeHeadOperatingBase = React.useCallback(
       (key, event) => {
@@ -104,6 +107,41 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6} sm={6}>
+            <ExtField
+              type="string"
+              label="Статус проверки:"
+              value={inspectionState.status_text}
+              readOnly
+              inline
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6} sm={6}>
+            <ExtField
+              type="string"
+              label="Проверка открыта:"
+              value={makeDate(inspectionState.date_start)}
+              readOnly
+              inline
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        {
+          inspectionState.date_end && (
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6} sm={6}>
+                <ExtField
+                  type="string"
+                  label="Проверка завершена:"
+                  value={makeDate(inspectionState.date_end)}
+                  readOnly
+                  inline
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          )
+        }
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField

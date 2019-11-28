@@ -175,6 +175,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               checks_type_text={state.checks_type_text}
               checks_period_text={state.checks_period_text}
               onChange={props.handleChange}
+              inspectionState={state}
             />
             {
               isHasPeriod

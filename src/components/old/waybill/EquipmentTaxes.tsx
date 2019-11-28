@@ -18,6 +18,7 @@ import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TaxiCalcBlock } from './Taxes';
+import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
 
 /**
  * Компонент таксировки ТС
@@ -346,6 +347,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
     return (
       <TaxiCalcBlock hidden={hidden}>
+        <HrLineWaybill />
         <EtsBootstrap.Row>
           <EtsHeaderContainerWrap>
             <EtsHeaderContainer>

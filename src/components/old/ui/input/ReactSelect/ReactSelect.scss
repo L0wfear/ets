@@ -52,17 +52,17 @@
         background-color: #e26240;
         border: none!important;
         color: white!important;
-      }
-      .react-select__multi-value__remove{
-        border: solid 1px!important;
-        border-color: #cf4420!important;
-        &:hover {
-          background: #cf4420!important;
-        }
-        .react-select__multi-value__label {
+        .react-select__multi-value__remove{
           border: solid 1px!important;
           border-color: #cf4420!important;
-          border-left: none!important;
+          &:hover {
+            background: #cf4420!important;
+          }
+          .react-select__multi-value__label {
+            border: solid 1px!important;
+            border-color: #cf4420!important;
+            border-left: none!important;
+          }
         }
       }
 

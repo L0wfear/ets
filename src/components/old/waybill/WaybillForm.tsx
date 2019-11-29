@@ -1630,6 +1630,8 @@ class WaybillForm extends React.Component<Props, State> {
       = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
       || !isPermittedByKey.update;
 
+    const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
+
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"

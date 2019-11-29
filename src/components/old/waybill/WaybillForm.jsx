@@ -1432,9 +1432,11 @@ class WaybillForm extends UNSAFE_Form {
     }
 
     const disableEquipmentFieldWaybillCarRefill
-      = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
+      = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
+      || !isPermittedByKey.update;
     const disableFieldWaybillCarRefill
-      = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
+      = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
+      || !isPermittedByKey.update;
 
     return (
       <EtsBootstrap.ModalContainer

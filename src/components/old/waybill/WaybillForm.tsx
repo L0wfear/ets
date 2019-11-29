@@ -1627,6 +1627,7 @@ class WaybillForm extends React.Component<Props, State> {
       = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
     const disableFieldWaybillCarRefill
       = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
+    const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -2492,7 +2493,7 @@ class WaybillForm extends React.Component<Props, State> {
                   id="waybill-comment"
                   type="text"
                   label="Комментарий"
-                  disabled={(IS_CLOSED && !IS_DELETE) || !isPermittedByKey.update}
+                  disabled={disableComment}
                   value={state.comment}
                   onChange={this.handleChange}
                   boundKeys="comment"

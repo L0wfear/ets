@@ -224,7 +224,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               array={props.array}
               meta={metaCarRefillRaw}
               onChange={props.handleChange}
-              visibleButtons={!(props.disabled || isPermittedWaybillRefill)}
+              visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
@@ -239,7 +239,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           selectedRowIndex={selectedRowIndex}
           setSelectedRowIndex={setSelectedRowIndex}
 
-          disabled={props.disabled || !isPermittedWaybillRefill}
+          disabled={props.disabled}
         />
         <DisplayFlexAlignCenterFooterForm>
           {

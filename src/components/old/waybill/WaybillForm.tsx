@@ -1624,10 +1624,11 @@ class WaybillForm extends React.Component<Props, State> {
     }
 
     const disableEquipmentFieldWaybillCarRefill
-      = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
+      = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
+      || !isPermittedByKey.update;
     const disableFieldWaybillCarRefill
-      = (IS_CLOSED && !this.state.canEditIfClose) || !isPermittedByKey.update;
-    const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
+      = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
+      || !isPermittedByKey.update;
 
     return (
       <EtsBootstrap.ModalContainer

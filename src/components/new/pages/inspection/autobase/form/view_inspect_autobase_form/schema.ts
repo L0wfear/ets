@@ -73,10 +73,14 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     surface_area_of_destruction: {
       title: 'Площадь разрушения покрытия на базе (кв. м)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
     },
     presence_of_pits_potholes: {
       title: 'Наличие ям, выбоин (шт.)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
     },
     lack_of_lighting: {
       title: 'Отсутствие освещения на базе',
@@ -116,7 +120,6 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     },
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
-      min: 0,
       type: 'number',
       minNotEqual: -1,
       integer: true,

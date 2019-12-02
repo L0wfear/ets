@@ -5,6 +5,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { RowAddRowAddAgentFromGbuWrapper, AgentsFromGbuMemberDataContainer, AgentsFromGbuCloseBtn } from './styled';
 import { get } from 'lodash';
 import { FooterEnd } from 'global-styled/global-styled';
+import { getNoTrimSpaceMessage, getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -44,6 +45,30 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
       [setNewAgent, newAgent],
     );
 
+    const newAgentPositionError = React.useMemo(() => {
+      if (!newAgentPosition) {
+        return getRequiredFieldMessage('Должность');
+      }
+
+      if (newAgentPosition?.trim() !== newAgentPosition) {
+        return getNoTrimSpaceMessage('Должность');
+      }
+
+      return '';
+    }, [newAgentPosition]);
+
+    const newAgentFioError = React.useMemo(() => {
+      if (!newAgentFio) {
+        return getRequiredFieldMessage('ФИО');
+      }
+
+      if (newAgentFio?.trim() !== newAgentFio) {
+        return getNoTrimSpaceMessage('ФИО');
+      }
+
+      return '';
+    }, [newAgentFio]);
+
     return (
       <RowAddRowAddAgentFromGbuWrapper>
         {
@@ -63,7 +88,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                   <ExtField
                     type="string"
                     label="Должность"
-                    error={!newAgentPosition ? 'Поле "Должность" должно быть заполнено' : ''}
+                    error={newAgentPositionError}
                     value={newAgentPosition}
                     onChange={handleChangeNewAgent}
                     boundKeys="position"
@@ -73,7 +98,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                   <ExtField
                     type="string"
                     label="ФИО"
-                    error={!newAgentFio ? 'Поле "ФИО" должно быть заполнено' : ''}
+                    error={newAgentFioError}
                     value={newAgentFio}
                     onChange={handleChangeNewAgent}
                     boundKeys="fio"
@@ -81,7 +106,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={12}>
                   <EtsBootstrap.Button
-                    disabled={!newAgentFio || !newAgentPosition}
+                    disabled={Boolean(newAgentPositionError) || Boolean(newAgentFioError)}
                     onClick={handleClickAddAgentFromGbu}
                   >
                     Сохранить

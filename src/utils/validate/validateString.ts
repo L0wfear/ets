@@ -1,3 +1,5 @@
+import { getNoTrimSpaceMessage } from "components/@next/@utils/getErrorString/getErrorString";
+
 const fixedValidators = [
   {
     name: 'required',
@@ -27,7 +29,7 @@ const fixedValidators = [
         return undefined;
       }
       if (data.trim() !== data) {
-        return `Поле "${config.title || config.key}" не должно начинаться и закачиваться пробелом`;
+        return getNoTrimSpaceMessage(config.title || config.key);
       }
 
       return undefined;

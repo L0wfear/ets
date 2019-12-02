@@ -25,3 +25,7 @@ export const getRequiredFieldMoreEqualThen = (field1 = 'Название по у
 export const getRequiredFieldToFixed = (field = 'Название по умолчанию', countMark) => {
   return `Поле "${field}" должно быть неотрицательным числом с ${countMark} знаками после запятой`;
 };
+
+export const getNoTrimSpaceMessage = (field = 'Название по умолчанию') => {
+  return `Поле "${field}" не должно начинаться или закачиваться пробелом`;
+};

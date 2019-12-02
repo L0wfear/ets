@@ -41,7 +41,7 @@ export type IReportMeta = {
 };
 
 type ISummaryTableData = {
-  summaryList: Array<object>;
+  summaryList: Array<any>;
   summaryMeta: IReportMeta;
   summaryTableMetaInfo: Array<IReportMetaField>;
 };

@@ -91,9 +91,9 @@ class TrTable extends React.Component<PropsTrTable, any> {
                 {
                   customComponent
                     ? customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
-                    :                  columnName === 'rowNumber'
+                    : columnName === 'rowNumber'
                       ? rowNumber
-                      :                    columnName === 'isChecked'
+                      : columnName === 'isChecked'
                         ? (
                           <div>
                             <input
@@ -105,7 +105,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
                             />
                           </div>
                         )
-                        :                    (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
+                        : (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
                 }
               </td>
             );

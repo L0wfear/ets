@@ -17,9 +17,8 @@ export type ExtFieldCommon<V = any> = {
   hidden?: boolean;
   readOnly?: boolean;
   value_string?: string | number;
-  format?: 'toFixed1'
-            | 'toFixed2'
-            | 'toFixed3';
+  format?: 'toFixed2'
+          | 'toFixed3';
 
   emptyValue?: any; // надо ли
 };

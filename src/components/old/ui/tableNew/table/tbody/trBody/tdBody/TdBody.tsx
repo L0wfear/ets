@@ -1,13 +1,19 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isNumber } from 'util';
 
 class TdBody extends React.Component<any, any> {
 
   static get defaultProps() {
     return {
-      render: ({ data, rowData, tableMeta }) => (!isNullOrUndefined(data) ? data : '').toString(),
+      render: ({ data, rowData, tableMeta }) =>
+        (!isNullOrUndefined(data) && !tableMeta.precision
+          ? data
+          : data && tableMeta.precision && isNumber(data)
+            ? data.toFixed(tableMeta.precision)
+            : ''
+        ).toString()
     };
   }
 
@@ -21,7 +27,9 @@ class TdBody extends React.Component<any, any> {
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td className={tdClassName}>{this.props.render(this.props, this.props)}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td className={tdClassName}>
+        {this.props.render(this.props, this.props)}
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   }
 }

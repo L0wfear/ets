@@ -1617,10 +1617,10 @@ class WaybillForm extends React.Component<Props, State> {
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
-        ? parseFloat((state.track_length / 1000).toString())?.toFixed(3).replace('.', ',')
+        ? parseFloat((state.track_length / 1000).toString())?.toFixed(2).replace('.', ',')
         : 'Нет данных';
     } else {
-      distanceOrTrackOrNodata = (Number(distanceOrTrackOrNodata) / 1000)?.toFixed(3).replace('.', ',');
+      distanceOrTrackOrNodata = (Number(distanceOrTrackOrNodata) / 1000)?.toFixed(2).replace('.', ',');
     }
 
     const disableEquipmentFieldWaybillCarRefill

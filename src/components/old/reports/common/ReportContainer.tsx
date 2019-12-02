@@ -30,6 +30,7 @@ import { IPropsReportHeaderCommon } from 'components/old/reports/common/@types/R
 import {
   ReportDataPromise,
   IReportTableMeta,
+  IReportMetaField,
 } from 'components/old/reports/redux-main/modules/@types/report.h';
 
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
@@ -43,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray } from 'util';
+import { isArray, isNumber } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -450,15 +451,45 @@ class ReportContainer extends React.Component<
     );
   };
 
+  reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {
+    const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
+      const precision = metaFieldsByKey[key]?.precision;
+      const newVal = precision && isNumber(elemVal)
+        ? elemVal?.toFixed(precision).replace(',', '.')
+        : elemVal;
+
+      return {
+        ...newObj,
+        [key]: newVal,
+      };
+    }, {});
+
+    return newRow;
+  };
+
+  makeSummaryByKey = (fields: Array<IReportMetaField>) => fields.reduce((newObj, currVal) => {
+    const newKey = Object.keys(currVal)?.[0];
+    return {
+      ...newObj,
+      [newKey]: {
+        ...currVal[newKey],
+      },
+    };
+  }, {});;
+
   handleReportPrint = async () => {
     const {
       location: { search },
     } = this.props;
     const searchObject = queryString.parse(search);
+
     this.setState({ exportFetching: true });
 
+    const metaFieldsByKey = this.makeSummaryByKey(this.props?.meta?.fields);
+    const metaFieldsSummaryByKey = this.makeSummaryByKey(this.props?.summaryMeta?.fields);
+
     let payload: any = {
-      rows: [...this.props.list],
+      rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
     };
 
     if (this.props.notUseServerSummerTable) {
@@ -503,10 +534,18 @@ class ReportContainer extends React.Component<
           return d;
         });
       }
+
       payload = {
         rows: {
-          report,
-          summary,
+          report: report.map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
+          summary: summary.map(
+            (elem) => ({
+              ...elem,
+              children: elem?.children?.map(
+                (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
+              )
+            })
+          ),
         },
       };
     }
@@ -529,7 +568,7 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sortable = true, sort_by, make_str_gov_number_format }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sortable = true, sort_by, make_str_gov_number_format, precision, }]] = Object.entries(
           field,
         );
 
@@ -543,6 +582,7 @@ class ReportContainer extends React.Component<
             sort_by,
             sortable,
             make_str_gov_number_format,
+            precision,
           };
           if (filter) {
             initialSchema.filter = {

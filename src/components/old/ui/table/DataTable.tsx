@@ -26,6 +26,7 @@ import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
 import { isArray } from 'util';
 import { renderCarData } from 'components/old/ui/table/legacy';
+import { isNumber } from 'highcharts';
 
 type Props = {
   [k: string]: any;
@@ -371,6 +372,9 @@ export default class DataTable extends React.Component<Props, State> {
       };
       if (col.make_str_gov_number_format) {
         metaObject.customComponent = (props) => renderCarData(props, this.props);
+      } else if (col.precision) {
+        metaObject.customComponent = (props) =>
+          this.precisionNumberRender(col.precision, props);
       } else if (col.type === 'string') {
         const callbackF
           = (typeof renderers[col.name] === 'function' && renderers[col.name])
@@ -444,6 +448,13 @@ export default class DataTable extends React.Component<Props, State> {
       return callback(newProps);
     }
     return <div>{data}</div>;
+  }
+
+  precisionNumberRender(precision, props) {
+    let { data = '' } = props;
+    return <div>{ isNumber(data)
+      ? data?.toFixed(precision)
+      : data}</div>;
   }
 
   initializeRowMetadata() {

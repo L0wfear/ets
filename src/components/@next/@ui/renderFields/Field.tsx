@@ -73,6 +73,21 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
       }
     }, [isFocus, props.format, props.type, props.value]);
 
+    // выводить 2 знака после запятой { format === 'toFixed2', type === 'number', }
+    React.useEffect( () => {
+      if (!isFocus
+        && props.format === 'toFixed2'
+        && props.type === 'number'
+        && !isNullOrUndefined(props.value)
+        && (props.value || props.value === 0)
+      ){
+        const newVal = Number(props.value).toFixed(2);
+        if(Number(props.value).toString()?.split('.')?.[1]?.length <= 2) { // Если пользак ввел больше 2x знаков, то не перетираем state
+          setLocalStateValue(newVal);
+        }
+      }
+    }, [isFocus, props.format, props.type, props.value]);
+
     // меняем точку на запятую во всех полях type === 'number'
     React.useEffect( () => {
       if (!isFocus

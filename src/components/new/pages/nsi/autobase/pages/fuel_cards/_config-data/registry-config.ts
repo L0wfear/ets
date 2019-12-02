@@ -73,7 +73,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           displayIf: displayIfContant.lenghtStructureMoreOne,
         },
         {
-          valueKey: 'company',
+          valueKey: 'company_short_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -114,7 +114,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'company',
+            key: 'company_short_name',
             title: 'Организация',
             width: 300,
           },

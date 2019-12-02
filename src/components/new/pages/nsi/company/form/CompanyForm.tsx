@@ -38,10 +38,23 @@ const CompanyForm: React.FC<PropsCompany> = React.memo(
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
               <ExtField
+                id="company_name"
+                modalKey={page}
+                type="string"
+                label="Полное наименование"
+                value={state.company_name}
+                error={errors.company_name}
+                onChange={props.handleChange}
+                boundKeys="company_name"
+                disabled
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
                 id="short_name"
                 modalKey={page}
                 type="string"
-                label="Наименование"
+                label="Краткое наименование"
                 value={state.short_name}
                 error={errors.short_name}
                 onChange={props.handleChange}

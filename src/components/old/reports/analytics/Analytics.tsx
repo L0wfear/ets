@@ -136,9 +136,9 @@ class Analytics extends React.Component<Props, any> {
       </div>
     ));
 
-    const COMPANY = companyList.map(({ company_id, company_name }) => ({
+    const COMPANY = companyList.map(({ company_id, short_name }) => ({
       value: company_id,
-      label: company_name,
+      label: short_name,
     }));
 
     return (

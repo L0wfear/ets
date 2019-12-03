@@ -98,19 +98,23 @@ export const driverHasSpecialLicenseWithActiveDate = ({
 
 const hasOdometr = (gov_number) => !hasMotohours(gov_number);
 
-const licenceSwitcher = (gov_number) => {
-  if (hasOdometr(gov_number)) {
+const licenceSwitcher = (gov_number, isValidOneOfLicense) => {
+  if(isValidOneOfLicense) { // компрессор - 
+    return driverHasLicenseWithActiveDate || driverHasSpecialLicenseWithActiveDate;
+  }
+  if (hasOdometr(gov_number)) { // не 4 знака
     return driverHasLicenseWithActiveDate;
   }
-  if (hasMotohours(gov_number)) {
+  if (hasMotohours(gov_number)) { // 4 знака
     return driverHasSpecialLicenseWithActiveDate;
   }
 
   return (d) => d;
 };
 
-export const getDrivers = (state, employeeIndex, driversList) => {
-  const driverFilter = licenceSwitcher(state.gov_number);
+export const getDrivers = (state, employeeIndex, driversList) => { // for waybill
+  const isValidOneOfLicense = state.car_type_id === 15;
+  const driverFilter = licenceSwitcher(state.gov_number, isValidOneOfLicense);
   const driverAfterCheckOnCarEmpl = driversList.filter(
     ({ id, employee_id }) => {
       const key = id || employee_id;

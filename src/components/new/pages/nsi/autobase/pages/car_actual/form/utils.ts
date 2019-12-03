@@ -165,25 +165,39 @@ export const memoizeMergeElement = memoizeOne(
  * Проверка доступности водителя на прикрепление к ТС
  * @param employeeData данные по водителю из employee
  * @param gov_number номер ТС
+ * @param payload Дополнительные параметры фильтрыции
  */
-export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number'], payload?: { includeNotActive: boolean, }) => {
+export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number'], payload?: { includeNotActive?: boolean; isValidSpecialLicense?: boolean; isValidDriverlLicense?: boolean; isValidOneOfLicense?: boolean; }) => {
   if (employeeData) {
     const isFourInGovNumver = isFourDigitGovNumber(gov_number);
 
-    if (employeeData.active || get(payload, 'includeNotActive')) {                                                  // сотрудник активен
-      if (isFourInGovNumver) {
-        return (
-          employeeData.special_license                                          // есть специальное удостоверение
-          && employeeData.special_license_date_end                              // есть дата окончания специального удостоверения
-          && diffDates(employeeData.special_license_date_end, new Date()) > 0   // срок действия специального удостоверения не закончился
-        );
+    if (employeeData.active || get(payload, 'includeNotActive')) {             // сотрудник активен || включить некактивных
+
+      const validSpecialLicense = employeeData.special_license                 // есть специальное удостоверение
+        && employeeData.special_license_date_end                               // есть дата окончания специального удостоверения
+        && diffDates(employeeData.special_license_date_end, new Date()) > 0;   // срок действия специального удостоверения не закончился
+
+      const validDriverLicense = employeeData.drivers_license                                            // есть водительское удостоверение
+        && employeeData.drivers_license_date_end                                // есть дата окончания водительского удостоверения
+        && diffDates(employeeData.drivers_license_date_end, new Date()) > 0;    // срок действия водительского удостоверения не закончился
+      
+      if (payload?.isValidOneOfLicense){   
+        return validSpecialLicense || validDriverLicense;
       }
 
-      return (
-        employeeData.drivers_license                                            // есть водительское удостоверение
-        && employeeData.drivers_license_date_end                                // есть дата окончания водительского удостоверения
-        && diffDates(employeeData.drivers_license_date_end, new Date()) > 0     // срок действия водительского удостоверения не закончился
-      );
+      if (payload?.isValidSpecialLicense){                                       // у сотрудника есть спец. удостоверение и оно валидно
+        return validSpecialLicense;
+      }
+
+      if (payload?.isValidDriverlLicense){                                       // у сотрудника есть вод. удостоверение и оно валидно
+        return validDriverLicense;
+      }
+
+      if (isFourInGovNumver) {
+        return validSpecialLicense;
+      }
+
+      return validDriverLicense;
     }
   }
 

@@ -68,7 +68,7 @@ export function filterCars(car, formState) {
 
   if (prefer_car && prefer_car === car.asuods_id || isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
     norm = true;
-  } else if (car.available_to_bind) {
+  } else if (car.available_to_bind || car.type_id === 15) { // car.type_id === 15 компрессор
     if (
       formState
       && formState.drivers_license_date_end

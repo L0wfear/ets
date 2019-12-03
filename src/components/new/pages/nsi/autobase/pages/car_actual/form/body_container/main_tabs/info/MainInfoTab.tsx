@@ -145,6 +145,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
             <EtsBootstrap.Col md={12}>
               <FieldSelectDriverCar
                 gov_number={state.gov_number}
+                type_id={state.type_id}
                 drivers_data={state.drivers_data}
                 onChange={props.onChangeBoolean}
                 isPermitted={isPermitted}

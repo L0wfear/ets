@@ -9,6 +9,7 @@ import { componentsToDriver } from 'components/new/pages/nsi/autobase/pages/car_
 
 type Props = {
   gov_number: CarWrap['gov_number'];
+  type_id: CarWrap['type_id'];
   drivers_data: CarWrap['drivers_data'];
   onChange: FormWithHandleChange<CarWrap>;
   isPermitted: boolean;

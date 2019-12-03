@@ -49,7 +49,10 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
           return filterDriver(
             employeeIndex[driver.id],
             gov_number,
-            { includeNotActive: true, },
+            {
+              includeNotActive: true,
+              isValidOneOfLicense: (meta.type_id === 15), // Тип техники: "Компрессор"
+            },
           );
         },
       ).map(
@@ -61,7 +64,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) =>
         }),
       );
     },
-    [employeeIndex, driverList],
+    [employeeIndex, driverList, meta.type_id, gov_number, ],
   );
 
   const primaryDriverOptions = React.useMemo(

@@ -23,18 +23,15 @@ import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time
 import styled from 'styled-components';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import { RedOptionsStyle } from 'global-styled/global-styled';
 import * as moment from 'moment';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { componentsForMissionSelect } from './MultiValueMissionField';
 
 const MissionFieldStyled = styled.div`
   margin-bottom: 15px;
   ${FieldLabel} {
     display: none;
   }
-  /* h4 {
-    margin-bottom: -10px;
-  } */
 `;
 
 type Props = {
@@ -43,18 +40,6 @@ type Props = {
   path: string;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
   [k: string]: any;
-};
-
-const pathToinvalidStatus = 'data.rowData.invalidMission'; // invalidMission новый флаг, сощдается при формировании опций, true если задание не проходит валидацию
-
-const MultiValueWithCheckInvalid = styled(components.MultiValue)`
-  &&& {
-    ${(props) => (get(props, pathToinvalidStatus, false) && RedOptionsStyle)}
-}
-`;
-
-const componentsForMissionSelect = {
-  MultiValue: MultiValueWithCheckInvalid,
 };
 
 class MissionField extends React.Component<Props, any> {

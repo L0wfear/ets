@@ -39,6 +39,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -137,7 +138,7 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) => {
 
 // избавиться
 // добавил из-за перерендера
-let timeId: any = null;
+let timeIdGlobal: any = null;
 
 type StateProps = {
   currentUser: InitialStateSession['userData'];
@@ -174,6 +175,7 @@ type State = {
     odometr_diff: number;
     motohours_diff: number;
   };
+  timeId: any; // id таймера
 
   [k: string]: any;
 };
@@ -207,6 +209,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
       },
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
+      timeId: null, // id таймера
     };
   }
 
@@ -224,7 +227,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
 
     const currentDate = new Date();
 
-    timeId = setTimeout(
+    timeIdGlobal = setTimeout(
       () => this.checkError(),
       (60 - currentDate.getSeconds()) * 1000,
     );
@@ -356,12 +359,47 @@ class WaybillFormWrap extends React.Component<Props, State> {
         });
       }
     }
+
+    this.checkErrorsWithTime();
+    const timeId = this.setTimer(async () => {
+      this.checkErrorsWithTime();
+    });
+    this.setState({timeId});
+
   }
 
   componentWillUnmount() {
-    clearTimeout(timeId);
+    clearTimeout(timeIdGlobal);
     this.props.dispatch(actionResetRefillTypeAndSetInStore());
     this.props.dispatch(fuelCardsActions.resetSetFuelCards());
+
+    if(this.state.timeId) {
+      this.clearTimer(this.state.timeId);
+    }
+  }
+
+  async checkErrorsWithTime() {
+    await this.props.dispatch(someUniqActions.actionGetAndSetInStoreMoscowTimeServer(
+      {},
+      {
+        page: this.props.page,
+        path: this.props.path,
+      },
+    ));
+    this.checkError();
+  }
+
+  setTimer(callBackFunc) {
+    // const currentDate = new Date();
+    const timeId = setInterval(
+      callBackFunc,
+      30000,
+    );
+    return timeId;
+  }
+
+  clearTimer(timeId) {
+    clearInterval(timeId);
   }
 
   createWaybill = async (waybill) => {
@@ -525,7 +563,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formErrors = formErrors;
-    timeId = setTimeout(() => this.checkError(), 60 * 1000);
+    timeIdGlobal = setTimeout(() => this.checkError(), 60 * 1000);
 
     if (
       Object.entries(formErrors).some(

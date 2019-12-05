@@ -44,6 +44,7 @@ import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/
 import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
 import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -122,6 +123,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       hiddenMapConfig,
 
       likeNewMission: false,
+      timeId: null, // id таймера
     };
   }
 
@@ -189,6 +191,14 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
         this.props.updateFormErrors();
       }
+
+      this.checkErrorsWithTime();
+
+      const timeId = this.setTimer(async () => {
+        this.checkErrorsWithTime();
+      });
+      this.setState({timeId});
+
     };
 
     loadData();
@@ -225,6 +235,33 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
   componentWillUnmount() {
     this.props.actionReseSetDependenceMissionDataForMissionForm();
+    if(this.state.timeId) {
+      this.clearTimer(this.state.timeId);
+    }
+  }
+
+  async checkErrorsWithTime() {
+    await this.props.actionGetAndSetInStoreMoscowTimeServer(
+      {},
+      {
+        page: this.props.page,
+        path: this.props.path,
+      },
+    );
+    this.props.updateFormErrors();
+  }
+
+  setTimer(callBackFunc) {
+    // const currentDate = new Date();
+    const timeId = setInterval(
+      callBackFunc,
+      30000,
+    );
+    return timeId;
+  }
+
+  clearTimer(timeId) {
+    clearInterval(timeId);
   }
 
   handleChangeAssignToWaybill = (value) => {
@@ -766,6 +803,7 @@ export default compose<PropsMissionForm, OwnMissionProps>(
       waybillData: getMissionsState(state).missionData.waybillData,
       dependeceOrder: getMissionsState(state).missionData.dependeceOrder,
       dependeceTechnicalOperation: getMissionsState(state).missionData.dependeceTechnicalOperation,
+      moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
     }),
     (dispatch: any) => ({
       actionPrintFormMission: (...arg) => dispatch(missionsActions.actionPrintFormMission(...arg)),
@@ -783,6 +821,16 @@ export default compose<PropsMissionForm, OwnMissionProps>(
       actionReseSetDependenceMissionDataForMissionForm: (...arg) => (
         dispatch(
           missionsActions.actionReseSetDependenceMissionDataForMissionForm(...arg),
+        )
+      ),
+      actionGetAndSetInStoreMoscowTimeServer: (payload, meta) => (
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMoscowTimeServer(payload, meta),
+        )
+      ),
+      actionResetMoscowTimeServer: () => (
+        dispatch(
+          someUniqActions.actionResetMoscowTimeServer(),
         )
       ),
     }),

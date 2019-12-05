@@ -48,7 +48,12 @@ export const MultiValue = styled(components.MultiValue)`
 `;
 
 export const MultiValueContainer = styled(components.MultiValueContainer)`
-
+  &&& {
+    ${({ data: { is_invalid } }) => (
+    is_invalid && RedOptionsStyle
+  )
+}
+  }
 `;
 export const MultiValueLabel = styled(components.MultiValueLabel)`
 `;

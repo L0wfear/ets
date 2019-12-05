@@ -65,6 +65,7 @@ export type Mission = {
   type_name: string;
   waybill_id: number | null;
   waybill_number: number | null;
+  plan_date_start: string | null;
 
   is_mission_progress_countable: boolean | null;
   consumable_materials: Array<ConsumableMaterialCountMission>;

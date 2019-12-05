@@ -74,4 +74,8 @@ export type IStateSomeUniq = {
   } | null;
 
   consumableMaterialCountMissionList: Array<ConsumableMaterialCountMission>;
+  moscowTimeServer: {
+    timestamp: number;
+    date: string;
+  };
 };

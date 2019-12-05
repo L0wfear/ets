@@ -54,6 +54,7 @@ import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -67,7 +68,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       isChanged: false,
 
       IS_CREATING,
-      DUTY_MISSION_IS_DISPLAY: dutyMissionIsDisplay(state.status),
+      DUTY_MISSION_IS_DISPLAY: dutyMissionIsDisplay(state.status), // не назначенно
       DUTY_MISSION_IS_CLOSED: dutyMissionIsClosed(state.status),
       DUTY_MISSION_IS_ASSIGNED: dutyMissionIsAssigned(state.status),
       DUTY_MISSION_IS_COMPLETED: dutyMissionIsComplete(state.status),
@@ -78,6 +79,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       isPermitted: !IS_CREATING
         ? props.isPermittedToUpdate
         : props.isPermittedToCreate,
+
+      timeId: null, // id таймера
     };
   }
 
@@ -111,9 +114,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
               { page, path },
             );
           }
-          if (IS_CREATING) {
-            this.checkOnMosckowTime();
-          }
         }
 
         if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
@@ -124,10 +124,44 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         }
       }
 
+      if (IS_CREATING) {
+        this.checkOnMosckowTime();
+        this.checkErrorsWithTime();
+
+        const timeId = this.setTimer(async () => {
+          this.checkErrorsWithTime();
+        });
+        this.setState({timeId});
+      }
+
       this.props.updateFormErrors();
     };
 
     loadData();
+  }
+
+  async checkErrorsWithTime() {
+    await this.props.actionGetAndSetInStoreMoscowTimeServer(
+      {},
+      {
+        page: this.props.page,
+        path: this.props.path,
+      },
+    );
+    this.props.updateFormErrors();
+  }
+
+  setTimer(callBackFunc) {
+    // const currentDate = new Date();
+    const timeId = setInterval(
+      callBackFunc,
+      30000,
+    );
+    return timeId;
+  }
+
+  clearTimer(timeId) {
+    clearInterval(timeId);
   }
 
   async checkOnMosckowTime() {
@@ -177,6 +211,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     }
 
     this.props.actionReseSetDependenceMissionDataForDutyMissionForm();
+    if(this.state.timeId) {
+      this.clearTimer(this.state.timeId);
+    }
   }
 
   handleGetPrintForm = async () => {
@@ -555,6 +592,7 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
         .STRUCTURE_FIELD_VIEW,
       order_mission_source_id: getSomeUniqState(state).missionSource
         .order_mission_source_id,
+      moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
     }),
     (dispatch: any) => ({
       dispatch,
@@ -580,6 +618,16 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
       actionReseSetDependenceMissionDataForDutyMissionForm: (...arg) => (
         dispatch(
           missionsActions.actionReseSetDependenceMissionDataForDutyMissionForm(...arg),
+        )
+      ),
+      actionGetAndSetInStoreMoscowTimeServer: (payload, meta) => (
+        dispatch(
+          someUniqActions.actionGetAndSetInStoreMoscowTimeServer(payload, meta),
+        )
+      ),
+      actionResetMoscowTimeServer: () => (
+        dispatch(
+          someUniqActions.actionResetMoscowTimeServer(),
         )
       ),
     }),

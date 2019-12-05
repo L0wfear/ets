@@ -8,6 +8,7 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type StatePropsDutyMission = {
   STRUCTURE_FIELD_VIEW: ReturnType<
@@ -27,6 +28,8 @@ export type DispatchPropsDutyMission = {
   actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceOrderDataForDutyMission>;
   loadEdcRequiedByIdForDutyMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForDutyMission>;
   actionReseSetDependenceMissionDataForDutyMissionForm: HandleThunkActionCreator<typeof missionsActions.actionReseSetDependenceMissionDataForDutyMissionForm>;
+  actionGetAndSetInStoreMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMoscowTimeServer>;
+  actionResetMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionResetMoscowTimeServer>;
 };
 export type OwnDutyMissionProps = (
   {

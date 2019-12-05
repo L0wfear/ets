@@ -223,6 +223,7 @@ type StateProps = {
   employeeList: Array<Employee>;
   employeeIndex: Record<Employee['id'], Employee>;
   waybillDriverList: Array<WaybillDriver>;
+  moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -2472,12 +2473,16 @@ class WaybillForm extends React.Component<Props, State> {
                 notAvailableMissions={notAvailableMissions}
                 IS_CLOSED={IS_CLOSED}
                 IS_DELETE={IS_DELETE}
+                IS_DRAFT={IS_DRAFT}
+                IS_CREATING={IS_CREATING}
+                IS_ACTIVE={IS_ACTIVE}
                 isPermittedByKey={isPermittedByKey}
                 origFormState={origFormState}
                 handleChange={this.handleChange}
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
+                moscowTimeServer={this.props.moscowTimeServer}
                 page={this.props.page}
                 path={this.props.path}
               />
@@ -2653,5 +2658,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     employeeIndex: getEmployeeState(state).employeeIndex,
 
     waybillDriverList: getEmployeeState(state).waybillDriverList,
+    moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
   }),
 )(WaybillForm);

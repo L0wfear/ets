@@ -23,6 +23,9 @@ import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time
 import styled from 'styled-components';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { RedOptionsStyle } from 'global-styled/global-styled';
+import * as moment from 'moment';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 
 const MissionFieldStyled = styled.div`
   margin-bottom: 15px;
@@ -38,7 +41,20 @@ type Props = {
   dispatch: EtsDispatch;
   page: string;
   path: string;
+  moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
   [k: string]: any;
+};
+
+const pathToinvalidStatus = 'data.rowData.invalidMission'; // invalidMission новый флаг, сощдается при формировании опций, true если задание не проходит валидацию
+
+const MultiValueWithCheckInvalid = styled(components.MultiValue)`
+  &&& {
+    ${(props) => (get(props, pathToinvalidStatus, false) && RedOptionsStyle)}
+}
+`;
+
+const componentsForMissionSelect = {
+  MultiValue: MultiValueWithCheckInvalid,
 };
 
 class MissionField extends React.Component<Props, any> {
@@ -195,6 +211,41 @@ class MissionField extends React.Component<Props, any> {
     });
   };
 
+  getInvalidMissionFlag = (missionElem) => {
+    // про ПЛ в разных статусах уточнить!!!
+    const {
+      moscowTimeServer,
+      IS_CREATING,
+      IS_DRAFT,
+      IS_ACTIVE,
+    } = this.props;
+    const minutesDiff = moment(moscowTimeServer?.date).diff(moment(missionElem.plan_date_start), 'minutes');
+
+    const isInvalidMission = (missionElem.status === 'assigned'
+      && (IS_CREATING || IS_DRAFT)
+      && moscowTimeServer?.date
+      && minutesDiff > 15)
+      || (
+        (
+          missionElem.status === 'assigned'
+          || missionElem.status === 'in_progress'
+          || missionElem.status === 'expired'
+        )
+        && IS_ACTIVE
+        && missionElem.plan_date_start
+        && minutesDiff > 15
+      )
+      || (
+        missionElem.status === 'not_assigned'
+        && moscowTimeServer?.date
+        && minutesDiff > 15
+      );
+
+    return missionElem.plan_date_start
+      ? isInvalidMission
+      : false;
+  };
+
   render() {
     const {
       state,
@@ -213,26 +264,27 @@ class MissionField extends React.Component<Props, any> {
 
     const MISSIONS = missionsList // удалить отсюда задания, которые были отменены( записаны в кеш отмены)
       .map(
-        ({
-          id,
-          number,
-          technical_operation_name,
-          municipal_facility_name,
-        }) => ({
-          value: id,
-          label: `№${number} (${technical_operation_name})`,
+        (elem) => ({
+          value: elem.id,
+          label: `№${elem.number} (${elem.technical_operation_name})`,
           clearableValue: countMissionMoreOne,
-          title: `${number} - ${technical_operation_name} - ${municipal_facility_name}`,
+          title: `${elem.number} - ${elem.technical_operation_name} - ${elem.municipal_facility_name}`,
+          rowData: {
+            // date_start
+            invalidMission: this.getInvalidMissionFlag(elem),
+            ...elem
+          },
         }),
       );
 
     const OUTSIDEMISSIONS = notAvailableMissions.map(
-      ({ id, number, technical_operation_name }) => ({
-        value: id,
-        label: `№${number} (${technical_operation_name})`,
+      (elem) => ({
+        value: elem.id,
+        label: `№${elem.number} (${elem.technical_operation_name})`,
         clearableValue: countMissionMoreOne,
-        number,
+        number: elem.number,
         className: 'yellow',        // <<< не работает Сделать "в выпадающем списке и выбранном"
+        rowData: {...elem},
       }),
     );
 
@@ -254,6 +306,11 @@ class MissionField extends React.Component<Props, any> {
       ${OUTSIDEMISSIONS.map((m) => `№${m.number}`,).join(', ',)}
       не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`;
 
+    const errorInvalidTimeShow = state.mission_id_list.some((mission_id) => {
+      return missionOptions.some((elem) => mission_id === elem.value && elem.rowData.invalidMission);
+    });
+    const errorInvalidTimeText = 'Выдавать задания можно с временем начала выполнения не раньше 15 минут от текущего. Измените время начала работ в выделенном задании или удалите его из путевого листа';
+
     return (
       <MissionFieldStyled>
         <h4>Задание</h4>
@@ -272,10 +329,15 @@ class MissionField extends React.Component<Props, any> {
           clearable={false}
           onChange={this.handleMissionsChange}
           multiValueContainerReander={this.multiValueContainerReander}
+          components={componentsForMissionSelect}
         />
         <ErrorsBlock
           hidden={!errorIntervalShow}
           error={errorIntervalText}
+        />
+        <ErrorsBlock
+          hidden={!errorInvalidTimeShow}
+          error={errorInvalidTimeText}
         />
 
         <EtsBootstrap.Button

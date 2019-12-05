@@ -42,6 +42,10 @@ export const initialState: IStateSomeUniq = {
 
   normList: [],
   consumableMaterialCountMissionList: [],
+  moscowTimeServer: {
+    timestamp: null,
+    date: '',
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

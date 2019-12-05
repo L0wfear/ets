@@ -7,6 +7,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type StatePropsMission = {
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
@@ -22,6 +23,8 @@ export type DispatchPropsMission = {
   actionLoadWaybillDataByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadWaybillDataByIdForMission>;
   loadEdcRequiedByIdForMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForMission>;
   actionReseSetDependenceMissionDataForMissionForm: HandleThunkActionCreator<typeof missionsActions.actionReseSetDependenceMissionDataForMissionForm>;
+  actionGetAndSetInStoreMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMoscowTimeServer>;
+  actionResetMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionResetMoscowTimeServer>;
 };
 
 export type OwnMissionProps = (

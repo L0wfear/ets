@@ -7,12 +7,13 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 import { promiseGetDutyMissionById, promiseSubmitDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { isPermittedEmployeeForDutyMission } from 'components/new/pages/missions/duty_mission/form/main/utils';
-import { getEmployeeState, getMissionsState } from 'redux-main/reducers/selectors';
+import { getEmployeeState, getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import memoizeOne from 'memoize-one';
 import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { defaultCheckConsumableMaterialsNumberValue } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
+import * as moment from 'moment';
 
 export const metaDutyMission: ConfigFormData<DutyMission> = {
   uniqField: 'id',
@@ -79,9 +80,10 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'datetime',
           required: true,
           dependencies: [
-            (value, { plan_date_end }, reduxState) => {
+            (value, { plan_date_end, }, reduxState) => {
               const dependeceOrder = getMissionsState(reduxState).dutyMissionData.dependeceOrder;
               const dependeceTechnicalOperation = getMissionsState(reduxState).dutyMissionData.dependeceTechnicalOperation;
+              const moscowTimeServer = getSomeUniqState(reduxState).moscowTimeServer;
 
               if (value) {
                 if (plan_date_end && diffDates(value, plan_date_end) >= 0) {
@@ -117,6 +119,13 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                     return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
                   }
                 }
+                
+                const minutesDiff = moment(moscowTimeServer.date).diff(moment(value), 'minutes');
+
+                if(moscowTimeServer.date && minutesDiff > 15){
+                  return 'Планируемая дата начала не может быть раньше на 15 минут от текущего времени';
+                }
+
               }
               return '';
             },
@@ -298,7 +307,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     order_operation_id: null,
     order_status: '',
     plan_date_end: createValidDateTime(getTomorrow9am()),
-    plan_date_start: createValidDateTime(getToday9am()),
+    plan_date_start: createValidDateTime(getToday9am()), //
     request_id: null,
     request_number: '',
     route_id: null,

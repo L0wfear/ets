@@ -5,13 +5,14 @@ import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@ty
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import { promiseSubmitMission, promiseGetMissionById } from 'redux-main/reducers/modules/missions/mission/promise';
-import { createValidDateTime, getTomorrow9am, getDateWithMoscowTz, diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, getTomorrow9am, getDateWithMoscowTz, diffDates, createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
-import { getMissionsState } from 'redux-main/reducers/selectors';
+import { getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
+import * as moment from 'moment';
 
 export const defaultCheckConsumableMaterialsNumberValue = (field_value_string: ValuesOf<Mission['consumable_materials']>[keyof ValuesOf<Mission['consumable_materials']>], title) => {
   if (field_value_string) {
@@ -105,10 +106,11 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'datetime',
           required: true,
           dependencies: [
-            (value, { waybill_id, order_id }, reduxState) => {
+            (value, { waybill_id, order_id, status, plan_date_start, }, reduxState) => {
               const dependeceTechnicalOperation = getMissionsState(reduxState).missionData.dependeceTechnicalOperation;
               const dependeceOrder = getMissionsState(reduxState).missionData.dependeceOrder;
               const waybillData = getMissionsState(reduxState).missionData.waybillData;
+              const moscowTimeServer = getSomeUniqState(reduxState).moscowTimeServer;
 
               if (value) {
                 if (order_id) {
@@ -142,6 +144,13 @@ export const metaMission: ConfigFormData<Mission> = {
                   }
                 }
 
+                const dateStartMinutesDiff = moment(moscowTimeServer.date).diff(moment(value), 'minutes');
+                if(status === 'not_assigned') {
+                  if(moscowTimeServer.date && dateStartMinutesDiff > 15){
+                    return 'Дата начала не может быть раньше на 15 минут от текущего времени';
+                  }
+                }
+
                 if (waybill_id) {
                   const waybill_plan_departure_date = get(
                     waybillData,
@@ -164,6 +173,11 @@ export const metaMission: ConfigFormData<Mission> = {
                     'fact_arrival_date',
                     null,
                   );
+                  const waybill_status = get(
+                    waybillData,
+                    'status',
+                    null,
+                  );
 
                   const checkWaybillDateFrom = waybill_fact_departure_date || waybill_plan_departure_date;
                   const checkWaybillDateTo = waybill_fact_arrival_date || waybill_plan_arrival_date;
@@ -171,6 +185,20 @@ export const metaMission: ConfigFormData<Mission> = {
                   if (diffDates(value, checkWaybillDateFrom) < 0 || diffDates(value, checkWaybillDateTo) > 0) {
                     return 'Дата не должна выходить за пределы путевого листа';
                   }
+
+                  if(status === 'assigned' && waybill_status === 'draft') {
+                    if(moscowTimeServer.date && dateStartMinutesDiff > 15){
+                      return 'Дата начала не может быть раньше на 15 минут от текущего времени';
+                    }
+                  }
+
+                  const planDateStartMinutesDiff = moment(moscowTimeServer.date).diff(moment(plan_date_start), 'minutes');
+                  if((status === 'assigned' || status === 'in_progress' || status === 'expired'  ) && waybill_status === 'active' && plan_date_start) {
+                    if(moscowTimeServer.date && planDateStartMinutesDiff > 15){
+                      return `Дата начала не может быть раньше на 15 минут от первоначально указанного времени (${createValidDateTimeDots(plan_date_start)})`;
+                    }
+                  }
+
                 }
               }
               return '';
@@ -365,5 +393,6 @@ export const metaMission: ConfigFormData<Mission> = {
     type_name: '',
     waybill_id: null,
     waybill_number: null,
+    plan_date_start: '',
   }),
 };

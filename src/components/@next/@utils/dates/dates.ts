@@ -104,6 +104,13 @@ export function createValidDateHM(date: string | Date) {
   return moment(date).format('YYYY.MM.DD HH:mm');
 }
 
+export function createValidDateTimeDots(date: string | Date) {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format('DD.MM.YYYY HH:mm');
+}
+
 export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false) {
   if (!date) {
     return null;

@@ -685,8 +685,9 @@ const closingDependencies = {
     },
     {
       validator(value, { plan_arrival_date }) {
-        const diffDates = Math.abs(
-          moment(value).diff(moment(plan_arrival_date), 'minutes'),
+        const diffDates = moment(value).diff(
+          moment(plan_arrival_date),
+          'minutes',
         );
         if (value && plan_arrival_date && diffDates > 180) {
           return 'Время, указанное в поле "Возвращение факт" не может превышать время в поле "Возвращение план" больше чем на 3 часа';

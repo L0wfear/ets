@@ -1627,10 +1627,10 @@ class WaybillForm extends React.Component<Props, State> {
 
     const disableEquipmentFieldWaybillCarRefill
       = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
-      || !isPermittedByKey.update;
+      || !isPermittedByKey.update || IS_DELETE;
     const disableFieldWaybillCarRefill
       = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
-      || !isPermittedByKey.update;
+      || !isPermittedByKey.update || IS_DELETE;
 
     const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
 
@@ -2228,7 +2228,7 @@ class WaybillForm extends React.Component<Props, State> {
                               && state.tax_data.length === 0)
                             || (IS_CLOSED && !state.tax_data)
                           }
-                          readOnly={IS_DELETE || !IS_ACTIVE && !this.state.canEditIfClose}
+                          readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose)}
                           IS_CLOSED={IS_CLOSED}
                           title="Расчет топлива по норме"
                           taxes={tax_data}
@@ -2368,8 +2368,9 @@ class WaybillForm extends React.Component<Props, State> {
                                     value={state.equipment_fact_fuel_end}
                                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                                     disabled={
-                                      !(
-                                        IS_DELETE || IS_ACTIVE || this.state.canEditIfClose
+                                      IS_DELETE
+                                      || !(
+                                        IS_ACTIVE || this.state.canEditIfClose
                                       ) || !isPermittedByKey.update
                                     }
                                     onChange={this.handleChange}

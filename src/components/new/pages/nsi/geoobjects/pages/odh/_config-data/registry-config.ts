@@ -67,7 +67,7 @@ export const config: TypeConfigData<Odh> = {
       },
       {
         valueKey: 'roadway_area',
-        title: 'Площадь проезжей части (кв.м.)',
+        title: 'Площадь мех. уборки проезжей части (кв.м.)',
         type: 'advanced-number',
         step: 0.01,
       },
@@ -176,7 +176,7 @@ export const config: TypeConfigData<Odh> = {
         },
         {
           key: 'roadway_area',
-          title: 'Площадь проезжей части (кв.м.)',
+          title: 'Площадь мех. уборки проезжей части (кв.м.)',
           format: 'toFixed2',
           width: 200,
         },

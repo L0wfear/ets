@@ -71,7 +71,7 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
               />
               <ExtField
                 type="string"
-                label="Площадь проезжей части (кв.м.)"
+                label="Площадь мех. уборки проезжей части (кв.м.)"
                 value={state.roadway_area}
                 readOnly
               />

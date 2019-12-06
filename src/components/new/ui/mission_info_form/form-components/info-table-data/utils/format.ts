@@ -33,5 +33,9 @@ export const makeTitle = ({ mission_data, car_data }) => {
     titleArr.push(`Колонна № ${mission_data.column_id}`);
   }
 
-  return titleArr.join(' ');
+  if (mission_data.parent) {
+    titleArr.push(`(переназначено с  задания №${mission_data.parent.number}. Рег. номер ТС: ${mission_data.car_gov_number})`);
+  }
+
+  return titleArr.join(' ').replace(' .', '.');
 };

@@ -2069,10 +2069,9 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.motohours_end}
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled={
-                              IS_DELETE || IS_CLOSED
+                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
                               || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values
-                                && !this.state.canEditIfClose)
+                                && !isPermittedByKey.departure_and_arrival_values)
                             }
                             onChange={this.handleChange}
                             boundKeys="motohours_end"

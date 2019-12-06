@@ -191,6 +191,10 @@ class MissionRejectForm extends React.Component<Props, State> {
 
   reject = () => {
     const { mIndex, missionList } = this.state;
+    if (this.props.isWaybillForm){
+      this.props.onRejectForWaybill(null);
+      return;
+    }
     if (mIndex === 0) {
       const { needUpdateParent } = this.state;
       this.props.onReject(needUpdateParent, this.state.edcRequestIds);

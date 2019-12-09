@@ -22,6 +22,7 @@ export const defaultBatteryRegistry: BatteryRegistry = {
   worked_months: null,
   status_text: null,
   status: null,
+  company_structure_name: null,
 };
 
 export const getDefaultBatteryRegistryElement = (element: Partial<BatteryRegistry>): BatteryRegistry => {

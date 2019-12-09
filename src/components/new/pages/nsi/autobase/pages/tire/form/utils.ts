@@ -24,6 +24,7 @@ export const defaultTire: Tire = {
   uninstalled_at: '',
   status_text: '',
   status: '',
+  company_structure_name: '',
 };
 
 export const getDefaultTireElement = (element: Partial<Tire>): Tire => {

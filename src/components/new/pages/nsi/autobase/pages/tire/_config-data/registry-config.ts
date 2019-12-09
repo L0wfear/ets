@@ -24,9 +24,6 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
     header: {
       title: 'Реестр шин', // Реестр шин основной
 
-      format: 'is_current_structure',
-      is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
-
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.create,
@@ -76,6 +73,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
         {
           valueKey: 'comment',
           title: 'Комментарий',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_structure_name',
+          title: 'Подразделение',
           type: 'multiselect',
         },
         {
@@ -141,6 +143,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
           {
             key: 'comment',
             title: 'Комментарий',
+            width: 200,
+          },
+          {
+            key: 'company_structure_name',
+            title: 'Подразделение',
             width: 200,
           },
           {

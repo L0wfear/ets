@@ -49,6 +49,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     path,
     repairCompanyList,
     techMaintOrderList,
+    selectedCarData,
   } = props;
 
   const IS_CREATING = !state.id;
@@ -90,6 +91,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     ),
     [techMaintOrderList],
   );
+
+  const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
 
   return (
     <EtsModal
@@ -183,7 +186,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </Col>
           <Col md={12}>
-            {!hasMotohours(state.gov_number) ? (
+            {!hasMotohours(gov_number) ? (
               <ExtField
                 type="number"
                 label="Пробег на момент ТО, км"
@@ -198,7 +201,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             )}
           </Col>
           <Col md={12}>
-            {hasMotohours(state.gov_number) ? (
+            {hasMotohours(gov_number) ? (
               <ExtField
                 type="number"
                 label="Счетчик м/ч на момент ТО, м/ч"

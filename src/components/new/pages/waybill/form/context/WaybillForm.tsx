@@ -87,6 +87,7 @@
 // - https://gost-jira.atlassian.net/browse/DITETS19-1168
 // - https://gost-jira.atlassian.net/browse/DITETS19-1345
 // - https://gost-jira.atlassian.net/browse/DITETSSUP-2623
+// - https://gost-jira.atlassian.net/browse/DITETSSUP-1903
 
 import * as React from 'react';
 

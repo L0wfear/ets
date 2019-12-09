@@ -895,6 +895,22 @@ class WaybillFormWrap extends React.Component<Props, State> {
       showWaybillFormWrap: false,
     });
   };
+  onFormHide = () => {
+    global.confirmDialog({
+      title:
+        'Внимание!',
+      body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
+      okName: 'Да',
+      cancelName: 'Нет',
+    })
+      .then(() => {
+        this.props.onFormHide();
+      })
+      .catch(() => {
+        //
+      });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -917,7 +933,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
             canSave={this.state.canSave}
 
             show
-            onHide={this.props.onFormHide}
+            onHide={this.onFormHide}
             page={this.props.page}
             path={this.props.path}
           />

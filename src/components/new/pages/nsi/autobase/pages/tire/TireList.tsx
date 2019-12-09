@@ -21,4 +21,4 @@ const TireList: React.FC<OwnProps> = React.memo(
   },
 );
 
-export default withRegistry<Tire, OwnProps>(getToConfig(null))(TireList);
+export default withRegistry<Tire, OwnProps>(getToConfig())(TireList);

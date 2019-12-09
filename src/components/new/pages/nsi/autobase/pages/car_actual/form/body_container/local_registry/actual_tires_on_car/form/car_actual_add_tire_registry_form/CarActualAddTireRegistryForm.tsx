@@ -37,7 +37,7 @@ const CarActualAddTireRegistryForm: React.FC<Props> = (props) => {
 
   React.useEffect(
     () => {
-      dispatch(registryAddInitialData(getToConfig(null, company_id)));
+      dispatch(registryAddInitialData(getToConfig(company_id)));
       return () => {
         dispatch(registryRemoveData(registryKey));
       };

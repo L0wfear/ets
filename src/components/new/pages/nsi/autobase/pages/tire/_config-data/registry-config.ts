@@ -5,14 +5,12 @@ import tirePermissions from './permissions';
 
 export const registryKey = 'tireRegistry';
 
-export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire> => {
+export const getToConfig = (): TypeConfigData<Tire> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/tire_registry',
         payload: {
-          is_current_structure,
         },
       },
       removeOneData: {

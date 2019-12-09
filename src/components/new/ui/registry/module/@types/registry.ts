@@ -178,7 +178,6 @@ export type OneRegistryData<F = any> = {
       | 'select_for_technical_operation_relations'
       | 'order_to'
     );
-    is_current_structure_popover?: string;
     buttons: Array<{
       type: typeof buttonsTypes[keyof typeof buttonsTypes];
       id: string;
@@ -293,7 +292,6 @@ export type TypeConfigData<F> = {
     title?: OneRegistryData<F>['header']['title'];
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
-    is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
     buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | typeof buttonsTypes[keyof typeof buttonsTypes]>;
   };
   filter?: Partial<OneRegistryData<F>['filter']>;

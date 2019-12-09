@@ -21,4 +21,4 @@ const BatteryRegistryList: React.FC<OwnProps> = React.memo(
   },
 );
 
-export default withRegistry<BatteryRegistry, OwnProps>(getToConfig(null))(BatteryRegistryList);
+export default withRegistry<BatteryRegistry, OwnProps>(getToConfig())(BatteryRegistryList);

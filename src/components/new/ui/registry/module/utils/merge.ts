@@ -102,10 +102,6 @@ export const mergeHeader = <F extends Record<string, any>>(header: TypeConfigDat
           newObj[key] = isString(header[key]) ? header[key] : value;
         }
 
-        if (key  === 'is_current_structure_popover') {
-          newObj[key] = isString(header[key]) ? header[key] : value;
-        }
-
         return newObj;
       }, {})
     )

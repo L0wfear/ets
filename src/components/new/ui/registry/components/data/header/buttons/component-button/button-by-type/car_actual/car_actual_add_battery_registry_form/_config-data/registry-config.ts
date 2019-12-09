@@ -6,14 +6,12 @@ import { AutoBaseBatteryRegistryService } from 'api/Services';
 
 export const registryKey = 'batteryRegistryAddButton';
 
-export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<BatteryRegistry> => {
+export const getToConfig = (company_id: number, ): TypeConfigData<BatteryRegistry> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: AutoBaseBatteryRegistryService._path,
         payload: {
-          is_current_structure,
           company_id,
         },
       },

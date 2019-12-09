@@ -304,6 +304,7 @@ export const config: TypeConfigData<Waybill> = {
         {
           key: 'status_text',
           title: 'Статус ПЛ',
+          sortBy: 'status',
           width: 125,
         },
         {

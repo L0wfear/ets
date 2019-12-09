@@ -27,6 +27,7 @@ const Th: React.FC<Props> = React.memo(
       metaField: {
         width,
         sortable = true,
+        sortBy,
       },
     } = props;
 
@@ -35,7 +36,7 @@ const Th: React.FC<Props> = React.memo(
     const handleClick = React.useCallback(
       () => {
         dispatch(
-          registryTriggerOnChangeSelectedField(props.registryKey, metaField.key, sortable && !('childrenFields' in metaField)),
+          registryTriggerOnChangeSelectedField(props.registryKey, sortBy ? sortBy : metaField.key, sortable && !('childrenFields' in metaField)),
         );
       },
       [props.registryKey, metaField, sortable],

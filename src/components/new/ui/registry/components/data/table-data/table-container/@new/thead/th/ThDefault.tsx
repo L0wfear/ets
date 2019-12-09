@@ -33,6 +33,7 @@ const ThDefault: React.FC<Props> = React.memo(
     const sort = etsUseSelector((state) => getListData(state.registry, props.registryKey).processed.sort);
 
     const groupOpt = get(metaField, 'groupOpt', null);
+    const sortBy = get(metaField, 'sortBy');
 
     return (
       <ThDefaultWrapper>
@@ -44,7 +45,7 @@ const ThDefault: React.FC<Props> = React.memo(
           />)
         }
         {metaField.title}
-        <EtsBootstrap.Glyphicon glyph={getGlyphName(metaField.key, sort)} />
+        <EtsBootstrap.Glyphicon glyph={getGlyphName(sortBy ? sortBy : metaField.key, sort)} />
       </ThDefaultWrapper>
     );
   },

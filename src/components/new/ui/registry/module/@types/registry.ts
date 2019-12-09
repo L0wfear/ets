@@ -26,6 +26,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
     key: string;
     firstElem?: boolean;
   };
+  sortBy?: Extract<keyof F, string>;
 
   max_size_to_scroll?: number;
 };

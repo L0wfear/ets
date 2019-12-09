@@ -31,7 +31,7 @@ export type BatteryRegistryListProps = (
 const BatteryRegistryList: React.FC<BatteryRegistryListProps> = (props) => {
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(null));
+      props.registryAddInitialData(getToConfig());
       return () => {
         props.registryRemoveData(registryKey);
       };

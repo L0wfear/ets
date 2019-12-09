@@ -5,15 +5,11 @@ import batteryRegistryPermissions from './permissions';
 
 export const registryKey = 'batteryRegistryRegistry';
 
-export const getToConfig = (is_current_structure: boolean): TypeConfigData<BatteryRegistry> => {
+export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/battery_registry',
-        payload: {
-          is_current_structure,
-        },
       },
       removeOneData: {
         entity: 'autobase/battery_registry',

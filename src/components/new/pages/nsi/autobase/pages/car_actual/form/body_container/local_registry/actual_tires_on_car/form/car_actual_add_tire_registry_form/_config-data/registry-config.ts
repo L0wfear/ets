@@ -5,14 +5,12 @@ import tirePermissions from './permissions';
 
 export const registryKey = 'tireRegistryAddButton';
 
-export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<Tire> => {
+export const getToConfig = (company_id: number, ): TypeConfigData<Tire> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/tire_registry',
         payload: {
-          is_current_structure,
           company_id,
         },
       },

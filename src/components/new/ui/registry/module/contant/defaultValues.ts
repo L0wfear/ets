@@ -18,7 +18,6 @@ const registryDefaultObj: OneRegistryData = {
   header: {
     buttons: [],
     format: 'default',
-    is_current_structure_popover: '',
     title: '',
     titlePopover: '',
   },

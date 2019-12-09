@@ -158,7 +158,6 @@ export interface OneRegistryData<F = any> {
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
     );
-    is_current_structure_popover?: string;
     buttons: Array<{
       type: string;
       title?: string;
@@ -237,7 +236,6 @@ export type TypeConfigData<F> = {
     title?: OneRegistryData<F>['header']['title'];
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
-    is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
     buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>,
   };
   filter?: Partial<OneRegistryData<F>['filter']>;

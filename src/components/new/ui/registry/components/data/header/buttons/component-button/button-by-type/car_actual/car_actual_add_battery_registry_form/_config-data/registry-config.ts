@@ -5,14 +5,12 @@ import batteryRegistryPermissions from 'components/new/ui/registry/components/da
 
 export const registryKey = 'batteryRegistryAddButton';
 
-export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<BatteryRegistry> => {
+export const getToConfig = (company_id: number, ): TypeConfigData<BatteryRegistry> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/battery_registry',
         payload: {
-          is_current_structure,
           company_id,
         },
       },

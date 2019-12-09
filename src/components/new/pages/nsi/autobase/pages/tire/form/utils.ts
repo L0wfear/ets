@@ -25,6 +25,7 @@ export const defaultTire: Tire = {
   status_text: '',
   status: '',
   sum_track_length: null,
+  company_structure_name: '',
 };
 
 export const getDefaultTireElement = (element: Partial<Tire>): Tire => {

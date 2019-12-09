@@ -175,7 +175,6 @@ export type OneRegistryData<F = any> = {
       | 'select_odh/dt'
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
-      | 'is_current_structure'
       | 'order_to'
     );
     is_current_structure_popover?: string;

@@ -21,6 +21,10 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
+  /* Во имя Edge( */
+  max-width: 50%;
+  min-width: 550px;
+  margin-left: -15px;
 
   ${ButtonWrap} {
     border-radius: 0;

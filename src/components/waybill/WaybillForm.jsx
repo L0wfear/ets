@@ -1926,15 +1926,17 @@ class WaybillForm extends UNSAFE_Form {
                         <Taxes
                           modalKey={modalKey}
                           hidden={
-                            !isPermittedByKey.update
-                            || !(IS_CLOSED || IS_ACTIVE)
+                            !(IS_CLOSED || IS_ACTIVE)
                             || state.status === 'draft'
                             || (IS_CLOSED
                               && state.tax_data
                               && state.tax_data.length === 0)
                             || (IS_CLOSED && !state.tax_data)
                           }
-                          readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                          readOnly={
+                            (!IS_ACTIVE && !this.state.canEditIfClose)
+                            || !isPermittedByKey.update
+                          }
                           title="Расчет топлива по норме"
                           taxes={tax_data}
                           operations={this.state.operations}
@@ -2136,8 +2138,7 @@ class WaybillForm extends UNSAFE_Form {
                             <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
-                                !isPermittedByKey.update
-                                || !(IS_CLOSED || IS_ACTIVE)
+                                !(IS_CLOSED || IS_ACTIVE)
                                 || state.status === 'draft'
                                 || (IS_CLOSED
                                   && state.equipment_tax_data
@@ -2145,7 +2146,8 @@ class WaybillForm extends UNSAFE_Form {
                                 || (IS_CLOSED && !state.equipment_tax_data)
                               }
                               readOnly={
-                                !IS_ACTIVE && !this.state.canEditIfClose
+                                (!IS_ACTIVE && !this.state.canEditIfClose)
+                                || !isPermittedByKey.update
                               }
                               taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}

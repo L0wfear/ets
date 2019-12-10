@@ -2220,15 +2220,14 @@ class WaybillForm extends React.Component<Props, State> {
                         <Taxes
                           modalKey={modalKey}
                           hidden={
-                            !isPermittedByKey.update
-                            || !(IS_CLOSED || IS_ACTIVE)
+                            !(IS_CLOSED || IS_ACTIVE)
                             || state.status === 'draft'
                             || (IS_CLOSED
                               && state.tax_data
                               && state.tax_data.length === 0)
                             || (IS_CLOSED && !state.tax_data)
                           }
-                          readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose)}
+                          readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
                           IS_CLOSED={IS_CLOSED}
                           title="Расчет топлива по норме"
                           taxes={tax_data}
@@ -2431,8 +2430,7 @@ class WaybillForm extends React.Component<Props, State> {
                             <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
-                                !isPermittedByKey.update
-                                || !(IS_CLOSED || IS_ACTIVE)
+                                !(IS_CLOSED || IS_ACTIVE)
                                 || state.status === 'draft'
                                 || (IS_CLOSED
                                   && state.equipment_tax_data
@@ -2440,7 +2438,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || (IS_CLOSED && !state.equipment_tax_data)
                               }
                               readOnly={
-                                IS_DELETE || !IS_ACTIVE && !this.state.canEditIfClose
+                                IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update
                               }
                               IS_CLOSED={IS_CLOSED}
                               taxes={equipment_tax_data}

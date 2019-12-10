@@ -1,66 +1,49 @@
 import * as React from 'react';
 
-import { connect, DispatchProp } from 'react-redux';
-
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
-import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type FiltersWrapStateProps = {
-  isOpen: OneRegistryData['filter']['isOpen'];
-  fields: OneRegistryData['filter']['fields'];
-};
-type FiltersWrapDispatchProps = DispatchProp;
-type FiltersWrapOwnProps = {
+type Props = {
   registryKey: string;
 };
-type FiltersWrapMergedProps = (
-  FiltersWrapStateProps
-  & FiltersWrapDispatchProps
-  & FiltersWrapOwnProps
-);
-type FiltersWrapProps = FiltersWrapMergedProps;
 
-type StateFiltersWrap = {
-  wasFirstOpen: boolean;
-};
+const FiltersWrap: React.FC<Props> = React.memo(
+  (props) => {
+    const { registryKey } = props;
+    const isOpen = etsUseSelector((state) => getFilterData(state.registry, registryKey).isOpen);
+    const fields_length = etsUseSelector((state) => Boolean(getFilterData(state.registry, registryKey).fields.length));
 
-class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap> {
-  state = {
-    wasFirstOpen: this.props.isOpen,
-  };
+    const [needUpdateFiltersOptions, setNeedUpdateFiltersOptions] = React.useState(() => isOpen);
 
-  static getDerivedStateFromProps(nextProps: FiltersWrapProps, prevState: StateFiltersWrap) {
-    if (!prevState.wasFirstOpen && nextProps.isOpen) {
-      return {
-        wasFirstOpen: true,
-      };
-    }
+    const handleToggle = React.useCallback(
+      () => {
+        //
+      },
+      [],
+    );
 
-    return null;
-  }
-
-  handleToggle = () => {
-    //
-  };
-
-  render() {
-    const { registryKey } = this.props;
+    React.useEffect(
+      () => {
+        if (isOpen) {
+          setNeedUpdateFiltersOptions(true);
+        }
+      },
+      [isOpen],
+    );
 
     return (
-      this.props.fields.length
+      fields_length
        ? (
-          <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
+          <PanelWrap expanded={isOpen} onToggle={handleToggle}>
             <EtsBootstrap.PanelCollapse>
               <PanelBodyWrap>
-                <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
+                <Filters registryKey={registryKey} needUpdateFiltersOptions={needUpdateFiltersOptions} />
               </PanelBodyWrap>
             </EtsBootstrap.PanelCollapse>
           </PanelWrap>
@@ -69,14 +52,7 @@ class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap
           <DivNone />
         )
     );
-  }
-}
+  },
+);
 
-export default compose<FiltersWrapProps, FiltersWrapOwnProps>(
-  connect<FiltersWrapStateProps, FiltersWrapDispatchProps, FiltersWrapOwnProps, ReduxState>(
-    (state, { registryKey }) => ({
-      isOpen: getFilterData(state.registry, registryKey).isOpen,
-      fields: getFilterData(state.registry, registryKey).fields,
-    }),
-  ),
-)(FiltersWrap);
+export default FiltersWrap;

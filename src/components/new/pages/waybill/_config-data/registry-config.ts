@@ -4,6 +4,7 @@ import waybillPermissions from './permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WAYBILL_STATUSES } from 'constants/statuses';
+import { WaybillCarService } from 'api/Services';
 
 export const registryWaybillKey = 'Waybills';
 
@@ -90,7 +91,8 @@ export const config: TypeConfigData<Waybill> = {
         title: 'Рег. номер ТС',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/waybill/cars',
+          entity: WaybillCarService._path,
+          groupName: WaybillCarService._path,
           valueKey: 'asuods_id',
           labelKey: 'gov_number',
         },
@@ -110,7 +112,8 @@ export const config: TypeConfigData<Waybill> = {
         title: 'Гаражный номер',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/waybill/cars',
+          entity: WaybillCarService._path,
+          groupName: WaybillCarService._path,
           valueKey: 'garage_number',
           labelKey: 'garage_number',
         },
@@ -151,6 +154,7 @@ export const config: TypeConfigData<Waybill> = {
         type: 'multiselect',
         getRegistryData: {
           entity: 'employee',
+          groupName: 'employee',
           valueKey: 'id',
           format: 'short_employee_name',
         },
@@ -161,6 +165,7 @@ export const config: TypeConfigData<Waybill> = {
         type: 'multiselect',
         getRegistryData: {
           entity: 'employee',
+          groupName: 'employee',
           valueKey: 'id',
           format: 'short_employee_name',
         },
@@ -171,6 +176,7 @@ export const config: TypeConfigData<Waybill> = {
         type: 'multiselect',
         getRegistryData: {
           entity: 'employee',
+          groupName: 'employee',
           valueKey: 'id',
           format: 'short_employee_name',
         },

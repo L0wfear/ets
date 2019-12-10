@@ -21,7 +21,7 @@ import AdvancedSelectLikeFilter from './advanced-select-like/AdvancedSelectLikeF
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type PropsFiltersLines = {
-  wasFirstOpen: boolean;
+  needUpdateFiltersOptions: boolean;
   registryKey: string;
   fileds: OneRegistryData['filter']['fields'];
   userData: InitialStateSession['userData'];
@@ -72,7 +72,7 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
             <MultiselectRegistryFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
-              wasFirstOpen={this.props.wasFirstOpen}
+              needUpdateFiltersOptions={this.props.needUpdateFiltersOptions}
               registryKey={registryKey}
               onChange={this.handleChange}
             />
@@ -85,7 +85,7 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
             <AdvancedSelectLikeFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
-              wasFirstOpen={this.props.wasFirstOpen}
+              needUpdateFiltersOptions={this.props.needUpdateFiltersOptions}
               registryKey={registryKey}
               onChange={this.handleChange}
             />

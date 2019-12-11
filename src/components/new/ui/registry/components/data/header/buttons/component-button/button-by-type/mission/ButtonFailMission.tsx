@@ -82,6 +82,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
               mission={props.selectedRow}
               missions={props.checkedRows}
               action_at={createValidDateTime(new Date())}
+              page={props.registryKey}
             />
           )
           : (

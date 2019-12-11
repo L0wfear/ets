@@ -196,6 +196,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
               onReject={this.onReject}
               mission={this.state.missionRejectForm}
               action_at={this.state.action_at}
+              page='dashboard'
             />
           )
         }

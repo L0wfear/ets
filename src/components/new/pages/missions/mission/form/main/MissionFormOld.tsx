@@ -54,14 +54,14 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
     const { formState: state, IS_CREATING } = props;
 
-    const IS_COMPLETE = state.status === 'complete';
-    const IS_FAIL = state.status === 'fail';
-    const IS_ASSIGNED = state.status === 'assigned';
-    const IS_NOT_ASSIGNED = state.status === 'not_assigned';
-    const IS_EXPIRED = state.status === 'expired';
-    const IS_IN_PROGRESS = state.status === 'in_progress';
-    const IS_DEFERRED = diffDates(state.date_start, new Date()) > 0;
-    const IS_POST_CREATING_NOT_ASSIGNED = (
+    const IS_COMPLETE = state.status === 'complete'; // Выполнено
+    const IS_FAIL = state.status === 'fail'; // Не выполнено
+    const IS_ASSIGNED = state.status === 'assigned'; // Назначено
+    const IS_NOT_ASSIGNED = state.status === 'not_assigned'; // Не назначено
+    const IS_EXPIRED = state.status === 'expired'; // Просрочено
+    const IS_IN_PROGRESS = state.status === 'in_progress'; // Выполняется
+    const IS_DEFERRED = diffDates(state.date_start, new Date()) > 0; // Дата начала позже текущего времени ( вроде) )
+    const IS_POST_CREATING_NOT_ASSIGNED = ( // Если задание "Не назначено" или (Форма создания и привязано к ПЛ)
       (
         !IS_CREATING
         && IS_NOT_ASSIGNED
@@ -72,14 +72,15 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       )
     );
 
-    const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED;
-    const IS_DISPLAY = (
-      !IS_CREATING
+    const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED; // 
+    const IS_DISPLAY = ( // Если не форма создания и Задание 
+      !IS_CREATING 
       && !(
         IS_POST_CREATING_NOT_ASSIGNED
         || IS_POST_CREATING_ASSIGNED
       )
     );
+    console.log('IS_CREATING ==== ', { IS_CREATING, IS_POST_CREATING_NOT_ASSIGNED, state, props: this.props, });
     const BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE = Boolean(props.formState.can_edit_car_and_route);
     const IS_DISABLED_ASSIGNED = (
       (

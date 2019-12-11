@@ -42,6 +42,7 @@ type DispatchProps = {
 type OwnProps = {
   mission?: Mission;
   missions?: Record<string, Mission>;
+  page?: string;
 
   action_at: string | Date;
   isWaybillForm?: boolean;
@@ -73,6 +74,7 @@ type State = {
     request_number: string;
   }>;
   data: any;
+  missionById: any;
 };
 
 const formPage = 'MissionRejectForm';
@@ -109,6 +111,7 @@ class MissionRejectForm extends React.Component<Props, State> {
       reason_id: null, // изменить
       edcRequestIds: null,
       data: null,
+      missionById: null,
     };
   }
 
@@ -116,6 +119,20 @@ class MissionRejectForm extends React.Component<Props, State> {
     this.props.dispatch(carGetAndSetInStore({}, { page: formPage }));
     this.getCarFuncTypesByNormId();
     this.props.dispatch(someUniqActions.actionGetAndSetInStoreMissionCancelReasons({}, { page: formPage }));
+    try {
+      this.props.dispatch(
+        missionsActions.actionGetMissionById(
+          this.state.mission_id,
+          { page: formPage },
+        ),
+      ).then((missionById) => {
+        if (missionById) {
+          this.setState({ missionById });
+        }
+      });
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
   }
 
   componentWillUnmount() {
@@ -255,16 +272,23 @@ class MissionRejectForm extends React.Component<Props, State> {
 
     if (!this.state.data) {
       let mission = null;
-      try {
-        mission = await this.props.dispatch(
-          missionsActions.actionGetMissionById(
-            this.state.mission_id,
-            { page: formPage },
-          ),
-        );
-      } catch (error) {
-        console.error(error); // tslint:disable-line
+      if (!this.state.missionById) {
+        try {
+          mission = await this.props.dispatch(
+            missionsActions.actionGetMissionById(
+              this.state.mission_id,
+              { page: formPage },
+            ),
+          );
+        } catch (error) {
+          console.error(error); // tslint:disable-line
+        }
+      } else {
+        mission = {
+          ...this.state.missionById,
+        };
       }
+
       if (mission) {
         mission.comment = this.state.comment;
         mission.mission_id = this.state.mission_id;
@@ -417,7 +441,10 @@ class MissionRejectForm extends React.Component<Props, State> {
       this.props.missionCancelReasonsList,
     );
 
-    const title = `Задание №${number}, ТС: ${mission_car_gov_number}`;
+    const column_id = get(this.state, 'missionById.column_id');
+    const title = `Задание №${number}, ТС: ${mission_car_gov_number}${
+      column_id ? `. Колонна № ${column_id}` : ''
+    }`;
     const missions = get(this.state.data, 'missions') || [];
 
     return (

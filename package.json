@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.667",
+    "version": "2.32.668",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,

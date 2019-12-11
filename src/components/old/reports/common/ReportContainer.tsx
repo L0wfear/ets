@@ -44,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNumber, isNullOrUndefined } from 'util';
+import { isArray, isNumber, isNull } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -228,7 +228,7 @@ class ReportContainer extends React.Component<
   }
 
   getReportData(query): ReportDataPromise {
-    const payload: any = query.okrug_id === '' || isNullOrUndefined(query.okrug_id)
+    const payload: any = query.okrug_id === '' || isNull(query.okrug_id)
       ? {
         ...query,
         okrug_id: 0,

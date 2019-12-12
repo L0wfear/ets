@@ -3,8 +3,6 @@ import { getHeaderData } from 'components/new/ui/registry/module/selectors-regis
 import { EtsHeaderTitle, TitleContainer, FlexContainerWrap } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getRegistryState } from 'redux-main/reducers/selectors';
-import ChangeIsCurrentStructure from './change_is_current_structure/ChangeIsCurrentStructure';
-import { Flex } from 'global-styled/global-styled';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type HeaderProps = {
@@ -42,13 +40,6 @@ const Title: React.FC<HeaderProps> = (props) => {
               )
             }
           </TitleContainer>
-          <Flex>
-            {
-              format === 'is_current_structure' && (
-                <ChangeIsCurrentStructure registryKey={props.registryKey} />
-              )
-            }
-          </Flex>
         </FlexContainerWrap>
         </EtsHeaderTitle>
     ),

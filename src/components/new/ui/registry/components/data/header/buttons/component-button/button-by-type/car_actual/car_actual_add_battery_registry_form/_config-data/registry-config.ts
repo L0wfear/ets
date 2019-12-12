@@ -5,14 +5,12 @@ import batteryRegistryPermissions from 'components/new/ui/registry/components/da
 
 export const registryKey = 'batteryRegistryAddButton';
 
-export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<BatteryRegistry> => {
+export const getToConfig = (company_id: number, ): TypeConfigData<BatteryRegistry> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/battery_registry',
         payload: {
-          is_current_structure,
           company_id,
         },
       },
@@ -24,9 +22,6 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
     registryKey,
     header: {
       title: 'Реестр аккумуляторов', // Реестр аккумуляторов для добавления
-
-      format: 'is_current_structure',
-      is_current_structure_popover: 'Отобразятся аккумуляторы, установленные на текущую дату на ТС Вашего подразделения',
 
       buttons: [
         buttonsTypes.filter,
@@ -67,6 +62,11 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
           title: 'Количество месяцев наработки',
           type: 'advanced-number',
           step: 1,
+        },
+        {
+          valueKey: 'company_structure_name',
+          title: 'Подразделение',
+          type: 'multiselect',
         },
         {
           valueKey: 'gov_number',
@@ -113,6 +113,11 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
             key: 'worked_months',
             title: 'Количество месяцев наработки',
             width: 300,
+          },
+          {
+            key: 'company_structure_name',
+            title: 'Подразделение',
+            width: 200,
           },
           {
             key: 'gov_number',

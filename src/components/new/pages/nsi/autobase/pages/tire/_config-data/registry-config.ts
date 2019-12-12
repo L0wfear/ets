@@ -5,14 +5,12 @@ import tirePermissions from './permissions';
 
 export const registryKey = 'tireRegistry';
 
-export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire> => {
+export const getToConfig = (): TypeConfigData<Tire> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/tire_registry',
         payload: {
-          is_current_structure,
         },
       },
       removeOneData: {
@@ -23,9 +21,6 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
     registryKey,
     header: {
       title: 'Реестр шин', // Реестр шин основной
-
-      format: 'is_current_structure',
-      is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
 
       buttons: [
         buttonsTypes.filter,
@@ -76,6 +71,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
         {
           valueKey: 'comment',
           title: 'Комментарий',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_structure_name',
+          title: 'Подразделение',
           type: 'multiselect',
         },
         {
@@ -141,6 +141,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
           {
             key: 'comment',
             title: 'Комментарий',
+            width: 200,
+          },
+          {
+            key: 'company_structure_name',
+            title: 'Подразделение',
             width: 200,
           },
           {

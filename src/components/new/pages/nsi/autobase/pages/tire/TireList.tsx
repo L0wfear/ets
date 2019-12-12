@@ -31,7 +31,7 @@ export type TireListProps = (
 const TireList: React.FC<TireListProps> = (props) => {
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(null));
+      props.registryAddInitialData(getToConfig());
       return () => {
         props.registryRemoveData(registryKey);
       };

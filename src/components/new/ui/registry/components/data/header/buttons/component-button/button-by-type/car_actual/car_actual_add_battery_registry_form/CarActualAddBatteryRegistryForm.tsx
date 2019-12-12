@@ -47,7 +47,7 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
 
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(null, company_id));
+      props.registryAddInitialData(getToConfig(company_id));
       return () => {
         props.registryRemoveData(registryKey);
       };

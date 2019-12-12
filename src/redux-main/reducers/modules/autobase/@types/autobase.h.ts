@@ -74,6 +74,7 @@ export type BatteryRegistry = {
   worked_months: number;
   status_text: string;
   status: string;
+  company_structure_name: string;
 };
 
 export type BatteryAvailableCar = {
@@ -320,6 +321,7 @@ export type Tire = {
   uninstalled_at: string;
   status_text: string;
   status: string;
+  company_structure_name: string;
 };
 export type TireSize = {
   id: number;

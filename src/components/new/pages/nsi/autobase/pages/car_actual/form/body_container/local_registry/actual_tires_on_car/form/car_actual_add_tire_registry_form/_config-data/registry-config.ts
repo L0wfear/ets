@@ -5,14 +5,12 @@ import tirePermissions from './permissions';
 
 export const registryKey = 'tireRegistryAddButton';
 
-export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<Tire> => {
+export const getToConfig = (company_id: number, ): TypeConfigData<Tire> => {
   return {
-    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/tire_registry',
         payload: {
-          is_current_structure,
           company_id,
         },
       },
@@ -24,9 +22,6 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
     registryKey,
     header: {
       title: 'Реестр шин', // "Реестр шин для добавления"
-
-      format: 'is_current_structure',
-      is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
 
       buttons: [
         buttonsTypes.filter,
@@ -62,6 +57,11 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
           title: 'Наработка, мч',
           type: 'advanced-number',
           step: 1,
+        },
+        {
+          valueKey: 'company_structure_name',
+          title: 'Подразделение',
+          type: 'multiselect',
         },
         {
           valueKey: 'gov_number',
@@ -107,6 +107,11 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
             key: 'motohours_diff',
             title: 'Наработка, мч',
             width: 150,
+          },
+          {
+            key: 'company_structure_name',
+            title: 'Подразделение',
+            width: 200,
           },
           {
             key: 'gov_number',

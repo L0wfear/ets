@@ -9,6 +9,7 @@ type ImgListBodyProps = {
   indexImage: number;
   countImages: number;
   setIndexImage: (indexImage: number) => any;
+  onClose: () => any;
 };
 
 const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
@@ -19,6 +20,10 @@ const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
       () => {
         const imgNew = new Image();
         imgNew.onload = () => setImg(imgNew);
+        imgNew.onerror = () => {
+          props.onClose();
+          return global.NOTIFICATION_SYSTEM.notify('Файл не найден', 'error', 'tr');
+        };
         imgNew.src = props.img_url;
       },
       [props.img_url],

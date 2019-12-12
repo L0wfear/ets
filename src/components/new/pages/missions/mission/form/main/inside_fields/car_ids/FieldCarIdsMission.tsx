@@ -136,20 +136,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_type_names: car_type_names_new,
           };
 
-          if (!this.props.order_operation_id) {
-            partialChange = {
-              ...partialChange,
-              technical_operation_id: null,
-              technical_operation_name: '',
-              municipal_facility_id: null,
-              municipal_facility_name: '',
-              route_id: null,
-              route_name: '',
-              route_type: null,
-              object_type_id: null,
-              object_type_name: '',
-            };
-          }
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
 
           this.props.onChange(partialChange);
         }
@@ -189,20 +189,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_type_names: car_type_names_new,
           };
 
-          if (!this.props.order_operation_id) {
-            partialChange = {
-              ...partialChange,
-              technical_operation_id: null,
-              technical_operation_name: '',
-              municipal_facility_id: null,
-              municipal_facility_name: '',
-              route_id: null,
-              route_name: '',
-              route_type: null,
-              object_type_id: null,
-              object_type_name: '',
-            };
-          }
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
 
           this.props.onChange(partialChange);
         }
@@ -284,20 +284,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_type_names: car_type_names_new,
         };
 
-        if (!this.props.order_operation_id) {
-          partialChange = {
-            ...partialChange,
-            technical_operation_id: null,
-            technical_operation_name: '',
-            municipal_facility_id: null,
-            municipal_facility_name: '',
-            route_id: null,
-            route_name: '',
-            route_type: null,
-            object_type_id: null,
-            object_type_name: '',
-          };
-        }
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
 
         this.props.onChange(partialChange);
       }
@@ -325,20 +325,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_special_model_names,
         };
 
-        if (!this.props.order_operation_id) {
-          partialChange = {
-            ...partialChange,
-            technical_operation_id: null,
-            technical_operation_name: '',
-            municipal_facility_id: null,
-            municipal_facility_name: '',
-            route_id: null,
-            route_name: '',
-            route_type: null,
-            object_type_id: null,
-            object_type_name: '',
-          };
-        }
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
 
         this.props.onChange(partialChange);
       } else {
@@ -353,20 +353,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_type_names: [],
           };
 
-          if (!this.props.order_operation_id) {
-            partialChange = {
-              ...partialChange,
-              technical_operation_id: null,
-              technical_operation_name: '',
-              municipal_facility_id: null,
-              municipal_facility_name: '',
-              route_id: null,
-              route_name: '',
-              route_type: null,
-              object_type_id: null,
-              object_type_name: '',
-            };
-          }
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
 
           this.props.onChange(partialChange);
         } else {
@@ -394,20 +394,20 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_type_names,
           };
 
-          if (!this.props.order_operation_id) {
-            partialChange = {
-              ...partialChange,
-              technical_operation_id: null,
-              technical_operation_name: '',
-              municipal_facility_id: null,
-              municipal_facility_name: '',
-              route_id: null,
-              route_name: '',
-              route_type: null,
-              object_type_id: null,
-              object_type_name: '',
-            };
-          }
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
 
           if (!is_common && structure_id) {
             partialChange.structure_id = structure_id;

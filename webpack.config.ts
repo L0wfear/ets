@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import * as MomentLocalesPlugin from 'moment-locales-webpack-plugin';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -36,9 +35,6 @@ const getColor = (stand) => {
 
 const getPlugins = () => {
   const plugins: webpack.Configuration['plugins'] = [
-    new MomentLocalesPlugin({
-      localesToKeep: ['ru'],
-    }),
     new ForkTsCheckerWebpackPlugin(),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [

@@ -248,9 +248,9 @@ export default class ReactSelect extends React.Component<any, any> {
     if (legacy) {
       value = value !== null && value !== undefined
         ? multi
-          ? sortedOptions.filter(({ value: op_value }) => value.includes(op_value))
-          :              sortedOptions.find(({ value: op_value }) => op_value === value)
-        :          null;
+          ? sortedOptions.filter(({ value: op_value }) => value?.includes(op_value))
+          : sortedOptions.find(({ value: op_value }) => op_value === value)
+        : null;
     }
 
     const id = geContainertId(this.props.id, modalKey);

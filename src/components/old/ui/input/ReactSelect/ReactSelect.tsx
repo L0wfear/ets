@@ -248,7 +248,9 @@ export default class ReactSelect extends React.Component<any, any> {
     if (legacy) {
       value = value !== null && value !== undefined
         ? multi
-          ? sortedOptions.filter(({ value: op_value }) => value?.includes(op_value))
+          ? sortedOptions.filter(({ value: op_value }) => isArray(value)
+            ? value.includes(op_value)
+            : value === op_value )
           : sortedOptions.find(({ value: op_value }) => op_value === value)
         : null;
     }

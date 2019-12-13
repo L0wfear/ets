@@ -1557,16 +1557,16 @@ class WaybillForm extends React.Component<Props, State> {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const EMPLOYEES = employeeList.map(({ id, full_name }) => ({
-      value: id,
-      label: full_name,
-    }));
-
     const IS_CREATING = !state.status;
     const IS_ACTIVE = state?.status === 'active';
     const IS_DRAFT = state?.status === 'draft';
     const IS_CLOSED = state?.status === 'closed';
     const IS_DELETE = state?.delete;
+
+    const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => ({
+      value: id,
+      label: `${full_name} ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
+    }));
 
     const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
@@ -1602,16 +1602,22 @@ class WaybillForm extends React.Component<Props, State> {
     );
     const taxeTotalHidden = allTaxes.length === 0;
 
+    const employeeByIndex = get(
+      this.props.employeeIndex,
+      `${state.driver_id}`,
+    );
     if (state.driver_id && !DRIVERS.some((d) => d.value === state.driver_id)) {
-      const personnel_number = get(
-        this.props.employeeIndex,
-        `${state.driver_id}.personnel_number`,
-      );
+      const personnel_number = employeeByIndex?.personnel_number
+        ? `[${employeeByIndex.personnel_number}] `
+        : '';
+      const isActiveText = (IS_DRAFT || IS_CREATING) && employeeByIndex?.active
+        ? ''
+        : '(Не работает)';
       DRIVERS.push({
-        label: `${personnel_number ? `[${personnel_number}] ` : ''}${
-          state.driver_name
-        }`,
+        label: `${personnel_number}${employeeByIndex?.last_name
+          || ''} ${employeeByIndex?.first_name || ''} ${employeeByIndex?.middle_name || ''} ${isActiveText}`,
         value: state.driver_id,
+        rowData: { ...employeeByIndex}
       });
     }
     const gps_code = get(carIndex[state.car_id], 'gps_code');
@@ -1633,6 +1639,26 @@ class WaybillForm extends React.Component<Props, State> {
       || !isPermittedByKey.update || IS_DELETE;
 
     const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
+
+    // <<< Да простят меня боги, переписать в 33м!!!
+    const driverNotActiveError = (IS_DRAFT || IS_CREATING) && state.driver_id && !employeeByIndex?.active
+      ? 'Поле "Водитель" должно быть заполнено работающим сотрудником'
+      : ''; // Если сотрудник неактивен, только для черновика
+    
+    const accompanyingPersonByIndex = get(
+      this.props.employeeIndex,
+      `${state.driver_id}`,
+    );
+    const accompanyingPersonNotActiveError = (IS_DRAFT || IS_CREATING) && state.accompanying_person_id && !accompanyingPersonByIndex?.active
+      ? 'Поле "Сопровождающий" должно быть заполнено работающим сотрудником'
+      : ''; // Если сотрудник неактивен, только для черновика
+
+    const canWaybillPrint =  (IS_DRAFT || IS_CREATING)
+      ? !driverNotActiveError.length && !accompanyingPersonNotActiveError.length && this.props.canSave
+      : this.props.canSave;
+    const canWaybillGiveOutRead =  (IS_DRAFT || IS_CREATING)
+      ? !driverNotActiveError.length  && !accompanyingPersonNotActiveError.length && this.props.canSave
+      : this.props.canSave;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -1701,7 +1727,7 @@ class WaybillForm extends React.Component<Props, State> {
                   type="select"
                   modalKey={modalKey}
                   label="Сопровождающий"
-                  error={errors.accompanying_person_id}
+                  error={errors.accompanying_person_id || accompanyingPersonNotActiveError}
                   clearable
                   disabled={IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update}
                   options={EMPLOYEES}
@@ -1907,7 +1933,7 @@ class WaybillForm extends React.Component<Props, State> {
                 type="select"
                 modalKey={modalKey}
                 label="Водитель (возможен поиск по табельному номеру)"
-                error={driversEnability ? errors.driver_id : undefined}
+                error={driversEnability ? errors.driver_id || driverNotActiveError : undefined}
                 sortingFunction={this.sortingDrivers}
                 hidden={!(IS_CREATING || IS_DRAFT)}
                 readOnly={!driversEnability}
@@ -2618,6 +2644,8 @@ class WaybillForm extends React.Component<Props, State> {
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
             canSave={this.props.canSave}
+            canPrint={canWaybillPrint}
+            canGiveOutRead={canWaybillGiveOutRead}
             canClose={this.props.canClose}
             formState={this.props.formState}
             state={state}

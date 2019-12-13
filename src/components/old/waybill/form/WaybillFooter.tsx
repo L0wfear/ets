@@ -17,6 +17,8 @@ type IPropsWaybillFooter = {
   isDraft: boolean;
   canSave: boolean;
   canClose: boolean;
+  canPrint: boolean;
+  canGiveOutRead: boolean;
   formState: any;
   state: any;
   canEditIfClose: boolean;
@@ -64,7 +66,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               id="waybill-print-dropdown_ptint"
               className="print"
               dropup
-              disabled={!props.canSave || !props.state.id}
+              disabled={!props.canPrint || !props.state.id}
 
               toggleElement={<EtsBootstrap.Glyphicon glyph="print" />}
             >
@@ -79,7 +81,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               id="waybill-print-dropdown_save"
               className="pdf"
               dropup
-              disabled={!props.canSave}
+              disabled={!props.canGiveOutRead}
 
               toggleElement={waybillSaveDropdownPrintToggleElement}
             >

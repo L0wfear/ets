@@ -172,11 +172,15 @@ export const getDrivers = (state, employeeIndex, driversList) => { // for waybil
       const personnel_number = driverData.personnel_number
         ? `[${driverData.personnel_number}] `
         : '';
+      const isActiveText = driverData.active
+        ? ''
+        : '(Не работает)';
       return {
         value: key,
         label: `${personnel_number}${driverData.last_name
-          || ''} ${driverData.first_name || ''} ${driverData.middle_name || ''}`,
+          || ''} ${driverData.first_name || ''} ${driverData.middle_name || ''} ${isActiveText}`,
         isPrefer: driverData.prefer_car === state.car_id,
+        rowData: {...driverData},
       };
     });
 };

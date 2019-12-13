@@ -454,10 +454,21 @@ class ReportContainer extends React.Component<
   reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {
     const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
       const precision = metaFieldsByKey[key]?.precision;
-      const newVal = precision && isNumber(elemVal)
+      let newVal = precision && isNumber(elemVal)
         ? elemVal?.toFixed(precision).replace(',', '.')
         : elemVal;
 
+      const {
+        renderers
+      } = this.props;
+
+      if(renderers) {
+        const renderersFunc = renderers[key];
+        newVal = renderersFunc
+          ? renderersFunc({ data: newVal, rowData: reportRowValue, }, this.props)
+          : newVal;
+      }
+      
       return {
         ...newObj,
         [key]: newVal,
@@ -491,6 +502,8 @@ class ReportContainer extends React.Component<
     let payload: any = {
       rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
     };
+
+    console.log('this.props ==== ', {props: this.props});
 
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
@@ -584,13 +597,27 @@ class ReportContainer extends React.Component<
             make_str_gov_number_format,
             precision,
           };
+          let renderer: any = identity;
+          if (schemaMakers[fieldName]) {
+            renderer = schemaMakers[fieldName];
+          }
           if (filter) {
             initialSchema.filter = {
               type,
             };
             if (type === 'multiselect') {
               initialSchema.options = undefined;
-              if (forWhat === 'mainList' && this.props.data.result && type === 'multiselect') {
+              let customOptions = [];
+              if(renderer){
+                const rendererSchemaObj = renderer(initialSchema, this.props);
+                customOptions = get(rendererSchemaObj, 'filter.options', []);
+              }
+
+              if(customOptions.length) {
+                initialSchema.options = [...customOptions];
+              }
+
+              if (!customOptions.length && forWhat === 'mainList' && this.props.data.result && type === 'multiselect') {
                 (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(
                   this.props.data.result.rows.map(
                     ({ [fieldName]: value }: any) => ({ value, label: value }),
@@ -601,11 +628,6 @@ class ReportContainer extends React.Component<
             }
           } else {
             initialSchema.filter = false;
-          }
-
-          let renderer: any = identity;
-          if (schemaMakers[fieldName]) {
-            renderer = schemaMakers[fieldName];
           }
           tableMeta.push(renderer(initialSchema, this.props));
         }

@@ -7,7 +7,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import Div from 'components/old/ui/Div';
-import { getDatesByShift, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, getYesterday9am, getToday859am } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
@@ -18,12 +18,24 @@ type IPropsReportHeader = {
 } & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  handleSubmit = () => {
-    const timeShift = getDatesByShift();
+  
+  getState() {
     const {
-      mission_date_start_from = timeShift[0],
-      mission_date_end_to = timeShift[1],
+      mission_date_start_from = getYesterday9am(),
+      mission_date_end_to = getToday859am(),
     } = this.props;
+
+    return {
+      mission_date_start_from,
+      mission_date_end_to,
+    };
+  }
+
+  handleSubmit = () => {
+    const {
+      mission_date_start_from,
+      mission_date_end_to,
+    } = this.getState();
 
     this.props.onClick({
       mission_date_start_from: createValidDateTime(mission_date_start_from),
@@ -31,12 +43,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     });
   };
   render() {
-    const timeShift = getDatesByShift();
     const {
-      mission_date_start_from = timeShift[0],
-      mission_date_end_to = timeShift[1],
       readOnly,
     } = this.props;
+    const {
+      mission_date_start_from,
+      mission_date_end_to,
+    } = this.getState();
 
     return (
       <EtsBootstrap.Row className="report-page__header">

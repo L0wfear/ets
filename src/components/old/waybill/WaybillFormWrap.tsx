@@ -176,6 +176,7 @@ type State = {
     motohours_diff: number;
   };
   timeId: any; // id таймера
+  didMountFormState: string; // слепок формы после didMount в waybillForm
 
   [k: string]: any;
 };
@@ -210,6 +211,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
       timeId: null, // id таймера
+      didMountFormState: null,
     };
   }
 
@@ -829,6 +831,12 @@ class WaybillFormWrap extends React.Component<Props, State> {
     }
   };
 
+  setDidMountFormState = (didMountFormState) => {
+    this.setState({
+      didMountFormState,
+    });
+  };
+
   handleClose = async (taxesControl) => {
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(
@@ -896,19 +904,26 @@ class WaybillFormWrap extends React.Component<Props, State> {
     });
   };
   onFormHide = () => {
-    global.confirmDialog({
-      title:
-        'Внимание!',
-      body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
-      okName: 'Да',
-      cancelName: 'Нет',
-    })
-      .then(() => {
-        this.props.onFormHide();
+    const {
+      is_bnso_broken, // долго подгружается
+      ...modFormState
+    } = this.state.formState;
+
+    JSON.stringify(modFormState) !== this.state.didMountFormState
+      ? global.confirmDialog({
+        title:
+          'Внимание!',
+        body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
+        okName: 'Да',
+        cancelName: 'Нет',
       })
-      .catch(() => {
-        //
-      });
+        .then(() => {
+          this.props.onFormHide();
+        })
+        .catch(() => {
+          //
+        })
+      : this.props.onFormHide();
   };
 
   render() {
@@ -931,6 +946,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
             isPermittedByKey={this.state.isPermittedByKey}
             canClose={this.state.canClose}
             canSave={this.state.canSave}
+            setDidMountFormState={this.setDidMountFormState}
 
             show
             onHide={this.onFormHide}

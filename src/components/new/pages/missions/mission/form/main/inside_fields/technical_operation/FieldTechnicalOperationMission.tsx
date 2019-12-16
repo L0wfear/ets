@@ -74,7 +74,7 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
       for_column,
     } = this.props;
 
-    if (car_ids !== prevProps.car_ids) {
+    if (car_ids !== prevProps.car_ids || for_column !== prevProps.for_column) {
       if (car_ids.length) {
         this.getTechnicalOperations(car_ids, for_column);
       } else {

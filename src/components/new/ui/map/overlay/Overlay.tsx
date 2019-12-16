@@ -41,7 +41,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
         position: this.props.coordsMsk,
         positioning: OverlayPositioning.BOTTOM_CENTER,
         element: this.state.container,
-        stopEvent: false,
+        // stopEvent: false, #DITETS19-1440
       });
       this.props.map.addOverlay(marker);
       this.props.map.updateSize();

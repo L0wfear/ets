@@ -19,7 +19,8 @@ export type EtsButtonProps = WithRequirePermissionProps & {
   type?: 'submit' | 'button';
   whiteSpace?: 'normal';
 
-  boundKeys?: any; // not use
+  boundKeys?: any;
+  roundButton?: boolean;
   style?: object;
 };
 type EtsButtonPropsWrap = EtsButtonProps & WithRequirePermissionAddProps;

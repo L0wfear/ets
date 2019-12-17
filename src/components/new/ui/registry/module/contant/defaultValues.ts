@@ -1,5 +1,5 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
+import { DEFAULT_ITEMS_PER_PAGE } from 'constants/ui';
 
 const registryDefaultObj: OneRegistryData<any> = {
   idRequestTime: 1,
@@ -59,7 +59,7 @@ const registryDefaultObj: OneRegistryData<any> = {
     },
     paginator: {
       currentPage: 0,
-      perPage: MAX_ITEMS_PER_PAGE,
+      perPage: DEFAULT_ITEMS_PER_PAGE,
     },
     processed: {
       filterValues: {},

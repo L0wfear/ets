@@ -44,7 +44,7 @@ import DataTable from 'components/ui/table/DataTable';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray } from 'util';
+import { isArray, isNull } from 'util';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -157,7 +157,15 @@ class ReportContainer extends React.Component<
   }
 
   getReportData(query): ReportDataPromise {
-    const payload: any = { ...query };
+
+    if (query.okrug_id === '' || isNull(query.okrug_id)) {
+      query.okrug_id = 0;
+    }
+    if (query.district_id === '' || isNull(query.district_id)) {
+      query.district_id = 0;
+    }
+
+    const payload: any = {...query};
 
     return new Promise(async (resolve, reject) => {
       try {

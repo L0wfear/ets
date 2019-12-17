@@ -228,13 +228,15 @@ class ReportContainer extends React.Component<
   }
 
   getReportData(query): ReportDataPromise {
-    const payload: any = query.okrug_id === '' || isNull(query.okrug_id)
-      ? {
-        ...query,
-        okrug_id: 0,
-      } : {
-        ...query,
-      };
+
+    if (query.okrug_id === '' || isNull(query.okrug_id)) {
+      query.okrug_id = 0;
+    }
+    if (query.district_id === '' || isNull(query.district_id)) {
+      query.district_id = 0;
+    }
+
+    const payload: any = {...query};
 
     return new Promise(async (resolve, reject) => {
       try {

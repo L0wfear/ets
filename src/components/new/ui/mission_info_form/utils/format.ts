@@ -17,6 +17,6 @@ export const makeTitle = ({ mission_data, car_data, }) => {
 
 export const makeReassignText = (mission_data) => {
   return mission_data && mission_data.parent
-    ? `(переназначено с  задания №${mission_data.parent.number}. Рег. номер ТС: ${mission_data.gov_number})`
+    ? `(переназначено с  задания №${mission_data.parent.number}. Рег. номер ТС: ${mission_data.parent.gov_number})`
     : '';
 };

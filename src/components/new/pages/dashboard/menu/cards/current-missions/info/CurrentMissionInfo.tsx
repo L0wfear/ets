@@ -160,23 +160,23 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           <ButtenUpdateMission onClick={this.rejectMission} >Не выполнено</ButtenUpdateMission>
         </RightButtonBlockContainer>
         {
-          this.state.showMissionRejectForm ?
-          (
-            <MissionRejectForm
-              show
-              onReject={this.onReject}
-              mission={{
-                ...infoData.mission_data,
-                car_gov_number: infoData.car_data.gov_number,
-                waybill_number: infoData.waybill_data.number,
-              }}
-              action_at={this.state.action_at}
-            />
-          )
-          :
-          (
-            <DivNone />
-          )
+          this.state.showMissionRejectForm
+            ? (
+              <MissionRejectForm
+                show
+                onReject={this.onReject}
+                mission={{
+                  ...infoData.mission_data,
+                  car_gov_number: infoData.car_data.gov_number,
+                  waybill_number: infoData.waybill_data.number,
+                }}
+                action_at={this.state.action_at}
+                page='dashboard'
+              />
+            )
+            : (
+              <DivNone />
+            )
         }
         <MissionInfoFormWrap
           onFormHide={this.handleFormHide}

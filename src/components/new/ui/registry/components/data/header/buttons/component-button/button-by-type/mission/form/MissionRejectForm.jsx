@@ -71,6 +71,7 @@ class MissionRejectForm extends React.Component {
       needUpdateParent: false,
       reason_id: null, // изменить
       edcRequestIds: null,
+      missionById: null,
     };
   }
 
@@ -78,6 +79,17 @@ class MissionRejectForm extends React.Component {
     this.context.flux.getActions('objects').getCars();
     this.getCarFuncTypesByNormId();
     this.props.actionGetAndSetInStoreMissionCancelReasons();
+    try {
+      this.props
+        .actionGetMissionById(this.state.mission_id, {})
+        .then((missionById) => {
+          if (missionById) {
+            this.setState({ missionById });
+          }
+        });
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
   }
 
   componentWillUnmount() {
@@ -209,14 +221,21 @@ class MissionRejectForm extends React.Component {
 
     if (!this.state.data) {
       let mission = null;
-      try {
-        mission = await this.props.actionGetMissionById(
-          this.state.mission_id,
-          {},
-        );
-      } catch (error) {
-        console.error(error); // tslint:disable-line
+      if (!this.state.missionById) {
+        try {
+          mission = await this.props.actionGetMissionById(
+            this.state.mission_id,
+            {},
+          );
+        } catch (error) {
+          console.error(error); // tslint:disable-line
+        }
+      } else {
+        mission = {
+          ...this.state.missionById,
+        };
       }
+
       if (mission) {
         mission.comment = this.state.comment;
         mission.mission_id = this.state.mission_id;
@@ -362,7 +381,10 @@ class MissionRejectForm extends React.Component {
       this.props.missionCancelReasonsList,
     );
 
-    const title = `Задание №${number}, ТС: ${mission_car_gov_number}`;
+    const column_id = get(this.state, 'missionById.column_id');
+    const title = `Задание №${number}, ТС: ${mission_car_gov_number}${
+      column_id ? `. Колонна № ${column_id}` : ''
+    }`;
     // const waybillText = waybill_number ? `, задание будет исключено из ПЛ №${waybill_number}` : '';
     // const bodyText = `Статус задания №${number} будет изменен на «Не назначено»${waybillText}`;
     const missions = this.state.data ? this.state.data.missions : null;

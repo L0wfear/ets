@@ -88,7 +88,7 @@ export const config: TypeConfigData<EdcRequest> = {
       {
         valueKey: 'request_send_at',
         type: 'advanced-date',
-        title: 'Передано в ППОЗ',
+        title: 'Передано в ППОЗ (ЕДЦ)',
       },
       {
         valueKey: 'rework',
@@ -223,7 +223,7 @@ export const config: TypeConfigData<EdcRequest> = {
         },
         {
           key: 'request_send_at',
-          title: 'Передано в ППОЗ',
+          title: 'Передано в ППОЗ (ЕДЦ)',
           width: 200,
         },
       ],

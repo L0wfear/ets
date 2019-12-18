@@ -9,6 +9,7 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export const EtsPaginatorCountPages = styled.div`
   display: inline-flex;
   align-items: center;
+  margin-bottom: 5px;
   ${SingleUiElementWrapperStyled} {
     min-width: 100px;
     margin-bottom: 0px;

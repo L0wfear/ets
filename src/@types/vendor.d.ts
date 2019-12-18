@@ -14,6 +14,7 @@
 
  type NOTIFICATION_SYSTEM_NOTIFY_TYPE = 'success' | 'error' | 'warning' | 'info' | string;
  type NOTIFICATION_SYSTEM_NOTIFY_POSITION = 'tc' | 'tr' | string;
+ type NOTIFICATION_SYSTEM_NOTIFY_SIZE = 'lg' | string;
 
  type NOTIFICATION_SYSTEM_NOTIFY_AS_OBJECT = {
   title?: string;
@@ -28,12 +29,14 @@
     label: string;
     callback: () => any;
   };
+  size?: NOTIFICATION_SYSTEM_NOTIFY_SIZE;
 };
 
  type NOTIFICATION_SYSTEM_NOTIFY = (
   text: string | NOTIFICATION_SYSTEM_NOTIFY_AS_OBJECT,
   type?: NOTIFICATION_SYSTEM_NOTIFY_TYPE,
   position?: NOTIFICATION_SYSTEM_NOTIFY_POSITION,
+  size?: NOTIFICATION_SYSTEM_NOTIFY_SIZE,
 ) => void;
 
  declare namespace NodeJS {

@@ -80,7 +80,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         || IS_POST_CREATING_ASSIGNED
       )
     );
-    console.log('IS_CREATING ==== ', { IS_CREATING, IS_POST_CREATING_NOT_ASSIGNED, state, props: this.props, });
+
     const BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE = Boolean(props.formState.can_edit_car_and_route);
     const IS_DISABLED_ASSIGNED = (
       (

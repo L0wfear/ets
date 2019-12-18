@@ -64,7 +64,9 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     );
 
     if (value) {
-      const selectedRouteNotInOption = ROUTE_OPTIONS.find((routeOptionData) => routeOptionData.value === value);
+      const selectedRouteNotInOption = ROUTE_OPTIONS.find(
+        (routeOptionData) => routeOptionData.value === value,
+      );
 
       if (!selectedRouteNotInOption) {
         ROUTE_OPTIONS = [

@@ -144,8 +144,9 @@ function httpMethod(
         const currV = process.env.VERSION;
 
         if (servV) {
-          const [, , minorS, someS] = servV.split('.');
-          const [, , minorV, someV] = currV.split('.');
+          const [, minorS, someS] = servV.split('.');
+          const [, minorV, someV] = currV.split('.');
+
           if (minorS > minorV || (someS > someV && minorS === minorV)) {
             global.NOTIFICATION_SYSTEM.notifyWithObject({
               title: 'Вышла новая версия',

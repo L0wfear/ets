@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ColumnPopupContainer } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/columns_control/column_popup/@styled';
+import { ColumnPopupContainer, ColumnPopupContainerWrapper } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/columns_control/column_popup/@styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
@@ -61,26 +61,28 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   );
 
   return (
-    <ColumnPopupContainer>
-      {
-        props.fields.reduce(
-          (newArr, fieldData, index) => {
-            if ('key' in fieldData && fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
-              newArr.push(
-                <ControlItem
-                  key={fieldData.key.toString()}
-                  fieldData={fieldData}
+    <ColumnPopupContainerWrapper>
+      <ColumnPopupContainer>
+        {
+          props.fields.reduce(
+            (newArr, fieldData, index) => {
+              if ('key' in fieldData && fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
+                newArr.push(
+                  <ControlItem
+                    key={fieldData.key.toString()}
+                    fieldData={fieldData}
 
-                  onChange={handleChange}
-                />,
-              );
-            }
-            return newArr;
-          },
-          [],
-        )
-      }
-    </ColumnPopupContainer>
+                    onChange={handleChange}
+                  />,
+                );
+              }
+              return newArr;
+            },
+            [],
+          )
+        }
+      </ColumnPopupContainer>
+    </ColumnPopupContainerWrapper>
   );
 };
 

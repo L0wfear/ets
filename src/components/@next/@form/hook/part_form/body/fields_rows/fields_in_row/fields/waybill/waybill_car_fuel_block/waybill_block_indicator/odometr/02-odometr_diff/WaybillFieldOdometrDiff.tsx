@@ -23,7 +23,7 @@ const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.me
     const odometr_diff = React.useMemo(
       () => {
         if (isNumber(odometr_end)) {
-          return parseFloat(odometr_end) - parseFloat(odometr_start);
+          return odometr_end - odometr_start;
         }
 
         return null;

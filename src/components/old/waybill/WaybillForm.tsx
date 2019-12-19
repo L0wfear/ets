@@ -767,10 +767,10 @@ class WaybillForm extends React.Component<Props, State> {
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
               ? null
-              : parseFloat(distance).toFixed(3),
+              : parseFloat(distance),
             consumption: isNullOrUndefined(consumption)
               ? null
-              : parseFloat(consumption).toFixed(3),
+              : parseFloat(consumption),
           });
 
           this.setState({
@@ -781,7 +781,6 @@ class WaybillForm extends React.Component<Props, State> {
           });
         })
         .catch(() => {
-          // this.props.handleFormChange('distance', parseFloat(distance / 100).toFixed(2));
           this.setState({
             loadingFields: {
               distance: false,
@@ -1632,10 +1631,10 @@ class WaybillForm extends React.Component<Props, State> {
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
-        ? parseFloat((state.track_length / 1000).toString())?.toFixed(2).replace('.', ',')
+        ? state.track_length / 1000
         : 'Нет данных';
     } else {
-      distanceOrTrackOrNodata = (Number(distanceOrTrackOrNodata) / 1000)?.toFixed(2).replace('.', ',');
+      distanceOrTrackOrNodata = Number(distanceOrTrackOrNodata) / 1000;
     }
 
     const disableEquipmentFieldWaybillCarRefill
@@ -1930,6 +1929,7 @@ class WaybillForm extends React.Component<Props, State> {
                       : distanceOrTrackOrNodata
                   }
                   isLoading={loadingFields.distance}
+                  format="toFixed2"
                   disabled
                 />
               </EtsBootstrap.Col>
@@ -2522,8 +2522,9 @@ class WaybillForm extends React.Component<Props, State> {
               <ExtField
                 type="number"
                 label="Общий расход топлива, л"
-                value={taxesTotal.toFixed(3)}
+                value={taxesTotal}
                 hidden={taxeTotalHidden}
+                format="toFixed3"
                 disabled
               />
             </EtsBootstrap.Col>

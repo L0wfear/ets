@@ -62,7 +62,6 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
     React.useEffect( () => {
       if (!isFocus
         && props.format === 'toFixed3'
-        && props.type === 'number'
         && !isNullOrUndefined(props.value)
         && (props.value || props.value === 0)
       ){
@@ -73,11 +72,10 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
       }
     }, [isFocus, props.format, props.type, props.value]);
 
-    // выводить 2 знака после запятой { format === 'toFixed2', type === 'number', }
+    // выводить 2 знака после запятой { format === 'toFixed2', }
     React.useEffect( () => {
       if (!isFocus
         && props.format === 'toFixed2'
-        && props.type === 'number'
         && !isNullOrUndefined(props.value)
         && (props.value || props.value === 0)
       ){

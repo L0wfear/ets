@@ -29,35 +29,18 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement } from './utils';
-import { FuelCardsIsCommonWrapper } from './styled';
-
-const popover = (
-  <EtsBootstrap.Popover
-    id="fuel_card-popover"
-    className="car-usage-report-title__popover"
-  >
-    При установленном флаге "Общая" данная топливная карта будет доступна
-    для всех подразделений организации, Если данный флаг не установлен, то
-    топливная карта доступна тому подразделению, которое указано в карточке.
-    Если подразделение не указано и не установлен признак "Общая", то
-    топливная карта доступна только головной организации.
-  </EtsBootstrap.Popover>
-);
 
 const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
   (props) => {
     const handleSubmit = React.useCallback(
       async () => {
         const {
-          originalFormState,
           formState,
           userStructureId,
         } = props;
 
         if (
-          originalFormState.is_common
-          && !formState.is_common
-          && formState.structure_id !== userStructureId
+          formState.structure_id !== userStructureId
           && userStructureId
         ) {
           try {
@@ -112,7 +95,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={9}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="string"
                 label="Номер"
@@ -123,28 +106,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={3}>
-              <FuelCardsIsCommonWrapper>
-                <ExtField
-                  id="is_common"
-                  type="boolean"
-                  label="Общая"
-                  value={state.is_common}
-                  error={errors.is_common}
-                  disabled={!isPermitted}
-                  onChange={props.handleChangeBoolean}
-                  boundKeys="is_common"
-                  modalKey={page}
-                />
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={popover}
-                  placement="bottom">
-                  <EtsBootstrap.Glyphicon glyph="question-sign" />
-                </EtsBootstrap.OverlayTrigger>
-              </FuelCardsIsCommonWrapper>
-            </EtsBootstrap.Col>
-
             <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"

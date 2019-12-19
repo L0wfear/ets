@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import fuelCardsPermissions from './permissions';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'fuelCardsRegistry';
@@ -60,12 +59,6 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
-          valueKey: 'is_common',
-          title: 'Общая',
-          type: 'multiselect',
-          options: YES_NO_SELECT_OPTIONS_BOOL,
-        },
-        {
           valueKey: 'structure_id',
           labelKey: 'structure_name',
           title: 'Подразделение',
@@ -101,12 +94,6 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             key: 'fuel_type_text',
             title: 'Тип топлива',
             width: 150,
-          },
-          {
-            key: 'is_common',
-            title: 'Общая',
-            format: 'boolean',
-            width: 100,
           },
           {
             key: 'structure_name',

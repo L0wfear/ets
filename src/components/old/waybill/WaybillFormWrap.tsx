@@ -270,16 +270,16 @@ class WaybillFormWrap extends React.Component<Props, State> {
         const fuelGiven = !isNullOrUndefined(waybill.fuel_given)
           ? parseFloat(waybill.fuel_given.toString())
           : 0;
-        const fuelTaxes = parseFloat(Taxes.calculateFinalResult(waybill.tax_data));
+        const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
         const equipmentFuelStart = !isNullOrUndefined(waybill.equipment_fuel_start)
           ? parseFloat(waybill.equipment_fuel_start.toString())
           : 0;
         const equipmentFuelGiven = !isNullOrUndefined(waybill.equipment_fuel_given)
           ? parseFloat(waybill.equipment_fuel_given.toString())
           : 0;
-        const equipmentFuelTaxes = parseFloat(EquipmentTaxes.calculateFinalResult(
+        const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
           waybill.equipment_tax_data,
-        ));
+        );
 
         if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
           waybill.fuel_end = +(fuelStart + fuelGiven - fuelTaxes);
@@ -300,14 +300,14 @@ class WaybillFormWrap extends React.Component<Props, State> {
 
         // Расчет пробегов
         waybill.odometr_diff = waybill.odometr_end
-          ? parseFloat(waybill.odometr_end || '0') - parseFloat(waybill.odometr_start || '0')
+          ? waybill.odometr_end || 0 - waybill.odometr_start || 0
           : null;
         waybill.motohours_diff = waybill.motohours_end
-          ? parseFloat(waybill.motohours_end) - parseFloat(waybill.motohours_start || '0')
+          ? waybill.motohours_end - waybill.motohours_start || 0
           : null;
         waybill.motohours_equip_diff = waybill.motohours_equip_end
-          ? parseFloat(waybill.motohours_equip_end || '0')
-            - parseFloat(waybill.motohours_equip_start || '0')
+          ? waybill.motohours_equip_end || 0
+            - waybill.motohours_equip_start || 0
           : null;
 
         if (this.props.element.status === 'active') {
@@ -474,16 +474,16 @@ class WaybillFormWrap extends React.Component<Props, State> {
     const fuelGiven = formState.fuel_given
       ? parseFloat(formState.fuel_given)
       : 0;
-    const fuelTaxes = parseFloat(Taxes.calculateFinalResult(formState.tax_data));
+    const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
     const equipmentFuelStart = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
       : 0;
     const equipmentFuelGiven = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : 0;
-    const equipmentFuelTaxes = parseFloat(EquipmentTaxes.calculateFinalResult(
+    const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
       formState.equipment_tax_data,
-    ));
+    );
 
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
       formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes);

@@ -50,14 +50,14 @@ export default class Taxes extends React.Component<any, any> {
       || isEmpty(fuel_correction_rate)
       || isEmpty(FUEL_RATE)
     ) {
-      return '0';
+      return 0;
     }
-    return parseFloat((FUEL_RATE * fuel_correction_rate * FACT_VALUE).toString()).toFixed(3)?.replace('.', ',');
+    return FUEL_RATE * fuel_correction_rate * FACT_VALUE;
   }
 
   static calculateFinalResult(data) {
     if (!data || (data && !data.length)) {
-      return '0';
+      return 0;
     }
     const result = data.reduce(
       (res, cur) => {
@@ -68,7 +68,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3)?.replace('.', ',');
+    return parseFloat(result);
   }
 
   static calculateFinalFactValue(data) {
@@ -84,7 +84,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result).toFixed(3).replace('.', ',')?.replace('.', ',');
+    return parseFloat(result);
   }
 
   tableCaptions: Array<any>;
@@ -169,7 +169,13 @@ export default class Taxes extends React.Component<any, any> {
         );
       },
       measure_unit_name: (measure_unit_name) => measure_unit_name || '-',
-      RESULT: (RESULT) => `${RESULT ? `${RESULT} л` : ''}`,
+      FUEL_RATE: (FUEL_RATE) => FUEL_RATE
+        ? parseFloat(FUEL_RATE).toFixed(3)?.replace('.', ',')
+        : '',
+      RESULT: (RESULT) => {
+        const resultView = RESULT ? parseFloat(RESULT).toFixed(3)?.replace('.', ',') : '';
+        return `${resultView ? `${resultView} л` : ''}`;
+      },
       fuel_correction_rate: (fuel_correction_rate) =>
         fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3)?.replace('.', ',') : 1,
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
@@ -322,7 +328,7 @@ export default class Taxes extends React.Component<any, any> {
 
     const value
       = baseFactValue || baseFactValue === 0
-        ? (baseFactValue - overallValue).toFixed(3)?.replace('.', ',')
+        ? (baseFactValue - overallValue)
         : null;
     tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
     this.setState({ tableData, errorsAll });
@@ -414,15 +420,15 @@ export default class Taxes extends React.Component<any, any> {
             <div>
               <b>
                 {!finalFactValueEqualsBaseValue ? (
-                  <SpanRed>{finalFactValue}</SpanRed>
+                  <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
                 ) : (
-                  <SpanGreen>{finalFactValue}</SpanGreen>
+                  <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>
                 )}
                 <span> (км | м/ч)</span>
               </b>
             </div>
             <div>
-              <b>{finalResult} л</b>
+              <b>{finalResult.toFixed(3).replace('.', ',')} л</b>
             </div>
           </FooterEnd>
         )}

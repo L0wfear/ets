@@ -23,15 +23,19 @@ import {
   getSessionFuelTypeOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import FieldStructureDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement } from './utils';
+import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
   (props) => {
+
+    const carActualListOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+
     const handleSubmit = React.useCallback(
       async () => {
         const {
@@ -68,7 +72,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       companyOptions,
       userCompanyId,
       fuelTypeOptions,
-      STRUCTURE_FIELD_VIEW,
       isPermitted,
     } = props;
 
@@ -143,20 +146,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
-              {
-                STRUCTURE_FIELD_VIEW && (
-                  <FieldStructureDutyMission
-                    value={state.structure_id}
-                    name={state.structure_name}
-                    error={errors.structure_id}
-                    isPermitted={isPermitted}
-                    onChange={props.handleChange}
-                    page={page}
-                    path={path}
-                    disabled={!isPermitted}
-                  />
-                )
-              }
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="select"
+                label="Рег. номер ТС"
+                error={errors.car_id}
+                options={carActualListOptions.options}
+                value={state.car_id}
+                onChange={props.handleChange}
+                boundKeys="car_id"
+                disabled={!isPermitted}
+                etsIsLoading={carActualListOptions.isLoading}
+                placeholder="Резерв"
+              />
               <ExtField
                 type="select"
                 label="Организация"

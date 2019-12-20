@@ -46,6 +46,11 @@ export const getToConfig = (): TypeConfigData<FuelCard> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'gov_number_text',
+          title: 'Рег. номер ТС',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'structure_id',
           labelKey: 'structure_name',
           title: 'Подразделение',
@@ -93,6 +98,11 @@ export const getToConfig = (): TypeConfigData<FuelCard> => {
             key: 'fuel_type_text',
             title: 'Тип топлива',
             width: 150,
+          },
+          {
+            key: 'gov_number_text',
+            title: 'Рег. номер ТС',
+            width: 200,
           },
           {
             key: 'structure_name',

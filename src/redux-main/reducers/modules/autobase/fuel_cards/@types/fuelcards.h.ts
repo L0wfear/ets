@@ -14,6 +14,9 @@ export type FuelCard = {
   structure_name: string | null;
   released_at: string;
   date_end: string;
+  car_id: number;
+  gov_number_text: string;
+  gov_number: string;
 };
 
 export type StateFuelCards = {

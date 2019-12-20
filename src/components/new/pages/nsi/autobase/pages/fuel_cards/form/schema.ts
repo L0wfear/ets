@@ -33,7 +33,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
       dependencies: [
         (value, { date_end, released_at, }) => {
           if (!value) {
-              return getRequiredFieldMessage('Дата окончания срока действия');
+            return getRequiredFieldMessage('Дата окончания срока действия');
           }
           if (diffDates(date_end, released_at) <= 0) {
             return getRequiredFieldDateMoreThen('Дата окончания срока действия', 'даты выпуска');

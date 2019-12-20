@@ -54,6 +54,16 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'released_at',
+          type: 'advanced-date',
+          title: 'Дата выпуска',
+        },
+        {
+          valueKey: 'date_end',
+          type: 'advanced-date',
+          title: 'Дата окончания срока действия',
+        },
+        {
           valueKey: 'fuel_type_text',
           title: 'Тип топлива',
           type: 'multiselect',
@@ -88,6 +98,18 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           {
             key: 'number',
             title: 'Номер',
+            width: 200,
+          },
+          {
+            key: 'released_at',
+            title: 'Дата выпуска',
+            format: 'datetime',
+            width: 200,
+          },
+          {
+            key: 'date_end',
+            title: 'Дата окончания срока действия',
+            format: 'datetime',
             width: 200,
           },
           {

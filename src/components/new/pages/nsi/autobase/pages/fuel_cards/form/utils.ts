@@ -15,6 +15,8 @@ export const defaultFuelCard: FuelCard = {
   is_common: false,
   is_used_in_waybill: false,
   structure_name: null,
+  released_at: null,
+  date_end: null,
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {

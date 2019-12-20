@@ -43,6 +43,8 @@ import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs'
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
+import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardToArchive';
+import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
 
 type PropsComponentButton = {
   data: ValuesOf<OneRegistryData['header']['buttons']>;
@@ -89,6 +91,8 @@ const buttonComponents = {
   [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
   [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
   [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
+  [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
+  [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
 };
 
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {

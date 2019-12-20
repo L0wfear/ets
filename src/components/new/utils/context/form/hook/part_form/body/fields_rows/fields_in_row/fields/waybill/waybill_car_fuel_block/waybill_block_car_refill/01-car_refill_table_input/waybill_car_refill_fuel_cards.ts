@@ -15,18 +15,20 @@ export const makeFuelCardStrickOptions = memoizeOne(
     return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
       (newArr, rowData) => {
         const triggerOnShow = (
-          (
-            fuel_type === rowData.fuel_type
-            || !fuel_type
-          ) && (
-            !userCompanyId
-            || rowData.company_id === userCompanyId
+          !rowData.is_archive
             && (
-              !userStructureId
-              || userStructureId === rowData.structure_id
-              || rowData.is_common
+              fuel_type === rowData.fuel_type
+              || !fuel_type
             )
-          )
+            && (
+              !userCompanyId
+              || rowData.company_id === userCompanyId
+              && (
+                !userStructureId
+                || userStructureId === rowData.structure_id
+                || rowData.is_common
+              )
+            )
         );
 
         if (triggerOnShow) {

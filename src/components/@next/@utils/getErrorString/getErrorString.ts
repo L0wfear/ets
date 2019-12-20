@@ -29,3 +29,7 @@ export const getRequiredFieldToFixed = (field = 'Название по умол�
 export const getNoTrimSpaceMessage = (field = 'Название по умолчанию') => {
   return `Поле "${field}" не должно начинаться или закачиваться пробелом`;
 };
+
+export const getRequiredFieldDateMoreThen = (field = 'Название по умолчанию', date: string) => {
+  return `"${field}" должна быть позже ${date}`;
+};

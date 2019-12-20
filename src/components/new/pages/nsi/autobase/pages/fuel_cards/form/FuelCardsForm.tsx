@@ -108,6 +108,32 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={12}>
               <ExtField
+                type="date"
+                time={true}
+                label="Дата выпуска"
+                value={state.released_at}
+                makeGoodFormat
+                onChange={props.handleChange}
+                error={errors.released_at}
+                boundKeys="released_at"
+                disabled={!props.isPermitted}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="date"
+                time={true}
+                label="Дата окончания срока действия"
+                value={state.date_end}
+                makeGoodFormat
+                onChange={props.handleChange}
+                error={errors.date_end}
+                boundKeys="date_end"
+                disabled={!props.isPermitted}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
                 type="select"
                 label="Тип топлива"
                 error={errors.fuel_type}

@@ -12,6 +12,8 @@ export const defaultFuelCard: FuelCard = {
   structure_id: null,
   is_common: false,
   structure_name: null,
+  released_at: null,
+  date_end: null,
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {

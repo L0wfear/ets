@@ -9,6 +9,8 @@ export type FuelCard = {
   structure_id: number | null;
   is_common: boolean | null;
   structure_name: string | null;
+  released_at: string;
+  date_end: string;
 };
 
 export type StateFuelCards = {

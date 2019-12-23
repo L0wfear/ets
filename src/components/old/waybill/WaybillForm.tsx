@@ -1569,10 +1569,12 @@ class WaybillForm extends React.Component<Props, State> {
     const IS_CLOSED = state?.status === 'closed';
     const IS_DELETE = state?.delete;
 
-    const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => ({
-      value: id,
-      label: `${full_name} ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
-    }));
+    const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => {
+      return ({
+        value: id,
+        label: `${full_name} ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
+      });
+    });
 
     const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
@@ -1653,12 +1655,12 @@ class WaybillForm extends React.Component<Props, State> {
     
     const accompanyingPersonByIndex = get(
       this.props.employeeIndex,
-      `${state.driver_id}`,
+      `${state.accompanying_person_id}`,
     );
     const accompanyingPersonNotActiveError = (IS_DRAFT || IS_CREATING) && state.accompanying_person_id && !accompanyingPersonByIndex?.active
       ? 'Поле "Сопровождающий" должно быть заполнено работающим сотрудником'
       : ''; // Если сотрудник неактивен, только для черновика
-
+    
     const canWaybillPrint =  (IS_DRAFT || IS_CREATING)
       ? !driverNotActiveError.length && !accompanyingPersonNotActiveError.length && this.props.canSave
       : this.props.canSave;

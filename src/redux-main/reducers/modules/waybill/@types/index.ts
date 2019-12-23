@@ -9,7 +9,19 @@ type WaybillCarRefill = {
 
 type WaybillEquipmentRefill = WaybillCarRefill;
 
-export type Waybill = {
+export type waybillDiff = { // Поля, которые есть в ПЛ, но нет в строке реестра ПЛ, для увеличения производительности бека
+  car_gps_code: string;
+  trailer_type_id: number;
+  trailer_gov_number: string;
+  trailer_model_id: number;
+  trailer_model_name: string;
+  trailer_special_model_id: number;
+  trailer_special_model_name: string;
+  trailer_type_name: string;
+  trailer_gps_code: string;
+};
+
+export type WaybillRegistryRow = {
   accompanying_person_id: number;
   accompanying_person_name: string;
   activated_by_employee_id: number;
@@ -22,7 +34,6 @@ export type Waybill = {
   car_model_name: string;
   car_type_id: number;
   car_type_name: string;
-  car_gps_code: string;
   car_refill: Array<WaybillCarRefill>;
   car_special_model_id: number;
   car_special_model_name: string;
@@ -95,19 +106,16 @@ export type Waybill = {
   }>;
   track_length: number;
   trailer_id: number;
-  trailer_type_id: number;
-  trailer_type_name: string;
-  trailer_gps_code: string;
-  trailer_gov_number: string;
-  trailer_model_id: number;
-  trailer_model_name: string;
-  trailer_special_model_id: number;
-  trailer_special_model_name: string;
   work_mode_id: number;
   work_mode_name: string;
   work_mode_text: string;
   season: 'winter' | 'summer';
 };
+
+export type Waybill = (
+  WaybillRegistryRow
+  & waybillDiff
+);
 
 export type IStateWaybill = {
   waybillList: Array<Waybill>;

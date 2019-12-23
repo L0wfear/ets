@@ -1,5 +1,7 @@
 import * as Moment from 'moment';
 
+import * as MomentTimezone from 'moment-timezone';
+
 import momentLocalizer from 'components/@next/@utils/dates/localizer';
 
 import { extendMoment } from 'moment-range';
@@ -67,6 +69,13 @@ export function makeUnixTime(timeOwn) {
   let time = timeOwn;
   if (typeof time === 'string') {
     time = moment(time).toDate();
+  }
+  return Math.floor(time / 1000);
+}
+
+export function makeUnixTimeMskTimezone(time) {
+  if (typeof time === 'string') {
+    time = MomentTimezone.tz(time, 'Europe/Moscow' );
   }
   return Math.floor(time / 1000);
 }

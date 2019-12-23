@@ -3,10 +3,10 @@ import { get } from 'lodash';
 import { TrackInfoService } from 'api/Services';
 import config from 'config';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { makeUnixTime } from 'components/@next/@utils/dates/dates';
+import { makeUnixTimeMskTimezone } from 'components/@next/@utils/dates/dates';
 import { TrackInfo } from 'redux-main/reducers/modules/some_uniq/track/@types';
 
-export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code']; from_dt: Parameters<typeof makeUnixTime>[0]; to_dt: Parameters<typeof makeUnixTime>[0]; }) => {
+export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code']; from_dt: Parameters<typeof makeUnixTimeMskTimezone>[0]; to_dt: Parameters<typeof makeUnixTimeMskTimezone>[0]; }) => {
   let version = get(
     JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
     [config.tracksCaching],
@@ -23,8 +23,8 @@ export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'
   }
   const payload = {
     gps_code: payloadOwn.gps_code,
-    from_dt: makeUnixTime(payloadOwn.from_dt),
-    to_dt: makeUnixTime(payloadOwn.to_dt),
+    from_dt: makeUnixTimeMskTimezone(payloadOwn.from_dt),
+    to_dt: makeUnixTimeMskTimezone(payloadOwn.to_dt),
     version,
   };
   try {

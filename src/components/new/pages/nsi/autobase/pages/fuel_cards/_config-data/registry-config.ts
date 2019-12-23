@@ -55,13 +55,13 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           title: 'Дата окончания срока действия',
         },
         {
-          valueKey: 'fuel_type_text',
-          title: 'Тип топлива',
+          valueKey: 'gov_number_text',
+          title: 'Рег. номер ТС',
           type: 'multiselect',
         },
         {
-          valueKey: 'gov_number_text',
-          title: 'Рег. номер ТС',
+          valueKey: 'fuel_type_text',
+          title: 'Тип топлива',
           type: 'multiselect',
         },
         {

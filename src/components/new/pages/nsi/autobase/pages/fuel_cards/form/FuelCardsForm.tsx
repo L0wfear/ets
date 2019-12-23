@@ -138,18 +138,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
             <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
-                label="Тип топлива"
-                error={errors.fuel_type}
-                options={fuelTypeOptions}
-                value={state.fuel_type}
-                onChange={props.handleChange}
-                boundKeys="fuel_type"
-                disabled={!isPermitted || state.is_used_in_waybill}
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
-              <ExtField
-                type="select"
                 label="Рег. номер ТС"
                 error={errors.car_id}
                 options={carActualListOptions.options}
@@ -160,6 +148,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 etsIsLoading={carActualListOptions.isLoading}
                 placeholder="Резерв"
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="select"
+                label="Тип топлива"
+                error={errors.fuel_type}
+                options={fuelTypeOptions}
+                value={state.fuel_type}
+                onChange={props.handleChange}
+                boundKeys="fuel_type"
+                disabled={!isPermitted || state.is_used_in_waybill}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Организация"

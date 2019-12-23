@@ -17,6 +17,7 @@
         "memoize-one": "^5.1.1",
         "moment": "^2.24.0",
         "moment-range": "^4.0.2",
+        "moment-timezone": "^0.5.27",
         "ol": "^5.3.3",
         "point-in-polygon": "^1.0.1",
         "prop-types": "^15.7.2",

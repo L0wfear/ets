@@ -59,7 +59,8 @@ const validateFuelCardId = (
     }
   }
 
-  if (!isValidSelectedFuelCard) {
+  if (!isValidSelectedFuelCard && rowData.fuel_card_id) {
+    // если выбрана топливная карта, но ее нет в списке, который приходит с бека
     return 'Укажите актуальную топливную карту';
   }
 
@@ -277,12 +278,12 @@ export const waybillSchema = {
         validator: (
           equipment_refill,
           formStatet,
-          { refillTypeList, fuelCardsList },
+          { refillTypeList, equipmentFuelCardsList },
         ) => {
           return checkCarRefill(
             equipment_refill,
             refillTypeList,
-            fuelCardsList,
+            equipmentFuelCardsList,
             formStatet.equipment_fuel_type,
           );
         },

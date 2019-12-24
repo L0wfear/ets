@@ -2239,6 +2239,11 @@ class WaybillForm extends React.Component<Props, State> {
                           fuel_given={state.fuel_given}
                           structure_id={state.structure_id}
                           fuel_type={state.fuel_type}
+                          car_id={state.car_id}
+                          date_for_valid={{
+                            fact_departure_date: state.fact_departure_date,
+                            plan_departure_date: state.plan_departure_date,
+                          }}
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
                           }
@@ -2448,6 +2453,11 @@ class WaybillForm extends React.Component<Props, State> {
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
                               fuel_type={state.equipment_fuel_type}
+                              car_id={state.car_id}
+                              date_for_valid={{
+                                fact_departure_date: state.fact_departure_date,
+                                plan_departure_date: state.plan_departure_date,
+                              }}
                               IS_DRAFT_OR_ACTIVE={
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE
                               }

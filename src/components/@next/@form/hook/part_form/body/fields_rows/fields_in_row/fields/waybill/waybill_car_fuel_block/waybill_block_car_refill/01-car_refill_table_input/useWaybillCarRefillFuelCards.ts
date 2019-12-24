@@ -32,10 +32,6 @@ export const useWaybillLoadCarRefillFuelCards = (formDataKey: any) => {
       () => {
         const options = makeFuelCardIdOptions(
           store.fuelCardsList.list,
-          car_refill,
-          fuel_type,
-          userData.company_id,
-          userData.structure_id,
         );
 
         return {

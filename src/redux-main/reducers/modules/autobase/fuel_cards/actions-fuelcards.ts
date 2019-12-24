@@ -21,6 +21,14 @@ export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
   )
 );
 
+export const setEquipmentFuelCards = (equipmentFuelCardsList: FuelCard[]) => (dispatch) => (
+  dispatch(
+    autobaseSetNewData({
+      equipmentFuelCardsList,
+    }),
+  )
+);
+
 export const setFuelType = (fuelTypeList: FuelType[]) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
@@ -50,6 +58,20 @@ export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): E
 
   dispatch(
     setFuelCards(data),
+  );
+
+  return {
+    data,
+  };
+};
+
+export const equipmentFuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
+  const { data } = await dispatch(
+    fuelCardsGet(payload, meta),
+  );
+
+  dispatch(
+    setEquipmentFuelCards(data),
   );
 
   return {

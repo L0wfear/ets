@@ -2017,6 +2017,7 @@ class WaybillForm extends UNSAFE_Form {
                           page={this.props.page}
                           path={this.props.path}
                           boundKey={'car_refill'}
+                          fuelCardsList={this.props.fuelCardsList}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
@@ -2232,6 +2233,7 @@ class WaybillForm extends UNSAFE_Form {
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
                               boundKey={'equipment_refill'}
+                              fuelCardsList={this.props.equipmentFuelCardsList}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>
@@ -2456,6 +2458,7 @@ export default compose(
     userStructures: getSessionState(state).userData.structures,
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
   })),

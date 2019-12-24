@@ -798,6 +798,7 @@ export default connect(
     userStructureId: getSessionState(state).userData.structure_id,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
   }),
   (dispatch) => ({
     actionLoadRefillTypeAndSetInStore: (...arg) =>

@@ -452,6 +452,7 @@ export type IStateAutobase = {
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];
   fuelCardsList: FuelCard[];
+  equipmentFuelCardsList: FuelCard[];
   fuelTypeList: FuelType[];
   typesAttrList: TypesAttr[];
 };

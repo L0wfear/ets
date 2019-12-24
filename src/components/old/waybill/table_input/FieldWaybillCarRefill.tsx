@@ -4,11 +4,11 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
-import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getSessionState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
@@ -23,13 +23,12 @@ import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 type FieldWaybillCarRefillStateProps = {
   isPermittedWaybillRefill: boolean;
-  fuelCardsList: IStateAutobase['fuelCardsList'];
-  refillTypeList: IStateSomeUniq['refillTypeList'],
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: InitialStateSession['userData']['structure_id'];
 };
 type FieldWaybillCarRefillDispatchProps = {
   fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
+  equipmentFuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof equipmentFuelCardsGetAndSetInStore>;
 };
 type FieldWaybillCarRefillOwnProps = {
   errors: any[];
@@ -50,6 +49,8 @@ type FieldWaybillCarRefillOwnProps = {
   };
   is_one_fuel_tank?: boolean;
   boundKey: string;
+  fuelCardsList: IStateAutobase['fuelCardsList'];
+  refillTypeList: IStateSomeUniq['refillTypeList'];
 
   canEditIfClose: boolean;
 } & (
@@ -116,6 +117,8 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
     const dispatch = etsUseDispatch();
+    const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
+    const isCarRefilBlock = props.boundKey === 'car_refill';
 
     const fuelCardIdOptions = React.useMemo(
       () => {
@@ -195,15 +198,28 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
         payload.valid_at = valid_at;
 
-        props.fuelCardsGetAndSetInStore(
-          {
-            ...payload,
-          },
-          {
-            page: props.page,
-            path: props.path,
-          },
-        );
+        if (isCarRefilBlock) {
+          props.fuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          );
+        } else if (isEquipmentRefilBlock) {
+          props.equipmentFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          );
+        }
+
       },
       [
         props.car_id,
@@ -273,9 +289,9 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
     const showForCarRefil = props.array.length
       || (!props.array.length && !(props.disabled && !props.isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
 
-    const showBlock = props.boundKey === 'equipment_refill'
+    const showBlock = isEquipmentRefilBlock
       ? showForEquipmentCarRefil
-      : props.boundKey === 'car_refill'
+      : isCarRefilBlock
         ? showForCarRefil
         : false;
 
@@ -333,7 +349,6 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDispatchProps, FieldWaybillCarRefillOwnProps, ReduxState>(
   (state) => ({
     isPermittedWaybillRefill: getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill),
-    fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
     userCompanyId: getSessionState(state).userData.company_id,
     userStructureId: getSessionState(state).userData.structure_id,
@@ -342,6 +357,11 @@ export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDis
     fuelCardsGetAndSetInStore: (...arg) => (
       dispatch(
         fuelCardsGetAndSetInStore(...arg),
+      )
+    ),
+    equipmentFuelCardsGetAndSetInStore: (...arg) => (
+      dispatch(
+        equipmentFuelCardsGetAndSetInStore(...arg),
       )
     ),
   }),

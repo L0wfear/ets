@@ -976,5 +976,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     carList: getAutobaseState(state).carList,
     carIndex: getAutobaseState(state).carIndex,
     employeeIndex: getEmployeeState(state).employeeIndex,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
   }),
 )(WaybillFormWrap);

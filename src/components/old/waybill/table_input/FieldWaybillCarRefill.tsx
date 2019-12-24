@@ -6,7 +6,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
@@ -17,6 +17,7 @@ import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as moment from 'moment';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 type Props = {
   id: string;
@@ -33,11 +34,12 @@ type Props = {
   fuel_type: Waybill['fuel_type'];
   car_id: Waybill['car_id'];
   date_for_valid: {
-    fact_departure_date: Waybill['fact_departure_date'],
-    plan_departure_date: Waybill['plan_departure_date'],
+    fact_departure_date: Waybill['fact_departure_date'];
+    plan_departure_date: Waybill['plan_departure_date'];
   };
   is_one_fuel_tank?: boolean;
   boundKey: string;
+  fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'];
 
   canEditIfClose: boolean;
 } & (
@@ -103,6 +105,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
     const dispatch = etsUseDispatch();
+    const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
+    const isCarRefilBlock = props.boundKey === 'car_refill';
 
     const isPermittedWaybillRefill = etsUseSelector((state) => getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill));
     const fuelCardsList = etsUseSelector((state) => getAutobaseState(state).fuelCardsList);
@@ -188,15 +192,27 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
         payload.valid_at = valid_at;
 
-        dispatch(fuelCardsGetAndSetInStore(
-          {
-            ...payload,
-          },
-          {
-            page: props.page,
-            path: props.path,
-          },
-        ));
+        if (isCarRefilBlock) {
+          dispatch(fuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
+        } else if (isEquipmentRefilBlock) {
+          dispatch(equipmentFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
+        }
       },
       [
         props.car_id,
@@ -266,9 +282,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const showForCarRefil = props.array.length
       || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
 
-    const showBlock = props.boundKey === 'equipment_refill'
+    const showBlock = isEquipmentRefilBlock
       ? showForEquipmentCarRefil
-      : props.boundKey === 'car_refill'
+      : isCarRefilBlock
         ? showForCarRefil
         : false;
 

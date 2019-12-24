@@ -215,6 +215,7 @@ type StateProps = {
   userStructures: InitialStateSession['userData']['structures'];
   userPermissionsSet: InitialStateSession['userData']['permissionsSet'];
   fuelCardsList: Array<FuelCard>;
+  equipmentFuelCardsList: Array<FuelCard>;
   workModeList: Array<WorkMode>;
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
   carList: Array<Car>;
@@ -2252,6 +2253,7 @@ class WaybillForm extends React.Component<Props, State> {
                           page={this.props.page}
                           path={this.props.path}
                           boundKey={'car_refill'}
+                          fuelCardsList={this.props.fuelCardsList}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
@@ -2467,6 +2469,7 @@ class WaybillForm extends React.Component<Props, State> {
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
                               boundKey={'equipment_refill'}
+                              fuelCardsList={this.props.equipmentFuelCardsList}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>
@@ -2694,6 +2697,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     workModeList: getSomeUniqState(state).workModeList,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
     carList: getAutobaseState(state).carList,

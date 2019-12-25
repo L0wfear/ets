@@ -223,9 +223,7 @@ class WaybillFormWrap extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
-    this.props.dispatch(
-      fuelCardsActions.fuelCardsGetAndSetInStore({}, this.props),
-    );
+    this.props.dispatch(fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(this.props));
 
     const currentDate = new Date();
 
@@ -977,5 +975,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     carIndex: getAutobaseState(state).carIndex,
     employeeIndex: getEmployeeState(state).employeeIndex,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
+    notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
   }),
 )(WaybillFormWrap);

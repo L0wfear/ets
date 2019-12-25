@@ -91,7 +91,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         if (date_start && date_end && carData.data) {
-          if (date_start !== date_start_prev || date_end !== date_end_prev || refresh || !carData_prev.dataIsLoaded) {
+          if (date_start !== date_start_prev || date_end !== date_end_prev || refresh || (carData_prev && !carData_prev.dataIsLoaded)) {
             const payload = {
               asuods_id: carData.data.asuods_id,
               gps_code: carData.data.gps_code,
@@ -110,7 +110,63 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
           }
         }
       },
-      [date_start, date_start_prev, date_end, date_end_prev, carData, carData_prev, refresh, props.match.params, props.setDataInSearch],
+      [
+        date_start,
+        date_start_prev,
+        date_end,
+        date_end_prev,
+        carData,
+        carData_prev,
+        refresh,
+        props.match.params,
+        props.setDataInSearch,
+      ],
+    );
+
+    React.useEffect(
+      () => {
+        if (date_start && date_end && carData.data) {
+          const payload = {
+            asuods_id: carData.data.asuods_id,
+            gps_code: carData.data.gps_code,
+            date_start,
+            date_end,
+          };
+
+          dispatch(fetchTrack(payload));
+          dispatch(fetchCarInfo(payload, { page: 'mainpage' }));
+        }
+      },
+      [
+        date_start,
+        date_end,
+        carData,
+      ],
+    );
+
+    React.useEffect(
+      () => {
+        if (refresh && date_start && date_end && carData.data) {
+          const payload = {
+            asuods_id: carData.data.asuods_id,
+            gps_code: carData.data.gps_code,
+            date_start,
+            date_end,
+          };
+
+          dispatch(fetchTrack(payload));
+          dispatch(fetchCarInfo(payload, { page: 'mainpage' }));
+
+          if (refresh) {
+            props.setDataInSearch({
+              refresh: null,
+            });
+          }
+        }
+      },
+      [
+        refresh,
+      ],
     );
 
     /****************************** end ******************************/

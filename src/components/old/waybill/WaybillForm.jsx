@@ -1994,6 +1994,7 @@ class WaybillForm extends UNSAFE_Form {
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
                           array={state.car_refill}
+                          arrayOrigin={origFormState.car_refill}
                           errors={get(
                             errors,
                             'car_refill',
@@ -2209,6 +2210,7 @@ class WaybillForm extends UNSAFE_Form {
                           <EtsBootstrap.Col md={12}>
                             <FieldWaybillCarRefill
                               array={state.equipment_refill}
+                              arrayOrigin={origFormState.equipment_refill}
                               errors={get(
                                 errors,
                                 'equipment_refill',

@@ -171,7 +171,7 @@ class WaybillFormWrap extends React.Component {
 
   componentDidMount() {
     this.props.actionLoadRefillTypeAndSetInStore({}, this.props);
-    this.props.fuelCardsGetAndSetInStore({}, this.props);
+    this.props.actionLoadOriginFuelCardsGetAndSetInStore(this.props);
 
     const currentDate = new Date();
 
@@ -759,7 +759,7 @@ class WaybillFormWrap extends React.Component {
   render() {
     const { entity } = this.props;
     return (
-      <>
+      <React.Fragment>
         {this.state.formState && (
           <WaybillForm
             formState={this.state.formState}
@@ -786,7 +786,7 @@ class WaybillFormWrap extends React.Component {
               array={this.state.edcRequestIds}
             />
           ))}
-      </>
+      </React.Fragment>
     );
   }
 }
@@ -799,14 +799,17 @@ export default connect(
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
+    notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
   }),
   (dispatch) => ({
     actionLoadRefillTypeAndSetInStore: (...arg) =>
       dispatch(actionLoadRefillTypeAndSetInStore(...arg)),
     actionResetRefillTypeAndSetInStore: (...arg) =>
       dispatch(actionResetRefillTypeAndSetInStore(...arg)),
-    fuelCardsGetAndSetInStore: (...arg) =>
-      dispatch(fuelCardsActions.fuelCardsGetAndSetInStore(...arg)),
     resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
+    actionLoadOriginFuelCardsGetAndSetInStore: (...arg) =>
+      dispatch(
+        fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(...arg),
+      ),
   }),
 )(connectToStores(WaybillFormWrap, ['objects']));

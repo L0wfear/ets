@@ -4,7 +4,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
-import { getSomeUniqState, getSessionState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarRefillTableHeader from './CarRefillTableHeader';
@@ -12,12 +12,10 @@ import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'r
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
-import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { get } from 'lodash';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { get, keyBy } from 'lodash';
 import * as moment from 'moment';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
@@ -56,10 +54,12 @@ type FieldWaybillCarRefillOwnProps = {
 } & (
   {
     array: Waybill['car_refill'];
+    arrayOrigin: Waybill['car_refill'];
     fuel_given: Waybill['fuel_given'];
     fuel_type: Waybill['fuel_type'];
   } | {
     array: Waybill['equipment_refill'];
+    arrayOrigin: Waybill['equipment_refill'];
     fuel_given: Waybill['equipment_fuel_given'];
     fuel_type: Waybill['equipment_fuel_type'];
   }
@@ -116,6 +116,7 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
 const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
+    const notFiltredFuelCardsIndex = etsUseSelector((state) => getAutobaseState(state).notFiltredFuelCardsIndex);
     const dispatch = etsUseDispatch();
     const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
     const isCarRefilBlock = props.boundKey === 'car_refill';
@@ -124,14 +125,14 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       () => {
         return makeFuelCardIdOptions(
           props.fuelCardsList,
+          props.array,
+          notFiltredFuelCardsIndex,
         );
       },
       [
         props.fuelCardsList,
-        props.structure_id,
-        props.userCompanyId,
         props.array,
-        props.fuel_type,
+        notFiltredFuelCardsIndex,
       ],
     );
 
@@ -260,8 +261,10 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           const availabelFuelCars = (
             makeFuelCardIdOptions(
               props.fuelCardsList,
-            ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[])
-          .reduce(
+              props.arrayOrigin,
+              notFiltredFuelCardsIndex,
+            ))
+          .reduce<Set<number>>(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 
@@ -269,18 +272,30 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
             },
             new Set(),
           );
+          const currentArrayIndex = keyBy(props.arrayOrigin, 'fuel_card_id');
 
           props.handleChange(
             props.array.map(
               (rowData) => ({
                 ...rowData,
-                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id) ? rowData.fuel_card_id : null,
+                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id) ? rowData.fuel_card_id : currentArrayIndex[rowData.fuel_card_id],
               }),
             ),
           );
         }
       },
-      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange, props.structure_id],
+      [
+        previosFuelType,
+        props.fuel_type,
+        props.fuelCardsList,
+        props.userCompanyId,
+        props.userStructureId,
+        props.array,
+        props.handleChange,
+        props.structure_id,
+        props.arrayOrigin,
+        notFiltredFuelCardsIndex,
+      ],
     );
 
     const showForEquipmentCarRefil = !props.is_one_fuel_tank

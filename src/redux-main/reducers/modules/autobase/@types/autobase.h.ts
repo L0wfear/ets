@@ -451,6 +451,7 @@ export type IStateAutobase = {
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];
+  notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
   fuelCardsList: FuelCard[];
   equipmentFuelCardsList: FuelCard[];
   fuelTypeList: FuelType[];

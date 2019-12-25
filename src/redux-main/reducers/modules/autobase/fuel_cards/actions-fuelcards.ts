@@ -1,4 +1,5 @@
 import { HandleThunkActionCreator } from 'react-redux';
+import { keyBy } from 'lodash';
 import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import {
   createFuelCard,
@@ -13,6 +14,14 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* ---------- FuelCards ---------- */
+export const actionSetNotFiltredFuelCardsIndex = (fuelCardsList: FuelCard[]) => (dispatch) => (
+  dispatch(
+    autobaseSetNewData({
+      notFiltredFuelCardsIndex: keyBy(fuelCardsList, 'id'),
+    }),
+  )
+);
+
 export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
@@ -49,6 +58,20 @@ export const fuelCardsGet = (payload: object, meta: LoadingMeta): EtsAction<Retu
     getFuelCards(payload),
     meta,
   );
+};
+
+export const actionLoadOriginFuelCardsGetAndSetInStore = (meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
+  const { data } = await dispatch(
+    fuelCardsGet({}, meta),
+  );
+
+  dispatch(
+    actionSetNotFiltredFuelCardsIndex(data),
+  );
+
+  return {
+    data,
+  };
 };
 
 export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {

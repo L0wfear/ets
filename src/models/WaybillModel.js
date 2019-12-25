@@ -16,6 +16,7 @@ const validateFuelCardId = (
   refillTypeList,
   fuelCardsList,
   fuel_type,
+  notFiltredFuelCardsIndex,
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard
@@ -26,7 +27,11 @@ const validateFuelCardId = (
       false,
     );
 
-  const availableFuelCard = makeFuelCardIdOptions(fuelCardsList);
+  const availableFuelCard = makeFuelCardIdOptions(
+    fuelCardsList,
+    [rowData],
+    notFiltredFuelCardsIndex,
+  );
 
   const isValidSelectedFuelCard = availableFuelCard.some(
     (optionData) => optionData.rowData.id === rowData.fuel_card_id,
@@ -63,7 +68,13 @@ const validateFuelCardId = (
 };
 
 const checkCarRefill = memoizeOne(
-  (car_refill, refillTypeList, fuelCardsList, fuel_type) => {
+  (
+    car_refill,
+    refillTypeList,
+    fuelCardsList,
+    fuel_type,
+    notFiltredFuelCardsIndex,
+  ) => {
     return car_refill.map((rowData) => {
       return {
         type_id: !rowData.type_id
@@ -74,6 +85,37 @@ const checkCarRefill = memoizeOne(
           refillTypeList,
           fuelCardsList,
           fuel_type,
+          notFiltredFuelCardsIndex,
+        ),
+        value:
+          !rowData.value && rowData.value !== 0
+            ? 'Поле "Выдано, л" должно быть заполнено'
+            : rowData.value < 0
+              ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+              : '',
+      };
+    });
+  },
+);
+const checkEquipmentCarRefill = memoizeOne(
+  (
+    car_refill,
+    refillTypeList,
+    fuelCardsList,
+    fuel_type,
+    notFiltredFuelCardsIndex,
+  ) => {
+    return car_refill.map((rowData) => {
+      return {
+        type_id: !rowData.type_id
+          ? 'Поле "Способ заправки" должно быть заполнено'
+          : '',
+        fuel_card_id: validateFuelCardId(
+          rowData,
+          refillTypeList,
+          fuelCardsList,
+          fuel_type,
+          notFiltredFuelCardsIndex,
         ),
         value:
           !rowData.value && rowData.value !== 0
@@ -242,13 +284,14 @@ export const waybillSchema = {
         validator: (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList },
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex },
         ) => {
           return checkCarRefill(
             car_refill,
             refillTypeList,
             fuelCardsList,
             formState.fuel_type,
+            notFiltredFuelCardsIndex,
           );
         },
       },
@@ -258,13 +301,14 @@ export const waybillSchema = {
         validator: (
           equipment_refill,
           formStatet,
-          { refillTypeList, equipmentFuelCardsList },
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
         ) => {
-          return checkCarRefill(
+          return checkEquipmentCarRefill(
             equipment_refill,
             refillTypeList,
             equipmentFuelCardsList,
             formStatet.equipment_fuel_type,
+            notFiltredFuelCardsIndex,
           );
         },
       },

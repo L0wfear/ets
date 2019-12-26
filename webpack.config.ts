@@ -244,6 +244,9 @@ const config: webpack.Configuration = {
                   },
                 ],
                 [
+                  '@babel/plugin-proposal-nullish-coalescing-operator',
+                ],
+                [
                   '@babel/plugin-proposal-optional-chaining',
                   {
                     loose: true,

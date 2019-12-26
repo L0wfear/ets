@@ -6,11 +6,11 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import Div from 'components/old/ui/Div';
 import { createValidDateTime, getYesterday9am, getToday859am } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 type IPropsReportHeader = {
   mission_date_start_from: string;
@@ -56,7 +56,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <EtsBootstrap.Col md={12}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col mdOffset={3} md={6}>
-              <Div><label htmlFor=" ">Период формирования</label></Div>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>

@@ -17,6 +17,7 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import companyActions from 'redux-main/reducers/modules/company/actions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types/index';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 const page = 'car-movement-time-report';
 
@@ -103,7 +104,9 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
         <EtsBootstrap.Col md={6}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
-              <label htmlFor=" ">Период формирования</label>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <DatePickerRange

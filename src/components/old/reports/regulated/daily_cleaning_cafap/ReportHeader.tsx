@@ -22,6 +22,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionSessionUpdateCurrentSeason } from 'redux-main/reducers/modules/session/action_get_config';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 type IPropsReportHeader = {
   date_start: string;
@@ -152,7 +153,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={5}>
-            <label htmlFor=" ">Период формирования</label>
+            <FieldLabel>
+              Период формирования
+            </FieldLabel>
             <DatePickerRange
               date_start_id="date_start"
               date_start_value={date_start}

@@ -16,6 +16,7 @@ import {
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 type IPropsReportHeader = {
   date_from: string;
@@ -99,7 +100,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <EtsBootstrap.Col md={12}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col mdOffset={3} md={6}>
-              <label htmlFor=" ">Период формирования</label>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>

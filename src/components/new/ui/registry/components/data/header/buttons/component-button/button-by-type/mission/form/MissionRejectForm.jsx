@@ -77,29 +77,32 @@ class MissionRejectForm extends React.Component {
 
   componentDidMount() {
     this.context.flux.getActions('objects').getCars();
-    this.getCarFuncTypesByNormId();
     this.props.actionGetAndSetInStoreMissionCancelReasons();
-    try {
-      this.props
-        .actionGetMissionById(this.state.mission_id, {})
-        .then((missionById) => {
-          if (missionById) {
-            this.setState({ missionById });
-          }
-        });
-    } catch (error) {
-      console.error(error); // tslint:disable-line
-    }
+    this.updateMissionData(this.state.mission_id);
   }
 
   componentWillUnmount() {
     // this.props.actionResetMissionCancelReasons();
   }
 
-  getCarFuncTypesByNormId() {
-    const { missionList, mIndex } = this.state;
+  updateMissionData = (mission_id) => {
+    try {
+      this.props
+        .actionGetMissionById(mission_id, {})
+        .then((missionById) => {
+          if (missionById) {
+            this.getCarFuncTypesByNormId(missionById);
+            this.setState({ missionById });
+          }
+        })
+        .then(() => {});
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+  };
 
-    const { norm_id, date_start: datetime } = missionList[mIndex];
+  getCarFuncTypesByNormId(missionById) {
+    const { norm_id, date_start: datetime } = missionById || {};
 
     if (norm_id) {
       this.context.flux
@@ -172,12 +175,14 @@ class MissionRejectForm extends React.Component {
       const { needUpdateParent } = this.state;
       this.props.onReject(needUpdateParent, this.state.edcRequestIds);
     } else {
-      this.setState({
+      const newState = {
         comment: '',
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),
-      });
+      };
+      this.setState(newState);
+      this.updateMissionData(newState.mission_id);
     }
   };
 
@@ -222,6 +227,7 @@ class MissionRejectForm extends React.Component {
     if (!this.state.data) {
       let mission = null;
       if (!this.state.missionById) {
+        // вроде как не актульно, тк при отмене в цепочке заданий идёт запрос за заданием
         try {
           mission = await this.props.actionGetMissionById(
             this.state.mission_id,
@@ -437,7 +443,7 @@ class MissionRejectForm extends React.Component {
       ));
 
     return (
-      <>
+      <React.Fragment>
         <EtsBootstrap.ModalContainer
           id="modal-mission-reject"
           show={this.props.show}
@@ -537,7 +543,7 @@ class MissionRejectForm extends React.Component {
             </EtsBootstrap.Button>
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
-      </>
+      </React.Fragment>
     );
   }
 }

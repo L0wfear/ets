@@ -17,6 +17,7 @@ import {
   dutyMissionIsClosed,
   dutyMissionIsAssigned,
   dutyMissionIsComplete,
+  dutyMissionIsNotAssigned,
 } from './utils';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -68,6 +69,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       isChanged: false,
 
       IS_CREATING,
+      DUTY_MISSION_IS_NOT_ASSIGNED: dutyMissionIsNotAssigned(status),
       DUTY_MISSION_IS_DISPLAY: dutyMissionIsDisplay(state.status), // не назначенно
       DUTY_MISSION_IS_CLOSED: dutyMissionIsClosed(state.status),
       DUTY_MISSION_IS_ASSIGNED: dutyMissionIsAssigned(state.status),
@@ -96,6 +98,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       const {
         isPermitted,
         IS_CREATING,
+        // DUTY_MISSION_IS_NOT_ASSIGNED,
         DUTY_MISSION_IS_ORDER_SOURCE,
         DUTY_MISSION_IS_DISPLAY,
       } = this.state;
@@ -124,6 +127,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         }
       }
 
+      // if (IS_CREATING || DUTY_MISSION_IS_NOT_ASSIGNED) {
       if (IS_CREATING) {
         this.checkOnMosckowTime();
         this.checkErrorsWithTime();

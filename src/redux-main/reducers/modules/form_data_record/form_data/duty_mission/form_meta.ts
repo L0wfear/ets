@@ -6,7 +6,10 @@ import { routeTypesByTitle } from 'constants/route';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 import { promiseGetDutyMissionById, promiseSubmitDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
-import { isPermittedEmployeeForDutyMission } from 'components/new/pages/missions/duty_mission/form/main/utils';
+import {
+  isPermittedEmployeeForDutyMission,
+  // dutyMissionIsNotAssigned,
+} from 'components/new/pages/missions/duty_mission/form/main/utils';
 import { getEmployeeState, getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import memoizeOne from 'memoize-one';
@@ -80,7 +83,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'datetime',
           required: true,
           dependencies: [
-            (value, { plan_date_end, }, reduxState) => {
+            (value, { plan_date_end, id, status }, reduxState) => {
               const dependeceOrder = getMissionsState(reduxState).dutyMissionData.dependeceOrder;
               const dependeceTechnicalOperation = getMissionsState(reduxState).dutyMissionData.dependeceTechnicalOperation;
               const moscowTimeServer = getSomeUniqState(reduxState).moscowTimeServer;
@@ -122,8 +125,11 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                 
                 const minutesDiff = moment(moscowTimeServer.date).diff(moment(value), 'minutes');
 
-                if(moscowTimeServer.date && minutesDiff > 15){
-                  return 'Планируемая дата начала не может быть раньше на 15 минут от текущего времени';
+                // if (!id || dutyMissionIsNotAssigned(status)) { // по идеи неназначенное нз тоже нужно валидировать
+                if (!id) {
+                  if (moscowTimeServer.date && minutesDiff > 15){
+                    return 'Планируемая дата начала не может быть раньше на 15 минут от текущего времени';
+                  }
                 }
 
               }

@@ -87,6 +87,10 @@ export const makeOptionsByEmployee = memoize(
 
 export const dutyMissionIsDisplay = (status) =>
   Boolean(status) && status !== DUTY_MISSION_STATUS.not_assigned;
+
+export const dutyMissionIsNotAssigned = (status) =>
+  status === DUTY_MISSION_STATUS.not_assigned;
+
 export const dutyMissionIsAssigned = (status) =>
   status === DUTY_MISSION_STATUS.assigned;
 export const dutyMissionIsComplete = (status) =>

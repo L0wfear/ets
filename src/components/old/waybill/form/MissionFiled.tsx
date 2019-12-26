@@ -276,7 +276,10 @@ class MissionField extends React.Component<Props, any> {
     const missionOptions = [...MISSIONS, ...OUTSIDEMISSIONS].reduce(
       (newArr, item) => {
         if (!newArr.some((innerItem) => innerItem.value === item.value)) {
-          newArr.push(item);
+          newArr.push({
+            ...item,
+            isNotVisible: item.rowData.invalidMission,
+          });
         }
         return newArr;
       },

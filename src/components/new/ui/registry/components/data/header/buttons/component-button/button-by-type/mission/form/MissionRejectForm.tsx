@@ -117,32 +117,36 @@ class MissionRejectForm extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.dispatch(carGetAndSetInStore({}, { page: formPage }));
-    this.getCarFuncTypesByNormId();
+
     this.props.dispatch(someUniqActions.actionGetAndSetInStoreMissionCancelReasons({}, { page: formPage }));
+    this.updateMissionData(this.state.mission_id);
+
+  }
+
+  componentWillUnmount() {
+    // this.props.actionResetMissionCancelReasons();
+  }
+
+  updateMissionData = (mission_id) => {
     try {
       this.props.dispatch(
         missionsActions.actionGetMissionById(
-          this.state.mission_id,
+          mission_id,
           { page: formPage },
         ),
       ).then((missionById) => {
         if (missionById) {
+          this.getCarFuncTypesByNormId(missionById);
           this.setState({ missionById });
         }
       });
     } catch (error) {
       console.error(error); // tslint:disable-line
     }
-  }
+  };
 
-  componentWillUnmount() {
-    // this.props.dispatch(someUniqActions.actionResetMissionCancelReasons());
-  }
-
-  async getCarFuncTypesByNormId() {
-    const { missionList, mIndex } = this.state;
-
-    const { norm_id, date_start } = missionList[mIndex];
+  async getCarFuncTypesByNormId(missionById) {
+    const { norm_id, date_start } = missionById || {};
 
     if (norm_id) {
       const norm_data = await this.props.dispatch(
@@ -216,12 +220,14 @@ class MissionRejectForm extends React.Component<Props, State> {
       const { needUpdateParent } = this.state;
       this.props.onReject(needUpdateParent, this.state.edcRequestIds);
     } else {
-      this.setState({
+      const newState = {
         comment: '',
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),
-      });
+      };
+      this.setState(newState);
+      this.updateMissionData(newState.mission_id);
     }
   };
 
@@ -273,6 +279,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     if (!this.state.data) {
       let mission = null;
       if (!this.state.missionById) {
+        // вроде как не актульно, тк при отмене в цепочке заданий идёт запрос за заданием
         try {
           mission = await this.props.dispatch(
             missionsActions.actionGetMissionById(

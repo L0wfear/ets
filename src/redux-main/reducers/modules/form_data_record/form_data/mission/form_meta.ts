@@ -12,7 +12,6 @@ import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modul
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
-import * as moment from 'moment';
 
 export const defaultCheckConsumableMaterialsNumberValue = (field_value_string: ValuesOf<Mission['consumable_materials']>[keyof ValuesOf<Mission['consumable_materials']>], title) => {
   if (field_value_string) {
@@ -144,7 +143,7 @@ export const metaMission: ConfigFormData<Mission> = {
                   }
                 }
 
-                const dateStartMinutesDiff = moment(moscowTimeServer.date).diff(moment(value), 'minutes');
+                const dateStartMinutesDiff = diffDates(moscowTimeServer.date, value, 'minutes', false);
                 if(status === 'not_assigned') {
                   if(moscowTimeServer.date && dateStartMinutesDiff > 15){
                     return 'Дата начала не может быть раньше на 15 минут от текущего времени';
@@ -186,15 +185,16 @@ export const metaMission: ConfigFormData<Mission> = {
                     return 'Дата не должна выходить за пределы путевого листа';
                   }
 
-                  if(status === 'assigned' && waybill_status === 'draft') {
-                    if(moscowTimeServer.date && dateStartMinutesDiff > 15){
+                  if (status === 'assigned' && waybill_status === 'draft') {
+                    if (moscowTimeServer.date && dateStartMinutesDiff > 15){
                       return 'Дата начала не может быть раньше на 15 минут от текущего времени';
                     }
                   }
 
-                  const planDateStartMinutesDiff = moment(moscowTimeServer.date).diff(moment(plan_date_start), 'minutes');
-                  if((status === 'assigned' || status === 'in_progress' || status === 'expired'  ) && waybill_status === 'active' && plan_date_start) {
-                    if(moscowTimeServer.date && planDateStartMinutesDiff > 15){
+                  const planDateStartMinutesDiff = diffDates(plan_date_start, value, 'minutes', false);
+
+                  if ((status === 'assigned' || status === 'in_progress' || status === 'expired'  ) && waybill_status === 'active' && plan_date_start) {
+                    if (moscowTimeServer.date && planDateStartMinutesDiff > 15) {
                       return `Дата начала не может быть раньше на 15 минут от первоначально указанного времени (${createValidDateTimeDots(plan_date_start)})`;
                     }
                   }

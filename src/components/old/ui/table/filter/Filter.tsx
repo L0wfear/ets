@@ -181,16 +181,16 @@ export default class Filter extends React.Component<Props, State> {
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}
-          onChange={(e) =>
+          onChange={(event) =>
             this.handleFilterValueChange(
               this.getName(byKey || name, type),
-              escape,
+              event,
             )
           }
-          onMultiChange={(e) =>
+          onMultiChange={(event) =>
             this.handleFilterMultipleValueChange(
               this.getName(byKey || name, type),
-              e,
+              event,
             )
           }
         />

@@ -158,13 +158,16 @@ export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAct
     };
   }
 
-  dispatch({
-    type: CAR_INFO_SET_TRACK_CACHING,
-    payload: {
-      trackCaching: trackData,
-      gps_code: payloadData.gps_code,
-    },
-  });
+  const monitorPage = getMonitorPageState(getState());
+  if (monitorPage && monitorPage.carInfo && monitorPage.carInfo.gps_code === payloadData.gps_code) {
+    dispatch({
+      type: CAR_INFO_SET_TRACK_CACHING,
+      payload: {
+        trackCaching: trackData,
+        gps_code: payloadData.gps_code,
+      },
+    });
+  }
 };
 
 export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> => async (dispatch, getState) => {
@@ -191,16 +194,19 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
     ),
   );
 
-  dispatch({
-    type: CAR_INFO_SET_MISSIONS_DATA,
-    payload: {
-      missions: result.missions,
-      ...getMaxSpeeds(result.missions),
-      gps_code: payloadData.gps_code,
-      carTabInfo: getCarTabInfo(result),
-      isLoading: false,
-    },
-  });
+  const monitorPage = getMonitorPageState(getState());
+  if (monitorPage && monitorPage.carInfo && monitorPage.carInfo.gps_code === payloadData.gps_code) {
+    dispatch({
+      type: CAR_INFO_SET_MISSIONS_DATA,
+      payload: {
+        missions: result.missions,
+        ...getMaxSpeeds(result.missions),
+        gps_code: payloadData.gps_code,
+        carTabInfo: getCarTabInfo(result),
+        isLoading: false,
+      },
+    });
+  }
 };
 
 export const carInfoPushPointIntoTrack = (point, odh_mkad) => ({

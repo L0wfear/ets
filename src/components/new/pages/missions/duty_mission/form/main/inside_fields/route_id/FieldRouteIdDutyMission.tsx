@@ -127,8 +127,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         DUTY_MISSION_IS_ORDER_SOURCE,
       } = this.props;
 
-      const triggerOne =
-        (
+      const triggerOne
+        = (
           (
             technical_operation_id !== prevProps.technical_operation_id
             || municipal_facility_id !== prevProps.municipal_facility_id
@@ -141,10 +141,10 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         )
         || (
           DUTY_MISSION_IS_ORDER_SOURCE
-            ? !dependeceTechnicalOperation &&
-              prevProps.dependeceTechnicalOperation
-            : !municipalFacilityForDutyMissionList.length &&
-              prevProps.municipalFacilityForDutyMissionList.length
+            ? !dependeceTechnicalOperation
+              && prevProps.dependeceTechnicalOperation
+            : !municipalFacilityForDutyMissionList.length
+              && prevProps.municipalFacilityForDutyMissionList.length
         );
 
       if (triggerOne) {

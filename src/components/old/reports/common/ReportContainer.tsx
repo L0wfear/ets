@@ -505,8 +505,6 @@ class ReportContainer extends React.Component<
       rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
     };
 
-    console.log('this.props ==== ', {props: this.props});
-
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
       let report = [...this.props.list];

@@ -1,4 +1,4 @@
-import { getRequiredFieldToFixed } from "components/@next/@utils/getErrorString/getErrorString";
+import { getRequiredFieldToFixed } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const fixedValidators = [
   {

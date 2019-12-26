@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { get, keyBy } from 'lodash';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
+import TableInput, { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
-import { getSomeUniqState, getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import CarRefillTableHeader from './CarRefillTableHeader';
 import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
-import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
@@ -21,7 +21,7 @@ type Props = {
   id: string;
   errors: Array<any>;
   title: string;
-  handleChange: TableInputProps['onChange'];
+  handleChange: (refill: Waybill['car_refill']) => any;
 
   IS_DRAFT_OR_ACTIVE: boolean;
 
@@ -161,7 +161,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
     const plan_departure_date = createValidDateTime(get(props, 'date_for_valid.plan_departure_date'));
 
-    const updateFuelCardList = React.useCallback(
+    const handleUpdateFuelCard = React.useCallback(
       async () => {
         const payload: any = {};
 
@@ -223,25 +223,43 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ],
     );
 
-    React.useEffect(() => {
-      updateFuelCardList();
-      // console.log('updateFuelCardList === ');
-    }, [
-      props.car_id,
-      props.fuel_type,
-      fact_departure_date,
-      plan_departure_date,
-    ]);
+    React.useEffect(
+      () => {
+        handleUpdateFuelCard();
+      }, [
+        handleUpdateFuelCard,
+      ],
+    );
 
-    const handleUpdateFuelCard = React.useCallback(
-      async () => {
-        updateFuelCardList();
+    const handleChange = React.useCallback(
+      (array) => {
+        let newArr = array;
+        const filtredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
+
+        // автозаполнение топливной картой, если она требуется
+        if (typeIdOptions.length && filtredFuelCardIdOptions.length === 1) {
+          if (newArr.length === 1) {
+            const firstElement = newArr[0];
+            if (!firstElement.fuel_card_id) {
+              const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
+              if (refillTypeData && refillTypeData.rowData.is_fuel_card_required) {
+                newArr = [
+                  {
+                    ...firstElement,
+                    fuel_card_id: filtredFuelCardIdOptions[0].value,
+                  },
+                ];
+              }
+            }
+          }
+        }
+
+        props.handleChange(newArr);
       },
       [
-        props.car_id,
-        props.fuel_type,
-        props.page,
-        props.path,
+        props.handleChange,
+        typeIdOptions,
+        fuelCardIdOptions,
       ],
     );
 
@@ -249,13 +267,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         if (props.fuel_type && props.fuel_type !== previosFuelType) {
-          const availabelFuelCars = (
-            makeFuelCardIdOptions(
-              fuelCardsList,
-              props.arrayOrigin,
-              notFiltredFuelCardsIndex,
-            ))
-          .reduce<Set<number>>(
+          const availabelFuelCars = fuelCardIdOptions.reduce<Set<number>>(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 
@@ -265,22 +277,28 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           );
           const currentArrayIndex = keyBy(props.arrayOrigin, 'fuel_card_id');
 
-          props.handleChange(
+          handleChange(
             props.array.map(
               (rowData) => ({
                 ...rowData,
-                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id) ? rowData.fuel_card_id : currentArrayIndex[rowData.fuel_card_id],
+                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id)
+                  ? rowData.fuel_card_id
+                  : (
+                    currentArrayIndex[rowData.fuel_card_id]
+                      ? currentArrayIndex[rowData.fuel_card_id].fuel_card_id
+                      : null
+                  ),
               }),
             ),
           );
         }
       },
       [
+        fuelCardIdOptions,
         previosFuelType,
         props.fuel_type,
-        fuelCardsList,
         props.array,
-        props.handleChange,
+        handleChange,
         props.arrayOrigin,
         notFiltredFuelCardsIndex,
       ],
@@ -306,7 +324,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           array={props.array}
           errors={props.errors}
           meta={metaCarRefillRaw}
-          onChange={props.handleChange}
+          onChange={handleChange}
 
           header={
             <CarRefillTableHeader
@@ -315,7 +333,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               selectedRowIndex={selectedRowIndex}
               array={props.array}
               meta={metaCarRefillRaw}
-              onChange={props.handleChange}
+              onChange={handleChange}
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}

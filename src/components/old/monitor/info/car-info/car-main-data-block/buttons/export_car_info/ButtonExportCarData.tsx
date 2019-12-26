@@ -465,11 +465,11 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               'JPEG',
               10,
               topPadding,
-              canvas_map.width / editParam * (2 / window.devicePixelRatio),
-              canvas_map.height / editParam * (2 /  window.devicePixelRatio),
+              canvas_map.width / editParam,
+              canvas_map.height / editParam,
             );
-            topPadding += canvas_map.height / editParam * (2 /  window.devicePixelRatio) - canvas_track_sensors_list.height / editParam + 4;
-            const leftPadding = 10 + (canvas_map.width / editParam * (2 / window.devicePixelRatio)) + 5;
+            topPadding += canvas_map.height / editParam - canvas_track_sensors_list.height / editParam + 4;
+            const leftPadding = 10 + (canvas_map.width / editParam) + 5;
 
             // список датчиков
             doc.addImage(

@@ -81,6 +81,12 @@ class MissionRejectForm extends React.Component {
     this.updateMissionData(this.state.mission_id);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.mission_id !== prevState.mission_id) {
+      this.updateMissionData(this.state.mission_id);
+    }
+  }
+
   componentWillUnmount() {
     // this.props.actionResetMissionCancelReasons();
   }
@@ -182,7 +188,6 @@ class MissionRejectForm extends React.Component {
         ...this.getPropsMission(missionList, mIndex - 1),
       };
       this.setState(newState);
-      this.updateMissionData(newState.mission_id);
     }
   };
 

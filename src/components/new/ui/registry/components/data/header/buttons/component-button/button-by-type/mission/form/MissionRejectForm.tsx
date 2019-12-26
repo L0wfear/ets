@@ -167,7 +167,7 @@ class MissionRejectForm extends React.Component<Props, State> {
 
       this.setState({ car_func_types });
     }
-  }
+  };
 
   getPropsMission(
     missionList = this.state.missionList,

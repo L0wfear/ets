@@ -2230,6 +2230,7 @@ class WaybillForm extends React.Component<Props, State> {
                         <FieldWaybillCarRefill
                           id="car_refill"
                           array={state.car_refill}
+                          arrayOrigin={origFormState.car_refill}
                           errors={get(
                             errors,
                             'car_refill',
@@ -2445,6 +2446,7 @@ class WaybillForm extends React.Component<Props, State> {
                             <FieldWaybillCarRefill
                               id="equipment_refill"
                               array={state.equipment_refill}
+                              arrayOrigin={origFormState.equipment_refill}
                               errors={get(
                                 errors,
                                 'equipment_refill',

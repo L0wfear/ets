@@ -460,4 +460,5 @@ export type IStateAutobase = {
   fuelTypeList: Array<FuelType>;
   typesAttrList: Array<TypesAttr>;
   equipmentFuelCardsList: Array<FuelCard>;
+  notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
 };

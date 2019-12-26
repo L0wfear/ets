@@ -1,4 +1,4 @@
-import { getNoTrimSpaceMessage } from "components/@next/@utils/getErrorString/getErrorString";
+import { getNoTrimSpaceMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const fixedValidators = [
   {

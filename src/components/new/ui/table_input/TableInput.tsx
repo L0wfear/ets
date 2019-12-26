@@ -54,7 +54,7 @@ export type TableMeta<F> = {
   }
 );
 
-export type TableInputProps = {
+type TableInputProps = {
   id: string;
   meta: Array<TableMeta<any>>;
   array: Array<any>;

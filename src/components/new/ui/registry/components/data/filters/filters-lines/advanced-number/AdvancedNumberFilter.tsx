@@ -114,13 +114,13 @@ export const AdvancedNumberFilter: React.FC<Props> = React.memo(
     React.useEffect(() => {
       if ( !userChangeFilter ) {
         const newActiveTypeArr = Object.entries(props.filterValuesObj)
-        .reduce((newArr, [key, value]) => {
+          .reduce((newArr, [key, value]) => {
             const val = get(value, 'value', null);
             if (val && val.toString().length) {
               return [...newArr, key];
             }
             return newArr;
-        }, []);
+          }, []);
 
         if (newActiveTypeArr.length && activeTypeArr.toString() !== newActiveTypeArr.toString()) {
           handleChangeType(newActiveTypeArr);

@@ -20,6 +20,11 @@ const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<Ext
   boolean: CheckBoxField,
 };
 
+const numberToFixed = {
+  toFixed2: 2,
+  toFixed3: 3,
+};
+
 const ExtField: React.FC<ExtFieldType> = React.memo(
   ({ boundKeys, ...props }) => {
     const Component = ComponentByType[props.type] || ComponentByType.string;
@@ -60,29 +65,17 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
       setLocalStateValue(props.value);
     }, [isFocus, props.type, props.value]);
 
-    // выводить 3 знака после запятой { format === 'toFixed3', type === 'number', }
+    // выводить 2-3 знака после запятой { format === 'toFixed3' | 'toFixed2' }
     React.useEffect( () => {
       if (!isFocus
-        && props.format === 'toFixed3'
+        && numberToFixed[props.format]
         && !isNullOrUndefined(props.value)
         && (props.value || props.value === 0)
       ){
-        const newVal = Number(props.value).toFixed(3);
-        if(Number(props.value).toString()?.split('.')?.[1]?.length <= 3) { // Если пользак ввел больше 3x знаков, то не перетираем state
-          setLocalStateValue(newVal);
-        }
-      }
-    }, [isFocus, props.format, props.type, props.value]);
+        const newVal = Number(props.value).toFixed(numberToFixed[props.format]);
+        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0;
 
-    // выводить 2 знака после запятой { format === 'toFixed2', }
-    React.useEffect( () => {
-      if (!isFocus
-        && props.format === 'toFixed2'
-        && !isNullOrUndefined(props.value)
-        && (props.value || props.value === 0)
-      ){
-        const newVal = Number(props.value).toFixed(2);
-        if(Number(props.value).toString()?.split('.')?.[1]?.length <= 2) { // Если пользак ввел больше 2x знаков, то не перетираем state
+        if (decimal <= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
           setLocalStateValue(newVal);
         }
       }

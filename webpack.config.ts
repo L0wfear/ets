@@ -3,7 +3,6 @@ import * as webpack from 'webpack';
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import * as MomentLocalesPlugin from 'moment-locales-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -165,17 +164,10 @@ const getPlugins = () => {
         VERSION: JSON.stringify(`${packageJson_version}`)
       },
     }),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // all options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-      ignoreOrder: false, // Enable to remove warnings about conflicting order
-    }),
   ];
   
   if (__DEVELOPMENT__) {
-    plugins.push(new webpack.HotModuleReplacementPlugin())
+    plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
   if (false) {
@@ -316,12 +308,7 @@ const config: webpack.Configuration = {
       {
         test: /\.(sc|c)ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: __DEVELOPMENT__,
-            }
-          },
+          'style-loader',
           {
             loader: 'css-loader',
             options: {

@@ -1923,7 +1923,7 @@ class WaybillForm extends React.Component<Props, State> {
               <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="distance-by-glonass"
-                  type="string"
+                  type="number"
                   label="Пройдено по Глонасс, км"
                   error={!this.state.tooLongFactDates && errors.distance}
                   value={
@@ -2562,7 +2562,7 @@ class WaybillForm extends React.Component<Props, State> {
                 <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                   <ExtField
                     id="consumption"
-                    type="string"
+                    type="number"
                     label="Расход по ДУТ, л"
                     error={errors.consumption}
                     value={state.consumption || state.sensor_consumption}

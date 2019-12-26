@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isArray, isNullOrUndefined } from 'util';
+import { isArray, isString, isNullOrUndefined } from 'util';
 
 import StringField from 'components/@next/@ui/renderFields/StringField/StringField';
 import TextAreaField from 'components/@next/@ui/renderFields/TextAreaField/TextAreaField';
@@ -42,16 +42,18 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
       [boundKeys, props.onChange, props.value,],
     );
 
-    const onFocus = React.useCallback( (...arg) => {
-      setIsFocus(true);
-    }, [isFocus]);
+    const onFocus = React.useCallback(
+      () => {
+        setIsFocus(true);
+      },
+      [],
+    );
 
     const onBlur = React.useCallback(
       () => {
         setIsFocus(false);
-        setLocalStateValue(props.value);
       },
-      [boundKeys, props.onBlur, props.format, props.value],
+      [],
     );
 
     React.useEffect( () => {
@@ -110,7 +112,10 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
     }
 
     return (
-      <Component {...props as any} value={isFocus ? props.value : localStateValue} onChange={onChange} onBlur={onBlur} onFocus={onFocus} />
+      <Component {...props as any}
+        value={isFocus ? props.value : isString(localStateValue) && props.type === 'number' ? localStateValue.replace(',', '.') : localStateValue }
+        onChange={onChange} onBlur={onBlur} onFocus={onFocus}
+      />
     );
   },
 );

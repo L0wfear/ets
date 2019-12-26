@@ -117,17 +117,21 @@ class MissionRejectForm extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.dispatch(carGetAndSetInStore({}, { page: formPage }));
-
     this.props.dispatch(someUniqActions.actionGetAndSetInStoreMissionCancelReasons({}, { page: formPage }));
     this.updateMissionData(this.state.mission_id);
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.mission_id !== prevState.mission_id) {
+      this.updateMissionData(this.state.mission_id);
+    }
   }
 
   componentWillUnmount() {
     // this.props.actionResetMissionCancelReasons();
   }
 
-  updateMissionData = (mission_id) => {
+  updateMissionData = (mission_id: number) => {
     try {
       this.props.dispatch(
         missionsActions.actionGetMissionById(
@@ -145,7 +149,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  async getCarFuncTypesByNormId(missionById) {
+  getCarFuncTypesByNormId = async (missionById) => {
     const { norm_id, date_start } = missionById || {};
 
     if (norm_id) {
@@ -227,7 +231,6 @@ class MissionRejectForm extends React.Component<Props, State> {
         ...this.getPropsMission(missionList, mIndex - 1),
       };
       this.setState(newState);
-      this.updateMissionData(newState.mission_id);
     }
   };
 

@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 type StateProps = {
   carFuncTypesList: IStateAutobase['carFuncTypesList'];
@@ -142,7 +143,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={4}>
-            <label htmlFor=" ">Период формирования</label>
+            <FieldLabel>
+              Период формирования
+            </FieldLabel>
             <DatePickerRange
               date_start_id="date_start"
               date_start_value={date_start}

@@ -14,6 +14,7 @@ import Div from 'components/old/ui/Div';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { OBJECT_TYPE_OPTION } from 'constants/dictionary';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 type IPropsMissionProgressReportHeader = {
   date_from: string;
@@ -77,7 +78,9 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
               <Div><label htmlFor=" ">Тип объекта</label></Div>
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={5}>
-              <Div><label htmlFor=" ">Период формирования</label></Div>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={2}>
               <Div><label htmlFor=" "></label></Div>

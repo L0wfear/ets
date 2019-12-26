@@ -45,6 +45,7 @@ import FieldConsumableMaterials from 'components/new/pages/missions/mission/form
 import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -71,6 +72,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         && state.waybill_id
       )
     );
+    // привязанный ПЛ - черновик
+    const PARENT_WAYBILL_IS_DRAFT = props.waybillData?.status === WAYBILL_STATUSES_KEY.draft;
 
     const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED; // 
     const IS_DISPLAY = ( // Если не форма создания и Задание 
@@ -117,6 +120,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       IS_DEFERRED,
       IS_POST_CREATING_ASSIGNED,
       IS_DISPLAY,
+      PARENT_WAYBILL_IS_DRAFT,
       IS_DISABLED_ASSIGNED,
       BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE,
 
@@ -131,13 +135,40 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       IS_ASSIGNED,
+      IS_EXPIRED,
+      IS_IN_PROGRESS,
+      IS_CREATING,
+      IS_POST_CREATING_NOT_ASSIGNED,
       BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE,
     } = prevState;
 
     const {
       formState,
       originalFormState,
+      waybillData,
     } = nextProps;
+
+    const PARENT_WAYBILL_IS_DRAFT = waybillData?.status === WAYBILL_STATUSES_KEY.draft;
+
+    const IS_DEFERRED = diffDates(formState.date_start, new Date()) > 0; // Дата начала позже текущего времени ( вроде) )
+    const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED; // 
+    const IS_DISPLAY = ( // Если не форма создания и Задание 
+      !IS_CREATING 
+      && !(
+        IS_POST_CREATING_NOT_ASSIGNED
+        || IS_POST_CREATING_ASSIGNED
+      )
+    );
+
+    const IS_DISABLED_ASSIGNED = (
+      (
+        IS_ASSIGNED
+        || IS_EXPIRED
+        || IS_IN_PROGRESS
+      )
+        ? false
+        : IS_DISPLAY
+    ); // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
 
     if (
       IS_ASSIGNED
@@ -146,10 +177,21 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     ) {
       return {
         likeNewMission: true,
+        IS_DEFERRED,
+        IS_POST_CREATING_ASSIGNED,
+        IS_DISPLAY,
+        IS_DISABLED_ASSIGNED,
+        PARENT_WAYBILL_IS_DRAFT,
       };
     }
 
-    return null;
+    return {
+      IS_DEFERRED,
+      IS_POST_CREATING_ASSIGNED,
+      IS_DISPLAY,
+      IS_DISABLED_ASSIGNED,
+      PARENT_WAYBILL_IS_DRAFT,
+    };
   }
 
   componentDidMount() {
@@ -338,6 +380,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       IS_DISABLED_ASSIGNED,
       IS_NOT_ASSIGNED,
       BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE,
+      PARENT_WAYBILL_IS_DRAFT,
       isPermitted,
     } = this.state;
 
@@ -450,8 +493,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           <FieldStructureMission
                             disabled={
                               !isPermitted
-                              || Boolean(state.waybill_id)
-                              || !IS_CREATING
+                              || (
+                                !PARENT_WAYBILL_IS_DRAFT
+                                && !IS_CREATING
+                              )
                             }
                             formDataKey={this.props.formDataKey}
                           />
@@ -526,7 +571,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       name={state.technical_operation_name}
                       isPermitted={!(
                         !isPermitted
-                        || (
+                        || !PARENT_WAYBILL_IS_DRAFT && (
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED
@@ -537,15 +582,16 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       )}
                       disabled={
                         !isPermitted
-                        || (
+                        || MISSION_IS_ORDER_SOURCE
+                        || !state.car_ids.length
+                        || !PARENT_WAYBILL_IS_DRAFT && (
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED
                             || IS_DISPLAY
                           )
                         )
-                        || MISSION_IS_ORDER_SOURCE
-                        || !state.car_ids.length
+
                       }
                       error={errors.technical_operation_id}
                       onChange={this.props.handleChange}
@@ -566,10 +612,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       value={state.municipal_facility_id}
                       name={state.municipal_facility_name}
                       disabled={
-                        !state.technical_operation_id
-                        || !isPermitted
+                        !isPermitted
+                        || !state.technical_operation_id
                         || MISSION_IS_ORDER_SOURCE
-                        || (
+                        || !PARENT_WAYBILL_IS_DRAFT && (
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED
@@ -581,7 +627,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       isPermitted={!(
                         !isPermitted
                         || MISSION_IS_ORDER_SOURCE
-                        || (
+                        || !state.technical_operation_id
+                        || !PARENT_WAYBILL_IS_DRAFT && (
                           !IS_CREATING
                           && (
                             IS_POST_CREATING_ASSIGNED

@@ -30,6 +30,7 @@ export const createMaintenanceRate = async (payload: MaintenanceRate) => {
   const maintenanceRate: MaintenanceRate = get(
     response,
     'result.rows.0',
+    response?.result,
   );
 
   return maintenanceRate;
@@ -47,6 +48,7 @@ export const updateMaintenanceRate = async (payload) => {
   const maintenanceRate: MaintenanceRate = get(
     response,
     'result.rows.0',
+    response?.result,
   );
 
   return maintenanceRate;

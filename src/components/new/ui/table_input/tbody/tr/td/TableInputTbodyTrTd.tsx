@@ -112,6 +112,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 onChange={handleChange}
                 placeholder={metaData.placeholder}
                 disabled={disabled || metaData.disabled || props.disabled}
+                clearable={metaData.options.length !== 1}
               />
             )
         }

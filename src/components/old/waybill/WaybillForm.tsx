@@ -1649,7 +1649,7 @@ class WaybillForm extends React.Component<Props, State> {
 
     const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
 
-    // <<< Да простят меня боги, переписать в 33м!!!
+    // <<< #ДаПростятМеняБоги, переписать в 33м!!!
     const driverNotActiveError = (IS_DRAFT || IS_CREATING) && state.driver_id && !employeeByIndex?.active
       ? 'Поле "Водитель" должно быть заполнено работающим сотрудником'
       : ''; // Если сотрудник неактивен, только для черновика

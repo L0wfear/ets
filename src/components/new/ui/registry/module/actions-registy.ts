@@ -81,7 +81,7 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
 );
 
 /**
- * Да простят меня боги
+ * #ДаПростятМеняБоги
  * @todo сделать нормально
  */
 export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
@@ -1157,7 +1157,7 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
     ),
   );
 };
-// Да простят меня боги v.2
+// #ДаПростятМеняБоги v.2
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
 export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields'], permissionsProps: ReturnType<typeof isPermittedUpdateCarContidion> ): EtsAction<any> => async (dispatch) => {
   const meta = list_new?.meta;

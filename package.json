@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.33.67",
+    "version": "2.33.69",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -111,7 +111,6 @@
         "jspdf": "^1.5.3",
         "lint-staged": "^9.5.0",
         "lodash-es": "^4.17.15",
-        "mini-css-extract-plugin": "^0.8.2",
         "moment-locales-webpack-plugin": "^1.1.2",
         "node-sass": "^4.13.0",
         "openurl": "^1.1.1",

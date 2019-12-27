@@ -360,11 +360,9 @@ class WaybillFormWrap extends React.Component<Props, State> {
       }
     }
 
-    this.checkErrorsWithTime();
-    const timeId = this.setTimer(async () => {
-      this.checkErrorsWithTime();
-    });
-    this.setState({timeId});
+    this.checkErrorsWithTime(true);
+    const timeId = this.setTimer(this.checkErrorsWithTime);
+    this.setState({ timeId });
 
   }
 
@@ -378,25 +376,31 @@ class WaybillFormWrap extends React.Component<Props, State> {
     }
   }
 
-  async checkErrorsWithTime() {
-    await this.props.dispatch(someUniqActions.actionGetAndSetInStoreMoscowTimeServer(
-      {},
-      {
-        page: this.props.page,
-        path: this.props.path,
-      },
-    ));
+  checkErrorsWithTime = async (first?: boolean) => {
+    await this.props.dispatch(
+      someUniqActions.actionGetAndSetInStoreMoscowTimeServer(
+        {},
+        first
+          ? {
+            page: this.props.page,
+            path: this.props.path,
+          }
+          : {
+            page: 'none',
+          },
+      ),
+    );
     this.checkError();
-  }
+  };
 
-  setTimer(callBackFunc) {
+  setTimer = (callBackFunc) => {
     // const currentDate = new Date();
     const timeId = setInterval(
       callBackFunc,
       30000,
     );
     return timeId;
-  }
+  };
 
   clearTimer(timeId) {
     clearInterval(timeId);

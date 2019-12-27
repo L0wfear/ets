@@ -130,9 +130,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       // if (IS_CREATING || DUTY_MISSION_IS_NOT_ASSIGNED) {
       if (IS_CREATING) {
         this.checkOnMosckowTime();
-        this.checkErrorsWithTime();
+        this.checkErrorsWithTime(true);
 
-        const timeId = this.setTimer(async () => {
+        const timeId = this.setTimer(() => {
           this.checkErrorsWithTime();
         });
         this.setState({timeId});
@@ -144,13 +144,17 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     loadData();
   }
 
-  async checkErrorsWithTime() {
+  async checkErrorsWithTime(first?: boolean) {
     await this.props.actionGetAndSetInStoreMoscowTimeServer(
       {},
-      {
-        page: this.props.page,
-        path: this.props.path,
-      },
+      first
+        ? {
+          page: this.props.page,
+          path: this.props.path,
+        }
+        : {
+          page: 'null',
+        }
     );
     this.props.updateFormErrors();
   }

@@ -235,9 +235,9 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         this.props.updateFormErrors();
       }
 
-      this.checkErrorsWithTime();
+      this.checkErrorsWithTime(true);
 
-      const timeId = this.setTimer(async () => {
+      const timeId = this.setTimer(() => {
         this.checkErrorsWithTime();
       });
       this.setState({timeId});
@@ -283,13 +283,17 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     }
   }
 
-  async checkErrorsWithTime() {
+  async checkErrorsWithTime(first?: boolean) {
     await this.props.actionGetAndSetInStoreMoscowTimeServer(
       {},
-      {
-        page: this.props.page,
-        path: this.props.path,
-      },
+      first
+        ? {
+          page: this.props.page,
+          path: this.props.path,
+        }
+        : {
+          page: 'null',
+        },
     );
     this.props.updateFormErrors();
   }

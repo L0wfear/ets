@@ -61,6 +61,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     const IS_NOT_ASSIGNED = state.status === 'not_assigned'; // Не назначено
     const IS_EXPIRED = state.status === 'expired'; // Просрочено
     const IS_IN_PROGRESS = state.status === 'in_progress'; // Выполняется
+
+    // не выносить в getDerivedStateFromProps, тк ломает дисейбл дат :)
     const IS_DEFERRED = diffDates(state.date_start, new Date()) > 0; // Дата начала позже текущего времени ( вроде) )
     const IS_POST_CREATING_NOT_ASSIGNED = ( // Если задание "Не назначено" или (Форма создания и привязано к ПЛ)
       (
@@ -135,10 +137,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       IS_ASSIGNED,
-      IS_EXPIRED,
-      IS_IN_PROGRESS,
-      IS_CREATING,
-      IS_POST_CREATING_NOT_ASSIGNED,
       BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE,
     } = prevState;
 
@@ -150,26 +148,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
     const PARENT_WAYBILL_IS_DRAFT = waybillData?.status === WAYBILL_STATUSES_KEY.draft;
 
-    const IS_DEFERRED = diffDates(formState.date_start, new Date()) > 0; // Дата начала позже текущего времени ( вроде) )
-    const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED; // 
-    const IS_DISPLAY = ( // Если не форма создания и Задание 
-      !IS_CREATING 
-      && !(
-        IS_POST_CREATING_NOT_ASSIGNED
-        || IS_POST_CREATING_ASSIGNED
-      )
-    );
-
-    const IS_DISABLED_ASSIGNED = (
-      (
-        IS_ASSIGNED
-        || IS_EXPIRED
-        || IS_IN_PROGRESS
-      )
-        ? false
-        : IS_DISPLAY
-    ); // флаг для возможности редактирования поля задач со статусом "Назначено", in_progress, expired
-
     if (
       IS_ASSIGNED
       && BACKEND_PERMITTED_EDIT_CAR_AND_ROUTE
@@ -177,19 +155,11 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     ) {
       return {
         likeNewMission: true,
-        IS_DEFERRED,
-        IS_POST_CREATING_ASSIGNED,
-        IS_DISPLAY,
-        IS_DISABLED_ASSIGNED,
         PARENT_WAYBILL_IS_DRAFT,
       };
     }
 
     return {
-      IS_DEFERRED,
-      IS_POST_CREATING_ASSIGNED,
-      IS_DISPLAY,
-      IS_DISABLED_ASSIGNED,
       PARENT_WAYBILL_IS_DRAFT,
     };
   }

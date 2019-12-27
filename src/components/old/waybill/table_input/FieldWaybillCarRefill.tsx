@@ -216,8 +216,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       [
         props.car_id,
         props.fuel_type,
-        props.date_for_valid.fact_departure_date,
-        props.date_for_valid.plan_departure_date,
+        fact_departure_date,
+        plan_departure_date,
         props.page,
         props.path,
       ],

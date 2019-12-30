@@ -432,11 +432,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   validate = (state, errors) => {
-    console.log('here')
     if (typeof this.schema === 'undefined') {
       return errors;
     }
-    console.log(this.schema)
 
     const formState = { ...state };
 

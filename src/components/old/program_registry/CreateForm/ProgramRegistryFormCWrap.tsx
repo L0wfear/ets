@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import ProgramRegistryFormCreate from 'components/old/program_registry/CreateForm/ProgramRegistryFormC';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { compose } from 'recompose';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 const firstStepFields = [
@@ -57,7 +57,7 @@ class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap<Props, State> {
       });
   };
 
-  validate = (state, errors) => this.props.validate(state, errors);
+  validate = (state) => this.props.validate(state);
 
   render() {
     const { entity, isPermitted = false } = this.props;

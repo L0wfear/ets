@@ -1,14 +1,14 @@
 import { IDataTableSelectedRow } from 'components/old/ui/table/@types/schema.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { ISharedPropsDataTableInput } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
 /**
  * Пропсы, которые принимает компонент-обёртка.
  * Оборачиваемый компонент о них ничего не знает.
  */
-export type IExternalPropsDataTableInputWrapper = {
+export type IExternalPropsDataTableInputWrapper<F = any> = {
   stackOrder?: boolean;
-  validationSchema?: IValidationSchema;
+  validationSchema?: SchemaType<F, any>;
   outerValidate?: boolean;
   errors?: Array<any>;
   onValidation?(options: IStateDataTableInputWrapper): void;

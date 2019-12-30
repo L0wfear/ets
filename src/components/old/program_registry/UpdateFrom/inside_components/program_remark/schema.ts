@@ -1,19 +1,17 @@
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const formValidationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'remark',
+export const formValidationSchema: SchemaType<any, any> = {
+  properties: {
+    remark: {
       title: 'Замечание',
       type: 'string',
       required: true,
       maxLength: 1024,
     },
-    {
-      key: 'comment',
+    comment: {
       title: 'Комментарий',
       type: 'string',
       maxLength: 1024 * 4,
     },
-  ],
+  },
 };

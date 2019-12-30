@@ -2,10 +2,10 @@
  * Утилиты для работы с таблицей
  */
 import { isString, isArray } from 'util';
+import { toArray } from 'lodash';
 import { diffDates } from 'components/@next/@utils/dates/dates';
-import { validateField } from 'utils/validate/validateField';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { each, toArray } from 'lodash';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { validate } from 'components/old/ui/form/new/validate';
 
 export const getFilterTypeByKey = (key, tableMeta) => {
   const col = tableMeta.cols.find((c) => c.name === key);
@@ -176,16 +176,19 @@ export const makeData = (data, prevProps, nextProps) => {
   return returnData;
 };
 
-export const DataTableInputOutputListErrors = (inputList: Array<any>, outputListErrors: Array<any>, validationSchema: IValidationSchema, ) =>
-  inputList.map((rowData, i) => {
-    const errors = outputListErrors[i] ? { ...outputListErrors[i] } : {};
-
-    each(validationSchema.properties, (prop) => {
-      errors[prop.key] = validateField(prop, rowData[prop.key], rowData, validationSchema, {});
-    });
-
-    return errors;
+export const DataTableInputOutputListErrors = (inputList: Array<any>, outputListErrors: Array<any>, validationSchema: SchemaType<any, any>) => {
+  return inputList.map((rowData, i) => {
+    return {
+      ...outputListErrors[i],
+      ...validate(
+        validationSchema,
+        {},
+        rowData,
+        rowData,
+      ),
+    };
   });
+};
 
 export const isValidDataTableInput = ( outputListErrors: Array<any>): boolean =>
   !outputListErrors.map((errorItem) => {

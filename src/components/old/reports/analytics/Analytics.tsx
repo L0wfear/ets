@@ -87,7 +87,7 @@ class Analytics extends React.Component<Props, any> {
     }
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     const state = {
       ...this.state,
       companies_ids:
@@ -101,7 +101,7 @@ class Analytics extends React.Component<Props, any> {
         saveData(blob, fileName);
       }
     });
-  }
+  };
 
   handleChange = (field, value) => {
     if (field === 'report_ids') {
@@ -168,7 +168,7 @@ class Analytics extends React.Component<Props, any> {
             <EtsBootstrap.Row>
               <EtsBootstrap.Button
                 disabled={!this.state.report_ids.length}
-                onClick={this.handleSubmit.bind(this)}>
+                onClick={this.handleSubmit}>
                 Выгрузить
               </EtsBootstrap.Button>
               <input

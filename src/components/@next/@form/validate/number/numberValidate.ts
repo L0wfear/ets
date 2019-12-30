@@ -8,6 +8,7 @@ export const floatValidate = (value: number, float: number, title: string) => {
     return `Поле "${title}" должно быть неотрицательным числом с ${float} знаками после запятой`;
   }
 };
+
 export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField<F>, formState: F) => {
   const {
     [key]: value,

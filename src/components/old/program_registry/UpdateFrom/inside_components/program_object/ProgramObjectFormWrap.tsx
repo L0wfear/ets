@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
-import { validateField } from 'utils/validate/validateField';
 
 import ProgramObjectFormDT from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
 
@@ -10,6 +9,7 @@ import {
   elementsValidationSchema,
 } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { validate } from 'components/old/ui/form/new/validate';
 
 type Props = {
   [k: string]: any;
@@ -17,7 +17,6 @@ type Props = {
 type State = any;
 
 class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
-  schema = formValidationSchema;
   preventDefaultNotification = true;
 
   createAction = (formState) =>
@@ -38,7 +37,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
       formState[field] = value;
     });
 
-    formErrors = this.validate(formState, formErrors);
+    formErrors = this.validate(formState);
 
     newState.canSave = Object.values(formErrors).reduce(
       (boolean, oneError) => boolean && !oneError,
@@ -51,51 +50,31 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
     this.setState(newState);
   };
 
-  validate = (state, errors) => {
-    if (typeof this.schema === 'undefined') {
-      return errors;
-    }
-
-    const schema = this.schema;
-    const formState = { ...state };
-
-    Object.keys(errors).forEach((key) => {
-      if (key.includes('element')) {
-        delete errors[key];
-      }
-    });
-
-    let newFormErrors = schema.properties.reduce(
-      (formErrors, prop) => {
-        const { key } = prop;
-        formErrors[key] = validateField(
-          prop,
-          formState[key],
-          formState,
-          this.schema,
-          this.props,
-        );
-        return formErrors;
-      },
-      { ...errors },
+  validate = (formState) => {
+    let newFormErrors = validate(
+      formValidationSchema,
+      formState,
+      this.props,
+      formState,
     );
 
     newFormErrors = {
       ...newFormErrors,
-      ...state.elements.reduce(
+      ...formState.elements.reduce(
         (obj, el, i) => ({
           ...obj,
-          ...elementsValidationSchema.properties.reduce((elErrors, prop) => {
-            const { key } = prop;
-            elErrors[`element_${i}_${key}`] = validateField(
-              prop,
-              el[key],
-              el,
+          ...Object.entries(
+            validate(
               elementsValidationSchema,
+              el,
               this.props,
-            );
-            return elErrors;
-          }, {}),
+              el,
+            ),
+          ).reduce((newObj, [key, error]) => {
+            newObj[`element_${i}_${key}`] = error;
+
+            return newObj;
+          }, {})
         }),
         {},
       ),
@@ -165,8 +144,8 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap<Props, State> {
         permissions={[`${entity}.update`]}
         addPermissionProp
         canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
         handleMultiChange={this.handleMultiChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}

@@ -37,14 +37,14 @@ class Table extends React.Component<Props, any> {
     };
   }
 
-  onRowClick(id) {
+  onRowClick = (id) => {
     if (this.props.onRowSelected !== undefined) {
       this.setState({
         selectedRow: id,
       });
       this.props.onRowSelected(id);
     }
-  }
+  };
 
   getNumPages() {
     let num = Math.floor(this.props.data.length / this.props.pageSize);
@@ -103,7 +103,7 @@ class Table extends React.Component<Props, any> {
         selected={
           o.ID ? this.state.selectedRow === o.ID : this.state.selectedRow === i
         }
-        handleClick={this.onRowClick.bind(this)}
+        handleClick={this.onRowClick}
       />
     ));
 

@@ -8,8 +8,9 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { TypesHarvestingUnit } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 const seasonOptions = [
   { value: 'Лето', label: 'Лето' },
@@ -17,43 +18,38 @@ const seasonOptions = [
   { value: 'Всесезон', label: 'Всесезон' },
 ];
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'type',
+export const validationSchema: SchemaType<TypesHarvestingUnit, any> = {
+  properties: {
+    type: {
       title: 'Тип прицепа, навесного уборочного агрегата',
       type: 'string',
       required: true,
       maxLength: 128,
     },
-    {
-      key: 'will_checked_cnt',
+    will_checked_cnt: {
       title: 'Всего подлежит подготовке',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'season',
+    season: {
       title: 'Сезон',
       type: 'string',
       required: true,
     },
-    {
-      key: 'ready_cnt',
+    ready_cnt: {
       title: 'Готово к сезону',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'not_ready_cnt',
+    not_ready_cnt: {
       title: 'Не готово к сезону',
       type: 'number',
       integer: true,
       required: false,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {

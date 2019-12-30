@@ -8,39 +8,36 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { TypesСar } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'type',
+export const validationSchema: SchemaType<TypesСar, any> = {
+  properties: {
+    type: {
       title: 'Тип техники',
       type: 'string',
       required: true,
     },
-    {
-      key: 'will_checked_cnt',
+    will_checked_cnt: {
       title: 'Всего подлежит подготовке',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'allseason_use_cnt',
+    allseason_use_cnt: {
       title: 'Круглогодичного использования',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'checks_period_use_cnt',
+    checks_period_use_cnt: {
       title: 'В выбранный период',
       type: 'number',
       integer: true,
       required: true,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {

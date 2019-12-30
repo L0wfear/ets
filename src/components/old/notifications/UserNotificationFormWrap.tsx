@@ -12,7 +12,6 @@ class UserNotificationFormWrap extends UNSAFE_FormWrap<any, any> {
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         history={this.props.history}
-        handleFormChange={this.handleFormStateChange}
         onSubmit={this.handleFormSubmit}
       />
     ) : null;

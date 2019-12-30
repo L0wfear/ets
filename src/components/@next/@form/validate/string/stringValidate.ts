@@ -1,6 +1,6 @@
 import { isString, isNullOrUndefined } from 'util';
 import { StringField } from 'components/@next/@form/@types';
-import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldNoTrim, getMinLengthError, getMaxLengthError, getRequiredFieldMessage, getRequiredFieldStringMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
 export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
   const {
@@ -12,23 +12,23 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
   } = fieldData;
 
   if (fieldData.required && !value) {
-    return `Поле "${title}" должно быть заполнено`;
+    return getRequiredFieldMessage(title);
   }
 
   if (fieldData.minLength && value && isString(value) && value.length < fieldData.minLength) {
-    return `Длина поля должна быть больше минимального количества символов (${fieldData.minLength})`;
+    return getMinLengthError(fieldData.minLength);
   }
 
   if (fieldData.maxLength && value && isString(value) && value.length > fieldData.maxLength) {
-    return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
+    return getMaxLengthError(fieldData.maxLength);
   }
 
   if (value && isString(value) && value.length !== value.trim().length) {
     return getRequiredFieldNoTrim(title);
   }
 
-  if (isString(value) || isNullOrUndefined(value) ) {
-    return '';
+  if (!(isString(value) || isNullOrUndefined(value))) {
+    return getRequiredFieldStringMessage(title);
   }
-  return `Поле "${title}" должно быть строкой`;
+  return '';
 };

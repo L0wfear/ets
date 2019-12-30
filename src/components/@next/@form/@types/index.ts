@@ -50,7 +50,7 @@ export type NumberField<F extends Record<string, any>, K extends keyof F = keyof
   integer?: boolean;
   float?: number;
 
-  regexp?: string;
+  regexp?: string;          // регулярка которой число должно соответствовать
   regexpErrorText?: string;
 };
 

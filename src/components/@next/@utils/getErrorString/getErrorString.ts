@@ -6,6 +6,10 @@ export const getRequiredFieldNumberMessage = (field = 'Название по у�
   return `Поле "${field}" должно быть числом`;
 };
 
+export const getRequiredFieldStringMessage = (field = 'Название по умолчанию') => {
+  return `Поле "${field}" должно быть строкой`;
+};
+
 export const getRequiredFieldNumberMoreThen = (field = 'Название по умолчанию', number: number) => {
   return `Поле "${field}" должно быть больше ${number}`;
 };
@@ -33,3 +37,20 @@ export const getNoTrimSpaceMessage = (field = 'Название по умолч�
 export const getRequiredFieldDateMoreThen = (field = 'Название по умолчанию', date: string) => {
   return `"${field}" должна быть позже ${date}`;
 };
+
+export const getAltMinError = (field = 'Название по умолчанию', max = 0) => {
+  return `Поле "${field}" должно быть неотрицательным числом и меньше ${max}`;
+};
+
+export const getMoreOrEqualError = (field = 'Название по умолчанию', min = 0) => {
+  return `Поле "${field}" должно быть больше либо равно ${min}`;
+};
+
+export const getMinLengthError = (minLength = 0) => {
+  return `Длина поля должна быть больше минимального количества символов (${minLength})`;
+};
+
+export const getMaxLengthError = (maxLength = 0) => {
+  return `Длина поля не должна превышать максимальное количество символов (${maxLength})`;
+};
+

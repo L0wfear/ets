@@ -63,7 +63,7 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
         = 'Процент выполнения не должен быть меньше последнего процента выполнения';
     }
 
-    if (diffDates(formState, minReviewedAt, 'minutes', false) < 0) {
+    if (diffDates(formState.reviewed_at, minReviewedAt, 'minutes', false) < 0) {
       newErrors.reviewed_at
         = 'Дата осмотра должна быть позже последней даты осмотра';
     }

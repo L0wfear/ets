@@ -1,10 +1,9 @@
 import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
-import * as moment from 'moment';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
+import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp, makeUnixDate } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayLineInfoContainer,
@@ -35,8 +34,8 @@ const OverlayFuelEventPoint: React.FC<any> = (props) => {
     started_at_msk,
     finished_at_msk,
   } = fuelEventPoint;
-  const sp_timestamp = moment(started_at_msk).unix();
-  const ep_timestamp = moment(finished_at_msk).unix();
+  const sp_timestamp = makeUnixDate(started_at_msk);
+  const ep_timestamp = makeUnixDate(finished_at_msk);
 
   const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
 

@@ -23,9 +23,9 @@ import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time
 import styled from 'styled-components';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import * as moment from 'moment';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { componentsForMissionSelect } from './MultiValueMissionField';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 const MissionFieldStyled = styled.div`
   margin-bottom: 15px;
@@ -200,35 +200,23 @@ class MissionField extends React.Component<Props, any> {
     // про ПЛ в разных статусах уточнить!!!
     const {
       moscowTimeServer,
-      IS_CREATING,
-      IS_DRAFT,
       IS_ACTIVE,
     } = this.props;
-    const minutesDiff = moment(moscowTimeServer?.date).diff(moment(missionElem.plan_date_start), 'minutes');
+    if (moscowTimeServer?.date) {
+      const minutesDiff = diffDates(moscowTimeServer?.date, missionElem.plan_date_start, 'minutes', false);
 
-    const isInvalidMission = (missionElem.status === 'assigned'
-      && (IS_CREATING || IS_DRAFT)
-      && moscowTimeServer?.date
-      && minutesDiff > 15)
-      || (
-        (
-          missionElem.status === 'assigned'
-          || missionElem.status === 'in_progress'
-          || missionElem.status === 'expired'
-        )
-        && IS_ACTIVE
+      const isInvalidMission = (
+        IS_ACTIVE
+        && missionElem.status === 'not_assigned'
         && missionElem.plan_date_start
-        && minutesDiff > 15
-      )
-      || (
-        missionElem.status === 'not_assigned'
-        && moscowTimeServer?.date
         && minutesDiff > 15
       );
 
-    return missionElem.plan_date_start
-      ? isInvalidMission
-      : false;
+      return missionElem.plan_date_start
+        ? isInvalidMission
+        : false;
+    }
+    return false;
   };
 
   render() {

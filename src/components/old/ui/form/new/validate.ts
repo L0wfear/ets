@@ -136,7 +136,7 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
             const error = dependencieValidator(formState[key], formState, props, rootFormState);
 
             formError[key] = mergeErrors(formError[key], error);
-            return true;
+            return Boolean(formError[key]);
           });
         }
       }

@@ -115,6 +115,15 @@ export type WaybillRegistryRow = {
 export type Waybill = (
   WaybillRegistryRow
   & waybillDiff
+  & {
+    equipment_tax_data_rows?: any[]; // для валидации
+    tax_data_rows?: any[]; // для валидации
+    distance?: number; // для валидации
+    hasEquipmentFuelRates?: boolean;
+
+    odometr_diff?: number; // для жизни
+    motohours_diff?: number; // для жизни
+  }
 );
 
 export type IStateWaybill = {

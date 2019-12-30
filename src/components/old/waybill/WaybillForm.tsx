@@ -1925,7 +1925,7 @@ class WaybillForm extends React.Component<Props, State> {
                   id="distance-by-glonass"
                   type="number"
                   label="Пройдено по Глонасс, км"
-                  error={!this.state.tooLongFactDates && errors.distance}
+                  error={!this.state.tooLongFactDates}
                   value={
                     this.state.tooLongFactDates
                       ? 'Слишком большой период действия ПЛ'

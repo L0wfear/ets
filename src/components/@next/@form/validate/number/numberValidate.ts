@@ -1,7 +1,6 @@
-import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
+import { NumberField } from 'components/@next/@form/@types';
 import { getRequiredFieldMessage, getRequiredFieldNumberMessage, getRequiredFieldNumberMoreThen, getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
-import { get } from 'lodash';
 
 export const floatValidate = (value: number, float: number, title: string) => {
   const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${float + 1},}$`);
@@ -31,7 +30,7 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     const regExpVal = fieldData.regexp
       ? new RegExp(fieldData.regexp)
       : null;
-    const regexpErrorText = get(fieldData, 'regexpErrorText', 'Определи regexpErrorText в схеме');
+    const regexpErrorText = fieldData.regexpErrorText ?? 'Определи regexpErrorText в схеме';
 
     if (fieldData.minLength && Number.parseInt(numberValue.toString(), 0).toString().length < fieldData.minLength) {
       return `Длина поля должна быть больше минимального количества символов (${fieldData.minLength})`;
@@ -42,6 +41,9 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     }
 
     if (isNumber(fieldData.min) && numberValue < fieldData.min) {
+      if (isNumber(fieldData.max) && fieldData.alt_min) {
+        return `Поле "${title}" должно быть неотрицательным числом и меньше ${fieldData.max}`;
+      }
       return `Поле "${title}" должно быть больше либо равно ${fieldData.min}`;
     }
 

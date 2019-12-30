@@ -65,6 +65,7 @@ export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   min?: number;
   minNotEqual?: number;
   max?: number;
+  alt_min?: boolean;
   integer?: boolean;
   float?: number;
   regexp?: string;

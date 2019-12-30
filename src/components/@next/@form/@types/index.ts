@@ -43,6 +43,7 @@ export type NumberField<F extends Record<string, any>, K extends keyof F = keyof
 
   min?: number;
   max?: number;
+  alt_min?: boolean;
 
   minNotEqual?: number;
 

@@ -5,7 +5,6 @@ import { isNullOrUndefined } from 'util';
 
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
-import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
@@ -22,7 +21,6 @@ import {
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
-import { validateField } from 'utils/validate/validateField';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
@@ -40,6 +38,9 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+// import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillShema';
+import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
+import { validate } from 'components/old/ui/form/new/validate';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -149,6 +150,8 @@ type StateProps = {
   carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
   employeeIndex: Record<Employee['id'], Employee>;
+  equipmentFuelCardsList: Array<FuelCard>;
+  notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -163,7 +166,7 @@ type OwnProps = {
   element: Partial<Waybill>;
 };
 
-type Props = (
+export type WaybillFormWrapProps = (
   StateProps
   & DispatchProps
   & OwnProps
@@ -181,7 +184,7 @@ type State = {
   [k: string]: any;
 };
 
-class WaybillFormWrap extends React.Component<Props, State> {
+class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   schema: any;
 
   static defaultProps = {
@@ -430,26 +433,19 @@ class WaybillFormWrap extends React.Component<Props, State> {
   };
 
   validate = (state, errors) => {
+    console.log('here')
     if (typeof this.schema === 'undefined') {
       return errors;
     }
+    console.log(this.schema)
 
-    const schema = this.schema;
     const formState = { ...state };
 
-    return schema.properties.reduce(
-      (formErrors, prop) => {
-        const { key } = prop;
-        formErrors[key] = validateField(
-          prop,
-          formState[key],
-          formState,
-          this.schema,
-          this.props,
-        );
-        return formErrors;
-      },
-      { ...errors },
+    return validate(
+      this.schema,
+      formState,
+      this.props,
+      formState,
     );
   };
 

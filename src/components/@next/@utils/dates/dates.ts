@@ -168,6 +168,10 @@ export function getFormattedDateTimeSeconds(date: string | Date | Moment.Moment)
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
+export function makeUnixDate(date: number) {
+  return moment(date).unix();
+}
+
 export function makeDateFromUnix(date: number) {
   if (!date) {
     return '-';

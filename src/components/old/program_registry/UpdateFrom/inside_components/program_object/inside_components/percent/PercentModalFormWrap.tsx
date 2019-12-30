@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 
 import { validateField } from 'utils/validate/validateField';
 
@@ -8,6 +7,7 @@ import PercentModalForm from 'components/old/program_registry/UpdateFrom/inside_
 
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 type Props = {
   [k: string]: any;
@@ -80,7 +80,7 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
         = 'Процент выполнения не должен быть меньше последнего процента выполнения';
     }
 
-    if (moment(state.reviewed_at).diff(minReviewedAt, 'minutes') < 0) {
+    if (diffDates(state.reviewed_at, minReviewedAt, 'minutes', false) < 0) {
       newErrors.reviewed_at
         = 'Дата осмотра должна быть позже последней даты осмотра';
     }

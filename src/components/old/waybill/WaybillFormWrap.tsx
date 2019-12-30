@@ -38,8 +38,7 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-// import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillShema';
-import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
+import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillSchema';
 import { validate } from 'components/old/ui/form/new/validate';
 
 const canSaveNotCheckField = [

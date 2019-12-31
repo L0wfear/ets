@@ -155,11 +155,11 @@
         "lint": "eslint -c .eslintrc.js --ext .ts --ext .tsx src",
         "lint:fix": "eslint -c .eslintrc.js --ext .ts --ext .tsx src --fix --quiet",
         "lint-staged": "lint-staged",
-        "standard-version": "standard-version"
+        "standard-version": "standard-version --first-release"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm --no-git-tag-version version patch && git add package.json && git add package-lock.json"
+    "standard-version": {
+        "skip": {
+            "tag": true
         }
     },
     "lint-staged": {

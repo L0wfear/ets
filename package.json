@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.33.82",
+    "version": "2.33.83",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -155,7 +155,7 @@
         "lint": "eslint -c .eslintrc.js --ext .ts --ext .tsx src",
         "lint:fix": "eslint -c .eslintrc.js --ext .ts --ext .tsx src --fix --quiet",
         "lint-staged": "lint-staged",
-        "standard-version": "standard-version --first-release"
+        "standard-version": "standard-version"
     },
     "standard-version": {
         "skip": {

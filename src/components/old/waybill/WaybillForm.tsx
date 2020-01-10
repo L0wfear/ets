@@ -865,6 +865,8 @@ class WaybillForm extends React.Component<Props, State> {
           equipment_fuel_type: null,
           structure_id,
           car_type_id: get(selectedCar, 'rowData.type_id', null),
+          car_refill: [],
+          equipment_refill: [],
         };
 
         if (!isEmpty(car_id)) {

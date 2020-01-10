@@ -697,6 +697,8 @@ class WaybillForm extends UNSAFE_Form {
           equipment_fuel: getDefaultBill({}).equipment_fuel,
           equipment_fuel_type: null,
           structure_id,
+          car_refill: [],
+          equipment_refill: [],
         };
 
         if (!isEmpty(car_id)) {

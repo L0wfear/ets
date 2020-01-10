@@ -57,7 +57,7 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
                 name: rowData.name,
               });
 
-              if (rowData.parent_id && !optionsObject[rowData.parent_id] && !valueOldObj[rowData.parent_id]) {
+              if (rowData.parent_id && !optionsObject[rowData.parent_id] && !valueOldObj[rowData.parent_id] && companyStructureOptionDataObject[rowData.parent_id]) {
                 const parent = companyStructureOptionDataObject[rowData.parent_id];
                 global.NOTIFICATION_SYSTEM.notify(addParentCompanyStructureIdNotyfication(parent.name, rowData.name));
 

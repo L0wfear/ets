@@ -59,7 +59,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (formData.position_id === 15 || formData.position_id === 24 || formData.position_id === 46) {
+          if (formData.is_driver) {
             if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
@@ -78,7 +78,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (formData.position_id === 15 || formData.position_id === 24 || formData.position_id === 46) {
+          if (formData.is_driver) {
             if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }

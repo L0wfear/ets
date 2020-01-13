@@ -20,15 +20,23 @@ class AppHeader extends React.Component<{}, any> {
 
     document.addEventListener('keydown', (event: any) => {
       if ('getAttribute' in event.target && event.target.getAttribute('type') === 'number') {
-        // e
+
         if (event.key === 'e') {
           event.preventDefault();
         }
-        // .
+
         if (event.key === '.') {
           event.preventDefault();
         }
 
+        if (event.key === ','
+          && (
+            event.target?.value?.toString().includes(',')
+            || event.target?.value?.toString().includes('.')
+          )
+        ) { // вводим максимум одну запятую
+          event.preventDefault();
+        }
       }
     });
   }

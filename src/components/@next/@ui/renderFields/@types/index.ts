@@ -18,7 +18,8 @@ export type ExtFieldCommon<V = any> = {
   readOnly?: boolean;
   value_string?: string | number;
   format?: 'toFixed2'
-          | 'toFixed3'; // разделяем отображение данных и значения, используя формат
+          | 'toFixed3' // разделяем отображение данных и значения, используя формат
+          | 'number';
 
   emptyValue?: any; // надо ли
 };

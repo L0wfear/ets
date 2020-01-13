@@ -73,9 +73,9 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
         && (props.value || props.value === 0)
       ){
         const newVal = Number(props.value).toFixed(numberToFixed[props.format]);
-        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0;
+        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0; // если десятичное значение
 
-        if (decimal <= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
+        if (decimal >= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
           setLocalStateValue(newVal);
         }
       }
@@ -106,8 +106,16 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
 
     return (
       <Component {...props as any}
-        value={isFocus ? props.value : isString(localStateValue) && props.type === 'number' ? localStateValue.replace(',', '.') : localStateValue }
-        onChange={onChange} onBlur={onBlur} onFocus={onFocus}
+        value={
+          isFocus
+            ? props.value
+            : (isString(localStateValue) && props.type === 'number')
+              ? localStateValue.replace(',', '.')
+              : localStateValue
+        }
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
       />
     );
   },

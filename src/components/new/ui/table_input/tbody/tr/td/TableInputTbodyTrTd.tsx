@@ -88,19 +88,21 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
-          metaData.format === 'number' || metaData.format === 'toFixed3'
-            && (
-              <ExtField
-                type="number"
-                id={props.metaData.key}
-                label={false}
-                value={props.value}
-                error={props.error}
-                onChange={handleChange}
-                disabled={disabled || metaData.disabled || props.disabled}
-                format={metaData?.format}
-              />
-            )
+          (metaData.format === 'number'
+            || metaData.format === 'toFixed3'
+            || metaData.format === 'toFixed2')
+              && (
+                <ExtField
+                  type="number"
+                  id={props.metaData.key}
+                  label={false}
+                  value={props.value}
+                  error={props.error}
+                  onChange={handleChange}
+                  disabled={disabled || metaData.disabled || props.disabled}
+                  format={metaData?.format}
+                />
+              )
         }
         {
           metaData.format === 'select'

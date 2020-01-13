@@ -432,11 +432,11 @@ class MissionRejectForm extends React.Component<Props, State> {
     } = mission;
 
     CARS = props.carList.reduce(
-      (carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
+      (carOptions, { available_to_bind, asuods_id, gov_number, type_id: car_type_id }) => {
         if (
           mission_car_gov_number !== gov_number
           && (!isEmpty(car_func_types)
-            ? car_func_types.includes(car_type_id)
+            ? Boolean(car_func_types.includes(car_type_id) && available_to_bind)
             : true)
         ) {
           carOptions.push({ value: asuods_id, label: gov_number });

@@ -190,6 +190,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           : time.date;
 
         payload.valid_at = valid_at;
+        payload.is_archive = false;
 
         if (isCarRefilBlock) {
           dispatch(fuelCardsGetAndSetInStore(

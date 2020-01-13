@@ -161,7 +161,9 @@ export function getTableMeta(props: MissionTemplateOrderTableProps, govNumberFil
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+        },
       },
     ],
   };

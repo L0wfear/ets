@@ -44,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNumber, isNull } from 'util';
+import { isArray, isNumber, isNull, isObject } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -466,9 +466,13 @@ class ReportContainer extends React.Component<
 
       if(renderers) {
         const renderersFunc = renderers[key];
+        const newValBeforeRenderers = newVal;
         newVal = renderersFunc
           ? renderersFunc({ data: newVal, rowData: reportRowValue, }, this.props)
           : newVal;
+        if(isObject(newVal)) { // в renderers иногда передаются компоненты с версткой, если так, то мы просто отправляем значение(без верстки) на печать
+          newVal = newValBeforeRenderers;
+        }
       }
       
       return {

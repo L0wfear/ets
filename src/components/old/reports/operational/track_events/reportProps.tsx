@@ -23,6 +23,8 @@ const schemaMakers = {
 };
 
 export const renderers = (handleMapVisibility) => ({
+  okrug_name: ({ data }) => data || '-',
+  district_name: ({ data }) => data || '-',
   coords_msk: (meta) => (
     <div>
       <span onClick={(event) => handleMapVisibility(meta.data, event)}>

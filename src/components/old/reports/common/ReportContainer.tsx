@@ -498,8 +498,8 @@ class ReportContainer extends React.Component<
 
     this.setState({ exportFetching: true });
 
-    const metaFieldsByKey = this.makeSummaryByKey(this.props?.meta?.fields);
-    const metaFieldsSummaryByKey = this.makeSummaryByKey(this.props?.summaryMeta?.fields);
+    const metaFieldsByKey = this.makeSummaryByKey(get(this.props, 'meta.fields', []));
+    const metaFieldsSummaryByKey = this.makeSummaryByKey( get(this.props, 'summaryMeta.fields', []));
 
     let payload: any = {
       rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),

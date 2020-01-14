@@ -42,17 +42,18 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule) => {
+export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule, uniqParams?: { fieldKey: string; arrayKey: string; }) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
         .reduce((newArrTemp, rows) =>
-          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule),
+          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule, uniqParams),
         [],
         ),
     );
   } else {
     const firstItem = data[0] || {};
+
     const newItem = {
       ...allCols.reduce((newObj, { keyName }) => {
         newObj[keyName] = firstItem[keyName];
@@ -61,10 +62,29 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
       }, {}),
       ...data.reduce((summObj, row) => ({
         ...summObj,
-        ...aggr_fields.reduce((summ, key) => ({
-          ...summ,
-          [key]: summRowWithAll(row[key], summObj[key] || 0),
-        }), {}),
+        ...aggr_fields.reduce((summ, key) => {
+          
+          let uniqSetList = new Set([]); // DITETS19-1556 кол-во уникальных ТС по сумме полей из uniqParams.arrayKey(gov_numbers)
+          if(uniqParams && key === uniqParams.fieldKey) {
+            uniqSetList = new Set(data.reduce((setList, dataVal ) => {
+              return [
+                ...setList,
+                ...get(dataVal, `${uniqParams.fieldKey}.${uniqParams.arrayKey}`, []),
+              ];
+            }, []));
+          }
+
+          const summValByKey = uniqParams
+            ? uniqParams && key === uniqParams.fieldKey
+              ? uniqSetList.size
+              : summRowWithAll(row[key], summObj[key] || 0)
+            : summRowWithAll(row[key], summObj[key] || 0);
+
+          return ({
+            ...summ,
+            [key]: summValByKey,
+          });
+        }, {}),
       }), {}),
     };
     aggr_fields.forEach((key) => {
@@ -80,7 +100,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
     });
 
     allCols.filter(({ keyName, abs, percent }) => {
-      if (abs) { // 2й вариант регшения -- убрать abs если в значении '-'
+      if (abs) { // 2й вариант решения -- убрать abs если в значении '-'
         const absVal = Math.abs(newItem[keyName]);
         newItem[keyName] = isNaN(absVal)
           ? forceValueByKey
@@ -154,7 +174,14 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
           return { key, value };
         });
 
-        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
+        const uniqParams = reportKey === 'car_usage_report' // пока так, если будут еще подобные отчеты, сделать switch
+          ? {
+            fieldKey: 'total_cars',
+            arrayKey: 'gov_numbers'
+          }
+          : null;
+
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, [], uniqParams).map((child, index) => {
           child[uniqName] = index + 1;
 
           filedsRule.forEach(({ key, value: { force_value }}) => {

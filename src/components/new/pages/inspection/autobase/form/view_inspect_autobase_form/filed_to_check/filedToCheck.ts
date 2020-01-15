@@ -3,12 +3,6 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 
 export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   {
-    key: 'is_coating_defects',
-    title: 'Дефекты на покрытии',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
     key: 'is_under_construction',
     title: 'Автобаза находится на стадии строительства',
     type: 'boolean',
@@ -90,6 +84,12 @@ export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   {
     key: 'surface_in_poor_condition',
     title: 'Покрытие базы в неудовлетворительном состоянии',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'is_coating_defects',
+    title: 'Дефекты на покрытии',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },

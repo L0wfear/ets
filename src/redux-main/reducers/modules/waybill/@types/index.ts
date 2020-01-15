@@ -19,6 +19,7 @@ export type waybillDiff = { // Поля, которые есть в ПЛ, но �
   trailer_special_model_name: string;
   trailer_type_name: string;
   trailer_gps_code: string;
+  hasEquipmentFuelRates: boolean | number;
 };
 
 export type WaybillRegistryRow = {

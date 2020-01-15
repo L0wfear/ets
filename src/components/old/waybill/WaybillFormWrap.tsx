@@ -901,9 +901,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   onFormHide = () => {
     const {
       is_bnso_broken, // долго подгружается
+      hasEquipmentFuelRates, // с бека не приходит, в промисе перед отправкой удаляется
       ...modFormState
     } = this.state.formState;
 
+    //  http://www.jsondiff.com/ для сравнения JSON
     JSON.stringify(modFormState) !== this.state.didMountFormState
       ? global.confirmDialog({
         title:

@@ -33,7 +33,7 @@ export type TableMeta<F> = {
   }
 );
 
-export type TableInputProps = {
+type Props = {
   meta: TableMeta<any>[];
   array: any[];
   errors?: any[];
@@ -46,7 +46,7 @@ export type TableInputProps = {
   disabled: boolean;
 };
 
-const TableInput: React.FC<TableInputProps> = React.memo(
+const TableInput: React.FC<Props> = React.memo(
   (props) => {
     const {
       disabled,

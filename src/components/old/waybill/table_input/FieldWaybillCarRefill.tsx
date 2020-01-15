@@ -1,35 +1,37 @@
 import * as React from 'react';
-import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
+import TableInput, { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
-import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getSessionState, getAutobaseState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
+import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
-import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { get, keyBy } from 'lodash';
+import * as moment from 'moment';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 type FieldWaybillCarRefillStateProps = {
   isPermittedWaybillRefill: boolean;
-  fuelCardsList: IStateAutobase['fuelCardsList'];
-  refillTypeList: IStateSomeUniq['refillTypeList'],
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: InitialStateSession['userData']['structure_id'];
 };
 type FieldWaybillCarRefillDispatchProps = {
   fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
+  equipmentFuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof equipmentFuelCardsGetAndSetInStore>;
 };
 type FieldWaybillCarRefillOwnProps = {
   errors: any[];
   title: string;
-  handleChange: TableInputProps['onChange'];
+  handleChange: (refill: Waybill['car_refill']) => any;
 
   IS_DRAFT_OR_ACTIVE: boolean;
 
@@ -38,17 +40,26 @@ type FieldWaybillCarRefillOwnProps = {
   path?: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
+  car_id: Waybill['car_id'];
+  date_for_valid: {
+    fact_departure_date: Waybill['fact_departure_date'],
+    plan_departure_date: Waybill['plan_departure_date'],
+  };
   is_one_fuel_tank?: boolean;
   boundKey: string;
+  fuelCardsList: IStateAutobase['fuelCardsList'];
+  refillTypeList: IStateSomeUniq['refillTypeList'];
 
   canEditIfClose: boolean;
 } & (
   {
     array: Waybill['car_refill'];
+    arrayOrigin: Waybill['car_refill'];
     fuel_given: Waybill['fuel_given'];
     fuel_type: Waybill['fuel_type'];
   } | {
     array: Waybill['equipment_refill'];
+    arrayOrigin: Waybill['equipment_refill'];
     fuel_given: Waybill['equipment_fuel_given'];
     fuel_type: Waybill['equipment_fuel_type'];
   }
@@ -105,23 +116,23 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
 const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
+    const notFiltredFuelCardsIndex = etsUseSelector((state) => getAutobaseState(state).notFiltredFuelCardsIndex);
+    const dispatch = etsUseDispatch();
+    const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
+    const isCarRefilBlock = props.boundKey === 'car_refill';
 
     const fuelCardIdOptions = React.useMemo(
       () => {
         return makeFuelCardIdOptions(
           props.fuelCardsList,
           props.array,
-          props.fuel_type,
-          props.userCompanyId,
-          props.structure_id,
+          notFiltredFuelCardsIndex,
         );
       },
       [
         props.fuelCardsList,
-        props.structure_id,
-        props.userCompanyId,
         props.array,
-        props.fuel_type,
+        notFiltredFuelCardsIndex,
       ],
     );
 
@@ -155,30 +166,118 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       },
       [fuelCardIdOptions, typeIdOptions, props.array],
     );
+    const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
+    const plan_departure_date = createValidDateTime(get(props, 'date_for_valid.plan_departure_date'));
 
     const handleUpdateFuelCard = React.useCallback(
-      () => {
-        props.fuelCardsGetAndSetInStore(
+      async () => {
+        const payload: any = {};
+
+        if (props.car_id) {
+          payload.car_id = props.car_id;
+        }
+        if (props.fuel_type) {
+          payload.fuel_type = props.fuel_type;
+        }
+
+        const time = await dispatch(
+          actionLoadTimeMoscow(
           {},
           {
             page: props.page,
             path: props.path,
           },
-        );
+        ));
+
+        const timeFromWaybill = fact_departure_date
+          ? fact_departure_date
+          : plan_departure_date;
+
+        const valid_at = moment(time.date).diff(moment(timeFromWaybill), 'minutes') <= 0
+          ? timeFromWaybill
+          : time.date;
+
+        payload.valid_at = valid_at;
+        payload.is_archive = false;
+
+        if (isCarRefilBlock) {
+          props.fuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          );
+        } else if (isEquipmentRefilBlock) {
+          props.equipmentFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          );
+        }
+
       },
-      [],
+      [
+        props.car_id,
+        props.fuel_type,
+        props.date_for_valid.fact_departure_date,
+        props.date_for_valid.plan_departure_date,
+        props.page,
+        props.path,
+      ],
+    );
+
+    React.useEffect(
+      () => {
+        handleUpdateFuelCard();
+      }, [
+        handleUpdateFuelCard,
+      ],
+    );
+
+    const handleChange = React.useCallback(
+      (array) => {
+        let newArr = array;
+        const filtredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
+
+        // автозаполнение топливной картой, если она требуется
+        if (typeIdOptions.length && filtredFuelCardIdOptions.length === 1) {
+          if (newArr.length === 1) {
+            const firstElement = newArr[0];
+            if (!firstElement.fuel_card_id) {
+              const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
+              if (refillTypeData && refillTypeData.rowData.is_fuel_card_required) {
+                newArr = [
+                  {
+                    ...firstElement,
+                    fuel_card_id: filtredFuelCardIdOptions[0].value,
+                  },
+                ];
+              }
+            }
+          }
+        }
+
+        props.handleChange(newArr);
+      },
+      [
+        props.handleChange,
+        typeIdOptions,
+        fuelCardIdOptions,
+      ],
     );
 
     const previosFuelType = usePrevious(props.fuel_type);
     React.useEffect(
       () => {
         if (props.fuel_type && props.fuel_type !== previosFuelType) {
-          const availabelFuelCars = (makeFuelCardStrickOptions(
-            props.fuelCardsList,
-            props.fuel_type,
-            props.userCompanyId,
-            props.userStructureId,
-          ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]).reduce(
+          const availabelFuelCars = fuelCardIdOptions.reduce<Set<number>>(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 
@@ -186,18 +285,33 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
             },
             new Set(),
           );
+          const currentArrayIndex = keyBy(props.arrayOrigin, 'fuel_card_id');
 
-          props.handleChange(
+          handleChange(
             props.array.map(
               (rowData) => ({
                 ...rowData,
-                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id) ? rowData.fuel_card_id : null,
+                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id)
+                  ? rowData.fuel_card_id
+                  : (
+                      currentArrayIndex[rowData.fuel_card_id]
+                        ? currentArrayIndex[rowData.fuel_card_id].fuel_card_id
+                        : null
+                  ),
               }),
             ),
           );
         }
       },
-      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange, props.structure_id],
+      [
+        fuelCardIdOptions,
+        previosFuelType,
+        props.fuel_type,
+        props.array,
+        handleChange,
+        props.arrayOrigin,
+        notFiltredFuelCardsIndex,
+      ],
     );
 
     const showForEquipmentCarRefil = !props.is_one_fuel_tank
@@ -206,9 +320,9 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
     const showForCarRefil = props.array.length
       || (!props.array.length && !(props.disabled && !props.isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
 
-    const showBlock = props.boundKey === 'equipment_refill'
+    const showBlock = isEquipmentRefilBlock
       ? showForEquipmentCarRefil
-      : props.boundKey === 'car_refill'
+      : isCarRefilBlock
         ? showForCarRefil
         : false;
 
@@ -218,7 +332,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           array={props.array}
           errors={props.errors}
           meta={metaCarRefillRaw}
-          onChange={props.handleChange}
+          onChange={handleChange}
 
           header={
             <CarRefillTableHeader
@@ -226,7 +340,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
               selectedRowIndex={selectedRowIndex}
               array={props.array}
               meta={metaCarRefillRaw}
-              onChange={props.handleChange}
+              onChange={handleChange}
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
@@ -266,7 +380,6 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDispatchProps, FieldWaybillCarRefillOwnProps, ReduxState>(
   (state) => ({
     isPermittedWaybillRefill: getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill),
-    fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
     userCompanyId: getSessionState(state).userData.company_id,
     userStructureId: getSessionState(state).userData.structure_id,
@@ -275,6 +388,11 @@ export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDis
     fuelCardsGetAndSetInStore: (...arg) => (
       dispatch(
         fuelCardsGetAndSetInStore(...arg),
+      )
+    ),
+    equipmentFuelCardsGetAndSetInStore: (...arg) => (
+      dispatch(
+        equipmentFuelCardsGetAndSetInStore(...arg),
       )
     ),
   }),

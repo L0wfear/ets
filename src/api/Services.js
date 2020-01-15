@@ -53,6 +53,9 @@ export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car');
 export const FuelCardsService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_cards',
 );
+export const FuelCardsArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
+  'fuel_cards_archive',
+);
 
 /* Рабочий стол */
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');

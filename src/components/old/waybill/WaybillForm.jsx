@@ -697,6 +697,8 @@ class WaybillForm extends UNSAFE_Form {
           equipment_fuel: getDefaultBill({}).equipment_fuel,
           equipment_fuel_type: null,
           structure_id,
+          car_refill: [],
+          equipment_refill: [],
         };
 
         if (!isEmpty(car_id)) {
@@ -1994,6 +1996,7 @@ class WaybillForm extends UNSAFE_Form {
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
                           array={state.car_refill}
+                          arrayOrigin={origFormState.car_refill}
                           errors={get(
                             errors,
                             'car_refill',
@@ -2004,6 +2007,11 @@ class WaybillForm extends UNSAFE_Form {
                           fuel_given={state.fuel_given}
                           structure_id={state.structure_id}
                           fuel_type={state.fuel_type}
+                          car_id={state.car_id}
+                          date_for_valid={{
+                            fact_departure_date: state.fact_departure_date,
+                            plan_departure_date: state.plan_departure_date,
+                          }}
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
                           }
@@ -2012,6 +2020,7 @@ class WaybillForm extends UNSAFE_Form {
                           page={this.props.page}
                           path={this.props.path}
                           boundKey={'car_refill'}
+                          fuelCardsList={this.props.fuelCardsList}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
@@ -2203,6 +2212,7 @@ class WaybillForm extends UNSAFE_Form {
                           <EtsBootstrap.Col md={12}>
                             <FieldWaybillCarRefill
                               array={state.equipment_refill}
+                              arrayOrigin={origFormState.equipment_refill}
                               errors={get(
                                 errors,
                                 'equipment_refill',
@@ -2213,6 +2223,11 @@ class WaybillForm extends UNSAFE_Form {
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
                               fuel_type={state.equipment_fuel_type}
+                              car_id={state.car_id}
+                              date_for_valid={{
+                                fact_departure_date: state.fact_departure_date,
+                                plan_departure_date: state.plan_departure_date,
+                              }}
                               IS_DRAFT_OR_ACTIVE={
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE
                               }
@@ -2222,6 +2237,7 @@ class WaybillForm extends UNSAFE_Form {
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
                               boundKey={'equipment_refill'}
+                              fuelCardsList={this.props.equipmentFuelCardsList}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>
@@ -2446,6 +2462,7 @@ export default compose(
     userStructures: getSessionState(state).userData.structures,
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
   })),

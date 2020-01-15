@@ -1,5 +1,5 @@
 import {
-  FuelCardsService,
+  FuelCardsService, FuelCardsArchiveService,
 } from 'api/Services';
 import { get } from 'lodash';
 import { FuelCard } from '../@types/fuelcards.h';
@@ -48,4 +48,23 @@ export const getFuelCards = async (payload: any): Promise<{ data: FuelCard[] }> 
     .then((ans) => ({
       data: get(ans, ['result', 'rows'], []),
     }));
+};
+
+export const promiseChangeArchiveStatus = async (id: FuelCard['id'], is_archive: boolean) => {
+  await FuelCardsArchiveService.path(id).put({ is_archive }, false, 'json');
+
+  return;
+};
+
+export const promiseLoadFuelCardById = async (id: FuelCard['id']) => {
+  let response = null;
+  try {
+    response = await FuelCardsService.path(id).get();
+  } catch {
+    //
+  }
+
+  const result: FuelCard = get(response, 'result.rows.0');
+
+  return result;
 };

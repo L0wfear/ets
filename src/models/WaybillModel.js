@@ -13,12 +13,10 @@ import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils'
 
 const validateFuelCardId = (
   rowData,
-  car_refill,
   refillTypeList,
   fuelCardsList,
   fuel_type,
-  userCompanyId,
-  structure_id,
+  notFiltredFuelCardsIndex,
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard
@@ -31,10 +29,12 @@ const validateFuelCardId = (
 
   const availableFuelCard = makeFuelCardIdOptions(
     fuelCardsList,
-    car_refill,
-    fuel_type,
-    userCompanyId,
-    structure_id,
+    [rowData],
+    notFiltredFuelCardsIndex,
+  );
+
+  const isValidSelectedFuelCard = availableFuelCard.some(
+    (optionData) => optionData.rowData.id === rowData.fuel_card_id,
   );
 
   if (needSelectFuelCard) {
@@ -44,7 +44,7 @@ const validateFuelCardId = (
     } else {
       fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
     }
-  } else if (fuel_card_id) {
+  } else if (rowData.fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(
       (optionData) => optionData.rowData.id === rowData.fuel_card_id,
     );
@@ -59,6 +59,11 @@ const validateFuelCardId = (
     }
   }
 
+  if (!isValidSelectedFuelCard && rowData.fuel_card_id) {
+    // если выбрана топливная карта, но ее нет в списке, который приходит с бека
+    return 'Укажите актуальную топливную карту';
+  }
+
   return fuel_card_id;
 };
 
@@ -68,8 +73,7 @@ const checkCarRefill = memoizeOne(
     refillTypeList,
     fuelCardsList,
     fuel_type,
-    userCompanyId,
-    structure_id,
+    notFiltredFuelCardsIndex,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -78,12 +82,40 @@ const checkCarRefill = memoizeOne(
           : '',
         fuel_card_id: validateFuelCardId(
           rowData,
-          car_refill,
           refillTypeList,
           fuelCardsList,
           fuel_type,
-          userCompanyId,
-          structure_id,
+          notFiltredFuelCardsIndex,
+        ),
+        value:
+          !rowData.value && rowData.value !== 0
+            ? 'Поле "Выдано, л" должно быть заполнено'
+            : rowData.value < 0
+              ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+              : '',
+      };
+    });
+  },
+);
+const checkEquipmentCarRefill = memoizeOne(
+  (
+    car_refill,
+    refillTypeList,
+    fuelCardsList,
+    fuel_type,
+    notFiltredFuelCardsIndex,
+  ) => {
+    return car_refill.map((rowData) => {
+      return {
+        type_id: !rowData.type_id
+          ? 'Поле "Способ заправки" должно быть заполнено'
+          : '',
+        fuel_card_id: validateFuelCardId(
+          rowData,
+          refillTypeList,
+          fuelCardsList,
+          fuel_type,
+          notFiltredFuelCardsIndex,
         ),
         value:
           !rowData.value && rowData.value !== 0
@@ -252,15 +284,14 @@ export const waybillSchema = {
         validator: (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, userCompanyId },
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex },
         ) => {
           return checkCarRefill(
             car_refill,
             refillTypeList,
             fuelCardsList,
             formState.fuel_type,
-            userCompanyId,
-            formState.structure_id,
+            notFiltredFuelCardsIndex,
           );
         },
       },
@@ -270,15 +301,14 @@ export const waybillSchema = {
         validator: (
           equipment_refill,
           formStatet,
-          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
         ) => {
-          return checkCarRefill(
+          return checkEquipmentCarRefill(
             equipment_refill,
             refillTypeList,
-            fuelCardsList,
+            equipmentFuelCardsList,
             formStatet.equipment_fuel_type,
-            userCompanyId,
-            userStructureId,
+            notFiltredFuelCardsIndex,
           );
         },
       },

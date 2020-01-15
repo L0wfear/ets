@@ -23,41 +23,28 @@ import {
   getSessionFuelTypeOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import FieldStructureDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement } from './utils';
-import { FuelCardsIsCommonWrapper } from './styled';
-
-const popover = (
-  <EtsBootstrap.Popover
-    id="fuel_card-popover"
-    className="car-usage-report-title__popover"
-  >
-    При установленном флаге "Общая" данная топливная карта будет доступна
-    для всех подразделений организации, Если данный флаг не установлен, то
-    топливная карта доступна тому подразделению, которое указано в карточке.
-    Если подразделение не указано и не установлен признак "Общая", то
-    топливная карта доступна только головной организации.
-  </EtsBootstrap.Popover>
-);
+import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
   (props) => {
+
+    const carActualListOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+
     const handleSubmit = React.useCallback(
       async () => {
         const {
-          originalFormState,
           formState,
           userStructureId,
         } = props;
 
         if (
-          originalFormState.is_common
-          && !formState.is_common
-          && formState.structure_id !== userStructureId
+          formState.structure_id !== userStructureId
           && userStructureId
         ) {
           try {
@@ -85,7 +72,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       companyOptions,
       userCompanyId,
       fuelTypeOptions,
-      STRUCTURE_FIELD_VIEW,
       isPermitted,
     } = props;
 
@@ -112,7 +98,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={9}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="string"
                 label="Номер"
@@ -123,28 +109,46 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={3}>
-              <FuelCardsIsCommonWrapper>
-                <ExtField
-                  id="is_common"
-                  type="boolean"
-                  label="Общая"
-                  value={state.is_common}
-                  error={errors.is_common}
-                  disabled={!isPermitted}
-                  onChange={props.handleChangeBoolean}
-                  boundKeys="is_common"
-                  modalKey={page}
-                />
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={popover}
-                  placement="bottom">
-                  <EtsBootstrap.Glyphicon glyph="question-sign" />
-                </EtsBootstrap.OverlayTrigger>
-              </FuelCardsIsCommonWrapper>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="date"
+                time={true}
+                label="Дата выпуска"
+                value={state.released_at}
+                makeGoodFormat
+                onChange={props.handleChange}
+                error={errors.released_at}
+                boundKeys="released_at"
+                disabled={!props.isPermitted}
+              />
             </EtsBootstrap.Col>
-
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="date"
+                time={true}
+                label="Дата окончания срока действия"
+                value={state.date_end}
+                makeGoodFormat
+                onChange={props.handleChange}
+                error={errors.date_end}
+                boundKeys="date_end"
+                disabled={!props.isPermitted}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="select"
+                label="Рег. номер ТС"
+                error={errors.car_id}
+                options={carActualListOptions.options}
+                value={state.car_id}
+                onChange={props.handleChange}
+                boundKeys="car_id"
+                disabled={!isPermitted}
+                etsIsLoading={carActualListOptions.isLoading}
+                placeholder="Резерв"
+              />
+            </EtsBootstrap.Col>
             <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
@@ -154,22 +158,10 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.fuel_type}
                 onChange={props.handleChange}
                 boundKeys="fuel_type"
-                disabled={!isPermitted}
+                disabled={!isPermitted || state.is_used_in_waybill}
               />
-              {
-                STRUCTURE_FIELD_VIEW && (
-                  <FieldStructureDutyMission
-                    value={state.structure_id}
-                    name={state.structure_name}
-                    error={errors.structure_id}
-                    isPermitted={isPermitted}
-                    onChange={props.handleChange}
-                    page={page}
-                    path={path}
-                    disabled={!isPermitted}
-                  />
-                )
-              }
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Организация"
@@ -217,6 +209,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateFuelCard,
     updateAction: autobaseActions.fuelCardsUpdate,
+    getRecordAction: autobaseActions.actionLoadFuelCardById,
     mergeElement: (props) => {
       const { companyOptions, userCompanyId, userStructureId } = props;
 

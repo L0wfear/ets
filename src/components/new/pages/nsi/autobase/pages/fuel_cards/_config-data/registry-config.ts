@@ -2,27 +2,40 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import fuelCardsPermissions from './permissions';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'fuelCardsRegistry';
 
-export const getToConfig = (): TypeConfigData<FuelCard> => {
+export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
+  let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
+    buttonsTypes.filter,
+    buttonsTypes.create,
+    buttonsTypes.read,
+    buttonsTypes.fuel_card_to_archive,
+    buttonsTypes.export,
+  ];
+
+  if (is_archive) {
+    buttons = [
+      buttonsTypes.filter,
+      buttonsTypes.read,
+      buttonsTypes.fuel_card_from_archive,
+    ];
+  }
+
   return {
     Service: {
       getRegistryData: {
         entity: 'fuel_cards',
+        payload: {
+          is_archive,
+        },
       },
     },
     registryKey,
     header: {
-      title: 'Реестр топливных карт',
-      buttons: [
-        buttonsTypes.filter,
-        buttonsTypes.create,
-        buttonsTypes.read,
-        buttonsTypes.export,
-      ],
+      title,
+      buttons,
     },
     filter: {
       fields: [
@@ -32,15 +45,24 @@ export const getToConfig = (): TypeConfigData<FuelCard> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'fuel_type_text',
-          title: 'Тип топлива',
+          valueKey: 'released_at',
+          type: 'advanced-date',
+          title: 'Дата выпуска',
+        },
+        {
+          valueKey: 'date_end',
+          type: 'advanced-date',
+          title: 'Дата окончания срока действия',
+        },
+        {
+          valueKey: 'gov_number_text',
+          title: 'Рег. номер ТС',
           type: 'multiselect',
         },
         {
-          valueKey: 'is_common',
-          title: 'Общая',
+          valueKey: 'fuel_type_text',
+          title: 'Тип топлива',
           type: 'multiselect',
-          options: YES_NO_SELECT_OPTIONS_BOOL,
         },
         {
           valueKey: 'structure_id',
@@ -75,15 +97,26 @@ export const getToConfig = (): TypeConfigData<FuelCard> => {
             width: 200,
           },
           {
+            key: 'released_at',
+            title: 'Дата выпуска',
+            format: 'datetime',
+            width: 200,
+          },
+          {
+            key: 'date_end',
+            title: 'Дата окончания срока действия',
+            format: 'datetime',
+            width: 200,
+          },
+          {
             key: 'fuel_type_text',
             title: 'Тип топлива',
             width: 150,
           },
           {
-            key: 'is_common',
-            title: 'Общая',
-            format: 'boolean',
-            width: 100,
+            key: 'gov_number_text',
+            title: 'Рег. номер ТС',
+            width: 200,
           },
           {
             key: 'structure_name',

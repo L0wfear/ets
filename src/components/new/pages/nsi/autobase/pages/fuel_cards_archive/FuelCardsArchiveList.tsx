@@ -31,7 +31,7 @@ export type FuelCardsListProps = (
 const FuelCardsList: React.FC<FuelCardsListProps> = (props) => {
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(false));
+      props.registryAddInitialData(getToConfig(true, 'Архив топливных карт'));
       return () => {
         props.registryRemoveData(registryKey);
       };

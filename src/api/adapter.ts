@@ -231,7 +231,7 @@ function httpMethod<F = any>(
 
           if (servV !== currV) {
             global.NOTIFICATION_SYSTEM.notifyWithObject({
-              title: 'Ваша версия не актуальна',
+              title: 'Ваша версия неактуальна',
               level: 'warning',
               position: 'br',
               dismissible: false,

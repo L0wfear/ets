@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
-
-import { fadeInKayframe } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/main_data/styled/index'
+import { fadeInAnimation } from 'global-styled/global-animation';
 
 export const ColumnPopupContainer = styled.div`
   max-height: 600px;
@@ -29,7 +28,7 @@ export const ColumnPopupContainerWrapper = styled.div`
   ${SingleUiElementWrapperStyled} {
     margin: 5px 0px;
   }
-  animation: ${fadeInKayframe} .2s ease-in;
+  animation: ${fadeInAnimation} .2s ease-in;
 
 
   &:before, &:after {

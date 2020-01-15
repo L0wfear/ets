@@ -228,12 +228,10 @@ function httpMethod<F = any>(
         const currV = process.env.VERSION;
 
         if (servV) {
-          const [, minorS, someS] = servV.split('.');
-          const [, minorV, someV] = currV.split('.');
 
-          if (minorS > minorV || (someS > someV && minorS === minorV)) {
+          if (servV !== currV) {
             global.NOTIFICATION_SYSTEM.notifyWithObject({
-              title: 'Вышла новая версия',
+              title: 'Ваша версия не актуальна',
               level: 'warning',
               position: 'br',
               dismissible: false,

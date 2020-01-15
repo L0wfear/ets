@@ -3,19 +3,11 @@ import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
+import styled from 'styled-components';
+import { fadeInAnimation } from 'global-styled/global-animation';
 
 const FieldCarsConditionsCarSelectFactStatusWrapper = styled(EtsBootstrap.Row)`
-  animation: ${fadeIn} .3s ease-in;
+  animation: ${fadeInAnimation} .3s ease-in;
 `;
 
 type FieldCarsConditionsCarSelectFactStatusProps = (

@@ -1,13 +1,5 @@
-import styled, { keyframes } from 'styled-components';
-
-export const fadeInKayframe = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
+import styled from 'styled-components';
+import { fadeInAnimation } from 'global-styled/global-animation';
 
 export const AdditionalInfoBlock = styled.div`
   border-radius: 3px;
@@ -15,7 +7,7 @@ export const AdditionalInfoBlock = styled.div`
   border: 1px solid #ddd;
   margin-top: 15px;
   position: relative;
-  animation: ${fadeInKayframe} .3s ease-in;
+  animation: ${fadeInAnimation} .3s ease-in;
   box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 15px 0 rgba(0,0,0,.1);
   &:before, &:after {
     content: '';

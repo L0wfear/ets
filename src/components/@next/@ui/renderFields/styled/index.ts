@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+
 import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
+
+import { fadeInAnimation } from 'global-styled/global-animation';
 
 export const SingleUiElementWrapperStyled = styled.div`
   margin-bottom: 10px;
@@ -14,6 +17,7 @@ export const SingleUiElementWrapperStyled = styled.div`
   .form-group {
     margin-bottom: 0px;
   }
+  animation: ${fadeInAnimation} .2s ease-in;
 `;
 
 export const FieldLabel = styled.label`

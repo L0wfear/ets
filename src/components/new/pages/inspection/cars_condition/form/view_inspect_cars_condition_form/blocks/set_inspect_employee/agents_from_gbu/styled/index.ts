@@ -1,8 +1,9 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { FooterEnd } from 'global-styled/global-styled';
+import { fadeInAnimation } from 'global-styled/global-animation';
 
 export const AgentsFromGbuDataContainer = styled.div`
   display: flex;
@@ -16,15 +17,6 @@ export const RowAddRowAddAgentFromGbuWrapper = styled.div`
   }
 `;
 
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
 export const AgentsFromGbuMemberDataContainer = styled.div`
   border-radius: 3px;
   margin: 5px 0;
@@ -34,7 +26,7 @@ export const AgentsFromGbuMemberDataContainer = styled.div`
   border: 1px solid #ddd;
   margin-top: 15px;
   position: relative;
-  animation: ${fadeIn} .3s ease-in;
+  animation: ${fadeInAnimation} .3s ease-in;
   box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 15px 0 rgba(0,0,0,.1);
   &:before, &:after {
     content: '';

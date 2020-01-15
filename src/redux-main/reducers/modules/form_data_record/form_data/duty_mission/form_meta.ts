@@ -8,7 +8,7 @@ import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_
 import { promiseGetDutyMissionById, promiseSubmitDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import {
   isPermittedEmployeeForDutyMission,
-  // dutyMissionIsNotAssigned,
+  dutyMissionIsNotAssigned,
 } from 'components/new/pages/missions/duty_mission/form/main/utils';
 import { getEmployeeState, getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
@@ -125,8 +125,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                 
                 const minutesDiff = moment(moscowTimeServer.date).diff(moment(value), 'minutes');
 
-                // if (!id || dutyMissionIsNotAssigned(status)) { // по идеи неназначенное нз тоже нужно валидировать
-                if (!id) {
+                if (!id || dutyMissionIsNotAssigned(status)) {
                   if (moscowTimeServer.date && minutesDiff > 15){
                     return 'Планируемая дата начала не может быть раньше на 15 минут от текущего времени';
                   }

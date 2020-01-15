@@ -2,13 +2,13 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import waybillPermissions from './permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { WaybillRegistryRow } from 'redux-main/reducers/modules/waybill/@types';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { WaybillCarService } from 'api/Services';
 
 export const registryWaybillKey = 'Waybills';
 
-export const config: TypeConfigData<Waybill> = {
+export const config: TypeConfigData<WaybillRegistryRow> = {
   Service: {
     getRegistryData: {
       entity: 'waybill',

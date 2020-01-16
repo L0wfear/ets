@@ -28,11 +28,13 @@ import employeePermissions from 'components/new/pages/nsi/employee/_config-data/
 import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
 import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/employee/position/actions';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import memoizeOne from 'memoize-one';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {
     carList: [],
-    carOptions: [],
+    preferCarOptions: [],
+    secondaryCarOptions: [],
     positionOptions: [],
     companyStructureOptions: [],
     isCommonOptions: [
@@ -68,13 +70,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     this.setState({
       carList: data,
-      carOptions: data
-        .filter((car) => filterCars(car, this.props.formState))
-        .map((rowData) => ({
-          value: rowData.asuods_id,
-          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
-          rowData,
-        })),
+      preferCarOptions: this.makeCarOptions(data, this.props.formState, 'prefer_car'),
+      secondaryCarOptions: this.makeCarOptions(data, this.props.formState, 'secondary_car'),
     });
   }
   async loadEmployeePosition() {
@@ -116,6 +113,21 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       companyStructureOptions: data.map(defaultSelectListMapper),
     });
   }
+
+  makeCarOptions = memoizeOne((
+    carList: StateEmployee['carList'],
+    formState: PropsEmployee['formState'],
+    fieldType: 'prefer_car' | 'secondary_car',
+  ) => {
+    return carList
+      .filter((car) => 
+        filterCars(car, formState, fieldType)
+      ).map((rowData) => ({
+        value: rowData.asuods_id,
+        label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+        rowData,
+      }));
+  });
 
   handleChangeDateEnd = (type: 'special_license_date_end', value) => {
     this.props.handleChange({
@@ -196,17 +208,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   };
   updateCarOptions(formState: PropsEmployee['formState']) {
     this.setState({
-      carOptions: this.state.carList
-        .filter((car) => (
-          filterCars(
-            car,
-            formState,
-          )
-        )).map((rowData) => ({
-          value: rowData.asuods_id,
-          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
-          rowData,
-        })),
+      preferCarOptions: this.makeCarOptions(this.state.carList, formState, 'prefer_car'),
+      secondaryCarOptions: this.makeCarOptions(this.state.carList, formState, 'secondary_car'),
     });
   }
 
@@ -510,7 +513,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     modalKey={path}
                     label="Основное ТС"
                     value={state.prefer_car}
-                    options={this.state.carOptions}
+                    options={ this.state.preferCarOptions }
                     error={errors.prefer_car}
                     disabled={!isPermitted || !state.is_driver}
                     onChange={this.handleChangeCar}
@@ -525,7 +528,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     multi
                     label="Вторичное ТС"
                     value={state.secondary_car}
-                    options={this.state.carOptions}
+                    options={ this.state.secondaryCarOptions }
                     error={errors.secondary_car}
                     disabled={!isPermitted || !state.is_driver}
                     onChange={this.props.handleChange}

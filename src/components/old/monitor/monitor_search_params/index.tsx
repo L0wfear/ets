@@ -34,7 +34,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
       },
       [carActualGpsNumberIndex, gov_number],
     );
-    const carData_prev = usePrevious(carData);
 
     React.useEffect(
       () => {
@@ -65,8 +64,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     /****************************** dates ******************************/
     const date_start = props.searchState.date_start;
     const date_end = props.searchState.date_end;
-    const date_start_prev = usePrevious(props.searchState.date_start);
-    const date_end_prev = usePrevious(props.searchState.date_end);
     const refresh = props.searchState.refresh;
 
     React.useEffect(

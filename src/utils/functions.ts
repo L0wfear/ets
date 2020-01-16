@@ -358,3 +358,5 @@ export const metresToKilometeres = (metresVal: number) =>
   isNumber(metresVal)
     ? ( metresVal / 1000 ).toFixed(2)
     : '0.00';
+
+export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));

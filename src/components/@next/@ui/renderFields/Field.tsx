@@ -73,9 +73,9 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
         && (props.value || props.value === 0)
       ){
         const newVal = Number(props.value).toFixed(numberToFixed[props.format]);
-        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0; // если десятичное значение
+        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0; // кол-во знаков после запятой в исходном значении
 
-        if (decimal >= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
+        if (decimal <= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
           setLocalStateValue(newVal);
         }
       }

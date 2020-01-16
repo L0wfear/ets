@@ -29,7 +29,8 @@ export type PropsEmployee = OutputWithFormProps<
 >;
 export type StateEmployee = {
   carList: Array<Car>;
-  carOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
+  preferCarOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
+  secondaryCarOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
   positionOptions: DefaultSelectListMapper<Position>;
   companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear>;
   isCommonOptions: Array<{ value: number; label: string; }>;

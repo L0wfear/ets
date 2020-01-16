@@ -61,12 +61,12 @@ export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) =>
   return newElement;
 };
 
-export function filterCars(car, formState) {
+export function filterCars(car, formState, fieldType: 'prefer_car' | 'secondary_car') {
   let isValid = false;
   const secondary_car = get(formState, 'secondary_car', []);
   const prefer_car = get(formState, 'prefer_car', null);
 
-  if (prefer_car && prefer_car === car.asuods_id || isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
+  if (fieldType === 'prefer_car' && prefer_car && prefer_car === car.asuods_id || fieldType === 'secondary_car' && isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
     isValid = true;
   } else if (car.available_to_bind) {
     // @todo

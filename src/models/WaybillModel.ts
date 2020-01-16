@@ -520,6 +520,7 @@ export const waybillSchema = {
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Возврат фактический, л', 3);
           }
+          return false;
         },
       },
     ],

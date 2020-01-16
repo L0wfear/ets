@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
 import { getWarningNotification } from 'utils/notifications';
-import { saveData, printData } from 'utils/functions';
+import { saveData, printData, parseFloatWithFixed } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
@@ -280,19 +280,19 @@ class WaybillFormWrap extends React.Component<Props, State> {
         );
 
         if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
-          waybill.fuel_end = +(fuelStart + fuelGiven - fuelTaxes);
-          waybill.equipment_fuel_end = +(
+          waybill.fuel_end = parseFloatWithFixed((fuelStart + fuelGiven - fuelTaxes), 3);
+          waybill.equipment_fuel_end = parseFloatWithFixed((
             equipmentFuelStart
             + equipmentFuelGiven
             - equipmentFuelTaxes
-          );
+          ), 3);
         } else {
-          waybill.fuel_end = +(
+          waybill.fuel_end = parseFloatWithFixed((
             fuelStart
             + fuelGiven
             - fuelTaxes
             - equipmentFuelTaxes
-          );
+          ), 3);
           waybill.equipment_fuel_end = null;
         }
 
@@ -489,18 +489,18 @@ class WaybillFormWrap extends React.Component<Props, State> {
 
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
       formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes);
-      formState.equipment_fuel_end = ( // Возврат по таксировке, л
+      formState.equipment_fuel_end = parseFloatWithFixed(( // Возврат по таксировке, л
         equipmentFuelStart
         + equipmentFuelGiven
         - equipmentFuelTaxes
-      );
+      ), 3);
     } else {
-      formState.fuel_end = (
+      formState.fuel_end = parseFloatWithFixed((
         fuelStart
         + fuelGiven
         - fuelTaxes
         - equipmentFuelTaxes
-      );
+      ), 3);
     }
 
     if (
@@ -546,9 +546,9 @@ class WaybillFormWrap extends React.Component<Props, State> {
     let { formErrors } = this.state;
     const newState: Partial<State> = {};
 
-    if (!formState.status || formState.status === 'draft') {
+    if (!formState?.status || formState?.status === 'draft') {
       this.schema = waybillSchema;
-    } else if (formState.status && formState.status !== 'draft') {
+    } else if (formState?.status && formState?.status !== 'draft') {
       this.schema = waybillClosingSchema;
     }
 

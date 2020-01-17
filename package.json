@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.757",
+    "version": "2.32.758",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -136,11 +136,11 @@
         "xml-loader": "^1.2.1"
     },
     "scripts": {
-        "dev": "cross-env STAND=dev NODE_ENV=development webpack-dev-server",
-        "dev:stage": "cross-env STAND=gost_stage NODE_ENV=development webpack-dev-server",
-        "dev:test": "cross-env STAND=ets_test NODE_ENV=development webpack-dev-server",
-        "dev:hotfix": "cross-env STAND=ets_hotfix NODE_ENV=development webpack-dev-server",
-        "dev:prod": "cross-env STAND=prod NODE_ENV=development webpack-dev-server",
+        "dev": "npm i && cross-env STAND=dev NODE_ENV=development webpack-dev-server",
+        "dev:stage": "npm i && cross-env STAND=gost_stage NODE_ENV=development webpack-dev-server",
+        "dev:test": "npm i && cross-env STAND=ets_test NODE_ENV=development webpack-dev-server",
+        "dev:hotfix": "npm i && cross-env STAND=ets_hotfix NODE_ENV=development webpack-dev-server",
+        "dev:prod": "npm i && cross-env STAND=prod NODE_ENV=development webpack-dev-server",
         "build": "cross-env STAND=dev NODE_ENV=production webpack",
         "build:stage": "cross-env STAND=gost_stage NODE_ENV=production webpack",
         "build:test": "cross-env STAND=ets_test NODE_ENV=production webpack",

@@ -39,6 +39,7 @@ export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'
     return {
       distance: null,
       consumption: null,
+      sensor_refill: null,
     };
   }
 };

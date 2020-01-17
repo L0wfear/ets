@@ -734,6 +734,7 @@ class WaybillForm extends React.Component<Props, State> {
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
+      loadingFields.sensor_refill = false;
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
@@ -750,6 +751,7 @@ class WaybillForm extends React.Component<Props, State> {
     ) {
       loadingFields.distance = true;
       loadingFields.consumption = true;
+      loadingFields.sensor_refill = true;
       this.setState({ loadingFields });
 
       this.props
@@ -763,7 +765,7 @@ class WaybillForm extends React.Component<Props, State> {
             this.props,
           ),
         )
-        .then(({ distance, consumption }) => {
+        .then(({ distance, consumption, sensor_refill, }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -772,12 +774,16 @@ class WaybillForm extends React.Component<Props, State> {
             consumption: isNullOrUndefined(consumption)
               ? null
               : parseFloat(consumption),
+            sensor_refill: isNullOrUndefined(sensor_refill)
+              ? null
+              : parseFloat(sensor_refill),
           });
 
           this.setState({
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_refill: false,
             },
           });
         })
@@ -786,6 +792,7 @@ class WaybillForm extends React.Component<Props, State> {
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_refill: false,
             },
           });
         });
@@ -794,6 +801,7 @@ class WaybillForm extends React.Component<Props, State> {
         loadingFields: {
           distance: false,
           consumption: false,
+          sensor_refill: false,
         },
       });
     }
@@ -2580,6 +2588,7 @@ class WaybillForm extends React.Component<Props, State> {
                     label="Заправка по ДУТ, л"
                     error={errors.sensor_refill}
                     value={state.sensor_refill}
+                    isLoading={loadingFields.sensor_refill}
                     format="toFixed3"
                     disabled
                   />

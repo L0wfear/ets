@@ -214,7 +214,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                 );
 
                 if (!isPermitted) {
-                  return 'Поле "Бригадир" должно быть заполнено активным сотрудником';
+                  return 'Поле "Бригадир" должно быть заполнено работающими сотрудниками';
                 }
               }
 
@@ -248,7 +248,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                 ));
 
                 if (!isPermitted) {
-                  return 'Поле "Бригада" должно быть заполнено активными сотрудниками';
+                  return 'Поле "Бригада" должно быть заполнено работающими сотрудниками';
                 }
               }
 

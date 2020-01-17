@@ -67,7 +67,6 @@ class MissionRejectForm extends React.Component {
       comment: '',
       ...this.getPropsMission(missionList, mIndex),
       car_id: null,
-      car_func_types: [],
       needUpdateParent: false,
       reason_id: null, // изменить
       edcRequestIds: null,
@@ -76,7 +75,6 @@ class MissionRejectForm extends React.Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('objects').getCars();
     this.props.actionGetAndSetInStoreMissionCancelReasons();
     this.updateMissionData(this.state.mission_id);
   }
@@ -108,22 +106,12 @@ class MissionRejectForm extends React.Component {
   };
 
   getCarFuncTypesByNormId(missionById) {
-    const { norm_id, date_start: datetime } = missionById || {};
-
+    const { norm_id, date_start: norms_on_date } = missionById || {};
     if (norm_id) {
-      this.context.flux
-        .getActions('missions')
-        .getCleaningByTypeInActiveMission({
-          type: 'norm_registry',
-          norm_id,
-          datetime,
-        })
-        .then(({ result: { rows: [norm_data] } }) => {
-          const car_func_types = norm_data.car_func_types.map(({ id }) => id);
-
-          this.setState({ car_func_types });
-        })
-        .catch(() => this.setState({ car_func_types: [] }));
+      this.context.flux.getActions('objects').getCarsByNorm({
+        norm_ids: norm_id,
+        norms_on_date,
+      });
     }
   }
 
@@ -358,7 +346,7 @@ class MissionRejectForm extends React.Component {
     const { state, props } = this;
 
     const errors = {};
-    const { car_func_types, missionList, mIndex } = state;
+    const { missionList, mIndex } = state;
 
     const mission = missionList[mIndex];
 
@@ -372,25 +360,13 @@ class MissionRejectForm extends React.Component {
       // waybill_number,
     } = mission;
 
-    CARS = props.carsList.reduce(
-      (
-        carOptions,
-        { available_to_bind, asuods_id, gov_number, type_id: car_type_id },
-      ) => {
-        if (
-          mission_car_gov_number !== gov_number
-          && available_to_bind
-          && (!isEmpty(car_func_types)
-            ? car_func_types.includes(car_type_id)
-            : true)
-        ) {
-          carOptions.push({ value: asuods_id, label: gov_number });
-        }
+    CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number }) => {
+      if (mission_car_gov_number !== gov_number) {
+        carOptions.push({ value: asuods_id, label: gov_number });
+      }
 
-        return carOptions;
-      },
-      [],
-    );
+      return carOptions;
+    }, []);
 
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(
       this.props.missionCancelReasonsList,

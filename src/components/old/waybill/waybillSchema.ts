@@ -592,7 +592,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Комментарий',
       type: 'string',
       required: false,
-      maxLength: 200,
+      maxLength: 4000,
     },
     equipment_tax_data: {
       title: 'Расчет топлива по норме для оборудования',

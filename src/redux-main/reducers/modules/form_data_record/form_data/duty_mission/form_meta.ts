@@ -204,7 +204,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'valueOfArray',
           required: true,
           dependencies: [
-            (foreman_id, { structure_id }, reduxState) => {
+            (foreman_id, { structure_id, status, }, reduxState) => {
               const employeeIndex = getEmployeeState(reduxState).employeeIndex;
 
               if (foreman_id && Object.keys(employeeIndex).length) {
@@ -213,7 +213,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                   structure_id,
                 );
 
-                if (!isPermitted) {
+                if (!isPermitted && dutyMissionIsNotAssigned(status)) {
                   return 'Поле "Бригадир" должно быть заполнено работающими сотрудниками';
                 }
               }
@@ -236,7 +236,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'multiValueOfArray',
           title: 'Бригада.ID',
           dependencies: [
-            (value, { structure_id }, reduxState) => {
+            (value, { structure_id, status, }, reduxState) => {
               const employeeIndex = getEmployeeState(reduxState).employeeIndex;
 
               if (value.length && Object.keys(employeeIndex).length) {
@@ -247,7 +247,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                   )
                 ));
 
-                if (!isPermitted) {
+                if (!isPermitted && dutyMissionIsNotAssigned(status) ) {
                   return 'Поле "Бригада" должно быть заполнено работающими сотрудниками';
                 }
               }

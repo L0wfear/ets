@@ -89,6 +89,7 @@ export type WaybillRegistryRow = {
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
+  sensor_refill: number;
   status: 'draft' | any;
   status_text: string;
   structure_id: number;

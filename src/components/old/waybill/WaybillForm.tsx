@@ -2573,6 +2573,17 @@ class WaybillForm extends React.Component<Props, State> {
                     disabled
                   />
                 </Div>
+                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+                  <ExtField
+                    id="sensor_refill"
+                    type="number"
+                    label="Заправка по ДУТ, л"
+                    error={errors.sensor_refill}
+                    value={state.sensor_refill}
+                    format="toFixed3"
+                    disabled
+                  />
+                </Div>
                 <ExtField
                   id="failed-medical-stat-types"
                   type="string"

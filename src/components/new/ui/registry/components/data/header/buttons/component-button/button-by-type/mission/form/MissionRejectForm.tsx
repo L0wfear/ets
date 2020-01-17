@@ -146,7 +146,7 @@ class MissionRejectForm extends React.Component<Props, State> {
   };
 
   getCarFuncTypesByNormId = async (missionById) => {
-    const { norm_id, norms_on_date } = missionById || {};
+    const { norm_id, date_start: norms_on_date } = missionById || {};
 
     if (norm_id) {
       this.props.dispatch(carGetAndSetInStore({

@@ -16,7 +16,6 @@ import { getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selector
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
-import { actionGetNormByIdAndDate } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
 import {
   actionGetMissionReassignationParameters,
   actionPostMissionReassignationParameters,
@@ -66,7 +65,6 @@ type State = {
   date_end: Mission['date_end'];
   comment: string;
   car_id: number;
-  car_func_types: Array<number>;
   needUpdateParent: boolean;
   reason_id: number;
   edcRequestIds: Array<{
@@ -106,7 +104,6 @@ class MissionRejectForm extends React.Component<Props, State> {
       comment: '',
       ...this.getPropsMission(missionList, mIndex),
       car_id: null,
-      car_func_types: [],
       needUpdateParent: false,
       reason_id: null, // изменить
       edcRequestIds: null,
@@ -116,7 +113,6 @@ class MissionRejectForm extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.props.dispatch(carGetAndSetInStore({}, { page: formPage }));
     this.props.dispatch(someUniqActions.actionGetAndSetInStoreMissionCancelReasons({}, { page: formPage }));
     this.updateMissionData(this.state.mission_id);
   }
@@ -150,22 +146,13 @@ class MissionRejectForm extends React.Component<Props, State> {
   };
 
   getCarFuncTypesByNormId = async (missionById) => {
-    const { norm_id, date_start } = missionById || {};
+    const { norm_id, norms_on_date } = missionById || {};
 
     if (norm_id) {
-      const norm_data = await this.props.dispatch(
-        actionGetNormByIdAndDate(
-          {
-            norm_id,
-            datetime: date_start,
-          },
-          { page: formPage },
-        ),
-      );
-
-      const car_func_types = norm_data.car_func_types.map(({ id }) => id);
-
-      this.setState({ car_func_types });
+      this.props.dispatch(carGetAndSetInStore({
+        norm_ids: norm_id,
+        norms_on_date,
+      }, { page: formPage }));
     }
   };
 
@@ -416,7 +403,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     const { state, props } = this;
 
     const errors: Record<string, string> = {};
-    const { car_func_types, missionList, mIndex } = state;
+    const { missionList, mIndex } = state;
 
     const mission = missionList[mIndex];
 
@@ -435,18 +422,12 @@ class MissionRejectForm extends React.Component<Props, State> {
       (carOptions, { available_to_bind, asuods_id, gov_number, type_id: car_type_id }) => {
         if (
           mission_car_gov_number !== gov_number
-          && available_to_bind
-          && (!isEmpty(car_func_types)
-            ? car_func_types.includes(car_type_id)
-            : true)
         ) {
           carOptions.push({ value: asuods_id, label: gov_number });
         }
 
         return carOptions;
-      },
-      [],
-    );
+      }, []);
 
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(
       this.props.missionCancelReasonsList,

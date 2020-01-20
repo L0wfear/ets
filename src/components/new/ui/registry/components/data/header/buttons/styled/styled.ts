@@ -29,7 +29,7 @@ export const EtsButtonsContainer = styled.div<EtsButtonsContainerProps>`
   .inline-block {
     margin: 0px;
   }
-  /* Для кнопок, обернутых в OutsideClickHandler */
+  /* Для кнопок, обернутых в ClickOutHandler */
   & > div > ${ButtonStyled} {
     min-height: 100%;
   }

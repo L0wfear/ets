@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 
 import { SecondMenuItemContainer, SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
 import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl, DivDivider, MenuTitleContainer } from 'components/new/ui/app_header/styled';
@@ -148,7 +148,7 @@ class SecondMenuItem extends React.Component<any, any> {
     const active = !!isActivemenu(this.props.match.url, path, childrenPath);
 
     return (
-      <OutsideClickHandler onOutsideClick={this.handleClickOut}>
+      <ClickOutHandler onClickOut={this.handleClickOut}>
         <SecondMenuItemContainer noneEffect={data.divider || (!data.path && !data.children) } active={this.state.showChildren || active}>
           { this.getItem() }
           {
@@ -161,7 +161,7 @@ class SecondMenuItem extends React.Component<any, any> {
             )
           }
         </SecondMenuItemContainer>
-      </OutsideClickHandler>
+      </ClickOutHandler>
     );
   }
 }

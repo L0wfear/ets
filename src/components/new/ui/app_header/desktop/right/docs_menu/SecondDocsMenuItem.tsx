@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/right/docs_menu/styled';
 import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl } from 'components/new/ui/app_header/styled';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { showHeaderMenu } from 'components/new/ui/app_header/utils';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
@@ -81,7 +81,7 @@ class SecondDocsMenuItem extends React.Component<any, any> {
     const { data } = this.props;
 
     return (
-      <OutsideClickHandler onOutsideClick={this.handleClickOut}>
+      <ClickOutHandler onClickOut={this.handleClickOut}>
         <SecondMenuItemContainer noneEffect={data.divider || (!data.path && !data.children) } active={this.state.showChildren}>
           { this.getItem() }
           {
@@ -98,7 +98,7 @@ class SecondDocsMenuItem extends React.Component<any, any> {
               )
           }
         </SecondMenuItemContainer>
-      </OutsideClickHandler>
+      </ClickOutHandler>
     );
   }
 }

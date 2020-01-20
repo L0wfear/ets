@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 import EtsButton, { EtsButtonProps } from '../00-button/EtsButton';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -52,7 +52,7 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
 
     return (
       <EtsDropdownContainer>
-        <OutsideClickHandler onOutsideClick={handleClickClose} useCapture={false}>
+        <ClickOutHandler onClickOut={handleClickClose}>
           <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
             {props.toggleElement}
             {
@@ -68,11 +68,11 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
               )
             }
           </EtsButton>
-          {
-            isOpen
-              && props.children
-          }
-        </OutsideClickHandler>
+        </ClickOutHandler>
+        {
+          isOpen
+            && props.children
+        }
       </EtsDropdownContainer>
     );
   },

@@ -5,7 +5,7 @@ import { isObject } from 'util';
 import { MarkNewRegistry } from 'global-styled/global-styled';
 import { showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
 import { DivDivider, LinkSecontLvl, LinkNoHashSecontLvl, MenuTitleContainer } from 'components/new/ui/app_header/styled';
-import * as ClickOutHandler from 'react-onclickout';
+import OutsideClickHandler from 'react-outside-click-handler';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
 import EtsBootstrap from '../../@bootstrap';
@@ -120,7 +120,7 @@ class OneMenu extends React.Component<any, any> {
     const active = !!isActivemenu(this.props.match.url, data.path, data.childrenPath);
 
     return (
-      <ClickOutHandler onClickOut={this.handleClickOut}>
+      <OutsideClickHandler onOutsideClick={this.handleClickOut}>
         <SecondMenuItemContainer active={this.state.showChildren || active}>
           {this.getTitle()}
           {
@@ -135,7 +135,7 @@ class OneMenu extends React.Component<any, any> {
             )
           }
         </SecondMenuItemContainer>
-      </ClickOutHandler>
+      </OutsideClickHandler>
     );
   }
 }

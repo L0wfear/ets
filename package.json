@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.761",
+    "version": "2.32.762",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -109,7 +109,7 @@
         "jsdoc": "^3.6.3",
         "jspdf": "^1.5.3",
         "lint-staged": "^9.5.0",
-        "node-sass": "^4.13.0",
+        "node-sass": "^4.13.1",
         "openurl": "^1.1.1",
         "path-to-regexp": "^5.0.0",
         "polished": "^3.4.2",

@@ -52,7 +52,7 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
 
     return (
       <EtsDropdownContainer>
-        <OutsideClickHandler onOutsideClick={handleClickClose}>
+        <OutsideClickHandler onOutsideClick={handleClickClose} useCapture={false}>
           <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
             {props.toggleElement}
             {
@@ -68,11 +68,11 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
               )
             }
           </EtsButton>
+          {
+            isOpen
+              && props.children
+          }
         </OutsideClickHandler>
-        {
-          isOpen
-            && props.children
-        }
       </EtsDropdownContainer>
     );
   },

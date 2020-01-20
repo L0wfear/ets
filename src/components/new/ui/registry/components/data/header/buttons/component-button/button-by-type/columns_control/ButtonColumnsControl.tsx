@@ -1,5 +1,5 @@
 import * as React from 'react';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ColumnsPopup from './column_popup/ColumnsPopup';
@@ -29,7 +29,7 @@ const ButtonColumnsControl: React.FC<Props> = React.memo(
     );
 
     return (
-      <OutsideClickHandler onOutsideClick={closePopup}>
+      <ClickOutHandler onClickOut={closePopup}>
         <EtsBootstrap.Button bsSize="small" active={showConfigPopup || hasHiddenField} onClick={toggleShowPopup}>
           <EtsBootstrap.Glyphicon glyph="cog" />
         </EtsBootstrap.Button>
@@ -39,7 +39,7 @@ const ButtonColumnsControl: React.FC<Props> = React.memo(
               <ColumnsPopup registryKey={props.registryKey} />
             )
         }
-      </OutsideClickHandler>
+      </ClickOutHandler>
     );
   },
 );

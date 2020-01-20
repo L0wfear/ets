@@ -3,7 +3,7 @@ import { DefaultFirstLvlMenu, LinkFirstLvl, LinkNoHashFirstLvl, DefaultFirstDt, 
 import { MarkNewRegistry } from 'global-styled/global-styled';
 import SecondMenuItem from 'components/new/ui/app_header/desktop/left/page_menu/SecondMenuItem';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
@@ -148,7 +148,7 @@ class MainMenuItem extends React.Component<any, any> {
     const active = !!isActivemenu(this.props.match.url, path, childrenPath);
 
     return Boolean(statusShow) && (
-      <OutsideClickHandler onOutsideClick={this.handleClickOut}>
+      <ClickOutHandler onClickOut={this.handleClickOut}>
         <DefaultFirstDt ref={this.node} active={this.state.showChildren || active}>
           { this.getItem() }
           {
@@ -161,7 +161,7 @@ class MainMenuItem extends React.Component<any, any> {
             )
           }
         </DefaultFirstDt>
-      </OutsideClickHandler>
+      </ClickOutHandler>
     );
   }
 }

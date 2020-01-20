@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import OutsideClickHandler from 'react-outside-click-handler';
+import * as ClickOutHandler from 'react-onclickout';
 import * as cx from 'classnames';
 
 import {
@@ -13,6 +13,9 @@ import {
 } from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
 import DefaultInput from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput';
 
+import {
+  DivNone,
+} from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -70,45 +73,53 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
   render() {
     return (
       <span>
-        <div className={cx('tool_bar-block', { active: this.props.active })}>
-          <OutsideClickHandler onOutsideClick={this.handleClickOut}>
+        <ClickOutHandler onClickOut={this.handleClickOut}>
+          <div className={cx('tool_bar-block', { active: this.props.active })}>
             <div className="default_cube flex-row map-car-filter multi">
               <div className="button-toggle" onClick={this.toggleHidden} >
                 <EtsBootstrap.Glyphicon glyph="filter" />
               </div>
               {
-                !this.state.hidden && (
-                  <div className="car_text_filter-container multi">
-                    <div>
-                      {
-                        [
-                          'carFilterMultyType',
-                          'carFilterMultyStructure',
-                        ].map((keyField) => (
-                          <DefaultInput
-                            key={keyField}
-                            keyField={keyField}
-                            OPTIONS={this.state[`${keyField}Options`]}
-                            placeholder={placeholder[keyField]}
-                          />
-                        ))
-                      }
-                      {
-                        this.props.isOkrug && (
-                          <DefaultInput
-                            keyField={'carFilterMultyOwner'}
-                            OPTIONS={this.state.carFilterMultyOwnerOptions}
-                            placeholder={placeholder.carFilterMultyOwner}
-                          />
-                        )
-                      }
+                this.state.hidden
+                  ? (
+                    <DivNone />
+                  )
+                  :                  (
+                    <div className="car_text_filter-container multi">
+                      <div>
+                        {
+                          [
+                            'carFilterMultyType',
+                            'carFilterMultyStructure',
+                          ].map((keyField) => (
+                            <DefaultInput
+                              key={keyField}
+                              keyField={keyField}
+                              OPTIONS={this.state[`${keyField}Options`]}
+                              placeholder={placeholder[keyField]}
+                            />
+                          ))
+                        }
+                        {
+                          this.props.isOkrug
+                            ? (
+                              <DefaultInput
+                                keyField={'carFilterMultyOwner'}
+                                OPTIONS={this.state.carFilterMultyOwnerOptions}
+                                placeholder={placeholder.carFilterMultyOwner}
+                              />
+                            )
+                            :                          (
+                              <DivNone />
+                            )
+                        }
+                      </div>
                     </div>
-                  </div>
-                )
+                  )
               }
             </div>
-          </OutsideClickHandler>
-        </div>
+          </div>
+        </ClickOutHandler>
       </span>
     );
   }

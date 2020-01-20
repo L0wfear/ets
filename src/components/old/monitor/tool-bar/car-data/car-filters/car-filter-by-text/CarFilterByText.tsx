@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connect } from 'react-redux';
-import * as ClickOutHandler from 'react-onclickout';
+import OutsideClickHandler from 'react-outside-click-handler';
 import * as cx from 'classnames';
 import CarFieldBytextInput from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput';
 import {
@@ -9,9 +9,6 @@ import {
   StateCarFilterByText,
 } from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
@@ -34,24 +31,20 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
   render() {
     return (
       <span>
-        <ClickOutHandler onClickOut={this.handleClickOut}>
-          <div className={cx('tool_bar-block', { active: this.props.active })}>
+        <div className={cx('tool_bar-block', { active: this.props.active })}>
+          <OutsideClickHandler onOutsideClick={this.handleClickOut}>
             <div className="default_cube flex-row map-car-filter">
-              <div className="button-toggle" onClick={this.toggleHidden} >
+              <div className="button-toggle" onClick={this.toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph="search" />
               </div>
               {
-                this.state.hidden
-                  ? (
-                    <DivNone />
-                  )
-                  :                  (
-                    <CarFieldBytextInput />
-                  )
+                !this.state.hidden && (
+                  <CarFieldBytextInput />
+                )
               }
             </div>
-          </div>
-        </ClickOutHandler>
+          </OutsideClickHandler>
+        </div>
       </span>
     );
   }

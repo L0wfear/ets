@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.762",
+    "version": "2.32.764",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -28,7 +28,7 @@
         "react-bootstrap": "^0.32.4",
         "react-dom": "^16.12.0",
         "react-notification-system": "^0.3.0",
-        "react-onclickout": "^2.0.8",
+        "react-outside-click-handler": "^1.3.0",
         "react-pdf-js": "^5.1.0",
         "react-redux": "^7.1.3",
         "react-router": "^5.1.2",
@@ -59,20 +59,21 @@
         "@types/enzyme": "^3.10.4",
         "@types/jest": "^24.9.0",
         "@types/lodash": "^4.14.149",
-        "@types/node": "^12.12.25",
+        "@types/node": "^13.1.8",
         "@types/ol": "^6.1.0",
         "@types/prop-types": "^15.7.3",
         "@types/query-string": "^5.1.0",
         "@types/react": "^16.9.17",
         "@types/react-bootstrap": "^0.32.20",
         "@types/react-dom": "^16.9.4",
+        "@types/react-outside-click-handler": "^1.3.0",
         "@types/react-redux": "^7.1.6",
         "@types/react-router-dom": "^5.1.3",
         "@types/react-select": "^3.0.10",
         "@types/react-virtualized": "^9.21.7",
         "@types/react-widgets": "^4.4.2",
         "@types/recompose": "^0.30.7",
-        "@types/styled-components": "=4.1.8",
+        "@types/styled-components": "^4.4.2",
         "@types/webpack": "^4.41.2",
         "@types/webpack-dev-server": "^3.9.0",
         "@types/webpack-env": "^1.15.0",
@@ -108,7 +109,7 @@
         "jest-mock": "^24.9.0",
         "jsdoc": "^3.6.3",
         "jspdf": "^1.5.3",
-        "lint-staged": "^9.5.0",
+        "lint-staged": "^10.0.0",
         "node-sass": "^4.13.1",
         "openurl": "^1.1.1",
         "path-to-regexp": "^5.0.0",
@@ -136,6 +137,7 @@
         "xml-loader": "^1.2.1"
     },
     "scripts": {
+        "postinstall": "rm -rf node_modules/@types/react-native",
         "dev": "npm i && cross-env STAND=dev NODE_ENV=development webpack-dev-server",
         "dev:stage": "npm i && cross-env STAND=gost_stage NODE_ENV=development webpack-dev-server",
         "dev:test": "npm i && cross-env STAND=ets_test NODE_ENV=development webpack-dev-server",
@@ -158,8 +160,7 @@
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
-            "eslint --config ./.eslintrc.js --ext .ts,.tsx --fix --quiet",
-            "git add"
+            "eslint --config ./.eslintrc.js --ext .ts,.tsx --fix --quiet"
         ]
     },
     "browserslist": [

@@ -11,7 +11,7 @@ import EtsLogout from 'components/new/ui/app_header/desktop/right/ets_logout/Ets
 import docs from 'components/new/pages/doc_header/_config-data/index';
 
 import OneMenuWrap from 'components/new/ui/app_header/mobi/OneMenu';
-import * as ClickOutHandler from 'react-onclickout';
+import OutsideClickHandler from 'react-outside-click-handler';
 import EtsBootstrap from '../../@bootstrap';
 
 class AppHeader extends React.Component<any, any> {
@@ -44,8 +44,8 @@ class AppHeader extends React.Component<any, any> {
     const { showChildren } = this.state;
 
     return (
-      <ClickOutHandler onClickOut={this.handleClickOut}>
-        <MobiContainer>
+      <MobiContainer>
+        <OutsideClickHandler onOutsideClick={this.handleClickOut} disabled={!showChildren}>
           <FirstLvlMobi>
             <EtsLogo />
             <MenuButton active={showChildren} onClick={this.toggleShowMenu}>Меню</MenuButton>
@@ -73,8 +73,8 @@ class AppHeader extends React.Component<any, any> {
               </SecondMenuContainerMobiFirst>
             </div>
           </EtsBootstrap.Collapse>
-        </MobiContainer>
-      </ClickOutHandler>
+        </OutsideClickHandler>
+      </MobiContainer>
     );
   }
 }

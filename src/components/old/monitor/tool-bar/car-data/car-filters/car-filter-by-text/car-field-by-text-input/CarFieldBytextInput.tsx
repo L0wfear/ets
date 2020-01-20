@@ -1,64 +1,56 @@
 import * as React from 'react';
-import { findDOMNode } from 'react-dom';
-
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
+
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
-import {
-  PropsCarFieldBytextInput,
-  StateCarFieldBytextInput,
-} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput.h';
-
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
-class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
-  focusOn = (node) => {
-    const element: any = findDOMNode(node);
-    if (element) {
-      (element.querySelector('.form-control') as HTMLInputElement).focus();
-    }
-  };
+type Props = {
+  carFilterText: string;
+  canFocusOnCar: boolean;
+  changeCarFilterText: any;
+  resetCarFilterText: React.MouseEventHandler<any>;
+  handleFocusOnCar: React.MouseEventHandler<HTMLDivElement>;
+};
 
-  render() {
+const CarFieldBytextInput: React.FC<Props> = React.memo(
+  (props) => {
     return (
       <div className="car_text_filter-container">
         <ExtField
-          ref={this.focusOn}
           label={false}
           type="string"
-          value={this.props.carFilterText}
-          onChange={this.props.changeCarFilterText}
+          value={props.carFilterText}
+          onChange={props.changeCarFilterText}
           placeholder="рег.номер/гар.номер/БНСО"
         />
         <div className="input_text_action-wrap">
           {
-            this.props.carFilterText
-              ? <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
+            props.carFilterText && (
+              <div className="input_text_action remove" onClick={props.resetCarFilterText}>
                 <EtsBootstrap.Glyphicon glyph="remove" />
               </div>
-              :          <DivNone />
+            )
           }
           {
-            this.props.canFocusOnCar
-              ? <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
+            props.canFocusOnCar && (
+              <div className="input_text_action show_tc" onClick={props.handleFocusOnCar}>
                 <EtsBootstrap.Glyphicon glyph="screenshot" />
                 <span>Показать</span>
               </div>
-              :            <DivNone />
+            )
           }
         </div>
       </div>
     );
   }
-}
-const mapStateToProps = (state) => {
+);
+
+const mapStateToProps = (state: ReduxState) => {
   const carsToShow = Object.entries(state.monitorPage.filters.filtredCarGpsCode)
     .filter(([gps_code, show]) => (
       show

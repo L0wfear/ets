@@ -1649,7 +1649,15 @@ class WaybillForm extends React.Component<Props, State> {
       = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
       || !isPermittedByKey.update || IS_DELETE;
 
-    const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
+    const disableComment = (
+      IS_CLOSED
+        && (
+          !isPermittedByKey.update
+            || !this.state.canEditIfClose
+        )
+    ) || (
+      !IS_CLOSED && !isPermittedByKey.update
+    );
 
     // <<< Да простят меня боги, переписать в 33м!!!
     const driverNotActiveError = (IS_DRAFT || IS_CREATING) && state.driver_id && !employeeByIndex?.active

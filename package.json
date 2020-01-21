@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.33.129",
+    "version": "2.33.130",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -171,7 +171,7 @@
         "ie 11"
     ],
     "engines": {
-        "node": ">=5.1.0",
+        "node": ">=12.11.0",
         "npm": ">=3.5.2"
     }
 }

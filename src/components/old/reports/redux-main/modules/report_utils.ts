@@ -42,7 +42,7 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule, uniqParams?: { fieldKey: string; arrayKey: string; }) => {
+export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule, uniqParams?: { [k: string]: { fieldKey: string; arrayKey: string; }; },) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
@@ -65,17 +65,17 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
         ...aggr_fields.reduce((summ, key) => {
           
           let uniqSetList = new Set([]); // DITETS19-1556 кол-во уникальных ТС по сумме полей из uniqParams.arrayKey(gov_numbers)
-          if(uniqParams && key === uniqParams.fieldKey) {
+          if(uniqParams && uniqParams[key]) {
             uniqSetList = new Set(data.reduce((setList, dataVal ) => {
               return [
                 ...setList,
-                ...get(dataVal, `${uniqParams.fieldKey}.${uniqParams.arrayKey}`, []),
+                ...get(dataVal, `${key}.${ get(uniqParams, `${key}.arrayKey`)}`, []),
               ];
             }, []));
           }
 
           const summValByKey = uniqParams
-            ? uniqParams && key === uniqParams.fieldKey
+            ? uniqParams && uniqParams[key] && key === uniqParams[key]?.fieldKey
               ? uniqSetList.size
               : summRowWithAll(row[key], summObj[key] || 0)
             : summRowWithAll(row[key], summObj[key] || 0);
@@ -176,8 +176,14 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
 
         const uniqParams = reportKey === 'car_usage_report' // пока так, если будут еще подобные отчеты, сделать switch
           ? {
-            fieldKey: 'total_cars',
-            arrayKey: 'gov_numbers'
+            total_cars: {
+              fieldKey: 'total_cars',
+              arrayKey: 'gov_numbers'
+            },
+            ready_cars: {
+              fieldKey: 'ready_cars',
+              arrayKey: 'gov_numbers'
+            },
           }
           : null;
 

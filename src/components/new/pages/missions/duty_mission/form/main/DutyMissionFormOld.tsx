@@ -97,7 +97,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 
       const {
         isPermitted,
-        IS_CREATING,
         // DUTY_MISSION_IS_NOT_ASSIGNED,
         DUTY_MISSION_IS_ORDER_SOURCE,
         DUTY_MISSION_IS_DISPLAY,
@@ -127,16 +126,13 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         }
       }
 
-      // if (IS_CREATING || DUTY_MISSION_IS_NOT_ASSIGNED) {
-      if (IS_CREATING) {
-        this.checkOnMosckowTime();
-        this.checkErrorsWithTime(true);
+      this.checkOnMosckowTime();
+      this.checkErrorsWithTime(true);
 
-        const timeId = this.setTimer(() => {
-          this.checkErrorsWithTime();
-        });
-        this.setState({timeId});
-      }
+      const timeId = this.setTimer(() => {
+        this.checkErrorsWithTime();
+      });
+      this.setState({timeId});
 
       this.props.updateFormErrors();
     };

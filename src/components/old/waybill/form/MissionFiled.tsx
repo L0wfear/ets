@@ -26,6 +26,7 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { componentsForMissionSelect } from './MultiValueMissionField';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import memoizeOne from 'memoize-one';
 
 const MissionFieldStyled = styled.div`
   margin-bottom: 15px;
@@ -51,6 +52,10 @@ class MissionField extends React.Component<Props, any> {
     action_at: '',
     mission_id_list: [],
     rejectedMission: null,
+    missionHasError: {
+      hasError: false,
+      errorText: '',
+    },
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -196,8 +201,28 @@ class MissionField extends React.Component<Props, any> {
     });
   };
 
+  setMissionTimeError = memoizeOne(( // для будущего перехода компонента на хуки, использовать useMemo
+    mission_id_list,
+    missionOptions,
+  ) => {
+    const errorInvalidTimeShow = mission_id_list.some((mission_id) => {
+      return missionOptions.some((elem) => mission_id === elem.value && elem.rowData.invalidMission);
+    });
+    const errorInvalidTimeText = 'Выдавать задания можно с временем начала выполнения не раньше 15 минут от текущего. Измените время начала работ в выделенном задании или удалите его из путевого листа';
+
+    if(this.state.missionHasError?.hasError !== errorInvalidTimeShow){
+      const missionHasError =  {
+        hasError: errorInvalidTimeShow,
+        errorText: errorInvalidTimeText,
+      };
+      this.setState({
+        missionHasError,
+      });
+      this.props.setMissionHasError(missionHasError);
+    }
+  });
+
   getInvalidMissionFlag = (missionElem) => {
-    // про ПЛ в разных статусах уточнить!!!
     const {
       moscowTimeServer,
       IS_ACTIVE,
@@ -282,10 +307,7 @@ class MissionField extends React.Component<Props, any> {
       ${OUTSIDEMISSIONS.map((m) => `№${m.number}`,).join(', ',)}
       не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`;
 
-    const errorInvalidTimeShow = state.mission_id_list.some((mission_id) => {
-      return missionOptions.some((elem) => mission_id === elem.value && elem.rowData.invalidMission);
-    });
-    const errorInvalidTimeText = 'Выдавать задания можно с временем начала выполнения не раньше 15 минут от текущего. Измените время начала работ в выделенном задании или удалите его из путевого листа';
+    this.setMissionTimeError(state.mission_id_list, missionOptions);
 
     return (
       <MissionFieldStyled>
@@ -312,8 +334,8 @@ class MissionField extends React.Component<Props, any> {
           error={errorIntervalText}
         />
         <ErrorsBlock
-          hidden={!errorInvalidTimeShow}
-          error={errorInvalidTimeText}
+          hidden={!this.state.missionHasError.hasError}
+          error={this.state.missionHasError.errorText}
         />
 
         <EtsBootstrap.Button

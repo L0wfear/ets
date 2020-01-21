@@ -285,6 +285,11 @@ type State = {
   rejectMissionList: Array<any>;
 
   origFormState: Props['formState'];
+
+  missionHasError: {
+    hasError: boolean;
+    errorText: string;
+  };
 };
 
 class WaybillForm extends React.Component<Props, State> {
@@ -306,6 +311,10 @@ class WaybillForm extends React.Component<Props, State> {
       notAvailableMissions: [],
       rejectMissionList: [],        // Массив с заданиями, которые надо будет отменить, формируется в missionField
       origFormState: {},
+      missionHasError: {
+        hasError: false,
+        errorText: '',
+      },
     };
   }
 
@@ -362,6 +371,12 @@ class WaybillForm extends React.Component<Props, State> {
       }
     }
   }
+
+  setMissionHasError = (missionHasError: State['missionHasError']) => {
+    this.setState({
+      missionHasError: missionHasError,
+    });
+  };
 
   handleChange = (field, e) => this.props.handleFormChange(field, e);
 
@@ -1673,11 +1688,17 @@ class WaybillForm extends React.Component<Props, State> {
       : ''; // Если сотрудник неактивен, только для черновика
     
     const canWaybillPrint =  (IS_DRAFT || IS_CREATING)
-      ? !driverNotActiveError.length && !accompanyingPersonNotActiveError.length && this.props.canSave
-      : this.props.canSave;
+      ? !driverNotActiveError.length
+        && !accompanyingPersonNotActiveError.length
+        && this.props.canSave
+        && !this.state.missionHasError?.hasError
+      : this.props.canSave && !this.state.missionHasError;
     const canWaybillGiveOutRead =  (IS_DRAFT || IS_CREATING)
-      ? !driverNotActiveError.length  && !accompanyingPersonNotActiveError.length && this.props.canSave
-      : this.props.canSave;
+      ? !driverNotActiveError.length 
+        && !accompanyingPersonNotActiveError.length
+        && this.props.canSave
+        && !this.state.missionHasError
+      : this.props.canSave && !this.state.missionHasError;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -2541,6 +2562,7 @@ class WaybillForm extends React.Component<Props, State> {
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
                 moscowTimeServer={this.props.moscowTimeServer}
+                setMissionHasError={this.setMissionHasError}
                 page={this.props.page}
                 path={this.props.path}
               />
@@ -2678,7 +2700,7 @@ class WaybillForm extends React.Component<Props, State> {
           <WaybillFooter
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
-            canSave={this.props.canSave}
+            canSave={Boolean(this.props.canSave && !this.state.missionHasError?.hasError)}
             canPrint={canWaybillPrint}
             canGiveOutRead={canWaybillGiveOutRead}
             canClose={this.props.canClose}

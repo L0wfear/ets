@@ -1692,14 +1692,14 @@ class WaybillForm extends React.Component<Props, State> {
         && !accompanyingPersonNotActiveError.length
         && this.props.canSave
         && !this.state.missionHasError?.hasError
-      : this.props.canSave && !this.state.missionHasError;
+      : this.props.canSave && !this.state.missionHasError?.hasError;
     const canWaybillGiveOutRead =  (IS_DRAFT || IS_CREATING)
       ? !driverNotActiveError.length 
         && !accompanyingPersonNotActiveError.length
         && this.props.canSave
-        && !this.state.missionHasError
-      : this.props.canSave && !this.state.missionHasError;
-
+        && !this.state.missionHasError?.hasError
+      : this.props.canSave && !this.state.missionHasError?.hasError;
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"

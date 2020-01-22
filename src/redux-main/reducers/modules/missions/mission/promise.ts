@@ -15,7 +15,7 @@ import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isArray } from 'util';
 
 export const getMissionDataById = async (id: number) => {
   let responce = null;
@@ -185,8 +185,11 @@ export const promiseSubmitMission = async (missionOwn: Mission, assign_to_waybil
       fact_value: isNullOrUndefined(rowData.fact_value) ? rowData.fact_value : getNumberValueFromSerch(rowData.fact_value),
       consumption: isNullOrUndefined(rowData.consumption) ? rowData.consumption : getNumberValueFromSerch(rowData.consumption),
     }));
-  } catch {
-    //
+    mission.assign_to_waybill = isArray(assign_to_waybill) && assign_to_waybill[0]
+      ? assign_to_waybill[0]
+      : null;
+  } catch(e) {
+    console.error('Ощибка при формировании задания', e);
   }
 
   if (mission.id) {

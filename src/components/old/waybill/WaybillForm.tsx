@@ -1676,7 +1676,7 @@ class WaybillForm extends React.Component<Props, State> {
       IS_CLOSED
         && (
           !isPermittedByKey.update
-            || !this.state.canEditIfClose
+            && !this.state.canEditIfClose
         )
     ) || (
       !IS_CLOSED && !isPermittedByKey.update

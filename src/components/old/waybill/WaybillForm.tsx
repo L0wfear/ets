@@ -1889,7 +1889,7 @@ class WaybillForm extends React.Component<Props, State> {
                     id="car-id"
                     type="select"
                     modalKey={modalKey}
-                    label="Транспортное средство (поиск по рег. номер  ТС)"
+                    label="Транспортное средство (поиск по рег. и гаражному номеру ТС)"
                     error={errors.car_id}
                     className="white-space-pre-wrap"
                     hidden={!(IS_CREATING || IS_DRAFT)}

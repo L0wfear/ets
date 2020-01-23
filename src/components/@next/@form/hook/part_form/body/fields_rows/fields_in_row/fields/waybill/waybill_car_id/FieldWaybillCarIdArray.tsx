@@ -66,7 +66,7 @@ const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo
         <ExtField
           id={`${path}_car_id`}
           type="select"
-          label={`Транспортное средство (поиск по рег. номер  ТС)`}
+          label={`Транспортное средство (поиск по рег. и гаражному номеру ТС)`}
           value={car_id}
           error={formErrors.car_id}
           options={carActualOptionData.options}

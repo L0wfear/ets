@@ -43,12 +43,15 @@ import { getDefaultRouteElement } from './utils';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import WorkTypes from './inside_fields/work_types/WorkTypes';
+import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 
 const path = 'routeForm';
 
 class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   state = {
     bridges: {},
+    municipal_facility_list: [],
   };
 
   async componentDidMount() {
@@ -128,11 +131,17 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
     }
   };
 
+  setMunicipalFacilityList = (municipal_facility_list: Array<MunicipalFacility>) => {
+    this.setState({
+      municipal_facility_list,
+    });
+  };
+
   render() {
     const {
       formErrors,
       formState,
-      formState: { technical_operation_id, municipal_facility_id, type },
+      formState: { technical_operation_id, municipal_facility_id, type, work_type_code },
       canSave,
       page,
       fromMission,
@@ -191,6 +200,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               onChange={this.props.handleChange}
               clearable={false}
               missionAvailableRouteTypes={this.props.missionAvailableRouteTypes}
+              setMunicipalFacilityList={this.setMunicipalFacilityList}
               page={page}
               path={path}
             />
@@ -216,6 +226,19 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               page={page}
               path={path}
             />
+            <WorkTypes
+              value={work_type_code}
+              disabled={!isPermitted || !municipal_facility_id}
+              error={formErrors.work_type_code}
+              onChange={this.props.handleChange}
+              municipal_facility_list={this.state.municipal_facility_list}
+              municipal_facility_id={municipal_facility_id}
+              IS_CREATING={IS_CREATING}
+
+              page={page}
+              path={path}
+            />
+
           </FlewWrapFormRow>
           <FlewWrapFormRow isWrap>
             <CreatingMap

@@ -5,6 +5,7 @@ import { Route } from 'redux-main/reducers/modules/routes/@types';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 
 export type PropsRouteFormWrap = InputRouteFormProps & {
   showForm: boolean;
@@ -69,4 +70,5 @@ export type ModifyBridgesForRoute = {
 
 export type StateRouteForm = {
   bridges: ModifyBridgesForRoute;
+  municipal_facility_list: Array<MunicipalFacility>;
 };

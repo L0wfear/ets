@@ -65,6 +65,24 @@ export const routeFormSchema: SchemaType<
         },
       ],
     },
+    work_type_code: {
+      title: 'Способ уборки ',
+      type: 'valueOfArray',
+      dependencies: [
+        (value, formState) => {
+          const triggerOnError
+            = isNumber(formState.technical_operation_id)
+            && isNumber(formState.municipal_facility_id)
+            && !value;
+
+          if (triggerOnError) {
+            return 'Поле "Способ уборки" должно быть заполнено';
+          }
+
+          return '';
+        },
+      ],
+    },
     object_list: {
       type: 'multiValueOfArray',
       title: 'Список выбранных геообъектов',

@@ -17,6 +17,7 @@ export type OwnPropsMunicipalFacilityField = {
   missionAvailableRouteTypes?: Array<string>;
 
   onChange: (changeObj: { [key: string]: any; }) => any;
+  setMunicipalFacilityList: ( municipal_facility_list: Array<MunicipalFacility>) => any;
 
   page: string;
   path: string;

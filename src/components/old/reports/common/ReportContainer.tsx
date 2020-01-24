@@ -527,7 +527,7 @@ class ReportContainer extends React.Component<
 
         report = report.map((d: any) => {
           Object.entries(schema).forEach(([key, metaRender]: any) => {
-            if (key in d && metaRender.needStr) {
+            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
               const count = get(d[key], 'count');
               const data = get(d[key], 'gov_numbers') || [];
 
@@ -542,7 +542,7 @@ class ReportContainer extends React.Component<
 
         summary = summary.map((d: any) => {
           Object.entries(schema).forEach(([key, metaRender]: any) => {
-            if (key in d && metaRender.needStr) {
+            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
               const count = d[key];
 
               d[`${key}_str`] = `${count}`;

@@ -34,6 +34,7 @@ type IPropsWaybillFooter = {
     update: boolean;
     departure_and_arrival_values: boolean;
   };
+  canEditIfCloseUpdPermission: boolean;
 };
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
@@ -98,9 +99,9 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           <Div
             permissions={savePermissions}
             className={'inline-block'}
-            hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
+            hidden={(props.state.status === 'closed' && !props.canEditIfClose && !props.canEditIfCloseUpdPermission) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
           >
-            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose && !props.canEditIfCloseUpdPermission}>Сохранить</EtsBootstrap.Button>
           </Div>
           <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
             <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>

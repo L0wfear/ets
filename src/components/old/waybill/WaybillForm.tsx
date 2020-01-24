@@ -275,6 +275,7 @@ type State = {
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
+  canEditIfCloseUpdPermission: boolean;
   loadingFields: Record<string, any>;
   fuelRateAllList: Array<any>;
   tooLongFactDates: boolean;
@@ -303,6 +304,7 @@ class WaybillForm extends React.Component<Props, State> {
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
+      canEditIfCloseUpdPermission: null,
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
@@ -434,12 +436,16 @@ class WaybillForm extends React.Component<Props, State> {
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
+            canEditIfCloseUpdPermission: waybill.closed_editable
+              ? this.props.userPermissionsSet.has('waybill.update')
+              : false,
           });
         })
         .catch((e) => {
           console.error(e);  // eslint-disable-line
           this.setState({
             canEditIfClose: false,
+            canEditIfCloseUpdPermission: false,
             origFormState: formState,
           });
         });
@@ -1667,7 +1673,7 @@ class WaybillForm extends React.Component<Props, State> {
     const disableComment = (
       IS_CLOSED
         && (
-          !isPermittedByKey.update
+          !this.state.canEditIfCloseUpdPermission
             && !this.state.canEditIfClose
         )
     ) || (
@@ -2707,6 +2713,7 @@ class WaybillForm extends React.Component<Props, State> {
             formState={this.props.formState}
             state={state}
             canEditIfClose={!!this.state.canEditIfClose}
+            canEditIfCloseUpdPermission={!!this.state.canEditIfCloseUpdPermission}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}

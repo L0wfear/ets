@@ -4,6 +4,7 @@ export type MissionTemplate = {
   car_ids: Array<number>;
   car_type_ids: Array<number>;
   car_type_names: Array<string>;
+  car_type_names_text: Array<string>;
   car_type_name_text: string;
   car_model_names: Array<string>;
   car_special_model_names: Array<string>;

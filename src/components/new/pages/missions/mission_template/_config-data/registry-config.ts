@@ -158,7 +158,7 @@ export const config: TypeConfigData<MissionTemplate> = {
           width: 200,
         },
         {
-          key: 'car_type_names',
+          key: 'car_type_names_text',
           title: 'Тип техники',
           width: 200,
         },

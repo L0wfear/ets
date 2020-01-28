@@ -28,18 +28,15 @@ const CarInWorkOverallInfo: React.FC<Props> = React.memo(
       <InfoCard title={infoData.title} handleClose={handleClose}>
         {
           infoData.subItems.map((subItemData) => (
-            <React.Fragment>
-              <h5>{subItemData.title}</h5>
-              <ul>
-                {
-                  subItemData.subItems.map(({ title }) => (
-                    <li key={title}>
-                      <span>{title}</span>
-                    </li>
-                  ))
-                }
-              </ul>
-            </React.Fragment>
+            <ul>
+              {
+                subItemData.subItems.map(({ title }) => (
+                  <li key={title}>
+                    <span>{title}</span>
+                  </li>
+                ))
+              }
+            </ul>
           ))
         }
       </InfoCard>

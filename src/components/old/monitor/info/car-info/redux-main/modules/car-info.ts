@@ -179,6 +179,9 @@ export default (state = initialState, { type, payload }: any) => {
         gov_number: payload.gov_number,
         date_start: getTrackDefaultDateStart(),
         date_end: getTrackDefaultDateEnd(),
+        status: state.status
+          ? state.status
+          : initialState.status,
       };
 
       return newState;

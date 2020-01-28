@@ -18,6 +18,8 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
+export const makeLastPointTrack = (trackCaching) => trackCaching.track === -1 ? false : (trackCaching.track.slice(-1)[0] || null);
+
 export type TypeLastPoint = {
   timestamp: number;
   coords_msk: [number, number];
@@ -113,7 +115,6 @@ export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
 const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.memo(
   (props) => {
     const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
-
     return (
       <div>
         <CarInfoBlockTabData>
@@ -174,7 +175,7 @@ const mapStateToProps = (state) => ({
     return newObj;
   }, {}),
   status: state.monitorPage.carInfo.status,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+  lastPoint: makeLastPointTrack(state.monitorPage.carInfo.trackCaching),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   missionsData: state.monitorPage.carInfo.missionsData,

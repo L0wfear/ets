@@ -46,6 +46,7 @@ export const makeDefaultMissionTemplate = (...arg: Array<any>): MissionTemplate 
   work_class_id: null,
   car_garage_numbers: [],
   car_garage_numbers_text: '',
+  car_type_names_text: null,
 });
 
 export const getDefaultMissionTemplateElement: GetDefaultMissionTemplateElement = (element) => {

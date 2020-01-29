@@ -70,7 +70,6 @@ export type Mission = {
 
   is_mission_progress_countable: boolean | null;
   consumable_materials: Array<ConsumableMaterialCountMission>;
-  assign_to_waybill?: string | Array<string>;
 };
 
 export type GetMissionPayload = {

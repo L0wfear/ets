@@ -10,7 +10,7 @@ import { FlexContainer } from 'global-styled/global-styled';
 import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials, useMissionFormDataIsCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { isNumber } from 'util';
+import { calculateCunsumption } from '../consumption/utils';
 
 type Props = PropsToTdReactComponent;
 
@@ -33,11 +33,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           consumable_materials: consumable_materials.map((rowData, index) => {
             if (index === props.indexRow) {
               const fact_value = get(event, 'target.value', event);
-              const fact_value_like_number = Number(fact_value);
-              let consumption = null;
-              if (rowData.is_consumption_locked && isNumber(rowData.norm_value) && !isNaN(fact_value_like_number)) {
-                consumption = Number((fact_value * rowData.norm_value).toFixed(3));
-              }
+              let consumption = calculateCunsumption({ rowData, fact_value, consumption: null, norm_value: rowData.norm_value });
 
               return {
                 ...rowData,

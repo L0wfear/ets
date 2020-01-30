@@ -87,7 +87,9 @@ const checkCarRefill = memoizeOne(
             ? 'Поле "Выдано, л" должно быть заполнено'
             : rowData.value < 0
               ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
-              : '',
+              : !isValidToFixed3(rowData.value)
+                ? getRequiredFieldToFixed('Выдано, л', 3)
+                : '',
       };
     });
   },

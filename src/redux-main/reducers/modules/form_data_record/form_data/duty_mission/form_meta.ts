@@ -15,7 +15,7 @@ import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/redu
 import memoizeOne from 'memoize-one';
 import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
-import { defaultCheckConsumableMaterialsNumberValue } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
+import { defaultCheckConsumableMaterialsNumberValue, validateNormConsumableMaterials } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 import * as moment from 'moment';
 
 export const metaDutyMission: ConfigFormData<DutyMission> = {
@@ -270,6 +270,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                     ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')
                     : defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)')
                 ),
+                norm_value: validateNormConsumableMaterials(rowData.norm_value), 
               })),
             ),
           ],

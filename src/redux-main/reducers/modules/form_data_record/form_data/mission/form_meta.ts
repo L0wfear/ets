@@ -13,6 +13,17 @@ import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'compone
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
 
+export const validateNormConsumableMaterials = (norm_value: ValuesOf<Mission['consumable_materials']>['norm_value']) => {
+  const floadError = floatValidate(Number(norm_value), 4, 'Норма');
+  if (floadError) {
+    return floadError;
+  }
+
+  if (norm_value && norm_value <= 0) {
+    return getRequiredFieldNumberMoreThen('Норма', 0);
+  }
+};
+
 export const defaultCheckConsumableMaterialsNumberValue = (field_value_string: ValuesOf<Mission['consumable_materials']>[keyof ValuesOf<Mission['consumable_materials']>], title) => {
   if (field_value_string) {
     const field_value = Number(field_value_string);
@@ -319,6 +330,7 @@ export const metaMission: ConfigFormData<Mission> = {
                     ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')
                     : defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)')
                 ),
+                norm_value: validateNormConsumableMaterials(rowData.norm_value), 
               })),
             ),
           ],

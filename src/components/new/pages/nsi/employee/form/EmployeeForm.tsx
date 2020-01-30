@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
+import * as moment from 'moment';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
@@ -30,37 +31,63 @@ import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/empl
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import memoizeOne from 'memoize-one';
 
-class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
-  state = {
-    carList: [],
-    preferCarOptions: [],
-    secondaryCarOptions: [],
-    positionOptions: [],
-    companyStructureOptions: [],
-    isCommonOptions: [
-      { label: 'Да', value: 1 },
-      { label: 'Нет', value: 0 },
-    ],
-    driverStateOptions: [
-      { value: 1, label: 'Работает' },
-      { value: 0, label: 'Не работает' },
-    ],
-    categoryDriversLicenseOptions: this.props.category_license.category_drivers_license.map((name) => ({
-      value: name,
-      label: name,
-    })),
-    categorySpecialLicenseOptions: this.props.category_license.category_special_license.map((name) => ({
-      value: name,
-      label: name,
-    })),
-  };
+function isValidLicenseEndDate(license_date_end: Date | string): boolean {
+  return Boolean(license_date_end) && moment(license_date_end).isSameOrAfter(moment(), 'day');
+}
 
-  componentDidMount() {
+class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
+  constructor(props) {
+    super(props);
+
+    const categoryDriversLicenseOptions = props.category_license.category_drivers_license.map((name) => ({
+      value: name,
+      label: name
+    }));
+    const categorySpecialLicenseOptions = props.category_license.category_special_license.map((name) => ({
+      value: name,
+      label: name
+    }));
+
+    const driverStateOptions = [
+      {
+        label: 'Работает',
+        value: 1
+      }, {
+        label: 'Не работает',
+        value: 0
+      },
+    ];
+    
+    const isCommonOptions = [
+      {
+        label: 'Да',
+        value: 1
+      }, {
+        label: 'Нет',
+        value: 0
+      },
+    ];
+
+    this.state = {
+      carList: [],
+      categoryDriversLicenseOptions,
+      categorySpecialLicenseOptions,
+      companyStructureOptions: [],
+      driverStateOptions,
+      isCommonOptions,
+      positionOptions: [],
+      preferCarOptions: [],
+      secondaryCarOptions: []
+    };
+  }
+
+  public componentDidMount() {
     this.loadCars();
     this.loadEmployeePosition();
     this.loadCompanyStructurePosition();
   }
-  async loadCars() {
+
+  private async loadCars(): Promise<void> {
     const { data } = await this.props.dispatch(
       autobaseGetSetCar(
         {},
@@ -74,7 +101,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       secondaryCarOptions: this.makeCarOptions(data, this.props.formState, 'secondary_car'),
     });
   }
-  async loadEmployeePosition() {
+
+  private async loadEmployeePosition(): Promise<void>  {
     const { data, dataIndex } = await this.props.dispatch(
       employeePositionGetSetPosition(
         {},
@@ -102,7 +130,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       });
     }
   }
-  async loadCompanyStructurePosition() {
+
+  private async loadCompanyStructurePosition(): Promise<void>  {
     const { data } = await this.props.dispatch(
       getSetCompanyStructureDescendantsByUser(
         {},
@@ -114,7 +143,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   }
 
-  makeCarOptions = memoizeOne((
+  private readonly makeCarOptions = memoizeOne((
     carList: StateEmployee['carList'],
     formState: PropsEmployee['formState'],
     fieldType: 'prefer_car' | 'secondary_car',
@@ -129,19 +158,28 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       }));
   });
 
-  handleChangeDateEnd = (type: 'special_license_date_end', value) => {
-    this.props.handleChange({
+  private readonly handleChangeDateEnd = (type: 'special_license_date_end' | 'drivers_license_date_end', value: Date): void => {
+    const { handleChange, formState } = this.props;
+
+    const additionalFields = ((): Pick<PropsEmployee['formState'], 'prefer_car' | 'secondary_car'> | void => {
+      const isValidDate = isValidLicenseEndDate(value);
+
+      return isValidDate ? undefined : { prefer_car: null, secondary_car: [] };
+    })();
+
+    handleChange({
+      ...additionalFields,
       [type]: value,
     });
 
     this.updateCarOptions({
-      ...{
-        ...this.props.formState,
-        [type]: value,
-      },
+      ...formState,
+      ...additionalFields,
+      [type]: value,
     });
   };
-  handleChangeWithValidate = (field, e) => {
+
+  private readonly handleChangeWithValidate = (field, e): void => {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
       const changeObject: any = {
@@ -176,7 +214,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       this.props.handleChange(changeObject);
     }
   };
-  handleChangePositionId = (field, value) => {
+
+  private readonly handleChangePositionId = (field, value): void => {
     if (value !== this.props.formState.position_id) {
       const changeObject: any = {
         [field]: value,
@@ -195,7 +234,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       this.props.handleChange(changeObject);
     }
   };
-  handleChangeCar = (field, value) => {
+
+  private readonly handleChangeCar = (field, value): void => {
     const { formState } = this.props;
 
     if (formState[field] !== value) {
@@ -206,7 +246,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       this.props.handleChange(changeObject);
     }
   };
-  updateCarOptions(formState: PropsEmployee['formState']) {
+
+  private updateCarOptions(formState: PropsEmployee['formState']): void {
     this.setState({
       preferCarOptions: this.makeCarOptions(this.state.carList, formState, 'prefer_car'),
       secondaryCarOptions: this.makeCarOptions(this.state.carList, formState, 'secondary_car'),
@@ -214,7 +255,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   }
 
   // ХХХ-ХХХ-ХХХ YY
-  handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string) => {
+  private readonly handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string): void => {
     let value = get(fieldValue, 'target.value', null);
 
     if (value) {
@@ -243,7 +284,16 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   };
 
-  render() {
+  private get hasDriversOrSpecialValidLicense(): boolean {
+    const { formState } = this.props;
+
+    return  [
+      formState.special_license_date_end,
+      formState.drivers_license_date_end,
+    ].some(isValidLicenseEndDate);
+  }
+
+  public render() {
     const {
       formState: state,
       formErrors: errors,
@@ -256,6 +306,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
+    const hasDriversOrSpecialValidLicense =  this.hasDriversOrSpecialValidLicense;
+    
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
@@ -513,9 +565,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     modalKey={path}
                     label="Основное ТС"
                     value={state.prefer_car}
-                    options={ this.state.preferCarOptions }
+                    options={hasDriversOrSpecialValidLicense ? this.state.preferCarOptions : []}
                     error={errors.prefer_car}
-                    disabled={!isPermitted || !state.is_driver}
+                    disabled={!isPermitted || !state.is_driver || !hasDriversOrSpecialValidLicense}
                     onChange={this.handleChangeCar}
                     boundKeys="prefer_car"
                   />
@@ -528,9 +580,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     multi
                     label="Вторичное ТС"
                     value={state.secondary_car}
-                    options={ this.state.secondaryCarOptions }
+                    options={hasDriversOrSpecialValidLicense ? this.state.secondaryCarOptions : []}
                     error={errors.secondary_car}
-                    disabled={!isPermitted || !state.is_driver}
+                    disabled={!isPermitted || !state.is_driver || !hasDriversOrSpecialValidLicense}
                     onChange={this.props.handleChange}
                     boundKeys="secondary_car"
                   />

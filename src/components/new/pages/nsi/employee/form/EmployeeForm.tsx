@@ -31,10 +31,6 @@ import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/empl
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import memoizeOne from 'memoize-one';
 
-function isValidLicenseEndDate(license_date_end: Date | string): boolean {
-  return Boolean(license_date_end) && moment(license_date_end).isSameOrAfter(moment(), 'day');
-}
-
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   constructor(props) {
     super(props);
@@ -161,20 +157,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   private readonly handleChangeDateEnd = (type: 'special_license_date_end' | 'drivers_license_date_end', value: Date): void => {
     const { handleChange, formState } = this.props;
 
-    const additionalFields = ((): Pick<PropsEmployee['formState'], 'prefer_car' | 'secondary_car'> | void => {
-      const isValidDate = isValidLicenseEndDate(value);
-
-      return isValidDate ? undefined : { prefer_car: null, secondary_car: [] };
-    })();
-
     handleChange({
-      ...additionalFields,
       [type]: value,
     });
 
     this.updateCarOptions({
       ...formState,
-      ...additionalFields,
       [type]: value,
     });
   };
@@ -284,14 +272,13 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   };
 
-  private get hasDriversOrSpecialValidLicense(): boolean {
+  private readonly licenseEndDateFilterOption = (): boolean => {
     const { formState } = this.props;
+    const { special_license_date_end, drivers_license_date_end } = formState;
 
-    return  [
-      formState.special_license_date_end,
-      formState.drivers_license_date_end,
-    ].some(isValidLicenseEndDate);
-  }
+    return [special_license_date_end, drivers_license_date_end].some((license_date_end: string) =>
+      Boolean(license_date_end) && moment(license_date_end).isSameOrAfter(moment(), 'day'));
+  };
 
   public render() {
     const {
@@ -305,8 +292,6 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-
-    const hasDriversOrSpecialValidLicense =  this.hasDriversOrSpecialValidLicense;
     
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -565,9 +550,10 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     modalKey={path}
                     label="Основное ТС"
                     value={state.prefer_car}
-                    options={hasDriversOrSpecialValidLicense ? this.state.preferCarOptions : []}
+                    options={this.state.preferCarOptions}
+                    filterOption={this.licenseEndDateFilterOption}
                     error={errors.prefer_car}
-                    disabled={!isPermitted || !state.is_driver || !hasDriversOrSpecialValidLicense}
+                    disabled={!isPermitted || !state.is_driver}
                     onChange={this.handleChangeCar}
                     boundKeys="prefer_car"
                   />
@@ -580,9 +566,10 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     multi
                     label="Вторичное ТС"
                     value={state.secondary_car}
-                    options={hasDriversOrSpecialValidLicense ? this.state.secondaryCarOptions : []}
+                    filterOption={this.licenseEndDateFilterOption}
+                    options={this.state.secondaryCarOptions}
                     error={errors.secondary_car}
-                    disabled={!isPermitted || !state.is_driver || !hasDriversOrSpecialValidLicense}
+                    disabled={!isPermitted || !state.is_driver}
                     onChange={this.props.handleChange}
                     boundKeys="secondary_car"
                   />

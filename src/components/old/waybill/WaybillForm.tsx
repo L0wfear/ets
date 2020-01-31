@@ -238,7 +238,6 @@ type OwnProps = {
   clearSomeData: () => any;
 
   handleClose: (...arg: any) => any;
-  setDidMountFormState: (arg: string) => any;
 
   handlePrint: (...arg: Array<any>) => any;
   handlePrintFromMiniButton: (...arg: Array<any>) => any;
@@ -571,12 +570,6 @@ class WaybillForm extends React.Component<Props, State> {
           });
         });
     }
-    const {
-      is_bnso_broken, // долго подгружается
-      ...didMountFormState
-    } = this.props.formState;
-
-    this.props.setDidMountFormState(JSON.stringify(didMountFormState));
   }
 
   componentWillUnmount() {

@@ -178,7 +178,6 @@ type State = {
     motohours_diff: number;
   };
   timeId: any; // id таймера
-  didMountFormState: string; // слепок формы после didMount в waybillForm
 
   [k: string]: any;
 };
@@ -213,7 +212,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
       timeId: null, // id таймера
-      didMountFormState: null,
     };
   }
 
@@ -826,12 +824,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     }
   };
 
-  setDidMountFormState = (didMountFormState) => {
-    this.setState({
-      didMountFormState,
-    });
-  };
-
   handleClose = async (taxesControl) => {
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(
@@ -899,28 +891,19 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     });
   };
   onFormHide = () => {
-    const {
-      is_bnso_broken, // долго подгружается
-      hasEquipmentFuelRates, // с бека не приходит, в промисе перед отправкой удаляется
-      ...modFormState
-    } = this.state.formState;
-
-    //  http://www.jsondiff.com/ для сравнения JSON
-    JSON.stringify(modFormState) !== this.state.didMountFormState
-      ? global.confirmDialog({
-        title:
-          'Внимание!',
-        body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
-        okName: 'Да',
-        cancelName: 'Нет',
+    global.confirmDialog({
+      title:
+        'Внимание!',
+      body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
+      okName: 'Да',
+      cancelName: 'Нет',
+    })
+      .then(() => {
+        this.props.onFormHide();
       })
-        .then(() => {
-          this.props.onFormHide();
-        })
-        .catch(() => {
-          //
-        })
-      : this.props.onFormHide();
+      .catch(() => {
+        //
+      });
   };
 
   render() {
@@ -943,7 +926,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             isPermittedByKey={this.state.isPermittedByKey}
             canClose={this.state.canClose}
             canSave={this.state.canSave}
-            setDidMountFormState={this.setDidMountFormState}
 
             show
             onHide={this.onFormHide}

@@ -37,6 +37,24 @@ const schemaMakers = {
   }),
 };
 
+function tableColValueParser({ data }) {
+  switch (typeof data) {
+    case 'number': {
+      const [, last = ''] = data.toString().split('.');
+      const lastLength = last.length;
+
+      if (lastLength > 0) {
+        return lastLength > 2 ? data.toFixed(2) : data.toFixed(lastLength);
+      }
+
+      return data;
+    }
+
+    default:
+      return data ? data : '-';
+  }
+}
+
 const renderers = {
   order_date_from: ({ data }) => data ? createValidDateTimeDots(data) : '-',
   order_date_to: ({ data }) => data ? createValidDateTimeDots(data) : '-',
@@ -49,7 +67,7 @@ const renderers = {
   plan_order: ({ data }) => data ? data : '-',
   plan_order_mission: ({ data }) => data ? data : '-',
   not_coverage: ({ data }) => data ? data : '-',
-  fact_traveled_area: ({ data }) => data ? data : '-',
+  fact_traveled_area: tableColValueParser,
 };
 
 const reportProps: IReportProps = {

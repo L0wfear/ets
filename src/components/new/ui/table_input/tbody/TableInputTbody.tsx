@@ -15,7 +15,7 @@ export type TableInputTbodyProps = {
 const TableInputTbody: React.FC<TableInputTbodyProps> = React.memo(
   (props) => {
     const handleChange = React.useCallback(
-      (rowIndex, rowData) => {
+      (rowIndex, rowData, value, key) => {
         props.onChange(
           props.array.map((arrayItem, indexItem) => {
             if (indexItem === rowIndex) {
@@ -24,6 +24,9 @@ const TableInputTbody: React.FC<TableInputTbodyProps> = React.memo(
 
             return arrayItem;
           }),
+          rowIndex,
+          value,
+          key,
         );
       },
       [props.array, props.onChange],

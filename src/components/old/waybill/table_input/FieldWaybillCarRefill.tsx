@@ -242,12 +242,12 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
     );
 
     const handleChange = React.useCallback(
-      (array) => {
+      (array: FieldWaybillCarRefillOwnProps['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
         let newArr = array;
-        const filtredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
+        const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
 
         // автозаполнение топливной картой, если она требуется
-        if (typeIdOptions.length && filtredFuelCardIdOptions.length === 1) {
+        if (typeIdOptions.length && filteredFuelCardIdOptions.length === 1) {
           if (newArr.length === 1) {
             const firstElement = newArr[0];
             if (!firstElement.fuel_card_id) {
@@ -256,12 +256,16 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
                 newArr = [
                   {
                     ...firstElement,
-                    fuel_card_id: filtredFuelCardIdOptions[0].value,
+                    fuel_card_id: filteredFuelCardIdOptions[0].value,
                   },
                 ];
               }
             }
           }
+        }
+
+        if ('fuel_card_id' === cellKey && typeof cellValue === 'number' && newArr[rowIndex]) {
+          newArr[rowIndex].type_id = 1;
         }
 
         props.handleChange(newArr);
@@ -273,11 +277,11 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       ],
     );
 
-    const previosFuelType = usePrevious(props.fuel_type);
+    const previousFuelType = usePrevious(props.fuel_type);
     React.useEffect(
       () => {
-        if (props.fuel_type && props.fuel_type !== previosFuelType) {
-          const availabelFuelCars = fuelCardIdOptions.reduce<Set<number>>(
+        if (props.fuel_type && props.fuel_type !== previousFuelType) {
+          const availableFuelCars = fuelCardIdOptions.reduce<Set<number>>(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 
@@ -291,7 +295,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
             props.array.map(
               (rowData) => ({
                 ...rowData,
-                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id)
+                fuel_card_id: availableFuelCars.has(rowData.fuel_card_id)
                   ? rowData.fuel_card_id
                   : (
                       currentArrayIndex[rowData.fuel_card_id]
@@ -305,7 +309,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       },
       [
         fuelCardIdOptions,
-        previosFuelType,
+        previousFuelType,
         props.fuel_type,
         props.array,
         handleChange,

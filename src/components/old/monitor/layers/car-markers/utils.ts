@@ -62,18 +62,25 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, g
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs) => Object.values(carPointsDataWs).reduce( // Активно:, Не на связи:
-  (carsByStatus, { front_status, visible }) => {
-    if (visible) {
-      carsByStatus[front_status] += 1;
-    }
+export const calcCountTsByStatus = (carPointsDataWs, carActualGpsCount?: number) => {
+  const countTsByStatus = Object.values(carPointsDataWs).reduce<Record<'in_move' | 'parking' | 'stop' | 'not_in_touch', number>>( // Активно:, Не на связи:
+    (carsByStatus, { front_status, visible }) => {
+      if (visible) {
+        carsByStatus[front_status] += 1;
+      }
 
-    return carsByStatus;
-  },
-  {
-    in_move: 0,
-    stop: 0,
-    parking: 0,
-    not_in_touch: 0,
-  },
-);
+      return carsByStatus;
+    },
+    { in_move: 0, not_in_touch: 0, parking: 0, stop: 0 },
+  );
+
+  const countVisibleTsByStatus = countTsByStatus.in_move + countTsByStatus.parking + countTsByStatus.stop;
+
+  if (typeof carActualGpsCount === 'number') {
+    const additionalNotInTouchTs = carActualGpsCount - countVisibleTsByStatus;
+
+    countTsByStatus.not_in_touch += additionalNotInTouchTs >= 0 ? additionalNotInTouchTs : 0;
+  }
+
+  return countTsByStatus;
+};

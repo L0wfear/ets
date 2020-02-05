@@ -319,7 +319,7 @@ class LayerCarMarker extends React.PureComponent<
         ...newCarPointsDataWs,
       };
 
-      this.props.monitoPageChangeCarsByStatus(calcCountTsByStatus(newObj));
+      this.props.monitoPageChangeCarsByStatus(calcCountTsByStatus(newObj, this.props.carActualGpsCount));
 
       return {
         carPointsDataWs: newObj,
@@ -555,7 +555,7 @@ class LayerCarMarker extends React.PureComponent<
       );
 
       this.props.monitoPageChangeCarsByStatus(
-        calcCountTsByStatus(carPointsDataWs),
+        calcCountTsByStatus(carPointsDataWs, this.props.carActualGpsCount),
       );
 
       if (hasDiffInFiltredCarGpsCode) {
@@ -585,6 +585,7 @@ const mapStateToProps = (state: ReduxState) => ({
   points_ws: getSessionState(state).appConfig.points_ws,
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
+  carActualGpsCount: state.monitorPage.carActualGpsCount,
   STATUS_SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,
   lastPoint:
     state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)

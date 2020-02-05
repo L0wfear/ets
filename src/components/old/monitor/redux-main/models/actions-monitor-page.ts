@@ -33,10 +33,14 @@ export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Comp
   },
 });
 
-export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex: Record<Car['gps_code'], Car>) => ({
+export const monitorPageSetcarActualGpsNumberIndex = (
+  carActualGpsNumberIndex: Record<Car['gps_code'], Car>,
+  carActualGpsCount: number,
+) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   payload: {
     carActualGpsNumberIndex,
+    carActualGpsCount,
   },
 });
 

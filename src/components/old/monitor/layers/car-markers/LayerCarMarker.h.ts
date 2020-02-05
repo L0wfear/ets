@@ -16,6 +16,7 @@ export type PropsLayerCarMarker = {
   STATUS_TC_FOLLOW_ON_CAR: boolean;
 
   carActualGpsNumberIndex: any;
+  carActualGpsCount: number;
   lastPoint: any;
   odh_mkad: Array<any>;
   statusShow: any;

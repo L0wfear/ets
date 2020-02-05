@@ -58,6 +58,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
                     result.data,
                     'gps_code',
                   ),
+                  Object.keys(result.data).length,
                 ),
               );
             }

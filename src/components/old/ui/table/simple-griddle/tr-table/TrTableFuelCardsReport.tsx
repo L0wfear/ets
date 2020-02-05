@@ -72,14 +72,23 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                   this.props.columns.map((columnNameOuter, colIndex) => {
                     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
 
-                    const { columnName, cssClassName } = field;
+                    const { columnName, cssClassName, customComponent } = field;
 
                     return (
                       <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                         {
-                          columnName === 'rowNumber'
-                            ? rowNumber + rowIndex
-                            : Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-'
+                          (() => {
+                            if (typeof customComponent === 'function') {
+                              return customComponent({ rowData: { ...rowData, rowNumber }, data: rowData[columnName] });
+                            }
+
+                            if (columnName === 'rowNumber') {
+                              return rowNumber + rowIndex;
+                            }
+
+                            return Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-';
+
+                          })()
                         }
                       </td>
                     );

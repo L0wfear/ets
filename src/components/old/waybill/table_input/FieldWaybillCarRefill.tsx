@@ -233,7 +233,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     );
 
     const handleChange = React.useCallback(
-      (array: FieldWaybillCarRefillOwnProps['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
+      (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
         let newArr = array;
         const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
 

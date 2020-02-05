@@ -47,7 +47,10 @@ const validateFuelCardId = (
       fuel_card_id
         = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
     } else {
-      fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
+      /**
+       * @deprecated
+       * fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
+       */
     }
   } else if (rowData.fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(

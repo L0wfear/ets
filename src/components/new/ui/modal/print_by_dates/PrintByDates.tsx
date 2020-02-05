@@ -58,7 +58,7 @@ const PrintByDates: React.FC<Props> = React.memo(
 
             newState.error_date_to = (
               (
-                diffDates(newState.date_from, newState.date_to) > 0
+                diffDates(newState.date_from, newState.date_to) >= 0
                   ? '"Дата по" должна быть позже "Даты с"'
                   : ''
               )

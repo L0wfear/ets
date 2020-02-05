@@ -37,6 +37,8 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
               ...props.rowData,
               ...key,
             },
+            value,
+            key,
           );
         } else {
           props.onChange(
@@ -45,6 +47,8 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
               ...props.rowData,
               [key]: value,
             },
+            value,
+            key,
           );
         }
       },

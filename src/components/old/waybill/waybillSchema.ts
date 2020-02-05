@@ -40,7 +40,10 @@ const validateFuelCardId = (
       fuel_card_id
         = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
     } else {
-      fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
+      /**
+       * @deprecated
+       * fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
+       */
     }
   } else if (rowData.fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(
@@ -171,7 +174,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           ) {
             return 'Дата "Возвращение план." не должна превышать дату "Выезд план." больше чем на 31 день';
           }
-  
+
           return false;
         },
         (plan_arrival_date, { plan_departure_date }) => {
@@ -209,11 +212,11 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
-  
+
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
-  
+
           return false;
         },
       ],
@@ -431,7 +434,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { status }) => {
           const IS_ACTIVE = status && status === 'active';
           const IS_CLOSED = status && status === 'closed';
-  
+
           if ((IS_ACTIVE || IS_CLOSED) && !value) {
             return 'Поле "Выезд факт." должно быть заполнено';
           }
@@ -455,7 +458,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { status }) => {
           const IS_ACTIVE = status && status === 'active';
           const IS_CLOSED = status && status === 'closed';
-  
+
           if ((IS_ACTIVE || IS_CLOSED) && !value) {
             return 'Поле "Возвращение факт." должно быть заполнено';
           }

@@ -74,7 +74,7 @@ export const calcCountTsByStatus = (carPointsDataWs, carActualGpsCount?: number)
     { in_move: 0, not_in_touch: 0, parking: 0, stop: 0 },
   );
 
-  const countVisibleTsByStatus = countTsByStatus.in_move + countTsByStatus.parking + countTsByStatus.stop;
+  const countVisibleTsByStatus = Object.values(countTsByStatus).reduce((accumulator, count) => accumulator + count, 0);
 
   if (typeof carActualGpsCount === 'number') {
     const additionalNotInTouchTs = carActualGpsCount - countVisibleTsByStatus;

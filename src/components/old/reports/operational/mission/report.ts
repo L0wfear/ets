@@ -1,5 +1,5 @@
 import { withProps } from 'recompose';
-import { isNumber, size, gt } from 'lodash';
+import { isNumber } from 'lodash';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 
@@ -40,10 +40,7 @@ const schemaMakers = {
 
 function tableColValueParser({ data }) {
   if (isNumber(data)) {
-    const [, last = ''] = data.toString().split('.');
-    const lastLength = size(last);
-
-    return gt(lastLength, 2) ? data.toFixed(2) : data;
+    return data.toFixed(2);
   }
 
   return data ? data : '-';

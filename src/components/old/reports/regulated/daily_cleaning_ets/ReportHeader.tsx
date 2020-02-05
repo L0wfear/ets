@@ -8,7 +8,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
+import { GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import ExtField from 'components/@next/@ui/renderFields/Field';
@@ -113,6 +113,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     const CAR_TYPES = uniqBy(carFuncTypesList, 'asuods_id')
       .map((t) => ({ value: t.asuods_id, label: t.full_name }));
+
+    const GEOZONE_OBJECTS = [
+      { value: 'odh', label: 'Объект дорожного хозяйства' },
+      { value: 'dt', label: 'Дворовая территория' },
+    ];
 
     const isDtGeozone = geozone_type === 'dt';
 

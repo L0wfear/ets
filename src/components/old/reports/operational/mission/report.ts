@@ -53,19 +53,18 @@ const renderers = {
 };
 
 const reportProps: IReportProps = {
-  title: 'Прохождение заданий',
-  serviceName,
-  reportUrl,
-  serviceUrl,
-  headerComponent: ReportHeader,
-  renderers,
   enumerated: true,
-  schemaMakers,
-  summaryTitle: 'Итого',
+  enumeratedChildren: true,
+  headerComponent: ReportHeader,
   notUseServerSummerTable: true,
-  tableProps: {
-    reportKey: serviceUrl,
-  },
+  renderers,
+  reportUrl,
+  schemaMakers,
+  serviceName,
+  serviceUrl,
+  summaryTitle: 'Итого',
+  tableProps: { reportKey: serviceUrl },
+  title: 'Прохождение заданий',
 };
 
 const ExportableReportContainer = exportable({

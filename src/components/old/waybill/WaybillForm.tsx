@@ -238,7 +238,6 @@ type OwnProps = {
   clearSomeData: () => any;
 
   handleClose: (...arg: any) => any;
-  setDidMountFormState: (arg: string) => any;
 
   handlePrint: (...arg: Array<any>) => any;
   handlePrintFromMiniButton: (...arg: Array<any>) => any;
@@ -275,6 +274,7 @@ type State = {
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
+  canEditIfCloseUpdPermission: boolean;
   loadingFields: Record<string, any>;
   fuelRateAllList: Array<any>;
   tooLongFactDates: boolean;
@@ -285,6 +285,11 @@ type State = {
   rejectMissionList: Array<any>;
 
   origFormState: Props['formState'];
+
+  missionHasError: {
+    hasError: boolean;
+    errorText: string;
+  };
 };
 
 class WaybillForm extends React.Component<Props, State> {
@@ -298,6 +303,7 @@ class WaybillForm extends React.Component<Props, State> {
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
+      canEditIfCloseUpdPermission: null,
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
@@ -306,6 +312,10 @@ class WaybillForm extends React.Component<Props, State> {
       notAvailableMissions: [],
       rejectMissionList: [],        // Массив с заданиями, которые надо будет отменить, формируется в missionField
       origFormState: {},
+      missionHasError: {
+        hasError: false,
+        errorText: '',
+      },
     };
   }
 
@@ -363,6 +373,12 @@ class WaybillForm extends React.Component<Props, State> {
     }
   }
 
+  setMissionHasError = (missionHasError: State['missionHasError']) => {
+    this.setState({
+      missionHasError: missionHasError,
+    });
+  };
+
   handleChange = (field, e) => this.props.handleFormChange(field, e);
 
   handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
@@ -419,12 +435,16 @@ class WaybillForm extends React.Component<Props, State> {
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
+            canEditIfCloseUpdPermission: waybill.closed_editable
+              ? this.props.userPermissionsSet.has('waybill.update')
+              : false,
           });
         })
         .catch((e) => {
           console.error(e);  // eslint-disable-line
           this.setState({
             canEditIfClose: false,
+            canEditIfCloseUpdPermission: false,
             origFormState: formState,
           });
         });
@@ -550,12 +570,6 @@ class WaybillForm extends React.Component<Props, State> {
           });
         });
     }
-    const {
-      is_bnso_broken, // долго подгружается
-      ...didMountFormState
-    } = this.props.formState;
-
-    this.props.setDidMountFormState(JSON.stringify(didMountFormState));
   }
 
   componentWillUnmount() {
@@ -1649,7 +1663,15 @@ class WaybillForm extends React.Component<Props, State> {
       = (IS_CLOSED && (!this.state.canEditIfClose || !isPermittedByKey.refill))
       || !isPermittedByKey.update || IS_DELETE;
 
-    const disableComment = (IS_CLOSED && (!isPermittedByKey.update || !this.state.canEditIfClose)) || !isPermittedByKey.update;
+    const disableComment = (
+      IS_CLOSED
+        && (
+          !this.state.canEditIfCloseUpdPermission
+            && !this.state.canEditIfClose
+        )
+    ) || (
+      !IS_CLOSED && !isPermittedByKey.update
+    );
 
     // <<< Да простят меня боги, переписать в 33м!!!
     const driverNotActiveError = (IS_DRAFT || IS_CREATING) && state.driver_id && !employeeByIndex?.active
@@ -1665,12 +1687,18 @@ class WaybillForm extends React.Component<Props, State> {
       : ''; // Если сотрудник неактивен, только для черновика
     
     const canWaybillPrint =  (IS_DRAFT || IS_CREATING)
-      ? !driverNotActiveError.length && !accompanyingPersonNotActiveError.length && this.props.canSave
-      : this.props.canSave;
+      ? !driverNotActiveError.length
+        && !accompanyingPersonNotActiveError.length
+        && this.props.canSave
+        && !this.state.missionHasError?.hasError
+      : this.props.canSave && !this.state.missionHasError?.hasError;
     const canWaybillGiveOutRead =  (IS_DRAFT || IS_CREATING)
-      ? !driverNotActiveError.length  && !accompanyingPersonNotActiveError.length && this.props.canSave
-      : this.props.canSave;
-
+      ? !driverNotActiveError.length 
+        && !accompanyingPersonNotActiveError.length
+        && this.props.canSave
+        && !this.state.missionHasError?.hasError
+      : this.props.canSave && !this.state.missionHasError?.hasError;
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"
@@ -2533,6 +2561,7 @@ class WaybillForm extends React.Component<Props, State> {
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
                 moscowTimeServer={this.props.moscowTimeServer}
+                setMissionHasError={this.setMissionHasError}
                 page={this.props.page}
                 path={this.props.path}
               />
@@ -2670,13 +2699,14 @@ class WaybillForm extends React.Component<Props, State> {
           <WaybillFooter
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
-            canSave={this.props.canSave}
+            canSave={Boolean(this.props.canSave && !this.state.missionHasError?.hasError)}
             canPrint={canWaybillPrint}
             canGiveOutRead={canWaybillGiveOutRead}
             canClose={this.props.canClose}
             formState={this.props.formState}
             state={state}
             canEditIfClose={!!this.state.canEditIfClose}
+            canEditIfCloseUpdPermission={!!this.state.canEditIfCloseUpdPermission}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}

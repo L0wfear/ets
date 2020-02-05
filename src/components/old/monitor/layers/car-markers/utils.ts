@@ -62,7 +62,7 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, g
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs) => Object.values(carPointsDataWs).reduce(
+export const calcCountTsByStatus = (carPointsDataWs) => Object.values(carPointsDataWs).reduce( // Активно:, Не на связи:
   (carsByStatus, { front_status, visible }) => {
     if (visible) {
       carsByStatus[front_status] += 1;

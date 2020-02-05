@@ -46,7 +46,11 @@ const useFormDataTitle = (formDataKey: FormKeys) => {
   const IS_CREATING = useFormDataIsCreating(formDataKey);
   const title = mapFormMeta[formDataKey].schema.header.title;
 
-  return IS_CREATING ? title.update : title.update;
+  return IS_CREATING
+    ? title.create
+      ? title.create
+      : title.update
+    : title.update;
 };
 
 /**

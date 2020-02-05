@@ -21,9 +21,13 @@ export const mergeConsumableMaterials = (consumable_materials_old: Array<Consuma
       if (rowDataInIndex) {
         const plan_value = rowDataInIndex.is_plan_value_locked ? rowDataInIndex.plan_value : rowData.plan_value;
         let fact_value = isNull(rowData.fact_value) ? rowData.fact_value : Number(rowData.fact_value);
-
+        let norm_value = rowDataInIndex.is_norm_value_locked ? rowDataInIndex.norm_value : rowData.norm_value;
+        
         if (isNaN(fact_value)) {
           fact_value = null;
+        }
+        if (isNaN(norm_value)) {
+          norm_value = null;
         }
 
         if (rowDataInIndex.is_fact_value_locked) {
@@ -38,8 +42,8 @@ export const mergeConsumableMaterials = (consumable_materials_old: Array<Consuma
         }
 
         let consumption = rowData.consumption;
-        if (rowDataInIndex.is_consumption_locked && isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
-          consumption = Number((fact_value * rowDataInIndex.norm_value).toFixed(3));
+        if (rowDataInIndex.is_consumption_locked && isNumber(norm_value) && isNumber(fact_value)) {
+          consumption = Number((fact_value * norm_value).toFixed(3));
         }
 
         newArr.push({
@@ -47,6 +51,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: Array<Consuma
           plan_value,
           fact_value,
           consumption,
+          norm_value,
         });
       }
 

@@ -6,6 +6,7 @@ import {
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -61,6 +62,7 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
 export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
   const newPayload = {
     ...payload,
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
   };
 
   const response = await InspectRegistryService.path(id).put(

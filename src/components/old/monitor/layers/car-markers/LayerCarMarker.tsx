@@ -61,7 +61,7 @@ class LayerCarMarker extends React.PureComponent<
     this.openWs();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) { // handleClick cars
     const { gps_code: prev_gps_code } = prevProps;
 
     if (updatePoints) {

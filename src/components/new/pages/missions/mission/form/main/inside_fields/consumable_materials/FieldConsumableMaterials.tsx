@@ -21,26 +21,6 @@ import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_m
 import { useMissionFormDataIsNotAssignOrIsAssignWithNotActiveWaybill, useMissionFormDataIsNotAssign, useMissionDataLoadConsumableMateriaForMission } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { actionGetAndSetInStoreMunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 
-/**
- * 6
- * 6.1
- * 6.2
- * 6.3
- * 6.4
- * 6.5
- * 6.6
- * 6.7
- * 6.8
- * 6.9 (комплит)
- * 6.10 (комплит)
- * 6.11 (комплит)
- * 6.11.1 (комплит)
- * 6.11.2 (комплит)
- * 6.11.3 (комплит)
- * 6.11.4 (комплит)
- * 6.Таблица 2
- */
-
 type Props = {
   formDataKey: FormKeys & ('mission' | 'duty_mission');
 };

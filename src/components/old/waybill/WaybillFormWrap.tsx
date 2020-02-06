@@ -897,23 +897,28 @@ class WaybillFormWrap extends React.Component<Props, State> {
       showWaybillFormWrap: false,
     });
   };
-  onFormHide = () => {
-    const { onFormHide, element: { status } } = this.props;
+  onFormHide = async () => {
+    const { formState } = this.state;
 
-    if (eq(status, 'closed')) {
-      onFormHide();
-    } else {
-      global
-        .confirmDialog({
+    const showConfirm = (
+      !eq(formState.status, 'closed')
+    );
+
+    if (showConfirm) {
+      try {
+        await global.confirmDialog({
           title:
             'Внимание!',
           body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
           okName: 'Да',
           cancelName: 'Нет',
-        })
-        .then(onFormHide)
-        .catch(() => null);
+        });
+      } catch (e) {
+        return;
+      }
     }
+
+    this.props.onFormHide();
   };
 
   render() {

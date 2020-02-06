@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { clone, cloneDeep, get, last } from 'lodash';
+import { clone, cloneDeep, get, last, eq } from 'lodash';
 import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
@@ -898,19 +898,22 @@ class WaybillFormWrap extends React.Component<Props, State> {
     });
   };
   onFormHide = () => {
-    global.confirmDialog({
-      title:
-        'Внимание!',
-      body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
-      okName: 'Да',
-      cancelName: 'Нет',
-    })
-      .then(() => {
-        this.props.onFormHide();
-      })
-      .catch(() => {
-        //
-      });
+    const { onFormHide, element: { status } } = this.props;
+
+    if (eq(status, 'closed')) {
+      onFormHide();
+    } else {
+      global
+        .confirmDialog({
+          title:
+            'Внимание!',
+          body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
+          okName: 'Да',
+          cancelName: 'Нет',
+        })
+        .then(onFormHide)
+        .catch(() => null);
+    }
   };
 
   render() {

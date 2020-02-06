@@ -86,6 +86,18 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
               skipValidate = true;
             }
           }
+
+          if (type === 'fixed_length') {
+            const {
+              value,
+              reverse = false,
+            } = validateIf;
+            const valueByPath = get(rootFormState, validateIf.path, false);
+
+            if (reverse ? valueByPath === value : valueByPath !== value) {
+              skipValidate = true;
+            }
+          }
         }
       }
 

@@ -54,3 +54,7 @@ export const getMaxLengthError = (maxLength = 0) => {
   return `Длина поля не должна превышать максимальное количество символов (${maxLength})`;
 };
 
+export const getFixedLengthCollectionError = (fixedLengthCollection: Array<number>) => {
+  return `Длина поля быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
+};
+

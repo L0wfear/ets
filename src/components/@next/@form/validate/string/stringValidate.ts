@@ -1,6 +1,13 @@
 import { isString, isNullOrUndefined } from 'util';
 import { StringField } from 'components/@next/@form/@types';
-import { getRequiredFieldNoTrim, getMinLengthError, getMaxLengthError, getRequiredFieldMessage, getRequiredFieldStringMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import {
+  getRequiredFieldNoTrim,
+  getMinLengthError,
+  getMaxLengthError,
+  getRequiredFieldMessage,
+  getRequiredFieldStringMessage,
+  getFixedLengthCollectionError,
+} from 'components/@next/@utils/getErrorString/getErrorString';
 
 export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
   const {
@@ -9,6 +16,7 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
 
   const {
     title,
+    fixedLengthCollection,
   } = fieldData;
 
   if (fieldData.required && !value) {
@@ -25,6 +33,15 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
 
   if (value && isString(value) && value.length !== value.trim().length) {
     return getRequiredFieldNoTrim(title);
+  }
+
+  if (
+    value
+    && isString(value)
+    && Array.isArray(fixedLengthCollection)
+    && !fixedLengthCollection.includes(value.length)
+  ) {
+    return getFixedLengthCollectionError(fixedLengthCollection);
   }
 
   if (!(isString(value) || isNullOrUndefined(value))) {

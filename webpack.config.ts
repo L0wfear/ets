@@ -17,6 +17,8 @@ const NODE_ENV = process.env.NODE_ENV as 'development' | 'production';
 
 const __DEVELOPMENT__ = NODE_ENV === 'development';
 
+console.info(`[webpack.config] version: ${process.version}`);
+
 const getNameFavicon = (stand) => {
   switch (stand) {
     case 'dev': return 'ets_dev';
@@ -165,7 +167,7 @@ const getPlugins = () => {
       },
     }),
   ];
-  
+
   if (__DEVELOPMENT__) {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }

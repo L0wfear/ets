@@ -17,6 +17,40 @@ type CommonFieldType<F extends Record<string, any>, K extends keyof F = keyof F>
   dependencies?: Array<
     (value: F[K], formState: F, reduxState: ReduxState) => FormErrorBySchema<F>[K]
   >;
+
+  validateIf?: (
+    {
+      type: 'has_data';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      reverse?: boolean;
+    }
+    | {
+      type: 'equal_to_value';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      value: any;
+      reverse?: boolean;
+    }
+    | {
+      type: 'fixed_length';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      value: any;
+      reverse?: boolean;
+    }
+  ) | (
+    Array<(
+      {
+        type: 'has_data';
+        path: string; // path.to.path | get(rootState, validateIf, false)
+        reverse?: boolean;
+      }
+      | {
+        type: 'equal_to_value';
+        path: string; // path.to.path | get(rootState, validateIf, false)
+        value: any;
+        reverse?: boolean;
+      }
+    )>
+  );
 };
 
 export type MultiValueOfArrayField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
@@ -58,6 +92,8 @@ export type StringField<F extends Record<string, any>, K extends keyof F = keyof
 
   minLength?: number;
   maxLength?: number;
+
+  fixedLengthCollection?: Array<number>;
 };
 
 export type ValueOfArrayField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {

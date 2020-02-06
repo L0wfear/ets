@@ -9,6 +9,7 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
 
   const {
     title,
+    fixedLengthCollection,
   } = fieldData;
 
   if (fieldData.required && !value) {
@@ -25,6 +26,15 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
 
   if (value && isString(value) && value.length !== value.trim().length) {
     return getRequiredFieldNoTrim(title);
+  }
+
+  if (
+    value
+    && isString(value)
+    && Array.isArray(fixedLengthCollection)
+    && !fixedLengthCollection.includes(value.length)
+  ) {
+    return `Длина поля быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
   }
 
   if (isString(value) || isNullOrUndefined(value) ) {

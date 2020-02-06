@@ -8,6 +8,7 @@ export const validateString = <K, F, P, RootFormState>(key: keyof F, fieldData: 
 
   const {
     title,
+    fixedLengthCollection,
   } = fieldData;
 
   if (fieldData.required && !value) {
@@ -24,6 +25,15 @@ export const validateString = <K, F, P, RootFormState>(key: keyof F, fieldData: 
 
   if (value && isString(value) && value.length !== value.trim().length) {
     return `Поле "${title}" не должно начинаться и заканчиваться пробелом`;
+  }
+
+  if (
+    value
+    && isString(value)
+    && Array.isArray(fixedLengthCollection)
+    && !fixedLengthCollection.includes(value.length)
+  ) {
+    return `Длина поля быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
   }
 
   if (isString(value) || value === null) {

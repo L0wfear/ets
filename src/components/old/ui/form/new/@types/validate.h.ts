@@ -21,6 +21,12 @@ export type CommonPropertie<K, F, P> = {
       value: any;
       reverse?: boolean;
     }
+    | {
+      type: 'fixed_length';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      value: any;
+      reverse?: boolean;
+    }
   ) | (
     Array<(
       {
@@ -45,6 +51,7 @@ export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   minLength?: number;
   maxLength?: number;
   trimSpace?: boolean;
+  fixedLengthCollection?: Array<number>;
 };
 
 export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {

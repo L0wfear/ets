@@ -55,7 +55,7 @@ export const actionMonitorPageLoadCarActual = (): EtsAction<EtsActionReturnType<
   return result;
 };
 
-export const monitoPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => (dispatch, getState) => {
+export const monitorPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => (dispatch, getState) => {
   const carsByStatusOld = getMonitorPageState(getState()).carsByStatus;
 
   const hasDiff = Object.entries(carsByStatusOld).some(

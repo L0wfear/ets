@@ -24,8 +24,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
       isActiveInspect,
     } = props;
 
-    const [staffing_drivers, setStaffing_drivers] = React.useState();
-    const [staffing_mechanics, setStaffing_mechanics] = React.useState();
+    const [staffing_drivers, setStaffing_drivers] = React.useState<number>(null);
+    const [staffing_mechanics, setStaffing_mechanics] = React.useState<number>(null);
 
     const handleChange = React.useCallback(
       (key, event) => {

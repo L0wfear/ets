@@ -32,13 +32,19 @@ class MissionRejectForm extends React.Component {
       actionGetAndSetInStoreMissionCancelReasons: PropTypes.func.isRequired,
       actionResetMissionCancelReasons: PropTypes.func.isRequired,
       missionCancelReasonsList: PropTypes.array.isRequired,
+      carsList: PropTypes.array,
     };
   }
 
   static get defaultProps() {
     return {
       missions: null,
+      carsList: [],
     };
+  }
+
+  static carIdFilterOptions(optionPros) {
+    return get(optionPros, 'data.available_to_bind', false);
   }
 
   makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
@@ -342,8 +348,29 @@ class MissionRejectForm extends React.Component {
     }
   };
 
+  get carIdOptions() {
+    const { carsList } = this.props;
+    const { missionList, mIndex } = this.state;
+
+    const mission = missionList[mIndex];
+    const { car_gov_number: mission_car_gov_number } = mission;
+
+    return carsList.reduce((accumulator, car) => {
+      const { asuods_id, gov_number } = car;
+
+      if (mission_car_gov_number !== gov_number) {
+        return [
+          ...accumulator,
+          { ...car, value: asuods_id, label: gov_number },
+        ];
+      }
+
+      return accumulator;
+    }, []);
+  }
+
   render() {
-    const { state, props } = this;
+    const { state } = this;
 
     const errors = {};
     const { missionList, mIndex } = state;
@@ -353,20 +380,11 @@ class MissionRejectForm extends React.Component {
     if (!state.reason_id)
       errors.reason_id = 'Поле должно быть обязательно заполнено'; // убрать это чудо, после перехода на withForm
 
-    let CARS = [];
     const {
       car_gov_number: mission_car_gov_number,
       number,
       // waybill_number,
     } = mission;
-
-    CARS = props.carsList.reduce((carOptions, { asuods_id, gov_number }) => {
-      if (mission_car_gov_number !== gov_number) {
-        carOptions.push({ value: asuods_id, label: gov_number });
-      }
-
-      return carOptions;
-    }, []);
 
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(
       this.props.missionCancelReasonsList,
@@ -451,7 +469,8 @@ class MissionRejectForm extends React.Component {
               type="select"
               label="Переназначить задание на ТС:"
               error={errors.car_id}
-              options={CARS}
+              options={this.carIdOptions}
+              filterOption={MissionRejectForm.carIdFilterOptions}
               value={state.car_id}
               onChange={this.handleChangeCarId}
               clearable

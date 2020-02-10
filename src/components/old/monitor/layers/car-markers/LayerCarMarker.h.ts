@@ -1,4 +1,5 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { IStateMonitorPage } from '../../redux-main/models/monitor-page';
 
 export type PropsLayerCarMarker = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -10,22 +11,23 @@ export type PropsLayerCarMarker = {
   token: string;
   points_ws: string;
   zoom: number;
-  gps_code: string | void;
+  gps_code?: string;
   forToday: boolean;
   STATUS_SHOW_GOV_NUMBER: boolean;
   STATUS_TC_FOLLOW_ON_CAR: boolean;
 
   carActualGpsNumberIndex: any;
+  carActualGpsCount: number;
   lastPoint: any;
   odh_mkad: Array<any>;
-  statusShow: any;
-  filters: any;
+  statusShow: Record<'in_move' | 'stop' | 'parking' | 'not_in_touch', boolean>;
+  filters: IStateMonitorPage['filters']['data'];
 
   carInfoSetStatus: any;
   carInfoPushPointIntoTrack: any;
   monitorPageResetCarStatus: any;
   centerOn: any;
-  monitoPageChangeCarsByStatus: any;
+  monitorPageChangeCarsByStatus: any;
   monitorPageMergeFiltredCarGpsCode: any;
 } & WithSearchProps;
 
@@ -44,29 +46,28 @@ export type OneWsDataCardata = {
 
 export type OneWsData = {
   car: OneWsDataCardata;
-  connection_status_date: number | void;
-  coords: Array<number>;
-  coords_msk: Array<number>;
-  direction: number | void;
+  connection_status_date?: number;
+  coords: [number, number];
+  coords_msk: [number, number];
+  direction?: number;
   distance: number;
   id: string;
-  nsat: number | void;
-  speed: number | void;
-  speed_max: number | void;
-  status: number | void;
-  status_date: number | void;
-  timestamp: number | void;
+  nsat?: number;
+  speed?: number;
+  speed_max?: number;
+  status?: number;
+  status_date?: number;
+  timestamp?: number;
+  front_status: string;
+  visibleWithoutFilters?: boolean;
+  visible?: boolean;
 };
 
 export type WsData = {
   [gps_code: string]: OneWsData;
 };
 
-export type OneCarPointDataWsType =
-  | OneWsData
-  | {
-      front_status: string;
-    };
+export type OneCarPointDataWsType = OneWsData;
 
 export type CarPointsDataWsType = {
   [gps_code: string]: OneCarPointDataWsType;

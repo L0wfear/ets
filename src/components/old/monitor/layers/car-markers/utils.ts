@@ -1,6 +1,8 @@
 import * as insider from 'point-in-polygon';
 import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
+import { add, flow, isNumber, max, reduce, subtract } from 'lodash';
+import { WsData } from './LayerCarMarker.h';
 
 export const getFrontStatus = (statusId) => {
   switch (statusId) {
@@ -48,7 +50,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
   }
 };
 
-export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code) => (
+export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, gps_code: string): boolean => (
   !!car_actualData
   && statusShow[getFrontStatus(wsData.status).slug]
   && !Object.entries(filters).some(([key, value]) => (
@@ -62,18 +64,43 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, g
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs) => Object.values(carPointsDataWs).reduce( // Активно:, Не на связи:
-  (carsByStatus, { front_status, visible }) => {
-    if (visible) {
-      carsByStatus[front_status] += 1;
-    }
+export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number) => {
+  let countTsByStatusWithoutFilters: number = 0;
 
-    return carsByStatus;
-  },
-  {
-    in_move: 0,
-    stop: 0,
-    parking: 0,
-    not_in_touch: 0,
-  },
-);
+  const countTsByStatus = reduce(
+    carPointsDataWs,
+    (carsByStatus, carByStatus) => {
+      const { front_status, visible, visibleWithoutFilters } = carByStatus;
+
+      if (visibleWithoutFilters) {
+        countTsByStatusWithoutFilters += 1;
+      }
+  
+      if (visible) {
+        return {
+          ...carsByStatus,
+          [front_status]: add(carsByStatus[front_status], 1),
+        };
+      } else {
+        return carsByStatus;
+      }
+    },
+    { in_move: 0, not_in_touch: 0, parking: 0, stop: 0 },
+  );
+
+  if (isNumber(carActualGpsCount)) {
+    const not_in_touch = flow(
+      subtract,
+      (hasNeverCarSignalCount: number): [number, number] => [hasNeverCarSignalCount, 0],
+      max,
+      (addend: number): number => add(countTsByStatus.not_in_touch, addend)
+    )(carActualGpsCount, countTsByStatusWithoutFilters);
+
+    return {
+      ...countTsByStatus,
+      not_in_touch,
+    };
+  } else {
+    return countTsByStatus;
+  }
+};

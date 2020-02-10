@@ -34,6 +34,7 @@ export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUE
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
+  carActualGpsCount: number;
   carInfo: IStateCarInfo;
   carsByStatus: {
     in_move: number;
@@ -90,6 +91,7 @@ export type IStateMonitorPage = {
 
 export const initialMonitorState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
+  carActualGpsCount: 0,
   carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
   status: {
@@ -157,6 +159,7 @@ export default (state = initialMonitorState, { type, payload }) => {
       return {
         ...state,
         carActualGpsNumberIndex: payload.carActualGpsNumberIndex,
+        carActualGpsCount: payload.carActualGpsCount,
       };
     }
     case MONITOR_PAGE_SET_COMPANY: {

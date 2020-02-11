@@ -4,7 +4,7 @@ import {
   checkAndModifyTrack,
 } from 'components/old/monitor/info/car-info/redux-main/modules/utils';
 import config from 'config';
-import { makeUnixTime } from 'components/@next/@utils/dates/dates';
+import { makeUnixTimeMskTimezone } from 'components/@next/@utils/dates/dates';
 import { Car } from '../../autobase/@types/autobase.h';
 
 type PromiseGetTracksCachingPayload = {
@@ -33,8 +33,8 @@ export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPa
   const payloadToTrack = {
     version,
     car_id,
-    from_dt: makeUnixTime(date_start),
-    to_dt: makeUnixTime(date_end),
+    from_dt: makeUnixTimeMskTimezone(date_start),
+    to_dt: makeUnixTimeMskTimezone(date_end),
     sensors,
   };
 

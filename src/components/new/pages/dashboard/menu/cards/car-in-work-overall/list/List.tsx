@@ -7,51 +7,39 @@ import {
 
 type PropsList = {
   items: Array<CarInWorkOverallItemsType>;
-  handleClick: React.MouseEventHandler<HTMLLIElement>;
+  onClick(item: CarInWorkOverallItemsType): void;
   classNameContainer?: string;
-  addIndex: number;
 };
 
 const List: React.FC<PropsList> = React.memo(
   (props) => {
-    const handleClick = React.useCallback(
-      (event) => {
-        const { currentTarget: { dataset: { path } } } = event;
-        const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
-
-        const subItemsLength = props.items?.[index]?.subItems?.some?.((rowData) => rowData?.subItems?.length);
-
-        if (subItemsLength) {
-          props.handleClick(event);
-        }
-      },
-      [props.items, props.handleClick],
-    );
+    const { onClick, items } = props;
 
     return (
       <ul>
-        {
-          props.items.map(({ subItems = [], title, ...item } , index) => {
-            const canClick = subItems?.some?.((rowData) => rowData?.subItems?.length);
-            return (
-              <li
-                key={index + props.addIndex}
-                data-path={index + props.addIndex}
-                title={item.tooltip || title}
-                className={cx(
-                  {
-                    pointer: canClick,
-                    default_cursor: !canClick,
-                  },
-                  props.classNameContainer,
-                )}
-                onClick={handleClick}
-              >
-                {title}
-              </li>
-            );
-          })
-        }
+        {items.map(( item, index) => {
+          const { subItems = [], title, tooltip } = item;
+          const canClick = subItems?.some?.((rowData) => rowData?.subItems?.length);
+          const listItemClassName = cx(
+            {
+              pointer: canClick,
+              default_cursor: !canClick,
+            },
+            props.classNameContainer,
+          );
+          const handleClick = () => onClick(item);
+
+          return (
+            <li
+              key={index}
+              title={tooltip || title}
+              className={listItemClassName}
+              onClick={canClick ? handleClick : undefined}
+            >
+              {title}
+            </li>
+          );
+        })}
       </ul>
     );
   },

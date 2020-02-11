@@ -14,7 +14,7 @@ export const removeRedundantNumbers = (rowValue) => {
   return Math.round(rowValue * 1000) / 1000;
 };
 export const openFields = (fields) => fields.map((meta) => {
-  const [[keyName, metaData]] = Object.entries(meta);
+  const [[keyName, metaData]] = Object.entries(meta) as any;    // что тут?
   return {
     keyName,
     ...metaData,
@@ -63,7 +63,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
       ...data.reduce((summObj, row) => ({
         ...summObj,
         ...aggr_fields.reduce((summ, key) => {
-          
+
           let uniqSetList = new Set([]); // DITETS19-1556 кол-во уникальных ТС по сумме полей из uniqParams.arrayKey(gov_numbers)
           if(uniqParams && uniqParams[key]) {
             uniqSetList = new Set(data.reduce((setList, dataVal ) => {

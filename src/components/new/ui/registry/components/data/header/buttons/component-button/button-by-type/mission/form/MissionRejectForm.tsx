@@ -78,11 +78,21 @@ type State = {
 const formPage = 'MissionRejectForm';
 
 class MissionRejectForm extends React.Component<Props, State> {
-  makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
+
+  public static readonly defaultProps: Partial<Props> = {
+    missions: null,
+    carList: [],
+  };
+
+  private static carIdFilterOptions(optionPros): boolean {
+    return get(optionPros, 'data.available_to_bind', false);
+  }
+
+  private readonly makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
     missionCancelReasonsList.map(defaultSelectListMapper),
   );
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props);
     const { mission, missions } = props;
 
@@ -112,22 +122,22 @@ class MissionRejectForm extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.props.dispatch(someUniqActions.actionGetAndSetInStoreMissionCancelReasons({}, { page: formPage }));
     this.updateMissionData(this.state.mission_id);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate(prevProps, prevState): void {
     if (this.state.mission_id !== prevState.mission_id) {
       this.updateMissionData(this.state.mission_id);
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount(): void {
     // this.props.actionResetMissionCancelReasons();
   }
 
-  updateMissionData = (mission_id: number) => {
+  private readonly updateMissionData = (mission_id: number): void => {
     try {
       this.props.dispatch(
         missionsActions.actionGetMissionById(
@@ -145,7 +155,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  getCarFuncTypesByNormId = async (missionById) => {
+  private readonly getCarFuncTypesByNormId = async (missionById): Promise<void> => {
     const { norm_id, date_start: norms_on_date } = missionById || {};
 
     if (norm_id) {
@@ -156,7 +166,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  getPropsMission(
+  private getPropsMission(
     missionList = this.state.missionList,
     mIndex = this.state.mIndex,
   ) {
@@ -173,7 +183,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     };
   }
 
-  handleChangeCarId = async (car_id: number) => {
+  private readonly handleChangeCarId = async (car_id: number): Promise<void> => {
     if (car_id) {
       const { missionList, mIndex } = this.state;
 
@@ -201,7 +211,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  reject = () => {
+  private readonly reject = (): void => {
     const { mIndex, missionList } = this.state;
     if (this.props.isWaybillForm){
       this.props.onRejectForWaybill(null);
@@ -221,7 +231,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  handleMissionsDateChange = (mission_id, field, value) => {
+  private readonly handleMissionsDateChange = (mission_id, field, value): void => {
     this.setState(({ data }) => ({
       data: {
         ...data,
@@ -239,7 +249,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }));
   };
 
-  handleChange = (field: keyof State, e) => {
+  private readonly handleChange = (field: keyof State, e): void => {
     const value = get(e, 'target.value', e) as State[keyof State];
 
     this.setState((oldState) => ({
@@ -248,7 +258,7 @@ class MissionRejectForm extends React.Component<Props, State> {
     }));
   };
 
-  handleSubmit = async () => {
+  private readonly handleSubmit = async (): Promise<void> => {
     let resolve;
     let payload;
     const { action_at, isWaybillForm } = this.props;
@@ -399,8 +409,29 @@ class MissionRejectForm extends React.Component<Props, State> {
     }
   };
 
-  render() {
-    const { state, props } = this;
+  private get carIdOptions() {
+    const { carList } = this.props;
+    const { missionList, mIndex } = this.state;
+
+    const mission = missionList[mIndex];
+    const { car_gov_number: mission_car_gov_number } = mission;
+
+    return carList.reduce((accumulator, car) => {
+      const { asuods_id, gov_number } = car;
+
+      if (mission_car_gov_number !== gov_number) {
+        return [
+          ...accumulator,
+          { ...car, value: asuods_id, label: gov_number },
+        ];
+      }
+
+      return accumulator;
+    }, []);
+  }
+
+  public render(): JSX.Element {
+    const { state } = this;
 
     const errors: Record<string, string> = {};
     const { missionList, mIndex } = state;
@@ -411,23 +442,11 @@ class MissionRejectForm extends React.Component<Props, State> {
       errors.reason_id = 'Поле должно быть обязательно заполнено'; // убрать это чудо, после перехода на withForm
     }
 
-    let CARS = [];
     const {
       car_gov_number: mission_car_gov_number,
       number,
       // waybill_number,
     } = mission;
-
-    CARS = props.carList.reduce(
-      (carOptions, { available_to_bind, asuods_id, gov_number, type_id: car_type_id }) => {
-        if (
-          mission_car_gov_number !== gov_number
-        ) {
-          carOptions.push({ value: asuods_id, label: gov_number });
-        }
-
-        return carOptions;
-      }, []);
 
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(
       this.props.missionCancelReasonsList,
@@ -464,7 +483,8 @@ class MissionRejectForm extends React.Component<Props, State> {
               type="select"
               label="Переназначить задание на ТС:"
               error={errors.car_id}
-              options={CARS}
+              options={this.carIdOptions}
+              filterOption={MissionRejectForm.carIdFilterOptions}
               value={state.car_id}
               onChange={this.handleChangeCarId}
               id="car_id"

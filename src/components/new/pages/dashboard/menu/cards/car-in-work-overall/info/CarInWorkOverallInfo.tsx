@@ -22,6 +22,7 @@ const TitleView = styled.div`
 
 const CarInWorkOverallInfo: React.FC<Props> = React.memo(() => {
   const dispatch = etsUseDispatch();
+
   const infoData = etsUseSelector(
     (state) => getDashboardState(state).car_in_work_overall.infoData,
   );
@@ -31,36 +32,25 @@ const CarInWorkOverallInfo: React.FC<Props> = React.memo(() => {
 
   const hasManySubitems = Boolean(infoData) && infoData.subItems.length > 1;
 
-  const subitemsMapperCallback = (subItemData: CarInWorkOverallItemsSubItemsType) => {
-    const getTitleView = (): JSX.Element => {
-      if (hasManySubitems) {
-        return (
-          <TitleView>
-            {subItemData.title}:
-          </TitleView>
-        );
-      }
-
-      return null;
-    };
-    return (
-      <React.Fragment>
-        {getTitleView()}
-        <ul>
-          {subItemData.subItems.map(({ title }) => (
-            <li key={title}>
-              <span>{title}</span>
-            </li>
-          ))}
-        </ul>
-      </React.Fragment>
-    );
-  };
-
   if (Boolean(infoData)) {
     return (
       <InfoCard title={infoData.title} handleClose={handleClose}>
-        {infoData.subItems.map(subitemsMapperCallback)}
+        {infoData.subItems.map(
+          (subItemData: CarInWorkOverallItemsSubItemsType) => (
+            <React.Fragment key={subItemData.title}>
+              {hasManySubitems ? (
+                <TitleView>{subItemData.title}:</TitleView>
+              ) : null}
+              <ul>
+                {subItemData.subItems.map(({ title }) => (
+                  <li key={title}>
+                    <span>{title}</span>
+                  </li>
+                ))}
+              </ul>
+            </React.Fragment>
+          ),
+        )}
       </InfoCard>
     );
   }

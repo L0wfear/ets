@@ -1,47 +1,45 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { HandleThunkActionCreator } from 'react-redux';
 
 import withDefaultCard, {
   PropsToDefaultCard,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
-
 import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 import List from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/list/List';
-
 import {
   dashboardLoadCarInWorkOverall,
   dashboardSetInfoDataInCarInWorkOverall,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-
 import CarInWorkOverallInfo from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo';
+import {
+  etsUseDispatch,
+  etsUseSelector,
+} from 'components/@next/ets_hoc/etsUseDispatch';
 
 import { getDashboardState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
 
-type StateProps = {
-  items: ReduxState['dashboard']['car_in_work_overall']['data']['items'];
-};
+import { CarInWorkOverallItemsType } from '../../../redux-main/modules/dashboard/@types/car-in-work-overall.h';
 
-type DispatchProps = {
-  setInfoData: HandleThunkActionCreator<
-    typeof dashboardSetInfoDataInCarInWorkOverall
-  >;
-};
+type Props = {};
 
-type OwnProps = {
-  countToFirstShow?: number;
-};
+const COUNT_TO_FIRST_SHOW = 2;
 
-type Props = StateProps & DispatchProps & OwnProps;
+const CarInWorkOverall: React.FC<Props> = React.memo(() => {
+  const dispatch = etsUseDispatch();
 
-function CarInWorkOverall(props: Props): JSX.Element {
-  const { items, setInfoData, countToFirstShow } = props;
+  const items = etsUseSelector(
+    (state) => getDashboardState(state).car_in_work_overall.data.items,
+  );
+
+  const setInfoData = React.useCallback((item: CarInWorkOverallItemsType) => {
+    dispatch(dashboardSetInfoDataInCarInWorkOverall(item));
+  }, []);
 
   const [firstTwoItem, collapsedItems] = React.useMemo(
-    () => [items.slice(0, countToFirstShow), items.slice(countToFirstShow)],
-    [items, countToFirstShow],
+    () => [
+      items.slice(0, COUNT_TO_FIRST_SHOW),
+      items.slice(COUNT_TO_FIRST_SHOW),
+    ],
+    [items],
   );
 
   return (
@@ -51,7 +49,7 @@ function CarInWorkOverall(props: Props): JSX.Element {
         onClick={setInfoData}
         classNameContainer="line_data"
       />
-      {Boolean(collapsedItems[0]) && (
+      {Boolean(collapsedItems.length) ? (
         <CollapseButton>
           <List
             items={collapsedItems}
@@ -59,32 +57,13 @@ function CarInWorkOverall(props: Props): JSX.Element {
             classNameContainer="line_data"
           />
         </CollapseButton>
-      )}
+      ) : null}
     </div>
   );
-}
-
-CarInWorkOverall.defaultProps = {
-  items: [],
-  countToFirstShow: 2,
-};
-
-const mapStateToProps = (state: ReduxState): StateProps => ({
-  items: getDashboardState(state).car_in_work_overall.data.items,
 });
 
-const mapDispatchToProps: DispatchProps = {
-  setInfoData: dashboardSetInfoDataInCarInWorkOverall,
-};
-
-export default compose<Props, PropsToDefaultCard>(
-  withDefaultCard({
-    path: 'car_in_work_overall',
-    loadData: dashboardLoadCarInWorkOverall,
-    InfoComponent: CarInWorkOverallInfo,
-  }),
-  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(CarInWorkOverall);
+export default withDefaultCard<PropsToDefaultCard>({
+  path: 'car_in_work_overall',
+  loadData: dashboardLoadCarInWorkOverall,
+  InfoComponent: CarInWorkOverallInfo,
+})(CarInWorkOverall);

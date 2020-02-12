@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { get } from 'lodash';
-import { makeUnixTime } from 'components/@next/@utils/dates/dates';
+import { makeUnixTimeMskTimezone } from 'components/@next/@utils/dates/dates';
 import config from 'config';
 import { InfoService } from 'api/Services';
 
@@ -22,8 +22,8 @@ export default class CarActions extends Actions {
     }
     const payload = {
       gps_code,
-      from_dt: makeUnixTime(from_dt),
-      to_dt: makeUnixTime(to_dt),
+      from_dt: makeUnixTimeMskTimezone(from_dt),
+      to_dt: makeUnixTimeMskTimezone(to_dt),
       version,
     };
 

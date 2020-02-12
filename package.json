@@ -1,8 +1,8 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.809",
-    "description": "",
+    "version": "2.32.810",
     "main": "./src/index.tsx",
+    "description": "",
     "private": true,
     "author": "GOST Group",
     "license": "Commercial",

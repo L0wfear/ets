@@ -20,6 +20,12 @@ export default class ObjectsActions extends Actions {
     }));
   }
 
+  getCarsByNorm(payload) {
+    return CarActualService.get(payload).then((r) => ({
+      result: r.result.rows,
+    }));
+  }
+
   getTypes(payload = {}) {
     return TypesService.get(payload);
   }

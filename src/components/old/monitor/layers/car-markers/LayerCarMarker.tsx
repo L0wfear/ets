@@ -413,7 +413,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         filters,
         carActualGpsCount,
       } = this.props;
-      
+
       const zoomMore8 = zoom > 8;
       const { carPointsDataWs } = this.state;
 

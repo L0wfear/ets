@@ -12,9 +12,7 @@ import {
   etsUseDispatch,
 } from 'components/@next/ets_hoc/etsUseDispatch';
 
-import { CarInWorkOverallItemsSubItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
-
-export type Props = {};
+type Props = {};
 
 const TitleView = styled.div`
   font-weight: 800;

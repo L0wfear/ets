@@ -237,51 +237,6 @@ const config: webpack.Configuration = {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              babelrc: false,
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    // remove targets
-                    corejs: { version: 3, proposals: true },
-                    useBuiltIns: 'usage', // 'usage' те функции, которые используются
-                    configPath: path.join(__dirname),
-                  },
-                ],
-                '@babel/preset-typescript',
-                ['@babel/preset-react', { useSpread: true }],
-              ],
-              plugins: [
-                [
-                  '@babel/plugin-proposal-decorators',
-                  {
-                    legacy: true,
-                  },
-                ],
-                [
-                  '@babel/plugin-proposal-nullish-coalescing-operator',
-                ],
-                [
-                  '@babel/plugin-proposal-optional-chaining',
-                  {
-                    loose: true,
-                  }
-                ],
-                [
-                  '@babel/plugin-proposal-class-properties',
-                  {
-                    loose: true,
-                  },
-                ],
-                [
-                  'babel-plugin-styled-components',
-                  {
-                    fileName: false
-                  },
-                ],
-                '@babel/plugin-syntax-dynamic-import',
-                'react-hot-loader/babel',
-              ],
             },
           },
         ],

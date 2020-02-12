@@ -9,6 +9,7 @@ export default class ObjectsStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.register(objectsActions.getCars, this.handleGetCars);
+    this.register(objectsActions.getCarsByNorm, this.handleGetCars);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 

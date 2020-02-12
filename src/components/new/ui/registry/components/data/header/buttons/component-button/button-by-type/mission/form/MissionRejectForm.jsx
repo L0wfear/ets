@@ -32,13 +32,19 @@ class MissionRejectForm extends React.Component {
       actionGetAndSetInStoreMissionCancelReasons: PropTypes.func.isRequired,
       actionResetMissionCancelReasons: PropTypes.func.isRequired,
       missionCancelReasonsList: PropTypes.array.isRequired,
+      carsList: PropTypes.array,
     };
   }
 
   static get defaultProps() {
     return {
       missions: null,
+      carsList: [],
     };
+  }
+
+  static carIdFilterOptions(optionPros) {
+    return get(optionPros, 'data.available_to_bind', false);
   }
 
   makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
@@ -67,7 +73,6 @@ class MissionRejectForm extends React.Component {
       comment: '',
       ...this.getPropsMission(missionList, mIndex),
       car_id: null,
-      car_func_types: [],
       needUpdateParent: false,
       reason_id: null, // изменить
       edcRequestIds: null,
@@ -76,19 +81,13 @@ class MissionRejectForm extends React.Component {
   }
 
   componentDidMount() {
-    this.context.flux.getActions('objects').getCars();
-    this.getCarFuncTypesByNormId();
     this.props.actionGetAndSetInStoreMissionCancelReasons();
-    try {
-      this.props
-        .actionGetMissionById(this.state.mission_id, {})
-        .then((missionById) => {
-          if (missionById) {
-            this.setState({ missionById });
-          }
-        });
-    } catch (error) {
-      console.error(error); // tslint:disable-line
+    this.updateMissionData(this.state.mission_id);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.mission_id !== prevState.mission_id) {
+      this.updateMissionData(this.state.mission_id);
     }
   }
 
@@ -96,25 +95,29 @@ class MissionRejectForm extends React.Component {
     // this.props.actionResetMissionCancelReasons();
   }
 
-  getCarFuncTypesByNormId() {
-    const { missionList, mIndex } = this.state;
+  updateMissionData = (mission_id) => {
+    try {
+      this.props
+        .actionGetMissionById(mission_id, {})
+        .then((missionById) => {
+          if (missionById) {
+            this.getCarFuncTypesByNormId(missionById);
+            this.setState({ missionById });
+          }
+        })
+        .then(() => {});
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+  };
 
-    const { norm_id, date_start: datetime } = missionList[mIndex];
-
+  getCarFuncTypesByNormId(missionById) {
+    const { norm_id, date_start: norms_on_date } = missionById || {};
     if (norm_id) {
-      this.context.flux
-        .getActions('missions')
-        .getCleaningByTypeInActiveMission({
-          type: 'norm_registry',
-          norm_id,
-          datetime,
-        })
-        .then(({ result: { rows: [norm_data] } }) => {
-          const car_func_types = norm_data.car_func_types.map(({ id }) => id);
-
-          this.setState({ car_func_types });
-        })
-        .catch(() => this.setState({ car_func_types: [] }));
+      this.context.flux.getActions('objects').getCarsByNorm({
+        norm_ids: norm_id,
+        norms_on_date,
+      });
     }
   }
 
@@ -172,12 +175,13 @@ class MissionRejectForm extends React.Component {
       const { needUpdateParent } = this.state;
       this.props.onReject(needUpdateParent, this.state.edcRequestIds);
     } else {
-      this.setState({
+      const newState = {
         comment: '',
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),
-      });
+      };
+      this.setState(newState);
     }
   };
 
@@ -222,6 +226,7 @@ class MissionRejectForm extends React.Component {
     if (!this.state.data) {
       let mission = null;
       if (!this.state.missionById) {
+        // вроде как не актульно, тк при отмене в цепочке заданий идёт запрос за заданием
         try {
           mission = await this.props.actionGetMissionById(
             this.state.mission_id,
@@ -343,39 +348,43 @@ class MissionRejectForm extends React.Component {
     }
   };
 
+  get carIdOptions() {
+    const { carsList } = this.props;
+    const { missionList, mIndex } = this.state;
+
+    const mission = missionList[mIndex];
+    const { car_gov_number: mission_car_gov_number } = mission;
+
+    return carsList.reduce((accumulator, car) => {
+      const { asuods_id, gov_number } = car;
+
+      if (mission_car_gov_number !== gov_number) {
+        return [
+          ...accumulator,
+          { ...car, value: asuods_id, label: gov_number },
+        ];
+      }
+
+      return accumulator;
+    }, []);
+  }
+
   render() {
-    const { state, props } = this;
+    const { state } = this;
 
     const errors = {};
-    const { car_func_types, missionList, mIndex } = state;
+    const { missionList, mIndex } = state;
 
     const mission = missionList[mIndex];
 
     if (!state.reason_id)
       errors.reason_id = 'Поле должно быть обязательно заполнено'; // убрать это чудо, после перехода на withForm
 
-    let CARS = [];
     const {
       car_gov_number: mission_car_gov_number,
       number,
       // waybill_number,
     } = mission;
-
-    CARS = props.carsList.reduce(
-      (carOptions, { asuods_id, gov_number, type_id: car_type_id }) => {
-        if (
-          mission_car_gov_number !== gov_number
-          && (!isEmpty(car_func_types)
-            ? car_func_types.includes(car_type_id)
-            : true)
-        ) {
-          carOptions.push({ value: asuods_id, label: gov_number });
-        }
-
-        return carOptions;
-      },
-      [],
-    );
 
     const CANCEL_REASON = this.makeOptionFromMissionCancelReasonsList(
       this.props.missionCancelReasonsList,
@@ -437,7 +446,7 @@ class MissionRejectForm extends React.Component {
       ));
 
     return (
-      <>
+      <React.Fragment>
         <EtsBootstrap.ModalContainer
           id="modal-mission-reject"
           show={this.props.show}
@@ -460,7 +469,8 @@ class MissionRejectForm extends React.Component {
               type="select"
               label="Переназначить задание на ТС:"
               error={errors.car_id}
-              options={CARS}
+              options={this.carIdOptions}
+              filterOption={MissionRejectForm.carIdFilterOptions}
               value={state.car_id}
               onChange={this.handleChangeCarId}
               clearable
@@ -537,7 +547,7 @@ class MissionRejectForm extends React.Component {
             </EtsBootstrap.Button>
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
-      </>
+      </React.Fragment>
     );
   }
 }

@@ -12,17 +12,13 @@ type PropsList = {
 const List: React.FC<PropsList> = React.memo((props) => {
   const { onClick, items } = props;
 
-  const listItemMapperCallback = (item, index) => {
-    const { subItems = [] } = item;
-
-    const canClick = subItems?.some?.((rowData) => rowData?.subItems?.length);
+  return <ul>{items.map((item, index) => {
+    const canClick = item.subItems?.some?.((rowData) => rowData?.subItems?.length);
 
     return (
       <ListItem canClick={canClick} key={index} item={item} onClick={onClick} />
     );
-  };
-
-  return <ul>{items.map(listItemMapperCallback)}</ul>;
+  })}</ul>;
 });
 
 export default List;

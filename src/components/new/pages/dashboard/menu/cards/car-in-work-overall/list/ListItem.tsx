@@ -3,15 +3,15 @@ import * as cx from 'classnames';
 
 import { CarInWorkOverallItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
 
-type PropsList = {
+type Props = {
   item: CarInWorkOverallItemsType;
   onClick(item: CarInWorkOverallItemsType): void;
   classNameContainer?: string;
   canClick: boolean;
 };
 
-const ListItem: React.FC<PropsList> = React.memo((props) => {
-  const { item, onClick, canClick } = props;
+const ListItem: React.FC<Props> = React.memo((props) => {
+  const { item, canClick } = props;
 
   const { title, tooltip } = item;
   const listItemClassName = cx(
@@ -22,7 +22,14 @@ const ListItem: React.FC<PropsList> = React.memo((props) => {
     props.classNameContainer,
   );
 
-  const handleClick = (_item: PropsList['item']) => (): void => canClick ? onClick(_item) : undefined;
+  const handleClick = React.useCallback(
+    () => {
+      if (canClick) {
+        props.onClick(props.item);
+      }
+    },
+    [props.onClick, props.item],
+  );
 
   const currentTitle = tooltip || title;
 
@@ -30,7 +37,7 @@ const ListItem: React.FC<PropsList> = React.memo((props) => {
     <li
       title={currentTitle}
       className={listItemClassName}
-      onClick={handleClick(item)}
+      onClick={handleClick}
     >
       {title}
     </li>

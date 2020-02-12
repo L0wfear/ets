@@ -30,17 +30,19 @@ const CarInWorkOverallInfo: React.FC<Props> = React.memo(() => {
     dispatch(dashboardSetInfoDataInCarInWorkOverall(null));
   }, []);
 
-  const hasManySubitems = Boolean(infoData) && infoData.subItems.length > 1;
+  const hasManySubitems = Boolean(infoData && infoData.subItems.length > 1);
 
   if (Boolean(infoData)) {
     return (
       <InfoCard title={infoData.title} handleClose={handleClose}>
         {infoData.subItems.map(
-          (subItemData: CarInWorkOverallItemsSubItemsType) => (
+          (subItemData) => (
             <React.Fragment key={subItemData.title}>
-              {hasManySubitems ? (
-                <TitleView>{subItemData.title}:</TitleView>
-              ) : null}
+              {
+                hasManySubitems && (
+                  <TitleView>{subItemData.title}:</TitleView>
+                )
+              }
               <ul>
                 {subItemData.subItems.map(({ title }) => (
                   <li key={title}>

@@ -1,5 +1,4 @@
 import { withProps } from 'recompose';
-import { isNumber } from 'lodash';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 
@@ -26,14 +25,6 @@ const schemaMakers = {
   }),
 };
 
-function tableColValueParser({ data }) {
-  if (isNumber(data)) {
-    return data.toFixed(2);
-  }
-
-  return data ? data : '-';
-}
-
 const renderers = {
   order_date_from: ({ data }) => data ? createValidDateTimeDots(data) : '-',
   order_date_to: ({ data }) => data ? createValidDateTimeDots(data) : '-',
@@ -46,7 +37,6 @@ const renderers = {
   plan_order: ({ data }) => data ? data : '-',
   plan_order_mission: ({ data }) => data ? data : '-',
   not_coverage: ({ data }) => data ? data : '-',
-  fact_traveled_area: tableColValueParser,
 };
 
 const reportProps: IReportProps = {

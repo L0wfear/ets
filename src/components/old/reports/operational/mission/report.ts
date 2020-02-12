@@ -12,18 +12,6 @@ const reportUrl = 'mission-reports';
 const serviceName = 'MissionReportsService';
 
 const schemaMakers = {
-  mission_status: (schema) => ({
-    ...schema,
-    filter: {
-      type: 'multiselect',
-      options: [
-        { label: 'Назначено', value: 'Назначено' },
-        { label: 'Выполняется', value: 'Выполняется' },
-        { label: 'Просрочено', value: 'Просрочено' },
-        { label: 'Выполнено', value: 'Выполнено' },
-      ],
-    },
-  }),
   object_type: (schema) => ({
     ...schema,
     filter: {

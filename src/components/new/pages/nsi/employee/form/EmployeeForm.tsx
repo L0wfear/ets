@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
+import { Option } from 'react-select/src/filters';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
@@ -272,12 +273,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   };
 
-  private readonly licenseEndDateFilterOption = (): boolean => {
+  private readonly licenseEndDateFilterOption = (option: Option, value: string): boolean => {
     const { formState } = this.props;
     const { special_license_date_end, drivers_license_date_end } = formState;
 
-    return [special_license_date_end, drivers_license_date_end].some((license_date_end: string) =>
+    const licencePeriod: [string, string] = [special_license_date_end, drivers_license_date_end];
+    const isValidOptionForLicencePeriod: boolean = licencePeriod.some((license_date_end: string): boolean =>
       Boolean(license_date_end) && moment(license_date_end).isSameOrAfter(moment(), 'day'));
+
+    if (isValidOptionForLicencePeriod) {
+      return option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase());
+    }
+
+    return isValidOptionForLicencePeriod;
   };
 
   public render() {

@@ -45,8 +45,18 @@ const popoverHoverFocus = (
   </EtsBootstrap.Popover>
 );
 
-class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
-  render() {
+class WaybillFooter extends React.Component<IPropsWaybillFooter> {
+  private get isDisabledWaybillSubmitButton(): boolean {
+    const { isDraft, canSave, state, canEditIfCloseUpdPermission } = this.props;
+
+    if (isDraft) {
+      return !canSave && !state.canEditIfClose;
+    }
+
+    return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
+  }
+
+  public render(): JSX.Element {
     const { props } = this;
     const waybillSaveDropdownPrintToggleElement = (
       <React.Fragment>
@@ -101,7 +111,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
             className={'inline-block'}
             hidden={(props.state.status === 'closed' && !props.canEditIfClose && !props.canEditIfCloseUpdPermission) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
           >
-            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose && !props.canEditIfCloseUpdPermission}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={this.isDisabledWaybillSubmitButton}>Сохранить</EtsBootstrap.Button>
           </Div>
           <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
             <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>

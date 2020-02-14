@@ -10,7 +10,6 @@ import { routeTypesByTitle } from 'constants/route';
 import { getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
-import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
 
 export const validateNormConsumableMaterials = (norm_value: ValuesOf<Mission['consumable_materials']>['norm_value']) => {
@@ -320,16 +319,12 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'multiValueOfArray',
           dependencies: [
             memoizeOne(
-              (consumable_materials, { status }) => consumable_materials.map((rowData): Partial<Record<keyof ValuesOf<Mission['consumable_materials']>, string>> => ({
+              (consumable_materials) => consumable_materials.map((rowData): Partial<Record<keyof ValuesOf<Mission['consumable_materials']>, string>> => ({
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
                 plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работы (план)'),
                 mission_progress_fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.mission_progress_fact_value, 'Объем работы (ГЛОНАСС)'),
                 fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)'),
-                consumption: (
-                  !rowData.consumption
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)')
-                ),
+                consumption: defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)'),
                 norm_value: validateNormConsumableMaterials(rowData.norm_value), 
               })),
             ),

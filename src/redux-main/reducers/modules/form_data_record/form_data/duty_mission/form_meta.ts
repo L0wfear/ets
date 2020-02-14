@@ -14,7 +14,6 @@ import { getEmployeeState, getMissionsState, getSomeUniqState } from 'redux-main
 import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import memoizeOne from 'memoize-one';
 import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
-import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { defaultCheckConsumableMaterialsNumberValue, validateNormConsumableMaterials } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 import * as moment from 'moment';
 
@@ -261,15 +260,11 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'multiValueOfArray',
           dependencies: [
             memoizeOne(
-              (consumable_materials, { status }) => consumable_materials.map((rowData) => ({
+              (consumable_materials) => consumable_materials.map((rowData) => ({
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
                 plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работы (план)'),
                 fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)'),
-                consumption: (
-                  !rowData.consumption
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)')
-                ),
+                consumption: defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)'),
                 norm_value: validateNormConsumableMaterials(rowData.norm_value), 
               })),
             ),

@@ -16,6 +16,7 @@ type Props = {
   disabled: boolean;
 
   formDataKey: FormKeys & 'mission';
+  MISSION_IS_ORDER_SOURCE: boolean;
 };
 
 const FieldStructureMission: React.FC<Props> = React.memo(
@@ -30,7 +31,8 @@ const FieldStructureMission: React.FC<Props> = React.memo(
     const handleChangeWrap = React.useCallback(
       (valueNew, option) => {
         if (valueNew !== structure_id) {
-          handleChange({
+
+          const changeObjDefault = {
             structure_id: valueNew,
             structure_name: get(option, 'label', null),
             car_gov_numbers: [],
@@ -38,12 +40,8 @@ const FieldStructureMission: React.FC<Props> = React.memo(
             car_type_ids: [],
             car_model_names: [],
             car_special_model_names: [],
-            car_type_names: [],
+            car_type_names: [], 
 
-            technical_operation_id: null,
-            technical_operation_name: '',
-            municipal_facility_id: null,
-            municipal_facility_name: '',
             route_id: null,
             route_name: '',
             route_type: null,
@@ -51,6 +49,20 @@ const FieldStructureMission: React.FC<Props> = React.memo(
             object_type_name: '',
 
             consumable_materials: [],
+          };
+
+          const changeObj = props.MISSION_IS_ORDER_SOURCE
+            ? changeObjDefault
+            : {
+              ...changeObjDefault,
+              technical_operation_id: null,
+              technical_operation_name: '',
+              municipal_facility_id: null,
+              municipal_facility_name: '',
+            };
+
+          handleChange({
+            ...changeObj,
           });
         }
       },

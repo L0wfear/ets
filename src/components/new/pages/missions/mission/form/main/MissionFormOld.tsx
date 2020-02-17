@@ -471,6 +471,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                               )
                             }
                             formDataKey={this.props.formDataKey}
+                            MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}
+
                           />
                         </EtsBootstrap.Col>
                       ) : (

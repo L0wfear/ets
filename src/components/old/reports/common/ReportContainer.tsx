@@ -666,6 +666,8 @@ class ReportContainer extends React.Component<
       location: { search },
     } = this.props;
 
+    const reportKey = get(this.props, 'tableProps.reportKey', null);
+
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props
       .headerComponent;
 
@@ -695,7 +697,9 @@ class ReportContainer extends React.Component<
     );
 
     const isSummaryEnable
-      = 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+      =  reportKey === 'fuel_cards_report' // fuel_cards_report - одноуровневый отчет
+        ? this.props.summaryList.length > 0
+        : 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
     const summaryTable
       = (this.props.notUseServerSummerTable && isSummaryEnable ? (

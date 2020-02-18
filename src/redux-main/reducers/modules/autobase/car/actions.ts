@@ -144,10 +144,9 @@ export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): Ets
     ...car
   } = carWrapOld;
 
-  await Promise.all([
-    dispatch(
-      actionUpdateCar(car, meta),
-    ),
+  await dispatch(
+    actionUpdateCar(car, meta),
+  ).then(() => Promise.all([
     dispatch(
       actionUpdateCarDrivers(drivers_data, meta),
     ),
@@ -157,7 +156,9 @@ export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): Ets
     dispatch(
       actionUpdateCarPassport(passport_data, meta),
     ),
-  ]);
+  ])).catch((e) => {
+    throw new Error(e);
+  });
 
   return carWrapOld;
 };

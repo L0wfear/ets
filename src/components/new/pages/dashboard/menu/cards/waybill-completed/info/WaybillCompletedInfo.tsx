@@ -116,7 +116,6 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
         title={infoData.subItemsTitle || 'Информация о ПЛ'}
         handleClose={this.handleClose}>
         {Object.entries(infoDataGroupByDate)
-          .sort()
           .map(([key, arrData]: any) => (
             <div key={key}>
               <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>

@@ -19,7 +19,7 @@ export const config: TypeConfigData<Norm> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

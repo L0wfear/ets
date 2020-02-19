@@ -28,7 +28,7 @@ export const config: TypeConfigData<Employee> = {
         type: buttonsTypes.create,
       },
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

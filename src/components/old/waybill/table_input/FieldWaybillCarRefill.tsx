@@ -264,7 +264,10 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           newArr[rowIndex].type_id = 1;
         }
 
-        console.log('newArr[rowIndex] === ', { newArr, cellValue, cellKey, });
+        if ( cellKeyList.includes('type_id') && cellValue === 2 && newArr[rowIndex]) {
+          newArr[rowIndex].fuel_card_id = null;
+          newArr[rowIndex].number = null;
+        }
 
         props.handleChange(newArr);
       },

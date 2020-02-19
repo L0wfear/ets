@@ -34,7 +34,7 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
     && Array.isArray(fixedLengthCollection)
     && !fixedLengthCollection.includes(value.length)
   ) {
-    return `Длина поля быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
+    return `Длина поля должна быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
   }
 
   if (isString(value) || isNullOrUndefined(value) ) {

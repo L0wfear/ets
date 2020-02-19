@@ -16,6 +16,7 @@ import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time
 import * as moment from 'moment';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { isObject } from 'util';
 
 type Props = {
   id: string;
@@ -255,9 +256,15 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           }
         }
 
-        if ('fuel_card_id' === cellKey && typeof cellValue === 'number' && newArr[rowIndex]) {
+        const cellKeyList = isObject(cellKey)
+          ? Object.keys(cellKey)
+          : [cellKey];
+
+        if ( cellKeyList.includes('fuel_card_id') && typeof cellKey['fuel_card_id'] === 'number' && newArr[rowIndex]) {
           newArr[rowIndex].type_id = 1;
         }
+
+        console.log('newArr[rowIndex] === ', { newArr, cellValue, cellKey, });
 
         props.handleChange(newArr);
       },

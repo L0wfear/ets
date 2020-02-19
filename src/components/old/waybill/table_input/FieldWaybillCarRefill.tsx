@@ -268,6 +268,10 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           newArr[rowIndex].type_id = 1;
         }
 
+        if ('type_id' === cellKey && cellValue === 2 && newArr[rowIndex]) {
+          newArr[rowIndex].fuel_card_id = null;
+        }
+
         props.handleChange(newArr);
       },
       [

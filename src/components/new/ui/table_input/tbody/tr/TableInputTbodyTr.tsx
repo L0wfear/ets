@@ -30,7 +30,6 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
     );
     const handleChange = React.useCallback(
       (key, value) => {
-        console.log('key == ', { key, value, });
         if (isObject(key)) {
           props.onChange(
             props.rowIndex,

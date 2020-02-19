@@ -43,10 +43,6 @@ class MissionRejectForm extends React.Component {
     };
   }
 
-  static carIdFilterOptions(optionPros) {
-    return get(optionPros, 'data.available_to_bind', false);
-  }
-
   makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
     missionCancelReasonsList.map(defaultSelectListMapper),
   );
@@ -356,9 +352,9 @@ class MissionRejectForm extends React.Component {
     const { car_gov_number: mission_car_gov_number } = mission;
 
     return carsList.reduce((accumulator, car) => {
-      const { asuods_id, gov_number } = car;
+      const { asuods_id, gov_number, available_to_bind } = car;
 
-      if (mission_car_gov_number !== gov_number) {
+      if (mission_car_gov_number !== gov_number && available_to_bind) {
         return [
           ...accumulator,
           { ...car, value: asuods_id, label: gov_number },
@@ -470,7 +466,6 @@ class MissionRejectForm extends React.Component {
               label="Переназначить задание на ТС:"
               error={errors.car_id}
               options={this.carIdOptions}
-              filterOption={MissionRejectForm.carIdFilterOptions}
               value={state.car_id}
               onChange={this.handleChangeCarId}
               clearable

@@ -55,6 +55,6 @@ export const getMaxLengthError = (maxLength = 0) => {
 };
 
 export const getFixedLengthCollectionError = (fixedLengthCollection: Array<number>) => {
-  return `Длина поля быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
+  return `Длина поля должна быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
 };
 

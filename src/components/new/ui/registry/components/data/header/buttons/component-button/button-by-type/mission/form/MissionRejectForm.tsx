@@ -84,10 +84,6 @@ class MissionRejectForm extends React.Component<Props, State> {
     carList: [],
   };
 
-  private static carIdFilterOptions(optionPros): boolean {
-    return get(optionPros, 'data.available_to_bind', false);
-  }
-
   private readonly makeOptionFromMissionCancelReasonsList = memoize((missionCancelReasonsList) =>
     missionCancelReasonsList.map(defaultSelectListMapper),
   );
@@ -417,9 +413,9 @@ class MissionRejectForm extends React.Component<Props, State> {
     const { car_gov_number: mission_car_gov_number } = mission;
 
     return carList.reduce((accumulator, car) => {
-      const { asuods_id, gov_number } = car;
+      const { asuods_id, gov_number, available_to_bind } = car;
 
-      if (mission_car_gov_number !== gov_number) {
+      if (mission_car_gov_number !== gov_number && available_to_bind) {
         return [
           ...accumulator,
           { ...car, value: asuods_id, label: gov_number },
@@ -484,7 +480,6 @@ class MissionRejectForm extends React.Component<Props, State> {
               label="Переназначить задание на ТС:"
               error={errors.car_id}
               options={this.carIdOptions}
-              filterOption={MissionRejectForm.carIdFilterOptions}
               value={state.car_id}
               onChange={this.handleChangeCarId}
               id="car_id"

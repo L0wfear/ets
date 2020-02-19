@@ -33,6 +33,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
       type: 'number',
       min: 0,
       required: true,
+      integer: true,
     },
     tire_to_car: {
       title: 'Транспортное средство, на котором установлена шина',

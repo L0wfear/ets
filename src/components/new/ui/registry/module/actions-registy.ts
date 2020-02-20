@@ -231,7 +231,7 @@ export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payl
   }
 };
 
-const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']) => {
+const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']): any => {
   const userServerFilters = get(getRegistryData, 'userServerFilters');
   const processed = list?.processed;
 
@@ -660,6 +660,9 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
   const list = get(registryData, 'list');
   const processed = get(list, 'processed');
   const processedArray = get(processed, 'processedArray') || [];
+  const getRegistryData = get(Service, 'getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const isServerFilterPrint = useFiltredData && userServerFilters;
 
   const getBlobData = (
     get(Service, 'getBlobData')
@@ -682,7 +685,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
       format: 'xls',
     };
 
-    if (useFiltredData) {
+    if (useFiltredData && !userServerFilters) {
       const paylaodAsString = Object.entries(payload).reduce(
         (str, [key, payloadData]) => `${str}&${key}=${payloadData}`,
         '',
@@ -701,11 +704,27 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
       fileName = get(result, 'fileName', '');
     } else {
 
+      const PayloadForLoad = makePayloadForLoad(
+        getRegistryData,
+        list,
+      );
+      const payloadForServerFilterPrint = {
+        sort_by: get(PayloadForLoad, 'sort_by'),
+        filter: get(PayloadForLoad, 'filter'),
+      };
+
+      const getPayload = isServerFilterPrint
+        ? {
+          ...payload,
+          ...payloadForServerFilterPrint,
+        }
+        : payload;
+
       const result = await etsLoadingCounter(
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
-          payload,
+          getPayload,
         ),
         { page: registryKey, path },
       );

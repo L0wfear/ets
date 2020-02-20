@@ -38,7 +38,7 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
         actionChangeGlobalPaylaodInServiceData(props.registryKey, payload, false),
       );
       await dispatch(
-        registyLoadPrintForm(props.registryKey),
+        registyLoadPrintForm(props.registryKey, true),
       );
       setIsOpenModalRemove(false);
     },

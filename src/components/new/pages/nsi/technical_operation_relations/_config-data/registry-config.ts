@@ -61,7 +61,7 @@ export const getToConfig = (
     list: {
       permissions: technicalOperationRelationsPermissions,
       data: {
-        uniqKey: 'car_id',
+        uniqKey: 'asuods_id',
         fixedWidth: true,
         uniqKeyForParams: 'technical_operation_relations_registry_id',
       },

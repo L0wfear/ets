@@ -49,7 +49,7 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
     () => {
       props.setParams({
         technical_operation_relations_type_form: 'change_driver',
-        car_actual_asuods_id: get(props.selectedRow, 'car_id', null),
+        car_actual_asuods_id: get(props.selectedRow, 'asuods_id', null),
       });
     },
     [props.registryKey, props.setParams, props.match.params, props.selectedRow],

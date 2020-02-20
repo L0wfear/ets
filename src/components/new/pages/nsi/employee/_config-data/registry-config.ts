@@ -17,6 +17,9 @@ export const config: TypeConfigData<Employee> = {
       entity: 'employee',
       format: 'employee',
     },
+    getBlobData: {
+      entity: 'employee/export',
+    }
   },
   registryKey,
   header: {

@@ -12,6 +12,9 @@ export const config: TypeConfigData<Norm> = {
       entity: CleaningNormRegistryService._path,
       format: 'normRegistry',
     },
+    getBlobData: {
+      entity:  `${CleaningNormRegistryService._path}/export`,
+    }
   },
   registryKey,
   header: {

@@ -325,6 +325,7 @@ export type Tire = {
   status_text: string;
   status: string;
   sum_track_length: number;
+  sum_track_length_km: number;
   company_structure_name: string;
 };
 export type TireSize = {

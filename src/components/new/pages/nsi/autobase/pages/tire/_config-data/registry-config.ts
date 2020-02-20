@@ -63,7 +63,7 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           step: 1,
         },
         {
-          valueKey: 'sum_track_length',
+          valueKey: 'sum_track_length_km',
           title: 'Общий пробег по ГЛОНАСС, км',
           type: 'advanced-number',
           step: 1,

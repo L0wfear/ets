@@ -25,6 +25,7 @@ export const defaultTire: Tire = {
   status_text: '',
   status: '',
   sum_track_length: null,
+  sum_track_length_km: null,
   company_structure_name: '',
 };
 

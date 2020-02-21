@@ -351,12 +351,12 @@ export const objectDiffer = (obj1, obj2): objectDifferReturn => {
 };
 
 /**
- * Перевод метры в километры с 3мя знаками после запятой
+ * Перевод метры в километры с 2-мя знаками после запятой
  * @param metresVal значение в метрах
  */
 export const metresToKilometeres = (metresVal: number) =>
   isNumber(metresVal)
     ? ( metresVal / 1000 ).toFixed(2)
-    : '0.00';
+    : '';
 
 export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));

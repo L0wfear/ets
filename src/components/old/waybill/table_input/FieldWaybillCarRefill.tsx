@@ -352,6 +352,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
+              car_id={props.car_id}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
 
               handleUpdateFuelCard={handleUpdateFuelCard}

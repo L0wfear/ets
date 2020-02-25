@@ -111,7 +111,10 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const isCarRefilBlock = props.boundKey === 'car_refill';
 
     const isPermittedWaybillRefill = etsUseSelector((state) => getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill));
-    const fuelCardsList = etsUseSelector((state) => getAutobaseState(state).fuelCardsList);
+    const fuelCardsList = etsUseSelector((state) => isCarRefilBlock
+      ? getAutobaseState(state).fuelCardsList
+      : getAutobaseState(state).equipmentFuelCardsList
+    );
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList);
 
     const fuelCardIdOptions = React.useMemo(

@@ -1,12 +1,26 @@
 export type WaybillDraftItemsSubItemsDataType = {
-  waybill_date_create: string;
-  waybill_id: number;
+  number: number;
+
+  id: number;
+  status: string;
+  date_create: string;
+  car_id: number;
+  gov_number: string;
+  garage_number: string;
+  driver_fio: string;
+  driver_phone: string;
+  drivers_license: string;
+  drivers_license_date_end: string;
+  special_license: string;
+  special_license_date_end: string;
+  mission_statuses: Array<string>;
+  missions_completed: Boolean;
+  plan_departure_date: string;
+  has_missions: Boolean;
 };
 
-export type WaybillDraftItemsSubItemsType = {
-  data: WaybillDraftItemsSubItemsDataType;
-  title: string;
-};
+export type WaybillDraftItemsSubItemsType = ({
+}) & WaybillDraftItemsSubItemsDataType;
 
 export type WaybillDraftItemsType = {
   subItems: Array<WaybillDraftItemsSubItemsType>;

@@ -1,16 +1,26 @@
 export type WaybillInProgressItemsSubItemsDataType = {
-  car_garage_number: string | void;
-  car_gov_number: string;
-  create_date: string;
+  number: number;
+
+  id: number;
+  status: string;
+  date_create: string;
+  car_id: number;
+  gov_number: string;
+  garage_number: string;
   driver_fio: string;
-  driver_phone: string | void;
-  waybill_id: number;
-  waybill_number: number;
+  driver_phone: string;
+  drivers_license: string;
+  drivers_license_date_end: string;
+  special_license: string;
+  special_license_date_end: string;
+  mission_statuses: Array<string>;
+  missions_completed: Boolean;
+  plan_departure_date: string;
+  has_missions: Boolean;
 };
 
-export type WaybillInProgressItemsSubItemsType = {
-  data: WaybillInProgressItemsSubItemsDataType;
-};
+export type WaybillInProgressItemsSubItemsType = ({})
+  & WaybillInProgressItemsSubItemsDataType;
 
 export type WaybillInProgressItemsType = {
   subItems: Array<WaybillInProgressItemsSubItemsType>;

@@ -1,78 +1,35 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
-import List from 'components/new/pages/dashboard/menu/cards/waybill-completed/list/List';
 import {
   dashboardLoadWaybillCompleted,
   dashboardSetInfoDataInWaybillCompleted,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import WaybillCompletedInfo from 'components/new/pages/dashboard/menu/cards/waybill-completed/info/WaybillCompletedInfo';
-import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 
-import {
-  PropsWaybillCompleted,
-  StateWaybillCompleted,
-} from 'components/new/pages/dashboard/menu/cards/waybill-completed/WaybillCompleted.h';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import withDefaultWaybill from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/withDefaultWaybill';
+import ListNumber from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/list/ListNumber';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
-import { compose } from 'recompose';
-import { getDashboardState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
-
-class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
-  handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
-    const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
-
-    this.props.setInfoData(
-      this.props.items[index],
-    );
-  };
-
-  render() {
-    const { items } = this.props;
-    const counttoFirstShow = 2;
-
-    const firstTwoItem = items.slice(0, counttoFirstShow);
-    const collapsetItems = items.slice(counttoFirstShow);
-
+type Props = WithRequirePermissionAddProps;
+const WaybillClosed: React.FC<Props> = React.memo(
+  () => {
     return (
-      <div>
-        <List items={firstTwoItem} handleClick={this.handleClick} addIndex={0} classNameContainer="line_data" />
-        {
-          collapsetItems.length
-            ? (
-              <CollapseButton>
-                <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
-              </CollapseButton>
-            )
-            :          (
-              <DivNone />
-            )
-        }
+      <div className="waybill_completed">
       </div>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsWaybillCompleted, PropsToDefaultCard>(
-  withDefaultCard({
-    path: 'waybill_completed',
-    loadData: dashboardLoadWaybillCompleted,
-    InfoComponent: WaybillCompletedInfo,
-  }),
-  connect<any, any, any, ReduxState>(
-    (state) => ({
-      items: getDashboardState(state).waybill_completed.data.items,
-    }),
-    (dispatch) => ({
-      setInfoData: (infoData) => (
-        dispatch(
-          dashboardSetInfoDataInWaybillCompleted(infoData),
-        )
-      ),
-    }),
+export default withDefaultWaybill<PropsToDefaultCard>({
+  path: 'waybill_completed',
+  loadData: dashboardLoadWaybillCompleted,
+  InfoComponent: WaybillCompletedInfo,
+  setInfoData: dashboardSetInfoDataInWaybillCompleted,
+  ListComponent: ListNumber,
+  setInfoDataPropsMake: (items, path: string) => (
+    items[
+      path.split('/').slice(-1)[0]
+    ]
   ),
-)(WaybillCompleted);
+})(WaybillClosed);

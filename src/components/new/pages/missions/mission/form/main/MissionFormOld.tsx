@@ -285,6 +285,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     this.setState({
       assign_to_waybill: [...value],
     });
+    this.props.handleChange({ assign_to_waybill: value[0], });
   };
 
   hideColumnAssignment = () => {

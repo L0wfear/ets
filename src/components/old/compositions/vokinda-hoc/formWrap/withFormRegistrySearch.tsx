@@ -180,7 +180,10 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
                     if (elementPick || config.no_find_in_arr) {
                       if (isPermittedToSee) {
                         if (elementPick) {
-                          setElement(elementPick);
+                          setElement({
+                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                            ...elementPick,
+                          });
                         } else {
                           setElement({
                             [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,

@@ -8,7 +8,7 @@ export type TechnicalOperationRelationsRoute = {
 };
 
 export type TechnicalOperationRelations = {
-  asuods_id: number;
+  car_id: number;
   employees: string;
   gov_number: string;
   route_names: string;

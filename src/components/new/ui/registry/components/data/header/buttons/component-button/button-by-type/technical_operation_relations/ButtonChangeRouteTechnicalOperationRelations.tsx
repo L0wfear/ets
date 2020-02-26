@@ -49,7 +49,7 @@ const ButtonChangeRouteTechnicalOperationRelations: React.FC<ButtonChangeRouteTe
     () => {
       props.setParams({
         technical_operation_relations_type_form: 'change_route',
-        car_actual_asuods_id: get(props.selectedRow, 'asuod_id', null),
+        car_actual_asuods_id: get(props.selectedRow, 'car_id', null),
       });
     },
     [props.registryKey, props.setParams, props.match.params, props.selectedRow],

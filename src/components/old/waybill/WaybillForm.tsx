@@ -2368,12 +2368,9 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Возвращение в гараж, м/ч"
                               error={errors.motohours_equip_end}
                               value={state.motohours_equip_end}
-                              hidden={
-                                !(IS_ACTIVE || IS_CLOSED)
-                                || (!isPermittedByKey.update
-                                  && !isPermittedByKey.departure_and_arrival_values)
-                              }
-                              disabled={IS_DELETE || IS_CLOSED && !this.state.canEditIfClose}
+                              hidden={ !(IS_ACTIVE || IS_CLOSED) }
+                              disabled={(IS_DELETE || IS_CLOSED && !this.state.canEditIfClose)
+                                || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_end"
                             />

@@ -2,7 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/company/_config-data/permissions';
 import { Company } from 'redux-main/reducers/modules/company/@types';
-import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'Company';
 
@@ -37,7 +37,7 @@ export const config: TypeConfigData<Company> = {
         valueKey: 'has_remote_checkup',
         type: 'multiselect',
         title: 'Наличие дистанционного мед. осмотра',
-        options: YES_NO_SELECT_OPTIONS_INT,
+        options: YES_NO_SELECT_OPTIONS_BOOL,
       },
     ],
   },

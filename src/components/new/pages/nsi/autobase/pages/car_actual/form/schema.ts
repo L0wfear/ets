@@ -25,14 +25,13 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
     // ___GIBDD___
     seria_number: {
       validateIf: {
-        type: 'equal_to_value',
+        type: 'fixed_length',
         path: 'passport_data.type',
         value: 'GIBDD',
       },
       title: 'Серия и номер паспорта',
       type: 'string',
-      minLength: 10,
-      maxLength: 10,
+      fixedLengthCollection: [10, 15],
     },
     vin: {
       validateIf: {

@@ -7,7 +7,6 @@ import {
   config,
 } from 'components/new/pages/administration/services/_config-data/registry-config';
 
-import ServicesFormLazy from 'components/new/pages/administration/services/form';
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 
@@ -17,9 +16,7 @@ type Props = OwnProps;
 const ServicesList: React.FC<Props> = React.memo(
   () => {
     return (
-      <Registry registryKey={registryKey}>
-        <ServicesFormLazy registryKey={registryKey} />
-      </Registry>
+      <Registry registryKey={registryKey}/>
     );
   },
 );

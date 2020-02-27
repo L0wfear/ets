@@ -23,9 +23,6 @@ const widthByKey: Record<string, { width: number; sortable?: boolean; }> = {
   service_files: {
     width: 400,
   },
-  button_show_action_log: {
-    width: 175,
-  },
   buttonCloneTire: {
     width: 200,
   },

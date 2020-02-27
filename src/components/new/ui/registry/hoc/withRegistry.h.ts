@@ -118,11 +118,6 @@ export type TypeFields<F extends any> = {
   sortable?: boolean;
   width: number;
 } | {
-  key: 'button_show_action_log';
-  title: string;
-  sortable?: boolean;
-  width: number;
-} | {
   key: 'buttonCloneTire';
   title: string;
 } | {

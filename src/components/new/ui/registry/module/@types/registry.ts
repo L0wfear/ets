@@ -40,7 +40,6 @@ export type TypeFieldsAvalibaleKey<F> = (
   | 'company_structure_actions'
   | 'services_actions_on_off'
   | 'service_files'
-  | 'button_show_action_log'
   | 'buttonCloneTire'
   | 'edc_request_info'
   | 'show_file_list'

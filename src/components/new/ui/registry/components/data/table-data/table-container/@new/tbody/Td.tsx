@@ -12,7 +12,6 @@ import ShowMissionInfoTdTitle from 'components/new/ui/registry/components/data/t
 import CompanyStructureActionsTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CompanyStructureActionsTdTitle';
 import ServicesActionsOnOffTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ServicesActionsOnOffTdTitle';
 import ServiceFilesTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ServiceFilesTdTitle';
-import ButtonShowActionLogTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ButtonShowActionLogTdTitle';
 import EdcRequestInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/EdcRequestInfoTdTitle';
 import DefaultTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/DefaultTdTitle';
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
@@ -32,7 +31,6 @@ const componentsByKey: Record<TypeFieldsAvalibaleKey<void>, React.ComponentType<
   company_structure_actions: CompanyStructureActionsTdTitle,
   services_actions_on_off: ServicesActionsOnOffTdTitle,
   service_files: ServiceFilesTdTitle,
-  button_show_action_log: ButtonShowActionLogTdTitle,
   edc_request_info: EdcRequestInfoTdTitle,
 };
 

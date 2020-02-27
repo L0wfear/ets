@@ -38,23 +38,13 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
       fields: [
         {
           valueKey: 'company_name',
-          title: [
-            {
-              title: 'Учреждение',
-              displayIf: displayIfContant.isOkrug,
-            },
-          ],
+          title: 'Организация',
           type: 'multiselect',
         },
         {
-          valueKey: 'timestamp',
+          valueKey: 'action_at',
           title: 'Дата действия',
           type: 'advanced-date',
-        },
-        {
-          valueKey: 'user_login',
-          title: 'Логин пользователя',
-          type: 'multiselect',
         },
         {
           valueKey: 'remote_ip',
@@ -62,10 +52,14 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           type: 'multiselect',
         },
         {
-          valueKey: 'entity_number',
-          title: 'Номер документа',
-          type: 'advanced-number',
-          step: 1,
+          valueKey: 'user_login',
+          title: 'Логин пользователя',
+          type: 'multiselect',
+        },
+        {
+          title: 'ФИО',
+          valueKey: 'fio',
+          type: 'multiselect',
         },
         {
           valueKey: 'action_name',
@@ -73,9 +67,20 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           type: 'multiselect',
         },
         {
-          title: 'ФИО',
-          valueKey: 'fio',
+          valueKey: 'content_type_name',
+          title: 'Объект системы',
           type: 'multiselect',
+        },
+        {
+          valueKey: 'entity_id',
+          title: 'ID записи',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'repr',
+          title: 'Номер/Наименование',
+          type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'structure_id',
@@ -100,35 +105,44 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
             key: 'company_name',
             title: [
               {
-                title: 'Учреждение',
+                title: 'Организация',
                 displayIf: displayIfContant.isOkrug,
               },
             ],
           },
           {
-            key: 'timestamp',
+            key: 'action_at',
             title: 'Дата действия',
             format: 'datetime',
-          },
-          {
-            key: 'user_login',
-            title: 'Логин пользователя',
           },
           {
             key: 'remote_ip',
             title: 'IP адрес',
           },
           {
-            key: 'entity_number',
-            title: 'Номер документа',
+            key: 'user_login',
+            title: 'Логин пользователя',
+          },
+          {
+            key: 'fio',
+            title: 'ФИО',
           },
           {
             key: 'action_name',
             title: 'Действие',
           },
           {
-            key: 'fio',
-            title: 'ФИО',
+            key: 'content_type_name',
+            title: 'Объект системы',
+          },
+          {
+            key: 'entity_id',
+            title: 'ID записи',
+          },
+          {
+            key: 'repr',
+            title: 'Номер/Наименование',
+            dashIfEmpty: true,
           },
           {
             key: 'structure_name',
@@ -138,7 +152,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
       },
       processed: {
         sort: {
-          field: 'timestamp',
+          field: 'action_at',
           reverse: true,
         },
       },

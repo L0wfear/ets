@@ -7,7 +7,7 @@ import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const NotInMapItemStyled = styled.div`
-  position: relative;
+	position: relative;
 `;
 
 type Props = {};

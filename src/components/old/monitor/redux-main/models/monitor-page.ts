@@ -35,12 +35,15 @@ export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUE
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
   carActualGpsCount: number;
+  carActualList: Array<Car>;
+  carActualNotInMap: Array<Car>;
   carInfo: IStateCarInfo;
   carsByStatus: {
     in_move: number;
     stop: number;
     parking: number;
     not_in_touch: number;
+    not_in_map: number; // считается на фронте
   };
   SHOW_GOV_NUMBER: boolean;
   status: {
@@ -92,6 +95,8 @@ export type IStateMonitorPage = {
 export const initialMonitorState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
   carActualGpsCount: 0,
+  carActualList: [],
+  carActualNotInMap: [],
   carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
   status: {
@@ -109,6 +114,7 @@ export const initialMonitorState: IStateMonitorPage = {
     stop: 0,
     parking: 0,
     not_in_touch: 0,
+    not_in_map: 0,
   },
   geoobjects: {
     ...Object.entries(GEOOBJECTS_OBJ).reduce((newObj, [key, { serverName }]) => ({
@@ -160,6 +166,7 @@ export default (state = initialMonitorState, { type, payload }) => {
         ...state,
         carActualGpsNumberIndex: payload.carActualGpsNumberIndex,
         carActualGpsCount: payload.carActualGpsCount,
+        carActualList: payload.carActualList,
       };
     }
     case MONITOR_PAGE_SET_COMPANY: {
@@ -187,6 +194,7 @@ export default (state = initialMonitorState, { type, payload }) => {
       return {
         ...state,
         carsByStatus: payload.carsByStatus,
+        carActualNotInMap: payload.carActualNotInMap,
       };
     }
     case MONITOR_PAGE_TOGGLE_STATUS_SHOW: {

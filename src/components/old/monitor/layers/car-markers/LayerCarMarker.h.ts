@@ -1,5 +1,6 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { IStateMonitorPage } from '../../redux-main/models/monitor-page';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type PropsLayerCarMarker = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -17,7 +18,9 @@ export type PropsLayerCarMarker = {
   STATUS_TC_FOLLOW_ON_CAR: boolean;
 
   carActualGpsNumberIndex: any;
+  carActualList: Array<Car>;
   carActualGpsCount: number;
+  carActualNotInMap: Array<Car>;
   lastPoint: any;
   odh_mkad: Array<any>;
   statusShow: Record<'in_move' | 'stop' | 'parking' | 'not_in_touch', boolean>;

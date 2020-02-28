@@ -345,7 +345,8 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         ...newCarPointsDataWs,
       };
 
-      this.props.monitorPageChangeCarsByStatus(calcCountTsByStatus(newObj, this.props.carActualGpsCount));
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(newObj, this.props.carActualGpsCount, this.props.carActualList);
+      this.props.monitorPageChangeCarsByStatus(countTsByStatusVal, carActualNotInMap);
 
       return {
         carPointsDataWs: newObj,
@@ -412,6 +413,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         odh_mkad,
         filters,
         carActualGpsCount,
+        carActualList,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
@@ -607,8 +609,11 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         },
       );
 
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(carPointsDataWs, carActualGpsCount, carActualList);
+
       this.props.monitorPageChangeCarsByStatus(
-        calcCountTsByStatus(carPointsDataWs, carActualGpsCount),
+        countTsByStatusVal,
+        carActualNotInMap,
       );
 
       if (hasDiffInFiltredCarGpsCode) {
@@ -639,6 +644,7 @@ const mapStateToProps = (state: ReduxState) => ({
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   carActualGpsCount: state.monitorPage.carActualGpsCount,
+  carActualList: state.monitorPage.carActualList,
   STATUS_SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,
   lastPoint:
     state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
@@ -660,8 +666,8 @@ const mapDispatchToProps = (dispatch) => ({
   carInfoPushPointIntoTrack(point, odh_mkad) {
     dispatch(carInfoPushPointIntoTrack(point, odh_mkad));
   },
-  monitorPageChangeCarsByStatus: (carsByStatus) =>
-    dispatch(monitorPageChangeCarsByStatus(carsByStatus)),
+  monitorPageChangeCarsByStatus: (carsByStatus, carActualNotInMap) =>
+    dispatch(monitorPageChangeCarsByStatus(carsByStatus, carActualNotInMap)),
   monitorPageResetCarStatus: () => dispatch(monitorPageResetCarStatus()),
   monitorPageMergeFiltredCarGpsCode: (filtredCarGpsCode) => {
     dispatch(monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode));

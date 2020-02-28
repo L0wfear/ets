@@ -36,11 +36,13 @@ export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Comp
 export const monitorPageSetcarActualGpsNumberIndex = (
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>,
   carActualGpsCount: number,
+  carActualList: Array<Car>,
 ) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   payload: {
     carActualGpsNumberIndex,
     carActualGpsCount,
+    carActualList,
   },
 });
 
@@ -55,7 +57,7 @@ export const actionMonitorPageLoadCarActual = (): EtsAction<EtsActionReturnType<
   return result;
 };
 
-export const monitorPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => (dispatch, getState) => {
+export const monitorPageChangeCarsByStatus = (carsByStatus, carActualNotInMap: Array<Car>): EtsAction<void> => (dispatch, getState) => {
   const carsByStatusOld = getMonitorPageState(getState()).carsByStatus;
 
   const hasDiff = Object.entries(carsByStatusOld).some(
@@ -67,6 +69,7 @@ export const monitorPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => 
       type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
       payload: {
         carsByStatus,
+        carActualNotInMap,
       },
     });
   }

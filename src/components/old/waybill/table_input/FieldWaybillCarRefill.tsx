@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
+import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 type Props = {
   id: string;
@@ -116,6 +117,11 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       : getAutobaseState(state).equipmentFuelCardsList
     );
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList);
+    const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
+
+    React.useEffect(() => {
+      getLastClosedWaybill();
+    }, []);
 
     const fuelCardIdOptions = React.useMemo(
       () => {
@@ -236,10 +242,25 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ],
     );
 
+    const getLastClosedWaybill = React.useCallback(
+      async () => {
+        return await dispatch(actionGetLastClosedWaybill({
+          car_id: props.car_id
+        }, {
+          page: props.page,
+          path: props.path,
+        })).then((res) => {
+          setLastClosedWaybill(res);
+        });
+      }, [props.car_id]);
+
     const handleChange = React.useCallback(
-      (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
+      async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
         let newArr = array;
         const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
+
+        const lastWaybillRefillList = lastClosedWaybill && lastClosedWaybill[props.boundKey];
+        const lastWaybillRefill = lastWaybillRefillList && lastWaybillRefillList.length && lastWaybillRefillList[lastWaybillRefillList.length - 1];
 
         // автозаполнение топливной картой, если она требуется
         if (typeIdOptions.length && filteredFuelCardIdOptions.length === 1) {
@@ -270,6 +291,32 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         if ( cellKeyList.includes('type_id') && cellValue === 2 && newArr[rowIndex]) {
           newArr[rowIndex].fuel_card_id = null;
           newArr[rowIndex].number = null;
+        }
+
+        // при добавлении первой записи в заправки, подтяшиваем заправки из посл. закрытого ПЛ
+        if (
+          cellKeyList.includes('type_id')
+          && cellValue === 1
+          && newArr[rowIndex]
+          && lastWaybillRefill
+          && rowIndex === 0
+          && fuelCardIdOptions.some(({ rowData }) => rowData.id === lastWaybillRefill.fuel_card_id)
+        ) {
+          newArr[rowIndex].fuel_card_id = lastWaybillRefill.fuel_card_id;
+          newArr[rowIndex].type_id = 1;
+          newArr[rowIndex].number = lastWaybillRefill.number;
+        }
+
+        // во вторую и последующие строки подтягиваем топливную карту, указанную в первой строке текущего ПЛ
+        if (
+          cellKeyList.includes('type_id')
+          && cellValue === 1
+          && newArr[rowIndex]
+          && newArr.length > 1
+        ) {
+          newArr[rowIndex].fuel_card_id = newArr[0].fuel_card_id;
+          newArr[rowIndex].type_id = 1;
+          newArr[rowIndex].number = newArr[0].number;
         }
 
         props.handleChange(newArr);

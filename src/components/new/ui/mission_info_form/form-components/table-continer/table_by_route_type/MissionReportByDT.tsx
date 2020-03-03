@@ -103,16 +103,11 @@ const MissionReportByDTTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   const renderers = {
-    traveled_percentage: (data) => (
-      <div>
-        {`${checkFixed(
-          [data.rowData.traveled, data.rowData.route_check_unit],
-          'TEN_I',
-        ).join(' ')}`}
-        <br />
-        {`(${`${(data * 100).toFixed(0)}%`})`}
-      </div>
-    ),
+    traveled_percentage: (data) => (<div>
+      {`${checkFixed([data.rowData.traveled, data.rowData.route_check_unit], 'TEN_I').join(' ')}`}
+      <br />
+      {`(${`${(data.data * 100).toFixed(0)}%`})`}
+    </div>),
     left_percentage: (data) => (
       <div>
         {`${checkFixed(

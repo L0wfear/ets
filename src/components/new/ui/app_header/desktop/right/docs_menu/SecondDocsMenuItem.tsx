@@ -17,11 +17,11 @@ class SecondDocsMenuItem extends React.Component<any, any> {
     this.setState({
       showChildren: !this.state.showChildren,
     });
-  }
+  };
 
   handleMiddlewareClick = () => {
     this.props.hiddenChildren();
-  }
+  };
 
   getItem = () => {
     const {
@@ -57,7 +57,7 @@ class SecondDocsMenuItem extends React.Component<any, any> {
         </DefaultSecondLvlMenu>
       </LinkSecontLvl>
     );
-  }
+  };
 
   renderChildrenItem = ([keyName, data]) => {
     return (
@@ -69,13 +69,13 @@ class SecondDocsMenuItem extends React.Component<any, any> {
         position="bottom_left"
       />
     );
-  }
+  };
 
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState({ showChildren: false });
     }
-  }
+  };
 
   render() {
     const { data } = this.props;
@@ -86,16 +86,16 @@ class SecondDocsMenuItem extends React.Component<any, any> {
           { this.getItem() }
           {
             this.state.showChildren
-            ? (
-              <SecondMenuContainer position={this.props.position}>
-                {
-                  Object.entries(data.children).map(this.renderChildrenItem)
-                }
-              </SecondMenuContainer>
-            )
-            : (
-              <DivNone />
-            )
+              ? (
+                <SecondMenuContainer position={this.props.position}>
+                  {
+                    Object.entries(data.children).map(this.renderChildrenItem)
+                  }
+                </SecondMenuContainer>
+              )
+              : (
+                <DivNone />
+              )
           }
         </SecondMenuItemContainer>
       </ClickOutHandler>

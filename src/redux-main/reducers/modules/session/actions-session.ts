@@ -20,6 +20,8 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { actionLoadAppConfig, actionLoadAppConfigTracksCaching } from './action_get_config';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 export const sessionCahngeCompanyOnAnother: any = (
   company_id,
@@ -65,7 +67,7 @@ export const sessionCahngeCompanyOnAnother: any = (
   };
 };
 
-export const sessionLogin = (user: { login: string; password: string }, meta: LoadingMeta) => async (dispatch) => {
+export const sessionLogin = (user: { login: string; password: string; }, meta: LoadingMeta) => async (dispatch) => {
   const { payload: userDataRaw, token } = await etsLoadingCounter(
     dispatch,
     AuthService.post(user, false, 'json'),
@@ -92,11 +94,7 @@ export const sessionLogin = (user: { login: string; password: string }, meta: Lo
   return userData;
 };
 
-export const sessionSetData: any = (
-  userData,
-  session,
-  sessionEtsTest,
-) => async (dispatch) => {
+export const sessionSetData = (userData: InitialStateSession['userData'], session: InitialStateSession['token'], sessionEtsTest: InitialStateSession['token']): EtsAction<Promise<void>> => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
 
   if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
@@ -121,13 +119,15 @@ export const sessionSetData: any = (
 
   setUserContext(userData);
 
-  return dispatch({
+  dispatch({
     type: SESSION_SET_DATA,
     payload: {
       token: session,
       userData: new User(userData),
     },
   });
+
+  return;
 };
 
 export const checkToken: any = () => async (dispatch, getState) => {
@@ -194,7 +194,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
   return null;
 };
 
-export const sessionResetData: any = () => (dispatch) => {
+export const sessionResetData = (): EtsAction<any> => (dispatch) => {
   // localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
   // localStorage.removeItem(global.SESSION_KEY);
   // localStorage.removeItem(global.API__KEY);

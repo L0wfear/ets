@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { TableMeta } from '../../../TableInput';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { get } from 'lodash';
 import { isArray } from 'util';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
 export type TableInputTbodyTrTdProps = {
-  meta: TableMeta<any>[];
+  meta: Array<TableMeta<any>>;
   metaData: TableMeta<any>;
   value: any;
   error: string;
@@ -22,21 +22,23 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     } = props;
 
     const handleChange = React.useCallback(
-      (valueRaw) => {
+      (valueRaw, option?) => {
         let value = get(valueRaw, 'target.value', valueRaw);
-        switch (metaData.format) {
-          case 'number': {
-            value = value ? Number(value) : null;
-            break;
-          }
+
+        if( metaData.format === 'number' || metaData.format === 'toFixed3' ) {
+          value = value ? Number(value) : null;
         }
 
-        props.onChange(
-          metaData.key,
-          value,
-        );
+        if (metaData.onChange) {
+          metaData.onChange(props.onChange)(valueRaw, option);
+        } else {
+          props.onChange(
+            metaData.key,
+            value,
+          );
+        }
       },
-      [metaData.key, metaData.format, props.onChange],
+      [metaData.onChange, metaData.key, metaData.format, props.onChange],
     );
 
     React.useEffect(
@@ -84,20 +86,23 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     );
 
     return (
-      <EtsTbodyTrTd>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
-          metaData.format === 'number'
-            && (
-              <ExtField
-                type="number"
-                id={props.metaData.key}
-                label={false}
-                value={props.value}
-                error={props.error}
-                onChange={handleChange}
-                disabled={disabled || metaData.disabled || props.disabled}
-              />
-            )
+          (metaData.format === 'number'
+            || metaData.format === 'toFixed3'
+            || metaData.format === 'toFixed2')
+              && (
+                <ExtField
+                  type="number"
+                  id={props.metaData.key}
+                  label={false}
+                  value={props.value}
+                  error={props.error}
+                  onChange={handleChange}
+                  disabled={disabled || metaData.disabled || props.disabled}
+                  format={metaData?.format}
+                />
+              )
         }
         {
           metaData.format === 'select'
@@ -112,11 +117,25 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 onChange={handleChange}
                 placeholder={metaData.placeholder}
                 disabled={disabled || metaData.disabled || props.disabled}
-                clearable={metaData.options.length !== 1}
               />
             )
         }
-      </EtsTbodyTrTd>
+        {
+          metaData.format === 'date'
+            && (
+              <ExtField
+                type="date"
+                time={metaData.time}
+                id={props.metaData.key}
+                label={false}
+                value={props.value}
+                error={props.error}
+                onChange={handleChange}
+                disabled={disabled || metaData.disabled || props.disabled}
+              />
+            )
+        }
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },
 );

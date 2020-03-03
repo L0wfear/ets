@@ -17,9 +17,9 @@ export default {
   routePath,
   hiddenNav: true,
   title: 'Тех. обслуживание',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_tech_maintenance',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -1,12 +1,15 @@
 import permissions from 'components/new/pages/dashboard/config-data/permissions';
 import component from 'components/new/pages/dashboard/config-data/components';
+import { ConfigPageData } from 'components/@next/@types/config_data';
 
-export default {
+const dashboard_page_config: ConfigPageData = {
   path: '/dashboard',
   title: 'Рабочий стол',
   entyity: 'dashboard',
-  noDotList: true,
-  checkHidden: (isShow, props) => isShow && !props.isOkrug,
+
+  checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
   component,
   permissions,
 };
+
+export default dashboard_page_config;

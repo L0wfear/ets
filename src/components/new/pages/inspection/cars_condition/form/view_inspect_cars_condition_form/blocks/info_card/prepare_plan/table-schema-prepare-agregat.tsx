@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 import {
@@ -9,7 +9,7 @@ import {
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
+import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const seasonOptions = [
   { value: 'Лето', label: 'Лето' },
@@ -23,7 +23,7 @@ export const validationSchema: IValidationSchema = {
       key: 'type',
       title: 'Тип прицепа, навесного уборочного агрегата',
       type: 'string',
-      required: false,
+      required: true,
       maxLength: 128,
     },
     {
@@ -31,20 +31,20 @@ export const validationSchema: IValidationSchema = {
       title: 'Всего подлежит подготовке',
       type: 'number',
       integer: true,
-      required: false,
+      required: true,
     },
     {
       key: 'season',
       title: 'Сезон',
       type: 'string',
-      required: false,
+      required: true,
     },
     {
       key: 'ready_cnt',
       title: 'Готово к сезону',
       type: 'number',
       integer: true,
-      required: false,
+      required: true,
     },
     {
       key: 'not_ready_cnt',
@@ -73,7 +73,6 @@ export const meta: IDataTableSchema = {
       name: 'season',
       displayName: 'Сезон',
       type: 'select',
-      cssClassName: 'width300',
     },
     {
       name: 'ready_cnt',
@@ -88,9 +87,9 @@ export const meta: IDataTableSchema = {
   ],
 };
 
-interface IPropsSelectRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: IBatteryAvailableCar[];
-}
+type IPropsSelectRenderer = {
+  vehicleList: Array<BatteryAvailableCar>;
+} & IPropsDataTableInputRenderer;
 
 const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
   value,
@@ -120,14 +119,8 @@ const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
     (elem) => elem.key === fieldKey,
   );
   const inputType = get(propertiesElem, 'type', 'string');
-  const elemIsInteger = get(propertiesElem, 'integer', false);
-  const newVal = (inputType === 'number' && elemIsInteger && value) // <<< в state всё равно записывается строка, замена на число в handleChangeTypesHarvestingUnit
-  ? parseInt(value, 10)
-  : (inputType === 'number' && !elemIsInteger)
-    ? parseFloat(value)
-    : value;
 
-  return (<ExtField id={fieldKey} type={inputType} label={false} value={newVal} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
 };
 // "type": "ПУ", // Тип прицепа, навесного уборочного агрегата'
 // "will_checked_cnt": 10, // Всего подлежит подготовке

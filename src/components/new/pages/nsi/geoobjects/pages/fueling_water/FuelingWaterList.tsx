@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import Registry from 'components/new/ui/registry/components/Registry';
 import FuelingWaterFormWrap from 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterForm/FuelingWaterFormWrap';
@@ -7,27 +8,20 @@ import {
   registryKey,
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data/registry-config';
+import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 
-import {
-  PropsFuelingWaterList,
-  StateFuelingWaterList,
-} from 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterList.h';
+type OwnProps = {};
 
-class FuelingWaterList extends React.Component<PropsFuelingWaterList, StateFuelingWaterList> {
-  render() {
+const FuelingWaterList: React.FC<OwnProps> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <FuelingWaterFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <Registry registryKey={registryKey}>
+        <FuelingWaterFormWrap registryKey={registryKey} />
+      </Registry>
     );
-  }
-}
+  },
+);
 
-export default withRegistry<any>(
+export default withRegistry<FuelingWater, OwnProps>(
   config,
 )(FuelingWaterList);

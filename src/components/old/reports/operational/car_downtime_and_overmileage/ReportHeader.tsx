@@ -10,13 +10,13 @@ import {
 import { getToday9am, getTomorrow9am, createValidDate } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import Div from 'components/old/ui/Div';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   start_date: string;
   end_date: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
@@ -29,7 +29,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       start_date: createValidDate(start_date),
       end_date: createValidDate(end_date),
     });
-  }
+  };
   render() {
     const {
       readOnly,
@@ -42,7 +42,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <EtsBootstrap.Col md={12}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col mdOffset={3} md={6}>
-              <Div><label htmlFor=" ">Период формирования</label></Div>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>

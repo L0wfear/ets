@@ -6,7 +6,7 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export type StateFieldMunicipalFacilityIdDutyMission = {
-  MUNICIPAL_FACILITY_OPTIONS: DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>[];
+  MUNICIPAL_FACILITY_OPTIONS: Array<DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>>;
 };
 
 export type StatePropsFieldMunicipalFacilityIdDutyMission = {

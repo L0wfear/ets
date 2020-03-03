@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionCarsConditionStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
@@ -92,7 +92,7 @@ const SelectCarsConditionChecksPeriod: React.FC<SelectCarsConditionChecksPeriodP
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   const notSelect = (
@@ -101,24 +101,24 @@ const SelectCarsConditionChecksPeriod: React.FC<SelectCarsConditionChecksPeriodP
 
   return (
     <InstectionBlockSelect disabled={notSelect}>
-      <SelectLabel md={2} sm={2}>
-          <h5>
+      <SelectLabel md={3} sm={2}>
+        <h5>
             Период проверки
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            placeholder={notSelect ? '' : undefined}
-            label={false}
-            value={checksPeriod}
-            options={checksPeriodOptions}
-            onChange={setChecksPeriodId}
-            clearable={false}
-            disabled={notSelect || status !== INSPECT_STATUS.noToday}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          placeholder={notSelect ? '' : undefined}
+          label={false}
+          value={checksPeriod}
+          options={checksPeriodOptions}
+          onChange={setChecksPeriodId}
+          clearable={false}
+          disabled={notSelect || status !== INSPECT_STATUS.noToday}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

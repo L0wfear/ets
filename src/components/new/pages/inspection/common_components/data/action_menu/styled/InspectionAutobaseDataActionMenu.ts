@@ -22,7 +22,6 @@ export const LineDataButtonLine = styled(LineData)`
 `;
 
 export const StatusLabel = styled.b`
-  text-decoration: underline;
   text-decoration-skip-ink: none;
   padding: 0 15px;
 `;
@@ -34,5 +33,5 @@ export const BigPaddingButton = styled(EtsBootstrap.Button)`
 `;
 
 export const InspectInfo = styled.div`
-  padding: 0 40px;
+  padding: 0;
 `;

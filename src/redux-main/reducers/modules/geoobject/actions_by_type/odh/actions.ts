@@ -1,109 +1,29 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
+import { geoobjectSetNewDataNew } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import {
-  promiseGetOdh,
-  promiseLoadPFOdh,
-  promiseCreateOdh,
   promiseUpdateOdh,
-  promiseRemoveOdh,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/promise';
+import { defaultAction, defaultActions } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { makeShape } from 'redux-main/reducers/modules/geoobject/promises';
 
-export const actionSetOdh = (odhList: Odh[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      odhList,
-    }),
-  )
-);
-export const geoobjectResetSetOdh = () => (dispatch) => (
-  dispatch(
-    actionSetOdh([]),
-  )
-);
-export const actionGetBlobOdh: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFOdh(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetOdh: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetOdh(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreOdh = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetOdh(payload, { page, path }),
+const actionUpdateOdh = (payload: Parameters<typeof promiseUpdateOdh>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateOdh>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateOdh(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetOdh(data),
-  );
-
-  return {
-    odhList: data,
-  };
 };
-export const actionCreateOdh: any = (odhOld: Odh, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateOdh(odhOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionUpdateOdh: any = (odhOld: Odh, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateOdh(odhOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionRemoveOdh = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveOdh(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+const actionsOdh_default = defaultActions<Odh>(
+  'geozones/odh',
+  geoobjectSetNewDataNew('odhList'),
+  makeShape,
 );
 
-export default {
-  actionSetOdh,
-  geoobjectResetSetOdh,
-  actionGetGetOdh,
-  actionGetBlobOdh,
-  actionGetAndSetInStoreOdh,
-  actionCreateOdh,
-  actionUpdateOdh,
-  actionRemoveOdh,
+export const actionsOdh = {
+  ...actionsOdh_default,
+  put: actionUpdateOdh,
 };

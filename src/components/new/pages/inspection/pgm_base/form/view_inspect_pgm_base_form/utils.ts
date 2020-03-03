@@ -52,6 +52,7 @@ export const defaultInspectPgmBase: InspectPgmBase = {
   date_start: '',
   date_end: '',
   has_pgm: null,
+  has_pgm_text: '',
   head_balance_holder_base: {
     fio: '',
     tel: '',

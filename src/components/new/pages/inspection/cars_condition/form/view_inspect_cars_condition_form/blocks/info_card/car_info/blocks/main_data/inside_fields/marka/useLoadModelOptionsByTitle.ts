@@ -5,7 +5,7 @@ import { actionGetModelList } from 'redux-main/reducers/modules/some_uniq/modelL
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 type useLoadModelOptionsByTitleAns = {
-  modelOptions: DefaultSelectOption<ModelElement['title'], ModelElement['title'], ModelElement>[],
+  modelOptions: Array<DefaultSelectOption<ModelElement['title'], ModelElement['title'], ModelElement>>;
 };
 
 type useLoadModelOptionsByTitle = (
@@ -14,23 +14,25 @@ type useLoadModelOptionsByTitle = (
   path: string,
 ) => useLoadModelOptionsByTitleAns;
 
+export const getModelOptionsByTitle = (data: Array<ModelElement>) => {
+  return data.map((rowData) => ({
+    value: rowData.title,
+    label: rowData.title,
+    rowData,
+  }));
+};
+
 const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelList, page, path) => {
   const [modelOptions, setModelOptions] = React.useState<useLoadModelOptionsByTitleAns['modelOptions']>([]);
 
   React.useEffect(
     () => {
       loadLoadModelList({}, { page, path }).then(
-        ({ payload: { data } }) => (
-          setModelOptions(
-            (data as ModelElement[]).map((rowData) => ({
-              value: rowData.title,
-              label: rowData.title,
-              rowData,
-            })),
-          )
+        ({ data }) => (
+          setModelOptions(getModelOptionsByTitle(data))
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

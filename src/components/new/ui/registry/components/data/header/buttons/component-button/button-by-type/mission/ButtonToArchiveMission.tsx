@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -12,8 +12,9 @@ import { compose } from 'recompose';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { get } from 'lodash';
 import { actionToArchiveMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonToArchiveMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -23,11 +24,10 @@ type ButtonToArchiveMissionStateProps = {
 type ButtonToArchiveMissionDispatchProps = {
   actionToArchiveMissionByIds: HandleThunkActionCreator<typeof actionToArchiveMissionByIds>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonToArchiveMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonToArchiveMissionOwnProps = CommonTypesForButton & {};
+
 type ButtonToArchiveMissionMergeProps = {};
 
 type ButtonToArchiveMissionProps = (
@@ -64,7 +64,7 @@ const ButtonToArchiveMission: React.FC<ButtonToArchiveMissionProps> = (props) =>
       const itemToArchiveAsArray = Object.values(itemToArchive);
 
       try {
-        await props.actionToArchiveMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id));
+        await props.actionToArchiveMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
       } catch (error) {
         console.error(error); // tslint:disable-line
         //
@@ -112,12 +112,12 @@ const ButtonToArchiveMission: React.FC<ButtonToArchiveMissionProps> = (props) =>
 };
 
 export default compose<ButtonToArchiveMissionProps, ButtonToArchiveMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{ permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonToArchiveMissionStateProps, ButtonToArchiveMissionDispatchProps, ButtonToArchiveMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

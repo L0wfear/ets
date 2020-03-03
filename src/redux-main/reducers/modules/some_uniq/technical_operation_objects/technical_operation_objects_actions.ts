@@ -33,7 +33,7 @@ export const actionGetTechnicalOperationObjects = (payload: any, meta: LoadingMe
   return response;
 };
 
-export const actionGetAndSetInStoreTechnicalOperationObjects = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<TechnicalOperationObjects[]>> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationObjects = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<Array<TechnicalOperationObjects>>> => async (dispatch) => {
   const technicalOperationObjectsList = await dispatch(
     actionGetTechnicalOperationObjects(payloadOwn, meta),
   );

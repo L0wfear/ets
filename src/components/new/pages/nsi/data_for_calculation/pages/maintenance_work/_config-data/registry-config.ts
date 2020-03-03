@@ -1,7 +1,8 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import maintenanceWorkPermissions from './permissions';
-import { MaintenanceWork } from 'redux-main/reducers/modules/maintenance_work/@types/maintenanceWork';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { MaintenanceWorkService } from 'api/Services';
 
 export const registryKey = 'maintenanceWorkRegistry';
 
@@ -9,10 +10,10 @@ export const getToConfig = (): TypeConfigData<MaintenanceWork> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'maintenance_work',
+        entity: MaintenanceWorkService._path,
       },
       removeOneData: {
-        entity: 'maintenance_work',
+        entity: MaintenanceWorkService._path,
         uniqKeyLikeQueryString: false,
       },
     },

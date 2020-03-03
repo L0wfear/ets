@@ -37,10 +37,10 @@ const NextImage: React.FC<NextImageProps> = React.memo(
         }
       };
 
-      document.addEventListener("keydown", escFunction, false);
+      document.addEventListener('keydown', escFunction, false);
 
       return () => {
-        document.removeEventListener("keydown", escFunction, false);
+        document.removeEventListener('keydown', escFunction, false);
       };
     });
 

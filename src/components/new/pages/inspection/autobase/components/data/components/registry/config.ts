@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
@@ -49,19 +49,14 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
           title: 'Дата окончания проверки',
         },
         {
-          valueKey: 'status_text',
+          valueKey: 'open_employee_fio',
+          title: 'Открыта',
           type: 'multiselect',
-          title: 'Статус проверки',
         },
         {
-          valueKey: 'company_name',
+          valueKey: 'close_employee_fio',
+          title: 'Завершена',
           type: 'multiselect',
-          title: 'Организация',
-        },
-        {
-          valueKey: 'base_address',
-          type: 'multiselect',
-          title: 'Адрес',
         },
       ],
     },
@@ -106,13 +101,13 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
             width: 200,
           },
           {
-            key: 'company_name',
-            title: 'Организация',
-            width: 500,
+            key: 'open_employee_fio',
+            title: 'Открыта',
+            width: 200,
           },
           {
-            key: 'base_address',
-            title: 'Адрес',
+            key: 'close_employee_fio',
+            title: 'Завершена',
             width: 200,
           },
         ],

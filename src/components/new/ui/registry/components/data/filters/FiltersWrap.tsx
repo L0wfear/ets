@@ -5,7 +5,6 @@ import { getFilterData } from 'components/new/ui/registry/module/selectors-regis
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
 
-import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
@@ -17,7 +16,7 @@ const FiltersWrap: React.FC<Props> = React.memo(
   (props) => {
     const { registryKey } = props;
     const isOpen = etsUseSelector((state) => getFilterData(state.registry, registryKey).isOpen);
-    const fields_length = etsUseSelector((state) => Boolean(getFilterData(state.registry, registryKey).fields.length));
+    const has_fields = etsUseSelector((state) => Boolean(getFilterData(state.registry, registryKey).fields.length));
 
     const [needUpdateFiltersOptions, setNeedUpdateFiltersOptions] = React.useState(() => isOpen);
 
@@ -37,20 +36,14 @@ const FiltersWrap: React.FC<Props> = React.memo(
       [isOpen],
     );
 
-    return (
-      fields_length
-       ? (
-          <PanelWrap expanded={isOpen} onToggle={handleToggle}>
-            <EtsBootstrap.PanelCollapse>
-              <PanelBodyWrap>
-                <Filters registryKey={registryKey} needUpdateFiltersOptions={needUpdateFiltersOptions} />
-              </PanelBodyWrap>
-            </EtsBootstrap.PanelCollapse>
-          </PanelWrap>
-        )
-        : (
-          <DivNone />
-        )
+    return has_fields && (
+      <PanelWrap expanded={isOpen} onToggle={handleToggle}>
+        <EtsBootstrap.PanelCollapse>
+          <PanelBodyWrap>
+            <Filters registryKey={registryKey} needUpdateFiltersOptions={needUpdateFiltersOptions} />
+          </PanelBodyWrap>
+        </EtsBootstrap.PanelCollapse>
+      </PanelWrap>
     );
   },
 );

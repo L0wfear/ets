@@ -1,6 +1,6 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
-export type ButtonDefineType = string[];
+export type ButtonDefineType = Array<string>;
 
 export type TypeOneDisplayIf = (
   'isKgh'
@@ -10,21 +10,21 @@ export type TypeOneDisplayIf = (
 );
 
 export type DisplayIfTitle = {
-  displayIf: TypeOneDisplayIf | TypeOneDisplayIf[];
+  displayIf: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   title: string;
 };
 
 export type FilterOptionType<F> = {
   value: F[keyof F];
   label: string | number;
-  [k: string]: any
+  [k: string]: any;
 };
 
 export type OneFilterType<F> = {
   valueKey: Extract<keyof F, string>;
-  title: string | DisplayIfTitle[];
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  options?: FilterOptionType<F>[];
+  title: string | Array<DisplayIfTitle>;
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
+  options?: Array<FilterOptionType<F>>;
   disabled?: boolean;
 } & (
   {
@@ -37,11 +37,11 @@ export type OneFilterType<F> = {
   } | {
     type: 'multiselect';
     labelKey?: keyof F;
-    options?: FilterOptionType<F>[];
+    options?: Array<FilterOptionType<F>>;
     getRegistryData?: {
       entity: string;
       payload?: object;
-      typeAns?: 'result.rows' | 'result',
+      typeAns?: 'result.rows' | 'result';
       valueKey: string;
       labelKey?: string;
       mergeWithArray?: boolean;
@@ -49,16 +49,16 @@ export type OneFilterType<F> = {
         'short_employee_name'
         | 'work_mode_label'
       );
-    }
+    };
   } | {
-    type: 'advanced-select-like',
-    options: any[];
+    type: 'advanced-select-like';
+    options: Array<any>;
   }
 );
 
 export type TypeFields<F extends any> = {
   key: keyof F;
-  title: string | DisplayIfTitle[];
+  title: string | Array<DisplayIfTitle>;
   width?: number;
   dashIfEmpty?: boolean;
   sortable?: boolean;
@@ -85,19 +85,19 @@ export type TypeFields<F extends any> = {
     | 'waybill_all_missions_status'
     | 'waybill_status_name'
   );
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  displayIfPermission?: string | string[];
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
+  displayIfPermission?: string | Array<string>;
 } | {
   title: string;
-  childrenFields?: TypeFields<F>[];
+  childrenFields?: Array<TypeFields<F>>;
 } | {
   key: 'enumerated';
   title: string;
   width?: number;
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
 } | {
   key: 'checkbox';
-  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
 } | {
   key: 'showMissionInfo';
   title: string;
@@ -105,39 +105,39 @@ export type TypeFields<F extends any> = {
   key: 'is_open';
   title?: string;
 } | {
-  key: 'company_structure_actions',
+  key: 'company_structure_actions';
   title: string;
 } | {
-  key: 'services_actions_on_off',
-  title: string,
+  key: 'services_actions_on_off';
+  title: string;
   sortable?: boolean;
   width: number;
 } | {
   key: 'service_files';
-  title: string,
+  title: string;
   sortable?: boolean;
   width: number;
 } | {
   key: 'button_show_action_log';
-  title: string,
+  title: string;
   sortable?: boolean;
   width: number;
 } | {
-  key: 'buttonCloneTire',
+  key: 'buttonCloneTire';
   title: string;
 } | {
-  key: 'edc_request_info',
-  title: string,
+  key: 'edc_request_info';
+  title: string;
   sortable?: boolean;
   width: number;
-  displayIfPermission?: string | string[];
+  displayIfPermission?: string | Array<string>;
 } | {
-  key: 'show_file_list',
+  key: 'show_file_list';
   title: string;
 } | {
-  key: 'show_edc_comments',
+  key: 'show_edc_comments';
   title: string;
-  displayIfPermission?: string | string[];
+  displayIfPermission?: string | Array<string>;
 };
 
 export type TypeConfigData<F> = {
@@ -148,7 +148,7 @@ export type TypeConfigData<F> = {
     title?: OneRegistryData<F>['header']['title'];
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
-    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>,
+    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>;
   };
   filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {

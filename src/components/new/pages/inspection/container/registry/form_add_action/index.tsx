@@ -16,8 +16,8 @@ const InspectContainerFormAddAction = React.lazy(() => (
 ));
 
 const InspectContainerFormAddActionLazy: React.FC<InspectContainerFormAddActionLazyProps> = (props) => {
-  return props.showForm ?
-    (
+  return props.showForm
+    ? (
       <ErrorBoundaryForm>
         <React.Suspense fallback={<LoadingComponent />}>
           <InspectContainerFormAddAction
@@ -27,8 +27,7 @@ const InspectContainerFormAddActionLazy: React.FC<InspectContainerFormAddActionL
         </React.Suspense>
       </ErrorBoundaryForm>
     )
-    :
-    (
+    :    (
       <DivNone />
     );
 };

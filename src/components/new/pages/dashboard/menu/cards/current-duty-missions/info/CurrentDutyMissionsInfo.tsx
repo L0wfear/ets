@@ -8,7 +8,7 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import RouteInfoFormWrap from 'components/new/pages/routes_list/route-info/RouteInfoFormWrap';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { listData } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/listData';
 import {
   dashboardLoadCurrentDutyMissions,
@@ -18,17 +18,35 @@ import {
 import { LinkToOpenRouteInfoForm } from 'components/new/pages/routes_list/buttons/buttons';
 
 import {
-  DispatchPropsCurrentMissionInfo,
-  PropsCurrentMissionInfo,
-  StateCurrentMissionInfo,
-} from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
-import {
   RightButtonBlockContainer,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import { ButtonUpdateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
+
+import {
+  CurrentDutyMissionsInfoDataType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
+type StateProps = {
+  infoData: CurrentDutyMissionsInfoDataType;
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {};
+type PropsCurrentMissionInfo = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+type StateCurrentMissionInfo = {
+  showRouteInfoForm: boolean;
+  showMissionRejectForm: boolean;
+};
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -37,56 +55,59 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   };
 
   refreshCard = () => (
-    this.props.loadData()
-  )
+    this.props.dispatch(dashboardLoadCurrentDutyMissions())
+  );
   openRouteInfoForm = () => {
     this.setState({
       showRouteInfoForm: true,
     });
-  }
+  };
   handleRouteInfoFormHide = () => {
     this.setState({
       showRouteInfoForm: false,
     });
-  }
+  };
 
-  handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
-    this.props.handleClose();
-  }
+  handleClose = () => {
+    this.props.dispatch(
+      dashboardLoadMissionDataForCurrentMission(null),
+    );
+  };
 
   completeDutyMission = () => {
     this.updateDutyMission({ status: 'complete' });
-  }
+  };
 
   rejectDutyMission = () => {
-    this.props.actionGetDutyMissionById(
-      this.props.infoData.duty_mission_data.duty_mission_id,
-      { page: 'dashboard' },
-    )
-      .then((duty_mission) => {
-        // надо уйти от этого
-        // react 16 Portal
-        return global.confirmDialog({
-          title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
-          body: (self) => (
-            <ExtField
-              type="string"
-              label="Причина"
-              value={self.state.comment}
-              onChange={({ target: { value: comment } }) => self.setState({ comment })}
-            />
-          ),
-          defaultState: {
-            comment: '',
-          },
-          checkOnOk: ({ state }) => {
-            if (!state.comment) {
-              global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
-              return false;
-            }
-            return true;
-          },
-        })
+    this.props.dispatch(
+      missionsActions.actionGetDutyMissionById(
+        this.props.infoData.duty_mission_data.duty_mission_id,
+        { page: 'dashboard' },
+      ),
+    ).then((duty_mission) => {
+      // надо уйти от этого
+      // react 16 Portal
+      return global.confirmDialog({
+        title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
+        body: (self) => (
+          <ExtField
+            type="string"
+            label="Причина"
+            value={self.state.comment}
+            onChange={({ target: { value: comment } }) => self.setState({ comment })}
+          />
+        ),
+        defaultState: {
+          comment: '',
+        },
+        checkOnOk: ({ state }) => {
+          if (!state.comment) {
+            global.NOTIFICATION_SYSTEM.notify('Введите причину отмены', 'warning', 'tr');
+            return false;
+          }
+          return true;
+        },
+      })
         .then(({ comment }) => (
           this.updateDutyMission({
             ...duty_mission,
@@ -97,40 +118,41 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         .catch(() => {
           //
         });
-      }).catch((e) => {
-        console.log(e); // tslint:disable-line:no-console
-      });
-  }
+    }).catch((e) => {
+      console.info(e); // eslint-disable-line
+    });
+  };
 
   updateDutyMission = (newProps) => (
     (
-      newProps.number ?
-      Promise.resolve(newProps)
-      :
-      this.props.actionGetDutyMissionById(
-        this.props.infoData.duty_mission_data.duty_mission_id,
-        { page: 'dashboard' },
-      )
-    )
-      .then((duty_mission) => {
-        if (duty_mission) {
-          this.props.actionUpdateDutyMission(
+      newProps.number
+        ? Promise.resolve(newProps)
+        : this.props.dispatch(
+          missionsActions.actionGetDutyMissionById(
+            this.props.infoData.duty_mission_data.duty_mission_id,
+            { page: 'dashboard' },
+          ),
+        )
+    ).then((duty_mission) => {
+      if (duty_mission) {
+        this.props.dispatch(
+          missionsActions.actionUpdateDutyMission(
             {
               ...duty_mission,
               ...newProps,
             },
             { page: 'dashboard' },
-          )
-          .then(() => {
-            this.refreshCard();
-            this.props.handleClose();
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not found duty mission');
-        }
-      })
-  )
+          ),
+        ).then(() => {
+          this.refreshCard();
+          this.handleClose();
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not found duty mission');
+      }
+    })
+  );
 
   render() {
     const {
@@ -146,24 +168,23 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         <ul>
           {
             listData.map(({ RenderComponent, ...line}, index) => (
-              RenderComponent ?
-              (
-                <RenderComponent key={line.path.join('/')} {...this.props} />
-              )
-              :
-              (
-                <li key={line.path.join('/')}>
-                  <b>{`${line.title}: `}</b>
-                  <span>{get(infoData, line.path, '---') || '---'}</span>
-                </li>
-              )
+              RenderComponent
+                ? (
+                  <RenderComponent key={line.path.join('/')} {...this.props} />
+                )
+                :              (
+                  <li key={line.path.join('/')}>
+                    <b>{`${line.title}: `}</b>
+                    <span>{get(infoData, line.path, '---') || '---'}</span>
+                  </li>
+                )
             ))
           }
         </ul>
         <LinkToOpenRouteInfoForm openRouteInfoForm={this.openRouteInfoForm}/>
         <RightButtonBlockContainer>
-          <ButtonUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtonUpdateDutyMission>
-          <ButtonUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtonUpdateDutyMission>
+          <EtsBootstrap.Button onClick={this.completeDutyMission} permissions={dutyMissionPermissions.update}>Выполнено</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.rejectDutyMission} permissions={dutyMissionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         <RouteInfoFormWrap
           showForm={this.state.showRouteInfoForm}
@@ -182,31 +203,9 @@ export default compose<any, any>(
     path: ['dashboard', 'current_duty_missions', 'infoData'],
     type: 'none',
   }),
-  connect<any, DispatchPropsCurrentMissionInfo, any, ReduxState>(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
       infoData: getDashboardState(state).current_duty_missions.infoData,
-    }),
-    (dispatch: any) => ({
-      handleClose: () => (
-        dispatch(
-          dashboardLoadMissionDataForCurrentMission(null),
-        )
-      ),
-      loadData: () => (
-        dispatch(
-          dashboardLoadCurrentDutyMissions(),
-        )
-      ),
-      actionGetDutyMissionById: (...arg) => (
-        dispatch(
-          missionsActions.actionGetDutyMissionById(...arg),
-        )
-      ),
-      actionUpdateDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionUpdateDutyMission(...arg),
-        )
-      ),
     }),
   ),
 )(CurrentMissionInfo);

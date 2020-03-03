@@ -13,8 +13,7 @@ import {
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
 import missionActions from 'redux-main/reducers/modules/missions/mission/actions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -22,8 +21,9 @@ import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/orde
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { get } from 'lodash';
 import edcRequestActions from '../../edc_request/edc_request_actions';
-import { DUTY_MISSION_STATUS } from '../mission/constants';
 import { isArray } from 'util';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 const actionSetDutyMissionPartialData = (partialDutyMissionData: Partial<IStateMissions['dutyMissionData']>): EtsAction<IStateMissions['dutyMissionData']> => (dispatch, getState) => {
   const newDutyMissionData = {
@@ -71,19 +71,16 @@ const actionGetDutyMission = (payloadOwn: object, meta: LoadingMeta): EtsAction<
 
   return payload;
 };
-const actionGetDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetDutyMissionById>>  => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetDutyMissionById(id),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+export const actionGetDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetDutyMissionById>>  => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    promiseGetDutyMissionById(id),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
-const actionGetAndSetInStoreDutyMission = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMission>>> => async (dispatch) => {
+const actionGetAndSetInStoreDutyMission = (payloadOwn: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetDutyMission>> => async (dispatch) => {
   dispatch(actionResetDutyMission());
 
   const response = await dispatch(
@@ -99,7 +96,7 @@ const actionGetAndSetInStoreDutyMission = (payloadOwn: object, meta: LoadingMeta
 
   return response;
 };
-const actionGetAvaliableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof missionActions.actionGetMission>>> => async (dispatch) => {
+const actionGetAvaliableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof missionActions.actionGetMission>> => async (dispatch) => {
   const response = await dispatch(
     missionActions.actionGetMission(
       payloadOwn,
@@ -109,7 +106,7 @@ const actionGetAvaliableMissionsToBind = (payloadOwn: GetMissionPayload, meta: L
 
   return response;
 };
-const actionGetAndSetInStoreAvalilableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetAvaliableMissionsToBind>>> => async (dispatch) => {
+const actionGetAndSetInStoreAvalilableMissionsToBind = (payloadOwn: GetMissionPayload, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetAvaliableMissionsToBind>> => async (dispatch) => {
   const response = await dispatch(
     actionGetAvaliableMissionsToBind(payloadOwn, meta),
   );
@@ -123,7 +120,7 @@ const actionGetAndSetInStoreAvalilableMissionsToBind = (payloadOwn: GetMissionPa
   return response;
 };
 
-type ActionSetDependenceEdcRequestForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>>;
+type ActionSetDependenceEdcRequestForMission = EtsAction<EtsActionReturnType<typeof actionSetDutyMissionPartialData>>;
 const actionSetDependenceEdcRequestForDutyMission = (edcRequest: IStateMissions['dutyMissionData']['edcRequest']): ActionSetDependenceEdcRequestForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -151,7 +148,7 @@ const loadEdcRequiedByIdForDutyMission = (id: number, meta: LoadingMeta) => asyn
   return edcRequest;
 };
 
-type ActionSetDependenceOrderDataForDutyMissionAction = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>>;
+type ActionSetDependenceOrderDataForDutyMissionAction = EtsAction<EtsActionReturnType<typeof actionSetDutyMissionPartialData>>;
 const actionSetDependenceOrderDataForDutyMission = (dependeceOrder: IStateMissions['dutyMissionData']['dependeceOrder'], dependeceTechnicalOperation: IStateMissions['dutyMissionData']['dependeceTechnicalOperation']): ActionSetDependenceOrderDataForDutyMissionAction => (
   (dispatch, getState) => {
     const dutyMissionData = dispatch(
@@ -218,7 +215,7 @@ const actionUpdateDutyMission = (dutyDutyMissionOld: DutyMission, meta: LoadingM
 
   return payload;
 };
-const actionRemoveDutyMissions = (dutyDutyMissionOldArr: (Pick<DutyMission, 'id'> & Partial<DutyMission>)[], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissions>> => async (dispatch) => {
+const actionRemoveDutyMissions = (dutyDutyMissionOldArr: Array<Pick<DutyMission, 'id'> & Partial<DutyMission>>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissions>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissions(dutyDutyMissionOldArr.map(({ id }) => id)),
@@ -230,7 +227,7 @@ const actionRemoveDutyMissions = (dutyDutyMissionOldArr: (Pick<DutyMission, 'id'
 
   return payload;
 };
-const actionRemoveDutyMission: any = (dutyDutyMissionOld: Pick<DutyMission, 'id'> & Partial<DutyMission>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMission>> => async (dispatch) => {
+const actionRemoveDutyMission = (dutyDutyMissionOld: Pick<DutyMission, 'id'> & Partial<DutyMission>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMission>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMission(dutyDutyMissionOld.id),
@@ -243,7 +240,7 @@ const actionRemoveDutyMission: any = (dutyDutyMissionOld: Pick<DutyMission, 'id'
   return payload;
 };
 
-export const actionCompleteDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionCompleteDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -258,7 +255,7 @@ export const actionCompleteDutyMissionByIds: any = (id: DutyMission['id'] | Duty
   );
 };
 
-export const actionCompleteDutyMissionById: any = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionCompleteDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const dutyMission = await dispatch(
     actionGetDutyMissionById(
       id,
@@ -283,7 +280,7 @@ export const actionCompleteDutyMissionById: any = (id: DutyMission['id'], meta: 
   return false;
 };
 
-export const actionToArchiveDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionToArchiveDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -299,22 +296,7 @@ export const actionToArchiveDutyMissionByIds: any = (id: DutyMission['id'] | Dut
   );
 };
 
-export const actionFailDutyMissionsByPartialData: any = (partialDutyMission: DutyMission | DutyMission[], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
-  const arrays = isArray(partialDutyMission) ? partialDutyMission : [partialDutyMission];
-
-  return Promise.all(
-    arrays.map((partialDutyMissionData) => (
-      dispatch(
-        actionCompleteDutyMissionById(
-          partialDutyMissionData,
-          meta,
-        ),
-      )
-    )),
-  );
-};
-
-export const actionFailDutyMissionByPartialData: any = (partialDutyMission: DutyMission, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionFailDutyMissionByPartialData = (partialDutyMission: DutyMission, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const dutyMission = await dispatch(
     actionGetDutyMissionById(
       partialDutyMission.id,
@@ -340,7 +322,7 @@ export const actionFailDutyMissionByPartialData: any = (partialDutyMission: Duty
   return false;
 };
 
-export const actionFromArchiveDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionFromArchiveDutyMissionByIds = (id: DutyMission['id'] | Array<DutyMission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -356,7 +338,7 @@ export const actionFromArchiveDutyMissionByIds: any = (id: DutyMission['id'] | D
   );
 };
 
-type ActionReseSetDependenceMissionDataForDutyMissionForm = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>>;
+type ActionReseSetDependenceMissionDataForDutyMissionForm = EtsAction<EtsActionReturnType<typeof actionSetDutyMissionPartialData>>;
 const actionReseSetDependenceMissionDataForDutyMissionForm = (): ActionReseSetDependenceMissionDataForDutyMissionForm => (
   (dispatch, getState) => {
     const missionData = dispatch(

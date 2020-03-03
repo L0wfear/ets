@@ -12,8 +12,7 @@ import {
   Company,
 } from 'redux-main/reducers/modules/company/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const actionSetCompany = (
@@ -63,7 +62,7 @@ export const actionLoadCompany = (
 export const actionGetAndSetInStoreCompany = (
   payload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionLoadCompany>> => async (dispatch) => {
   const response = await dispatch(actionLoadCompany(payload, meta));
 
   dispatch(actionSetCompany(response.data));

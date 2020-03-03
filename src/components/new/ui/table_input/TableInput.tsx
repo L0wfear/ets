@@ -4,39 +4,61 @@ import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
 import EtsBootstrap from '../@bootstrap';
 import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+
+export type PropsToTdReactComponent = {
+  formDataKey: FormKeys;
+  indexRow: number;
+};
 
 export type TableMeta<F> = {
-  key: string;
+  key: Extract<keyof F, string>;
   title: string;
+  titlePopup?: string;
   width: number;
+  ReactComponentType?: React.ComponentType<PropsToTdReactComponent>;
   disabled?: boolean;
-  disabledIf?: {
-    type: 'compare_with_value_in_option',
-    path_to_option: string,
-    compareItemPath: string,
-    match: any,
-  }[];
-  resetIf?: {
-    type: 'compare_with_value_in_option',
-    path_to_option: string,
-    compareItemPath: string,
-    match: any,
-  }[];
+  default_value?: any;
+  onChange?: (onChange: (partilaF: Partial<F>) => any) => (value, option?: any) => any;
+  disabledIf?: Array<{
+    type: 'compare_with_value_in_option';
+    path_to_option: string;
+    compareItemPath: string;
+    match: any;
+  }>;
+  resetIf?: Array<{
+    type: 'compare_with_value_in_option';
+    path_to_option: string;
+    compareItemPath: string;
+    match: any;
+  }>;
 } & (
   {
     format: 'select';
-    options: any[];
+    options: Array<any>;
     placeholder?: string;
     uniqValueInCol?: boolean;
   } | {
     format: 'number';
+  } | {
+    format: 'boolean';
+  } | {
+    format: 'date';
+    time?: boolean;
+  } | {
+    format: 'string';
+  } | {
+    format: 'toFixed3';
+  } | {
+    format: 'toFixed2';
   }
 );
 
-type Props = {
-  meta: TableMeta<any>[];
-  array: any[];
-  errors?: any[];
+type TableInputProps = {
+  id: string;
+  meta: Array<TableMeta<any>>;
+  array: Array<any>;
+  errors?: Array<any>;
   onChange: any;
 
   header: any;
@@ -44,9 +66,11 @@ type Props = {
   setSelectedRowIndex: any;
 
   disabled: boolean;
+
+  formDataKey?: FormKeys;
 };
 
-const TableInput: React.FC<Props> = React.memo(
+const TableInput: React.FC<TableInputProps> = React.memo(
   (props) => {
     const {
       disabled,
@@ -79,7 +103,7 @@ const TableInput: React.FC<Props> = React.memo(
               && (
                 <EtsTableDataContainer>
                   <EtsTableWrapNoScroll className="ets_table_wrap">
-                    <EtsTable fixedWidth>
+                    <EtsTable fixedWidth id={`${props.id || 'default'}_table`}>
                       <TableInputThead
                         meta={props.meta}
                       />
@@ -91,6 +115,8 @@ const TableInput: React.FC<Props> = React.memo(
                         selectedRowIndex={props.selectedRowIndex}
                         setSelectedRowIndex={props.setSelectedRowIndex}
                         disabled={disabled}
+
+                        formDataKey={props.formDataKey}
                       />
                     </EtsTable>
                   </EtsTableWrapNoScroll>

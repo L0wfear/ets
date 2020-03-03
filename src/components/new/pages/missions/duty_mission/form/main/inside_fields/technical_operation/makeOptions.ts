@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 
 export const makeOptionsByTechnicalOperationRegistryForMissionList = (
   memoize(
-    (technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[]) => (
+    (technicalOperationRegistryForDutyMissionList: Array<TechnicalOperationRegistry>) => (
       technicalOperationRegistryForDutyMissionList
         .map(defaultSelectListMapper)
     ),

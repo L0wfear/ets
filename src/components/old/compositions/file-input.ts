@@ -10,15 +10,15 @@ export const fileFormatter = withHandlers({
     isLoading = identity,
     value = [],
     multiple = false,
-  }) => async (e) => {
+  }) => async (boundKeys, e) => {
     if (Array.isArray(e)) {
-      onChange(e);
+      onChange(boundKeys, e);
       return;
     }
 
-    const newFiles: File[] = fromIterableListToArray(e.target.files);
+    const newFiles: Array<File> = fromIterableListToArray(e.target.files);
 
-    const fileArray: IFileWrapper[] = [];
+    const fileArray: Array<IFileWrapper> = [];
 
     newFiles.forEach((file) => {
       fileArray.push({
@@ -45,7 +45,7 @@ export const fileFormatter = withHandlers({
         base64PromiseList.push(readingPromise);
       });
     } catch (error) {
-      console.log('File reading error:', error); // tslint:disable-line:no-console
+      console.info('File reading error:', error); // eslint-disable-line
     }
 
     let base64List = [];
@@ -62,7 +62,7 @@ export const fileFormatter = withHandlers({
       base64: base64List[i],
     }));
 
-    onChange([...value, ...fileWrappers]);
+    onChange(boundKeys, [...value, ...fileWrappers]);
   },
 });
 
@@ -80,13 +80,13 @@ export const fileCountLimiter = withHandlers({
     maxSize = mbToBytes(MAX_SUM_FILE_SIZE_MB),
     onChange,
     value = [],
-  }) => (e) => {
+  }) => (boundKeys, e) => {
     if (Array.isArray(e)) {
-      onChange(e);
+      onChange(boundKeys, e);
       return;
     }
 
-    const newFiles: File[] = fromIterableListToArray(e.target.files);
+    const newFiles: Array<File> = fromIterableListToArray(e.target.files);
     const allFiles = [...value, ...newFiles];
 
     if (allFiles.length > maxCount) {
@@ -101,6 +101,6 @@ export const fileCountLimiter = withHandlers({
       return;
     }
 
-    onChange(e);
+    onChange(boundKeys, e);
   },
 });

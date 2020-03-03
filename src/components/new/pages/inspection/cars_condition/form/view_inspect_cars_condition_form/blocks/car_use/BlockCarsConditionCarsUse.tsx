@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
@@ -10,7 +10,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type BlockCarsConditionCarsUseProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
   cars_use: InspectCarsCondition['data']['cars_use'];
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   error_cars_use: FormErrorType<SchemaType<InspectCarsCondition['data']['cars_use'], PropsViewInspectCarsConditionWithForm>>;
   isPermitted: boolean;
   isActiveInspect: boolean;
@@ -51,8 +51,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
       () => {
         return carsConditionCarsList.reduce(
           (objCount, carData) => {
-            if (carData.fact_status) {
-              objCount[carData.fact_status] += 1;
+            if (carData.status_at_check) {
+              objCount[carData.status_at_check] += 1;
             }
 
             return objCount;
@@ -140,6 +140,7 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
         <ExtField
           id="comment"
           type="text"
+          label="Другое"
           value={state.comment}
           onChange={handleChange}
           boundKeys="comment"

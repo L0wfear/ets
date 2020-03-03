@@ -2,23 +2,49 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { ReduxState } from 'redux-main/@types/state';
-import {
-  PropsFieldNormIdMission,
-  StatePropsFieldNormIdMission,
-  DispatchPropsFieldNormIdMission,
-  OwnPropsFieldNormIdMission,
-  StateFieldNormIdMission,
-} from 'components/new/pages/missions/mission/form/main/inside_fields/norm_id/FieldNormIdMission.d';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+
 import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
-import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
-class FieldNormIdMission extends React.PureComponent<
-  PropsFieldNormIdMission,
-  StateFieldNormIdMission
-> {
-  componentDidUpdate(prevProps: PropsFieldNormIdMission) {
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
+
+type StateProps = {
+  dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+type OwnProps = {
+  value: Mission['norm_ids'];
+  datetime: Mission['date_start'];
+  technical_operation_id: Mission['technical_operation_id'];
+  municipal_facility_id: Mission['municipal_facility_id'];
+  route_type: Mission['route_type'];
+  type_ids: Mission['car_type_ids'];
+
+  disabled: boolean;
+  onChange: (obj: { [key in keyof Mission]?: Mission[key] }) => void;
+
+  IS_TEMPLATE: boolean;
+  MISSION_IS_ORDER_SOURCE: boolean;
+
+  page: string;
+  path: string;
+};
+
+type Props = (
+  StateProps &
+  DispatchProps &
+  OwnProps
+);
+
+class FieldNormIdMission extends React.PureComponent<Props, {}> {
+  componentDidUpdate(prevProps: Props) {
     const {
       MISSION_IS_ORDER_SOURCE,
       disabled,
@@ -30,8 +56,8 @@ class FieldNormIdMission extends React.PureComponent<
     } = this.props;
 
     const triggerOnUpdate = (
-      !disabled &&
-      (
+      !disabled
+      && (
         datetime !== prevProps.datetime
         || technical_operation_id !== prevProps.technical_operation_id
         || municipal_facility_id !== prevProps.municipal_facility_id
@@ -60,36 +86,35 @@ class FieldNormIdMission extends React.PureComponent<
       municipal_facility_id,
       route_type,
       type_ids,
-      page,
-      path,
       MISSION_IS_ORDER_SOURCE,
     } = this.props;
 
-    const hasAllData =
-      datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
+    const hasAllData
+      = datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
 
     // Дит гарантирует, что проверка на is_cleaning_norm не нужна (по факсограмме)
     if (!MISSION_IS_ORDER_SOURCE) {
       if (hasAllData) {
-        const norms = await Promise.all(
-          type_ids.map((func_type_id) => (
-            this.props.actionLoadCleaningOneNorm(
-              {
-                datetime: createValidDateTime(datetime),
-                technical_operation_id,
-                municipal_facility_id,
-                route_type,
-                needs_brigade: false,
-                func_type_id,
-                kind_task_ids: 3,                           // для децентрализованных заданий
-              },
-              {
-                page,
-                path,
-              },
-            )
-          )),
-        );
+        const norms = (
+          await Promise.all(
+            type_ids.map((func_type_id) => (
+              this.props.dispatch(
+                actionLoadCleaningOneNorm(
+                  getValidOneNormPayload({
+                    datetime: createValidDateTime(datetime),
+                    technical_operation_id,
+                    municipal_facility_id,
+                    route_type,
+                    needs_brigade: false,
+                    func_type_id,
+                    kind_task_ids: 3,                           // для децентрализованных заданий
+                  }
+                  ),
+                  this.props,
+                ),
+              )
+            )),
+          )).filter((d) => d);
 
         const normObj = {
           norm_ids: norms.map(({ norm_id }) => norm_id),
@@ -109,23 +134,13 @@ class FieldNormIdMission extends React.PureComponent<
   }
 
   render() {
-    return <DivNone>norm_id</DivNone>;
+    return null;
   }
 }
 
-export default connect<
-  StatePropsFieldNormIdMission,
-  DispatchPropsFieldNormIdMission,
-  OwnPropsFieldNormIdMission,
-  ReduxState
->(
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   (state) => ({
-    technicalOperationRegistryForMissionList: getSomeUniqState(state)
-      .technicalOperationRegistryForMissionList,
+    technicalOperationRegistryForMissionList: getSomeUniqState(state).technicalOperationRegistryForMissionList,
     dependeceTechnicalOperation: getMissionsState(state).missionData.dependeceTechnicalOperation,
-  }),
-  (dispatch: any) => ({
-    actionLoadCleaningOneNorm: (...arg) =>
-      dispatch(someUniqActions.actionLoadCleaningOneNorm(...arg)),
   }),
 )(FieldNormIdMission);

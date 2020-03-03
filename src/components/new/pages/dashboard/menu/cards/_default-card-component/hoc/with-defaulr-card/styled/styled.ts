@@ -1,26 +1,10 @@
-import styled, { keyframes, css } from 'styled-components';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 type PropsCardBodyContainer = {
   isLoading?: boolean;
 };
-
-const spin = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(359deg);
-  }
-`;
-
-const AnimationSpin = css`
-  animation: ${spin} 1000ms infinite linear;
-`;
-
-const AnimationNone = css`
-  animation: none !important;
-`;
 
 export const CardTitleContainer = styled.div`
   padding: 20px;
@@ -34,7 +18,7 @@ export const CardTitleContainer = styled.div`
     height: 1px;
     bottom: 1px;
     left: 20px;
-    background-color: #d6d6d6;
+    /* background-color: #d6d6d6; */
   }
 `;
 
@@ -47,31 +31,36 @@ export const CardTitleContainerWrap = styled.div`
   &>*:nth-of-type(n + 2) {
     margin-left: 10px;
   }
-`;
-
-export const GlyphiconWithNonAnimation = styled(EtsBootstrap.Glyphicon)<{ isLoading: boolean }>`
-  &&& {
-    ${({ isLoading }) => isLoading ? AnimationSpin : AnimationNone};
+  ${ButtonStyled} {
+    background: transparent!important;
+    color: #4c4c4c!important;
+    padding-right: 0px!important;
+    padding-left: 0px!important;
+    &:hover {
+      color: ${UiConstants.colorError}!important;
+    }
   }
 `;
 
 export const LineData = styled.div`
   padding: 15px 0;
-  border-bottom: 1px solid #d6d6d6;
+  /* border-bottom: 1px solid #d6d6d6; */
 `;
 
-export const CardBodyContainer = styled.div`
+export const CardBodyContainer = styled.div<PropsCardBodyContainer>`
   padding: 20px;
   padding-top: 5px;
   display: flex;
   flex-direction: column;
 
-  pointer-events: ${({ isLoading }: PropsCardBodyContainer) => isLoading ? 'none' : 'all'};
+  pointer-events: ${({ isLoading }) => isLoading ? 'none' : 'all'};
   opacity: ${({ isLoading }) => isLoading ? '0.5' : '1'};
+  max-height: 380px;
+  overflow: auto;
 
   .line_data {
     padding: 15px 0;
-    border-bottom: 1px solid #d6d6d6;
+    /* border-bottom: 1px solid #d6d6d6; */
 
     &.number {
       display: flex;

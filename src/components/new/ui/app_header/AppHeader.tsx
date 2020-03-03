@@ -18,9 +18,25 @@ class AppHeader extends React.Component<{}, any> {
       this.resizeWindow,
     );
 
-    document.addEventListener('keydown', (e: any) => {
-      if ('getAttribute' in e.target && e.target.getAttribute('type') === 'number' && e.keyCode === 69) {
-        event.preventDefault();
+    document.addEventListener('keydown', (event: any) => {
+      if ('getAttribute' in event.target && event.target.getAttribute('type') === 'number') {
+
+        if (event.key === 'e') {
+          event.preventDefault();
+        }
+
+        if (event.key === '.') {
+          event.preventDefault();
+        }
+
+        if (event.key === ','
+          && (
+            event.target?.value?.toString().includes(',')
+            || event.target?.value?.toString().includes('.')
+          )
+        ) { // вводим максимум одну запятую
+          event.preventDefault();
+        }
       }
     });
   }
@@ -34,7 +50,7 @@ class AppHeader extends React.Component<{}, any> {
       width: document.body.offsetWidth,
       mobi: document.body.offsetWidth < mobiSize,
     }));
-  }
+  };
 
   render() {
     const {
@@ -45,12 +61,12 @@ class AppHeader extends React.Component<{}, any> {
       <AppHeaderNav ref={this.node}>
         {
           this.state.mobi
-          ? (
-            <AppHeaderMobi width={width} />
-          )
-          : (
-            <AppHeaderDesktop width={width} />
-          )
+            ? (
+              <AppHeaderMobi width={width} />
+            )
+            : (
+              <AppHeaderDesktop width={width} />
+            )
         }
       </AppHeaderNav>
     );

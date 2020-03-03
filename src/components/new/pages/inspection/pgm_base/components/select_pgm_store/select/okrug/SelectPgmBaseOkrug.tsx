@@ -2,7 +2,7 @@ import * as React from 'react';
 import { uniqBy } from 'lodash';
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionPgmBaseSelectCarpoolStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
@@ -55,17 +55,17 @@ const SelectPgmBaseOkrug: React.FC<SelectPgmBaseOkrugProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={1} sm={1}>
+      <SelectLabel md={3} sm={1}>
         <h5>
           Округ
         </h5>
       </SelectLabel>
-      <SelectField md={4} sm={6}>
+      <SelectField md={9} sm={6}>
         <ExtField
           type="select"
           label={false}

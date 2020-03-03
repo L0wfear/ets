@@ -12,15 +12,24 @@ import {
 
 import { secondsToTime } from 'components/@next/@utils/dates/dates';
 
-import { PropsInfoTableData } from 'components/new/ui/mission_info_form/form-components/info-table-data/InfoTableData.h';
+import {
+  IMIssionData,
+  IReportData,
+} from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 
-class InfoTableData extends React.PureComponent<PropsInfoTableData, {}> {
-  render() {
+type Props = {
+  mission_data: IMIssionData;
+  report_data: IReportData;
+  parkingCount: number | void;
+};
+
+const InfoTableData: React.FC<Props> = React.memo(
+  (props) => {
     const {
       mission_data,
       report_data,
       parkingCount,
-    } = this.props;
+    } = props;
 
     const withWorkSpeed = getDataTraveledYet([
       ...checkFixed([report_data.traveled_raw, report_data.check_unit], 'TWO_F'),
@@ -33,12 +42,11 @@ class InfoTableData extends React.PureComponent<PropsInfoTableData, {}> {
     ]);
 
     const allRunWithWorkEquipment = (
-      mission_data.sensor_traveled_working !== null ?
-      getDataTraveledYet(
-        checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F'),
-      )
-      :
-      'Нет данных'
+      mission_data.sensor_traveled_working !== null
+        ? getDataTraveledYet(
+          checkFixed([mission_data.sensor_traveled_working / 1000, 'км'], 'THREE_F'),
+        )
+        :      'Нет данных'
     );
 
     return (
@@ -62,7 +70,7 @@ class InfoTableData extends React.PureComponent<PropsInfoTableData, {}> {
         </div>
       </>
     );
-  }
-}
+  },
+);
 
 export default InfoTableData;

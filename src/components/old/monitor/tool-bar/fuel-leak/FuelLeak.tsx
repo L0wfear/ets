@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
 import { compose } from 'recompose';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
@@ -12,11 +12,7 @@ import {
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 const getActiveClassName = (activeMain) => (
   cx(
@@ -56,7 +52,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
 
     this.props.monitorPageToggleFuelEvetnsLeakShow();
     event.stopPropagation();
-  }
+  };
 
   toggleIsOpen = () => {
     const isOpen = !this.state.isOpen;
@@ -64,7 +60,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     this.setState({
       isOpen,
     });
-  }
+  };
 
   handleChange = (field, date) => {
     const changedDates = {
@@ -79,7 +75,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     }
 
     this.props.changeFuelEventDate(field, date);
-  }
+  };
 
   render() {
     const {
@@ -98,12 +94,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
               <span>{`Сливы ${isOpen ? ' \u25BC' : ' \u25BA'}`}</span>
             </div>
             {
-              !isOpen ?
-              (
-                <DivNone />
-              )
-              :
-              (
+              isOpen && (
                 <div className="car_block_legend left fuel_leak">
                   <div>
                     <span>C </span>
@@ -168,7 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: 'map.leak_and_refill',
   }),
   connect(

@@ -1,4 +1,3 @@
-import { HandleThunkActionCreator } from 'react-redux';
 import { get } from 'lodash';
 import { isArray } from 'util';
 
@@ -14,11 +13,14 @@ import {
   promiseRemoveMissions,
   promiseRemoveMission,
   getMissionDataById,
+  promiseGetMissionReassignationParameters,
+  promisePostMissionReassignationParameters,
+  promisePutMissionReassignationParameters,
 } from 'redux-main/reducers/modules/missions/mission/promise';
-import { Mission, MissionDataType } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Mission, MissionDataType, MissionReassignation } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
 import {
@@ -27,13 +29,13 @@ import {
 } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
-import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+
 import edcRequestActions from '../../edc_request/edc_request_actions';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (
   dispatch,
@@ -60,11 +62,10 @@ const actionResetMission = (): EtsAction<IStateMissions['missionData']> => (disp
   return newMissionData;
 };
 
-type ThunkActionSetCarsMission = EtsAction<Pick<IStateMissions['missionData'], 'carsIndex' | 'carsList'>>;
 const actionSetCarsMission = (
   carsList: IStateMissions['missionData']['carsList'],
   carsIndex: IStateMissions['missionData']['carsIndex'],
-): ThunkActionSetCarsMission => (dispatch) => {
+): EtsAction<Pick<IStateMissions['missionData'], 'carsIndex' | 'carsList'>> => (dispatch) => {
   dispatch(
     actionSetMissionPartialData({
       carsList,
@@ -78,25 +79,19 @@ const actionSetCarsMission = (
   };
 };
 
-type ThunkActionResetCarsMissionTemplate = EtsAction<
-  Pick<
-    IStateMissions['missionData'],
-    'carsIndex' | 'carsList'
-  >,
->;
-
 const actionLoadCarsForMission = (
   ownPayload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof autobaseGetSetCar>> => async (dispatch) => {
   const response = await dispatch(autobaseGetSetCar(ownPayload, meta));
 
   return response;
 };
+
 const actionGetAndSetInStoreCarForMission = (
   payload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCarsForMission>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionLoadCarsForMission>> => async (dispatch) => {
   const { data, dataIndex } = await dispatch(
     actionLoadCarsForMission(payload, meta),
   );
@@ -109,9 +104,7 @@ const actionGetAndSetInStoreCarForMission = (
   };
 };
 
-const actionResetCarsMission = (): ThunkActionResetCarsMissionTemplate => (
-  dispatch,
-) => {
+const actionResetCarsMission = (): EtsAction<Pick<IStateMissions['missionData'], 'carsIndex' | 'carsList'>> => (dispatch) => {
   const carsList = [];
   const carsIndex = {};
   dispatch(
@@ -173,7 +166,7 @@ const actionGetMissionById = (
 const actionGetAndSetInStoreMission = (
   payloadOwn: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetMission>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionGetMission>> => async (dispatch) => {
   dispatch(actionResetMission());
 
   const response = await dispatch(actionGetMission(payloadOwn, meta));
@@ -188,7 +181,7 @@ const actionGetAndSetInStoreMission = (
   return response;
 };
 
-type ActionSetDependenceOrderDataForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
+type ActionSetDependenceOrderDataForMission = EtsAction<EtsActionReturnType<typeof actionSetMissionPartialData>>;
 const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['missionData']['dependeceOrder'], dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation']): ActionSetDependenceOrderDataForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -203,7 +196,7 @@ const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['
   }
 );
 
-type ActionSetDependenceEdcRequestForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
+type ActionSetDependenceEdcRequestForMission = EtsAction<EtsActionReturnType<typeof actionSetMissionPartialData>>;
 const actionSetDependenceEdcRequestForMission = (edcRequest: IStateMissions['missionData']['edcRequest']): ActionSetDependenceEdcRequestForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -217,7 +210,7 @@ const actionSetDependenceEdcRequestForMission = (edcRequest: IStateMissions['mis
   }
 );
 
-type ActionSetDependenceWaybillDataForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
+type ActionSetDependenceWaybillDataForMission = EtsAction<EtsActionReturnType<typeof actionSetMissionPartialData>>;
 const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['missionData']['waybillData']): ActionSetDependenceWaybillDataForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -231,7 +224,7 @@ const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['m
   }
 );
 
-const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta) => async (dispatch) => {
+const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof edcRequestActions.actionLoadEdcRequestById>> => async (dispatch) => {
   const edcRequest = await dispatch(
     edcRequestActions.actionLoadEdcRequestById(id, meta),
   );
@@ -248,8 +241,8 @@ const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta) => async (d
 const actionLoadWaybillDataByIdForMission = (
   waybill_id: number,
   meta: LoadingMeta,
-) => async (dispatch) => {
-  const waybillData: Waybill = await dispatch(waybillActions.actionGetWaybillById(waybill_id, meta));
+): EtsAction<EtsActionReturnType<typeof actionGetWaybillById>> => async (dispatch) => {
+  const waybillData = await dispatch(actionGetWaybillById(waybill_id, meta));
 
   dispatch(
     actionSetDependenceWaybillDataForMission(
@@ -264,7 +257,7 @@ const actionLoadOrderAndTechnicalOperationByIdForMission = (
   id: Order['id'],
   operation_id: OrderTechnicalOperation['order_operation_id'],
   meta: LoadingMeta,
-) => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionLoadOrderById>> => async (dispatch) => {
   const dependeceOrder: Order = await dispatch(actionLoadOrderById(id, meta));
 
   dispatch(
@@ -281,7 +274,7 @@ const actionLoadOrderAndTechnicalOperationByIdForMission = (
 
 const actionCreateMission = (
   missionRaw: Partial<Mission>,
-  assign_to_waybill: string[],
+  assign_to_waybill: Array<string>,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseCreateMission>> => (dispatch) => {
   return etsLoadingCounter(
@@ -307,8 +300,8 @@ const actionChangeArchiveMissionStatus = (
   return payload;
 };
 
-const actionUpdateMission = (
-  missionOld: Mission & { action_at?: string },
+export const actionUpdateMission = (
+  missionOld: Mission & { action_at?: string; },
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseUpdateMission>> => async (dispatch) => {
   const { payload } = await dispatch({
@@ -323,7 +316,7 @@ const actionUpdateMission = (
   return payload;
 };
 const actionRemoveMissions = (
-  missionOldArr: (Pick<Mission, 'id'> & Partial<Mission>)[],
+  missionOldArr: Array<Pick<Mission, 'id'> & Partial<Mission>>,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseRemoveMissions>> => async (dispatch) => {
   const { payload } = await dispatch({
@@ -337,7 +330,7 @@ const actionRemoveMissions = (
 
   return payload;
 };
-const actionRemoveMission: any = (
+const actionRemoveMission = (
   id: Mission['id'],
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseRemoveMission>> => async (dispatch) => {
@@ -353,7 +346,7 @@ const actionRemoveMission: any = (
   return payload;
 };
 
-export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionCompleteMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
   // формировать новый массив объектов
   return Promise.all(
@@ -395,14 +388,14 @@ export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta):
       ),
     );
 
-    // console.log('actionCompleteMissionById response == ', { response });
+    // console.info('actionCompleteMissionById response == ', { response });
     return response;
   }
 
   return false;
 };
 
-export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionToArchiveMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -418,7 +411,7 @@ export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id
   );
 };
 
-export const actionFromArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
+export const actionFromArchiveMissionByIds = (id: Mission['id'] | Array<Mission['id']>, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -444,7 +437,7 @@ export const actionLoadMissionData = (id: Mission['id'], meta: LoadingMeta): Ets
   return result;
 };
 
-type ActionReseSetDependenceMissionDataForMissionForm = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
+type ActionReseSetDependenceMissionDataForMissionForm = EtsAction<EtsActionReturnType<typeof actionSetMissionPartialData>>;
 const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDependenceMissionDataForMissionForm => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -462,6 +455,36 @@ const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDepend
     return missionData;
   }
 );
+
+export const actionGetMissionReassignationParameters = (payload: Parameters<typeof promiseGetMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseGetMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPostMissionReassignationParameters = (payload: Parameters<typeof promisePostMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePostMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPutMissionReassignationParameters = (payload: Parameters<typeof promisePutMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePutMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
 
 export default {
   actionSetMissionPartialData,

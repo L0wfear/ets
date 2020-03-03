@@ -21,7 +21,7 @@ export type InspectOneActScan = {
   id: number;
   name: string;
   inspection_id: number;
-  files: any[],
+  files: Array<any>;
   notes: string;
   inspection?: InspectAutobase | InspectPgmBase | InspectCarsCondition;
 };

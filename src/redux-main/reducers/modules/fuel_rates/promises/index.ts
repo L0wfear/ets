@@ -5,33 +5,39 @@ import {
   FuelOperationsService,
 } from 'api/Services';
 import {
-  IFuelRatesByCarModel,
-  IEquipmentFuelRatesByCarModel,
   FuelRate,
- } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+} from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
+import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
-export const getFuelRates = (payload = {}) => {
-  return FuelConsumptionRateService
-  .get(payload)
-  .catch((error) => {
-    // tslint:disable-next-line:no-console
-    console.warn(error);
+export const getFuelRates = (payload = {}): Promise<{ fuelRatesList: Array<FuelRate>;}> => {
+  return FuelConsumptionRateService.get(payload)
+    .catch((error) => {
+      // tslint:disable-next-line:no-console
+      console.warn(error);
 
-    return {
-      result: {
-        rows: [],
-      },
-    };
-  }).then((r) => ({ fuelRatesList: r.result.rows }));
+      return {
+        result: {
+          rows: [],
+        },
+      };
+    }).then((r) => ({ fuelRatesList: r.result.rows }));
 };
 
+type IFuelRatesByCarModel = {
+  car_id?: number | null;
+  datetime?: string | null;
+  for_equipment?: number | null;
+};
 export const getFuelRatesByCarModel = (payload: IFuelRatesByCarModel = {} ) => {
   return getFuelRates(payload);
 };
 
-export const getEquipmentFuelRatesByCarModel = (payload: IEquipmentFuelRatesByCarModel) => {
-  return getFuelRates(payload);
+export const getEquipmentFuelRatesByCarModel = (payload: IFuelRatesByCarModel) => {
+  return getFuelRatesByCarModel({
+    ...payload,
+    for_equipment: 'for_equipment' in payload ? payload.for_equipment : 1,
+  });
 };
 
 export const createFuelRate = (rate: FuelRate) => {
@@ -82,7 +88,7 @@ export const deleteFuelRate = ( id: number ) => {
   );
 };
 
-export const getFuelOperations = (payload = {}) => {
+export const getFuelOperations = (payload = {}): Promise<{ fuelRateOperations: Array<FuelOperation>; }> => {
   return FuelOperationsService
     .get(payload)
     .catch((error) => {

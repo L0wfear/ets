@@ -1,9 +1,12 @@
 import { EdcRequestInfoDetailService } from 'api/Services';
 import { get } from 'lodash';
-import { Mission } from '../../missions/mission/@types';
-import { DutyMission } from '../../missions/duty_mission/@types';
+// import { Mission } from '../../missions/mission/@types';
+// import { DutyMission } from '../../missions/duty_mission/@types';
+import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 
-export const promiseGetEdcRequestInfo = async (payload: {id: number, original: boolean}) => {
+// export type EdcRequestInfoData = (Mission | DutyMission)[];
+
+export const promiseGetEdcRequestInfo = async (payload: {id: number; original: boolean;}) => {
   let response = null;
 
   const id = get(payload, 'id', null);
@@ -15,7 +18,7 @@ export const promiseGetEdcRequestInfo = async (payload: {id: number, original: b
     response = null;
   }
 
-  const data: (Mission | DutyMission)[] = get(response, 'result.rows', []).reduce(
+  const data: Array<EdcRequestInfo> = get(response, 'result.rows', []).reduce(
     (newData, currentRequest) => {
       const missions = get(currentRequest, 'missions', []).map((mission, index) => {
         const number = get(mission, 'number', '');

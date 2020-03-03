@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
@@ -24,6 +24,9 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
       isActiveInspect,
     } = props;
 
+    const [staffing_drivers, setStaffing_drivers] = React.useState<number>(null);
+    const [staffing_mechanics, setStaffing_mechanics] = React.useState<number>(null);
+
     const handleChange = React.useCallback(
       (key, event) => {
         props.onChange({
@@ -37,23 +40,16 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
     );
 
     React.useEffect( () => {
-      let {
-        staffing_drivers,
-        staffing_mechanics,
-      } = state;
-      staffing_drivers = state.staff_drivers
-        ? Number((state.list_drivers / state.staff_drivers * 100).toFixed())
-        : staffing_drivers;
-      staffing_mechanics = state.staff_mechanics
-        ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
-        : staffing_mechanics;
-      props.onChange({
-        headcount: {
-          ...props.headcount,
-          staffing_drivers,
-          staffing_mechanics,
-        },
-      });
+      setStaffing_drivers(
+        state.staff_drivers
+          ? Number((state.list_drivers / state.staff_drivers * 100).toFixed())
+          : staffing_drivers,
+      );
+      setStaffing_mechanics(
+        state.staff_mechanics
+          ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
+          : staffing_mechanics,
+      );
     }, [state.staff_drivers, state.list_drivers, state.staff_mechanics, state.list_mechanics ]);
 
     return (
@@ -72,7 +68,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staff_drivers"
               error={errors.staff_drivers}
-              disabled
+              disabled={!isActiveInspect || !isPermitted}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -84,7 +80,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staff_mechanics"
               error={errors.staff_mechanics}
-              disabled
+              disabled={!isActiveInspect || !isPermitted}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -126,10 +122,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               id="staffing_drivers"
               type="number"
               label="Водителей, %"
-              value={state.staffing_drivers}
-              onChange={handleChange}
+              value={staffing_drivers}
               boundKeys="staffing_drivers"
-              error={errors.staffing_drivers}
               disabled
             />
           </EtsBootstrap.Col>
@@ -138,10 +132,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               id="staffing_mechanics"
               type="number"
               label="Механизаторов, %"
-              value={state.staffing_mechanics}
-              onChange={handleChange}
+              value={staffing_mechanics}
               boundKeys="staffing_mechanics"
-              error={errors.staffing_mechanics}
               disabled
             />
           </EtsBootstrap.Col>

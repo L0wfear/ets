@@ -8,7 +8,7 @@ import { getFuelRatesState } from 'redux-main/reducers/selectors';
 export type FuelRateOperationsIsActiveStructure = ValuesOf<IStateFuelRates['fuelRateOperationsIsActiveList']>;
 
 export type GetSessionModelListOptionsAns = (
-  DefaultSelectOption<FuelRateOperationsIsActiveStructure['id'], FuelRateOperationsIsActiveStructure['name'], FuelRateOperationsIsActiveStructure>[]
+  Array<DefaultSelectOption<FuelRateOperationsIsActiveStructure['id'], FuelRateOperationsIsActiveStructure['name'], FuelRateOperationsIsActiveStructure>>
 );
 
 export const getFuelRateOperationsIsActive: Selector<ReduxState, IStateFuelRates['fuelRateOperationsIsActiveList']> = (state) => (
@@ -22,5 +22,5 @@ export const getFuelRateOperationsIsActiveOptions = createSelector<ReduxState, I
     label: `${op.name}, ${op.measure_unit_name}${op.equipment ? ' [спецоборудование]' : ''}${op.is_excluding_mileage ? '[без учета пробега]' : ''}`,
     rowData: op,
   }))
-  .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())),
+    .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())),
 );

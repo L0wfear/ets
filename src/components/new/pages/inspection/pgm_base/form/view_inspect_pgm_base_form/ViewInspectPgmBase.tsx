@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
 import ViewInspectPgmBaseButtonSubmit from './button_sumbit/ViewInspectPgmBaseButtonSubmit';
 import {
@@ -6,8 +8,7 @@ import {
   filedToCheckFallHardPgm,
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
 import ContainerBlock from './container_bloc';
-import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
-import { compose } from 'recompose';
+import { ContainerForm, FooterForm, TitleForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
@@ -65,6 +66,12 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
 
     return (
       <React.Fragment>
+        <TitleForm md={12} sm={12}>
+          <h4>{props.title}</h4>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
+        </TitleForm>
         <ContainerForm>
           <EtsBootstrap.Col md={6} sm={12}>
             <BlockInspectPgmBaseMainInfo
@@ -75,6 +82,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               errors_head_balance_holder_base={errors.head_balance_holder_base}
               head_operating_base={state.head_operating_base}
               errors_head_operating_base={errors.head_operating_base}
+              inspectionState={state}
 
               onChange={props.handleChange}
 
@@ -120,9 +128,9 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
                 />
               </EtsBootstrap.Col>
             )
-            : (
-              <DivNone />
-            )
+              : (
+                <DivNone />
+              )
           }
           <EtsBootstrap.Col md={6} sm={12}>
             <BlockCarsConditionSetInspectEmployee
@@ -162,7 +170,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               id={state.id}
               registryPage={props.page}
             />
-            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>
@@ -180,9 +188,9 @@ export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseOwnProps>(
     },
     permissions: inspectPgmBasePermissions,
     schema: inspectPgmBaseSchema,
+    askBeforeCloseIfChanged: {},
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectPgmBase);

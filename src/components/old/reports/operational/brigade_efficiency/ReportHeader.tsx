@@ -12,13 +12,14 @@ import { GEOZONE_OBJECTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: Date;
   date_end: Date;
   object_type: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
@@ -46,7 +47,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end: createValidDateTime(date_end),
       object_type,
     });
-  }
+  };
   render() {
     const { readOnly } = this.props;
     const {
@@ -73,7 +74,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           <EtsBootstrap.Col md={8}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                <label htmlFor=" ">Период формирования</label>
+                <FieldLabel>
+                  Период формирования
+                </FieldLabel>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <DatePickerRange

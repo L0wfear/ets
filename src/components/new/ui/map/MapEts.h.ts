@@ -2,25 +2,31 @@ import Map from 'ol/Map';
 import View, { FitOptions, ViewOptions } from 'ol/View';
 import { Extent } from 'ol/extent';
 
-import {
-  SetMapToContextType,
-  RemoveMapToContextType,
-} from 'components/new/ui/map/context/MapetsContext.h';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { SetMapToContextType, RemoveMapToContextType } from 'components/new/ui/map/context/MapetsContext.h';
 
 export type StateMapEts = {
-  map: Map,
+  map: Map;
   center: [number, number];
-  zoom: number,
+  zoom: number;
 
   centerOn: any;
   enableInteractions: boolean;
 };
 
-export type PropsMapEts = {
-  center: [number, number];
-  zoom: number,
+export type StateProps = {
+  userData: InitialStateSession['userData'];
+  zoom: InitialStateSession['userData']['map_config']['zoom'];
+  center: InitialStateSession['userData']['map_config']['coordinates'];
+};
+export type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+export type OwnProps = {
   enableInteractions: boolean;
-  children(props: StateMapEts): React.ReactNode,
+  children(props: StateMapEts): React.ReactNode;
   disabledCenterOn?: boolean;
   disabledMousePointerMove?: boolean;
   disabledMouseSingleClick?: boolean;
@@ -31,18 +37,24 @@ export type PropsMapEts = {
   rotationAngle?: number;
 };
 
+export type PropsMapEts = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
 export namespace MapUtils {
   export type getViewFunc = (
     props: ViewOptions,
   ) => View;
 
   export type getMapViewFunc = (
-    center: number[],
+    center: Array<number>,
     zoom: number,
   ) => View;
 
   export type getMapFunc = (
-    center: number[],
+    center: Array<number>,
     zoom?: number,
   ) => Map;
 
@@ -63,7 +75,7 @@ export namespace MapUtils {
   ) => defaultRetValType;
 
   export type calcChangedDataFunc = (
-    dataArr: defaultRetValType[],
+    dataArr: Array<defaultRetValType>,
   ) => defaultRetValType;
 
   export type triggerFuncOnNewPRopsInMapEtsFunc = (
@@ -73,12 +85,12 @@ export namespace MapUtils {
 
   export type checkOnHitByEventFunc = (
     map: Map,
-    pixel: number[],
+    pixel: Array<number>,
   ) => boolean;
 
   export type olEvent = {
     map: Map;
-    pixel: number[];
+    pixel: Array<number>;
   };
 
   export type mousePointerMoveFunc = (
@@ -99,8 +111,8 @@ export namespace MapUtils {
     map: Map,
     disabledCenterOn: boolean,
     fitProps: {
-      extent: Extent,
-      opt_options: FitOptions,
+      extent: Extent;
+      opt_options: FitOptions;
     },
     noCheckDisabledCenterOn?: boolean,
   ) => boolean;

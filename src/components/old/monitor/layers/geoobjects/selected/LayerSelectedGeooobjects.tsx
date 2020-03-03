@@ -15,7 +15,7 @@ import {
 
 class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeooobjects, StateLayerSelectedGeooobjects> {
   componentDidMount() {
-    this.props.addLayer({ id: 'SelectedGeoObject', zIndex: 1, renderMode: 'vector' }).then(() => {
+    this.props.addLayer({ id: 'SelectedGeoObject', zIndex: 1, renderMode: 'hybrid' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       renderGeoobjects(this.props.selectedGeoobjects, this.props.selectedGeoobjects, this.props);
@@ -37,7 +37,7 @@ class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeo
       feature.get('serverName'),
       (feature as any).getId(),
     );
-  }
+  };
 
   render() {
     return <div></div>;

@@ -34,11 +34,11 @@ export const makeLabelForMissionCarOption = (carData: Partial<Car> & Pick<Car, '
 export const makeOptionsForMission = (
   memoize(
     (
-      carList: Car[],
+      carList: Array<Car>,
       structure_id: Mission['structure_id'],
       withCheckAvailableToBind?: boolean,
     ) => (
-      carList.reduce<DefaultSelectOption<Car['asuods_id'], string, Partial<Car>>[]>((newArr, carData) => {
+      carList.reduce<Array<DefaultSelectOption<Car['asuods_id'], string, Partial<Car>>>>((newArr, carData) => {
         if (!structure_id || carData.is_common || carData.company_structure_id === structure_id) {
           if (!withCheckAvailableToBind || carData.available_to_bind) {
             newArr.push({

@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import Registry from 'components/new/ui/registry/components/Registry';
 import CarFuncTypesFormWrap from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/CarFuncTypesFormWrap';
@@ -7,27 +8,20 @@ import {
   registryKey,
   config,
 } from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data/registry-config';
+import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-import {
-  PropsCarFuncTypes,
-  StateCarFuncTypes,
-} from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypes.h';
+type OwnProps = {};
 
-class CarFuncTypes extends React.Component<PropsCarFuncTypes, StateCarFuncTypes> {
-  render() {
+const CarFuncTypesList: React.FC<OwnProps> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <CarFuncTypesFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <Registry registryKey={registryKey}>
+        <CarFuncTypesFormWrap registryKey={registryKey} />
+      </Registry>
     );
-  }
-}
+  },
+);
 
-export default withRegistry<any>(
+export default withRegistry<CarFuncTypes, OwnProps>(
   config,
-)(CarFuncTypes);
+)(CarFuncTypesList);

@@ -11,21 +11,21 @@ import { compose } from 'recompose';
 import { getStyleForStatusDirectionType } from 'components/old/monitor/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 import {
-  carInfoSetStatus,
   carInfoPushPointIntoTrack,
+  carInfoSetStatus,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { CAR_INFO_SET_TRACK_CACHING } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import {
-  monitoPageChangeCarsByStatus,
-  monitorPageResetCarStatus,
+  monitorPageChangeCarsByStatus,
   monitorPageMergeFiltredCarGpsCode,
+  monitorPageResetCarStatus,
 } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import {
-  getFrontStatus,
-  checkOnVisible,
   calcCountTsByStatus,
+  checkOnVisible,
+  getFrontStatus,
 } from 'components/old/monitor/layers/car-markers/utils';
 
 import {
@@ -43,16 +43,28 @@ const MIN_ZOOM_VAL = 3;
 
 global.toggleUpdateCarPoints = () => (updatePoints = !updatePoints);
 
-class LayerCarMarker extends React.PureComponent<
-  PropsLayerCarMarker,
-  StateLayerCarMarker
-> {
-  state = {
+const defaultFilters = {
+  carFilterMultyOwner: [],
+  carFilterMultyStructure: [],
+  carFilterMultyType: [],
+  carFilterText: '',
+  featureBufferPolygon: null,
+};
+
+const defaultStatusShow = {
+  in_move: true,
+  not_in_touch: true,
+  parking: true,
+  stop: true,
+};
+
+class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayerCarMarker> {
+  public readonly state = {
     ws: null,
     carPointsDataWs: {},
   };
 
-  componentDidMount() {
+  public componentDidMount(): void {
     this.props
       .addLayer({ id: 'CarMarker', zIndex: 10, renderMode: 'image' })
       .then(() => {
@@ -61,7 +73,7 @@ class LayerCarMarker extends React.PureComponent<
     this.openWs();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  public componentDidUpdate(prevProps): void { // handleClick cars
     const { gps_code: prev_gps_code } = prevProps;
 
     if (updatePoints) {
@@ -157,13 +169,13 @@ class LayerCarMarker extends React.PureComponent<
         }
       }
 
-      const tgiggerOnChangeStyleForAllCars =
-        carActualGpsNumberIndex !== prevProps.carActualGpsNumberIndex || // для фильтрации (тс должна быть с списке и для гаражного номер)
-        zoomMore8 !== prevZoomMore8 || // размер иконок на 8 зуме
-        minZoom !== prevMinZoom || // максимальное отдоление карты
-        STATUS_SHOW_GOV_NUMBER !== prevProps.STATUS_SHOW_GOV_NUMBER || // (не)отображение гаражного номера
-        statusShow !== prevProps.statusShow || // Отображение иконок по статусу ТС (Активен, стоянка ...)
-        filters !== prevProps.filters; // отображение ТС по фильтрам
+      const tgiggerOnChangeStyleForAllCars
+        = carActualGpsNumberIndex !== prevProps.carActualGpsNumberIndex // для фильтрации (тс должна быть с списке и для гаражного номер)
+        || zoomMore8 !== prevZoomMore8 // размер иконок на 8 зуме
+        || minZoom !== prevMinZoom // максимальное отдоление карты
+        || STATUS_SHOW_GOV_NUMBER !== prevProps.STATUS_SHOW_GOV_NUMBER // (не)отображение гаражного номера
+        || statusShow !== prevProps.statusShow // Отображение иконок по статусу ТС (Активен, стоянка ...)
+        || filters !== prevProps.filters; // отображение ТС по фильтрам
 
       if (tgiggerOnChangeStyleForAllCars) {
         // для фильтрации (тс должна быть с списке и для гаражного номер)
@@ -172,10 +184,10 @@ class LayerCarMarker extends React.PureComponent<
       }
 
       if (
-        gps_code &&
-        lastPoint !== prevProps.lastPoint &&
-        this.props.forToday &&
-        !isEmpty(odh_mkad)
+        gps_code
+        && lastPoint !== prevProps.lastPoint
+        && this.props.forToday
+        && !isEmpty(odh_mkad)
         && this.state.carPointsDataWs[gps_code]
       ) {
         const {
@@ -230,13 +242,13 @@ class LayerCarMarker extends React.PureComponent<
     }
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.props.removeLayer();
     this.props.monitorPageResetCarStatus();
     this.closeWs();
   }
 
-  changeStyle({
+  private changeStyle({
     carPointsDataWs,
     zoomMore8,
     gps_code: state_gps_code,
@@ -246,7 +258,7 @@ class LayerCarMarker extends React.PureComponent<
     carActualGpsNumberIndex,
     old_carPointsDataWs,
     minZoom,
-  }) {
+  }): void {
     const filtredCarGpsCode = {};
     let hasDiffInFiltredCarGpsCode = false;
     const newCarPointsDataWs = {};
@@ -263,14 +275,28 @@ class LayerCarMarker extends React.PureComponent<
           }
           const selected = gps_code === state_gps_code;
 
-          const visible =
-            selected ||
-            checkOnVisible(
+          const visibleWithoutFilters = selected
+          || checkOnVisible(
+            {
+              car_actualData: carActualGpsNumberIndex[gps_code],
+              filters: defaultFilters,
+              statusShow: defaultStatusShow,
+              wsData: carPointsDataWs[gps_code],
+            },
+            gps_code,
+          );
+          carPointsDataWs[gps_code].visibleWithoutFilters = visibleWithoutFilters;
+
+          data.visibleWithoutFilters = visibleWithoutFilters;
+
+          const visible
+            = selected
+            || checkOnVisible(
               {
-                filters,
-                wsData: carPointsDataWs[gps_code],
-                statusShow,
                 car_actualData: carActualGpsNumberIndex[gps_code],
+                filters,
+                statusShow,
+                wsData: carPointsDataWs[gps_code],
               },
               gps_code,
             );
@@ -319,7 +345,7 @@ class LayerCarMarker extends React.PureComponent<
         ...newCarPointsDataWs,
       };
 
-      this.props.monitoPageChangeCarsByStatus(calcCountTsByStatus(newObj));
+      this.props.monitorPageChangeCarsByStatus(calcCountTsByStatus(newObj, this.props.carActualGpsCount));
 
       return {
         carPointsDataWs: newObj,
@@ -331,7 +357,7 @@ class LayerCarMarker extends React.PureComponent<
     }
   }
 
-  openWs() {
+  private openWs(): void {
     const { points_ws } = this.props;
 
     let token = null;
@@ -349,7 +375,7 @@ class LayerCarMarker extends React.PureComponent<
     const ws = new ReconnectingWebSocket(wsUrl, null);
 
     ws.onmessage = ({ data }) => {
-      this.handleReveiveData(JSON.parse(data), this.props.statusShow);
+      this.handleReviewData(JSON.parse(data) as WsData, this.props.statusShow);
     };
 
     ws.onclose = (event) => {
@@ -368,14 +394,14 @@ class LayerCarMarker extends React.PureComponent<
     this.setState({ ws });
   }
 
-  closeWs() {
+  private closeWs(): void {
     if (this.state.ws) {
       this.state.ws.close();
       this.setState({ ws: null });
     }
   }
 
-  handleReveiveData(data: WsData, statusShow) {
+  private handleReviewData(data: WsData, statusShow: PropsLayerCarMarker['statusShow']): void {
     if (updatePoints) {
       const {
         gps_code: state_gps_code,
@@ -385,8 +411,9 @@ class LayerCarMarker extends React.PureComponent<
         zoom,
         odh_mkad,
         filters,
+        carActualGpsCount,
       } = this.props;
-
+      
       const zoomMore8 = zoom > 8;
       const { carPointsDataWs } = this.state;
 
@@ -404,10 +431,10 @@ class LayerCarMarker extends React.PureComponent<
           };
 
           if (
-            this.props.forToday &&
-            gps_code === state_gps_code &&
-            lastPoint !== -1 &&
-            lastPoint
+            this.props.forToday
+            && gps_code === state_gps_code
+            && lastPoint !== -1
+            && lastPoint
           ) {
             if (lastPoint.timestamp > point.timestamp) {
               point = {
@@ -415,8 +442,8 @@ class LayerCarMarker extends React.PureComponent<
                 ...lastPoint,
               };
             } else if (
-              lastPoint.timestamp < point.timestamp &&
-              !isEmpty(odh_mkad)
+              lastPoint.timestamp < point.timestamp
+              && !isEmpty(odh_mkad)
             ) {
               this.props.carInfoPushPointIntoTrack(point, odh_mkad);
             }
@@ -430,17 +457,30 @@ class LayerCarMarker extends React.PureComponent<
             });
             const selected = gps_code === state_gps_code;
 
-            const visible =
-              selected ||
-              checkOnVisible(
+            const visibleWithoutFilters = selected
+              || checkOnVisible(
                 {
-                  filters,
-                  wsData: carPointsDataWs[gps_code],
-                  statusShow,
                   car_actualData: carActualGpsNumberIndex[gps_code],
+                  filters: defaultFilters,
+                  statusShow: defaultStatusShow,
+                  wsData: carPointsDataWs[gps_code]
                 },
                 gps_code,
               );
+            carPointsDataWs[gps_code].visibleWithoutFilters = visibleWithoutFilters;
+
+            const visible
+              = selected
+              || checkOnVisible(
+                {
+                  car_actualData: carActualGpsNumberIndex[gps_code],
+                  filters,
+                  statusShow,
+                  wsData: carPointsDataWs[gps_code]
+                },
+                gps_code,
+              );
+
             carPointsDataWs[gps_code].visible = visible;
 
             if (visible) {
@@ -500,17 +540,30 @@ class LayerCarMarker extends React.PureComponent<
             const old_visible = feature.get('visible');
             const selected = gps_code === state_gps_code;
 
-            const visible =
-              selected ||
-              checkOnVisible(
+            const visible
+              = selected
+              || checkOnVisible(
                 {
-                  filters,
-                  wsData: carPointsDataWs[gps_code],
-                  statusShow,
                   car_actualData: carActualGpsNumberIndex[gps_code],
+                  filters,
+                  statusShow,
+                  wsData: carPointsDataWs[gps_code],
                 },
                 gps_code,
               );
+
+            const visibleWithoutFilters = selected
+              || checkOnVisible(
+                {
+                  car_actualData: carActualGpsNumberIndex[gps_code],
+                  filters: defaultFilters,
+                  statusShow: defaultStatusShow,
+                  wsData: carPointsDataWs[gps_code],
+                },
+                gps_code,
+              );
+            carPointsDataWs[gps_code].visibleWithoutFilters = visibleWithoutFilters;
+
             carPointsDataWs[gps_code].visible = visible;
 
             if (visible) {
@@ -554,8 +607,8 @@ class LayerCarMarker extends React.PureComponent<
         },
       );
 
-      this.props.monitoPageChangeCarsByStatus(
-        calcCountTsByStatus(carPointsDataWs),
+      this.props.monitorPageChangeCarsByStatus(
+        calcCountTsByStatus(carPointsDataWs, carActualGpsCount),
       );
 
       if (hasDiffInFiltredCarGpsCode) {
@@ -566,7 +619,7 @@ class LayerCarMarker extends React.PureComponent<
     }
   }
 
-  singleclick = (feature) => {
+  private readonly singleclick = (feature): void => {
     const gps_code = (feature as any).getId();
     if (gps_code !== this.props.gps_code) {
       this.props.setParams({
@@ -575,7 +628,7 @@ class LayerCarMarker extends React.PureComponent<
     }
   };
 
-  render() {
+  public render(): JSX.Element {
     return <div />;
   }
 }
@@ -585,10 +638,11 @@ const mapStateToProps = (state: ReduxState) => ({
   points_ws: getSessionState(state).appConfig.points_ws,
   gps_code: state.monitorPage.carInfo.gps_code,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
+  carActualGpsCount: state.monitorPage.carActualGpsCount,
   STATUS_SHOW_GOV_NUMBER: state.monitorPage.SHOW_GOV_NUMBER,
   lastPoint:
-    state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING) ||
-    state.monitorPage.carInfo.trackCaching.track === -1
+    state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
+    || state.monitorPage.carInfo.trackCaching.track === -1
       ? false
       : state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null,
   forToday: state.monitorPage.carInfo.forToday,
@@ -606,8 +660,8 @@ const mapDispatchToProps = (dispatch) => ({
   carInfoPushPointIntoTrack(point, odh_mkad) {
     dispatch(carInfoPushPointIntoTrack(point, odh_mkad));
   },
-  monitoPageChangeCarsByStatus: (carsByStatus) =>
-    dispatch(monitoPageChangeCarsByStatus(carsByStatus)),
+  monitorPageChangeCarsByStatus: (carsByStatus) =>
+    dispatch(monitorPageChangeCarsByStatus(carsByStatus)),
   monitorPageResetCarStatus: () => dispatch(monitorPageResetCarStatus()),
   monitorPageMergeFiltredCarGpsCode: (filtredCarGpsCode) => {
     dispatch(monitorPageMergeFiltredCarGpsCode(filtredCarGpsCode));

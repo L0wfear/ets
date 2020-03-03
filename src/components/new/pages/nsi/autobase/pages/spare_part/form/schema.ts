@@ -50,22 +50,22 @@ export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
               return ({
                 car_id: (
                   !d.car_id
-                  ? 'Поле "Рег. номер ТС" должно быть заполнено'
-                  : ''
+                    ? 'Поле "Рег. номер ТС" должно быть заполнено'
+                    : ''
                 ),
                 count_part: (
                   !d.count_part
-                  ? 'Поле "Количество" должно быть заполнено'
-                  : !Number.isInteger(Number(d.count_part))
-                    ? '"Количество" должно быть целым числом'
-                    : d.count_part < 1
-                      ? '"Количество" должно быть больше 0'
-                      : ''
+                    ? 'Поле "Количество" должно быть заполнено'
+                    : !Number.isInteger(Number(d.count_part))
+                      ? '"Количество" должно быть целым числом'
+                      : d.count_part < 1
+                        ? '"Количество" должно быть больше 0'
+                        : ''
                 ),
                 installed_at: (
                   !d.installed_at
-                  ? 'Поле "Дата монтажа" должно быть заполнено'
-                  : ''
+                    ? 'Поле "Дата монтажа" должно быть заполнено'
+                    : ''
                 ),
                 uninstalled_at: (
                   !d.uninstalled_at && index
@@ -78,7 +78,7 @@ export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
                 ),
               });
             },
-          );
+            );
           },
         ),
       ],

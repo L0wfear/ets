@@ -2,13 +2,11 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { isNullOrUndefined } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { repairFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/schema';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { getDefaultRepairElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/utils';
@@ -19,7 +17,6 @@ import {
   PropsRepair,
   StateRepair,
   StatePropsRepair,
-  DispatchPropsRepair,
   PropsRepairWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/@types/RepairForm';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -29,14 +26,17 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import repairPermissions from '../_config-data/permissions';
+import { autobaseGetSetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
+import { autobaseGetSetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/actions';
+import { autobaseCreateRepair, autobaseUpdateRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/actions';
 
 const statusOptions = Object.entries(AUTOBASE_REPAIR_STATUS)
-.filter(([, value]) => !value.disabled)
-.map(([key, value]) => ({
-  value: key,
-  label: value.name,
-  rowData: null,
-}));
+  .filter(([, value]) => !value.disabled)
+  .map(([key, value]) => ({
+    value: key,
+    label: value.name,
+    rowData: null,
+  }));
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
@@ -50,15 +50,25 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   }
   async loadRepairCompany() {
     const {
-      payload: { data },
-    } = await this.props.autobaseGetRepairCompany();
+      data,
+    } = await this.props.dispatch(
+      autobaseGetSetRepairCompany(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ repairCompanyOptions: data.map(defaultSelectListMapper) });
   }
   async loadRepairType() {
     const {
-      payload: { data },
-    } = await this.props.autobaseGetRepairType();
+      data,
+    } = await this.props.dispatch(
+      autobaseGetSetRepairType(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
@@ -70,20 +80,11 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
 
       page,
       path,
+      IS_CREATING,
+      isPermitted,
     } = this.props;
 
-    const IS_CREATING = !state.id;
-
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
-
-    const isPermitted =
-      ownIsPermitted &&
-      (isNullOrUndefined(state.company_id) ||
-        state.can_edit ||
-        state.company_id === this.props.userCompanyId);
 
     const value_string_repair = get(AUTOBASE_REPAIR_STATUS[state.status], 'name') || null;
 
@@ -92,7 +93,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         id="modal-repair"
         show
         onHide={this.props.hideWithoutChanges}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -255,25 +256,15 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
 }
 
 export default compose<PropsRepair, OwnRepairProps>(
-  connect<StatePropsRepair, DispatchPropsRepair, OwnRepairProps, ReduxState>(
+  connect<StatePropsRepair, {}, OwnRepairProps, ReduxState>(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
-    }),
-    (dispatch: any, { page, path }) => ({
-      autobaseGetRepairCompany: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRepairCompany({}, { page, path }),
-        )
-      ),
-      autobaseGetRepairType: () => (
-        dispatch(autobaseActions.autobaseGetSetRepairType({}, { page, path }))
-      ),
     }),
   ),
   withForm<PropsRepairWithForm, Repair>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateRepair,
-    updateAction: autobaseActions.autobaseUpdateRepair,
+    createAction: autobaseCreateRepair,
+    updateAction: autobaseUpdateRepair,
     mergeElement: (props) => {
       return getDefaultRepairElement(props.element);
     },

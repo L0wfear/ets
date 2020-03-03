@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionPgmBaseSelectCarpoolStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
@@ -26,7 +26,7 @@ type SelectPgmBaseCompanyProps = (
   & WithSearchProps
 );
 
-const filterCompanyByOkrug = (companyList: Company[], okrugId: number) => (
+const filterCompanyByOkrug = (companyList: Array<Company>, okrugId: number) => (
   companyList.filter(({ okrug_id }) => okrug_id === okrugId)
 );
 
@@ -89,28 +89,28 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={1} sm={1}>
-          <h5>
+      <SelectLabel md={3} sm={1}>
+        <h5>
             Организация
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={companyId}
-            options={companyOptions}
-            onChange={setCompanyId}
-            clearable={false}
-            disabled={!okrugId}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={companyId}
+          options={companyOptions}
+          onChange={setCompanyId}
+          clearable={false}
+          disabled={!okrugId}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

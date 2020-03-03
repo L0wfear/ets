@@ -83,13 +83,14 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
                 ...dutyMissionTamplate,
                 ...props.formState,
                 status: 'not_assigned', // зачем-то
+                consumable_materials: null,
               },
             )
           )),
         );
 
         if (response.every((ans) => Boolean(ans))) {
-          props.handleHide(true, response);
+          props.handleHide(true, response as any);
         }
       }
     },

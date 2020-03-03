@@ -3,8 +3,8 @@ import { ThemeProvider } from 'styled-components';
 import etsThemes from 'components/new/ui/@bootstrap/@themes/etsThemes';
 
 type EtsThemeContextValue = {
-  changeThemeName: (name: keyof typeof etsThemes) => void,
-  themeName: keyof typeof etsThemes,
+  changeThemeName: (name: keyof typeof etsThemes) => void;
+  themeName: keyof typeof etsThemes;
 };
 
 const defaultEtsThemeContext: EtsThemeContextValue = {

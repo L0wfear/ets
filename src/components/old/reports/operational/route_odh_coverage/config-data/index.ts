@@ -5,7 +5,7 @@ export default {
   path: '/route-odh-coverage-report',
   title: 'Покрытие ОДХ маршрутами',
   entyity: 'route_odh_coverage_report',
-  noDotList: false,
+
   hiddenNav: process.env.STAND === 'prod',
   component,
   permissions,

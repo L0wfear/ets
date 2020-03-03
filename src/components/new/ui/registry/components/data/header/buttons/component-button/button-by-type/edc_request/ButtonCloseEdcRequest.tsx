@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCloseEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -20,11 +21,9 @@ type ButtonCloseEdcRequestStateProps = {
 type ButtonCloseEdcRequestDispatchProps = {
   actionCloseEdcRequestById: HandleThunkActionCreator<typeof edcRequestActions.actionCloseEdcRequestById>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonCloseEdcRequestOwnProps = {
-  registryKey: string;
-};
+type ButtonCloseEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCloseEdcRequestMergeProps = {};
 
 type ButtonCloseEdcRequestProps = (
@@ -66,7 +65,7 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
 };
 
 export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: edcRequestPermissions.update,
   }),
   connect<ButtonCloseEdcRequestStateProps, ButtonCloseEdcRequestDispatchProps, ButtonCloseEdcRequestOwnProps, ReduxState>(

@@ -13,13 +13,16 @@ import { createValidDate } from 'components/@next/@utils/dates/dates';
 import {
   Employee,
 } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { EmployeeBindedToCarService } from 'api/Services';
+import { EmployeeBindedToCar } from 'components/new/utils/context/loading/@types/by_service/employee_binded_to_car';
 
 export const getEmployee = employeeLoadEmployee;
 export const createEmployee = employeeCreateEmployee;
 export const updateEmployee = employeeUpdateEmployee;
 export const removeEmployee = employeeDeleteEmployee;
 
-export const getFrontEmployee = (row) => {
+export const getFrontEmployee = (row: Employee) => {
   const files = get(row, 'files', []);
 
   row.driver_license_files = files.filter((file) => file.kind === 'driver_license');
@@ -49,7 +52,7 @@ const makeFilesToBackendOne = (formState: Employee) => {
 
 export const getSetEmployee = async (...payload) => {
   const { data: rawData } = await getEmployee(...payload);
-  const data = rawData.map(getFrontEmployee);
+  const data: Array<Employee> = rawData.map(getFrontEmployee);
 
   return {
     data,
@@ -84,4 +87,17 @@ export const removeSetEmployee = (id) => {
   return removeEmployee(
     id,
   );
+};
+
+export const promsieGetEmployeeBindedToCarService = async (payload: { asuods_id: Car['asuods_id']; }) => {
+  let response = null;
+
+  try {
+    response = await EmployeeBindedToCarService.path(payload.asuods_id).get();
+  } catch {
+    //
+  }
+
+  const result: Array<EmployeeBindedToCar> = get(response, 'result.rows') || [];
+  return result;
 };

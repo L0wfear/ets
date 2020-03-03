@@ -12,7 +12,7 @@ export const promiseGetMissionSource = async (payload: object) => {
     response = null;
   }
 
-  const data: MissionSource[] = get(response, ['result', 'rows'], []);
+  const data: Array<MissionSource> = get(response, ['result', 'rows'], []);
 
   return {
     data,

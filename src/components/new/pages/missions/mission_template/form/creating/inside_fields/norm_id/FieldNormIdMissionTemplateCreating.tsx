@@ -2,18 +2,39 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { ReduxState } from 'redux-main/@types/state';
-import {
-  PropsFieldNormIdMissionTemplateCreating,
-  StatePropsFieldNormIdMissionTemplateCreating,
-  DispatchPropsFieldNormIdMissionTemplateCreating,
-  OwnPropsFieldNormIdMissionTemplateCreating,
-  StateFieldNormIdMissionTemplateCreating,
-} from 'components/new/pages/missions/mission_template/form/creating/inside_fields/norm_id/FieldNormIdMissionTemplateCreating.d';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 
-class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldNormIdMissionTemplateCreating, StateFieldNormIdMissionTemplateCreating> {
+import {
+  PropsMissionTemplateCreatingForm,
+  MissionTemplateCreating,
+} from '../../@types/MissionTemplateCreatingForm';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
+
+type StateProps = {
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+type OwnProps = {
+  date_start: MissionTemplateCreating['date_start'];
+  missionTemplates: MissionTemplateCreating['missionTemplates'];
+  onChange: PropsMissionTemplateCreatingForm['handleChange'];
+
+  page: string;
+  path: string;
+};
+
+type PropsFieldNormIdMissionTemplateCreating = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldNormIdMissionTemplateCreating, {}> {
   componentDidMount() {
     this.updateNormId();
   }
@@ -36,9 +57,6 @@ class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldN
     const {
       date_start,
       missionTemplates,
-
-      page,
-      path,
     } = this.props;
 
     const hasAllData = Boolean(date_start);
@@ -48,19 +66,18 @@ class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldN
         Object.entries(missionTemplates).map(async ([key, missionData]) => {
           const normData = await Promise.all(
             missionData.car_type_ids.map((func_type_id) => {
-              return this.props.actionLoadCleaningOneNorm(
-                {
-                  datetime: createValidDateTime(date_start),
-                  technical_operation_id: missionData.technical_operation_id,
-                  municipal_facility_id: missionData.municipal_facility_id,
-                  route_type: missionData.route_type,
-                  needs_brigade: false,
-                  func_type_id,
-                },
-                {
-                  page,
-                  path,
-                },
+              return this.props.dispatch(
+                actionLoadCleaningOneNorm(
+                  getValidOneNormPayload({
+                    datetime: createValidDateTime(date_start),
+                    technical_operation_id: missionData.technical_operation_id,
+                    municipal_facility_id: missionData.municipal_facility_id,
+                    route_type: missionData.route_type,
+                    needs_brigade: false,
+                    func_type_id,
+                  }),
+                  this.props,
+                ),
               );
             }),
           );
@@ -110,10 +127,6 @@ class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldN
   }
 }
 
-export default connect<StatePropsFieldNormIdMissionTemplateCreating, DispatchPropsFieldNormIdMissionTemplateCreating, OwnPropsFieldNormIdMissionTemplateCreating, ReduxState>(
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   null,
-  (dispatch: any) => ({
-    actionLoadCleaningOneNorm: (...arg) =>
-      dispatch(someUniqActions.actionLoadCleaningOneNorm(...arg)),
-  }),
 )(FieldNormIdMissionTemplateCreating);

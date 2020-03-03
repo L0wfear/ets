@@ -1,7 +1,7 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 export const getDefaultWaybill = (company_id): Waybill => ({
   accompanying_person_id: null,
@@ -35,6 +35,8 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   downtime_hours_work: null,
   driver_id: null,
   driver_fio: '',
+  driver_name: '',
+  delete: false,
   equipment_fact_fuel_end: null,
   equipment_fuel: null,
   equipment_fuel_end: null,
@@ -70,6 +72,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   plan_departure_date: createValidDateTime(getDateWithMoscowTz()),
   sensor_consumption: null,
   status: 'draft',
+  status_text: '',
   structure_id: null,
   structure_name: '',
   tax_data: [],
@@ -87,6 +90,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   work_mode_id: null,
   work_mode_name: '',
   work_mode_text: '',
+  hasEquipmentFuelRates: null,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

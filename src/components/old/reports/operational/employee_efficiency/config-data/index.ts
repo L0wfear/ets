@@ -5,7 +5,7 @@ export default {
   path: '/employee-efficiency-report',
   title: 'Работа сотрудников по ручной уборке',
   entyity: 'employee_efficiency_report',
-  noDotList: false,
+
   component,
   permissions,
 };

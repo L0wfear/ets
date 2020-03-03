@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -10,12 +10,13 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionFailDutyMissionByPartialData } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { DivNone } from 'global-styled/global-styled';
 import DutyMissionFailForm from './form/DutyMissionFailForm';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonFailDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -25,11 +26,9 @@ type ButtonFailDutyMissionStateProps = {
 type ButtonFailDutyMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionFailDutyMissionByPartialData: HandleThunkActionCreator<typeof actionFailDutyMissionByPartialData>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonFailDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonFailDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailDutyMissionMergeProps = {};
 
 type ButtonFailDutyMissionProps = (
@@ -40,7 +39,7 @@ type ButtonFailDutyMissionProps = (
 );
 
 const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
-  const [missionsFail, setMissionsFail] = React.useState<DutyMission[]>([]);
+  const [missionsFail, setMissionsFail] = React.useState<Array<DutyMission>>([]);
   const [edcRequestIds, setEdcRequestIds] = React.useState(null);
   const requestFormHide = React.useCallback(
     () => {
@@ -82,7 +81,7 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
   const handleSubmit = React.useCallback(
     async (partialDutyMission) => {
       try {
-        const response = await props.actionFailDutyMissionByPartialData(partialDutyMission);
+        const response = await props.actionFailDutyMissionByPartialData(partialDutyMission, { page: props.registryKey });
         const { request_id, request_number, close_request } = response;
 
         const successEdcRequestIds = close_request
@@ -145,12 +144,12 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
 };
 
 export default compose<ButtonFailDutyMissionProps, ButtonFailDutyMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonFailDutyMissionStateProps, ButtonFailDutyMissionDispatchProps, ButtonFailDutyMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

@@ -7,9 +7,9 @@ export default {
   path: '/nsi/autobase/types',
   routePath: `/nsi/autobase/types/:${config.list.data.uniqKeyForParams}?`,
   title: 'Типы техники',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'type',
-  noDotList: false,
+
   component,
   permissions,
 };

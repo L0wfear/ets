@@ -11,12 +11,12 @@ import olInteractionDraw from 'ol/interaction/Draw';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 type PropsLayerLayerDraw = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
   map: Map;
   initCallback?: any;
 
@@ -25,7 +25,7 @@ type PropsLayerLayerDraw = {
   handleEndDraw: any;
   handleStartDraw?: any;
 
-  styles: Style | Style[];
+  styles: Style | Array<Style>;
 };
 
 type StateLayerLayerDraw = {

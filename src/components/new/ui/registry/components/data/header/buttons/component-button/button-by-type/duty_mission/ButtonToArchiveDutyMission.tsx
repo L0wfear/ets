@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -10,10 +10,11 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionToArchiveDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonToArchiveDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -23,11 +24,9 @@ type ButtonToArchiveDutyMissionStateProps = {
 type ButtonToArchiveDutyMissionDispatchProps = {
   actionToArchiveDutyMissionByIds: HandleThunkActionCreator<typeof actionToArchiveDutyMissionByIds>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonToArchiveDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonToArchiveDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonToArchiveDutyMissionMergeProps = {};
 
 type ButtonToArchiveDutyMissionProps = (
@@ -64,7 +63,7 @@ const ButtonToArchiveDutyMission: React.FC<ButtonToArchiveDutyMissionProps> = (p
       const itemToArchiveAsArray = Object.values(itemToArchive);
 
       try {
-        await props.actionToArchiveDutyMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id));
+        await props.actionToArchiveDutyMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
       } catch (error) {
         console.error(error); // tslint:disable-line
         //
@@ -112,12 +111,12 @@ const ButtonToArchiveDutyMission: React.FC<ButtonToArchiveDutyMissionProps> = (p
 };
 
 export default compose<ButtonToArchiveDutyMissionProps, ButtonToArchiveDutyMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonToArchiveDutyMissionStateProps, ButtonToArchiveDutyMissionDispatchProps, ButtonToArchiveDutyMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

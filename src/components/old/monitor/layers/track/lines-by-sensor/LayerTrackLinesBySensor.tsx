@@ -11,13 +11,13 @@ import { get } from 'lodash';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 type PropsLayerTrackLines = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
   lastPoint: any;
   front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   SHOW_TRACK: boolean;
@@ -94,7 +94,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
           linePoints = [
             track[0],
           ];
-
+  
           lastStatus = countWorkSensor(linePoints[0], front_cars_sensors_equipment);
         } else {
           const currPoint = track[index];

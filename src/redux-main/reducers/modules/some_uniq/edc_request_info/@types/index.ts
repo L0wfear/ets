@@ -36,7 +36,7 @@ export type EdcDutyMissionData = {
 
 export type EdcRequestInfo = {
   edc_date: string; // create_date из заявки
-  missions: (
+  missions: Array<
     {
       front_custom_id: number;          // <<< Руками в промисе promiseGetEdcRequestInfo index + 1;
       mission_title: string;            // <<< Руками в промисе promiseGetEdcRequestInfo
@@ -44,5 +44,5 @@ export type EdcRequestInfo = {
       EdcMissionData
       | EdcDutyMissionData
     )
-  )[]
+  >;
 };

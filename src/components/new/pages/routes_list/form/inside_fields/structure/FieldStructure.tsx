@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Flex, DivNone } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldStructure,
@@ -11,7 +11,7 @@ import {
   DispatchPropsFieldStructure,
   OwnPropsFieldStructure,
 } from 'components/new/pages/routes_list/form/inside_fields/structure/FieldStructure.d';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import { getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
 class FieldStructure extends React.PureComponent<PropsFieldStructure, StateFieldStructure> {
   constructor(props) {
@@ -52,9 +52,14 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
   }
 
   async getCompanyStructure() {
-    const { companyStructureLinearList } = await this.props.getAndSetInStoreCompanyStructureLinear();
+    const result = await this.props.dispatch(
+      getAndSetInStoreCompanyStructureLinear(
+        {},
+        this.props,
+      ),
+    );
 
-    const STRUCTURE_OPTIONS = companyStructureLinearList.map((structure) => ({
+    const STRUCTURE_OPTIONS = result.data.map((structure) => ({
       value: structure.id,
       label: structure.name,
     }));
@@ -71,7 +76,7 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
         structure_name: value ? options.label : null,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -103,24 +108,24 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
     }
 
     return STRUCTURE_FIELD_VIEW
-    ? (
-      <Flex grow={1} shrink={1} basis={100}>
-        <ExtField
-          id="structure-id"
-          type="select"
-          label="Подразделение"
-          options={state.STRUCTURE_OPTIONS}
-          value={props.value}
-          onChange={this.handleChange}
-          disabled={STRUCTURE_FIELD_READONLY || props.disabled}
-          clearable={STRUCTURE_FIELD_DELETABLE}
-          error={props.error}
-        />
-      </Flex>
-    )
-    : (
-      <DivNone />
-    );
+      ? (
+        <Flex grow={1} shrink={1} basis={100}>
+          <ExtField
+            id="structure-id"
+            type="select"
+            label="Подразделение"
+            options={state.STRUCTURE_OPTIONS}
+            value={props.value}
+            onChange={this.handleChange}
+            disabled={STRUCTURE_FIELD_READONLY || props.disabled}
+            clearable={STRUCTURE_FIELD_DELETABLE}
+            error={props.error}
+          />
+        </Flex>
+      )
+      : (
+        <DivNone />
+      );
   }
 }
 
@@ -128,15 +133,5 @@ export default connect<StatePropsFieldStructure, DispatchPropsFieldStructure, Ow
   (state) => ({
     sessionStructures: state.session.userData.structures,
     userStructureId: state.session.userData.structure_id,
-  }),
-  (dispatch, { page, path }) => ({
-    getAndSetInStoreCompanyStructureLinear: () => (
-      dispatch(
-        companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-          {},
-          { page, path },
-        ),
-      )
-    ),
   }),
 )(FieldStructure);

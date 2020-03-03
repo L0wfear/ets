@@ -1,5 +1,5 @@
-import { FuelOperationActive } from "./@types/fuelOperations";
-import { FuelOperationsService } from "api/Services";
+import { FuelOperationActive } from './@types/fuelOperations';
+import { FuelOperationsService } from 'api/Services';
 import { get } from 'lodash';
 
 export const promiseCreateFuelOperation = async (fuelOperationNew: FuelOperationActive) => {
@@ -36,4 +36,12 @@ export const promiseUpdateFuelOperation = async (fuelOperationNew: FuelOperation
   };
 
   return result;
+};
+
+export const promiseSubmitFuelOperation = (fuelOperationNew: FuelOperationActive) => {
+  if (fuelOperationNew.id) {
+    return promiseUpdateFuelOperation(fuelOperationNew);
+  }
+
+  return promiseCreateFuelOperation(fuelOperationNew);
 };

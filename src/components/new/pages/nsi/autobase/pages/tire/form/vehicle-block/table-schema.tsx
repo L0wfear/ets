@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get, uniqBy } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 import {
@@ -9,7 +9,8 @@ import {
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { ITireAvailableCar } from 'api/@types/services/autobase.h';
+import { TireAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { metresToKilometeres } from 'utils/functions';
 
 export const validationSchema: IValidationSchema = {
   properties: [
@@ -55,6 +56,12 @@ export const meta: IDataTableSchema = {
       cssClassName: 'width200',
     },
     {
+      name: 'sum_track_length',
+      displayName: 'Пробег по ГЛОНАСС, км',
+      type: 'text',
+      cssClassName: 'width200',
+    },
+    {
       name: 'motohours_diff',
       displayName: 'Наработка, мч',
       type: 'text',
@@ -63,9 +70,9 @@ export const meta: IDataTableSchema = {
   ],
 };
 
-interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: ITireAvailableCar[];
-}
+type IPropsCarIdRenderer = {
+  vehicleList: Array<TireAvailableCar>;
+} & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   value,
@@ -184,6 +191,13 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
       />
+    ),
+    sum_track_length: (rowMeta) => (
+      <React.Fragment>
+        {
+          metresToKilometeres(rowMeta.data)
+        }
+      </React.Fragment>
     ),
   };
 };

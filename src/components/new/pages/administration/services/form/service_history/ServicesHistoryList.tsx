@@ -1,57 +1,46 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
   registryKey,
   getConfig,
 } from 'components/new/pages/administration/services/form/service_history/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
-import { HandleThunkActionCreator } from "react-redux";
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'components/@next/@utils/dates/dates';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type ServicesHistoryListStateProps = {};
-export type ServicesHistoryListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
-};
-export type ServicesHistoryListOwnProps = {
+type OwnProps = {
   service_id: Service['id'];
   service_name: Service['name'];
 };
-export type ServicesHistoryListMergedProps = (
-  ServicesHistoryListStateProps
-  & ServicesHistoryListDispatchProps
-  & ServicesHistoryListOwnProps
+type Props = (
+  OwnProps
 ) & WithSearchProps;
-export type ServicesHistoryListProps = (
-  ServicesHistoryListMergedProps
-);
 
-const ServicesHistoryList: React.FC<ServicesHistoryListProps> = (props) => {
+const ServicesHistoryList: React.FC<Props> = (props) => {
   const date_start: string = props.searchState.date_from;
   const date_end: string = props.searchState.date_to;
 
+  const dispatch = etsUseDispatch();
+
   React.useEffect(
     () => {
-      props.registryAddInitialData(
-        getConfig(
-          props.service_id,
-          props.service_name,
-          date_start || createValidDateTime(getToday0am()),
-          date_end || createValidDateTime(getToday2359()),
+      dispatch(
+        registryAddInitialData(
+          getConfig(
+            props.service_id,
+            props.service_name,
+            date_start || createValidDateTime(getToday0am()),
+            date_end || createValidDateTime(getToday2359()),
+          ),
         ),
       );
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [props.service_id, props.service_name],
@@ -76,7 +65,7 @@ const ServicesHistoryList: React.FC<ServicesHistoryListProps> = (props) => {
             },
           };
 
-          props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
+          dispatch(actionChangeGlobalPaylaodInServiceData(registryKey, payload));
         }
       }
     },
@@ -88,30 +77,4 @@ const ServicesHistoryList: React.FC<ServicesHistoryListProps> = (props) => {
   );
 };
 
-export default compose<ServicesHistoryListProps, ServicesHistoryListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<ServicesHistoryListStateProps, ServicesHistoryListDispatchProps, ServicesHistoryListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-      actionChangeGlobalPaylaodInServiceData: (...arg) => (
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(...arg),
-        )
-      ),
-    }),
-  ),
-  withSearch,
-)(ServicesHistoryList);
+export default withSearch<OwnProps>(ServicesHistoryList);

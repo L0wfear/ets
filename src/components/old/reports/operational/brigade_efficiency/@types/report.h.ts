@@ -1,4 +1,4 @@
-export interface IStateBrigadeEfficiency {
+export type IStateBrigadeEfficiency = {
   dutyMissionFormVisibility: boolean;
   dutyMissionSelectedItem: {};
-}
+};

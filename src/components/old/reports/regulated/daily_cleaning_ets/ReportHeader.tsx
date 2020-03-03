@@ -6,34 +6,47 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
-import { IVehicleType } from 'api/@types/services/index.h';
 
-import { connectToStores } from 'utils/decorators';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { FluxContext } from 'utils/decorators';
-import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
+import { GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { carFuncTypesGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type StateProps = {
+  carFuncTypesList: IStateAutobase['carFuncTypesList'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
   geozone_type: string;
   element_type: string;
   car_func_types_ids: any;
-  typesList: Array<IVehicleType>;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper & StateProps & DispatchProps;
 
-@connectToStores(['objects'])
-@FluxContext
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  context!: ETSCore.LegacyContext;
-
   componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('objects').getTypes();
+    this.props.dispatch(
+      carFuncTypesGetAndSetInStore(
+        {},
+        {
+          page: 'mainpage',
+        },
+      ),
+    );
   }
   getState() {
     const {
@@ -62,7 +75,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange('geozone_type', value);
-  }
+  };
   handleSubmit = () => {
     const {
       date_start,
@@ -86,7 +99,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       ? requestBody
       : omit(requestBody, 'car_func_types_ids'),
     );
-  }
+  };
   render() {
     const {
       date_start,
@@ -96,10 +109,15 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_ids,
     } = this.getState();
 
-    const { typesList = [], readOnly } = this.props;
+    const { carFuncTypesList, readOnly } = this.props;
 
-    const CAR_TYPES = uniqBy(typesList, 'asuods_id')
+    const CAR_TYPES = uniqBy(carFuncTypesList, 'asuods_id')
       .map((t) => ({ value: t.asuods_id, label: t.full_name }));
+
+    const GEOZONE_OBJECTS = [
+      { value: 'odh', label: 'Объект дорожного хозяйства' },
+      { value: 'dt', label: 'Дворовая территория' },
+    ];
 
     const isDtGeozone = geozone_type === 'dt';
 
@@ -130,7 +148,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={4}>
-            <label htmlFor=" ">Период формирования</label>
+            <FieldLabel>
+              Период формирования
+            </FieldLabel>
             <DatePickerRange
               date_start_id="date_start"
               date_start_value={date_start}
@@ -169,4 +189,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   }
 }
 
-export default ReportHeaderWrapper(ReportHeader);
+export default compose(
+  ReportHeaderWrapper,
+  connect<StateProps, DispatchProps, any, ReduxState>(
+    (state) => ({
+      carFuncTypesList: getAutobaseState(state).carFuncTypesList,
+    }),
+  ),
+)(ReportHeader);

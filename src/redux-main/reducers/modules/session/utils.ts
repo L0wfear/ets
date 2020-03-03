@@ -1,8 +1,19 @@
-import createFio from 'utils/create-fio';
-import { getFullAccess } from 'api/mocks/permissions';
-import { userNotification } from 'api/mocks/permissions';
 
 import requireAuth from 'utils/auth';
+import { createFio } from 'utils/labelFunctions';
+
+const OPERATIONS = {
+  L: 'list',
+  C: 'create',
+  R: 'read',
+  U: 'update',
+  D: 'delete',
+  REW: 'review',
+};
+
+export function getFullAccess(entity, permission = ['L', 'C', 'R', 'U', 'D']) {
+  return permission.map((op) => `${entity}.${OPERATIONS[op]}`);
+}
 
 export const withSpecificPermissions = (user) => {
   const permissions = [];
@@ -20,7 +31,11 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_issue_a_waybill'));
   permissions.push(...getFullAccess('docs_create_mission_by_order'));
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
+  permissions.push(...getFullAccess('userNotification'));
+
   /* end docs */
+
+  // console.info(permissions.push(...getFullAccess('your_permission')));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
@@ -39,7 +54,6 @@ export const makeUserData = (userDataRaw) => {
   // Здесь можно вставлять моковые пермишины
   userData.permissions = [
     ...userDataRaw.permissions,
-    ...userNotification,
     ...withSpecificPermissions(userDataRaw),
   ];
 

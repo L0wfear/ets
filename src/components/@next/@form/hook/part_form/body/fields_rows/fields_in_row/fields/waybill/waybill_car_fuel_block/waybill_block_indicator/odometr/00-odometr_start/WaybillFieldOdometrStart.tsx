@@ -1,0 +1,73 @@
+import * as React from 'react';
+import { get } from 'lodash';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+type WaybillFieldOdometrStartProps = {
+  formDataKey: any;
+  md?: number;
+};
+
+const WaybillFieldOdometrStart: React.FC<WaybillFieldOdometrStartProps> = React.memo(
+  (props) => {
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
+
+    const odometr_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['odometr_start']>(props.formDataKey, 'odometr_start');
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+
+    const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
+    const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
+    const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
+    const isSelectedCarId = Boolean(car_id);
+
+    const handleChangeWrap = React.useCallback(
+      (keyName, valueNew) => {
+        const valueData = get(valueNew, 'target.value', null);
+
+        handleChange({
+          [keyName]: valueData ? Number(valueData) : null,
+        });
+      },
+      [handleChange],
+    );
+
+    const previosIsSelectedCarId = usePrevious(isSelectedCarId);
+
+    React.useEffect(
+      () => {
+        return () => handleChangeWrap('odometr_start', null);
+      },
+      [],
+    );
+
+    React.useEffect(
+      () => {
+        if (!isSelectedCarId && previosIsSelectedCarId) {
+          handleChangeWrap('odometr_start', null);
+        }
+      },
+      [previosIsSelectedCarId, isSelectedCarId, handleChangeWrap],
+    );
+
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_odometr_start`}
+          type="number"
+          label="Выезд из гаража, км"
+          value={odometr_start}
+          onChange={handleChangeWrap}
+          disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
+
+          boundKeys="odometr_start"
+        />
+      </EtsBootstrap.Col>
+    );
+  },
+);
+
+export default WaybillFieldOdometrStart;

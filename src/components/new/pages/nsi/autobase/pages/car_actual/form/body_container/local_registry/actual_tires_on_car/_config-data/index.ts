@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Реестр шин',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_tire',
-  noDotList: false,
+
   component,
   permissions,
 };

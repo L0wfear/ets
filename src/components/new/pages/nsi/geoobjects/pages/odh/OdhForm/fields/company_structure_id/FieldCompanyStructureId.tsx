@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { changeCompanyStructureIdNotyfication, addParentCompanyStructureIdNotyfication } from 'utils/notifications';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import useCompanyStructureLinearForUserOptions from 'components/new/utils/hooks/services/useOptions/useCompanyStructureLinearForUserOptions';
@@ -57,7 +57,7 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
                 name: rowData.name,
               });
 
-              if (rowData.parent_id && !optionsObject[rowData.parent_id] && !valueOldObj[rowData.parent_id]) {
+              if (rowData.parent_id && !optionsObject[rowData.parent_id] && !valueOldObj[rowData.parent_id] && companyStructureOptionDataObject[rowData.parent_id]) {
                 const parent = companyStructureOptionDataObject[rowData.parent_id];
                 global.NOTIFICATION_SYSTEM.notify(addParentCompanyStructureIdNotyfication(parent.name, rowData.name));
 

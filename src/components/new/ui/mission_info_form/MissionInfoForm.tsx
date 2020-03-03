@@ -62,17 +62,17 @@ class MissionInfoForm extends React.Component<
         diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
       missionReport: entries
         ? entries.map((report, index) => {
-            if (check_unit) {
-              report.route_check_unit = check_unit;
-            }
-            report.frontIndex = index + 1;
+          if (check_unit) {
+            report.route_check_unit = check_unit;
+          }
+          report.frontIndex = index + 1;
 
-            if (props.element.route_data.type === 'points') {
-              report.state = maskStatusPoint[report.status];
-            }
+          if (props.element.route_data.type === 'points') {
+            report.state = maskStatusPoint[report.status];
+          }
 
-            return report;
-          })
+          return report;
+        })
         : null,
     };
   }
@@ -227,7 +227,7 @@ class MissionInfoForm extends React.Component<
       this.setState({
         polys: {
           [slug]: Object.entries(polys[slug]).reduce(
-            (newObj, [geoId, geoData]) => {
+            (newObj, [geoId, geoData]: any) => {
               newObj[geoId] = { ...geoData };
               newObj[geoId].frontIsSelected = geoId === `${slug}/${id}`;
 
@@ -263,64 +263,64 @@ class MissionInfoForm extends React.Component<
         show
         onHide={onFormHide}
         bsSize="large"
-       >
-          <EtsBootstrap.ModalHeader closeButton>
-            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
-          </EtsBootstrap.ModalHeader>
-          <ModalBodyPreloader
-            page="any"
-            path="missionInfoForm"
-            typePreloader="mainpage">
-            <FormContainer>
-              <SideContainerDiv>
-                <MapContainer
-                  gov_number={car_data.gov_number}
-                  gps_code={car_data.gps_code}
-                  track={this.state.track}
-                  geoobjects={this.state.polys}
-                  inputLines={this.state.inputLines}
-                  front_parkings={this.state.front_parkings}
-                  speed_limits={speed_limits}
-                  cars_sensors={this.state.cars_sensors}
-                  missionNumber={mission_data.number}
-                  has_mkad={route_data.has_mkad}
-                  object_type_name={route_data.object_type_name}
+      >
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <ModalBodyPreloader
+          page="any"
+          path="missionInfoForm"
+          typePreloader="mainpage">
+          <FormContainer>
+            <SideContainerDiv>
+              <MapContainer
+                gov_number={car_data.gov_number}
+                gps_code={car_data.gps_code}
+                track={this.state.track}
+                geoobjects={this.state.polys}
+                inputLines={this.state.inputLines}
+                front_parkings={this.state.front_parkings}
+                speed_limits={speed_limits}
+                cars_sensors={this.state.cars_sensors}
+                missionNumber={mission_data.number}
+                has_mkad={route_data.has_mkad}
+                object_type_name={route_data.object_type_name}
+              />
+              {!this.state.tooLongDates ? (
+                <InfoTableData
+                  mission_data={mission_data}
+                  report_data={report_data}
+                  parkingCount={this.state.parkingCount}
                 />
-                {!this.state.tooLongDates ? (
-                  <InfoTableData
-                    mission_data={mission_data}
-                    report_data={report_data}
-                    parkingCount={this.state.parkingCount}
-                  />
-                ) : (
-                  <DivNone />
-                )}
-              </SideContainerDiv>
-              <SideContainerDiv>
-                {this.state.tooLongDates ? (
-                  <span>Слишком большой период действия задания</span>
-                ) : !missionReport ? (
-                  <h5>Нет данных о прохождении задания</h5>
-                ) : (
-                  <MissionInfoTableContainer
-                    type={route_data.type}
-                    missionReport={missionReport}
-                    handleSelectedElementChange={
-                      this.handleSelectedElementChange
-                    }
-                  />
-                )}
-                {!route_data.has_object_list ? (
-                  <h5>Объекты отсутствуют в маршруте</h5>
-                ) : (
-                  <DivNone />
-                )}
-              </SideContainerDiv>
-            </FormContainer>
-          </ModalBodyPreloader>
-          <EtsBootstrap.ModalFooter>
-            <EtsBootstrap.Button onClick={this.props.onFormHide}>Закрыть</EtsBootstrap.Button>
-          </EtsBootstrap.ModalFooter>
+              ) : (
+                <DivNone />
+              )}
+            </SideContainerDiv>
+            <SideContainerDiv>
+              {this.state.tooLongDates ? (
+                <span>Слишком большой период действия задания</span>
+              ) : !missionReport ? (
+                <h5>Нет данных о прохождении задания</h5>
+              ) : (
+                <MissionInfoTableContainer
+                  type={route_data.type}
+                  missionReport={missionReport}
+                  handleSelectedElementChange={
+                    this.handleSelectedElementChange
+                  }
+                />
+              )}
+              {!route_data.has_object_list ? (
+                <h5>Объекты отсутствуют в маршруте</h5>
+              ) : (
+                <DivNone />
+              )}
+            </SideContainerDiv>
+          </FormContainer>
+        </ModalBodyPreloader>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button onClick={this.props.onFormHide}>Закрыть</EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   }

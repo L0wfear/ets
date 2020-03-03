@@ -1,4 +1,4 @@
-import { EmployeeOnCar } from "./@types/employeeOnCar";
+import { EmployeeOnCar } from './@types/employeeOnCar';
 import { cloneDeep } from 'lodash';
 
 const BINDING_TYPE_TEXT = {

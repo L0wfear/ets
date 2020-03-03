@@ -2,10 +2,9 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
@@ -13,9 +12,7 @@ import { connect } from 'react-redux';
 import {
   OwnTireProps,
   PropsTire,
-  StateTire,
   StatePropsTire,
-  DispatchPropsTire,
   PropsTireWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire, TireSize, TireModel, TireOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -32,6 +29,10 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data/registry-config';
+import { tireSizeGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
+import { tireModelGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
+import { autobaseCreateTire, autobaseUpdateTire } from 'redux-main/reducers/modules/autobase/actions_by_type/tire/actions';
+import { metresToKilometeres } from 'utils/functions';
 
 const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 
@@ -43,19 +44,27 @@ const defaultTireOnCarItem: TireOnCar = {
   motohours_diff: null,
   odometr_diff: null,
   uninstalled_at: null,
+  sum_track_length: null,
   // для таблички
   customId: null,
   isChecked: false,
   isHighlighted: false,
   isSelected: false,
 };
-class TireForm extends React.PureComponent<PropsTire, StateTire> {
-  state = {
-    canSave: true,
-  };
+class TireForm extends React.PureComponent<PropsTire, {}> {
   componentDidMount() {
-    this.props.tireModelGetAndSetInStore();
-    this.props.tireSizeGetAndSetInStore();
+    this.props.dispatch(
+      tireModelGetAndSetInStore(
+        {},
+        this.props,
+      ),
+    );
+    this.props.dispatch(
+      tireSizeGetAndSetInStore(
+        {},
+        this.props,
+      ),
+    );
     this.addNewTireOnCar();
   }
 
@@ -78,11 +87,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     }
   };
 
-  handleTireToCarValidity = ({ isValidInput }) => {
-    this.setState({
-      canSave: isValidInput,
-    });
-  }
   handleChangeTireModel = (name, value, allOptionData) => {
     const {
       formState: { tire_model_id },
@@ -105,16 +109,16 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
         });
       }
     }
-  }
+  };
 
   makeOptionFromTireSizeList = (
     memoize(
-      (tireSizeList: TireSize[]) => tireSizeList.map(defaultSelectListMapper),
+      (tireSizeList: Array<TireSize>) => tireSizeList.map(defaultSelectListMapper),
     )
   );
   makeOptionFromTireModelList = (
     memoize(
-      (tireModelList: TireModel[]) => tireModelList.map(defaultSelectListMapper),
+      (tireModelList: Array<TireModel>) => tireModelList.map(defaultSelectListMapper),
     )
   );
 
@@ -126,6 +130,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
       path,
       tireSizeList,
       tireModelList,
+      canSave,
     } = this.props;
 
     const IS_CREATING = !state.id;
@@ -134,16 +139,12 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
     const isPermitterToUpdateInitialMileage = !IS_CREATING
-    ? (this.props.isPermitterToUpdateInitialMileage && isGivenAway)
-    : this.props.isPermitterToUpdateInitialMileage;
+      ? (this.props.isPermitterToUpdateInitialMileage && isGivenAway)
+      : this.props.isPermitterToUpdateInitialMileage;
 
     const isPermitted = !IS_CREATING
       ? (this.props.isPermittedToUpdate && isGivenAway)
       : this.props.isPermittedToCreate;
-    const canSave = (
-      this.state.canSave
-      && this.props.canSave
-    );
 
     const tireSizeOptions = this.makeOptionFromTireSizeList(
       tireSizeList,
@@ -151,6 +152,8 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     const tireModelOptions = this.makeOptionFromTireModelList(
       tireModelList,
     );
+
+    const sumTrackLength = metresToKilometeres(state.sum_track_length);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -229,17 +232,20 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                           <label htmlFor=" ">Наработка, мч:</label>
                           <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
                         </DiffValueElem>
+                        <DiffValueElem>
+                          <label htmlFor=" ">Общий пробег по ГЛОНАСС, км:</label>
+                          <InlineSpanValue>{sumTrackLength}</InlineSpanValue>
+                        </DiffValueElem>
                       </DiffValueWrapper>
                     </EtsBootstrap.Col>
                   </React.Fragment>
                 )
-              }
+            }
             <EtsBootstrap.Col md={12}>
               <TireToVehicleBlock
                 onChange={this.props.handleChange}
                 boundKeys="tire_to_car"
                 inputList={state.tire_to_car}
-                onValidation={this.handleTireToCarValidity}
                 outerValidate
                 errors={errors.tire_to_car}
                 disabled={!isPermitted}
@@ -269,36 +275,18 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
 }
 
 export default compose<PropsTire, OwnTireProps>(
-  connect<StatePropsTire, DispatchPropsTire, OwnTireProps, ReduxState>(
+  connect<StatePropsTire, {}, OwnTireProps, ReduxState>(
     (state) => ({
       tireModelList: getAutobaseState(state).tireModelList,
       tireSizeList: getAutobaseState(state).tireSizeList,
       isPermitterToUpdateInitialMileage: getSessionState(state).userData.permissionsSet.has(tirePermissions.update_mileage),
     }),
-    (dispatch, { page, path }) => ({
-      tireSizeGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.tireSizeGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      tireModelGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.tireModelGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withSearch,
   withForm<PropsTireWithForm, Tire>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTire,
-    updateAction: autobaseActions.autobaseUpdateTire,
+    createAction: autobaseCreateTire,
+    updateAction: autobaseUpdateTire,
     mergeElement: (props) => {
       return getDefaultTireElement(props.element);
     },

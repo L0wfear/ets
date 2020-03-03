@@ -1,37 +1,39 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-import { PropsInsurancePolicyFormLazy } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/@types/InsurancePolicyForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { memoizeMergeElement } from '../../car_actual/form/utils';
-
-const InsurancePolicyFrom = React.lazy(() =>
+const InsurancePolicyFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "insurance_policy_form" */ 'components/new/pages/nsi/autobase/pages/insurance_policy/form/InsurancePolicyForm'),
 );
 
-const InsurancePolicyFormLazy: React.FC<PropsInsurancePolicyFormLazy> = (props) => {
-  const page = props.loadingPageName || props.page;
-  const path = `${props.path ? `${props.path}-` : ''}insurance-policy-form`;
+const InsurancePolicyFormLazy: React.FC<WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap; }> = React.memo(
+  (props) => {
+    const element = React.useMemo(
+      () => {
+        if (!props.element.car_id && props.selectedCarData) {
+          return {
+            ...props.element,
+            car_id: props.selectedCarData.asuods_id,
+            car_gov_number: props.selectedCarData.gov_number,
+          };
+        }
 
-  return props.element ? (
-    <ErrorBoundaryForm>
-      <React.Suspense fallback={<LoadingComponent />}>
-        <InsurancePolicyFrom
-          element={memoizeMergeElement(props.element, props.selectedCarData)}
-          handleHide={props.onFormHide}
-          selectedCarData={props.selectedCarData}
+        return props.element;
+      },
+      [props.element, props.selectedCarData],
+    );
 
-          page={page}
-          path={path}
-        />
-      </React.Suspense>
-    </ErrorBoundaryForm>
-  ) : (
-    <DivNone />
-  );
-};
+    return (
+      <InsurancePolicyFromReactLazy
+        {...props}
+        element={element}
+      />
+    );
+  },
+);
 
-export default withFormRegistrySearch<Pick<PropsInsurancePolicyFormLazy, 'selectedCarData'>>({})(InsurancePolicyFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<InsurancePolicy> & { selectedCarData?: CarWrap; }, InsurancePolicy>({
+  add_path: 'insurance-policy',
+})(InsurancePolicyFormLazy);

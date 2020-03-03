@@ -1,13 +1,14 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/administration/services/_config-data/permissions';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
+import { ServicesService } from 'api/Services';
 
 export const registryKey = 'service_registry';
 
 export const config: TypeConfigData<Service> = {
   Service: {
     getRegistryData: {
-      entity: 'services',
+      entity: ServicesService._path,
     },
   },
   registryKey,

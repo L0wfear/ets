@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { SelectLabel, InstectionBlockSelect, SelectField } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { ReduxState } from 'redux-main/@types/state';
@@ -27,7 +27,7 @@ type SelectCarpoolProps = (
   & WithSearchProps
 );
 
-const filterPgmBaseByCompany = (carpoolList: Carpool[], companyId: number) => (
+const filterPgmBaseByCompany = (carpoolList: Array<Carpool>, companyId: number) => (
   carpoolList.filter(({ contractor_id }) => contractor_id === companyId)
 );
 
@@ -57,7 +57,7 @@ const SelectCarpool: React.FC<SelectCarpoolProps> = (props) => {
         }
       }
     },
-    [companyId, carpoolId, props.companyList, searchState],
+    [companyId, carpoolId, props.companyList, searchState, props.match.params],
   );
 
   const carpoolOptions = React.useMemo(
@@ -90,17 +90,17 @@ const SelectCarpool: React.FC<SelectCarpoolProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={1} sm={1}>
+      <SelectLabel md={3} sm={1}>
         <h5>
         Автобаза
         </h5>
       </SelectLabel>
-      <SelectField md={4} sm={6}>
+      <SelectField md={9} sm={6}>
         <ExtField
           type="select"
           value={carpoolId}

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import ListByTypeCurerntDutyMission from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/ListByTypeCurerntDutyMission';
 
 import {
@@ -12,20 +11,20 @@ import {
 import CurrentDutyMissionInfo from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
 
 import {
-  CurrentDutyMissionsItemsSubItemsType,
+  CurrentDutyMissionsItemsSubItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-export type OwnPropsCurrentDutyMissions = {};
-export type PropsCurrentDutyMissions = OwnPropsCurrentDutyMissions;
+type OwpProps = PropsToDefaultCard;
+type Props = OwpProps & WithRequirePermissionAddProps;
 
-const CurrentDutyMissions: React.FC<PropsCurrentDutyMissions> = React.memo(
+const CurrentDutyMissions: React.FC<Props> = React.memo(
   () => {
     const dispatch = etsUseDispatch();
 
     const handleClick = React.useCallback(
-      (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => {
+      (lastSubItem: CurrentDutyMissionsItemsSubItemsSubItemsType) => {
         dispatch(
           dashboardLoadRouteDataForCurrentDutyMissions(
             lastSubItem.data,
@@ -36,22 +35,17 @@ const CurrentDutyMissions: React.FC<PropsCurrentDutyMissions> = React.memo(
       [dispatch],
     );
 
-    return React.useMemo(
-      () => (
-        <div>
-          <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
-          <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
-        </div>
-      ),
-      [handleClick],
+    return (
+      <div>
+        <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
+        <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
+      </div>
     );
   },
 );
 
-export default compose<PropsCurrentDutyMissions, PropsToDefaultCard>(
-  withDefaultCard({
-    path: 'current_duty_missions',
-    loadData: dashboardLoadCurrentDutyMissions,
-    InfoComponent: CurrentDutyMissionInfo,
-  }),
-)(CurrentDutyMissions);
+export default withDefaultCard<OwpProps>({
+  path: 'current_duty_missions',
+  loadData: dashboardLoadCurrentDutyMissions,
+  InfoComponent: CurrentDutyMissionInfo,
+})(CurrentDutyMissions);

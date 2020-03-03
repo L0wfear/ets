@@ -7,8 +7,13 @@ import {
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService, ConfigTrackService } from 'api/Services';
-import { InitialStateSession } from './session.d';
+import { InitialStateSession } from './@types/session';
 import config from 'config';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 
 const actionSetAppConfig = (appConfig: InitialStateSession['appConfig']) => ({
   type: SESSION_SET_CONFIG,
@@ -33,6 +38,11 @@ export const actionLoadAppConfig = () => async (dispatch) => {
     appConfig = CONFIG_INITIAL;
   }
 
+  appConfig.current_season = getCurrentSeason(
+    appConfig.summer_start_date,
+    appConfig.summer_end_date,
+  );
+
   dispatch(
     actionSetAppConfig(appConfig),
   );
@@ -56,7 +66,7 @@ const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['a
     ),
   );
   if (versionFromLocalStorage !== api_version_stable) {
-    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
+    console.info(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // eslint-disable-line
 
     versions[config.tracksCaching] = api_version_stable.toString();
   }
@@ -64,8 +74,8 @@ const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['a
   localStorage.setItem(global.API__KEY, JSON.stringify(versions));
 };
 
-export const actionLoadAppConfigTracksCaching = async () => async (dispatch) => {
-  let appConfigTracksCaching: InitialStateSession['appConfigTracksCaching'] = null;
+export const actionLoadAppConfigTracksCaching = (): EtsAction<Promise<InitialStateSession['appConfigTracksCaching']>> => async (dispatch) => {
+  let appConfigTracksCaching = null;
 
   try {
     appConfigTracksCaching = await ConfigTrackService.get();
@@ -79,4 +89,20 @@ export const actionLoadAppConfigTracksCaching = async () => async (dispatch) => 
   );
 
   return appConfigTracksCaching;
+};
+
+export const actionSessionUpdateCurrentSeason = (meta: LoadingMeta): EtsAction<Promise<InitialStateSession['appConfig']>> => async (dispatch, getState) => {
+  const time = await dispatch(actionLoadTimeMoscow({}, meta));
+
+  const appConfig = getSessionState(getState()).appConfig;
+
+  appConfig.current_season = getCurrentSeason(
+    appConfig.summer_start_date,
+    appConfig.summer_end_date,
+    time.date,
+  );
+
+  dispatch(actionSetAppConfig(appConfig));
+  
+  return appConfig;
 };

@@ -1,5 +1,5 @@
-import { Car } from "redux-main/reducers/modules/autobase/@types/autobase.h";
-import { Employee } from "redux-main/reducers/modules/employee/@types/employee.h";
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 export type EmployeeBindedToCar = {
   asuods_id: Car['asuods_id'];

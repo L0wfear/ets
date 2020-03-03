@@ -11,7 +11,7 @@ export const getSpecialModelList = (state: ReduxState) => (
 export type SpecialModelStructure = ValuesOf<IStateSomeUniq['specialModelList']>;
 
 export type GetSessionModelListOptionsAns = (
-  DefaultSelectOption<SpecialModelStructure['id'], SpecialModelStructure['name'], SpecialModelStructure>[]
+  Array<DefaultSelectOption<SpecialModelStructure['id'], SpecialModelStructure['name'], SpecialModelStructure>>
 );
 
 export const getSomeUniqSpecialModel: Selector<ReduxState, IStateSomeUniq['specialModelList']> = (state) => (

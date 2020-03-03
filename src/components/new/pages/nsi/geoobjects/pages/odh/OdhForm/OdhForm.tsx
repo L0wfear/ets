@@ -1,24 +1,22 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import odhPermissions from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { odhFormSchema } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/schema';
 
 import { getDefaultOdhFormElement } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsOdhForm,
   PropsOdhForm,
   PropsOdhFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/@types/OdhForm.h';
 
-import { DivNone } from 'global-styled/global-styled';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import FieldCompanyStructureId from './fields/company_structure_id/FieldCompanyStructureId';
+import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
 
 const OdhForm: React.FC<PropsOdhForm> = React.memo(
   (props) => {
@@ -132,26 +130,22 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          {
+            isPermitted &&  (
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsOdhForm, OwnPropsOdhForm>(
+export default compose<PropsOdhForm, PropsOdhFormWithForm>(
   withForm<PropsOdhFormWithForm, Odh>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateOdh,
-    updateAction: geoobjectActions.actionUpdateOdh,
+    createAction: actionsOdh.post,
+    updateAction: actionsOdh.put,
     mergeElement: (props) => {
       return getDefaultOdhFormElement(props.element);
     },

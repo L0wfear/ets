@@ -1,13 +1,13 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { carFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/schema';
 
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnCarProps,
   PropsCar,
   PropsCarWithForm,
   CarWrap,
@@ -44,40 +44,40 @@ const CarForm: React.FC<PropsCar> = React.memo(
     return (
       <CarActualRegistryFormContext.Provider value={contextValue}>
         <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
-        <EtsBootstrap.ModalHeader closeButton>
-          <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <CarFormBodyHeader isPermitted={isPermitted} />
-          <CarFormBodyContainer
-            isPermitted={isPermitted}
-            formState={state}
-            formErrors={errors}
-            onChange={props.handleChange}
-            onChangeBoolean={props.handleChangeBoolean}
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
+          <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+            <CarFormBodyHeader isPermitted={isPermitted} />
+            <CarFormBodyContainer
+              isPermitted={isPermitted}
+              formState={state}
+              formErrors={errors}
+              onChange={props.handleChange}
+              onChangeBoolean={props.handleChangeBoolean}
 
-            page={props.page}
-            path={props.path}
-          />
-        </ModalBodyPreloader>
-        <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+              page={props.page}
+              path={props.path}
+            />
+          </ModalBodyPreloader>
+          <EtsBootstrap.ModalFooter>
+            {
+              isPermitted // либо обновление, либо создание
+                ? (
+                  <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
       </CarActualRegistryFormContext.Provider>
     );
   },
 );
 
-export default compose<PropsCar, OwnCarProps>(
+export default compose<PropsCar, PropsCarWithForm>(
   withForm<PropsCarWithForm, CarWrap>({
     updateAction: actionUpdateCarWrap,
     getRecordAction: actionsGetCarFormDataByAsuodsId,

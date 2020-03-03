@@ -3,13 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="Description" content="Единая транспортная система">
     <meta name="version" content={{htmlWebpackPlugin.options.version}} />
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="-1">
     <link rel="manifest" href="{{htmlWebpackPlugin.options.publicPath}}manifest.json">
     <meta http-equiv="Cache-Control" content="max-age=86400" />
     <meta name="mobile-web-app-capable" content="yes">
+
+    {{!-- <meta property="og:site_name" content="Ets"> --}}
+    <meta property="og:title" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Единая транспортная система">
+    <meta data-rh="true" property="og:image" content="{{htmlWebpackPlugin.options.publicPath}}images/bg.jpg">
+
     <meta name="apple-mobile-web-app-status-bar-style" content="{{htmlWebpackPlugin.options.themeColor}}">
     <meta name="theme-color" content="{{htmlWebpackPlugin.options.themeColor}}" />
     <title>{{htmlWebpackPlugin.options.title}}</title>

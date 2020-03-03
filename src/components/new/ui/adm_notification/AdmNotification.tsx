@@ -1,19 +1,27 @@
 import * as React from 'react';
-import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { connect } from 'react-redux';
+
+import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { ReduxState } from 'redux-main/@types/state';
-import { setMakeReadAdmNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import { IStateUserNotifications } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
+import { setMakeReadAdmNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-import {
-  StateAdmNotification,
-  StatePropsAdmNotification,
-  DispatchPropsAdmNotification,
-  OwnPropsAdmNotification,
-  PropsAdmNotification,
-} from 'components/new/ui/adm_notification/AdmNotification.h';
+type StateProps = {
+  admNotReadNotificationsList: IStateUserNotifications['admNotReadNotificationsList'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {};
+type PropsAdmNotification = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
-class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNotification> {
+class AdmNotification extends React.PureComponent<PropsAdmNotification> {
   componentDidUpdate(prevProps: PropsAdmNotification) {
     const { props } = this;
 
@@ -37,11 +45,12 @@ class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNoti
         action: {
           label: 'Прочитано',
           callback: () => {
-            this.props.setMakeReadAdmNotification(notify.id)
-              .catch(({ error_text }) => {
-                // tslint:disable-next-line
-                console.warn(error_text);
-              });
+            this.props.dispatch(
+              setMakeReadAdmNotification(notify.id),
+            ).catch(({ error_text }) => {
+              // tslint:disable-next-line
+              console.warn(error_text);
+            });
           },
         },
       })
@@ -49,19 +58,12 @@ class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNoti
   }
 
   render() {
-    return <div></div>;
+    return null;
   }
 }
 
-export default connect<StatePropsAdmNotification, DispatchPropsAdmNotification, OwnPropsAdmNotification, ReduxState>(
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   (state) => ({
     admNotReadNotificationsList: getUserNotificationsState(state).admNotReadNotificationsList,
-  }),
-  (dispatch) => ({
-    setMakeReadAdmNotification: (id) => (
-      dispatch(
-        setMakeReadAdmNotification(id),
-      )
-    ),
   }),
 )(AdmNotification);

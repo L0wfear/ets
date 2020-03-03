@@ -33,8 +33,8 @@ export const loadGeozones: any = (type, type_geoobject, meta = { loading: true }
 
   const service = (
     Object.values(GORMOST_GEOOBJECTS_LIST).some(({ serverName }) => serverName === type_geoobject)
-    ? GormostService
-    : GeozonesService
+      ? GormostService
+      : GeozonesService
   );
 
   return ({

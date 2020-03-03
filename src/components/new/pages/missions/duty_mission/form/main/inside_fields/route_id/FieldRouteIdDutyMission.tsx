@@ -3,7 +3,7 @@ import memoize from 'memoize-one';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
@@ -45,9 +45,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
   };
 
   static getDerivedStateFromProps(nextProps: PropsFieldRouteIdDutyMission) {
-    const { value, name, routesList, structure_id } = nextProps;
+    const {
+      value,
+      name,
+      routesList,
+      structure_id,
+    } = nextProps;
 
-    let ROUTE_OPTIONS = makeOptionFromRouteList(routesList, structure_id);
+    let ROUTE_OPTIONS = makeOptionFromRouteList(
+      routesList,
+      structure_id,
+    );
 
     if (value) {
       const selectedRouteNotInOption = ROUTE_OPTIONS.find(
@@ -83,15 +91,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         municipal_facility_id,
         technical_operation_id,
         dependeceTechnicalOperation,
-        municipalFacilityForDutyMissionList,
       } = this.props;
 
-      const triggerOnGetRouteList =
-        technical_operation_id &&
-        municipal_facility_id &&
-        (DUTY_MISSION_IS_ORDER_SOURCE
-          ? dependeceTechnicalOperation
-          : municipalFacilityForDutyMissionList.length);
+      const triggerOnGetRouteList = (
+        technical_operation_id
+        && municipal_facility_id
+        && (
+          DUTY_MISSION_IS_ORDER_SOURCE
+            ? dependeceTechnicalOperation
+            : municipal_facility_id
+        )
+      );
 
       if (triggerOnGetRouteList) {
         this.getRoutes(technical_operation_id, municipal_facility_id);
@@ -117,17 +127,25 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         DUTY_MISSION_IS_ORDER_SOURCE,
       } = this.props;
 
-      const triggerOne =
-        ((technical_operation_id !== prevProps.technical_operation_id ||
-          municipal_facility_id !== prevProps.municipal_facility_id) &&
-          (DUTY_MISSION_IS_ORDER_SOURCE
-            ? dependeceTechnicalOperation
-            : municipalFacilityForDutyMissionList.length)) ||
-        (DUTY_MISSION_IS_ORDER_SOURCE
-          ? !dependeceTechnicalOperation &&
-            prevProps.dependeceTechnicalOperation
-          : !municipalFacilityForDutyMissionList.length &&
-            prevProps.municipalFacilityForDutyMissionList.length);
+      const triggerOne
+        = (
+          (
+            technical_operation_id !== prevProps.technical_operation_id
+            || municipal_facility_id !== prevProps.municipal_facility_id
+          )
+          && (
+            DUTY_MISSION_IS_ORDER_SOURCE
+              ? dependeceTechnicalOperation
+              : municipalFacilityForDutyMissionList.length
+          )
+        )
+        || (
+          DUTY_MISSION_IS_ORDER_SOURCE
+            ? !dependeceTechnicalOperation
+              && prevProps.dependeceTechnicalOperation
+            : !municipalFacilityForDutyMissionList.length
+              && prevProps.municipalFacilityForDutyMissionList.length
+        );
 
       if (triggerOne) {
         if (technical_operation_id && municipal_facility_id) {
@@ -137,31 +155,18 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
             (routeOptionData) => routeOptionData.value === value,
           );
 
-          if (!selectedRouteNotInOption) {
+          if (value && !selectedRouteNotInOption) {
             this.handleRouteIdChange(null);
           }
         }
       }
 
-      if (!technical_operation_id || !municipal_facility_id) {
+      if (value && (!technical_operation_id || !municipal_facility_id)) {
         this.handleRouteIdChange(null);
       }
 
       if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
-      }
-      if (structure_id !== prevProps.structure_id) {
-        if (structure_id) {
-          const route_structure_id = get(
-            this.state.selectedRoute,
-            'structure_id',
-            null,
-          );
-
-          if (route_structure_id !== structure_id) {
-            this.handleRouteIdChange(null);
-          }
-        }
       }
     }
   }
@@ -187,9 +192,9 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
         type: (DUTY_MISSION_IS_ORDER_SOURCE
           ? get(dependeceTechnicalOperation, 'route_types', [])
           : getAvailableRouteTypesMemo(
-              this.props.municipalFacilityForDutyMissionList,
-              municipal_facility_id,
-            )
+            this.props.municipalFacilityForDutyMissionList,
+            municipal_facility_id,
+          )
         ).toString(),
       },
       { page, path },
@@ -245,6 +250,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
       null,
     );
 
+    if (this.props.formDataKey === 'duty_mission' && !route_id && this.props.consumable_materials[0]) {
+      try {
+        await global.confirmDialog({
+          title: 'Внимание!',
+          body: 'При удалении маршрута будет очищена таблица расходных материалов. Продолжить?',
+        });
+      } catch {
+        return;
+      }
+    }
+
     this.props.onChange({
       route_id,
       route_name,
@@ -277,6 +293,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
 
           this.props.onChange({
             object_type_name,
+            route_type: get(route_data, 'type') || null,
           });
 
         } else {
@@ -397,9 +414,9 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
             missionAvailableRouteTypes={(DUTY_MISSION_IS_ORDER_SOURCE
               ? get(dependeceTechnicalOperation, 'route_types', [])
               : getAvailableRouteTypesMemo(
-                  this.props.municipalFacilityForDutyMissionList,
-                  municipal_facility_id,
-                )
+                this.props.municipalFacilityForDutyMissionList,
+                municipal_facility_id,
+              )
             )}
             fromMission={fromMission}
             fromMissionTemplate={fromMissionTemplate}

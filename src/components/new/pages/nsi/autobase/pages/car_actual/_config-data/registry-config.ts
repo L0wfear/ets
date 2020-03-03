@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 import {
   YES_NO_SELECT_OPTIONS_BOOL,
@@ -42,18 +42,33 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_name_customer',
         title: [
           {
             displayIf: displayIfContant.isOkrug,
-            title: 'Заказчик/Подрядчик',
+            title: 'Заказчик',
+          },
+        ],
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_name_contractor',
+        title: [
+          {
+            displayIf: displayIfContant.isOkrug,
+            title: 'Подрядчик',
           },
         ],
         type: 'multiselect',
       },
       {
         valueKey: 'owner_name',
-        title: 'Владелец',
+        title: [
+          {
+            displayIf: displayIfContant.isOkrug,
+            title: 'Владелец',
+          },
+        ],
         type: 'multiselect',
       },
       {
@@ -67,7 +82,7 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'model_name',
+        valueKey: 'full_model_name',
         title: 'Марка шасси ТС',
         type: 'multiselect',
       },

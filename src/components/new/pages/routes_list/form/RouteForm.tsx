@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { isArray, isFunction } from 'util';
+import { compose, withProps } from 'recompose';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-
 import FieldIsMain from 'components/new/pages/routes_list/form/inside_fields/is-main/FieldIsMain';
-
 import FieldName from 'components/new/pages/routes_list/form/inside_fields/name/FieldName';
 import FieldTechnicalOperation from 'components/new/pages/routes_list/form/inside_fields/technical-operation/FieldTechnicalOperation';
 import FieldMunicipalFacility from 'components/new/pages/routes_list/form/inside_fields/municipal-facility/FieldMunicipalFacility';
@@ -14,9 +13,7 @@ import FieldType from 'components/new/pages/routes_list/form/inside_fields/type/
 import CreatingMap from 'components/new/pages/routes_list/form/inside_fields/creating-map/CreatingMap';
 
 import { FlewWrapFormRow } from 'components/old/ui/form/new/styled/styled';
-
 import { routeFormSchema } from 'components/new/pages/routes_list/form/route-form-schema';
-
 import {
   FormStateRouteForm,
   PropsRouteWithForm,
@@ -30,10 +27,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 
 import { DivNone } from 'global-styled/global-styled';
-import { isArray, isFunction } from 'util';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-
 import routePermisions from 'components/new/pages/routes_list/config-data/permissions';
 import bridgesPermission from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
@@ -48,6 +42,7 @@ import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { getDefaultRouteElement } from './utils';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 const path = 'routeForm';
 
@@ -65,7 +60,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
       this.setState({
         bridges: Object.entries(data).reduce(
-          (newBridges: any, [key, value]) => ({
+          (newBridges: any, [key, value]: any) => ({
             ...newBridges,
             [key]: {
               ...value,
@@ -160,7 +155,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -203,8 +198,8 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               value={formState.structure_id}
               name={formState.structure_name}
               disabled={
-                !isPermitted ||
-                (hasMissionStructureId && !!formState.structure_id)
+                !isPermitted
+                || (hasMissionStructureId && !!formState.structure_id)
               }
               error={formErrors.structure_id}
               onChange={this.props.handleChange}
@@ -277,11 +272,6 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 }
 
 export default compose<PropsRouteForm, InputRouteFormProps>(
-  withRequirePermissionsNew({
-    permissions: bridgesPermission.list,
-    withIsPermittedProps: true,
-    permissionName: 'isPermittedToShowBridge',
-  }),
   connect<
     StateRouteFormProps,
     DispatchRouteFormProps,
@@ -289,6 +279,7 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
     ReduxState
   >(
     (state) => ({
+      userData: getSessionState(state).userData,
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
       geozoneMunicipalFacility: getSomeUniqState(state)
@@ -305,6 +296,12 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
             path,
           }),
         ),
+    }),
+  ),
+  withProps<StateRouteFormProps & { isPermittedToShowBridge: boolean; }, any>(
+    (props) => ({
+      ...props,
+      isPermittedToShowBridge: validatePermissions(bridgesPermission.list, props.userData.permissionsSet),
     }),
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({

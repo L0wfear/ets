@@ -1,11 +1,11 @@
-import { InspectPgmBase } from "./@types/inspect_pgm_base";
+import { InspectPgmBase } from './@types/inspect_pgm_base';
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy, cloneDeep } from 'lodash';
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from 'util';
 
 export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   lack_traffic_scheme_at_entrance: false,
@@ -60,13 +60,13 @@ const makeInspectPgmBase = (inspect: any): InspectPgmBase => {
   return inspectAutobase;
 };
 
-export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number }) => {
+export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number; }) => {
   const response = await promiseGetInspectRegistry<InspectPgmBase>({
     base_id: payload.pgmBaseId,
     type: 'pgm_base',
   });
 
-  const data: InspectPgmBase[] = response.data.map((inspectPgmBase: InspectPgmBase) => {
+  const data: Array<InspectPgmBase> = response.data.map((inspectPgmBase: InspectPgmBase) => {
     return makeInspectPgmBase(inspectPgmBase);
   }).sort((a, b) => a.id - b.id);
 
@@ -91,7 +91,7 @@ export const promiseGetInspectPgmBaseById = async (id: number) => {
   return inspectPgmBase;
 };
 
-export const promiseCreateInspectionPgmBase = async (payload: { pgmBaseId: number; companyId: number }) => {
+export const promiseCreateInspectionPgmBase = async (payload: { pgmBaseId: number; companyId: number; }) => {
   let inspectPgmBase: InspectPgmBase = await promiseCreateInspection({
     base_id: payload.pgmBaseId,
     company_id: payload.companyId,

@@ -26,13 +26,13 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         action,
       ],
     });
-  }
+  };
 
   removeActionByIndex = (removeIndex: number) => {
     this.props.handleChange({
       actions: this.props.formState.actions.filter((_, index) => index !== removeIndex),
     });
-  }
+  };
 
   handleChangeData = (data) => {
     this.props.handleChange({
@@ -41,7 +41,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         ...data,
       },
     });
-  }
+  };
 
   render() {
     const {
@@ -49,6 +49,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
       formErrors: errors,
       page, path,
       isPermitted,
+      isPermittedChangeListParams,
     } = this.props;
 
     return (
@@ -68,7 +69,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                 onChange={this.props.handleChange}
                 data={state}
                 errors={errors}
-                isPermitted={isPermitted}
+                isPermitted={isPermittedChangeListParams}
                 filedToCheck={filedToCheckContainerFirst}
               />
               <br/>
@@ -86,7 +87,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                   path={this.props.path}
                   addToActionRow={this.addToActionRow}
                   removeActionByIndex={this.removeActionByIndex}
-                  isPermitted={isPermitted}
+                  isPermitted={isPermittedChangeListParams}
                 />
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
@@ -94,7 +95,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {
-            Boolean(isPermitted) && ( // либо обновление, либо создание
+            Boolean(isPermittedChangeListParams) && ( // либо обновление, либо создание
               <EtsBootstrap.Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>
@@ -102,7 +103,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
               </EtsBootstrap.Button>
             )
           }
-          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>{Boolean(isPermitted) ? 'Отмена' : 'Закрыть'}</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>{Boolean(isPermittedChangeListParams) ? 'Отмена' : 'Закрыть'}</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

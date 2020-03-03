@@ -24,7 +24,7 @@ const makePayloadToCreateInspect = (searchState: object) => {
   return payload;
 };
 
-const InspectionCarsConditionData: React.FC<{ loadingPage: string }> = (props) => {
+const InspectionCarsConditionData: React.FC<{ loadingPage: string; }> = (props) => {
   return (
     <InspectionData
       loadingPage={props.loadingPage}

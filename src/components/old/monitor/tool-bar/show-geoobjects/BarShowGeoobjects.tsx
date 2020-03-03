@@ -11,10 +11,6 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
-
 const getActiveClassName = (activeMain) => (
   cx(
     'legen_option',
@@ -49,10 +45,10 @@ class BarShowGeoobjects extends React.Component<any, any> {
         showGeoObjList: !this.state.showGeoObjList,
       });
     }
-  }
+  };
   toggleShowStatus: any = ({ currentTarget: { dataset: { type } } }) => {
     this.props.toggleShowStatus([type]);
-  }
+  };
 
   toggleAllStatus = (event) => {
     if (this.props.companiesIndex !== -1) {
@@ -75,7 +71,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
         );
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -84,42 +80,32 @@ class BarShowGeoobjects extends React.Component<any, any> {
     } = this.state;
 
     const activeMain = !FILTRED_GEOOBJECTS_LIST.some((key) => !this.props[GEOOBJECTS_OBJ[key].serverName]);
-    return FILTRED_GEOOBJECTS_LIST.length === 0 ?
-      (
-        <DivNone />
-      )
-      :
-      (
-        <span>
-          <div className={cx('tool_bar-block', { disabled: this.props.companiesIndex === -1 })}>
-            <div className="default_cube">
-              <div className={getActiveClassName(activeMain)} onClick={this.toggleList}>
-                <input type="checkbox" checked={activeMain} readOnly onClick={this.toggleAllStatus} />
-                <span>{`Объекты ${showGeoObjList ? ' \u25BC' : ' \u25BA'}`}</span>
-              </div>
-              {
-                !showGeoObjList ?
-                (
-                  <DivNone />
-                )
-                :
-                (
-                  <div className="car_block_legend left">
-                    {
-                      FILTRED_GEOOBJECTS_LIST.map((key) => (
-                        <div key={key} data-type={GEOOBJECTS_OBJ[key].serverName} onClick={this.toggleShowStatus} className={getClassNameByType(this.props, GEOOBJECTS_OBJ[key].serverName)}>
-                          <input readOnly type="checkbox" checked={this.props[GEOOBJECTS_OBJ[key].serverName]} />
-                          <div>{GEOOBJECTS_OBJ[key].label}</div>
-                        </div>
-                      ))
-                    }
-                  </div>
-                )
-              }
+    return FILTRED_GEOOBJECTS_LIST.length !== 0 && (
+      <span>
+        <div className={cx('tool_bar-block', { disabled: this.props.companiesIndex === -1 })}>
+          <div className="default_cube">
+            <div className={getActiveClassName(activeMain)} onClick={this.toggleList}>
+              <input type="checkbox" checked={activeMain} readOnly onClick={this.toggleAllStatus} />
+              <span>{`Объекты ${showGeoObjList ? ' \u25BC' : ' \u25BA'}`}</span>
             </div>
+            {
+              showGeoObjList && (
+                <div className="car_block_legend left">
+                  {
+                    FILTRED_GEOOBJECTS_LIST.map((key) => (
+                      <div key={key} data-type={GEOOBJECTS_OBJ[key].serverName} onClick={this.toggleShowStatus} className={getClassNameByType(this.props, GEOOBJECTS_OBJ[key].serverName)}>
+                        <input readOnly type="checkbox" checked={this.props[GEOOBJECTS_OBJ[key].serverName]} />
+                        <div>{GEOOBJECTS_OBJ[key].label}</div>
+                      </div>
+                    ))
+                  }
+                </div>
+              )
+            }
           </div>
-        </span>
-      );
+        </div>
+      </span>
+    );
   }
 }
 
@@ -174,5 +160,4 @@ export default compose(
     null,
     mergedPropd,
   ),
-)
-(BarShowGeoobjects);
+)(BarShowGeoobjects);

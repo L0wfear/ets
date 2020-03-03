@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/fueling_water',
   routePath: `/nsi/geoobjects/fueling_water/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник баз гидрантов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'fueling_water',
-  noDotList: false,
+
   component,
   permissions,
 };

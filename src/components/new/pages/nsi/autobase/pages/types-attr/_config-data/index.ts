@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Таблица нормативных скоростей и ширин',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'types_attr',
-  noDotList: false,
+
   component,
   permissions,
 };

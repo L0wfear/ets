@@ -1,6 +1,6 @@
 import { ISchemaRenderer, ISchemaMaker, IDataTableColSchema } from 'components/old/ui/table/@types/schema.h';
 
-export interface IReportProps {
+export type IReportProps = {
   title: string | JSX.Element | null;
   titleText?: string;
   serviceName: string;
@@ -16,8 +16,9 @@ export interface IReportProps {
   renderers?: ISchemaRenderer;
   summaryRenderes?: ISchemaRenderer;
   schemaMakers?: ISchemaMaker;
-  additionalSchemaMakers?: IDataTableColSchema[];
+  summarySchemaMakers?: ISchemaMaker;
+  additionalSchemaMakers?: Array<IDataTableColSchema>;
   notUseServerSummerTable?: boolean;
   headerStateMaker?(state: any): any;
   onRowDoubleClick?: any;
-}
+};

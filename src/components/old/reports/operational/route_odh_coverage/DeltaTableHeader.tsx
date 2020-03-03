@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-interface IPropsDeltaTableHeader {
+type IPropsDeltaTableHeader = {
   tooltip?: string;
-  name: string;
-}
+  name: React.ReactNode;
+};
 
 const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) => {
   const popover = (

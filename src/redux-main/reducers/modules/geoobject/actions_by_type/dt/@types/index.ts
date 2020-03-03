@@ -6,10 +6,10 @@ export type Dt = {
   bti_okrug_id: number | null;
   clean_area: number | null;
   company_name: string;
-  company_structures: {
+  company_structures: Array<{
     id: number;
     name: string;
-  }[];
+  }>;
   developer: string;
   district_id: number | null;
   dt_id: number | null;
@@ -45,9 +45,3 @@ export type Dt = {
   area_hand_improved_sum: number | null;
   improved_cover_flag: boolean | null;
 };
-
-export type CreateDt = any;
-
-export type UpdateDt = any;
-
-export type GetDt = () => Promise<any>;

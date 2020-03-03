@@ -6,7 +6,7 @@ import { PropsColumnAssignmentForm } from './@types/index.h';
 import { DivNone } from 'global-styled/global-styled';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
-class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm, { showBackButton: boolean }> {
+class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm, { showBackButton: boolean; }> {
   state = {
     showBackButton: false,
   };
@@ -15,7 +15,7 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
     if (!response) {
       this.setState({ showBackButton: true });
     }
-  }
+  };
   handleChange = (index, value) => {
     this.props.handleChangeAssignToWaybill(
       this.props.assign_to_waybill.map((assign_to_waybill, assign_to_waybill_index) => {
@@ -26,7 +26,7 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
         return assign_to_waybill;
       }),
     );
-  }
+  };
 
   render() {
     return (

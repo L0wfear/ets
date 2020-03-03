@@ -3,7 +3,7 @@ import memoize from 'memoize-one';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
@@ -64,7 +64,9 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     );
 
     if (value) {
-      const selectedRouteNotInOption = ROUTE_OPTIONS.find((routeOptionData) => routeOptionData.value === value);
+      const selectedRouteNotInOption = ROUTE_OPTIONS.find(
+        (routeOptionData) => routeOptionData.value === value,
+      );
 
       if (!selectedRouteNotInOption) {
         ROUTE_OPTIONS = [
@@ -132,7 +134,6 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       const {
         value,
         dependeceTechnicalOperation,
-        structure_id,
         municipal_facility_id,
         technical_operation_id,
         for_column,
@@ -155,15 +156,9 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         )
       );
 
-      if (!technical_operation_id || !municipal_facility_id) {
-        this.handleRouteIdChange(null);
-      }
-
       if (triggerOne) {
         if (technical_operation_id && municipal_facility_id && value) {
           this.getRoutesWithCheckCurrent(technical_operation_id, municipal_facility_id, for_column);
-        } else {
-          this.handleRouteIdChange(null);
         }
       }
 
@@ -176,20 +171,20 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
           || for_column !== prevProps.for_column
           || (
             MISSION_IS_ORDER_SOURCE
-            ? (
-              dependeceTechnicalOperation
+              ? (
+                dependeceTechnicalOperation
               && !prevProps.dependeceTechnicalOperation
-            )
-            : (
-              municipalFacilityForMissionList.length
+              )
+              : (
+                municipalFacilityForMissionList.length
               && !prevProps.municipalFacilityForMissionList.length
-            )
+              )
           )
         )
         && (
           MISSION_IS_ORDER_SOURCE
             ? (
-                dependeceTechnicalOperation
+              dependeceTechnicalOperation
                 || (
                   dependeceTechnicalOperation
                   && !prevProps.dependeceTechnicalOperation
@@ -211,15 +206,6 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
 
       if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
-      }
-      if (structure_id !== prevProps.structure_id) {
-        if (structure_id) {
-          const route_structure_id = get(this.state.selectedRoute, 'structure_id', null);
-
-          if (route_structure_id !== structure_id) {
-            this.handleRouteIdChange(null);
-          }
-        }
       }
     }
   }
@@ -266,14 +252,14 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         type: (
           MISSION_IS_ORDER_SOURCE
             ? getDependeceTechnicalOperationRouteType(
-                dependeceTechnicalOperation,
-                for_column,
-              )
+              dependeceTechnicalOperation,
+              for_column,
+            )
             : getAvailableRouteTypesMemo(
-                this.props.municipalFacilityForMissionList,
-                municipal_facility_id,
-                for_column,
-              )
+              this.props.municipalFacilityForMissionList,
+              municipal_facility_id,
+              for_column,
+            )
         ).toString(),
       },
       { page, path },
@@ -316,7 +302,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       object_type_id,
       object_type_name,
     });
-  }
+  };
 
   handleRouteIdChange = async (route_id: Mission['route_id'], route?: ValuesOf<StateFieldRouteIdMission['ROUTE_OPTIONS']>) => {
     const route_name = get(route, 'rowData.name', null);
@@ -328,6 +314,17 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       null,
     );
 
+    if (this.props.formDataKey === 'mission' && !route_id && this.props.consumable_materials[0]) {
+      try {
+        await global.confirmDialog({
+          title: 'Внимание!',
+          body: 'При удалении маршрута будет очищена таблица расходных материалов. Продолжить?',
+        });
+      } catch {
+        return;
+      }
+    }
+
     this.props.onChange({
       route_id,
       route_name,
@@ -335,7 +332,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       object_type_id,
       object_type_name,
     });
-  }
+  };
 
   async loadSelectedRoute(route_id: Route['id'] | null) {
     if (route_id) {
@@ -401,7 +398,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         draw_object_list: [],
       },
     });
-  }
+  };
 
   render() {
     const {
@@ -495,10 +492,10 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
                         for_column,
                       )
                       : getAvailableRouteTypesMemo(
-                          this.props.municipalFacilityForMissionList,
-                          municipal_facility_id,
-                          for_column,
-                        )
+                        this.props.municipalFacilityForMissionList,
+                        municipal_facility_id,
+                        for_column,
+                      )
                   )
                 }
                 fromMission={fromMission}

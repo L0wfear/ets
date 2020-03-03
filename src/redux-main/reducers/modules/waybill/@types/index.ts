@@ -4,6 +4,7 @@ type WaybillCarRefill = {
   fuel_card_id: number;
   type_id: number;
   value: number;
+  number: string;
 };
 
 type WaybillEquipmentRefill = WaybillCarRefill;
@@ -18,6 +19,7 @@ export type waybillDiff = { // Поля, которые есть в ПЛ, но �
   trailer_special_model_name: string;
   trailer_type_name: string;
   trailer_gps_code: string;
+  hasEquipmentFuelRates: boolean | number;
 };
 
 export type WaybillRegistryRow = {
@@ -33,7 +35,7 @@ export type WaybillRegistryRow = {
   car_model_name: string;
   car_type_id: number;
   car_type_name: string;
-  car_refill: WaybillCarRefill[]
+  car_refill: Array<WaybillCarRefill>;
   car_special_model_id: number;
   car_special_model_name: string;
   closed_by_employee_id: number;
@@ -51,6 +53,8 @@ export type WaybillRegistryRow = {
   downtime_hours_work: number;
   driver_id: number;
   driver_fio: string;
+  driver_name: string;
+  delete: boolean;
   equipment_fact_fuel_end: number;
   equipment_fuel: boolean;
   equipment_fuel_end: number;
@@ -58,8 +62,8 @@ export type WaybillRegistryRow = {
   equipment_fuel_start: number;
   equipment_fuel_to_give: number;
   equipment_fuel_type: string;
-  equipment_refill: WaybillEquipmentRefill[];
-  equipment_tax_data: any[];
+  equipment_refill: Array<WaybillEquipmentRefill>;
+  equipment_tax_data: Array<any>;
   fact_arrival_date: string;
   fact_departure_date: string;
   fact_fuel_end: number;
@@ -74,7 +78,7 @@ export type WaybillRegistryRow = {
   id: number;
   is_bnso_broken: boolean;
   is_one_fuel_tank: boolean;
-  mission_id_list: Mission['id'][];
+  mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
   motohours_equip_start: number;
@@ -86,20 +90,21 @@ export type WaybillRegistryRow = {
   plan_departure_date: string;
   sensor_consumption: number;
   status: 'draft' | any;
+  status_text: string;
   structure_id: number;
   structure_name: string;
-  tax_data: {
+  tax_data: Array<{
     FACT_VALUE: number;
     FUEL_RATE: number;
     OPERATION: number;
-    RESULT: string;       // number.toFixed(3)
+    RESULT: number;
     comment: string;
     fuel_correction_rate: number;
     is_excluding_mileage: boolean;
     measure_unit_name: string;
     operation_name: string;
     iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
-  }[];
+  }>;
   track_length: number;
   trailer_id: number;
   work_mode_id: number;
@@ -114,5 +119,5 @@ export type Waybill = (
 );
 
 export type IStateWaybill = {
-  waybillList: Waybill[];
+  waybillList: Array<Waybill>;
 };

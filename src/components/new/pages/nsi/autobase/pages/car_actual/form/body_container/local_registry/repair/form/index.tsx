@@ -1,37 +1,39 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
+import { withFormRegistrySearch, WithFormRegistrySearchAddProps, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-import { PropsRepairFormWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/@types/RepairForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { memoizeMergeElement } from '../../../../utils';
-
-const RepareFrom = React.lazy(() =>
+const RepareFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "repare_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/RepairForm'),
 );
 
-const RepareFormLazy: React.FC<PropsRepairFormWrap> = (props) => {
-  const page = props.loadingPageName || props.page;
-  const path = `${props.path ? `${props.path}-` : ''}repare-form`;
+const RepareFormLazy: React.FC<WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap; }> = React.memo(
+  (props) => {
+    const element = React.useMemo(
+      () => {
+        if (!props.element.car_id && props.selectedCarData) {
+          return {
+            ...props.element,
+            car_id: props.selectedCarData.asuods_id,
+            car_gov_number: props.selectedCarData.gov_number,
+          };
+        }
 
-  return props.element ? (
-    <ErrorBoundaryForm>
-      <React.Suspense fallback={<LoadingComponent />}>
-        <RepareFrom
-          element={memoizeMergeElement(props.element, props.selectedCarData)}
-          handleHide={props.onFormHide}
-          selectedCarData={props.selectedCarData}
+        return props.element;
+      },
+      [props.element, props.selectedCarData],
+    );
 
-          page={page}
-          path={path}
-        />
-      </React.Suspense>
-    </ErrorBoundaryForm>
-  ) : (
-    <DivNone />
-  );
-};
+    return (
+      <RepareFromReactLazy
+        {...props}
+        element={element}
+      />
+    );
+  },
+);
 
-export default withFormRegistrySearch<Pick<PropsRepairFormWrap, 'selectedCarData'>>({})(RepareFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Repair> & { selectedCarData?: CarWrap; }, Repair>({
+  add_path: 'repair',
+})(RepareFormLazy);

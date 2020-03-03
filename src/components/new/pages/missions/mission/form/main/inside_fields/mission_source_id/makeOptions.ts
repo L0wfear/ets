@@ -2,7 +2,7 @@ import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_sou
 import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeOptionsByMissionSourceForMission = (
-  missionSource: MissionSource[],
+  missionSource: Array<MissionSource>,
   selectedSourceIsOrder: boolean,
 ) => (
   missionSource.reduce((newArr: DefaultSelectListMapper<MissionSource>, missionSourceData) => {

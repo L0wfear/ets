@@ -5,9 +5,9 @@ export type FrontGeozonesDataByIndex = GeozonesDataByIndex & {
   front_add_at: any;
 };
 
-interface SelectedGeoobjectsByserverName {
+type SelectedGeoobjectsByserverName = {
   [id: string]: FrontGeozonesDataByIndex;
-}
+};
 export type TypeSelectedGeoobjects = {
   [serverName: string]: SelectedGeoobjectsByserverName;
 };

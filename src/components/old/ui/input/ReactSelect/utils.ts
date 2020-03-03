@@ -1,14 +1,14 @@
 import { isString, isNumber } from 'lodash';
 
 export type DefaultSelectOption<V, L, R> = {
-  value: V,
-  label: L,
-  rowData?: Partial<R>,
-  isNotVisible?: boolean,
+  value: V;
+  label: L;
+  rowData?: Partial<R>;
+  isNotVisible?: boolean;
   [k: string]: any;
 };
 
-export type DefaultSelectListMapper<R extends any> = DefaultSelectOption<R['id'], R['name'], R>[];
+export type DefaultSelectListMapper<R extends any> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
 
 export const defaultSelectListMapper = <R extends any>(rowData: R): DefaultSelectOption<R['id'], R['name'], R> => ({ value: rowData.id, label: rowData.name, rowData });
 
@@ -44,4 +44,18 @@ export const defaultSortingFunction = (a, b) => {
   }
 
   return a.label - b.label;
+};
+
+export const geContainertId = (id: string, modalKey?: string, ) => {
+  return id ? `${modalKey ? `${modalKey}-` : ''}${id}-container` : undefined;
+};
+export const getValueId = (id: string, modalKey?: string, ) => {
+  return id ? `${modalKey ? `${modalKey}-` : ''}${id}-value` : undefined;
+};
+export const getInstanceId = (id: string, modalKey?: string, ) => {
+  return modalKey ? `${modalKey}-${id}` : id;
+};
+export const getMultiValueId = (id: string, modalKey: string, value: any) => {
+  const instanceId = getInstanceId(id, modalKey);
+  return instanceId ? `${instanceId}-value-${value}` : undefined;
 };

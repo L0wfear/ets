@@ -5,7 +5,7 @@ export const InstectionBlockSelect = styled(EtsBootstrap.Row)`
   margin-top: 10px;
   margin-bottom: 10px;
 
-  padding: 0 40px;
+  padding: 0;
 `;
 
 export const SelectLabel = styled(EtsBootstrap.Col)`

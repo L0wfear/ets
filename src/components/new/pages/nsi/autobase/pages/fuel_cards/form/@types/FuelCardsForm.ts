@@ -1,28 +1,16 @@
-import {
-  FuelCard,
-} from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import {
   GetSessionCompanyOptionsAns,
   getSessionStructuresParams,
 } from 'redux-main/reducers/modules/session/selectors';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
-
-export type PropsFuelCardsFormLazy = {
-  element: Partial<FuelCard>;
-  onFormHide: OnFormHideType;
-
-  registryKey?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;
-  fuelTypeOptions: any[];
+  fuelTypeOptions: Array<any>;
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: number | null;
   STRUCTURE_FIELD_VIEW: ReturnType<
@@ -30,14 +18,7 @@ export type StatePropsFuelCards = {
   >['STRUCTURE_FIELD_VIEW'];
 };
 export type DispatchPropsFuelCards = {};
-export type OwnFuelCardsProps = {
-  element: Partial<FuelCard>;
-  handleHide: OnFormHideType;
-  page: string;
-  path?: string;
-
-  fromWaybill?: boolean;
-};
+export type OwnFuelCardsProps =  WithFormRegistrySearchAddProps<Partial<FuelCard>>;
 
 export type PropsFuelCardsWithForm = StatePropsFuelCards &
   DispatchPropsFuelCards &

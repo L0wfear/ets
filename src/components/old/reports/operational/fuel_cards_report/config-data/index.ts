@@ -3,9 +3,9 @@ import component from 'components/old/reports/operational/fuel_cards_report/conf
 
 export default {
   path: '/fuel_cards_report',
-  title: 'Отчёт по топливным картам',
+  title: 'Отчет по топливным картам',
   entyity: 'fuel_cards_report',
-  noDotList: false,
+
   component,
   permissions,
 };

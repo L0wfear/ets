@@ -8,10 +8,10 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 import SelectRouteType from './SelectRouteType';
-import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import SelectFuncType from './SelectFuncType';
-import { actionGetNormsByParams } from 'redux-main/reducers/modules/norm_registry/actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionGetNormsByParams } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
 
 type SelectRouteTypeAndFuncTypeStateProps = {
   municipalFacilityList: IStateSomeUniq['municipalFacilityList'];
@@ -34,7 +34,7 @@ type SelectRouteTypeAndFuncTypeProps = (
 );
 
 type SelectRouteTypeAndFuncTypeState = {
-  normList: Norm[];
+  normList: Array<Norm>;
 };
 
 class SelectRouteTypeAndFuncType extends React.PureComponent<SelectRouteTypeAndFuncTypeProps, SelectRouteTypeAndFuncTypeState> {

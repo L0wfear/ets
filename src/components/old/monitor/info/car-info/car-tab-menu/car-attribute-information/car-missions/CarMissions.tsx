@@ -54,7 +54,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
             missionToShowInfo: mission_data,
           });
         } else {
-          console.log('not_find_mission_data'); // tslint:disable-line:no-console
+          console.info('not_find_mission_data'); // eslint-disable-line
           this.setState({ selectedMissionIdToShowInfo: null });
         }
       }
@@ -82,7 +82,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           missionToShow: mission,
         });
       } else {
-        console.log('not_find_mission'); // tslint:disable-line:no-console
+        console.info('not_find_mission'); // eslint-disable-line
         this.setState({ selectedMissionIdToShowMain: null });
       }
     }
@@ -98,7 +98,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
       selectedMissionIdToShowMain: null,
       missionToShow: null,
     });
-  }
+  };
 
   hideInfo = () =>
     this.setState({
@@ -118,9 +118,15 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           showMissionForm={this.showMissionForm}
         />
         <MissionFormLazy
-          onFormHide={this.hideMain}
+          handleHide={this.hideMain}
           showForm={!!missionToShow && !!this.state.selectedMissionIdToShowMain}
           element={missionToShow}
+
+          type={null}
+
+          registryKey="mainpage"
+          page="mainpage"
+          path="mission"
         />
         <MissionInfoFormWrap
           onFormHide={this.hideInfo}

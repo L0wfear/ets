@@ -21,14 +21,8 @@ import {
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
-import {
-  ButtonCreateRoute,
-  ButtonUpdateRoute,
-  ButtonDeleteRoute,
-} from 'components/new/pages/routes_list/buttons/buttons';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
-import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { DivNone } from 'global-styled/global-styled';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -47,14 +41,9 @@ import { getWarningNotification } from 'utils/notifications';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getDefaultRouteElement } from './form/utils';
 
-import {
-  StatePropsRoutesList,
-  DispatchPropsRoutesList,
-  OwnPropsRoutesList,
-  PropsRoutesList,
-  StateRoutesList,
-} from 'components/new/pages/routes_list/@types/RoutesList.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
+import { actionSessionUpdateCurrentSeason } from 'redux-main/reducers/modules/session/action_get_config';
 
 const SEASONS_OPTIONS = [
   {
@@ -138,6 +127,38 @@ const filterOptions: any = [
   },
 ];
 
+import { RouteComponentProps } from 'react-router-dom';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { Route } from 'redux-main/reducers/modules/routes/@types/index';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
+type StateProps = {
+  appConfig: InitialStateSession['appConfig'];
+  structures: InitialStateSession['userData']['structures'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = (
+  RouteComponentProps<any>
+);
+type PropsRoutesList = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+type StateRoutesList = {
+  selectedRoute: Route | null;
+  selectedRoute_old: Route | null;
+  showForm: boolean;
+  filterValues: any;
+  filterModalIsOpen: boolean;
+  ROUTES: object;
+  routesList: Array<Route>;
+  showId: Set<any>;
+  routesMapNameId: Map<any, any>;
+};
+
 class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   constructor(props) {
     super(props);
@@ -153,10 +174,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
           type: 'multiselect',
           value: [
             3,
-            getCurrentSeason(
-              this.props.appConfig.summer_start_date,
-              this.props.appConfig.summer_end_date,
-            ) === 'winter'
+            this.props.appConfig.current_season === 'winter'
               ? 2
               : 1,
           ],
@@ -171,6 +189,18 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 
   async componentDidMount() {
+    const applyCurrentSeasonFilters = async () => {
+      const appConfig = await this.props.dispatch(actionSessionUpdateCurrentSeason({ page }));
+      this.handleChangeSeasonId([
+        3,
+        appConfig.current_season === 'winter'
+          ? 2
+          : 1
+      ]);
+    };
+
+    applyCurrentSeasonFilters();
+
     const {
       location: { search },
     } = this.props;
@@ -180,10 +210,11 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       const filterValues = {
         ...this.state.filterValues,
       };
+      const intValues = ['technical_operation_id'];
       Object.entries(searchObject).forEach(([key, value]) => {
         filterValues[key] = {
           type: 'multiselect',
-          value: [value],
+          value: intValues.includes(key) ? [parseInt(value as string, 10)] : [value],
         };
       });
 
@@ -194,17 +225,27 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       this.refreshRoutes();
     }
 
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+    const new_title = `${etsName} Реестр маршрутов`;
+
     if (document) {
-      document.title = `${etsName} Реестр маршрутов`;
+      document.title = new_title;
+    }
+    if (meta) {
+      meta.setAttribute('content', new_title);
     }
   }
 
   componentWillUnmount() {
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
 
     if (document) {
       document.title = etsName;
+    }
+    if (meta) {
+      meta.setAttribute('content', etsName);
     }
   }
 
@@ -224,14 +265,16 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   };
 
   async getRouteById(id) {
-    const route_data = await this.props.actionLoadRouteById(id, { page });
+    const route_data = await this.props.dispatch(
+      routesAction.actionLoadRouteById(id, { page })
+    );
     if (!route_data) {
       throw new Error('Маршрут не найден');
     }
     return route_data;
   }
 
-  handleChangeSeasonId = (value) => {
+  handleChangeSeasonId = (value: Array<number>) => {
     const { filterValues } = this.state;
 
     this.saveFilter({
@@ -282,9 +325,11 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   };
 
   refreshRoutes = async (withState = null) => {
-    const { data: routesListRaw } = await this.props.actionLoadRoutes(
-      {},
-      { page },
+    const { data: routesListRaw } = await this.props.dispatch(
+      routesAction.actionLoadRoutes(
+        {},
+        { page },
+      )
     );
 
     const routesList = makeRoutesListForRender(routesListRaw);
@@ -343,8 +388,8 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
     const pathToIsMain = routeData.is_main ? 'main' : 'other';
     const pathTo_type = pathToIsMain + getTypeRoute(routeData.type);
-    const pathTo_structure_name =
-      pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
+    const pathTo_structure_name
+      = pathTo_type + (routeData.structure_name || EMPTY_STUCTURE);
     const pathTo_technical_operation_name_arr = [];
     routeData.work_types.forEach((elem) => {
       const pathToStructureWorkType = `${pathTo_structure_name}${
@@ -425,7 +470,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       return;
     }
 
-    await this.props.actionRemoveRoute(this.state.selectedRoute.id, { page });
+    await this.props.dispatch(routesAction.actionRemoveRoute(this.state.selectedRoute.id, { page }));
     this.refreshRoutes({ selectedRoute: null });
   };
 
@@ -475,7 +520,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                     id="season_id"
                     type="select"
                     multi
-                    label={false}
+                    label={''}
                     options={SEASONS_OPTIONS}
                     value={this.state.filterValues.season_id.value}
                     onChange={this.handleChangeSeasonId}
@@ -485,27 +530,33 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                   active={activeFilter}
                   onClick={this.toggleFilter}
                 />
-                <ButtonCreateRoute bsSize="small" onClick={this.createRoute} id = "create_route">
+                <EtsBootstrap.Button bsSize="small" onClick={this.createRoute} id = "create_route" permissions={routePermissions.create}>
                   <EtsBootstrap.Glyphicon glyph="plus" /> Создать маршрут
-                </ButtonCreateRoute>
-                <ButtonUpdateRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.updateRoute}>
+                  onClick={this.updateRoute}
+                  permissions={routePermissions.update}
+                >
                   <EtsBootstrap.Glyphicon glyph="pencil" /> Изменить маршрут
-                </ButtonUpdateRoute>
-                <ButtonUpdateRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.copyRoute}>
+                  onClick={this.copyRoute}
+                  permissions={routePermissions.create}
+                >
                   <EtsBootstrap.Glyphicon glyph="copy" /> Копировать маршрут
-                </ButtonUpdateRoute>
-                <ButtonDeleteRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.deleteRoute}>
+                  onClick={this.deleteRoute}
+                  permissions={routePermissions.delete}
+                >
                   <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
-                </ButtonDeleteRoute>
+                </EtsBootstrap.Button>
               </div>
             </RouteHeaderContainer>
             <Filter
@@ -539,28 +590,20 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 }
 
-export default compose<PropsRoutesList, OwnPropsRoutesList>(
+export default compose<PropsRoutesList, OwnProps>(
   withPreloader({
     page,
     typePreloader: 'mainpage',
   }),
   connect<
-    StatePropsRoutesList,
-    DispatchPropsRoutesList,
-    OwnPropsRoutesList,
+    StateProps,
+    DispatchProps,
+    OwnProps,
     ReduxState
   >(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
       structures: getSessionState(state).userData.structures,
-    }),
-    (dispatch: any) => ({
-      actionLoadRoutes: (...arg) =>
-        dispatch(routesAction.actionLoadRoutes(...arg)),
-      actionLoadRouteById: (...arg) =>
-        dispatch(routesAction.actionLoadRouteById(...arg)),
-      actionRemoveRoute: (...arg) =>
-        dispatch(routesAction.actionRemoveRoute(...arg)),
     }),
   ),
 )(RoutesList);

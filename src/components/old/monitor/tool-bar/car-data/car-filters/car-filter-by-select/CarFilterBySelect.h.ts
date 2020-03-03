@@ -11,15 +11,15 @@ export type PropsCarFilterByText = {
 
 export type StateCarFilterByText = {
   hidden: boolean;
-  carActualGpsNumberIndex: Record<string, Car>,
-  carFilterMultyTypeOptions: IReactSelectOption[];
-  carFilterMultyStructureOptions: IReactSelectOption[];
-  carFilterMultyOwnerOptions: IReactSelectOption[];
+  carActualGpsNumberIndex: Record<string, Car>;
+  carFilterMultyTypeOptions: Array<IReactSelectOption>;
+  carFilterMultyStructureOptions: Array<IReactSelectOption>;
+  carFilterMultyOwnerOptions: Array<IReactSelectOption>;
 };
 
 export type DefOneAnsData = {
-  obj: {[id: string]: string},
-  arr: IReactSelectOption[],
+  obj: {[id: string]: string;};
+  arr: Array<IReactSelectOption>;
 };
 
 export type CheckByIdAndNameFunc = (

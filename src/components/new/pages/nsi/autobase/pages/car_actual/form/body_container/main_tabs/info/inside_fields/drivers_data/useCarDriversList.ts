@@ -1,38 +1,39 @@
 import * as React from 'react';
-import createFio from 'utils/create-fio';
-import { filterDriver } from '../../../../../utils';
+
+import { createFio } from 'utils/labelFunctions';
 import { Employee, Driver } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { CarWrap } from '../../../../../@types/CarForm';
-import { HandleThunkActionCreator } from 'react-redux';
 import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
 import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
+import { filterDriver } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { get } from 'lodash';
 
 type UseCarDriversListAns = {
-  primaryDriverOptions: DefaultSelectOption<number, string, Employee>[],
-  secondaryDriverOptions: DefaultSelectOption<number, string, Employee>[],
+  primaryDriverOptions: Array<DefaultSelectOption<number, string, Employee>>;
+  secondaryDriverOptions: Array<DefaultSelectOption<number, string, Employee>>;
 };
 type UseCarDriversList = (
   drivers_data: CarWrap['drivers_data'],
   gov_number: CarWrap['gov_number'],
-  page: string,
-  path: string,
-  employeePromise: HandleThunkActionCreator<typeof employeeEmployeeGetSetEmployee>,
-  driverPromise: HandleThunkActionCreator<typeof employeeDriverGetSetDriver>,
+  meta: LoadingMeta,
 ) => UseCarDriversListAns;
 
-const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, path, employeePromise, driverPromise) => {
+const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) => {
   const [employeeIndex, setEmployeeIndex] = React.useState<Record<Employee['id'], Employee>>({});
-  const [driverList, setDriverList] = React.useState<Driver[]>([]);
+  const [driverList, setDriverList] = React.useState<Array<Driver>>([]);
 
+  const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      employeePromise({}, { page, path }).then(
-        ({ payload: { dataIndex } }) => {
+      dispatch(employeeEmployeeGetSetEmployee({}, meta)).then(
+        ({ dataIndex }) => {
           setEmployeeIndex(dataIndex);
         },
       );
-      driverPromise({}, { page, path }).then(
+      dispatch(employeeDriverGetSetDriver({}, meta)).then(
         ({ data }) => {
           setDriverList(data);
         },
@@ -48,6 +49,10 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
           return filterDriver(
             employeeIndex[driver.id],
             gov_number,
+            {
+              includeNotActive: true,
+              isValidOneOfLicense: (meta.type_id === 15), // Тип техники: "Компрессор"
+            },
           );
         },
       ).map(
@@ -55,10 +60,11 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
           value: driver.id,
           label: createFio(employeeIndex[driver.id]),
           rowData: employeeIndex[driver.id],
+          isNotVisible: !driver.active,
         }),
       );
     },
-    [employeeIndex, driverList],
+    [employeeIndex, driverList, meta.type_id, gov_number, ],
   );
 
   const primaryDriverOptions = React.useMemo(
@@ -74,6 +80,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
             value: id,
             label: createFio(employeeIndex[id]),
             rowData: employeeIndex[id],
+            isNotVisible: !get(employeeIndex[id], 'active'),
           });
         }
       });
@@ -96,6 +103,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
             value: id,
             label: createFio(employeeIndex[id]),
             rowData: employeeIndex[id],
+            isNotVisible: !get(employeeIndex[id], 'active'),
           });
         }
       });

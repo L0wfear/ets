@@ -1,14 +1,17 @@
 import permissions from 'components/new/pages/inspection/container/_config_data/permissions';
 import component from 'components/new/pages/inspection/container/_config_data/components';
+import { ConfigPageData } from 'components/@next/@types/config_data';
 
-export default {
+const inspection_container_page_config: ConfigPageData = {
   path: '/inspection/container',
   routePath: '/inspection/container/',
   title: 'container',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'inspect.container',
-  noDotList: true,
-  checkHidden: (isShow, props) => isShow && !props.isOkrug,
+
+  checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
   component,
   permissions,
 };
+
+export default inspection_container_page_config;

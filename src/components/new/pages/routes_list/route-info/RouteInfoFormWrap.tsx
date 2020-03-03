@@ -17,21 +17,20 @@ class RouteInfoFormWrap extends React.PureComponent<PropsRouteInfoFormWrap, {}> 
     } = this.props;
 
     return (
-      showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <RouteInfoForm
-              route={props.route}
-              title={props.title}
-              onHide={props.onHide}
-              mapKey={props.mapKey}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      ( <DivNone /> )
+      showForm
+        ? (
+          <ErrorBoundaryForm>
+            <React.Suspense fallback={<LoadingComponent />}>
+              <RouteInfoForm
+                route={props.route}
+                title={props.title}
+                onHide={props.onHide}
+                mapKey={props.mapKey}
+              />
+            </React.Suspense>
+          </ErrorBoundaryForm>
+        )
+        :      ( <DivNone /> )
     );
   }
 }

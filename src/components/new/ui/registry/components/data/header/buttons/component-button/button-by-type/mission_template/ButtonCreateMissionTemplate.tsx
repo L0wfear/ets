@@ -1,29 +1,26 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 import { getWarningNotification } from 'utils/notifications';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateMissionTemplateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
 };
 type ButtonCreateMissionTemplateDispatchProps = {
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateMissionTemplateOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateMissionTemplateOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionTemplateMergeProps = {};
 
 type ButtonCreateMissionTemplateProps = (
@@ -61,28 +58,21 @@ const ButtonCreateMissionTemplate: React.FC<ButtonCreateMissionTemplateProps> = 
   );
 
   return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={disabled}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_by_template-form`} bsSize="small" onClick={handleClick} disabled={disabled}>
         Сформировать децентрализованное задание
-      </EtsBootstrap.Button>
+    </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonCreateMissionTemplateProps, ButtonCreateMissionTemplateOwnProps>(
   withSearch,
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: missionTemplatePermissions.create,
   }),
   connect<ButtonCreateMissionTemplateStateProps, ButtonCreateMissionTemplateDispatchProps, ButtonCreateMissionTemplateOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
-    }),
-    (dispatch: any) => ({
-      registrySetSelectedRowToShowInForm: (...arg) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(...arg),
-        )
-      ),
     }),
   ),
 )(ButtonCreateMissionTemplate);

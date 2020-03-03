@@ -12,7 +12,7 @@ const PDFViewModal = React.lazy(() => (
   import(/* webpackChunkName: "pdf_view_modal" */ 'components/new/pages/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal')
 ));
 
-class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: boolean }, {}> {
+class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: boolean; }, {}> {
   render() {
     const {
       show,
@@ -20,18 +20,17 @@ class MissionFormLazy extends React.PureComponent<PropsPDFViewModal & { show: bo
     } = this.props;
 
     return (
-      this.props.show ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <PDFViewModal
-              {...props}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      ( <DivNone /> )
+      this.props.show
+        ? (
+          <ErrorBoundaryForm>
+            <React.Suspense fallback={<LoadingComponent />}>
+              <PDFViewModal
+                {...props}
+              />
+            </React.Suspense>
+          </ErrorBoundaryForm>
+        )
+        :      ( <DivNone /> )
     );
   }
 }

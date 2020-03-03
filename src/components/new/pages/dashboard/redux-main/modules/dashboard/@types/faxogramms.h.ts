@@ -10,8 +10,8 @@ export type FaxogrammsItemsSubItemsType = {
 };
 
 export type FaxogrammsItemsType = {
-  data: FaxogrammsItemsDataType,
-  subItems: FaxogrammsItemsSubItemsType[],
+  data: FaxogrammsItemsDataType;
+  subItems: Array<FaxogrammsItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
@@ -22,7 +22,7 @@ export type FaxogrammsAnsMetaType = {
 };
 
 export type FaxogrammsAnsType = {
-  items: FaxogrammsItemsType[];
+  items: Array<FaxogrammsItemsType>;
   tooltip?: string;
   title: string;
   meta: FaxogrammsAnsMetaType;

@@ -4,9 +4,11 @@ import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/glob
 
 export type BlockCarInfoOwnProps = {
   element: Partial<CarsConditionCars>;
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   handleHide: (isSubmitted: boolean) => void;
   type: keyof typeof INSPECT_TYPE_FORM;
+  isCustomUserCard: boolean;
+  isPermittedChangeListParams: boolean;
 
   page: string;
   path?: string;

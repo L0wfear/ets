@@ -14,9 +14,9 @@ export default {
     })}`,
   routePath: `/nsi/employees/:${config.list.data.uniqKeyForParams}?`,
   title: 'Реестр сотрудников',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'employee',
-  noDotList: false,
+
   component,
   permissions,
 };

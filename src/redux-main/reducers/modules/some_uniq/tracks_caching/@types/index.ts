@@ -8,8 +8,8 @@ export type TracksCaching = {
   equipment_distance: number | null;
   equipment_time: number | null;
   events: any;
-  parkings: any[] | null;
+  parkings: Array<any> | null;
   sensors: any | null;
   time_of_parking: number;
-  track: any[] | null;
+  track: Array<any> | null;
 };

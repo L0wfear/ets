@@ -4,7 +4,7 @@ import EtsModalContainer from 'components/new/ui/@bootstrap/02-modal_container/E
 import EtsModalHeader from 'components/new/ui/@bootstrap/03-modal_header/EtsModalHeader';
 import EtsModalTitle from 'components/new/ui/@bootstrap/04-modal_title/EtsModalTitle';
 import EtsModalFooter from 'components/new/ui/@bootstrap/05-modal_footer/EtsModalFooter';
-import EtsRow from 'components/new/ui/@bootstrap/06-row/EtsRow';
+import EtsRow from 'components/new/ui/@bootstrap/row/EtsRow';
 import EtsCol from 'components/new/ui/@bootstrap/07-col/EtsCol';
 import EtsModalBody from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBody';
 import EtsDropdown from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
@@ -21,11 +21,13 @@ import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/Ets
 import EtsPopover from 'components/new/ui/@bootstrap/23-popover/EtsPopover';
 import EtsOverlayTrigger from 'components/new/ui/@bootstrap/24-overlay_trigger/EtsOverlayTrigger';
 import EtsNavItem from 'components/new/ui/@bootstrap/25-nav_item/EtsNavItem';
-import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
+import EtsTableOld from 'components/new/ui/@bootstrap/27-table_old/EtsTableOld';
 import EtsBadge from 'components/new/ui/@bootstrap/28-badge/EtsBadge';
 import EtsDashboardCard from './29-dashboard_card/EtsDashboardCard';
 import EtsViewCarousel from './30-view_carousel/EtsViewCarousel';
 import EtsBackgroundLabel from 'components/new/ui/@bootstrap/31-background_label/EtsBackgroundLabel';
+import EtsGridBootstrap from 'components/new/ui/@bootstrap/grid_bootstrap/EtsGridBootstrap';
+import EtsInputGroup from 'components/new/ui/@bootstrap/input_group/EtsInputGroup';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -52,10 +54,14 @@ const EtsBootstrap = {
   Popover: EtsPopover,
   OverlayTrigger: EtsOverlayTrigger,
   NavItem: EtsNavItem,
-  Table: EtsTable,
+  TableOld: EtsTableOld,
   Badge: EtsBadge,
   DashboardCard: EtsDashboardCard,
   ViewCarousel: EtsViewCarousel,
+
+  Grid: EtsGridBootstrap,
+
+  InputGroup: EtsInputGroup,
 };
 
 export default EtsBootstrap;

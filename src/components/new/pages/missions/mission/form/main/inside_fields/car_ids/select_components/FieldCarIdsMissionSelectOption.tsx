@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { Option } from "components/old/ui/input/ReactSelect/styled/styled";
+import { Option } from 'components/old/ui/input/ReactSelect/styled/styled';
 
 import { AvailableCarImg, NotAvailableCarImg } from './styled';
 

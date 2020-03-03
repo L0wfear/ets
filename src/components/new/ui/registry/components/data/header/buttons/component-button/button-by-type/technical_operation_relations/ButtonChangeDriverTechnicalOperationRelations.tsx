@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonChangeDriverTechnicalOperationRelationsStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -19,12 +20,9 @@ type ButtonChangeDriverTechnicalOperationRelationsStateProps = {
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonChangeDriverTechnicalOperationRelationsDispatchProps = {
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonChangeDriverTechnicalOperationRelationsOwnProps = {
-  registryKey: string;
-};
+type ButtonChangeDriverTechnicalOperationRelationsOwnProps = CommonTypesForButton & {};
 type ButtonChangeDriverTechnicalOperationRelationsMergeProps = {};
 
 type ButtonChangeDriverTechnicalOperationRelationsProps = (
@@ -52,8 +50,7 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
       props.setParams({
         technical_operation_relations_type_form: 'change_driver',
         car_actual_asuods_id: get(props.selectedRow, 'car_id', null),
-      }),
-      props.registrySetSelectedRowToShowInForm(props.registryKey);
+      });
     },
     [props.registryKey, props.setParams, props.match.params, props.selectedRow],
   );
@@ -77,14 +74,14 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
   );
 
   return (
-    <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-update_car-form`} bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
       Изменить водителей
     </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonChangeDriverTechnicalOperationRelationsProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: carActualPermissions.update,
   }),
   connect<ButtonChangeDriverTechnicalOperationRelationsStateProps, ButtonChangeDriverTechnicalOperationRelationsDispatchProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps, ReduxState>(
@@ -94,11 +91,6 @@ export default compose<ButtonChangeDriverTechnicalOperationRelationsProps, Butto
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any) => ({
-      registrySetSelectedRowToShowInForm: (...arg) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(...arg),
-        )
-      ),
       actionUnselectSelectedRowToShow: (...arg) => (
         dispatch(
           actionUnselectSelectedRowToShow(...arg),

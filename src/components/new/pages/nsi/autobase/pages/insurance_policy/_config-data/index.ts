@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Реестр страховок',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_insurance_policy',
-  noDotList: false,
+
   component,
   permissions,
 };

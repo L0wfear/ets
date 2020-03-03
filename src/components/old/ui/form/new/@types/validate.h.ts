@@ -1,10 +1,19 @@
+import { ExtFieldDate, ExtFieldBoolean, ExtFieldString, ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
+
 export type DependenciesFieldFunc<K, F, P> = (
   value: K,
   formState: F,
   props: P,
 ) => any;
 
-export type DependenciesField<K, F, P> = DependenciesFieldFunc<K, F, P>[];
+export type dependenciesDisableFieldFunc<K, F, P> = (
+  value: K,
+  formState: F,
+  props: P,
+) => any;
+
+export type DependenciesField<K, F, P> = Array<DependenciesFieldFunc<K, F, P>>;
+export type dependenciesDisableField<K, F, P> = Array<dependenciesDisableFieldFunc<K, F, P>>;
 
 export type CommonPropertie<K, F, P> = {
   title: string;
@@ -41,13 +50,14 @@ export type CommonPropertie<K, F, P> = {
         reverse?: boolean;
       }
     )>
-  )
+  );
 
   dependencies?: DependenciesField<K, F, P>;
+  dependenciesDisable?: dependenciesDisableField<K, F, P>;
 };
 
 export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'string';
+  type: ExtFieldString<K>['type'];
   minLength?: number;
   maxLength?: number;
   trimSpace?: boolean;
@@ -55,7 +65,8 @@ export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
 };
 
 export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'number';
+  type: ExtFieldNumber<K>['type'];
+  strick?: boolean; // не преобразовывать в строку, при изменении(handleChange) в withForm
   minLength?: number;
   maxLength?: number;
   min?: number;
@@ -63,7 +74,8 @@ export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   max?: number;
   integer?: boolean;
   float?: number;
-
+  regexp?: string;
+  regexpErrorText?: string;
 };
 
 export type ValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {
@@ -75,21 +87,21 @@ export type MultiValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {
 };
 
 export type DatePropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'date';
+  type: ExtFieldDate<K>['type'];
 };
 export type DateTimePropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'datetime';
 };
 
 export type BooleanPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'boolean';
+  type: ExtFieldBoolean<K>['type'];
 };
 export type ObjectProperty<K, P> = {
   type: 'schema';
   schema: SchemaType<K, P>;
 };
 export type AnyProperty<K, F, P> = CommonPropertie<K, F, P> & {
-  title?: string
+  title?: string;
   type: 'any';
 };
 
@@ -106,26 +118,15 @@ export type FormErrorType<Shema extends SchemaType<any, any>> = {
 };
 
 export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
-  K extends Array<any>
-    ? (
-      MultiValueOfArrayPropertie<K, F, P>
-      | AnyProperty<K, F, P>
-    )
-    : (
-      K extends { [k: string]: any }
-        ? (
-          ObjectProperty<K, P>
-        )
-        : (
-          StringPropertie<K, F, P>
-          | NumberPropertie<K, F, P>
-          | ValueOfArrayPropertie<K, F, P>
-          | DatePropertie<K, F, P>
-          | DateTimePropertie<K, F, P>
-          | BooleanPropertie<K, F, P>
-          | AnyProperty<K, F, P>
-        )
-    )
+    MultiValueOfArrayPropertie<K, F, P>
+    | ObjectProperty<K, P>
+    | StringPropertie<K, F, P>
+    | NumberPropertie<K, F, P>
+    | ValueOfArrayPropertie<K, F, P>
+    | DatePropertie<K, F, P>
+    | DateTimePropertie<K, F, P>
+    | BooleanPropertie<K, F, P>
+    | AnyProperty<K, F, P>
 );
 
 export type PropertieType<F, P> = {
@@ -133,5 +134,5 @@ export type PropertieType<F, P> = {
 };
 
 export type SchemaType<F, P> = {
-  properties: PropertieType<F, P>,
+  properties: PropertieType<F, P>;
 };

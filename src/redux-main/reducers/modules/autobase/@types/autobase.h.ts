@@ -30,7 +30,7 @@ export type SparePartGroup = {
 };
 
 export type BatteryBrand = {
-  id?: number;
+  id: number;
   name: string;
   manufacturer_id: number;
   manufacturer_name: string;
@@ -54,7 +54,7 @@ export type BatteryOnCar = {
 };
 
 export type BatteryRegistry = {
-  battery_to_car: BatteryOnCar[];
+  battery_to_car: Array<BatteryOnCar>;
   battery_to_car_id: number;
   brand_id: number;
   brand_name: string;
@@ -100,7 +100,7 @@ export type InsurancePolicy = {
   price: number;
   seria: string;
   updated_at: string;
-  files: any[];
+  files: Array<any>;
 };
 
 export type InsuranceType = {
@@ -125,8 +125,9 @@ export type Car = {
   condition_bool: boolean;
   condition_text: string;
   equipment_sensors_str: string;
-  equipment_sensors_types_ids: number[];
+  equipment_sensors_types_ids: Array<number>;
   exploitation_date_start: string;
+  factory_number: string;
   for_driver_license: boolean;
   for_special_license: boolean;
   fuel_correction_rate: number;
@@ -155,6 +156,7 @@ export type Car = {
   type_id: number;
   type_image_name: string;
   type_name: string;
+  vin: string;
 };
 
 export type CarFuncTypes = {
@@ -175,7 +177,7 @@ export type Repair = {
   description: string;
   fact_date_end: string;
   fact_date_start: string;
-  files: any[];
+  files: Array<any>;
   gov_number: string;
   id: number;
   note: string;
@@ -216,9 +218,9 @@ export type RoadAccident = {
   damage_price: number;
   driver_fio: string;
   driver_id: number;
-  drivers_license: null
+  drivers_license: null;
   employee_position_name: string;
-  files: any[],
+  files: Array<any>;
   id: number;
   is_guilty: boolean;
   special_license: string;
@@ -237,20 +239,20 @@ export type TechInspection = {
   date_end: string;
   date_start: string;
   gov_number: string;
-  id?: number;
+  id: number;
   is_allowed: boolean;
   note: string;
   reg_number: string;
   tech_operator: string;
   updated_at: string;
-  files?: any[];
+  files?: Array<any>;
 };
 export type TechMaintOrder = {
   car_model_id: number;
   car_model_name: string;
   description: string;
   entity_name: string;
-  id?: number;
+  id: number;
   interval_probeg: number;
   interval_time: number;
   interval_time_type: number;
@@ -260,7 +262,7 @@ export type TechMaintOrder = {
   sequence: number;
   tech_maintenance_type_id: number;
   tech_maintenance_type_name: string;
-  files?: any[];
+  files?: Array<any>;
 };
 
 export type TechMaintType = {
@@ -292,6 +294,7 @@ export type TireOnCar =   {
   motohours_diff: number;
   odometr_diff: number;
   uninstalled_at: string;
+  sum_track_length: number;
   // для таблички
   customId?: number;
   isChecked?: boolean;
@@ -316,11 +319,13 @@ export type Tire = {
   tire_model_name: string;
   tire_size_id: number;
   tire_size_name: string;
-  tire_to_car: TireOnCar[];
+  tire_to_car: Array<TireOnCar>;
   tire_to_car_id: number;
   uninstalled_at: string;
   status_text: string;
   status: string;
+  sum_track_length: number;
+  sum_track_length_km: number;
   company_structure_name: string;
 };
 export type TireSize = {
@@ -354,8 +359,8 @@ export type TechMaintenance = {
   plan_date_start: string;
   repair_company_id: number;
   repair_company_name: string;
-  tech_maintenance_order_ids: number[]
-  tech_maintenance_orders: {
+  tech_maintenance_order_ids: Array<number>;
+  tech_maintenance_orders: Array<{
     car_model_id: number;
     car_model_name: string;
     description: string;
@@ -370,9 +375,9 @@ export type TechMaintenance = {
     sequence: number;
     tech_maintenance_type_id: number;
     tech_maintenance_type_name: string;
-  }[]
+  }>;
   tech_maintenance_orders_text: string;
-  files: any[];
+  files: Array<any>;
 };
 export type TechMaintenanceExtra = {
   car_interval_probeg: number;
@@ -418,42 +423,43 @@ export type TypesAttr = {
 };
 
 export type IStateAutobase = {
-  sparePartList: SparePart[];
-  measureUnitList: MeasureUnit[];
-  sparePartGroupList: SparePartGroup[];
-  batteryBrandList: BatteryBrand[];
-  batteryManufacturerList: BatteryManufacturer[];
-  batteryRegistryList: BatteryRegistry[];
-  batteryAvailableCarList: BatteryAvailableCar[];
-  insuranceTypeList: InsuranceType[];
-  insurancePolicyList: InsurancePolicy[];
-  carList: Car[];
-  carFuncTypesList: CarFuncTypes[];
-  repairList: Repair[];
-  repairCompanyList: RepairCompany[];
-  repairTypeList: RepairType[];
-  roadAccidentList: RoadAccident[];
-  roadAccidentCauseList: RoadAccidentCause[];
-  techInspectionList: TechInspection[];
-  techMaintOrderList: TechMaintOrder[];
-  techMaintTypeList: TechMaintType[];
-  measureUnitRunList: MeasureUnitRun[];
-  tireModelList: TireModel[];
-  tireManufacturerList: TireManufacturer[];
-  tireList: Tire[];
-  tireSizeList: TireSize[];
-  tireAvailableCarList: TireAvailableCar[];
-  spareAvailableCarList: SpareAvailableCar[];
-  actualBatteriesOnCarList: ActualBatteriesOnCar[];
-  actualTiresOnCarList: ActualTiresOnCar[];
-  techMaintList: TechMaintenance[];
+  sparePartList: Array<SparePart>;
+  measureUnitList: Array<MeasureUnit>;
+  sparePartGroupList: Array<SparePartGroup>;
+  batteryBrandList: Array<BatteryBrand>;
+  batteryManufacturerList: Array<BatteryManufacturer>;
+  batteryRegistryList: Array<BatteryRegistry>;
+  batteryAvailableCarList: Array<BatteryAvailableCar>;
+  insuranceTypeList: Array<InsuranceType>;
+  insurancePolicyList: Array<InsurancePolicy>;
+  carList: Array<Car>;
+  carIndex: Record<Car['asuods_id'], Car>;
+  carFuncTypesList: Array<CarFuncTypes>;
+  repairList: Array<Repair>;
+  repairCompanyList: Array<RepairCompany>;
+  repairTypeList: Array<RepairType>;
+  roadAccidentList: Array<RoadAccident>;
+  roadAccidentCauseList: Array<RoadAccidentCause>;
+  techInspectionList: Array<TechInspection>;
+  techMaintOrderList: Array<TechMaintOrder>;
+  techMaintTypeList: Array<TechMaintType>;
+  measureUnitRunList: Array<MeasureUnitRun>;
+  tireModelList: Array<TireModel>;
+  tireManufacturerList: Array<TireManufacturer>;
+  tireList: Array<Tire>;
+  tireSizeList: Array<TireSize>;
+  tireAvailableCarList: Array<TireAvailableCar>;
+  spareAvailableCarList: Array<SpareAvailableCar>;
+  actualBatteriesOnCarList: Array<ActualBatteriesOnCar>;
+  actualTiresOnCarList: Array<ActualTiresOnCar>;
+  techMaintList: Array<TechMaintenance>;
   techMaintExtra: TechMaintenanceExtra;
-  carCategoryList: CarCategory[];
-  engineTypeList: EngineType[];
-  propulsionTypeList: PropulsionType[];
+  carCategoryList: Array<CarCategory>;
+  engineTypeList: Array<EngineType>;
+  propulsionTypeList: Array<PropulsionType>;
+  fuelCardsList: Array<FuelCard>;
+  fuelTypeList: Array<FuelType>;
+  typesAttrList: Array<TypesAttr>;
+  equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
-  fuelCardsList: FuelCard[];
-  equipmentFuelCardsList: FuelCard[];
-  fuelTypeList: FuelType[];
-  typesAttrList: TypesAttr[];
 };

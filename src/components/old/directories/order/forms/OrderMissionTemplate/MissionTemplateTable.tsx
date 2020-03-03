@@ -6,9 +6,11 @@ import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/old/ui/table/DataTable';
-import DateFormatter from 'components/old/ui/DateFormatter';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { OneSessionStructure } from 'redux-main/reducers/modules/session/session.d';
+import { OneSessionStructure } from 'redux-main/reducers/modules/session/@types/session';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
+import { actionGetMissionTemplatesCars } from 'redux-main/reducers/modules/order/action-order';
+import { Order } from 'redux-main/reducers/modules/order/@types';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 require('components/old/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
 
@@ -24,9 +26,20 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 
 const forColumnLabelFunction = (for_column) => for_column ? 'Да' : 'Нет';
 
-type GetTableMetaProps = Pick<MissionTemplateOrderTableProps, 'govNumberFilter' | 'structures'>;
+type MissionTemplateOrderTableProps = {
+  data: Array<any>;
+  order_id: Order['id'];
+  page: string;
+  path: string;
+  structures: Array<OneSessionStructure>;
+  onRowSelected: (...props: Array<any>) => void;
+  onRowChecked: (...props: Array<any>) => void;
+  onAllRowsChecked: (...props: any) => void;
+  selected: any | null;
+  checked: object | null;
+};
 
-export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
+export function getTableMeta(props: MissionTemplateOrderTableProps, govNumberFilterOptions: Array<any>): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
@@ -79,7 +92,7 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
         display: false,
         filter: {
           type: 'multiselect',
-          options: props.govNumberFilter.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
+          options: govNumberFilterOptions,
         },
         cssClassName: 'width120',
       },
@@ -148,7 +161,9 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
         name: 'comment',
         displayName: 'Комментарий',
         type: 'string',
-        filter: false,
+        filter: {
+          type: 'multiselect',
+        },
       },
     ],
   };
@@ -156,42 +171,47 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
 }
 
 const renderers: ISchemaRenderer = {
-  date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
-  date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
+  date_from: ({ data }) => makeDateFormated(data, true),
+  date_to: ({ data }) => makeDateFormated(data, true),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
   car_type_names: ({ rowData }) => <div>{get(rowData, 'car_type_names_text') || '-'}</div>,
   for_column: ({ data }) => <div>{forColumnLabelFunction(data)}</div>,
 };
 
-type MissionTemplateOrderTableProps = {
-  data: any[];
-  govNumberFilter: Car[];
-  structures: OneSessionStructure[],
-  onRowSelected: (...props: any[]) => void;
-  onRowChecked: (...props: any[]) => void;
-  onAllRowsChecked: (...props: any) => void;
-  selected: any | null;
-  checked: object | null;
-};
+const Table: React.FC<MissionTemplateOrderTableProps> = React.memo(
+  (props) => {
+    const [govNumberFilterOptions, setOptions] = React.useState([]);
+    const dispatch = etsUseDispatch();
+    React.useEffect(
+      () => {
+        const loadData = async () => {
+          const result = await dispatch(actionGetMissionTemplatesCars({ order_id: props.order_id }, props));
+          setOptions(result.map((car) => ({ label: car.gov_number, value: car.asuods_id })));
+        };
 
-const Table: React.FC<MissionTemplateOrderTableProps> = (props) => {
-  return (
-    <DataTable
-      className="order_mission_template"
-      multiSelection={true}
-      results={props.data}
-      renderers={renderers}
-      tableMeta={getTableMeta(props)}
-      onRowSelected={props.onRowSelected}
-      onRowChecked={props.onRowChecked}
-      onAllRowsChecked={props.onAllRowsChecked}
-      selected={props.selected}
-      initialSort="frontId"
-      selectField="frontId"
-      checked={props.checked}
-      highlightClassMapper={highlightClassMapper}
-    />
-  );
-};
+        loadData();
+      },
+      [props.order_id],
+    );
+
+    return (
+      <DataTable
+        className="order_mission_template"
+        multiSelection={true}
+        results={props.data}
+        renderers={renderers}
+        tableMeta={getTableMeta(props, govNumberFilterOptions)}
+        onRowSelected={props.onRowSelected}
+        onRowChecked={props.onRowChecked}
+        onAllRowsChecked={props.onAllRowsChecked}
+        selected={props.selected}
+        initialSort="frontId"
+        selectField="frontId"
+        checked={props.checked}
+        highlightClassMapper={highlightClassMapper}
+      />
+    );
+  },
+);
 
 export default Table;

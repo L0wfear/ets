@@ -9,6 +9,7 @@ import ProgramRegistryFormCreateWrap from 'components/old/program_registry/Creat
 import ProgramRegistryFormUWrap from 'components/old/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { isObject } from 'util';
 
 const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
   const schema = formValidationSchema;
@@ -66,20 +67,15 @@ const validate = (state, errors) => {
 
   return schema.properties.reduce((formErrors, prop) => {
     const { key } = prop;
-    formErrors[key] = validateField(prop, formState[key], formState, schema);
+    formErrors[key] = validateField(prop, formState[key], formState, schema, {});
     return formErrors;
   },
-    { ...errors },
+  { ...errors },
   );
 };
 
 const ProgramRegistrySwitcher: React.FC<any> = React.memo(
   (props) => {
-    const { showForm } = props;
-    if (!showForm) {
-      return null;
-    }
-
     const { element } = props;
 
     const dispatch = etsUseDispatch();
@@ -91,38 +87,30 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
       [props.page],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          isEmpty(element)
-            ? (
-              <ProgramRegistryFormCreateWrap
-                defSendFromState={defSendFromStateWrap}
-                getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-                validate={validate}
-                {...props}
-              />
-            )
-            : (
-              <ProgramRegistryFormUWrap
-                defSendFromState={defSendFromStateWrap}
-                getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-                validate={validate}
-                {...props}
-                entity={'repair_program_version'}
-              />
-            )
-        );
-      },
-      [
-        props,
-        element,
-        defSendFromStateWrap,
-        getFrowmStateAndErrorAndCanSave,
-        validate,
-      ],
+    return (
+      isEmpty(element) || (isObject(element) && !Object.keys(element)[0])
+        ? (
+          <ProgramRegistryFormCreateWrap
+            defSendFromState={defSendFromStateWrap}
+            getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
+            validate={validate}
+            showForm
+            onFormHide={props.handleHide}
+            {...props}
+          />
+        )
+        : (
+          <ProgramRegistryFormUWrap
+            defSendFromState={defSendFromStateWrap}
+            getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
+            validate={validate}
+            onFormHide={props.handleHide}
+            {...props}
+            showForm
+            entity={'repair_program_version'}
+          />
+        )
     );
-
   },
 );
 

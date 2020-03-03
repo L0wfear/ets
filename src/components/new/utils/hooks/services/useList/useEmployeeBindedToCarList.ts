@@ -29,7 +29,7 @@ const useEmployeeBindedToCarApiList = (car_id: Car['asuods_id'], page: string = 
               isLoading: false,
             });
           } catch (error) {
-            console.error(error); //tslint:disable-line
+            console.error(error);
           }
         } else {
           setList({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
@@ -17,16 +17,17 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import companyActions from 'redux-main/reducers/modules/company/actions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types/index';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 const page = 'car-movement-time-report';
 
-interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsMissionProgressReportHeader = {
   date_start: string;
   date_end: any;
   company_id: null | number;
   actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany>;
   companyList: IStateCompany['companyList'];
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class MissionProgressReportHeader extends React.Component<IPropsMissionProgressReportHeader, any> {
   async componentDidMount() {
@@ -60,7 +61,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
   }
   handleChangeDateEnd = (field, value) => (
     this.props.handleChange(field, value ? createValidDateTime(value) : value)
-  )
+  );
 
   handleSubmit = () => {
     const {
@@ -74,7 +75,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
       date_end: createValidDateTime(date_end),
       company_id,
     });
-  }
+  };
   render() {
     const {
       readOnly,
@@ -103,7 +104,9 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
         <EtsBootstrap.Col md={6}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
-              <label htmlFor=" ">Период формирования</label>
+              <FieldLabel>
+                Период формирования
+              </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <DatePickerRange
@@ -155,7 +158,7 @@ export default compose<any, any>(
     page,
     typePreloader: 'mainpage',
   }),
-  connect<any, { actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany> }, any, ReduxState>(
+  connect<any, { actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof companyActions.actionGetAndSetInStoreCompany>; }, any, ReduxState>(
     (state) => ({
       companyList: getCompanyState(state).companyList,
     }),

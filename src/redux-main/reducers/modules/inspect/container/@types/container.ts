@@ -15,8 +15,8 @@ export type InspectContainer = {
   diagnostic_result: string;
   id: number; // бэк ещё не присылает
   data: {
-    equipment_pipeline_in_poor_condition: boolean,
+    equipment_pipeline_in_poor_condition: boolean;
     control_measuring_instruments_in_poor_condition: boolean;
-  },
-  actions: InspectContainerActions[];
+  };
+  actions: Array<InspectContainerActions>;
 };

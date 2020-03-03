@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/pgm_store',
   routePath: `/nsi/geoobjects/pgm_store/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник пунктов отпуска ПГМ',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'pgm',
-  noDotList: false,
+
   component,
   permissions,
 };

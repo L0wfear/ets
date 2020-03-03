@@ -34,7 +34,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
       },
       [carActualGpsNumberIndex, gov_number],
     );
-
     React.useEffect(
       () => {
         if (gov_number) {

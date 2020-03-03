@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { MarginTopRow } from './styled';
 import { get } from 'lodash';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
@@ -69,6 +69,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
         if (!passport_data.type || passport_data.type !== type) {
           let changeObj: Partial<CarWrap['passport_data']> = {
             type,
+            vin: state.vin || '',
           };
 
           if (passport_data.type && passport_data.type !== type) {
@@ -113,7 +114,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
           onChange(changeObj);
         }
       },
-      [onChange, passport_data],
+      [onChange, passport_data, state.vin],
     );
 
     return (

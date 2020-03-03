@@ -6,14 +6,18 @@ import { ISharedPropsDataTableInput } from 'components/old/ui/table/DataTableInp
  * Пропсы, которые принимает компонент-обёртка.
  * Оборачиваемый компонент о них ничего не знает.
  */
-export interface IExternalPropsDataTableInputWrapper {
+export type IExternalPropsDataTableInputWrapper = {
   stackOrder?: boolean;
   validationSchema?: IValidationSchema;
   outerValidate?: boolean;
-  errors?: any[];
+  errors?: Array<any>;
   onValidation?(options: IStateDataTableInputWrapper): void;
   onChange(value: any, isValidInput?: boolean): void;
-}
+
+  batteryAvailableCarList?: any;
+  tireAvailableCarList?: any;
+  spareAvailableCarList?: any;
+};
 
 /**
  * Объединённые пропсы обёртки и оборачиваемого компонента.
@@ -22,17 +26,17 @@ export interface IExternalPropsDataTableInputWrapper {
  */
 export type TPropsDataTableInputWrapper = IExternalPropsDataTableInputWrapper & ISharedPropsDataTableInput;
 
-export interface IPropsDataTableInputWrapper {
+export type IPropsDataTableInputWrapper = {
   onItemChange?(index: number, key: string, value: any): void;
   onItemAdd?(): void;
   onItemRemove?(index?: number): void;
   onRowSelected?(selectedRow: IDataTableSelectedRow): void;
-}
-export interface IStateDataTableInputWrapper {
-  outputListErrors?: any[];
+};
+export type IStateDataTableInputWrapper = {
+  outputListErrors?: Array<any>;
   isValidInput?: boolean;
   selectedIndex?: number;
-}
+};
 
 /**
  * Объединённые пропсы и стейт обёртки, которые прокидываются (!) в оборачиваемый компонент.

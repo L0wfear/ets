@@ -1,13 +1,10 @@
 import * as React from 'react';
-
-import { compose } from 'recompose';
-import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { LegenCompanyLegendOption, CubeColor } from 'components/old/monitor/tool-bar/show-company-color/styled';
 import { Company } from 'redux-main/reducers/modules/company/@types';
@@ -18,13 +15,13 @@ type PropsBarCompanyColor = {
 
 type StateBarCompanyColor = {
   isOpen: boolean;
-  companiesOption: {
+  companiesOption: Array<{
     company_id: number;
     short_name: string;
     style: {
       backgroundColor: string;
     };
-  }[];
+  }>;
 };
 
 class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarCompanyColor> {
@@ -43,18 +40,13 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
     this.setState({
       isOpen: !this.state.isOpen,
     })
-  )
+  );
 
   render() {
     const { companiesOption } = this.state;
 
     return (
-      companiesOption.length < 2 ?
-      (
-        <DivNone />
-      )
-      :
-      (
+      !(companiesOption.length < 2) && (
         <span>
           <div className="tool_bar-block">
             <div className="default_cube companies">
@@ -63,18 +55,13 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
               </div>
               <div className="car_block_legend left companies">
                 {
-                  this.state.isOpen ?
-                  (
+                  this.state.isOpen && (
                     companiesOption.map((companyData) => (
                       <LegenCompanyLegendOption key={companyData.company_id}>
                         <div>{companyData.short_name}</div>
                         <CubeColor backgroundColor={companyData.style.backgroundColor}></CubeColor>
                       </LegenCompanyLegendOption>
                     ))
-                  )
-                  :
-                  (
-                    <DivNone />
                   )
                 }
               </div>

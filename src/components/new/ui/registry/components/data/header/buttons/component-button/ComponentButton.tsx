@@ -14,8 +14,6 @@ import ButtonCreateDutyMission from './button-by-type/duty_mission_template/Butt
 import ButtonCloseEdcRequest from './button-by-type/edc_request/ButtonCloseEdcRequest';
 import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdcRequest';
 import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
-import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/ButtonReadCarsConditionsCar';
-import ButtonReadEmployeeOnCar from './button-by-type/employee_on_car/ButtonReadEmployeeOnCar';
 import ButtonChangeDriverTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeDriverTechnicalOperationRelations';
 import ButtonChangeRouteTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeRouteTechnicalOperationRelations';
 import ButtonRemoveDutyMission from './button-by-type/duty_mission/ButtonRemoveDutyMission';
@@ -24,7 +22,6 @@ import ButtonCompleteDutyMission from './button-by-type/duty_mission/ButtonCompl
 import ButtonToArchiveDutyMission from './button-by-type/duty_mission/ButtonToArchiveDutyMission';
 import ButtonFailDutyMission from './button-by-type/duty_mission/ButtonFailDutyMission';
 import ButtonFromArchiveDutyMission from './button-by-type/duty_mission/ButtonFromArchiveDutyMission';
-import ButtonCopyMissionTemplate from './button-by-type/mission_template/ButtonCopyMissionTemplate';
 import ButtonCreateMissionTemplate from './button-by-type/mission_template/ButtonCreateMissionTemplate';
 import ButtonCreateMission from './button-by-type/mission/ButtonCreateMission';
 import ButtonCreateMissionByOrder from './button-by-type/mission/ButtonCreateMissionByOrder';
@@ -34,38 +31,35 @@ import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMissio
 import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
 import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
-import ButtonCreateCompanyStructure from './button-by-type/company_structure/ButtonCreateCompanyStructure';
 import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumnsControl';
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs';
-import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
+import ButtonOrderCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateMission';
+import ButtonOrderCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateDutyMission';
+import ButtonOrderExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderExport';
+import ButtonCarsConditionTableDefectsForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCarsConditionTableDefectsForm';
+import ButtonOrderToCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateMission';
+import ButtonOrderToCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateDutyMission';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import ButtonAddNewRowTable from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonAddNewRowTable';
 import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardToArchive';
 import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
 
-type PropsComponentButton = {
-  data: ValuesOf<OneRegistryData['header']['buttons']>;
-  registryKey: string;
-};
+type Props = CommonTypesForButton;
 
-const buttonComponents = {
+type AllButtons = Record<typeof buttonsTypes[keyof typeof buttonsTypes], React.ComponentType<CommonTypesForButton & Record<string, any>>>;
+
+const buttonComponents: AllButtons = {
   [buttonsTypes.export]: ButtonExport,
   [buttonsTypes.export_filtred_data]: ButtonExportFiltredData,
+  [buttonsTypes.show_сars_condition_table_defects]: ButtonCarsConditionTableDefectsForm,
+  [buttonsTypes.ButtonAddNewRowTable]: ButtonAddNewRowTable,
   [buttonsTypes.filter]: ButtonToggleFilter,
   [buttonsTypes.create]: ButtonCreate,
   [buttonsTypes.read]: ButtonRead,
   [buttonsTypes.remove]: ButtonRemove,
-  [buttonsTypes.duty_missions_by_templates]: ButtonCreateDutyMission,
-  [buttonsTypes.edc_request_create_mission]: ButtonCreateMissionByEdcRequest,
-  [buttonsTypes.edc_request_create_duty_mission]: ButtonCreateDutyMissionByEdcRequest,
-  [buttonsTypes.edc_request_reject]: ButtonRejectEdcRequest,
-  [buttonsTypes.edc_request_cancel]: ButtonCancelEdcRequest,
-  [buttonsTypes.edc_request_close]: ButtonCloseEdcRequest,
-  [buttonsTypes.read_cars_contisions_car]: ButtonReadCarsConditionsCar,
-  [buttonsTypes.read_employee_on_car]: ButtonReadEmployeeOnCar,
   [buttonsTypes.change_driver_technical_operation_relations ]: ButtonChangeDriverTechnicalOperationRelations,
   [buttonsTypes.change_route_technical_operation_relations ]: ButtonChangeRouteTechnicalOperationRelations,
   [buttonsTypes.duty_missions_remove ]: ButtonRemoveDutyMission,
@@ -75,7 +69,15 @@ const buttonComponents = {
   [buttonsTypes.duty_missions_to_archvie ]: ButtonToArchiveDutyMission,
   [buttonsTypes.duty_missions_from_archvie]: ButtonFromArchiveDutyMission,
   [buttonsTypes.missions_by_templates]: ButtonCreateMissionTemplate,
-  [buttonsTypes.copy_template]: ButtonCopyMissionTemplate,
+  [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
+  [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
+  [buttonsTypes.waybill_print]: ButtonWaybillExport,
+  [buttonsTypes.edc_request_create_mission]: ButtonCreateMissionByEdcRequest,
+  [buttonsTypes.edc_request_create_duty_mission]: ButtonCreateDutyMissionByEdcRequest,
+  [buttonsTypes.edc_request_reject]: ButtonRejectEdcRequest,
+  [buttonsTypes.edc_request_cancel]: ButtonCancelEdcRequest,
+  [buttonsTypes.edc_request_close]: ButtonCloseEdcRequest,
+  [buttonsTypes.duty_missions_by_templates]: ButtonCreateDutyMission,
   [buttonsTypes.mission_create]: ButtonCreateMission,
   [buttonsTypes.mission_create_by_order]: ButtonCreateMissionByOrder,
   [buttonsTypes.missions_remove]: ButtonRemoveMission,
@@ -84,22 +86,22 @@ const buttonComponents = {
   [buttonsTypes.missions_fail]: ButtonFailMission,
   [buttonsTypes.missions_to_archvie]: ButtonToArchiveMission,
   [buttonsTypes.missions_from_archvie]: ButtonFromArchiveMission,
-  [buttonsTypes.company_structure_create]: ButtonCreateCompanyStructure,
   [buttonsTypes.columns_control]: ButtonColumnsControl,
-  [buttonsTypes.waybill_print]: ButtonWaybillExport,
-  [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
-  [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
-  [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
-  [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
+  [buttonsTypes.order_create_mission_by_templates]: ButtonOrderCreateMission,
+  [buttonsTypes.order_create_duty_mission_by_templates]: ButtonOrderCreateDutyMission,
+  [buttonsTypes.order_export]: ButtonOrderExport,
+  [buttonsTypes.order_to_create_mission]: ButtonOrderToCreateMission,
+  [buttonsTypes.order_to_create_duty_mission]: ButtonOrderToCreateDutyMission,
+
   [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
   [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
 };
 
-const ComponentButton: React.FC<PropsComponentButton> = (props) => {
+const ComponentButton: React.FC<Props> = (props) => {
   const { data } = props;
 
   const ButtonNameComponent = React.useMemo(
-    () => buttonComponents[data.type],
+    () => data && buttonComponents[data.type],
     [data],
   );
 

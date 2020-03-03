@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const InstectionBlockSelect = styled(EtsBootstrap.Row)<{ disabled?: boolean }>`
+export const InstectionBlockSelect = styled(EtsBootstrap.Row)<{ disabled?: boolean; }>`
   margin-top: 10px;
   margin-bottom: 10px;
 
-  padding: 0 40px;
+  padding: 0;
 
   opacity: ${({ disabled }) => disabled ? 0.5 : 1};
 `;

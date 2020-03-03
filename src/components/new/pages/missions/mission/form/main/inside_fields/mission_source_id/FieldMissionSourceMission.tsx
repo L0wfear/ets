@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldMissionSourceMission,
@@ -36,7 +36,7 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
       mission_source_name: get(option, ['rowData', 'name'], ''),
       mission_source_text: get(option, ['rowData', 'name'], ''),
     })
-  )
+  );
 
   render() {
     const {

@@ -1,4 +1,3 @@
-import { HandleThunkActionCreator } from 'react-redux';
 import { keyBy } from 'lodash';
 import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import {
@@ -11,10 +10,10 @@ import {
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* ---------- FuelCards ---------- */
-export const actionSetNotFiltredFuelCardsIndex = (fuelCardsList: FuelCard[]) => (dispatch) => (
+export const actionSetNotFiltredFuelCardsIndex = (fuelCardsList: Array<FuelCard>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       notFiltredFuelCardsIndex: keyBy(fuelCardsList, 'id'),
@@ -22,7 +21,7 @@ export const actionSetNotFiltredFuelCardsIndex = (fuelCardsList: FuelCard[]) => 
   )
 );
 
-export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
+export const setFuelCards = (fuelCardsList: Array<FuelCard>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       fuelCardsList,
@@ -30,7 +29,7 @@ export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
   )
 );
 
-export const setEquipmentFuelCards = (equipmentFuelCardsList: FuelCard[]) => (dispatch) => (
+export const setEquipmentFuelCards = (equipmentFuelCardsList: Array<FuelCard>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       equipmentFuelCardsList,
@@ -38,7 +37,7 @@ export const setEquipmentFuelCards = (equipmentFuelCardsList: FuelCard[]) => (di
   )
 );
 
-export const setFuelType = (fuelTypeList: FuelType[]) => (dispatch) => (
+export const setFuelType = (fuelTypeList: Array<FuelType>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       fuelTypeList,
@@ -60,7 +59,7 @@ export const fuelCardsGet = (payload: object, meta: LoadingMeta): EtsAction<Retu
   );
 };
 
-export const actionLoadOriginFuelCardsGetAndSetInStore = (meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
+export const actionLoadOriginFuelCardsGetAndSetInStore = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelCardsGet>> => async (dispatch) => {
   const { data } = await dispatch(
     fuelCardsGet({}, meta),
   );
@@ -74,7 +73,7 @@ export const actionLoadOriginFuelCardsGetAndSetInStore = (meta: LoadingMeta): Et
   };
 };
 
-export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
+export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelCardsGet>> => async (dispatch) => {
   const { data } = await dispatch(
     fuelCardsGet(payload, meta),
   );
@@ -88,7 +87,7 @@ export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): E
   };
 };
 
-export const equipmentFuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
+export const equipmentFuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelCardsGet>> => async (dispatch) => {
   const { data } = await dispatch(
     fuelCardsGet(payload, meta),
   );

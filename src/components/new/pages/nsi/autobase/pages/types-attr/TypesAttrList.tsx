@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import Registry from 'components/new/ui/registry/components/Registry';
 
@@ -7,23 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data/registry-config';
 
-import {
-  PropsTypesAttrList,
-  StateTypesAttrList,
-} from 'components/new/pages/nsi/autobase/pages/types-attr/TypesAttrList.h';
+import { TypesAttr } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-class TypesAttrList extends React.Component<PropsTypesAttrList, StateTypesAttrList> {
-  render() {
+type OwnProps = {};
+
+const TypesAttrList: React.FC<OwnProps> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-      </>
+      <Registry registryKey={registryKey} />
     );
-  }
-}
+  },
+);
 
-export default withRegistry<any>(
+export default withRegistry<TypesAttr, OwnProps>(
   config,
 )(TypesAttrList);

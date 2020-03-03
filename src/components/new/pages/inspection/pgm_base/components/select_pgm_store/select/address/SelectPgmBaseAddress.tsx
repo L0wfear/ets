@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionPgmBaseSelectCarpoolStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
@@ -31,8 +31,8 @@ type SelectPgmBaseProps = (
   & WithSearchProps
 );
 
-const filterPgmBaseByCompany = (pgmBaseList: PgmStore[], companyId: number, pgmBaseId: number) => (
-  pgmBaseList.filter(({ company_id, pgm_stores_type_id }) => company_id === companyId && pgm_stores_type_id === pgmBaseId)
+const filterPgmBaseByCompany = (pgmBaseList: Array<PgmStore>, companyId: number) => (
+  pgmBaseList.filter(({ company_id }) => company_id === companyId)
 );
 
 const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
@@ -41,7 +41,6 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
     setDataInSearch,
   } = props;
   const companyId = getNumberValueFromSerch(searchState.companyId);
-  const pgmBaseTypeId = getNumberValueFromSerch(searchState.pgmBaseTypeId);
   const pgmBaseId = getNumberValueFromSerch(searchState.pgmBaseId);
 
   React.useEffect(
@@ -50,7 +49,6 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         const currentPgmBaseInCompany = filterPgmBaseByCompany(
           props.pgmBaseList,
           companyId,
-          pgmBaseTypeId,
         ).some(({ id }) => id === pgmBaseId);
 
         if (!currentPgmBaseInCompany) {
@@ -63,17 +61,16 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         }
       }
     },
-    [companyId, pgmBaseTypeId, pgmBaseId, props.companyList, searchState],
+    [companyId, pgmBaseId, props.companyList, searchState, props.match.params],
   );
 
   const pgmBaseIdOptions = React.useMemo(
     () => {
-      if (companyId && pgmBaseTypeId) {
+      if (companyId) {
         return uniqBy(
           filterPgmBaseByCompany(
             props.pgmBaseList,
             companyId,
-            pgmBaseTypeId,
           ).map(
             (pgmBase) => ({
               value: pgmBase.id,
@@ -87,7 +84,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 
       return [];
     },
-    [props.pgmBaseList, companyId, pgmBaseTypeId],
+    [props.pgmBaseList, companyId],
   );
 
   const setPgmBaseId = React.useCallback(
@@ -100,21 +97,21 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={1} sm={1}>
+      <SelectLabel md={3} sm={1}>
         <h5>
           Адрес базы
         </h5>
       </SelectLabel>
-      <SelectField md={4} sm={6}>
+      <SelectField md={9} sm={6}>
         <ExtField
           type="select"
           value={pgmBaseId}
-          disabled={!companyId || !pgmBaseTypeId}
+          disabled={!companyId}
           label={false}
           options={pgmBaseIdOptions}
           onChange={setPgmBaseId}

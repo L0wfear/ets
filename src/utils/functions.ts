@@ -5,6 +5,8 @@
 
 import { isPlainObject, every, includes } from 'lodash';
 import html2canvas from 'html2canvas';
+import { InspectionConfig } from 'redux-main/reducers/modules/some_uniq/inspection_config/@types';
+import { isNumber } from 'util';
 
 /**
  * Example
@@ -107,9 +109,9 @@ export function saveData(blob, fileName) {
 export function get_browser() {
   const ua = navigator.userAgent;
   let tem;
-  let M =
-    ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) ||
-    [];
+  let M
+    = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i)
+    || [];
 
   if (/trident/i.test(M[1])) {
     tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
@@ -180,28 +182,6 @@ export function hasMotohours(carStateNumber) {
   return null;
 }
 
-/**
- * преобразовывает hex цвет в rgba с нужной прозрачностью
- * @param hex
- * @param opacity
- * @return {*}
- */
-export function hexToRgba(hex, opacity) {
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  if (!result) {
-    return null;
-  }
-
-  const red = parseInt(result[1], 16);
-  const green = parseInt(result[2], 16);
-  const blue = parseInt(result[3], 16);
-  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-}
-
 export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
   return new Promise((res) => {
     const canvas = document.createElement('canvas');
@@ -226,7 +206,7 @@ export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
       res(canvas);
     };
 
-    image.crossOrigin = "anonymous";
+    image.crossOrigin = 'anonymous';
     image.src = url;
   });
 };
@@ -308,12 +288,12 @@ export function detectIE() {
  * @param style стиль ('font-size: 10px;color: '#e26240'')
  */
 export const getTextCanvas = async (text: string, style: string) => {
-  const temp = document.createElement("span");
+  const temp = document.createElement('span');
   temp.id = `${temp}_${Math.random()}`;
   temp.setAttribute('style', style);
   temp.innerHTML = text;
 
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   container.setAttribute('style', 'height:0px; position: absolute; z-index: -1; top:0');
   container.appendChild(temp);
   document.body.appendChild(container);
@@ -331,3 +311,83 @@ export const getTextCanvas = async (text: string, style: string) => {
 export const getCanvasOfElement = (element: HTMLElement) => {
   return html2canvas(element, { scale: 2 });
 };
+
+export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
+  if (optionsObj) {
+    return Object.keys(optionsObj).reduce(
+      (newObj, key ) => {
+        const configOptionsByKeyList = Object.entries(optionsObj[key]).map(
+          ([keyEntry, valueEntry]) => {
+            return {
+              value: keyEntry,
+              label: valueEntry,
+            };
+          },
+        );
+
+        return {
+          ...newObj,
+          [key]: configOptionsByKeyList,
+        };
+      },
+      {},
+    );
+  }
+
+  return null;
+};
+
+type objectDifferReturn = Array<{
+  type: string;
+  field: string;
+  whichOne: string;
+  values: Record<string, any>;
+}>;
+/**
+ * Выявление различий между двумя объектами с учётом вложенности
+ * @param obj1 объект 1
+ * @param obj2 объект 2
+ */
+export const objectDiffer = (obj1, obj2): objectDifferReturn => {
+  const diffs = [];
+  for (const prop in obj1) {
+    if (undefined === typeof obj2[prop]
+          || obj2[prop] !== obj1[prop]) {
+      diffs.push({
+        type: (obj2[prop] !== undefined ? 'Not equal' : 'Undefined'),
+        field: prop,
+        whichOne: 'Object 2',
+        values: {
+          object1: obj1[prop],
+          object2: obj2[prop],
+        },
+      });
+    }
+  }
+  for (const prop in obj2) {
+    if (undefined === typeof obj1[prop]
+          || obj1[prop] !== obj2[prop]) {
+      diffs.push({
+        type: (obj1[prop] !== undefined ? 'Not equal' : 'Undefined'),
+        field: prop,
+        whichOne: 'Object 1',
+        values: {
+          object1: obj1[prop],
+          object2: obj2[prop],
+        },
+      });
+    }
+  }
+  return diffs;
+};
+
+/**
+ * Перевод метры в километры с 2-мя знаками после запятой
+ * @param metresVal значение в метрах
+ */
+export const metresToKilometeres = (metresVal: number) =>
+  isNumber(metresVal)
+    ? ( metresVal / 1000 ).toFixed(2)
+    : '';
+
+export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));

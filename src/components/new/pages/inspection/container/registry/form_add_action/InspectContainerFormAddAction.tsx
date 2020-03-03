@@ -2,10 +2,12 @@ import * as React from 'react';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { diffDates, createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
+import { isString } from 'util';
 
 type InspectContainerFormAddActionProps = {
   addAction: (obj: ValuesOf<InspectContainer['actions']>) => void;
@@ -21,7 +23,11 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
     name: (
       !name
         ? 'Поле "Наименование работ" должно быть заполнено'
-        : ''
+        : (
+          name && isString(name) && name.length !== name.trim().length
+            ? getRequiredFieldNoTrim('Наименование работ')
+            : ''
+        )
     ),
     date_start: (
       !date_start
@@ -78,11 +84,12 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
           error={errors.name}
           modalKey="container_add_action"
         />
-          <ExtField
+        <ExtField
           id="date_start"
           type="date"
           time={false}
           label="Дата начала"
+          makeGoodFormat
           value={date_start}
           onChange={setDateStart}
           error={errors.date_start}
@@ -93,6 +100,7 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
           type="date"
           time={false}
           label="Дата окончания"
+          makeGoodFormat
           value={date_end}
           onChange={setDateEnd}
           error={errors.date_end}

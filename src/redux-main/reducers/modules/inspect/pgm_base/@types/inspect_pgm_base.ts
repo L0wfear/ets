@@ -4,49 +4,49 @@ import { DefaultPartInspect } from '../../@types/inspect_reducer';
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 
 export type InspectPgmBaseData = {
-  access_roads_in_poor_condition: boolean,
-  containers_in_poor_condition: boolean,
-  equipment_and_piping_in_poor_condition: boolean,
-  hangar_is_not_sealed: boolean,
-  insufficient_availability_of_wooden_pallets: boolean,
-  lack_of_changing_rooms: boolean,
+  access_roads_in_poor_condition: boolean;
+  containers_in_poor_condition: boolean;
+  equipment_and_piping_in_poor_condition: boolean;
+  hangar_is_not_sealed: boolean;
+  insufficient_availability_of_wooden_pallets: boolean;
+  lack_of_changing_rooms: boolean;
   lack_of_documents_etc: string;
-  lack_of_documents_on_pgm: boolean,
-  lack_of_height_restriction_sign: boolean,
-  lack_of_information_stands: boolean,
-  lack_of_lighting: boolean,
-  lack_of_lighting_in_hangars: boolean,
-  lack_of_loading_unloading_mechanisms: boolean,
-  lack_of_personal_protection: boolean,
-  lack_of_ramps_stairs: boolean,
-  lack_of_records_in_training_logs: boolean,
-  lack_of_rest_rooms: boolean,
-  lack_of_schema_slinging: boolean,
-  lack_of_shelter_for_solid_pgm: boolean,
-  lack_of_shower: boolean,
-  lack_of_technical_passport: boolean,
-  lack_of_wooden_pallets: boolean,
-  lack_traffic_scheme_at_entrance: boolean,
+  lack_of_documents_on_pgm: boolean;
+  lack_of_height_restriction_sign: boolean;
+  lack_of_information_stands: boolean;
+  lack_of_lighting: boolean;
+  lack_of_lighting_in_hangars: boolean;
+  lack_of_loading_unloading_mechanisms: boolean;
+  lack_of_personal_protection: boolean;
+  lack_of_ramps_stairs: boolean;
+  lack_of_records_in_training_logs: boolean;
+  lack_of_rest_rooms: boolean;
+  lack_of_schema_slinging: boolean;
+  lack_of_shelter_for_solid_pgm: boolean;
+  lack_of_shower: boolean;
+  lack_of_technical_passport: boolean;
+  lack_of_wooden_pallets: boolean;
+  lack_traffic_scheme_at_entrance: boolean;
   pgm_in_hangars: string;
   pgm_on_open_area: string;
-  type_coverage_in_hangar: string[];
-  type_of_base_coverage: string[];
+  type_coverage_in_hangar: Array<string>;
+  type_of_base_coverage: Array<string>;
   comments: string;
 };
 
 export type InspectPgmBase = {
-  agents_from_gbu: any[];
+  agents_from_gbu: Array<any>;
   base_address: string;
-  base_id: number
+  base_id: number;
   base_type: string;
-  can_have_container: boolean
+  can_have_container: boolean;
   capacity_cnt: number;
-  close_employee_assignment: string
-  close_employee_assignment_date_start: string
+  close_employee_assignment: string;
+  close_employee_assignment_date_start: string;
   close_employee_fio: string;
   close_employee_id: number;
   close_employee_position: string;
-  commission_members: any[];
+  commission_members: Array<any>;
   company_id: number;
   company_name: string;
   company_short_name: string;
@@ -54,6 +54,7 @@ export type InspectPgmBase = {
   data: InspectPgmBaseData;
   date_start: string;
   has_pgm: boolean;
+  has_pgm_text: string;
   head_balance_holder_base: {
     fio: string;
     tel: string;
@@ -71,21 +72,21 @@ export type InspectPgmBase = {
   open_employee_id: number;
   pgm_volume_sum: number;
   resolve_to: string;
-  status_text: 'Проводится'
+  status_text: 'Проводится';
   type: 'pgm_base';
   updated_at: string;
   volume_capacity_sum: number;
   was_resaved: boolean;
-  files: any[];
+  files: Array<any>;
   action: string;
 } & DefaultPartInspect;
 
 export type IStateInspectPgmBase = {
-  companyList: Company[],
-  okrugList: any[],
-  carpoolList: Carpool[],
-  pgmBaseList: PgmStore[],
-  inspectPgmBaseList: InspectPgmBase[];
+  companyList: Array<Company>;
+  okrugList: Array<any>;
+  carpoolList: Array<Carpool>;
+  pgmBaseList: Array<PgmStore>;
+  inspectPgmBaseList: Array<InspectPgmBase>;
   lastConductingInspect: InspectPgmBase;
   lastCompletedInspect: InspectPgmBase;
 };

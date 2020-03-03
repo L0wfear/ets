@@ -6,17 +6,22 @@ import { getToday9am, diffDates, getTomorrow9am, addTime, createValidDateTime } 
 import DatePickerRange from '../../date_picker/DatePickerRange';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
-export type IPropsPrintByDates = {
-  onHide: (...arg: any[]) => any;
+type Props = {
+  initial_date_from?: string;
+  initial_date_to?: string;
+  onHide: (...arg: Array<any>) => any;
   onExport: (payload: any) => any;
   title: string;
+  helpText?: string;
+
+  time?: boolean;
 };
 
-const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
+const PrintByDates: React.FC<Props> = React.memo(
   (props) => {
     const [datesData, setDatesData] = React.useState({
-      date_from: createValidDateTime(getToday9am()),
-      date_to: createValidDateTime(getTomorrow9am()),
+      date_from: props.initial_date_from || createValidDateTime(getToday9am()),
+      date_to: props.initial_date_to || createValidDateTime(getTomorrow9am()),
       error_date_from: '',
       error_date_to: '',
     });
@@ -53,8 +58,8 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
 
             newState.error_date_to = (
               (
-                diffDates(newState.date_from, newState.date_to) > 0
-                  ? 'Дата окончания дололжна быть позже'
+                diffDates(newState.date_from, newState.date_to) >= 0
+                  ? '"Дата по" должна быть позже "Даты с"'
                   : ''
               )
               || (
@@ -93,11 +98,12 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
             date_end_id="date_to"
             date_end_value={datesData.date_to}
             date_end_error={datesData.error_date_to}
-            date_start_time={false}
-            date_end_time={false}
+            date_start_time={Boolean(props.time)}
+            date_end_time={Boolean(props.time)}
 
             onChange={handleChange}
           />
+          <span>{props.helpText}</span>
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
           <EtsButtonsContainer>

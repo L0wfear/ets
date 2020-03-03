@@ -10,8 +10,8 @@ const ColumnAssignmentForm = React.lazy(() => (
 ));
 
 const ColumnAssignmentFormLazy: React.FC<PropsColumnAssignmentFormLazy> = (props) => {
-  return props.showForm ?
-    (
+  return props.showForm
+    ? (
       <ErrorBoundaryForm>
         <React.Suspense fallback={<LoadingComponent />}>
           <ColumnAssignmentForm
@@ -27,8 +27,7 @@ const ColumnAssignmentFormLazy: React.FC<PropsColumnAssignmentFormLazy> = (props
         </React.Suspense>
       </ErrorBoundaryForm>
     )
-    :
-    (
+    :    (
       <DivNone />
     );
 };

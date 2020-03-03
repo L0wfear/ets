@@ -18,9 +18,9 @@ export default {
   formPath,
   routePath,
   title: 'Реестр транспортных средств',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'car',
-  noDotList: false,
+
   component,
   permissions,
 };

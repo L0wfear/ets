@@ -7,9 +7,9 @@ export default {
   path: '/missions/mission_templates',
   routePath: `/missions/mission_templates/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Шаблоны заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'mission_template',
-  noDotList: false,
+
   component,
   permissions,
 };

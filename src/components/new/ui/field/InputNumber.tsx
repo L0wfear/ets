@@ -9,7 +9,7 @@ type PropsInputNumber = {
   id?: string;
   error?: string;
   noShowError?: boolean;
-  value: number | string | string[];
+  value: number | string | Array<string>;
   hidden?: boolean;
   label?: string;
   noShowLabel?: boolean;
@@ -33,35 +33,35 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
 
     return (
       !this.props.hidden
-      ? (
-        <div>
-          <InputContainer>
+        ? (
+          <div>
+            <InputContainer>
+              {
+                !noShowLabel
+                  ? (
+                    <label className="control-label"><span>{this.props.label}</span></label>
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
+              <EtsBootstrap.FormControl id={this.props.id} lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
+            </InputContainer>
             {
-              !noShowLabel
-              ? (
-                <label className="control-label"><span>{this.props.label}</span></label>
+              !noShowError ? (
+                <ErrorsBlock
+                  error={error}
+                />
               )
-              : (
-                <DivNone />
-              )
+                : (
+                  <DivNone />
+                )
             }
-            <EtsBootstrap.FormControl id={this.props.id} lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
-          </InputContainer>
-          {
-            !noShowError ? (
-              <ErrorsBlock
-                error={error}
-              />
-            )
-            : (
-              <DivNone />
-            )
-          }
-        </div>
-      )
-      : (
-        <DivNone />
-      )
+          </div>
+        )
+        : (
+          <DivNone />
+        )
     );
   }
 }

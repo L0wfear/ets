@@ -5,7 +5,7 @@ export default {
   path: '/mission-progress-report',
   title: 'Отчет посещения ОДХ/ДТ уборочной техникой, оборудованной датчиками КБМ',
   entyity: 'mission_progress_report',
-  noDotList: false,
+
   component,
   permissions,
 };

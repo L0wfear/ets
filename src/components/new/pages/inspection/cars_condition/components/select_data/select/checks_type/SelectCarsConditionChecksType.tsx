@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionCarsConditionStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
@@ -85,28 +85,28 @@ const SelectCarsConditionChecksType: React.FC<SelectCarsConditionChecksTypeProps
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={2} sm={2}>
-          <h5>
+      <SelectLabel md={3} sm={2}>
+        <h5>
             Тип проверки
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={checksType}
-            options={checksTypeOptions}
-            onChange={setChecksTypeId}
-            clearable={false}
-            disabled={status !== INSPECT_STATUS.noToday}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={checksType}
+          options={checksTypeOptions}
+          onChange={setChecksTypeId}
+          clearable={false}
+          disabled={status !== INSPECT_STATUS.noToday}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { compose } from 'recompose';
 
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FooterEnd } from 'global-styled/global-styled';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
-import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import { ContainerForm, FooterForm, TitleForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps, PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
@@ -19,6 +19,7 @@ import { inspectAutobaseSchema } from './schema';
 import { getDefaultInspectAutobaseElement } from './utils';
 import BlockCarsConditionSetInspectEmployee from '../../../cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import IAVisibleWarningContainer from '../../../container/filed_to_check/IAVisibleWarningContainer';
+import { makeDate } from 'components/@next/@utils/dates/dates';
 
 const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
   (props) => {
@@ -63,81 +64,128 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
     );
 
     return (
-        <React.Fragment>
-          <ContainerForm>
-            <EtsBootstrap.Col md={6} sm={6}>
-              <BoxContainer>
-                <ExtField
-                  type="string"
-                  label="Организация:"
-                  value={state.company_short_name}
-                  readOnly
-                  inline
-                />
-                <ExtField
-                  type="string"
-                  label="Адрес базы:"
-                  value={state.base_address}
-                  readOnly
-                  inline
-                />
-              </BoxContainer>
-              <BoxContainer>
-                <h4>
+      <React.Fragment>
+        <TitleForm md={12} sm={12}>
+          <h4>{props.title}</h4>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
+        </TitleForm>
+        <ContainerForm>
+          <EtsBootstrap.Col md={6} sm={6}>
+            <BoxContainer>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Организация:"
+                    value={state.company_short_name}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Адрес базы:"
+                    value={state.base_address}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Статус проверки:"
+                    value={state.status_text}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6} sm={6}>
+                  <ExtField
+                    type="string"
+                    label="Проверка открыта:"
+                    value={makeDate(state.date_start)}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              {
+                state.date_end && (
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={6} sm={6}>
+                      <ExtField
+                        type="string"
+                        label="Проверка завершена:"
+                        value={makeDate(state.date_end)}
+                        readOnly
+                        inline
+                      />
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                )
+              }
+            </BoxContainer>
+            <BoxContainer>
+              <h4>
                   Выявленные нарушения:
-                </h4>
-                <IAVisibleWarningContainer
-                  onChange={onChangeData}
-                  data={state.data}
-                  errors={errors.data}
-                  isPermitted={isPermittedChangeListParams}
-                  filedToCheck={filedToCheck}
-                />
-              </BoxContainer>
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6} sm={6}>
-              <BlockCarsConditionSetInspectEmployee
-                type={props.type}
-                isPermittedChangeListParams={isPermittedChangeListParams}
-                isPermittedListPhotosOfSupportingDocuments={isPermittedChangeListParams}
-                isPermittedListPhotosDefect={isPermittedChangeListParams}
-
-                commission_members={state.commission_members}
-                company_id={state.company_id}
-                error_agents_from_gbu={errors.agents_from_gbu}
-                error_commission_members={errors.commission_members}
-
-                agents_from_gbu={state.agents_from_gbu}
-                company_short_name={state.company_short_name}
-                resolve_to={state.resolve_to}
-                files={state.files}
-
-                error_resolve_to={errors.resolve_to}
-                handleChange={props.handleChange}
-                page={props.page}
-                path={props.path}
+              </h4>
+              <IAVisibleWarningContainer
+                onChange={onChangeData}
+                data={state.data}
+                errors={errors.data}
+                isPermitted={isPermittedChangeListParams}
+                filedToCheck={filedToCheck}
               />
-            </EtsBootstrap.Col>
-          </ContainerForm>
-          <FooterForm md={12} sm={12}>
-            <FooterEnd>
-              <ViewInspectAutobaseButtonSubmit
-                type={props.type}
-                handleSubmit={handleSubmit}
-                isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-                handleHide={props.handleHide}
-                selectedInspectAutobase={state}
-                canSave={props.canSave}
-                loadingPage={props.loadingPage}
+            </BoxContainer>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6} sm={6}>
+            <BlockCarsConditionSetInspectEmployee
+              type={props.type}
+              isPermittedChangeListParams={isPermittedChangeListParams}
+              isPermittedListPhotosOfSupportingDocuments={isPermittedChangeListParams}
+              isPermittedListPhotosDefect={isPermittedChangeListParams}
 
-                id={state.id}
-                registryPage={props.page}
-              />
-              <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
-            </FooterEnd>
-          </FooterForm>
-        </React.Fragment>
-      );
+              commission_members={state.commission_members}
+              company_id={state.company_id}
+              error_agents_from_gbu={errors.agents_from_gbu}
+              error_commission_members={errors.commission_members}
+
+              agents_from_gbu={state.agents_from_gbu}
+              company_short_name={state.company_short_name}
+              resolve_to={state.resolve_to}
+              files={state.files}
+
+              error_resolve_to={errors.resolve_to}
+              handleChange={props.handleChange}
+              page={props.page}
+              path={props.path}
+            />
+          </EtsBootstrap.Col>
+        </ContainerForm>
+        <FooterForm md={12} sm={12}>
+          <FooterEnd>
+            <ViewInspectAutobaseButtonSubmit
+              type={props.type}
+              handleSubmit={handleSubmit}
+              isPermittedToUpdateClose={props.isPermittedToUpdateClose}
+              handleHide={props.handleHide}
+              selectedInspectAutobase={state}
+              canSave={props.canSave}
+              loadingPage={props.loadingPage}
+
+              id={state.id}
+              registryPage={props.page}
+            />
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+          </FooterEnd>
+        </FooterForm>
+      </React.Fragment>
+    );
   },
 );
 
@@ -151,9 +199,9 @@ export default compose<ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps>(
     },
     permissions: inspectAutobasePermissions,
     schema: inspectAutobaseSchema,
+    askBeforeCloseIfChanged: {},
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectAutobase);

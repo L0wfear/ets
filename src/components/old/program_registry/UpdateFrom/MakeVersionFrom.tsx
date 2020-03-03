@@ -16,14 +16,14 @@ class MakeFileModal extends React.Component<any, any> {
   getCanSave: any = () => {
     const { files = [] } = this.state;
     return !!files[0];
-  }
+  };
   handleChange = (name, val) => this.setState({ [name]: val });
   setNullFile = () => this.setState({ files: [] });
 
   onHide = () => {
     this.props.onHide();
     this.setNullFile();
-  }
+  };
   onSubmit = () => this.props.onSubmit(this.state).then(this.setNullFile);
 
   render() {
@@ -43,6 +43,7 @@ class MakeFileModal extends React.Component<any, any> {
                 <EtsBootstrap.Col md={12}>
                   <FileField
                     label="Файл"
+                    type="file"
                     value={this.state.files}
                     onChange={this.handleChange}
                     boundKeys="files"

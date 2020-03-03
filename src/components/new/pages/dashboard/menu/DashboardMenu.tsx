@@ -6,7 +6,7 @@ import {
   DashboardMenuContainer
 } from 'components/new/pages/dashboard/menu/styled/styled';
 
-const DashboardMenu: React.FC<{ page: string }> = React.memo(
+const DashboardMenu: React.FC<{ page: string; }> = React.memo(
   (props) => {
     return (
       <DashboardMenuContainer>

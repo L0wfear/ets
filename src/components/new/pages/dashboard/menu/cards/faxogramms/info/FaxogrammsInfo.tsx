@@ -1,5 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { path } from 'components/new/pages/nsi/order/_config-data';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -11,11 +12,6 @@ import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-co
 import {
   dashboardSetInfoDataInFaxogramms,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-
-import {
-  ButtonReadOrder,
-  LinkToOrder,
-} from 'components/old/directories/order/buttons/buttons';
 
 import PDFViewModalLazy from 'components/new/pages/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModalLazy';
 
@@ -30,12 +26,10 @@ import {
 } from 'global-styled/global-styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'components/old/directories/order/utils-order';
-
-const TypeDownload = {
-  old: 'old',
-  new: 'new',
-};
+import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'redux-main/reducers/modules/order/order_promise';
+import { LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
+import { TypeDownload } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
+import orderPermissions from 'components/new/pages/nsi/order/_config-data/permissions';
 
 class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogrammsInfo> {
   state = {
@@ -50,14 +44,14 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
       showFaxogrammMissionsFormWrap: false,
       elementFaxogrammMissionsFormWrap: null,
     })
-  )
+  );
 
   seclectDownload = (event) => {
-    promiseLoadOrderBlobAndSave({ id: this.props.infoData.data.id }, event);
-  }
+    promiseLoadOrderBlobAndSave(this.props.infoData.data.id, event);
+  };
 
   showPDFViewModal = () => {
-    promiseLoadOrderBlob({ id: this.props.infoData.data.id }, '')
+    promiseLoadOrderBlob(this.props.infoData.data.id, TypeDownload.old)
       .then(({ blob }) => {
         if (blob) {
           this.setState({
@@ -67,16 +61,16 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
         }
       })
       .catch((error) => {
-        console.log(error); // tslint:disable-line:no-console
+        console.info(error); // eslint-disable-line
       });
-  }
+  };
 
   handleHidePDFViewModal = () => {
     this.setState({
       showPDFViewModal: false,
       blob: null,
     });
-  }
+  };
 
   render() {
     const {
@@ -103,30 +97,29 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           }
         </ul>
         {
-          order_info ?
-          (
-            <div>
-              <div className="line_data"><b>Доп. информация</b></div>
-              <div>{order_info}</div>
-            </div>
-          )
-          :
-          (
-            <DivNone />
-          )
+          order_info
+            ? (
+              <div>
+                <div className="line_data"><b>Доп. информация</b></div>
+                <div>{order_info}</div>
+              </div>
+            )
+            :          (
+              <DivNone />
+            )
         }
         <RightButtonBlockContainer needMarginBottom>
           <EtsBootstrap.Dropdown
             id="save-faxogramm"
             toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
           >
-            <EtsBootstrap.DropdownMenu pullRight>
+            <EtsBootstrap.DropdownMenu dropupRight>
               <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={this.seclectDownload}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
               <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={this.seclectDownload}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
-          <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
-          <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
+          <EtsBootstrap.Button onClick={this.showPDFViewModal} permissions={orderPermissions.read} style={{marginRight: '5px', }} ><EtsBootstrap.Glyphicon glyph="info-sign" /></EtsBootstrap.Button>
+          <LinkToOrder to={`${path}/${infoData.data.id}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>
           </LinkToOrder>
         </RightButtonBlockContainer>
@@ -134,6 +127,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           show={this.state.showPDFViewModal}
           blob={this.state.blob}
           onHide={this.handleHidePDFViewModal}
+          title="Скан-копия факсограммы"
         />
       </InfoCard>
     );

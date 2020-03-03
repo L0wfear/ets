@@ -3,10 +3,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { get } from 'lodash';
@@ -24,12 +23,13 @@ import {
   getConfig,
   getRegistryKey,
 } from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
+import { actionGetAndSetInStoreEdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/actions';
 
 export type RequestHistoryListStateProps = {
   edcRequestInfoList: IStateSomeUniq['edcRequestInfoList'];
 };
 export type RequestHistoryListDispatchProps = {
-  actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreEdcRequestInfo>;
+  actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof actionGetAndSetInStoreEdcRequestInfo>;
 };
 export type RequestHistoryListOwnProps = {
   requestElement: EdcRequest;
@@ -89,7 +89,7 @@ export default compose<RequestHistoryListProps, RequestHistoryListOwnProps>(
     (dispatch: any) => ({
       actionGetAndSetInStoreEdcRequestInfo: (...args) => (
         dispatch(
-          someUniqActions.actionGetAndSetInStoreEdcRequestInfo(...args),
+          actionGetAndSetInStoreEdcRequestInfo(...args),
         )
       ),
     }),

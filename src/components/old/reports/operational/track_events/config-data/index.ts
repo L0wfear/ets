@@ -5,7 +5,7 @@ export default {
   path: '/track-events-reports',
   title: 'Отчет по возможным сливам топлива',
   entyity: 'track_events_report',
-  noDotList: false,
+
   component,
   permissions,
 };

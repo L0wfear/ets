@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 import RoadAccidentFormLazy from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form';
 
@@ -6,77 +8,43 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { get } from 'lodash';
-import { CarWrap } from '../../../@types/CarForm';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-export type RoadAccidentListStateProps = {};
-export type RoadAccidentListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type RoadAccidentListOwnProps = {
+type OwnProps = {
   selectedCarData?: CarWrap;
 };
-export type RoadAccidentListMergedProps = (
-  RoadAccidentListStateProps
-  & RoadAccidentListDispatchProps
-  & RoadAccidentListOwnProps
+type Props = OwnProps & {};
+
+const RoadAccidentList: React.FC<Props> = React.memo(
+  (props) => {
+    const {
+      selectedCarData,
+    } = props;
+    const car_id = get(selectedCarData, 'asuods_id', null);
+    const dispatch = etsUseDispatch();
+
+    React.useEffect(
+      () => {
+        dispatch(registryAddInitialData(getToConfig(car_id)));
+        return () => {
+          dispatch(registryRemoveData(registryKey));
+        };
+      },
+      [car_id, getToConfig],
+    );
+
+    return (
+      <Registry registryKey={registryKey}>
+        <RoadAccidentFormLazy
+          registryKey={registryKey}
+          selectedCarData={selectedCarData}
+        />
+      </Registry>
+    );
+  },
 );
-export type RoadAccidentListProps = (
-  RoadAccidentListMergedProps
-);
 
-const RoadAccidentList: React.FC<RoadAccidentListProps> = (props) => {
-  const {
-    selectedCarData,
-  } = props;
-  const car_id = get(selectedCarData, 'asuods_id', null);
-
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(getToConfig(car_id));
-      return () => {
-        props.registryRemoveData(registryKey);
-      };
-    },
-    [car_id],
-  );
-
-  return (
-    <>
-      <Registry registryKey={registryKey} />
-      <RoadAccidentFormLazy
-        registryKey={registryKey}
-        selectedCarData={selectedCarData}
-      />
-    </>
-  );
-};
-
-export default compose<RoadAccidentListProps, RoadAccidentListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<RoadAccidentListStateProps, RoadAccidentListDispatchProps, RoadAccidentListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(RoadAccidentList);
+export default RoadAccidentList;

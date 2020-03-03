@@ -61,31 +61,35 @@ export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) =>
   return newElement;
 };
 
-export function filterCars(car, formState) {
-  let norm = false;
+export function filterCars(car, formState, fieldType: 'prefer_car' | 'secondary_car') {
+  let isValid = false;
   const secondary_car = get(formState, 'secondary_car', []);
   const prefer_car = get(formState, 'prefer_car', null);
 
-  if (prefer_car && prefer_car === car.asuods_id || isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
-    norm = true;
+  if (fieldType === 'prefer_car' && prefer_car && prefer_car === car.asuods_id || fieldType === 'secondary_car' && isArray(secondary_car) && secondary_car.includes(car.asuods_id)) {
+    isValid = true;
   } else if (car.available_to_bind) {
-    if (
-      formState &&
-      formState.drivers_license_date_end &&
-      diffDates(formState.drivers_license_date_end, new Date()) > 0 &&
-      car.for_driver_license
-    ) {
-      norm = true;
+    // @todo
+    if (car.type_id === 15) { // car.type_id === 15 компрессор
+      isValid = true;
     }
     if (
-      formState.special_license &&
-      formState.special_license_date_end &&
-      diffDates(formState.special_license_date_end, new Date()) > 0 &&
-      car.for_special_license
+      formState
+      && formState.drivers_license_date_end
+      && diffDates(formState.drivers_license_date_end, new Date()) > 0
+      && car.for_driver_license
     ) {
-      norm = true;
+      isValid = true;
+    }
+    if (
+      formState.special_license
+      && formState.special_license_date_end
+      && diffDates(formState.special_license_date_end, new Date()) > 0
+      && car.for_special_license
+    ) {
+      isValid = true;
     }
   }
 
-  return norm;
+  return isValid;
 }

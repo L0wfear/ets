@@ -7,21 +7,21 @@ export type CurrentMissionsItemsSubItemsSubItemsType = {
 };
 
 export type CurrentMissionsItemsSubItemsType = {
-  subItems: CurrentMissionsItemsSubItemsSubItemsType[],
+  subItems: Array<CurrentMissionsItemsSubItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CurrentMissionsItemsType = {
-  subItems: CurrentMissionsItemsSubItemsType[],
+  subItems: Array<CurrentMissionsItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CurrentMissionsAnsType = {
-  items: CurrentMissionsItemsType[];
-  items_centralized: CurrentMissionsItemsType[];
-  items_decentralized: CurrentMissionsItemsType[];
+  items: Array<CurrentMissionsItemsType>;
+  items_centralized: Array<CurrentMissionsItemsType>;
+  items_decentralized: Array<CurrentMissionsItemsType>;
   tooltip?: string;
   title: string;
   title_centralized: string;

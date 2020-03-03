@@ -5,8 +5,8 @@ export type PropsMapContainer = {
   gps_code: string | null;
   geoobjects: object;
   inputLines: any;
-  front_parkings: any[];
-  track: any[];
+  front_parkings: Array<any>;
+  track: Array<any>;
   cars_sensors: object;
   missionNumber: number;
   has_mkad: boolean;
@@ -19,6 +19,6 @@ export type StateMapContainer = {
   SHOW_GEOOBJECTS: boolean;
   SHOW_TRACK: boolean;
   geoobjects: object;
-  track: any[];
-  front_parkings: any[];
+  track: Array<any>;
+  front_parkings: Array<any>;
 };

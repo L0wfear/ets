@@ -8,11 +8,12 @@ import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/glob
 // import { Switch } from 'react-router-dom';
 
 type BlockInfoCardOwnProps = {
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   type: keyof typeof INSPECT_TYPE_FORM;
   callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
+  isPermitted: boolean;
 
   types_cars: InspectCarsCondition['data']['types_cars'];
   types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
@@ -77,6 +78,9 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
         <BlockCarInfoWrap
           handleHide={handleHideCarInfo}
           carsConditionCarsList={props.carsConditionCarsList}
+          handleChangeData={props.handleChangeData}
+          isPermittedChangeListParams={props.isPermitted}
+
           type={props.type}
           page={props.page}
         />
@@ -91,6 +95,8 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
           types_harvesting_unit={props.types_harvesting_unit}
           canSavePreparePlanHandler={props.canSavePreparePlanHandler}
           handleChangeData={props.handleChangeData}
+          inspectType={props.type}
+          isPermitted={props.isPermitted}
 
           page={props.page}
         />

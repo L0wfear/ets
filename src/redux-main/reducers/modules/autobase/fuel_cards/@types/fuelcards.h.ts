@@ -4,6 +4,7 @@ export type FuelCard = {
   fuel_type: string | null; // Поле «Тип топлива»
   company_id: number | null;
   company_name: string | null;
+  company_short_name: string | null;
   company: string | null; // Организация
   is_used_in_waybill: boolean | null;
   is_archive: boolean;
@@ -19,7 +20,7 @@ export type FuelCard = {
 };
 
 export type StateFuelCards = {
-  fuelCardsList: FuelCard[];
+  fuelCardsList: Array<FuelCard>;
 };
 
 export type FuelType = {

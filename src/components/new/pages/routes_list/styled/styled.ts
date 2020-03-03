@@ -32,7 +32,7 @@ const cssActiveRoute = css`
   color: #fff;
 `;
 
-export const LiRouteName = styled.li<{ active: boolean }>`
+export const LiRouteName = styled.li<{ active: boolean; }>`
   display: block;
   margin: 0 0 8px 0;
   padding: 5px 5px;

@@ -5,7 +5,7 @@ export default {
   path: '/analytics',
   title: 'Аналитика',
   entyity: 'analytical_reports',
-  noDotList: false,
+
   component,
   permissions,
 };

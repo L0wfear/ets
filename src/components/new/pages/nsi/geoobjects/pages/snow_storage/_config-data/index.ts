@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/snow_storage',
   routePath: `/nsi/geoobjects/snow_storage/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник пунктов временного складирования снега',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'snow_storage',
-  noDotList: false,
+
   component,
   permissions,
 };

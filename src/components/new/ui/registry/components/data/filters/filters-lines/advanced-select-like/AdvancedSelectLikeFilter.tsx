@@ -21,6 +21,7 @@ import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 import { isNumber, isBoolean, isArray } from 'util';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const cache: Record<string, Promise<any>> = {};
 
@@ -34,13 +35,14 @@ type PropsAdvancedSelectLikeFilterFilter = {
     getRegistryData: any;
   };
   registryKey: string;
-  actionFetchWithCount: any;
   needUpdateFiltersOptions: boolean;
   formatedTitle: string;
   filterValuesObj: any;
-  array: any[];
+  array: Array<any>;
   total_count: number;
-  onChange: (valueKey: string, type: string, value: any[], option: object) => any;
+  onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
+
+  dispatch: EtsDispatch;
 };
 
 type StateAdvancedSelectLikeFilterFilter = {
@@ -53,7 +55,7 @@ type StateAdvancedSelectLikeFilterFilter = {
     disabled?: boolean;
     getRegistryData: any;
   };
-  options: any[];
+  options: Array<any>;
   disabled: boolean;
   isLoading: boolean;
 };
@@ -65,7 +67,7 @@ const getOption = (value, label) => {
   return null;
 };
 
-const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey?: string | number) => (
+const makeOptionsFromArray = (array: Array<any>, valueKey: string | number, labelKey?: string | number) => (
   array.reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
     if (isArray(value)) {
       value.forEach((oneValue) => {
@@ -95,7 +97,7 @@ const makeOptions = (props: PropsAdvancedSelectLikeFilterFilter) => (
   )
 );
 
-const makeObjByKey = (array: any[], valueKey: string) => {
+const makeObjByKey = (array: Array<any>, valueKey: string) => {
   return Object.values(array.reduce((newObj, { [valueKey]: value }) => {
     if (isArray(value)) {
       value.forEach((valueItem) => {
@@ -109,7 +111,7 @@ const makeObjByKey = (array: any[], valueKey: string) => {
   }, {}));
 };
 
-const checkOnNewValuewInArray = (array: any[], filterData: StateAdvancedSelectLikeFilterFilter['filterData'], options: StateAdvancedSelectLikeFilterFilter['options']) => {
+const checkOnNewValuewInArray = (array: Array<any>, filterData: StateAdvancedSelectLikeFilterFilter['filterData'], options: StateAdvancedSelectLikeFilterFilter['options']) => {
   const objArray = Object.values(makeObjByKey(array, filterData.valueKey));
 
   return options.length !== objArray.length;
@@ -162,6 +164,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
         && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
       )
     );
+
     if (triggerToUpdate) {
       const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
 
@@ -175,12 +178,14 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
           if (groupName && groupName in cache) {
             promise = cache[groupName];
           } else {
-            promise = this.props.actionFetchWithCount(
-              getJSON(
-                `${configStand.backend}/${getRegistryData.entity}`,
-                payload,
-              ),
-              { page: '' },
+            promise = this.props.dispatch(
+              actionFetchWithCount(
+                getJSON(
+                  `${configStand.backend}/${getRegistryData.entity}`,
+                  payload,
+                ),
+                { page: '' },
+              )
             ).then((ans) => {
               delete cache[groupName];
 
@@ -194,7 +199,7 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
 
           response = await promise;
         } catch (error) {
-          console.error(error); // tslint:disable-line:no-console
+          console.error(error); // eslint-disable-line
 
           this.setState({
             isLoading: false,
@@ -248,13 +253,13 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
     const { filterData } = props;
 
     this.props.onChange(filterData.valueKey, 'like', value || [], options);
-  }
+  };
 
   render() {
     const { state, props } = this;
     const {
       filterValuesObj: {
-        in: {
+        like: {
           value,
         },
       },
@@ -290,19 +295,10 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
   }
 }
 
-const mapStateToProps = (state, { registryKey, filterData }) => ({
-  total_count: getListData(state.registry, registryKey).data.total_count,
-  array: getListData(state.registry, registryKey).data.array,
-  filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
-});
-
 export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
-  (dispatch: any) => ({
-    actionFetchWithCount: (...arg) => (
-      dispatch(
-        actionFetchWithCount(...arg),
-      )
-    ),
+  (state, { registryKey, filterData }) => ({
+    total_count: getListData(state.registry, registryKey).data.total_count,
+    array: getListData(state.registry, registryKey).data.array,
+    filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
   }),
 )(AdvancedSelectLikeFilterFilter);

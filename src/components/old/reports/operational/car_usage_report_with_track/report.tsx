@@ -1,22 +1,18 @@
-import { withProps } from 'recompose';
 import * as React from 'react';
+import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/car_usage_report_with_track/ReportHeader';
-import Title from 'components/old/reports/operational/car_usage_report_with_track/Title';
+import Title from 'components/old/reports/common/Title';
 
 const serviceUrl = 'car_usage_report';
 const reportUrl = 'car-usage-report';
 const serviceName = 'CarUsageReport';
 
-const schemaMakers = {};
-
-const renderers = {};
-
-const infoMessage = 'Отчет строится по назначенным заданиям на ТС, попадающим в период формирования отчета. Если хотя бы одна координата поступала от ТС, то ТС учитывается в отчете.';
+const infoMessage = 'Отчет строится по назначенным заданиям на ТС, попадающим в дату формирования отчета. Если хотя бы одна координата поступала от ТС, то ТС учитывается в отчете.';
 const titleText = 'Отчет по статистике выхода техники';
 
 const title = (
@@ -33,9 +29,11 @@ const reportProps: IReportProps = {
   reportUrl,
   serviceUrl,
   headerComponent: ReportHeader,
-  renderers,
   enumerated: true,
-  schemaMakers,
+  notUseServerSummerTable: true,
+  tableProps: {
+    reportKey: serviceUrl,
+  },
 };
 
 const ExportableReportContainer = exportable({

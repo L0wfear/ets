@@ -1,5 +1,5 @@
-export interface IBaseForm<TFormState = any> {
+export type IBaseForm<TFormState = any> = {
   state: TFormState;
-  onChange(...args: any[]);
+  onChange(...args: Array<any>);
   isPermitted?: boolean;
-}
+};

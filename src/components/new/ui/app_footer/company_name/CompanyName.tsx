@@ -1,27 +1,15 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { CompanyNameContainer } from './styled';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CompanyNameContainer } from 'components/new/ui/app_footer/company_name/styled';
 
-type AppFooterStateProps = {
-  userData: InitialStateSession['userData'];
-};
-type AppFooterDispatchProps = DispatchProp;
-type AppFooterOwnProps = {};
-type AppFooterMergedProps = (
-  AppFooterStateProps
-  & AppFooterDispatchProps
-  & AppFooterOwnProps
-);
-type AppFooterProps = AppFooterMergedProps;
+type OwnProps = {};
+type Propw = OwnProps & {};
 
-const AppFooter: React.FC<AppFooterProps> = React.memo(
-  (props) => {
-    const {
-      userData,
-    } = props;
+const AppFooter: React.FC<Propw> = React.memo(
+  () => {
+    const userData = etsUseSelector((state) => getSessionState(state).userData);
 
     const company_name = userData.company_name || '';
     const structure_name = userData.structure_name || '';
@@ -34,8 +22,4 @@ const AppFooter: React.FC<AppFooterProps> = React.memo(
   },
 );
 
-export default connect<AppFooterStateProps, AppFooterDispatchProps, AppFooterOwnProps, ReduxState>(
-  (state) => ({
-    userData: getSessionState(state).userData,
-  }),
-)(AppFooter);
+export default AppFooter;

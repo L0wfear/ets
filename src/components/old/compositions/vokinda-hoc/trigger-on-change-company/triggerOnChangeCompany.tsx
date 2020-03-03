@@ -33,12 +33,12 @@ const triggerOnChangeCompany = (Component) => (
             loading,
             company_id,
           }),
-          loading ? 50 : 100,
+        loading ? 50 : 100,
         );
         if (loading) {
           this.changeStatusLoading(false, company_id);
         }
-      }
+      };
 
       render() {
         if (this.state.loading) {

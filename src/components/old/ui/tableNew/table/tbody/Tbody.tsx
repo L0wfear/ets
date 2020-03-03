@@ -1,6 +1,7 @@
 import * as React from 'react';
 import TrBody from 'components/old/ui/tableNew/table/tbody/trBody/TrBody';
 import TrBodyAllRow from 'components/old/ui/tableNew/table/tbody/trBody/TrBodyAllRow';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class Tbody extends React.Component<any, any> {
   renderTr = (summObj, rowData) => {
@@ -47,21 +48,19 @@ class Tbody extends React.Component<any, any> {
     }
 
     return summObj;
-  }
+  };
 
   render() {
     return (
-      <tbody>
-      {
-        this.props.hasData
-        ?
-          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 1 }).arr
-        :
-          <tr>
-            <td colSpan={9999}>{'Нет данных'}</td>
-          </tr>
-      }
-      </tbody>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+        {
+          this.props.hasData
+            ?          this.props.data.reduce(this.renderTr, { arr: [], indexRow: 1 }).arr
+            :          <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey="none">
+              <EtsBootstrap.Grid.GridBootstrapTbody.Td colSpan={9999}>{'Нет данных'}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+            </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+        }
+      </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
     );
   }
 }

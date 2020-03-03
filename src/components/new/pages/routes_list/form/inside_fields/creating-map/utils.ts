@@ -1,3 +1,5 @@
+import { keyBy } from 'lodash';
+
 import {
   PropsCreatingMap,
   StateCreatingMap,
@@ -9,7 +11,6 @@ import {
   GeozoneMunicipalFacilityById,
 } from 'redux-main/trash-actions/geometry/geometry.h';
 import { polyState } from 'constants/polygons';
-import { keyBy } from 'lodash';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 export const routesToLoadByKeySet = new Set(
@@ -19,7 +20,7 @@ export const routesToLoadByKeySet = new Set(
 );
 
 const mergeRestObjetRecordWithNew = (objectIndex: Record<ValuesOf<Route['object_list']>['object_id'], ValuesOf<Route['object_list']>>, newObjectList: Route['object_list']) => {
-  const newArr: Array<ValuesOf<Route['object_list']> & { is_invalid?: boolean }>  = [...newObjectList];
+  const newArr: Array<ValuesOf<Route['object_list']> & { is_invalid?: boolean; }>  = [...newObjectList];
 
   Object.values(objectIndex).forEach((rowData) => {
     newArr.push({
@@ -38,6 +39,7 @@ export const mergeStateFromObjectList = (
 ) => {
   const objectIndex = keyBy(objectList, 'object_id');
   const newObjectList = [];
+
   const geozone_municipal_facility_by_id = Object.entries(
     geozoneMunicipalFacilityById,
   ).reduce<GeozoneMunicipalFacilityById>((newObj, [id, geoData]) => {
@@ -110,15 +112,12 @@ export const makeObjectListOptions = (
   const options_by_mf = Object.values(geozone_municipal_facility_by_id).map(
     ({ id, name, is_valid_company_structure }) => {
       delete objectIndex[id];
-
-      return ({
+      return {
         value: id,
         label: name,
         is_invalid: !is_valid_company_structure,
-      });
-    },
-  );
-
+      };
+    });
   Object.values(objectIndex).forEach((rowData: any) => {
     options_by_mf.push({
       value: rowData.object_id,
@@ -156,7 +155,7 @@ export const makeObjByGeo = (
 };
 
 export const makeObjectListByObjectListIdArr = (
-  ObjectListIdArr: number[],
+  ObjectListIdArr: Array<number>,
   object_list: PropsCreatingMap['object_list'],
   type: PropsCreatingMap['type'],
   geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],

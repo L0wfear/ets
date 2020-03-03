@@ -7,91 +7,66 @@ import {
   updateSetTire,
   autobaseDeleteTire,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tire/promise';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- Tire ---------- */
-export const autobaseSetTire = (tireList: Tire[]) => (dispatch) => (
+export const autobaseSetTire = (tireList: Array<Tire>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       tireList,
     }),
   )
 );
-export const autobaseResetSetTire = () => (dispatch) => (
+export const autobaseResetSetTire = (): EtsAction<EtsActionReturnType<typeof autobaseSetTire>> => (dispatch) => (
   dispatch(
     autobaseSetTire([]),
   )
 );
-export const autobaseGetSetTire = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSetTire(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const tireGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetTire(payload, { page, path }),
+export const autobaseGetSetTire = (payloadOwn = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSetTire>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getSetTire(payloadOwn),
+    meta,
+  );
+};
+export const tireGetAndSetInStore = (payloadOwn = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseGetSetTire>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetTire(payloadOwn, meta),
   );
 
   dispatch(
-    autobaseSetTire(data),
+    autobaseSetTire(result.data),
   );
 
-  return {
-    tireList: data,
-  };
+  return result;
 };
-export const autobaseCreateTire: any = (tireOld: Tire, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: tire } = await dispatch({
-    type: 'none',
-    payload: createSetTire(tireOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return tire;
+export const autobaseCreateTire = (tireOld: Tire, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createSetTire>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    createSetTire(tireOld),
+    meta,
+  );
 };
-export const autobaseCloneTire: any = (tireId: Tire, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: tire } = await dispatch({
-    type: 'none',
-    payload: cloneSetTire(tireId),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return tire;
+export const autobaseCloneTire = (tireId: Tire['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof cloneSetTire>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    cloneSetTire(tireId),
+    meta,
+  );
 };
-export const autobaseUpdateTire: any = (tireOld: Tire, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: tire } = await dispatch({
-    type: 'none',
-    payload: updateSetTire(tireOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return tire;
+export const autobaseUpdateTire = (tireOld: Tire, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetTire>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    updateSetTire(tireOld),
+    meta,
+  );
 };
-export const autobaseRemoveTire = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: autobaseDeleteTire(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
+export const autobaseRemoveTire = (id: Tire['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteTire>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    autobaseDeleteTire(id),
+    meta,
+  );
+};

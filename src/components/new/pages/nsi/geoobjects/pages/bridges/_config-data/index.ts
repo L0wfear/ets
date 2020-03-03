@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/bridges',
   routePath: `/nsi/geoobjects/bridges/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник мостов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'bridges',
-  noDotList: false,
+
   component,
   permissions,
 };

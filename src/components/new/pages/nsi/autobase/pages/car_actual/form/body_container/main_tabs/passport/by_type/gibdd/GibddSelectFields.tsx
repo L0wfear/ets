@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { CarGibddPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/old/ui/input/fields';
 import useCarTypesOptions from 'components/new/utils/hooks/services/useOptions/useCarTypesOptions';

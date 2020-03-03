@@ -1,149 +1,44 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { compose } from 'recompose';
-import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getFormDataMetaByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
-import {
-  OwnCleaningRateProps,
-  PropsCleaningRate,
-  StatePropsCleaningRate,
-  DispatchPropsCleaningRate,
-  PropsCleaningRateWithForm,
-} from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/@types/CleaningRateForm';
-import { DivNone } from 'global-styled/global-styled';
-import cleaningRatePermissions from '../_config-data/permissions';
-import { cleaningRateFormSchema } from './schema';
+
+import { mapFormMeta } from 'redux-main/reducers/modules/form_data_record/actions';
+import ModalHeaderDefault from 'components/@next/@form/hook/part_form/ModalHeaderDefault';
+import ModalFooterDefault from 'components/@next/@form/hook/part_form/ModalFooterDefault';
+import FieldTechnicalOperationId from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/technical_operation_id/FieldTechnicalOperationId';
+import FieldProperty from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/property/FieldProperty';
+import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
-import { getDefaultCleaningRateElement, getCleaningRateProperties } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import useMeasureUnitOperationOptions from './use/useMeasureUnitOptions';
-import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
-import { actionCreateCleaningRate, actionUpdateCleaningRate } from 'redux-main/reducers/modules/cleaning_rate/actions_cleaning_rate';
-import { actionGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
-import useTechnicalOperationOptions from './use/useTechnicalOperationOptions';
+import FieldMeasureUnitId from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/measure_unit_id/FieldTechnicalOperationId';
 
-const CleaningRateForm: React.FC<PropsCleaningRate> = (props) => {
-  const {
-    formState: state,
-    formErrors: errors,
-    page,
-    path,
-    IS_CREATING,
-    isPermitted,
-  } = props;
-
-  const title = (
-    !IS_CREATING
-      ? 'Изменение показателя для расчета'
-      : 'Добавление показателя для расчета'
-  );
-
-  const {
-    measureUnitOptions,
-  } = useMeasureUnitOperationOptions(
-    props.actionLoadMeasureUnit,
-    page, path,
-  );
-
-  const {
-    technicalOperationOptions,
-  } = useTechnicalOperationOptions(
-    props.actionGetTechnicalOperationRegistry,
-    page, path,
-  );
-
-  const PROPERTIES = getCleaningRateProperties(state.type);
-
-  return (
-    <EtsBootstrap.ModalContainer id="modal-cleaning-rate" show onHide={props.hideWithoutChanges}>
-      <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
-      </EtsBootstrap.ModalHeader>
-      <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <ExtField
-          type="select"
-          label="Технологическая операция"
-          value={state.technical_operation_id}
-          error={errors.technical_operation_id}
-          options={technicalOperationOptions}
-          onChange={props.handleChange}
-          disabled={!isPermitted}
-          boundKeys="technical_operation_id"
-        />
-        <ExtField
-          type="select"
-          label="Площадная характеристика"
-          value={state.property}
-          error={errors.property}
-          options={PROPERTIES}
-          onChange={props.handleChange}
-          boundKeys="property"
-          disabled={!isPermitted}
-        />
-        <ExtField
-          type="string"
-          label="Коэффициент"
-          value={state.value}
-          error={errors.value}
-          onChange={props.handleChange}
-          boundKeys="value"
-          disabled={!isPermitted}
-        />
-        <ExtField
-          type="select"
-          label="Единица измерения"
-          options={measureUnitOptions}
-          value={state.measure_unit_id}
-          error={errors.measure_unit_id}
-          onChange={props.handleChange}
-          boundKeys="measure_unit_id"
-          disabled={!isPermitted}
-        />
-      </ModalBodyPreloader>
-      <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
-        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-      </EtsBootstrap.ModalFooter>
-    </EtsBootstrap.ModalContainer>
-  );
+type Props = {
+  formDataKey: 'cleaning_rate';
+  handleHide: any;
 };
 
-export default compose<PropsCleaningRate, OwnCleaningRateProps>(
-  connect<StatePropsCleaningRate, DispatchPropsCleaningRate, OwnCleaningRateProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      actionGetTechnicalOperationRegistry: (...arg) => (
-        dispatch(
-          actionGetTechnicalOperationRegistry(...arg),
-        )
-      ),
-      actionLoadMeasureUnit: (...arg) => (
-        dispatch(
-          actionLoadMeasureUnit(...arg),
-        )
-      ),
-    }),
-  ),
-  withForm<PropsCleaningRateWithForm, CleaningRate>({
-    uniqField: 'id',
-    createAction: actionCreateCleaningRate,
-    updateAction: actionUpdateCleaningRate,
-    mergeElement: (props) => {
-      return getDefaultCleaningRateElement(props.element);
-    },
-    schema: cleaningRateFormSchema,
-    permissions: cleaningRatePermissions,
-  }),
-)(CleaningRateForm);
+const CleaningRateForm: React.FC<Props> = React.memo(
+  (props) => {
+    const { formDataKey } = props;
+
+    const bsSizeForm = mapFormMeta[formDataKey].bsSizeForm;
+    const meta = etsUseSelector((state) => getFormDataMetaByKey(state, formDataKey));
+
+    return (
+      <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
+        <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
+        <ModalBodyPreloader meta={meta} typePreloader="mainpage">
+          <FieldTechnicalOperationId formDataKey={formDataKey} />
+          <FieldProperty formDataKey={formDataKey} />
+          <DefaultFieldString<CleaningRate> formDataKey={formDataKey} name="Коэффициент" field_name="value" />
+          <FieldMeasureUnitId formDataKey={formDataKey} />
+        </ModalBodyPreloader>
+        <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
+      </EtsBootstrap.ModalContainer>
+    );
+  },
+);
+
+export default CleaningRateForm;

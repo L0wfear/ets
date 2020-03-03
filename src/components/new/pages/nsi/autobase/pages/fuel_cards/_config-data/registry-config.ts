@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import fuelCardsPermissions from './permissions';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
@@ -11,6 +11,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
     buttonsTypes.filter,
     buttonsTypes.create,
     buttonsTypes.read,
+    buttonsTypes.remove,
     buttonsTypes.fuel_card_to_archive,
     buttonsTypes.export,
   ];
@@ -20,6 +21,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.fuel_card_from_archive,
+      buttonsTypes.export,
     ];
   }
 
@@ -31,6 +33,13 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           is_archive,
         },
       },
+      getBlobData: {
+        entity: 'fuel_cards',
+        payload: {
+          format: 'xls',
+          is_archive,
+        },
+      }
     },
     registryKey,
     header: {
@@ -72,7 +81,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           displayIf: displayIfContant.lenghtStructureMoreOne,
         },
         {
-          valueKey: 'company',
+          valueKey: 'company_short_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -124,7 +133,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'company',
+            key: 'company_short_name',
             title: 'Организация',
             width: 300,
           },

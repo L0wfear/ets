@@ -1,11 +1,11 @@
 import ApiServiceFactory from './ApiServiceFactory';
-import config, { configApi } from 'config';
+import config, { host_dev } from 'config';
 
 const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
   apiUrl: process.env.STAND === 'gost_stage'
-    ? configApi.develop.ets_test
+    ? `https://${host_dev.ets_test}services`
     : process.env.STAND === 'ets_hotfix'
-      ? configApi.develop.ets_hotfix
+      ? `https://${host_dev.ets_hotfix}services`
       : config.backend,
   otherToken: true,
   headers: () => {
@@ -13,8 +13,8 @@ const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
       window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV) || null,
     );
     return {
-      "Authorization": `Token ${token}`,
-      "Accept": 'application/json',
+      'Authorization': `Token ${token}`,
+      'Accept': 'application/json',
       'Access-Control-Expose-Headers': 'Content-Disposition',
     };
   },

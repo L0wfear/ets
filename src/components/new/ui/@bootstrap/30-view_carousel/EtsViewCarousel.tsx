@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const EtsViewCarousel = styled.div<{ manual?: boolean; indexShow?: number }>`
+const EtsViewCarousel = styled.div<{ manual?: boolean; indexShow?: number; }>`
   display: flex;
   overflow-x: hidden;
 

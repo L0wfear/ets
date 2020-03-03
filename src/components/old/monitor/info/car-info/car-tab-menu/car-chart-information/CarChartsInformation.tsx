@@ -27,7 +27,7 @@ class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation
     const selectedTab = Number(number);
 
     this.setState({ selectedTab });
-  }
+  };
 
   handleChartClick = (trackPoint) => {
     if (trackPoint) {
@@ -44,7 +44,7 @@ class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation
         this.props.carInfoSetTrackPoint(trackPoint);
       }
     }
-  }
+  };
 
   handleEventClick = (fuelEvent, fuel = false) => {
     if (fuelEvent) {
@@ -67,7 +67,7 @@ class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation
         this.props.carInfoSetFuelEventPoint(fuelEvent);
       }
     }
-  }
+  };
 
   render() {
     const { selectedTab } = this.state;

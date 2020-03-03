@@ -1,7 +1,7 @@
 import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 import { InitialStateTypeRegistry } from 'components/new/ui/registry/module/@types/registry';
 import { IStateReport } from 'components/old/reports/redux-main/modules/report';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 import { IStateUserNotifications } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
 import { IStateOldReport } from 'components/old/coverage_reports/redux-main/modules/old-report/@types/old_report';
@@ -15,12 +15,11 @@ import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/f
 import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
-import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { IStateFormDataRecord } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
-export interface ReduxState {
+export type ReduxState = {
   dashboard: InitialStateDashboard;
   registry: InitialStateTypeRegistry;
   report: IStateReport;
@@ -38,12 +37,10 @@ export interface ReduxState {
   inspect: IStateInspect;
   monitorPage: IStateMonitorPage;
 
-  order: IStateOrder; // partial
   loading: any;
   etsLoading: any;
 
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
-  materialConsumptionRate: IStateMaterialConsumptionRate;
-  [key: string]: any;
-}
+  formDataRecord: IStateFormDataRecord;
+};

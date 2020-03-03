@@ -1,5 +1,5 @@
-import { CleaningRate } from "./@types/cleaningRate";
-import { CleaningRateService } from "api/Services";
+import { CleaningRate } from './@types/cleaningRate';
+import { CleaningRateService } from 'api/Services';
 import { get } from 'lodash';
 
 export const promiseCreateCleaningRate = async (cleaningRateNew: CleaningRate) => {
@@ -35,4 +35,11 @@ export const promiseUpdateCleaningRate = async (cleaningRate: CleaningRate) => {
   };
 
   return result;
+};
+
+export const promiseSubmitCleaningRate = (cleaningRate: CleaningRate) => {
+  if (cleaningRate.id) {
+    return promiseUpdateCleaningRate(cleaningRate);
+  }
+  return promiseCreateCleaningRate(cleaningRate);
 };

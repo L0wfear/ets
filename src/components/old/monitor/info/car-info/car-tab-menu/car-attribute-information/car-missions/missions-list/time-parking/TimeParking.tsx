@@ -7,7 +7,7 @@ import { compose } from 'recompose';
 type PropsTimeParking = {
   date_start: number;
   date_end: number;
-  parkings: any[];
+  parkings: Array<any>;
 };
 
 class TimeParking extends React.PureComponent<PropsTimeParking, {}> {
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => ({
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'parkings'],
-    type: 'small-loader-field',
+    type: 'field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
   connect(

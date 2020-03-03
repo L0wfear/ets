@@ -1,25 +1,16 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
+import MissionFormLazy, { OwnMissionFormProps } from 'components/new/pages/missions/mission/form/main';
 
-export const PermittedMissionFormLazy = withRequirePermissionsNew({
+export const PermittedMissionFormLazy = withRequirePermission<OwnMissionFormProps & WithRequirePermissionProps>({
   permissions: 'mission.read',
-})(MissionFormLazy);
+})(MissionFormLazy as any);
 
-export const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: 'mission.create',
-})(EtsBootstrap.Button);
-
-export const ButtenUpdateMission = withRequirePermissionsNew({
-  permissions: 'mission.update',
-})(EtsBootstrap.Button);
-
-export const LinkToOpenMissionInfoForm = withRequirePermissionsNew({
+export const LinkToOpenMissionInfoForm = withRequirePermission<any>({
   permissions: 'mission.read',
-})((props) => (
+})((props: any) => (
   <div>
     <a className="pointer" onClick={props.openMissiomInfoForm} >Подробнее...</a>
   </div>

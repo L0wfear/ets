@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -15,19 +15,18 @@ import MissionRejectForm from './form/MissionRejectForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonFailMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  selectedRow: OneRegistryData['list']['data']['selectedRow'];
-  checkedRows: OneRegistryData['list']['data']['checkedRows'];
+  selectedRow: OneRegistryData<Mission>['list']['data']['selectedRow'];
+  checkedRows: OneRegistryData<Mission>['list']['data']['checkedRows'];
 };
 type ButtonFailMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonFailMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonFailMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailMissionMergeProps = {};
 
 type ButtonFailMissionProps = (
@@ -87,7 +86,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
+      <EtsBootstrap.Button id="mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ban-circle" /> Не выполнено / Отменено
       </EtsBootstrap.Button>
       {
@@ -119,12 +118,12 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
 };
 
 export default compose<ButtonFailMissionProps, ButtonFailMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonFailMissionStateProps, ButtonFailMissionDispatchProps, ButtonFailMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

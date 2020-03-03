@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isNullOrUndefined } from 'util';
 
 type PropsTrTable = {
   rowData: any;
@@ -14,9 +15,10 @@ type PropsTrTable = {
   selectField: string;
   currentPage: number;
   resultsPerPage: number;
-  columns: string[];
+  columns: Array<string>;
 
   checked: any;
+  localState: Record<string, any>;
 };
 
 class TrTable extends React.Component<PropsTrTable, any> {
@@ -27,7 +29,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
       props.rowData,
       props.index,
     );
-  }
+  };
   handleDoubleClickTbodyTr: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
 
@@ -35,13 +37,13 @@ class TrTable extends React.Component<PropsTrTable, any> {
       props.rowData,
       props.index,
     );
-  }
+  };
 
   handleRowCheck: any = () => {
     const { props } = this;
 
     props.handleRowCheck(props.rowData[props.selectField] || props.index);
-  }
+  };
 
   render() {
     const {
@@ -63,58 +65,53 @@ class TrTable extends React.Component<PropsTrTable, any> {
         onClick={this.handleClickTbodyTr}
         onDoubleClick={this.handleDoubleClickTbodyTr}
       >
-      {
-        this.props.columns.map((columnNameOuter, colIndex) => {
-          const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
+        {
+          this.props.columns.map((columnNameOuter, colIndex) => {
+            const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
 
-          const { columnName, customComponent, cssClassName } = field;
+            const { columnName, customComponent, cssClassName } = field;
 
-          return (
-            <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
-              {
-                rowData._isParent && colIndex === 0 ?
-                (
-                  rowData._isShowChildren ?
-                  (
-                    <EtsBootstrap.Glyphicon glyph="triangle-bottom" />
-                  )
-                  :
-                  (
-                    <EtsBootstrap.Glyphicon glyph="triangle-right" />
-                  )
-                )
-                :
-                (
-                  <span></span>
-                )
-              }
-              {
-                customComponent ?
-                  customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] })
-                :
-                  columnName === 'rowNumber' ?
-                  rowNumber
-                  :
-                    columnName === 'isChecked' ?
-                    (
-                      <div>
-                        <input
-                          type="checkbox"
-                          readOnly
-                          id={`checkbox-${rowData[this.props.selectField] || index}`}
-                          checked={Boolean(rowData.isChecked)}
-                          onClick={this.handleRowCheck}
-                        />
-                      </div>
+            return (
+              <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+                {
+                  rowData._isParent && colIndex === 0
+                    ? (
+                      rowData._isShowChildren
+                        ? (
+                          <EtsBootstrap.Glyphicon glyph="triangle-bottom" />
+                        )
+                        :                  (
+                          <EtsBootstrap.Glyphicon glyph="triangle-right" />
+                        )
                     )
-                    :
-                    rowData[columnName]
-              }
-            </td>
-          );
-        })
-      }
-    </tr>
+                    :                (
+                      <span></span>
+                    )
+                }
+                {
+                  customComponent
+                    ? customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
+                    : columnName === 'rowNumber'
+                      ? rowNumber
+                      : columnName === 'isChecked'
+                        ? (
+                          <div>
+                            <input
+                              type="checkbox"
+                              readOnly
+                              id={`checkbox-${rowData[this.props.selectField] || index}`}
+                              checked={Boolean(rowData.isChecked)}
+                              onClick={this.handleRowCheck}
+                            />
+                          </div>
+                        )
+                        : (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
+                }
+              </td>
+            );
+          })
+        }
+      </tr>
     );
   }
 }

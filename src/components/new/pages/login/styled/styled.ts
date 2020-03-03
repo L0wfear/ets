@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const background = require('components/new/pages/login/styled/bg.jpg');
 const jkh = require('components/new/pages/login/styled/jkh.png');
@@ -24,14 +25,23 @@ export const LoginPageFormWrap = styled.div`
   align-items: center;
 `;
 
+export const LoginPageFormContentInput = styled.input`
+  height: 44px;
+  background: #fff;
+  border: 0;
+  box-shadow: none!important;
+`;
+
 export const LoginPageForm = styled.form`
   width: 100%;
   max-width: 400px;
-  background: #efefef;
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.4);
+  background: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   user-select: none;
   border-radius: 3px;
-
+  ${LoginPageFormContentInput} {
+    margin-bottom: 10px;
+  }
   >*:first-child {
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
@@ -73,6 +83,11 @@ export const HrLine = styled.hr`
   border-top: 1px solid #706b77 !important;
 `;
 
+export const HrLineWaybill = styled.hr`
+  border-top: 1px solid ${UiConstants.colorGrey} !important;
+  margin: 20px -15px;
+`;
+
 export const DitLogo = styled.div`
   background: url(${jkh});
   background-position: center;
@@ -91,13 +106,6 @@ export const LoginPageFormContentLabel = styled.label`
   margin-bottom: 25px;
 `;
 
-export const LoginPageFormContentInput = styled.input`
-  height: 44px;
-  background: #fff;
-  border: 0;
-  margin-bottom: 25px !important;
-`;
-
 export const LoginPageFormContentButton = styled(EtsBootstrap.Button)`
   text-transform: uppercase;
   font-family: 'Roboto', sans-serif;
@@ -110,7 +118,8 @@ export const LoginPageFormContentButton = styled(EtsBootstrap.Button)`
 export const TpMessangeContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: baseline;
+  align-items: center;
+  margin-top: 20px;
   &>span {
     font-weight: bold;
   }

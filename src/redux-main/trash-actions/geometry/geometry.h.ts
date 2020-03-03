@@ -1,20 +1,20 @@
-export interface GeozonesDataByIndex {
+export type GeozonesDataByIndex = {
   front_key: string;
   front_id: string;
   company_id: number;
   shape: (Document | Node | any | string);
   frontIsSelected?: boolean;
   [key: string]: any;
-}
+};
 
 export type LoadGeozonesPromise = Record<GeozonesDataByIndex['type_geoobject'], GeozonesDataByIndex>;
 
 export type AnsLoadGeozonesFunc = {
-  type: string,
-  payload: Promise<LoadGeozonesPromise>
+  type: string;
+  payload: Promise<LoadGeozonesPromise>;
   meta: {
-    loading: boolean,
-  },
+    loading: boolean;
+  };
 };
 
 export type loadGeozonesFunc = (
@@ -36,6 +36,6 @@ export type OneGeozoneMunicipalFacility = {
   is_valid_company_structure: boolean;
 };
 
-export type GeozoneMunicipalFacility = OneGeozoneMunicipalFacility[];
+export type GeozoneMunicipalFacility = Array<OneGeozoneMunicipalFacility>;
 
 export type GeozoneMunicipalFacilityById = Record<string, OneGeozoneMunicipalFacility>;

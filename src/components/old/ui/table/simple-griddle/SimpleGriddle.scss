@@ -10,6 +10,7 @@
     }
 
     th {
+      position: sticky;
       &.sortable {
         cursor: pointer;
       }

@@ -4,17 +4,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsTechMaintOrderFormWrap = {
-  element: Partial<TechMaintOrder>;
-  onFormHide: OnFormHideType
-
-  registryKey?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTechMaintOrder = {
   techMaintTypeList: IStateAutobase['techMaintTypeList'];
@@ -22,17 +12,10 @@ export type StatePropsTechMaintOrder = {
   specialModelList: IStateSomeUniq['specialModelList'];
 };
 export type DispatchPropsTechMaintOrder = {
-  techMaintTypeGetAndSetInStore: () => any;
   measureUnitRunGetAndSetInStore: (tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) => any;
   actionGetAndSetInStoreSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreSpecialModel>;
 };
-export type OwnTechMaintOrderProps = {
-  element: Partial<TechMaintOrder>;
-  handleHide: OnFormHideType
-
-  page: string;
-  path?: string;
-};
+export type OwnTechMaintOrderProps = WithFormRegistrySearchAddProps<TechMaintOrder>;
 
 export type PropsTechMaintOrderWithForm = (
   StatePropsTechMaintOrder

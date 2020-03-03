@@ -26,7 +26,7 @@ import { WaybillCompletedItemsSubItemsType } from 'components/new/pages/dashboar
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -57,21 +57,21 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
     },
   }) => {
     this.props.dispatch(
-      waybillActions.actionGetWaybillById(
+      actionGetWaybillById(
         Number.parseInt(path, 0),
         { page: 'dashboard' },
       ),
     ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
-        }
-      });
+      if (waybill_data) {
+        this.setState({
+          showWaybillFormWrap: true,
+          elementWaybillFormWrap: waybill_data,
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not find waybill');
+      }
+    });
   };
 
   handleWaybillFormWrapHide = () => {
@@ -116,7 +116,6 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
         title={infoData.subItemsTitle || 'Информация о ПЛ'}
         handleClose={this.handleClose}>
         {Object.entries(infoDataGroupByDate)
-          .sort()
           .map(([key, arrData]: any) => (
             <div key={key}>
               <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
@@ -151,6 +150,7 @@ export default compose<any, any>(
       infoData: getDashboardState(state).waybill_completed.infoData,
     }),
     (dispatch) => ({
+      dispatch,
       handleClose: () => dispatch(dashboardSetInfoDataInWaybillCompleted(null)),
       loadAllWaybillCard: () =>
         dispatch(dashboardLoadDependentDataByWaybillCompleted()),

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldCarIdsMission,
@@ -126,7 +126,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           const car_special_model_names_new = car_special_model_names.slice(0, 1);
           const car_type_names_new = car_type_names.slice(0, 1);
 
-          this.props.onChange({
+          let partialChange: Partial<any> = {
             car_gov_numbers: car_gov_numbers_new,
             car_gov_numbers_text: car_gov_numbers_new.join(', '),
             car_ids: value.slice(0, 1),
@@ -134,8 +134,24 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: car_model_names_new,
             car_special_model_names: car_special_model_names_new,
             car_type_names: car_type_names_new,
-            car_type_names_text: car_type_names_new.join(', '),
-          });
+          };
+
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
+
+          this.props.onChange(partialChange);
         }
 
         this.getCars();
@@ -163,7 +179,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           const car_model_names_new = car_model_names.filter((_, index) => permittedIndexObj[index]);
           const car_special_model_names_new = car_special_model_names.filter((_, index) => permittedIndexObj[index]);
 
-          this.props.onChange({
+          let partialChange: Partial<any> = {
             car_gov_numbers: car_gov_numbers_new,
             car_gov_numbers_text: car_gov_numbers_new.join(', '),
             car_ids,
@@ -171,8 +187,24 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: car_model_names_new,
             car_special_model_names: car_special_model_names_new,
             car_type_names: car_type_names_new,
-            car_type_names_text: car_type_names_new.join(', '),
-          });
+          };
+
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
+
+          this.props.onChange(partialChange);
         }
       }
     }
@@ -242,7 +274,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         const car_model_names_new = car_model_names.filter((_, index) => permittedIndexObj[index]);
         const car_special_model_names_new = car_special_model_names.filter((_, index) => permittedIndexObj[index]);
 
-        this.props.onChange({
+        let partialChange: Partial<any> = {
           car_gov_numbers: car_gov_numbers_new,
           car_gov_numbers_text: car_gov_numbers_new.join(', '),
           car_ids,
@@ -250,8 +282,24 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_model_names: car_model_names_new,
           car_special_model_names: car_special_model_names_new,
           car_type_names: car_type_names_new,
-          car_type_names_text: car_type_names_new.join(', '),
-        });
+        };
+
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
+
+        this.props.onChange(partialChange);
       }
     }
   }
@@ -267,8 +315,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         const car_type_names = option.map(({ rowData }) => rowData.type_name);
         const car_model_names = option.map(({ rowData }) => rowData.model_name);
         const car_special_model_names = option.map(({ rowData }) => rowData.special_model_name);
-
-        props.onChange({
+        let partialChange: Partial<any> = {
           car_gov_numbers,
           car_gov_numbers_text: car_gov_numbers.join(', '),
           car_ids: value,
@@ -276,11 +323,27 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_type_names,
           car_model_names,
           car_special_model_names,
-          car_type_names_text: car_type_names.join(', '),
-        });
+        };
+
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
+
+        this.props.onChange(partialChange);
       } else {
         if (!value) {
-          props.onChange({
+          let partialChange: Partial<any> = {
             car_gov_numbers: [],
             car_gov_numbers_text: '',
             car_ids: [],
@@ -288,8 +351,24 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: [],
             car_special_model_names: [],
             car_type_names: [],
-            car_type_names_text: '',
-          });
+          };
+
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
+
+          this.props.onChange(partialChange);
         } else {
           let car_gov_numbers = get(option, ['rowData', 'gov_number'], '');
           car_gov_numbers = car_gov_numbers ? [car_gov_numbers] : [];
@@ -305,7 +384,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           const structure_id  = get(option, ['rowData', 'company_structure_id'], null);
           const is_common  = get(option, ['rowData', 'is_common'], '');
 
-          const newObj: any = {
+          let partialChange: Partial<any> = {
             car_gov_numbers,
             car_gov_numbers_text: car_gov_numbers.join(', '),
             car_ids: [value],
@@ -313,20 +392,32 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names,
             car_special_model_names,
             car_type_names,
-            car_type_names_text: car_type_names.join(', '),
           };
 
+          // if (!this.props.order_operation_id) {
+          //   partialChange = {
+          //     ...partialChange,
+          //     technical_operation_id: null,
+          //     technical_operation_name: '',
+          //     municipal_facility_id: null,
+          //     municipal_facility_name: '',
+          //     route_id: null,
+          //     route_name: '',
+          //     route_type: null,
+          //     object_type_id: null,
+          //     object_type_name: '',
+          //   };
+          // }
+
           if (!is_common && structure_id) {
-            newObj.structure_id = structure_id;
+            partialChange.structure_id = structure_id;
           }
 
-          props.onChange({
-            ...newObj,
-          });
+          props.onChange(partialChange);
         }
       }
     }
-  }
+  };
 
   render() {
     const {

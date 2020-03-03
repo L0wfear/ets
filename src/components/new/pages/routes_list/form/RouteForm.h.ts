@@ -1,4 +1,4 @@
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
@@ -11,6 +11,7 @@ export type PropsRouteFormWrap = InputRouteFormProps & {
 };
 
 export type StateRouteFormProps = {
+  userData: InitialStateSession['userData'];
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   geozoneMunicipalFacility: IStateSomeUniq['geozoneMunicipalFacility'];
@@ -32,23 +33,25 @@ export type InputRouteFormProps = {
   fromMission?: boolean;
   fromMissionTemplate?: boolean;
   fromOrder?: boolean;
-  missionAvailableRouteTypes?: string[];
+  missionAvailableRouteTypes?: Array<string>;
   hasMissionStructureId?: boolean;
 
 };
 
 export type OwnRouteFormProps = InputRouteFormProps & {
-  isPermittedToShowBridge: boolean;
 };
 
 export type PropsRouteWithForm = StateRouteFormProps &
   DispatchRouteFormProps &
-  OwnRouteFormProps;
+  OwnRouteFormProps
+  & {
+    isPermittedToShowBridge: boolean;
+  };
 
 export type FormStateRouteForm = Route & {
-  normatives: any[];
-  available_route_types: string[];
-  draw_object_list: any[];
+  normatives: Array<any>;
+  available_route_types: Array<string>;
+  draw_object_list: Array<any>;
 };
 
 export type PropsRouteForm = OutputWithFormProps<

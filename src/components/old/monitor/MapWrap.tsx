@@ -24,36 +24,36 @@ type PropsMapWrap = {
 
 const MapWrap: React.FC<PropsMapWrap> = (props) => (
   <MapEtsConsumer>
-  {
-    ({ setMapToContext, removeMapToContext }) => (
-      <MapEts
-        enableInteractions={props.enableInteractions}
-        disabledCenterOn={props.disabledCenterOn}
-        disabledMouseSingleClick={props.disabledMouseSingleClick}
-        setMapToContext={setMapToContext}
-        removeMapToContext={removeMapToContext}
-        mapKey="monitor"
-      >
-        {
-          ({ map, zoom, centerOn }) => (
-            <div>
-              <LayerGeooobjects map={map} />
-              <LayerSelectedGeooobjects map={map} />
-              <LayerTrackLines map={map} />
-              <LayerTrackPoints map={map} />
-              <LayerTrackLinesBySensor map={map} />
-              <LayerParkingPoints map={map} />
-              <LayerFuelEventPoint map={map} />
-              <LayerPlayPoint map={map} centerOn={centerOn} />
-              <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
-              <LayerFuelEventLeakPoint map={map} />
-              <MapInfo map={map} centerOn={centerOn}/>
-            </div>
-          )
-        }
-      </MapEts>
-    )
-  }
+    {
+      ({ setMapToContext, removeMapToContext }) => (
+        <MapEts
+          enableInteractions={props.enableInteractions}
+          disabledCenterOn={props.disabledCenterOn}
+          disabledMouseSingleClick={props.disabledMouseSingleClick}
+          setMapToContext={setMapToContext}
+          removeMapToContext={removeMapToContext}
+          mapKey="monitor"
+        >
+          {
+            ({ map, zoom, centerOn }) => (
+              <div>
+                <LayerGeooobjects map={map} />
+                <LayerSelectedGeooobjects map={map} />
+                <LayerTrackLines map={map} />
+                <LayerTrackPoints map={map} />
+                <LayerTrackLinesBySensor map={map} />
+                <LayerParkingPoints map={map} />
+                <LayerFuelEventPoint map={map} />
+                <LayerPlayPoint map={map} centerOn={centerOn} />
+                <LayerCarMarker map={map} zoom={zoom} centerOn={centerOn} />
+                <LayerFuelEventLeakPoint map={map} />
+                <MapInfo map={map} centerOn={centerOn}/>
+              </div>
+            )
+          }
+        </MapEts>
+      )
+    }
   </MapEtsConsumer>
 );
 

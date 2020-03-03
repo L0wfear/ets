@@ -1,16 +1,20 @@
-
-export type CarInWorkOverallItemsSubItemsType = {
+export type CarInWorkOverallItemsSubItemsSubItemsType = {
   title: string;
 };
 
+export type CarInWorkOverallItemsSubItemsType = {
+  title: string;
+  subItems: Array<CarInWorkOverallItemsSubItemsSubItemsType>;
+};
+
 export type CarInWorkOverallItemsType = {
-  subItems?: CarInWorkOverallItemsSubItemsType[],
+  subItems?: Array<CarInWorkOverallItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CarInWorkOverallAnsType = {
-  items: CarInWorkOverallItemsType[];
+  items: Array<CarInWorkOverallItemsType>;
   title: string;
 };
 

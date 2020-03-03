@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 import {
   WORK_NOT_SELECT_OPTIONS,
@@ -24,6 +24,7 @@ export const config: TypeConfigData<Employee> = {
     buttons: [
       buttonsTypes.filter,
       {
+        id: 'open-create-form',
         type: buttonsTypes.create,
       },
       buttonsTypes.read,

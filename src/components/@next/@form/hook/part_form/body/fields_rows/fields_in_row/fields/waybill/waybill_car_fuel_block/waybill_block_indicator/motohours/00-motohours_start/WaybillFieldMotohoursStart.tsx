@@ -1,0 +1,72 @@
+import * as React from 'react';
+import { get } from 'lodash';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+type WaybillFieldMotohoursStartProps = {
+  formDataKey: any;
+  md?: number;
+};
+
+const WaybillFieldMotohoursStart: React.FC<WaybillFieldMotohoursStartProps> = React.memo(
+  (props) => {
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
+    const motohours_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['motohours_start']>(props.formDataKey, 'motohours_start');
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+
+    const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
+    const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
+    const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
+    const isSelectedCarId = Boolean(car_id);
+
+    const handleChangeWrap = React.useCallback(
+      (keyName, valueNew) => {
+        const valueData = get(valueNew, 'target.value', null);
+
+        handleChange({
+          [keyName]: valueData ? Number(valueData) : null,
+        });
+      },
+      [handleChange],
+    );
+
+    const previosIsSelectedCarId = usePrevious(isSelectedCarId);
+
+    React.useEffect(
+      () => {
+        if (!isSelectedCarId && previosIsSelectedCarId) {
+          handleChangeWrap('motohours_start', null);
+        }
+      },
+      [previosIsSelectedCarId, isSelectedCarId, handleChangeWrap],
+    );
+
+    React.useEffect(
+      () => {
+        return () => handleChangeWrap('motohours_start', null);
+      },
+      [],
+    );
+
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_motohours_start`}
+          type="number"
+          label="Выезд из гаража, м/ч"
+          value={motohours_start}
+          onChange={handleChangeWrap}
+          disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
+
+          boundKeys="motohours_start"
+        />
+      </EtsBootstrap.Col>
+    );
+  },
+);
+
+export default WaybillFieldMotohoursStart;

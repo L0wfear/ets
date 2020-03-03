@@ -1,63 +1,12 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
+import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
+import { WithFormRegistrySearchProps, withFormRegistrySearch } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
-import { PropsConsumableMaterialFormLazy } from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/@types/ConsumableMaterialForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { compose } from 'recompose';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-
-const ConsumableMaterialFrom = React.lazy(() => (
-  import(/* webpackChunkName: "consumable_material_form" */ 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/ConsumableMaterialForm')
+const ConsumableMaterialFormContextReactLazy = React.lazy(() => (
+  import(/* webpackChunkName: "consumable_material_form" */ 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/ConsumableMaterialFormContext')
 ));
 
-const ConsumableMaterialFormLazy: React.FC<PropsConsumableMaterialFormLazy> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}cleaning-rate-form`;
-    const type = props.match.params.selected_odh_dt_value;
-
-    const element = React.useMemo(
-      () => {
-        if (props.element) {
-          if (!props.element.id) {
-            return {
-              ...props.element,
-              type,
-            };
-          }
-        }
-
-        return props.element;
-      },
-      [props.element, type],
-    );
-
-    return (
-      element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <ConsumableMaterialFrom
-                element={element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        : (
-          <DivNone />
-        )
-    );
-  },
-);
-
-export default compose<PropsConsumableMaterialFormLazy, any>(
-  withFormRegistrySearch({}),
-  withSearch,
-)(ConsumableMaterialFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<ConsumableMaterial>, ConsumableMaterial>({
+  add_path: 'consumable_material',
+})(ConsumableMaterialFormContextReactLazy);

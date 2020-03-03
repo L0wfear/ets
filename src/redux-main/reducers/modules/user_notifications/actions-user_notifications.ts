@@ -19,8 +19,9 @@ import {
   mapAdmNotifyToSetReadByIdArr,
 } from 'redux-main/reducers/modules/user_notifications/utils';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-export const userAdmNotificationPut = (type: string | null, read_ids: number | number[], { page = 'notification-registry', path = null } = {}) => ({
+export const userAdmNotificationPut = (type: string | null, read_ids: number | Array<number>, { page = 'notification-registry', path = null } = {}) => ({
   type,
   payload: makeReadAdmNotification(read_ids),
   meta: {
@@ -40,7 +41,7 @@ export const readAllAdmNotification = (type, { page = 'notification-registry', p
   },
 });
 
-export const userNotificationRead = (type: string | null, read_ids: number | number[], { page = 'notification-registry', path = null } = {}) => ({
+export const userNotificationRead = (type: string | null, read_ids: number | Array<number>, { page = 'notification-registry', path = null } = {}) => ({
   type,
   payload: makeUserNotificationRead(read_ids),
   meta: {
@@ -60,7 +61,7 @@ export const userNotificationReadAll = (type, { page = 'notification-registry', 
   },
 });
 
-export const userNotificationGet = (type: string | null, payload: { is_read?: boolean, type_id?: number }, { page = 'notification-registry', path = null} = {}) => ({
+export const userNotificationGet = (type: string | null, payload: { is_read?: boolean; type_id?: number; }, { page = 'notification-registry', path = null} = {}) => ({
   type,
   payload: getNotify(payload),
   meta: {
@@ -70,7 +71,7 @@ export const userNotificationGet = (type: string | null, payload: { is_read?: bo
   },
 });
 
-export const getOrderNotRead: any = () => async (dispatch) => {
+export const getOrderNotRead = (): EtsAction<Promise<void>> => async (dispatch) => {
   const { payload: { notify } } = await dispatch(
     userNotificationGet(
       'none',
@@ -90,24 +91,27 @@ export const getOrderNotRead: any = () => async (dispatch) => {
       orderNotReadList: notify,
     }),
   );
+
+  return;
 };
 
-export const userNotificationAdmGet = (type: string | null, payload: { is_read?: boolean }, { page = 'notification-registry', path = null } = {}) => ({
-  type,
-  payload: getNotifyAdm(payload),
-  meta: {
-    promise: true,
-    page,
-    path,
-  },
-});
+export const userNotificationAdmGet = (payload: { is_read?: boolean; }, { page = 'notification-registry', path = null } = {}): EtsAction<Promise<any>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getNotifyAdm(payload),
+    {
+      page,
+      path,
+    },
+  )
+);
 
 export const changeUserNotificationsState = (newSomeState) => ({
   type: SESSION_CHANGE_SOME_DATA,
   payload: newSomeState,
 });
 
-export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) => async (dispatch, getState) => {
+export const setMakeReadAdmNotification = (notifyIds: number | Array<number>): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];
 
   await dispatch(
@@ -149,6 +153,8 @@ export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) =>
       userNotificationList,
     }),
   );
+
+  return;
 };
 
 export const getUserNotificationInfo = (): EtsAction<Promise<any>> => async (dispatch) => {
@@ -166,7 +172,7 @@ export const getUserNotificationInfo = (): EtsAction<Promise<any>> => async (dis
   return response;
 };
 
-export const setMakeReadOrderNotification = (notifyIds: number | number[]): EtsAction<Promise<void>> => async (dispatch, getState) => {
+export const setMakeReadOrderNotification = (notifyIds: number | Array<number>): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];
 
   await dispatch(
@@ -260,7 +266,6 @@ export const getNotifications = (): EtsAction<Promise<void>> => async (dispatch,
 export const getAdmNotifications = () => async (dispatch, getState) => {
   const { payload: { notify } } = await dispatch(
     userNotificationAdmGet(
-      'none',
       {},
     ),
   );
@@ -359,10 +364,9 @@ export const markAsRead = (readData = []) => async (dispatch) => {
   }
 };
 
-export const getAdmNotReadNotifications: any = () => async (dispatch) => {
+export const getAdmNotReadNotifications = (): EtsAction<Promise<void>> => async (dispatch) => {
   const { payload: { notify } } = await dispatch(
     userNotificationAdmGet(
-      'none',
       {
         is_read: false,
       },
@@ -382,10 +386,12 @@ export const getAdmNotReadNotifications: any = () => async (dispatch) => {
       }),
     ),
   );
+
+  return;
 };
 
-export const setNotifyFromWs: any = (notify) => (dispatch) => {
-  dispatch(
+export const setNotifyFromWs = (notify): EtsAction<Promise<void>> => async (dispatch) => {
+  await dispatch(
     changeUserNotificationsStateByGroup({
       ...notify,
       front_type: get(TYPE_GROUP, [notify.group, 'front_type'], ''),
@@ -394,6 +400,8 @@ export const setNotifyFromWs: any = (notify) => (dispatch) => {
   dispatch(
     getNotifications(),
   );
+
+  return;
 };
 
 export const changeUserNotificationsStateByGroup = (newRowsNotifyArr) => (dispatch, getState) => {

@@ -1,5 +1,5 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export type InspectionDataStateProps = {

@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Реестр регламентов ТО',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_tech_maintenance_order',
-  noDotList: false,
+
   component,
   permissions,
 };

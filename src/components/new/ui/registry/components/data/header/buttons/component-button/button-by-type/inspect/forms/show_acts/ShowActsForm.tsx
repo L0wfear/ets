@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import TableData from 'components/new/ui/registry/components/data/table-data/TableData';
 import Paginator from 'components/new/ui/registry/components/data/paginator/Paginator';
-import { EtsHeaderContainer } from '../../../../../../styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/permissions';
 
@@ -13,9 +13,8 @@ import {
   registryKey,
 } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/registry-config';
 import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { EtsButtonsContainer } from '../../../../../styled/styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
-import InspectActFileForm from './form/InspectActFileForm';
 import ButtonRead from '../../../ButtonRead';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
@@ -25,18 +24,24 @@ import { actionUpdateInspectAutobase } from 'redux-main/reducers/modules/inspect
 import { actionUpdateInspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import { actionUpdateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 
+const InspectActFileFormContext = React.lazy(() => (
+  import(/* webpackChunkName: "services" */ 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/form/InspectActFileFormContext')
+));
+
 type Props = {
-  element: { id: number };
-  handleHide: (...arg: any[]) => any;
+  element: { id: number; };
+  handleHide: (...arg: Array<any>) => any;
 
   page: string;
   path: string;
 };
 
 const dataRemove: ValuesOf<OneRegistryData['header']['buttons']> = {
+  id: 'button_remove_file',
   type: buttonsTypes.remove,
   message_single: 'Вы уверены, что хотите удалить файл?',
   message_multi: 'Вы уверены, что хотите удалить файлы?',
+  modal_format: 'yesno',
 };
 
 const ShowActsForm: React.FC<Props> = React.memo(
@@ -51,7 +56,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         dispatch(
-          registryAddInitialData(getConfig(props.element.id)), // не сработает из других мест ЕТС
+          registryAddInitialData(getConfig(props.element.id, props.path)), // не сработает из других мест ЕТС
         );
 
         return () => {
@@ -143,7 +148,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     );
 
     const handleHide = React.useCallback(
-      (isSubmitted) => {
+      (isSubmitted, result?: any) => {
         changeElement(null);
 
         if (isSubmitted) {
@@ -168,15 +173,17 @@ const ShowActsForm: React.FC<Props> = React.memo(
           </EtsBootstrap.ModalHeader>
           <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
             <EtsBootstrap.Row>
-              <EtsHeaderContainer>
-                <EtsBootstrap.Button disabled={!isPermittedUpdate} onClick={handleOpenForm}>
-                  Добавить файл
-                </EtsBootstrap.Button>
-                <EtsButtonsContainer>
-                  <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
-                  <ButtonRemove registryKey={registryKey} onClick={handleClickRemoveFile} data={dataRemove} format="yesno"/>
-                </EtsButtonsContainer>
-              </EtsHeaderContainer>
+              <EtsHeaderContainerWrap>
+                <EtsHeaderContainer>
+                  <EtsBootstrap.Button disabled={!isPermittedUpdate} onClick={handleOpenForm}>
+                    Добавить файл
+                  </EtsBootstrap.Button>
+                  <EtsButtonsContainer>
+                    <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
+                    <ButtonRemove registryKey={registryKey} data={dataRemove} onClick={handleClickRemoveFile} />
+                  </EtsButtonsContainer>
+                </EtsHeaderContainer>
+              </EtsHeaderContainerWrap>
               <TableData registryKey={registryKey} />
               <Paginator registryKey={registryKey} />
             </EtsBootstrap.Row>
@@ -188,8 +195,9 @@ const ShowActsForm: React.FC<Props> = React.memo(
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
         {
-          element && (
-            <InspectActFileForm
+          Boolean(element) && (
+            <InspectActFileFormContext
+              registryKey={registryKey}
               page={registryKey}
               path={path}
 

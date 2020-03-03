@@ -7,7 +7,7 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 
 const DTPicker: any = DateTimePicker;
 
-export interface DatePickerProps {
+export type DatePickerProps = {
   date: any;
   onChange?: any;
   id?: string;
@@ -16,14 +16,18 @@ export interface DatePickerProps {
   calendar?: boolean;
   disabled?: boolean;
   makeGoodFormat?: boolean;
+  makeGoodFormatInitial?: boolean;
   preventDateTime?: boolean;
-}
+
+  style?: object;
+};
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,
     makeGoodFormat = false,
+    makeGoodFormatInitial = false,
     preventDateTime,
   } = props;
   let { date: value } = props;
@@ -48,6 +52,17 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     },
     [props.onChange, makeGoodFormat, preventDateTime],
   );
+
+  React.useEffect(() => {
+    if (value && makeGoodFormat && makeGoodFormatInitial) {
+      value = (
+        (time || preventDateTime)
+          ? createValidDateTime(value)
+          : createValidDate(value)
+      );
+      props.onChange(value);
+    }
+  }, []);
 
   return (
     <DTPicker

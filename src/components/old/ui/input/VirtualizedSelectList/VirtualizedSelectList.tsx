@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { List } from 'react-virtualized';
 import { VirtualizedOption } from './styled/styled';
+import { getMultiValueId } from 'components/old/ui/input/ReactSelect/utils';
 
 type Props = {
-  children: any[]; // Возможно реакт
+  children: Array<any>; // Возможно реакт
+  id: string;
+  modalKey: string;
+
   [k: string]: any;
 };
 
@@ -16,7 +20,14 @@ const VirtualizedSelectList = React.memo(
   (props: Props) => {
     const rows = props.children;
     const rowRenderer = ({ key, index, style }) => (
-      <VirtualizedOption title={rows[index].label} key={key} style={style}>{rows[index]}</VirtualizedOption>
+      <VirtualizedOption
+        id={`react-select-${getMultiValueId(props.id, props.modalKey, rows?.[index]?.value)}`}
+        title={rows[index].label}
+        key={key}
+        style={style}
+      >
+        {rows[index]}
+      </VirtualizedOption>
     );
 
     const childrenCount = rows.length;

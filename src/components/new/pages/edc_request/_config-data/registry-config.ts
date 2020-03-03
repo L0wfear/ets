@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 
@@ -11,10 +11,9 @@ export const config: TypeConfigData<EdcRequest> = {
       entity: 'edc_request',
       typeAns: 'result',
       userServerFilters: true,
-    },
-    getOneData: {
-      entity: 'edc_request',
-      typeAns: 'result.0',
+      payload: {
+        sort_by: 'create_date:desc',
+      },
     },
   },
   registryKey,
@@ -110,7 +109,7 @@ export const config: TypeConfigData<EdcRequest> = {
       fixedWidth: true,
     },
     meta: {
-      row_double_click: true,
+      row_double_click: false,
       fields: [
         {
           key: 'enumerated',

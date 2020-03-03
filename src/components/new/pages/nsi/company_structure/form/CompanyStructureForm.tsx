@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 import memoize from 'memoize-one';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { companyStructureFormSchema } from 'components/new/pages/nsi/company_structure/form/schema';
-import { get } from 'lodash';
 
 import {
   getdefaultCompanyStructureElement,
@@ -15,27 +16,26 @@ import {
   STRUCTURE_TYPES
 } from 'components/new/pages/nsi/company_structure/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   OwnCompanyStructureProps,
   PropsCompanyStructure,
-  StateCompanyStructure,
   StatePropsCompanyStructure,
-  DispatchPropsCompanyStructure,
   PropsCompanyStructureWithForm,
 } from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
 import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { DivNone } from 'global-styled/global-styled';
-import { getCompanyStructureState, getGeoobjectState } from 'redux-main/reducers/selectors';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
 import companyStructurePermissions from '../_config-data/permissions';
+import { createCompanyStructure, updateCompanyStructure, getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
-class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
+class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, {}> {
   componentDidMount() {
-    this.props.getAndSetInStoreCompanyStructureLinear(
-      {},
-      { page: this.props.page, path: this.props.path },
+    this.props.dispatch(
+      getAndSetInStoreCompanyStructureLinear(
+        {},
+        this.props,
+      ),
     );
   }
   handleChangeParentID = (parent_id) => {
@@ -43,11 +43,11 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
       type: null,
       parent_id,
     });
-  }
+  };
 
   makeOptionFromTechMaintTypeList = (
     memoize(
-      (companyStructureLinearList: CompanyStructureLinear[]) => (
+      (companyStructureLinearList: Array<CompanyStructureLinear>) => (
         companyStructureLinearList
           .filter((companyStructure) => (
             companyStructure.type !== STRUCTURE_TYPE_DEY.value
@@ -149,15 +149,15 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          {
+            isPermitted // либо обновление, либо создание
+              ? (
+                <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
@@ -165,23 +165,15 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
 }
 
 export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
-  connect<StatePropsCompanyStructure, DispatchPropsCompanyStructure, OwnCompanyStructureProps, ReduxState>(
+  connect<StatePropsCompanyStructure, {}, OwnCompanyStructureProps, ReduxState>(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
-      carpoolList: getGeoobjectState(state).carpoolList,
-    }),
-    (dispatch: any) => ({
-      getAndSetInStoreCompanyStructureLinear: (...arg) => (
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(...arg),
-        )
-      ),
     }),
   ),
   withForm<PropsCompanyStructureWithForm, CompanyStructure>({
     uniqField: 'id',
-    createAction: companyStructureActions.createCompanyStructure,
-    updateAction: companyStructureActions.updateCompanyStructure,
+    createAction: createCompanyStructure,
+    updateAction: updateCompanyStructure,
     mergeElement: (props) => {
       return getdefaultCompanyStructureElement(props.element);
     },

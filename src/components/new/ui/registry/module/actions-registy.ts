@@ -1,6 +1,7 @@
-import { get, keyBy } from 'lodash';
+import { cloneDeep, get, keyBy } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
+import { OneRegistryData, TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 
 import {
   REGISTRY_ADD_INITIAL_DATA,
@@ -35,7 +36,6 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
-import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
 import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
@@ -44,30 +44,57 @@ import { getListData } from './selectors-registry';
 import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { makeInspectCarsConditionExtendedFront } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
+import { getFrontNorm } from 'redux-main/reducers/modules/some_uniq/norm_registry/promise';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import { makeInspectActScanFilesFront } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_promise';
+import { makeConsumableMaterialFront } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
+import { registryIsPermitedByKey } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Tr';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+
+const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: Array<any>) => Array<any>> = {
+  dutyMissionTemplate: (array) => array.map(getFrontDutyMission),
+  employee: (array) => array.map(getFrontEmployee),
+  typesAttr: (array) => array.map(getFrontTypesAttr),
+  normRegistry: (array) => array.map(getFrontNorm),
+  carActual: (array) => array.map(getFrontCar),
+  employee_on_car: (array) => array.map(getFrontEmployeeOnCar),
+  technical_operation_relations: (array) => array.map(getFrontTechnicalOperationRelations),
+  duty_mission: (array) => array.map(getFrontDutyMission),
+  mission: (array) => array.map(getFrontMission),
+  cars_condition_extended: (array) => array.map(makeInspectCarsConditionExtendedFront),
+  inspect_act_scan: makeInspectActScanFilesFront,
+  consumable_material_wrap: makeConsumableMaterialFront,
+};
+
+const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegistryData']['payload']) => (
+  Object.entries(payload || {}).reduce(
+    (newObj, [key, value]) => {
+      if (!isNullOrUndefined(value)) {
+        newObj[key] = value;
+      }
+      return newObj;
+    },
+    {},
+  )
+);
 
 /**
  * Да простят меня боги
  * @todo сделать нормально
  */
-
-export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch, getState) => {
-  if (!config.noInitialLoad) {
-    setTimeout(() => (
-      dispatch(
-        registryLoadDataByKey(registryKey),
-      )
-    ), 100);
-  }
-
+export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
 
-  const mergeConfig: any = {
+  const mergeConfig: Partial<OneRegistryData<any>> = {
     isLoading: !config.noInitialLoad,
     Service: config.Service,
-    filter: mergeFilter(config.filter),
-    header: mergeHeader(config.header),
-    trash: config.trash,
+    path: config.path || null,
+    filter: mergeFilter<F>(config.filter),
+    header: mergeHeader<F>(config.header),
   };
 
   const columnContorolData = localStorage.getItem(`columnContorol`);
@@ -78,8 +105,14 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
 
     if (currentRegistryData) {
       meta = {
+        ...config.list.meta,
         fields: meta.fields.map((fieldData) => {
-          const filedFormLocalStorage = currentRegistryData.find(({ key }) => fieldData.key === key);
+          const filedFormLocalStorage = currentRegistryData.find(({ key }) => {
+            if ('key' in fieldData) {
+              return fieldData.key === key;
+            }
+            return true;
+          });
           return {
             ...fieldData,
             ...(filedFormLocalStorage || {}),
@@ -101,23 +134,30 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
     },
   );
 
-  return dispatch({
+  dispatch({
     type: REGISTRY_ADD_INITIAL_DATA,
     payload: {
       registryKey,
       config: mergeConfig,
     },
   });
+
+  if (!config.noInitialLoad) {
+    return dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
+  return Promise.resolve();
 };
 
-export const registryRemoveData = (registryKey) => ({
+export const registryRemoveData = (registryKey: string) => ({
   type: REGISTRY_REMOVE_DATA,
   payload: {
     registryKey,
   },
 });
 
-export const actionSetLoadingStatus = (registryKey, isLoading) => ({
+export const actionSetLoadingStatus = (registryKey: string, isLoading: boolean) => ({
   type: REGISTRY_SET_LOADING_STATUS,
   payload: {
     registryKey,
@@ -125,7 +165,7 @@ export const actionSetLoadingStatus = (registryKey, isLoading) => ({
   },
 });
 
-export const actionSetRequestTime = (registryKey, idRequestTime) => ({
+export const actionSetRequestTime = (registryKey: string, idRequestTime: number) => ({
   type: REGISTRY_SET_ID_REQUEST_TIME,
   payload: {
     registryKey,
@@ -133,9 +173,9 @@ export const actionSetRequestTime = (registryKey, idRequestTime) => ({
   },
 });
 
-export const actionChangeRegistryMetaFields: any = (registryKey, fields) => (dispatch, getState) => {
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const list = get(registyData, 'list', null);
+export const actionChangeRegistryMetaFields = (registryKey: string, fields: OneRegistryData<any>['list']['meta']['fields']): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const list = get(registryData, 'list');
 
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
@@ -156,12 +196,12 @@ export const actionChangeRegistryMetaFields: any = (registryKey, fields) => (dis
   );
 };
 
-export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload, needUpdate = true) => (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
+export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payload: Record<string, any>, needUpdate: boolean = true): EtsAction<any> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
   const ServiceData = get(registryData, 'Service', null);
 
   const ServiceDataNew = Object.entries(ServiceData).reduce(
-    (newObj, [key, value]) => {
+    (newObj, [key, value]: any) => {
       if (payload[key]) {
         const lastPayload = get(value, 'payload', {});
 
@@ -192,75 +232,89 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
   }
 };
 
-export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] = []) => async (dispatch, getState) => {
-  // const stateSome = getState();
-  dispatch(
-    actionSetLoadingStatus(registryKey, true),
+const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']) => {
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const processed = list?.processed;
+
+  let payload = makePayloadFromObject(getRegistryData.payload);
+
+  if (userServerFilters) {
+    const paginator = list?.paginator;
+    const perPage = get(paginator, 'perPage', 0);
+    const offset = get(paginator, 'currentPage', 0);
+    const filterValues = get(processed, 'filterValues') || {};
+    const sort = get(processed, 'sort') || {};
+    const payloadSortBy = get(payload, 'sort_by', '');
+
+    payload = {
+      ...payload,
+      limit: MAX_ITEMS_PER_PAGE,
+      offset: offset * perPage,
+      sort_by: sort.field
+        ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}`
+        : payloadSortBy,
+      filter: JSON.stringify(filterValues),
+    };
+  }
+
+  return payload;
+};
+
+export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<any>> => async (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const path = get(registryData, 'path');
+  const list = get(registryData, 'list');
+  const getRegistryData = get(Service, 'getRegistryData');
+
+  const payload = makePayloadForLoad(
+    getRegistryData,
+    list,
   );
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
+
+  let result = null;
+  try {
+    result = await etsLoadingCounter(
+      dispatch,
+      getJSON(
+        `${configStand.backend}/${getRegistryData.entity}`,
+        payload,
+      ),
+      { page: registryKey, noTimeout: true, path },
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+  processResponse(result);
+
+  return result;
+};
+
+export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const idRequestTime = +(new Date());
-  dispatch(
-    actionSetRequestTime(registryKey, idRequestTime),
-  );
 
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const getRegistryData = get(registryData, 'Service.getRegistryData', null);
-  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const list: any = get(registryData, 'list', null);
-  const uniqKey = list.data.uniqKey;
+  dispatch(actionSetLoadingStatus(registryKey, true));
+  dispatch(actionUnselectSelectedRowToShow(registryKey, true));
+  dispatch(actionSetRequestTime(registryKey, idRequestTime));
 
-  let arrayRaw = null;
-  let arrayExtra = {};
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const list = get(registryData, 'list');
+  const data = get(list, 'data');
+  const uniqKey = get(data, 'uniqKey');
+
+  let arrayRaw = [];
   let total_count = 0;
+  let objectExtra = {};
 
   if (getRegistryData) {
-    let payload = {};
-    if (getRegistryData.payload) {
-      payload = {
-        ...Object.entries(getRegistryData.payload).reduce(
-          (newObj, [key, value]) => {
-            if (!isNullOrUndefined(value)) {
-              newObj[key] = value;
-            }
-            return newObj;
-          },
-          {},
-        ),
-      };
-    }
-    if (userServerFilters) {
-      const perPage: any = get(list, 'paginator.perPage', 0);
-      const offset: any = get(list, 'paginator.currentPage', 0);
-      const filterValues: any = get(list, 'processed.filterValues', {}) || {};
-      const sort: any = get(list, 'processed.sort', {}) || {};
+    const result = await dispatch(
+      actionGetRegistryData(registryKey),
+    );
 
-      payload = {
-        ...payload,
-        limit: MAX_ITEMS_PER_PAGE,
-        offset: offset * perPage,
-        sort_by: sort.field ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}` : '',
-        filter: JSON.stringify(filterValues),
-      };
-    }
-
-    let result = null;
-    try {
-      result = await etsLoadingCounter(
-        dispatch,
-        getJSON(
-          `${configStand.backend}/${getRegistryData.entity}`,
-          payload,
-        ),
-        { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true },
-      );
-    } catch (error) {
-      console.error(error); //tslint:disable-line
-    }
-
-    const idRequestTimeOld = get(getState(), `registry.${registryKey}.idRequestTime`, null);
-
+    const idRequestTimeOld = get(get(getRegistryState(getState()), registryKey), 'idRequestTime');
     if (idRequestTime !== idRequestTimeOld) {
       return;
     }
@@ -268,157 +322,57 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
     const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
-    processResponse(result);
-
-    const arrayRawResult = get(result, typeAns, []);
-
-    const newDataObj = keyBy(responseDataList, uniqKey);
-
+    // сплющивание массивов
+    const arrayRawResult: Array<any> = get(result, typeAns) || [];
+    const newDataObj: object = keyBy(responseDataList, uniqKey);
     arrayRaw = arrayRawResult.map(
       (resultElem) => {
         return newDataObj[resultElem[uniqKey]] || resultElem;
       },
     );
+    objectExtra = get(result, typeExtra, {});
 
-    arrayExtra = get(result, typeExtra, {});
-
-    switch (getRegistryData.format) {
-      case 'dutyMissionTemplate': {
-        arrayRaw = arrayRaw.map(getFrontDutyMission);
-        break;
-      }
-      case 'employee': {
-        arrayRaw = arrayRaw.map(getFrontEmployee);
-        break;
-      }
-      case 'typesAttr': {
-        arrayRaw = arrayRaw.map(getFrontTypesAttr);
-        break;
-      }
-      case 'normRegistry': {
-        arrayRaw = arrayRaw.map(getFrontNorm);
-        break;
-      }
-      case 'carActual': {
-        arrayRaw = arrayRaw.map(getFrontCar);
-        break;
-      }
-      case 'employee_on_car': {
-        arrayRaw = arrayRaw.map(getFrontEmployeeOnCar);
-        break;
-      }
-      case 'technical_operation_relations': {
-        arrayRaw = arrayRaw.map(getFrontTechnicalOperationRelations);
-        break;
-      }
-      case 'duty_mission': {
-        arrayRaw = arrayRaw.map(getFrontDutyMission);
-        break;
-      }
-      case 'mission': {
-        arrayRaw = arrayRaw.map(getFrontMission);
-        break;
-      }
-      case 'inspect_act_scan': {
-        arrayRaw = arrayRaw.reduce(
-          (newArr, inspection) => {
-            const { files = [] } = inspection;
-            files.forEach(
-              (file) => {
-                if (file.kind === 'act_scan') {
-                  newArr.push({
-                    id: file.id,
-                    files: [file],
-                    name: file.name,
-                    notes: file.notes,
-                    url: file.url,
-                    inspection,
-                  });
-                }
-              },
-            );
-
-            return newArr;
-          },
-          [],
-        );
-        break;
-      }
+    // форматирование массива под реестр
+    if (getRegistryData.format in mapKeyMapArray) {
+      arrayRaw = mapKeyMapArray[getRegistryData.format](arrayRaw);
     }
+    total_count = arrayRaw.length;
 
     if (userServerFilters) {
+      // где-то там количество
       total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);
-    } else {
-      total_count = arrayRaw.length;
-    }
 
-    if (total_count > 0 && !arrayRaw.length) {
-      dispatch(
-        registryChangeDataPaginatorCurrentPage(
-          registryKey,
-          Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1,
-        ),
-      );
-      return;
+      // если в текущем списке больше 1 элемента, а массив пуст, то переходим на редыдущую страницу
+      if (total_count > 0 && !arrayRaw.length) {
+        dispatch(
+          registryChangeDataPaginatorCurrentPage(
+            registryKey,
+            Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1,
+          ),
+        );
+        return;
+      }
     }
   }
 
-  let resultDisaptch = null;
-
-  if (list) {
-    let array = arrayRaw;
-    if (!userServerFilters) {
-      array = arrayRaw.sort((a, b) => b[list.data.uniqKey] - a[list.data.uniqKey]);
-    }
-
-    let processedArray = array;
-
-    let processedTotalCount = 0;
-
-    if (!userServerFilters) {
-      const processed: any = get(list, 'processed', {}) || {};
-      const fields: any = get(registryData, 'filter.fields', []);
-
-      processedArray = makeProcessedArray(array, processed, fields);
-      processedTotalCount = processedArray.length;
-    } else {
-      processedTotalCount = total_count;
-    }
-
-    resultDisaptch = dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...list,
-          data: {
-            ...list.data,
-            total_count,
-            array,
-            arrayExtra,
-          },
-          processed: {
-            ...list.processed,
-            processedArray,
-            total_count: processedTotalCount,
-          },
-        },
-      ),
-    );
-  }
+  dispatch(
+    registryChangeData(
+      registryKey,
+      arrayRaw,
+      total_count,
+      objectExtra,
+    ),
+  );
 
   dispatch(
     actionSetLoadingStatus(registryKey, false),
   );
-
-  return resultDisaptch;
 };
 
-export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
+export const registryChangeDataPaginatorCurrentPage = (registryKey: string, currentPage = 0): EtsAction<void> => (dispatch, getState) => {
+  dispatch(actionUnselectSelectedRowToShow(registryKey, true));
 
-  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const registryData = get(getRegistryState(getState()), registryKey);
 
   if (registryData) {
     dispatch(
@@ -445,7 +399,7 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
   }
 };
 
-export const registryChangeServiceData = (registryKey, Service) => ({
+export const registryChangeServiceData = (registryKey: string, Service: OneRegistryData<any>['Service']) => ({
   type: REGISTRY_CHANGE_SERVICE,
   payload: {
     registryKey,
@@ -453,15 +407,78 @@ export const registryChangeServiceData = (registryKey, Service) => ({
   },
 });
 
-export const registryChangeListData = (registryKey: string, list: OneRegistryData['list']) => ({
-  type: REGISTRY_CHANGE_LIST,
-  payload: {
-    registryKey,
-    list,
-  },
-});
+export const registryChangeData = <F extends Record<string, any>>(registryKey: string, arrayRaw: Array<F>, total_count: number, objectExtra: any): EtsAction<any> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const list = get(registryData, 'list');
+  const data = get(list, 'data');
+  const uniqKey = get(data, 'uniqKey');
 
-export const registryChangeFilterData = (registryKey, filter) => ({
+  if (list) {
+    let array = arrayRaw;
+    if (!userServerFilters) {
+      array = arrayRaw.sort((a, b) => b[uniqKey] - a[uniqKey]);
+    }
+
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            total_count,
+            array,
+            objectExtra,
+          },
+        },
+      ),
+    );
+  }
+};
+
+export const registryChangeListData = (registryKey: string, listRaw: OneRegistryData['list']): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const filter = get(registryData, 'filter');
+  const listOld = get(registryData, 'list');
+
+  let processed = listRaw.processed;
+
+  const triggerOnUpdate = (
+    listRaw.data.array !== listOld.data.array
+    || processed.sort !== listOld.processed.sort
+    || processed.filterValues !== listOld.processed.filterValues
+  );
+
+  if (triggerOnUpdate) {
+    processed = { ...listRaw.processed };
+    if (!getRegistryData || !userServerFilters) {
+      processed.processedArray = makeProcessedArray(listRaw.data.array, processed, filter.fields);
+      processed.total_count = processed.processedArray.length;
+    } else {
+      processed.processedArray = listRaw.data.array;
+      processed.total_count = listRaw.data.total_count;
+    }
+  }
+
+  return dispatch({
+    type: REGISTRY_CHANGE_LIST,
+    payload: {
+      registryKey,
+      list: {
+        ...listRaw,
+        processed,
+      },
+    },
+  });
+};
+
+export const registryChangeFilterData = (registryKey: string, filter: OneRegistryData<any>['filter']) => ({
   type: REGISTRY_CHANGE_FILTER,
   payload: {
     registryKey,
@@ -469,14 +486,9 @@ export const registryChangeFilterData = (registryKey, filter) => ({
   },
 });
 
-export const registryChangeFilterRawValues = (registryKey, valueKey, type, value) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        filter,
-      },
-    },
-  } = getState();
+export const registryChangeFilterRawValues = <F extends Record<string, any>>(registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const filter = get(registryData, 'filter');
 
   return dispatch(
     registryChangeFilterData(
@@ -498,30 +510,18 @@ export const registryChangeFilterRawValues = (registryKey, valueKey, type, value
   );
 };
 
-export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
+export const registryResetAllTypeFilter = (registryKey: string): EtsAction<void> => (dispatch, getState) => {
+  dispatch(actionUnselectSelectedRowToShow(registryKey, true));
+  const registryData = get(getRegistryState(getState()), registryKey);
 
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
   const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const filter = {
-    ...get(registyData, 'filter', {}),
-  };
-  const list = get(registyData, 'list', null);
+  const list = get(registryData, 'list');
 
-  filter.rawFilterValues = setEmptyRawFilters(filter);
+  const filter = cloneDeep(get(registryData, 'filter'));
 
-  const processed = {
-    ...list.processed,
-    filterValues: applyFilterFromRaw(filter),
-  };
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-    processed.total_count = processed.processedArray.length;
-  }
+  filter.rawFilterValues = setEmptyRawFilters(filter.rawFilterValues);
 
   dispatch(
     registryChangeFilterData(
@@ -530,13 +530,16 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
+  const registryDataNew = get(getRegistryState(getState()), registryKey);
+  const listNew = get(registryDataNew, 'list');
   dispatch(
     registryChangeListData(
       registryKey,
       {
-        ...list,
+        ...listNew,
         processed: {
-          ...processed,
+          ...list.processed,
+          filterValues: applyFilterFromRaw(filter.rawFilterValues),
         },
       },
     ),
@@ -549,16 +552,14 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
   }
 };
 
-export const applyFilterValues = (registryKey, filterValues) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
-
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+export const applyFilterValues = (registryKey: string, filterValues: OneRegistryData['list']['processed']['filterValues']): EtsAction<void> => (dispatch, getState) => {
+  dispatch(actionUnselectSelectedRowToShow(registryKey, true));
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
   const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const filter: OneRegistryData['filter'] = get(registyData, 'filter', {});
-  const list: OneRegistryData['list'] = get(registyData, 'list', null);
+  const filter = get(registryData, 'filter');
+  const list = get(registryData, 'list');
 
   const processed = {
     ...list.processed,
@@ -566,9 +567,9 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
   };
 
   if (__DEVELOPMENT__) {
-    console.log('SAVE FILTER', processed.filterValues); // tslint:disable-line:no-console
+    console.info('SAVE FILTER', processed.filterValues); // eslint-disable-line
   } else {
-    let filterAsString = '';
+    let filterAsString: string | object = '';
 
     try {
       filterAsString = JSON.stringify(processed.filterValues);
@@ -576,12 +577,7 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
       filterAsString = processed.filterValues;
     }
 
-    console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
-  }
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-    processed.total_count = processed.processedArray.length;
+    console.info('SAVE FILTER', filterAsString); // eslint-disable-line
   }
 
   dispatch(
@@ -611,20 +607,9 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
   }
 };
 
-export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const filter = get(registyData, 'filter', {});
-
-  dispatch(
-    applyFilterValues(
-      registryKey,
-      applyFilterFromRaw(filter),
-    ),
-  );
-};
-
-export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) => {
-  const filterState = getState().registry[registryKey].filter;
+export const registryToggleIsOpenFilter = (registryKey: string): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const filterState = get(registryData, 'filter');
 
   return dispatch(
     registryChangeFilterData(
@@ -637,11 +622,17 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean) => async  (dispatch, getState) => {
-  const getBlobData = get(
-    getState(),
-    ['registry', registryKey, 'Service', 'getBlobData'],
-    get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null),
+export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boolean): EtsAction<Promise<void>> => async  (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const path = get(registryData, 'path') || null;
+  const list = get(registryData, 'list');
+  const processed = get(list, 'processed');
+  const processedArray = get(processed, 'processedArray') || [];
+
+  const getBlobData = (
+    get(Service, 'getBlobData')
+    || get(Service, 'getRegistryData')
   );
   let blob = null;
   let fileName = '';
@@ -661,10 +652,6 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
     };
 
     if (useFiltredData) {
-      const registryData = get(getState(), `registry.${registryKey}`, null);
-      const list: any = get(registryData, 'list', null);
-      const processedArray: any = get(list, 'processed.processedArray', {}) || {};
-
       const paylaodAsString = Object.entries(payload).reduce(
         (str, [key, payloadData]) => `${str}&${key}=${payloadData}`,
         '',
@@ -676,19 +663,20 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
           `${configStand.backend}/${getBlobData.entity}?${paylaodAsString}`,
           { rows: processedArray },
         ),
-        { page: registryKey },
+        { page: registryKey, path },
       );
       processResponse(result);
       blob = get(result, 'blob', null);
       fileName = get(result, 'fileName', '');
     } else {
+
       const result = await etsLoadingCounter(
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
           payload,
         ),
-        { page: registryKey },
+        { page: registryKey, path },
       );
       processResponse(result);
       blob = get(result, 'blob', null);
@@ -701,70 +689,73 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
   }
 };
 
-export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
-
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const getRegistryData = get(registyData, 'Service.getRegistryData', null);
-  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const filter = get(registyData, 'filter', {});
-  const list = get(registyData, 'list', null);
-
-  const {
-    processed : {
-      sort: sortOld,
-    },
-  } = list;
-
-  const sort = {
-    ...sortOld,
-  };
-
-  if (field === sortOld.field) {
-    if (sortOld.reverse) {
-      sort.field = '';
-      sort.reverse = false;
-    } else {
-      sort.reverse = true;
-    }
-  } else {
-    sort.field = field;
-    sort.reverse = false;
-  }
-
-  const processed = {
-    ...list.processed,
-    sort,
-  };
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-  }
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        processed,
-      },
-    ),
-  );
-
-  if (getRegistryData && userServerFilters) {
+export const registryTriggerOnChangeSelectedField = <F extends Record<string, any>>(registryKey: string, field: OneRegistryData<F>['list']['processed']['sort']['field'], sortable?: boolean): EtsAction<void> => (dispatch, getState) => {
+  if (field === 'checkbox') {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryGlobalCheck(registryKey),
     );
+
+    return;
+  }
+  if (sortable) {
+    dispatch(actionUnselectSelectedRowToShow(registryKey, true));
+    const registryData = get(getRegistryState(getState()), registryKey);
+    const Service = get(registryData, 'Service');
+    const getRegistryData = get(Service, 'getRegistryData');
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+    const list = get(registryData, 'list');
+
+    const {
+      processed : {
+        sort: sortOld,
+      },
+    } = list;
+
+    const sort = {
+      ...sortOld,
+    };
+
+    if (field === sortOld.field) {
+      if (sortOld.reverse) {
+        sort.field = '';
+        sort.reverse = false;
+      } else {
+        sort.reverse = true;
+      }
+    } else {
+      sort.field = field;
+      sort.reverse = false;
+    }
+
+    const processed = {
+      ...list.processed,
+      sort,
+    };
+
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          processed,
+        },
+      ),
+    );
+
+    if (getRegistryData && userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
   }
 };
 
-export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getState) => {
-  const registryData: OneRegistryData = get(getState(), `registry.${registryKey}`, null);
+export const registryCheckLine = <F extends Record<string, any>>(registryKey: string, rowData: F): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
   const list = get(registryData, 'list');
-  const uniqKey: any = get(list, 'data.uniqKey', null);
-  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
+  const data = get(list, 'data');
+  const uniqKey = get(data, 'uniqKey');
+  const checkedRowsCurrent = get(data, 'checkedRows') || {};
 
   let checkedRowsNew = { ...checkedRowsCurrent };
 
@@ -794,15 +785,20 @@ export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getSt
   );
 };
 
-export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+export const registryGlobalCheck = (registryKey: string): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const Service = get(registryData, 'Service');
+  const getRegistryData = get(Service, 'getRegistryData');
   const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const list: any = get(registryData, 'list', null);
-  const uniqKey: any = get(list, 'data.uniqKey', null);
-  const offset: any = get(list, 'paginator.currentPage', 0);
-  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
-  const processedArray: any = get(list, 'processed.processedArray', {}) || {};
+
+  const list = get(registryData, 'list');
+  const data = get(list, 'data');
+  const uniqKey = get(data, 'uniqKey');
+  const paginator = get(list, 'paginator');
+  const offset = get(paginator, 'currentPage', 0);
+  const checkedRowsCurrent = get(data, 'checkedRows') || {};
+  const processed = get(list, 'processed');
+  const processedArray = get(processed, 'processedArray') || [];
 
   let checkedRowsNew = {};
   let checkArray = processedArray;
@@ -841,35 +837,43 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   );
 };
 
-export const registryResetGlobalCheck: any = (registryKey) => (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const list: any = get(registryData, 'list', null);
-  const checkedRows: any = get(list, 'data.checkedRows', {});
+export const registryChangeGroupActiveColumn = (registryKey: string, payload: {key: string; value: any;}): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const list = get(registryData, 'list');
 
-  if (Object.keys(checkedRows).length) {
-    dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...list,
-          data: {
-            ...list.data,
-            checkedRows: {},
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        meta: {
+          ...list.meta,
+          groupColumn: {
+            ...list.meta.groupColumn,
+            [payload.key]: payload.value,
           },
         },
-      ),
-    );
-  }
+      },
+    ),
+  );
 };
 
-export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
+// добавление новой строки в реестре, по кнопкке ButtonAddNewRowTable
+export const registryAddNewRow = (registryKey: string, payload: { defaultRowValue: any; }): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const list = get(registryData, 'list');
+
+  let newRowVal = {...payload.defaultRowValue};
+  // выводим поля из data на верхний уровень
+  if (registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
+    newRowVal = makeInspectCarsConditionExtendedFront(newRowVal);
+  }
+
+  newRowVal = {
+    ...newRowVal,
+    id: list.data.array.length + 1,
+    isNewRow: true,
+  };
 
   dispatch(
     registryChangeListData(
@@ -878,17 +882,85 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
         ...list,
         data: {
           ...list.data,
-          selectedRow,
+          array: [
+            {
+              ...newRowVal,
+            },
+            ...list.data.array,
+          ],
         },
       },
     ),
   );
 
-  const children = get(selectedRow, 'children', null);
+  dispatch(
+    registrySelectRow(
+      registryKey,
+      newRowVal,
+    ),
+  );
+};
+
+export const registrySelectRow = <F extends Record<string, any>>(registryKey: string, selectedRow: F, registryIsPermitedFuctionResult?: ReturnType<(typeof registryIsPermitedByKey)[keyof typeof registryIsPermitedByKey]>): EtsAction<Promise<void>> => async (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const list = get(registryData, 'list') as OneRegistryData<F>['list'];
+
+  const data = get(list, 'data');
+  const prevRendersFields = get(list, 'rendersFields');
+  const rendersFieldsValues = get(list, 'rendersFields.values');
+
+  const uniqKey = get(data, 'uniqKey');
+  const prevSelectedRow = get(data, 'selectedRow');
+
+  const isEqualSelectedRow = (
+    uniqKey
+    && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, 1)
+  );
+
+  const list_new: OneRegistryData['list'] = {
+    ...list,
+    data: {
+      ...list.data,
+      selectedRow,
+    },
+    rendersFields: {
+      ...list.rendersFields,
+      values: selectedRow,
+    },
+  };
+
+  const sendPutPostRequest = rendersFieldsValues
+    && registryIsPermitedFuctionResult
+    && registryIsPermitedFuctionResult.isPermittedToUpdate
+    && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
+
+  if (!isEqualSelectedRow) {
+    if (sendPutPostRequest) {
+      await dispatch(
+        registrySelectRowWithPutRequest(
+          registryKey,
+          list_new,
+          prevRendersFields,
+          registryIsPermitedFuctionResult,
+        ),
+      );
+    } else {
+      dispatch(
+        registryChangeListData(
+          registryKey,
+          {
+            ...list_new,
+          },
+        ),
+      );
+    }
+  }
+
+  const children = selectedRow?.children || null;
 
   if (children && children.length) {
     const listNew = getListData(getRegistryState(getState()), registryKey);
-    const uniqKey = listNew.data.uniqKey;
+
     const processedArray = listNew.processed.processedArray.map(
       (rowData) => {
         if (rowData[uniqKey] === selectedRow[uniqKey]) {
@@ -916,31 +988,9 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
   }
 };
 
-export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow?) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        data: {
-          ...list.data,
-          selectedRowToShow: selectedRow || list.data.selectedRow,
-        },
-      },
-    ),
-  );
-};
-
-export const actionUnselectSelectedRowToShow: any = (registryKey: string, allReset: boolean) => (dispatch, getState) => {
-  const list = get(getState(), `registry.${registryKey}.list`, null);
+export const actionUnselectSelectedRowToShow = <F extends Record<string, any>>(registryKey: string, allReset: boolean): EtsAction<void> => (dispatch, getState) => {
+  const registryData: OneRegistryData<F> = get(getRegistryState(getState()), registryKey);
+  const list = registryData?.list;
 
   if (list) {
     dispatch(
@@ -952,7 +1002,6 @@ export const actionUnselectSelectedRowToShow: any = (registryKey: string, allRes
             ...list.data,
             selectedRow: !allReset ? list.data.selectedRow : null,
             checkedRows: !allReset ? list.data.checkedRows : {},
-            selectedRowToShow: null,
           },
         },
       ),
@@ -960,65 +1009,31 @@ export const actionUnselectSelectedRowToShow: any = (registryKey: string, allRes
   }
 };
 
-export const registryLoadOneData: any = (registryKey, id) => async (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const getOneData = get(registryData, 'Service.getOneData', null);
-
-  if (getOneData) {
-    const result = await etsLoadingCounter(
-      dispatch,
-      getJSON(
-        `${configStand.backend}/${getOneData.entity}`,
-        { id },
-      ),
-      { page: registryKey, noTimeout: true },
-    );
-
-    let response = get(
-      result,
-      get(getOneData, 'typeAns', 'result.rows.0'),
-      null,
-    );
-
-    switch (getOneData.format) {
-      case 'dutyMissionTemplate': {
-        response = getFrontDutyMission(response);
-        break;
-      }
-      case 'employee': {
-        response = getFrontEmployee(response);
-        break;
-      }
-    }
-
-    dispatch(
-      registrySetSelectedRowToShowInForm(registryKey, response),
-    );
-
-    return response;
-  }
-
-  return null;
-};
-
-export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => async (dispatch, getState) => {
+export const registryRemoveSelectedRows = <F extends Record<string, any>>(registryKey: string, rows?: Array<F>): EtsAction<Promise<boolean>> => async (dispatch, getState) => {
   let itemToRemove = rows;
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const list: any = get(registryData, 'list', null);
-  const uniqKey: string = get(list, 'data.uniqKey', null);
-  const removeOneData = get(
-    registryData,
-    'Service.removeOneData',
-    get(registryData, 'Service.getRegistryData', null),
+
+  const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
+  const Service = registryData?.Service;
+  const list = registryData?.list;
+  const data = list?.data;
+  const uniqKey= data?.uniqKey;
+
+  const removeOneData = (
+    Service?.removeOneData
+    || Service?.getRegistryData
   );
 
+  const pathToLoadingMeta = registryData?.path;
+
   if (!itemToRemove) {
-    const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
-    const selectedRowCurrent: any = get(list, 'data.selectedRow', {});
+    const checkedRowsCurrent = data?.checkedRows;
+    const selectedRowCurrent = data?.selectedRow;
 
-    itemToRemove = Object.values(checkedRowsCurrent);
+    if (checkedRowsCurrent) {
+      itemToRemove = Object.values(checkedRowsCurrent);
+    }
 
-    if (!itemToRemove.length) {
+    if (!itemToRemove.length && selectedRowCurrent) {
       itemToRemove.push(selectedRowCurrent);
     }
   }
@@ -1029,11 +1044,11 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
 
   try {
     await Promise.all(
-      itemToRemove.map(async ({ [uniqKey]: uniqKeyValue }: any) => {
+      itemToRemove.map(async ({ [uniqKey]: uniqKeyValue }: F) => {
         let path = `${configStand.backend}/${removeOneData.entity}`;
         const payload: any = {};
 
-        if (removeOneData.uniqKeyLikeQueryString) {
+        if (('uniqKeyLikeQueryString' in removeOneData) && removeOneData.uniqKeyLikeQueryString) {
           payload[uniqKey] = uniqKeyValue;
         } else {
           path = `${path}/${uniqKeyValue}`;
@@ -1049,7 +1064,7 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
               payload,
               'json',
             ),
-            { page: registryKey },
+            { page: registryKey, path: pathToLoadingMeta },
           );
           processResponse(response);
         } catch (error) {
@@ -1067,7 +1082,7 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
   return true;
 };
 
-export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted, responseData) => async (dispatch, getState) => {
+export const registryResetSelectedRowToShowInForm = (registryKey: string, isSubmitted: boolean, responseData: any): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionUnselectSelectedRowToShow(
       registryKey,
@@ -1088,4 +1103,174 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
       registryLoadDataByKey(registryKey, responseDataList),
     );
   }
+};
+
+export const registryChangeObjectExtra = <F extends Record<string, any>>(registryKey: string, partialObjectExtra: Record<string, any>): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
+  const list = get(registryData, 'list');
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          objectExtra: {
+            ...list.data.objectExtra,
+            ...partialObjectExtra,
+          },
+        },
+      },
+    ),
+  );
+};
+// Да простят меня боги v.2
+// отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
+export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields'], permissionsProps: ReturnType<typeof isPermittedUpdateCarContidion> ): EtsAction<any> => async (dispatch) => {
+  const meta = list_new?.meta;
+  const actionCreate = meta?.rowRequestActions?.actionCreate;
+  const actionUpdate = meta?.rowRequestActions?.actionUpdate;
+
+  const rowRequestActionCreate = actionCreate?.action;
+  const rowRequestActionCreatePayload = actionCreate?.payload;
+  const rowRequestActionUpdate = actionUpdate?.action;
+  const rowRequestActionUpdatePayload = actionUpdate?.payload;
+
+  const rendersFieldsValues = prevRendersFields?.values;
+  const isNewRow = rendersFieldsValues?.isNewRow || false;
+
+  if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate))) {
+    const listMetaFields = get(meta, 'fields', []);
+    const formatedRendersFieldsValues = { ...rendersFieldsValues };
+
+    if (listMetaFields.length) {
+      listMetaFields.forEach(({ key, renderParams }) => {
+        if (renderParams) {
+          let value: any = formatedRendersFieldsValues[key];
+
+          if (renderParams.type === 'number' && value) {
+            value = Number(value);
+          }
+          if (renderParams.type === 'date' && value) {
+            value = createValidDate(value);
+          }
+          if (renderParams.type === 'date' && renderParams.time) {
+            value = createValidDateTime(value);
+          }
+          formatedRendersFieldsValues[key] = value;
+        }
+      });
+
+      removeEmptyString(formatedRendersFieldsValues);
+    }
+
+    try {
+      let response = null;
+      if (isNewRow) {
+        response = await dispatch(
+          rowRequestActionCreate(
+            {
+              ...formatedRendersFieldsValues,
+              ...rowRequestActionCreatePayload,
+              id: null,
+            },
+            { page: '', path: '' },
+          ),
+        );
+      } else {
+        const actionType = get(permissionsProps, 'actionType', 'save'); // isPermittedUpdateCarContidion - задаётся тут
+        response = await dispatch(
+          rowRequestActionUpdate(
+            {
+              ...formatedRendersFieldsValues,
+              ...rowRequestActionUpdatePayload,
+              actionType,
+            },
+            { page: '', path: '' },
+          ),
+        );
+      }
+
+      let putRes = get(response, 'result.rows.0');
+
+      if (!putRes) {
+        throw new Error('Неверный формат даанных с сервера, или пустое значение');
+      }
+
+      if (registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
+        putRes = makeInspectCarsConditionExtendedFront(putRes);
+      }
+
+      const uniqKey = get(list_new, 'data.uniqKey');
+      const arrayWithPutObjList = get(list_new, 'data.array', []).map((elem) => {
+        if (elem[uniqKey] === putRes[uniqKey] || elem[uniqKey] === formatedRendersFieldsValues[uniqKey] ) { // во втором условии находим строку(новую) и заменяем полностью объект, что бы не оставался старый id
+          return putRes;
+        }
+        return elem;
+      });
+
+      list_new.data.array = arrayWithPutObjList;
+
+      if (isNewRow && !isNullOrUndefined(putRes)) {
+        list_new.data.array.push(putRes);
+      }
+
+      list_new.data.selectedRow = list_new.data.selectedRow;
+
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  }
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list_new,
+      },
+    ),
+  );
+};
+
+export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
+  const list = get(registryData, 'list');
+
+  const newVal = {
+    ...list.rendersFields.values,
+    [payload.key]: payload.value,
+  };
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          values: newVal,
+        },
+      },
+    ),
+  );
+};
+
+export const registryChangeRenderOptions = <F extends Record<string, any>>(registryKey: string, payload: {options: any;}): EtsAction<void> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
+  const list = get(registryData, 'list');
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          options: payload.options,
+        },
+      },
+    ),
+  );
 };

@@ -5,8 +5,7 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/ui/input/FileInput/FileInput.h';
 
-import { DivNone, DisplayFlexAlignCenter } from 'global-styled/global-styled';
-import { ButtonRemoveFile, FileInputWrapper } from 'components/old/ui/input/FileInput/styled';
+import { ButtonRemoveFile, FileInputWrapper, SingleInputFileItem } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateHM } from 'components/@next/@utils/dates/dates';
 
@@ -36,24 +35,28 @@ const FileListItem: React.FC<any> = React.memo(
     const withDateTime = get(props, 'withDateTime', false);
 
     return (
-      <EtsBootstrap.Col style={{ marginBottom: 10 }} md={12}>
+      <EtsBootstrap.Col md={12}>
         <FileInputWrapper>
-          <DisplayFlexAlignCenter>
-            <ButtonRemoveFile
-              bsClass="close"
-              bsSize="xsmall"
-              onClick={onFileRemove}
-              disabled={props.disabled}
-              children="×"
-            />
+          <SingleInputFileItem>
+            {
+              !props.disabled && (
+                <ButtonRemoveFile
+                  bsClass="close"
+                  bsSize="xsmall"
+                  onClick={onFileRemove}
+                  disabled={props.disabled}
+                  children="×"
+                />
+              )
+            }
             <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
-          </DisplayFlexAlignCenter>
+          </SingleInputFileItem>
           {
-            (createdAt && withDateTime) ? (
+            Boolean(createdAt && withDateTime) && (
               <div>
                 {createValidDateHM(createdAt)}
               </div>
-            ) : (<DivNone />)
+            )
           }
         </FileInputWrapper>
       </EtsBootstrap.Col>
@@ -81,10 +84,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       [],
     );
     this.props.onChange(newFileList);
-  }
+  };
   handleFilePick = () => {
     this.fileInputNode.click();
-  }
+  };
 
   setRef = (fileInputNode) => this.fileInputNode = fileInputNode;
 
@@ -137,32 +140,28 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     return (
       <div>
         { showFileList && <EtsBootstrap.Row id={ID}>{fileList}</EtsBootstrap.Row> }
-          {
-            !this.props.disabled
-              ? (
-                <EtsBootstrap.Button
-                  disabled={this.props.disabled || disabledIfSingleFile}
-                  onClick={this.handleFilePick}
-                  id={button_id}
-                  children={buttonName}
-                />
-              )
-              : (
-                <DivNone />
-              )
-          }
-          <input
-            id={id}
-            type="file"
-            value={''}
-            style={inputStyle}
-            className={inputClass}
-            ref={this.setRef}
-            accept={this.props.formats}
-            disabled={this.props.disabled}
-            onChange={this.props.onChange}
-            multiple={multiple}
-          />
+        {
+          !this.props.disabled && (
+            <EtsBootstrap.Button
+              disabled={this.props.disabled || disabledIfSingleFile}
+              onClick={this.handleFilePick}
+              id={button_id}
+              children={buttonName}
+            />
+          )
+        }
+        <input
+          id={id}
+          type="file"
+          value={''}
+          style={inputStyle}
+          className={inputClass}
+          ref={this.setRef}
+          accept={this.props.formats}
+          disabled={this.props.disabled}
+          onChange={this.props.onChange}
+          multiple={multiple}
+        />
       </div>
     );
   }

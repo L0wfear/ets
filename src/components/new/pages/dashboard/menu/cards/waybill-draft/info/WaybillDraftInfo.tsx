@@ -26,7 +26,7 @@ import { WaybillDraftItemsSubItemsType } from 'components/new/pages/dashboard/re
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -57,21 +57,21 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
     },
   }) => {
     this.props.dispatch(
-      waybillActions.actionGetWaybillById(
+      actionGetWaybillById(
         Number.parseInt(path, 0),
         { page: 'dashboard' },
       ),
     ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
-        }
-      });
+      if (waybill_data) {
+        this.setState({
+          showWaybillFormWrap: true,
+          elementWaybillFormWrap: waybill_data,
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not find waybill');
+      }
+    });
   };
 
   handleWaybillFormWrapHide = () => {
@@ -121,14 +121,13 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
           .map(this.mapInfoDataGroupByDate)
         }
         {
-          this.state.showWaybillFormWrap
-            && (
-              <WaybillFormWrap
-                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-                element={this.state.elementWaybillFormWrap}
-              />
-            )
+          this.state.showWaybillFormWrap && (
+            <WaybillFormWrap
+              onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
+              onCallback={this.handleWaybillFormWrapHideAfterSubmit}
+              element={this.state.elementWaybillFormWrap}
+            />
+          )
         }
       </InfoCard>
     );
@@ -146,6 +145,7 @@ export default compose<any, any>(
       infoDataRaw: getDashboardState(state).waybill_draft.data.items[0],
     }),
     (dispatch) => ({
+      dispatch,
       handleClose: () => dispatch(dashboardSetInfoDataInWaybillDraft(null)),
       loadAllWaybillCard: () =>
         dispatch(dashboardLoadDependentDataByWaybillDraft()),

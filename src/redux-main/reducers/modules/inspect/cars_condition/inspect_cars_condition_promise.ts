@@ -1,12 +1,11 @@
-import { InspectCarsCondition, CarsConditionCars } from "./@types/inspect_cars_condition";
+import { InspectCarsCondition, CarsConditionCars } from './@types/inspect_cars_condition';
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService } from "api/Services";
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { InspectCarsService, } from 'api/Services';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -35,8 +34,6 @@ const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_mechanics: null,
   list_drivers: null,
   list_mechanics: null,
-  staffing_drivers: null,
-  staffing_mechanics: null,
 };
 
 const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
@@ -47,6 +44,7 @@ const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
 };
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
+  // if (inspectCarsConditionBackend) {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
 
   inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
@@ -71,33 +69,48 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
-  inspectCarsCondition.data.preparing_cars_check.order_issued_at = createValidDateTime(inspectCarsCondition.data.preparing_cars_check.order_issued_at);
   return inspectCarsCondition;
+  // }
+
+  // return null;
 };
 
 export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
 
   inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
-      delete rowData.customId;
-      delete rowData.disabled;
-      return rowData;
-    });
+    delete rowData.customId;
+    delete rowData.disabled;
+    return rowData;
+  });
   inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
-      delete rowData.customId;
-      return rowData;
-    });
+    delete rowData.customId;
+    return rowData;
+  });
 
   return inspectCarsCondition;
 };
 
-export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number }) => {
+export const makeInspectCarsConditionExtendedFront = (elem) => { // Перенос data на верхний уровень
+  const dataVal = get(elem, 'data', null);
+  if (dataVal) {
+    delete elem.data;
+    return {
+      ...elem,
+      ...dataVal,
+    };
+  } else {
+    return elem;
+  }
+};
+
+export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number; }) => {
   const response = await promiseGetInspectRegistry<InspectCarsCondition>({
     base_id: payload.carsConditionId,
     type: 'cars_condition',
   });
 
-  const data: InspectCarsCondition[] = response.data;
+  const data: Array<InspectCarsCondition> = response.data;
   return {
     data,
     dataIndex: keyBy(data, 'id'),
@@ -115,7 +128,7 @@ export const promiseGetInspectCarsConditionById = async (id: number) => {
   return makeInspectCarsConditionFront(inspectCarsCondition);
 };
 
-export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number }) => {
+export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number; }) => {
   const inspectCarsCondition: InspectCarsCondition = await promiseCreateInspection({
     base_id: payload.carsConditionId,
     company_id: payload.companyId,

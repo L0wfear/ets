@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { DefaultFirstLvlMenu, LinkFirstLvl, LinkNoHashFirstLvl, DefaultFirstDt, MenuTitleContainer } from 'components/new/ui/app_header/styled';
-import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
+import { MarkNewRegistry } from 'global-styled/global-styled';
 import SecondMenuItem from 'components/new/ui/app_header/desktop/left/page_menu/SecondMenuItem';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
 import * as ClickOutHandler from 'react-onclickout';
-import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
+import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
 import { compose } from 'recompose';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class MainMenuItem extends React.Component<any, any> {
   node = React.createRef<any>();
@@ -29,11 +31,11 @@ class MainMenuItem extends React.Component<any, any> {
     this.setState({
       showChildren: !this.state.showChildren,
     });
-  }
+  };
 
   hiddenChildren = () => {
     this.setState({ showChildren: false });
-  }
+  };
 
   getItem = () => {
     const {
@@ -45,6 +47,20 @@ class MainMenuItem extends React.Component<any, any> {
       return (
         <LinkFirstLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultFirstLvlMenu>
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                  </EtsBootstrap.Popover>
+                )}
+                placement="top"
+              >
+                <MarkNewRegistry />
+              </EtsBootstrap.OverlayTrigger>
+            )
+            }
             <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultFirstLvlMenu>
@@ -57,7 +73,19 @@ class MainMenuItem extends React.Component<any, any> {
         <LinkNoHashFirstLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultFirstLvlMenu>
             <MenuTitleContainer>
-              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
               {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
             </MenuTitleContainer>
           </DefaultFirstLvlMenu>
@@ -69,13 +97,25 @@ class MainMenuItem extends React.Component<any, any> {
       <LinkFirstLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`}>
         <DefaultFirstLvlMenu>
           <MenuTitleContainer>
-            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                  </EtsBootstrap.Popover>
+                )}
+                placement="top"
+              >
+                <MarkNewRegistry />
+              </EtsBootstrap.OverlayTrigger>
+            )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultFirstLvlMenu>
       </LinkFirstLvl>
     );
-  }
+  };
 
   renderChildrenItem = ([keyName, data]) => {
     return (
@@ -87,57 +127,46 @@ class MainMenuItem extends React.Component<any, any> {
         hiddenChildren={this.hiddenChildren}
       />
     );
-  }
+  };
 
   handleClickOut = () => {
     if (this.state.showChildren) {
       this.setState({ showChildren: false });
     }
-  }
+  };
 
   render() {
     const {
       statusShow,
       data,
-      matchUrl,
     } = this.props;
     const {
       path,
       childrenPath,
     } = data;
 
-    const active = !!isActivemenu(matchUrl, path, childrenPath);
+    const active = !!isActivemenu(this.props.match.url, path, childrenPath);
 
-    return (
-      statusShow
-        ? (
-          <ClickOutHandler onClickOut={this.handleClickOut}>
-            <DefaultFirstDt ref={this.node} active={this.state.showChildren || active}>
-              { this.getItem() }
-              {
-                this.state.showChildren
-                ? (
-                  <SecondMenuContainer position={this.props.position}>
-                    {
-                      Object.entries(data.children).map(this.renderChildrenItem)
-                    }
-                  </SecondMenuContainer>
-                )
-                : (
-                  <DivNone />
-                )
-              }
-            </DefaultFirstDt>
-          </ClickOutHandler>
-        )
-        : (
-          <DivNone />
-        )
+    return Boolean(statusShow) && (
+      <ClickOutHandler onClickOut={this.handleClickOut}>
+        <DefaultFirstDt ref={this.node} active={this.state.showChildren || active}>
+          { this.getItem() }
+          {
+            Boolean(this.state.showChildren) && (
+              <SecondMenuContainer position={this.props.position}>
+                {
+                  Object.entries(data.children).map(this.renderChildrenItem)
+                }
+              </SecondMenuContainer>
+            )
+          }
+        </DefaultFirstDt>
+      </ClickOutHandler>
     );
   }
 }
 
 export default compose< any, any>(
-  withRouterMatchUrl,
+  withSearch,
   showHeaderMenu,
 )(MainMenuItem);

@@ -3,7 +3,7 @@ import useCarActualList from '../useList/useCarActualList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { isFunction } from 'util';
 
-const useCarActualOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '', hookPayload?: { labelFunc, }) => {
+const useCarActualOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '', hookPayload?: { labelFunc; }) => {
   const listData = useCarActualList(page, path);
 
   const carActualOptions = React.useMemo(

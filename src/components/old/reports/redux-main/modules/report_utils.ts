@@ -1,10 +1,20 @@
 import { get, groupBy } from 'lodash';
 import { isNullOrUndefined, isArray } from 'util';
 
-export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
-export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;
+export const summRowWithAll = (rowValue, summValue) => {
+  const value = get(rowValue, 'count') || rowValue;
+
+  return (
+    isNaN(Number(value))
+      ? summValue
+      : value + summValue
+  );
+};
+export const removeRedundantNumbers = (rowValue) => {
+  return Math.round(rowValue * 1000) / 1000;
+};
 export const openFields = (fields) => fields.map((meta) => {
-  const [[keyName, metaData]] = Object.entries(meta);
+  const [[keyName, metaData]] = Object.entries(meta) as any;    // что тут?
   return {
     keyName,
     ...metaData,
@@ -32,15 +42,15 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCols, aggr_fields, filedsRule) => {
+export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule, uniqParams?: { [k: string]: { fieldKey: string; arrayKey: string; }; },) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
         .reduce((newArrTemp, rows) =>
-          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule),
-          [],
+          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule, uniqParams),
+        [],
         ),
-      );
+    );
   } else {
     const firstItem = data[0] || {};
 
@@ -52,25 +62,49 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
       }, {}),
       ...data.reduce((summObj, row) => ({
         ...summObj,
-        ...aggr_fields.reduce((summ, key) => ({
-          ...summ,
-          [key]: summRowWithAll(row[key], summObj[key] || 0),
-        }), {}),
+        ...aggr_fields.reduce((summ, key) => {
+
+          let uniqSetList = new Set([]); // DITETS19-1556 кол-во уникальных ТС по сумме полей из uniqParams.arrayKey(gov_numbers)
+          if(uniqParams && uniqParams[key]) {
+            uniqSetList = new Set(data.reduce((setList, dataVal ) => {
+              return [
+                ...setList,
+                ...get(dataVal, `${key}.${ get(uniqParams, `${key}.arrayKey`)}`, []),
+              ];
+            }, []));
+          }
+
+          const summValByKey = uniqParams
+            ? uniqParams && uniqParams[key] && key === uniqParams[key]?.fieldKey
+              ? uniqSetList.size
+              : summRowWithAll(row[key], summObj[key] || 0)
+            : summRowWithAll(row[key], summObj[key] || 0);
+
+          return ({
+            ...summ,
+            [key]: summValByKey,
+          });
+        }, {}),
       }), {}),
     };
     aggr_fields.forEach((key) => {
       newItem[key] = removeRedundantNumbers(newItem[key]);
     });
 
+    let forceValueByKey = '-';
     filedsRule.forEach(({ key, value: { force_value }}) => {
       if (!isNullOrUndefined(force_value) && isNullOrUndefined(newItem[key])) {
+        forceValueByKey = force_value;
         newItem[key] = force_value;
       }
     });
 
     allCols.filter(({ keyName, abs, percent }) => {
-      if (abs) {
-        newItem[keyName] = Math.abs(newItem[keyName]);
+      if (abs) { // 2й вариант решения -- убрать abs если в значении '-'
+        const absVal = Math.abs(newItem[keyName]);
+        newItem[keyName] = isNaN(absVal)
+          ? forceValueByKey
+          : absVal;
       }
       if (percent) {
         const numerator: number = get(newItem, get(percent, '0'));
@@ -115,17 +149,24 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
 
     const deepArr = rows.some((blockData) => isArray(blockData.rows));
     if (deepArr) {
-      rows = rows.reduce((newArr: any[], blockData) => {
+      rows = rows.reduce((newArr: Array<any>, blockData) => {
         newArr.push(...blockData.rows);
 
         return newArr;
       }, []);
     }
 
-    if (reportKey === 'fuel_cards_report' || reportKey === 'mission_progress_report') {
+    if (reportKey === 'fuel_cards_report'
+      || reportKey === 'mission_progress_report'
+      || reportKey === 'car_usage_report'
+      || reportKey === 'car_travel_report'
+    ) {
       if (rows.length) {
         const cols_wsd = openFields(fields);
-        const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
+
+        const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => {
+          return !aggr_fields.includes(keyName) && !is_row;
+        });
 
         const filedsRule = fields.map((fieldData) => {
           const [[key, value]] = Object.entries(fieldData);
@@ -133,7 +174,20 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
           return { key, value };
         });
 
-        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
+        const uniqParams = reportKey === 'car_usage_report' // пока так, если будут еще подобные отчеты, сделать switch
+          ? {
+            total_cars: {
+              fieldKey: 'total_cars',
+              arrayKey: 'gov_numbers'
+            },
+            ready_cars: {
+              fieldKey: 'ready_cars',
+              arrayKey: 'gov_numbers'
+            },
+          }
+          : null;
+
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, [], uniqParams).map((child, index) => {
           child[uniqName] = index + 1;
 
           filedsRule.forEach(({ key, value: { force_value }}) => {
@@ -141,6 +195,15 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
               child[key] = force_value;
             }
           });
+
+          if (reportKey === 'car_travel_report') {
+            const onePercentVal = (child.route_left_percentage + child.route_traveled_percentage) / 100;
+            return {
+              ...child,
+              route_left_percentage: onePercentVal ? (child.route_left_percentage / onePercentVal).toFixed(2) : 0,
+              route_traveled_percentage: onePercentVal ? (child.route_traveled_percentage / onePercentVal).toFixed(2) : 0,
+            };
+          }
 
           return child;
         });

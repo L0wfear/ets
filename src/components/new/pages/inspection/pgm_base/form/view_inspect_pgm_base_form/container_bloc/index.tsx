@@ -98,7 +98,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         loadContainerList();
         setSelectedContainer(null);
       } catch (error) {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       }
     },
     [],
@@ -166,13 +166,14 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
               <DivNone />
             )
         }
-       <br />
+        <br />
       </BoxContainer>
 
       <ContainerFormLazy
         element={selectedContainer}
         onFormHide={handleFormHide}
         readOnly={props.inspectIsClosed}
+        isPermittedChangeListParams={props.isPermittedChangeListParams}
       />
     </React.Fragment>
   );

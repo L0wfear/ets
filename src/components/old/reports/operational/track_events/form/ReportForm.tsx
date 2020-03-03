@@ -63,24 +63,24 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
         <ModalBodyPreloader>
           <MapEtsContainer>
             <MapEtsConsumer>
-            {
-              ({ setMapToContext, removeMapToContext }) => (
-                <MapEts
-                  enableInteractions
-                  setMapToContext={setMapToContext}
-                  removeMapToContext={removeMapToContext}
-                  mapKey="reportForm"
-                >
-                  {
-                    ({ map, centerOn }) => (
-                      <>
-                        <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
-                      </>
-                    )
-                  }
-                </MapEts>
-              )
-            }
+              {
+                ({ setMapToContext, removeMapToContext }) => (
+                  <MapEts
+                    enableInteractions
+                    setMapToContext={setMapToContext}
+                    removeMapToContext={removeMapToContext}
+                    mapKey="reportForm"
+                  >
+                    {
+                      ({ map, centerOn }) => (
+                        <>
+                          <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={this.state.geoobjects} />
+                        </>
+                      )
+                    }
+                  </MapEts>
+                )
+              }
             </MapEtsConsumer>
           </MapEtsContainer>
         </ModalBodyPreloader>

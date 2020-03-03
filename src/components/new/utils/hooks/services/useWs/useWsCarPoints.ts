@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 
 type OneWsPointData = {
-  coords: number[] | [number | number];       // координаты
-  coords_msk: number[] | [number | number];   // координаты мск (не используем)
-  direction: number                           // направление (0 - 360)
-  distance: number                            // расстояние от предыдущей точки
+  coords: Array<number> | [number | number];       // координаты
+  coords_msk: Array<number> | [number | number];   // координаты мск (не используем)
+  direction: number;                           // направление (0 - 360)
+  distance: number;                            // расстояние от предыдущей точки
   id: number;                                 // gps_code
   nsat: number;                               // количество спутников
   speed: number;                              // скорость в точке

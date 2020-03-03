@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 type EtsDropdownMenuProps = {
   pullRight?: boolean;
   dropup?: boolean;
+  dropupRight?: boolean;
 };
 
 const pullRightCss = css`
@@ -12,6 +13,12 @@ const pullRightCss = css`
 `;
 
 const dropupCss = css`
+  top: auto;
+  bottom: 100%;
+  margin-bottom: 2px;
+`;
+
+const dropupRightCss = css`
   top: auto;
   bottom: 100%;
   margin-bottom: 2px;
@@ -47,6 +54,10 @@ export const EtsDropdownMenuContainer = styled.ul<EtsDropdownMenuProps>`
 
   ${({ dropup }) => (
     dropup && dropupCss
+  )}
+
+  ${({ dropupRight }) => (
+    dropupRight && dropupRightCss
   )}
 `;
 

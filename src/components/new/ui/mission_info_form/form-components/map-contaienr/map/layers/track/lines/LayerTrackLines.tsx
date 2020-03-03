@@ -4,16 +4,15 @@ import LineString from 'ol/geom/LineString';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForTrackLine } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/track/lines/feature-style';
-import { get } from 'lodash';
 
 type PropsLayerTrackLines = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
   mkad_speed_lim: number;
   speed_lim: number;
 };
@@ -22,8 +21,8 @@ type StateLayerTrackLines = {
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
-  const onMkad =  get(trackPoint, 'checkCoordsMsk.onMkad', false);
-  const speed_avg = get(trackPoint, 'speed_avg');
+  const onMkad = trackPoint?.checkCoordsMsk?.onMkad || false;
+  const speed_avg = trackPoint?.speed_avg;
 
   const topSpeed = onMkad ? mkad_speed_lim : speed_lim;
   return speed_avg <= topSpeed;

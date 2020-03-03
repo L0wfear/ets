@@ -1,12 +1,8 @@
-import { TypeOneDisplayIf } from 'components/new/ui/registry/hoc/withRegistry.h';
-
-type DisplayIfContantType = {
-  [key: string]: TypeOneDisplayIf;
-};
-
-export const displayIfContant: DisplayIfContantType = {
+export const displayIfContant = {
   isKgh: 'isKgh',
   isOkrug: 'isOkrug',
   lenghtStructureMoreOne: 'lenghtStructureMoreOne',
   false: false,
-};
+} as const;
+
+export type TypeOneDisplayIf = typeof displayIfContant[keyof typeof displayIfContant];

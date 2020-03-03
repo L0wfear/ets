@@ -4,22 +4,48 @@ import { connect } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import memoize from 'memoize-one';
-import {
-  StatePropsModalSwitchApiVersion,
-  DispatchPropsModalSwitchApiVersion,
-  OwnPropsModalSwitchApiVersion,
-  PropsModalSwitchApiVersion,
-  StateModalSwitchApiVersion,
-  OneOptionInStateModalSwitchApiVersion,
-} from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion.h';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import config from 'config';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
+type StateProps = {
+  appConfig: InitialStateSession['appConfig'];
+  appConfigTracksCaching: InitialStateSession['appConfigTracksCaching'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  onHide: () => void;
+};
+
+type NoneVersionOption = {
+  value: number | null;
+  label: string;
+};
+
+type DefaultVersionOption = {
+  value: string;
+  label: string;
+};
+
+type OneOptionInStateModalSwitchApiVersion = NoneVersionOption | DefaultVersionOption;
+
+type StateModalSwitchApiVersion = {
+  serviceValue: OneOptionInStateModalSwitchApiVersion['value'];
+  tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value'];
+};
+type PropsModalSwitchApiVersion = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
 const modalKey = 'ModalSwitchApiVersion';
 const defaultNonVersionoption = {
@@ -41,8 +67,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
         JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [keyTracksCachingForTest],
         null,
-      ) ||
-      get(
+      )
+      || get(
         JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [config.tracksCaching],
         null,
@@ -61,8 +87,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     if (!versions) {
       versions = {};
     }
-    versions[config.backend] =
-      serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
+    versions[config.backend]
+      = serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
     localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       serviceValue: serviceValue === -1 || !serviceValue ? '' : serviceValue,
@@ -77,8 +103,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     if (!versions) {
       versions = {};
     }
-    versions[keyTracksCachingForTest] =
-      tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
+    versions[keyTracksCachingForTest]
+      = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
     localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,
@@ -131,7 +157,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
         id="modal-battery-brand"
         show
         onHide={this.props.onHide}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Изменить версию API</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -176,12 +202,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   }
 }
 
-export default connect<
-  StatePropsModalSwitchApiVersion,
-  DispatchPropsModalSwitchApiVersion,
-  OwnPropsModalSwitchApiVersion,
-  ReduxState
->((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>((state) => ({
   appConfig: getSessionState(state).appConfig,
   appConfigTracksCaching: getSessionState(state).appConfigTracksCaching,
 }))(ModalSwitchApiVersion);

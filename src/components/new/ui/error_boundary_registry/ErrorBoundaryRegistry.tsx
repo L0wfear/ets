@@ -11,11 +11,12 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 
 const STAND = process.env.STAND;
+const timerValueSec = 10;
 
-class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, countLeft: number, intervalId: any }> {
+class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean; countLeft: number; intervalId: any; }> {
   state = {
     hasError: false,
-    countLeft: 5,
+    countLeft: timerValueSec,
     intervalId: null,
   };
 
@@ -26,8 +27,8 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
   }
 
   componentDidCatch(error, info) {
-    console.log(error); // tslint:disable-line:no-console
-    console.log(info); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
+    console.info(info); // eslint-disable-line
 
     Raven.captureException(new Error(error));
 
@@ -45,9 +46,10 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
     this.setState({
       hasError: false,
       intervalId: null,
-      countLeft: 5,
+      countLeft: timerValueSec,
     });
-  }
+    document.location.reload(true);
+  };
 
   updateCountLeft = () => {
     this.setState((state) => {
@@ -55,18 +57,14 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
 
       if (countLeft === 0) {
         clearInterval(state.intervalId);
-        return {
-          hasError: false,
-          intervalId: null,
-          countLeft: 5,
-        };
+        document.location.reload(true);
       }
       return {
         ...state,
         countLeft,
       };
     });
-  }
+  };
 
   render() {
     const { countLeft } = this.state;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldForemanIdDutyMission,
@@ -80,7 +80,7 @@ class FieldForemanIdDutyMission extends React.PureComponent<PropsFieldForemanIdD
     }
   }
 
-  handleChange = (value, option: DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>) => {
+  handleChange = (value, option: DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean; }>) => {
     const { props } = this;
 
     if (value !== props.value) {
@@ -91,20 +91,20 @@ class FieldForemanIdDutyMission extends React.PureComponent<PropsFieldForemanIdD
             'label',
             '',
           ).split(' ')
-          .filter((string) => (
-            Boolean(string)
-          ))
-          .map((string, index) => (
-            index === 0
-              ? `${string} `
-              : string[0].toLocaleUpperCase()
-           )).join('.')
+            .filter((string) => (
+              Boolean(string)
+            ))
+            .map((string, index) => (
+              index === 0
+                ? `${string} `
+                : string[0].toLocaleUpperCase()
+            )).join('.')
         ),
         foreman_full_fio: get(option, ['label'], ''),
         foreman_id: value,
       });
     }
-  }
+  };
 
   render() {
     const {

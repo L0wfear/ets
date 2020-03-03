@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Нормы на содержание объектов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'maintenance_rate',
-  noDotList: false,
+
   component,
   permissions,
 };

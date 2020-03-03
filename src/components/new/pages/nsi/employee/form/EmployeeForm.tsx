@@ -1,84 +1,111 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { FileField } from 'components/old/ui/input/fields';
 import { compose } from 'recompose';
+import { get } from 'lodash';
+import { connect } from 'react-redux';
+import * as moment from 'moment';
+import { Option } from 'react-select/src/filters';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { FileField } from 'components/old/ui/input/fields';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { employeeFormSchema } from 'components/new/pages/nsi/employee/form/schema';
-import { get } from 'lodash';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import { getSetCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
 
 import { getDefaultEmployeeElement, filterCars } from 'components/new/pages/nsi/employee/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnEmployeeProps,
   PropsEmployee,
   StateEmployee,
   StatePropsEmployee,
-  DispatchPropsEmployee,
   PropsEmployeeWithForm,
 } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
+import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/employee/position/actions';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import memoizeOne from 'memoize-one';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
-  state = {
-    carList: [],
-    carOptions: [],
-    positionOptions: [],
-    companyStructureOptions: [],
-    isCommonOptions: [
-      { label: 'Да', value: 1 },
-      { label: 'Нет', value: 0 },
-    ],
-    driverStateOptions: [
-      { value: 1, label: 'Работает' },
-      { value: 0, label: 'Не работает' },
-    ],
-    categoryDriversLicenseOptions: this.props.category_license.category_drivers_license.map((name) => ({
-      value: name,
-      label: name,
-    })),
-    categorySpecialLicenseOptions: this.props.category_license.category_special_license.map((name) => ({
-      value: name,
-      label: name,
-    })),
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
+    const categoryDriversLicenseOptions = props.category_license.category_drivers_license.map((name) => ({
+      value: name,
+      label: name
+    }));
+    const categorySpecialLicenseOptions = props.category_license.category_special_license.map((name) => ({
+      value: name,
+      label: name
+    }));
+
+    const driverStateOptions = [
+      {
+        label: 'Работает',
+        value: 1
+      }, {
+        label: 'Не работает',
+        value: 0
+      },
+    ];
+    
+    const isCommonOptions = [
+      {
+        label: 'Да',
+        value: 1
+      }, {
+        label: 'Нет',
+        value: 0
+      },
+    ];
+
+    this.state = {
+      carList: [],
+      categoryDriversLicenseOptions,
+      categorySpecialLicenseOptions,
+      companyStructureOptions: [],
+      driverStateOptions,
+      isCommonOptions,
+      positionOptions: [],
+      preferCarOptions: [],
+      secondaryCarOptions: []
+    };
+  }
+
+  public componentDidMount() {
     this.loadCars();
     this.loadEmployeePosition();
     this.loadCompanyStructurePosition();
   }
-  async loadCars() {
-    const { page, path } = this.props;
 
-    const { data } = await this.props.autobaseGetSetCar(
-      {},
-      { page, path },
+  private async loadCars(): Promise<void> {
+    const { data } = await this.props.dispatch(
+      autobaseGetSetCar(
+        {},
+        this.props,
+      ),
     );
 
     this.setState({
       carList: data,
-      carOptions: data
-        .filter((car) => filterCars(car, this.props.formState))
-        .map((rowData) => ({
-          value: rowData.asuods_id,
-          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
-          rowData,
-        })),
+      preferCarOptions: this.makeCarOptions(data, this.props.formState, 'prefer_car'),
+      secondaryCarOptions: this.makeCarOptions(data, this.props.formState, 'secondary_car'),
     });
   }
-  async loadEmployeePosition() {
-    const { payload: { data, dataIndex } } = await this.props.employeePositionGetSetPosition();
+
+  private async loadEmployeePosition(): Promise<void>  {
+    const { data, dataIndex } = await this.props.dispatch(
+      employeePositionGetSetPosition(
+        {},
+        this.props,
+      ),
+    );
     const positionOptions = data
       .map((rowData) => ({
         value: rowData.id,
@@ -93,31 +120,55 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const { formState: { position_id } } = this.props;
 
     if (position_id) {
+      const positionInfo = dataIndex[position_id];
+
       this.props.handleChange({
-        is_driver: get(dataIndex, [position_id, 'is_driver'], false),
+        is_driver: positionInfo ? positionInfo.is_driver : false,
       });
     }
   }
-  async loadCompanyStructurePosition() {
-    const { payload: { data } } = await this.props.companyStructureActions();
+
+  private async loadCompanyStructurePosition(): Promise<void>  {
+    const { data } = await this.props.dispatch(
+      getSetCompanyStructureDescendantsByUser(
+        {},
+        this.props,
+      ),
+    );
     this.setState({
       companyStructureOptions: data.map(defaultSelectListMapper),
     });
   }
 
-  handleChangeDateEnd = (type: 'special_license_date_end', value) => {
-    this.props.handleChange({
+  private readonly makeCarOptions = memoizeOne((
+    carList: StateEmployee['carList'],
+    formState: PropsEmployee['formState'],
+    fieldType: 'prefer_car' | 'secondary_car',
+  ) => {
+    return carList
+      .filter((car) => 
+        filterCars(car, formState, fieldType)
+      ).map((rowData) => ({
+        value: rowData.asuods_id,
+        label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+        rowData,
+      }));
+  });
+
+  private readonly handleChangeDateEnd = (type: 'special_license_date_end' | 'drivers_license_date_end', value: Date): void => {
+    const { handleChange, formState } = this.props;
+
+    handleChange({
       [type]: value,
     });
 
     this.updateCarOptions({
-      ...{
-        ...this.props.formState,
-        [type]: value,
-      },
+      ...formState,
+      [type]: value,
     });
-  }
-  handleChangeWithValidate = (field, e) => {
+  };
+
+  private readonly handleChangeWithValidate = (field, e): void => {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
       const changeObject: any = {
@@ -151,8 +202,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
-  handleChangePositionId = (field, value) => {
+  };
+
+  private readonly handleChangePositionId = (field, value): void => {
     if (value !== this.props.formState.position_id) {
       const changeObject: any = {
         [field]: value,
@@ -170,8 +222,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
-  handleChangeCar = (field, value) => {
+  };
+
+  private readonly handleChangeCar = (field, value): void => {
     const { formState } = this.props;
 
     if (formState[field] !== value) {
@@ -181,25 +234,17 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
       this.props.handleChange(changeObject);
     }
-  }
-  updateCarOptions(formState: PropsEmployee['formState']) {
+  };
+
+  private updateCarOptions(formState: PropsEmployee['formState']): void {
     this.setState({
-      carOptions: this.state.carList
-        .filter((car) => (
-          filterCars(
-            car,
-            formState,
-          )
-        )).map((rowData) => ({
-          value: rowData.asuods_id,
-          label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
-          rowData,
-        })),
+      preferCarOptions: this.makeCarOptions(this.state.carList, formState, 'prefer_car'),
+      secondaryCarOptions: this.makeCarOptions(this.state.carList, formState, 'secondary_car'),
     });
   }
 
   // ХХХ-ХХХ-ХХХ YY
-  handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string) => {
+  private readonly handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string): void => {
     let value = get(fieldValue, 'target.value', null);
 
     if (value) {
@@ -228,7 +273,22 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   };
 
-  render() {
+  private readonly licenseEndDateFilterOption = (option: Option, value: string): boolean => {
+    const { formState } = this.props;
+    const { special_license_date_end, drivers_license_date_end } = formState;
+
+    const licencePeriod: [string, string] = [special_license_date_end, drivers_license_date_end];
+    const isValidOptionForLicencePeriod: boolean = licencePeriod.some((license_date_end: string): boolean =>
+      Boolean(license_date_end) && moment(license_date_end).isSameOrAfter(moment(), 'day'));
+
+    if (isValidOptionForLicencePeriod) {
+      return option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase());
+    }
+
+    return isValidOptionForLicencePeriod;
+  };
+
+  public render() {
     const {
       formState: state,
       formErrors: errors,
@@ -240,7 +300,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-
+    
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
@@ -300,7 +360,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted}
                     onChange={this.handleChangeSnils}
                     boundKeys="snils"
-                    maxlength={14}
+                    maxLength={14}
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -498,7 +558,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     modalKey={path}
                     label="Основное ТС"
                     value={state.prefer_car}
-                    options={this.state.carOptions}
+                    options={this.state.preferCarOptions}
+                    filterOption={this.licenseEndDateFilterOption}
                     error={errors.prefer_car}
                     disabled={!isPermitted || !state.is_driver}
                     onChange={this.handleChangeCar}
@@ -513,7 +574,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     multi
                     label="Вторичное ТС"
                     value={state.secondary_car}
-                    options={this.state.carOptions}
+                    filterOption={this.licenseEndDateFilterOption}
+                    options={this.state.secondaryCarOptions}
                     error={errors.secondary_car}
                     disabled={!isPermitted || !state.is_driver}
                     onChange={this.props.handleChange}
@@ -612,15 +674,11 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          {
+            isPermitted && (
+              <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
@@ -628,32 +686,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 }
 
 export default compose<PropsEmployee, OwnEmployeeProps>(
-  connect<StatePropsEmployee, DispatchPropsEmployee, OwnEmployeeProps, ReduxState>(
+  connect<StatePropsEmployee, {}, OwnEmployeeProps, ReduxState>(
     (state) => ({
       category_license: state.session.appConfig.category_license,
-    }),
-    (dispatch: any, { page, path }) => ({
-      autobaseGetSetCar: (...arg) => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(...arg),
-        )
-      ),
-      employeePositionGetSetPosition: () => (
-        dispatch(
-          employeeActions.employeePositionGetSetPosition(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      companyStructureActions: () => (
-        dispatch(
-          companyStructureActions.getSetCompanyStructureDescendantsByUser(
-            {},
-            { page, path },
-          ),
-        )
-      ),
     }),
   ),
   withForm<PropsEmployeeWithForm, Employee>({

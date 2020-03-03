@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Планирование ремонтных работ',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'repair_program',
-  noDotList: false,
+
   component,
   permissions,
 };

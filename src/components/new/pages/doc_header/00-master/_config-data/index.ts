@@ -1,6 +1,7 @@
 import config from 'config';
+import { ConfigPageData } from 'components/@next/@types/config_data';
 
-export default {
+const master_page_config: ConfigPageData = {
   title: 'Руководство Мастера',
   path: `${config.docs}Руководство-мастера.docx`,
   noHash: true,
@@ -8,3 +9,5 @@ export default {
     list: 'docs_master.list',
   },
 };
+
+export default master_page_config;

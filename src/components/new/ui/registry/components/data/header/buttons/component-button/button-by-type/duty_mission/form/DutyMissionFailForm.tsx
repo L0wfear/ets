@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type DutyMissionFailFormProps = {
@@ -49,12 +49,13 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
         id="modal-duty-mission-reject"
         onHide={props.handleHide}
         show
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{`Введите причину для наряд-задания №${element.number}`}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={props.page} typePreloader="mainpage">
           <ExtField
+            id="duty_mission_cancel_comment"
             type="string"
             label="Причина"
             value={comment}
@@ -62,7 +63,7 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
           />
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
+          <EtsBootstrap.Button id="duty_mission_cancel_submit" disabled={!comment} onClick={handleSubmit}>
             Отметка о невыполнении
           </EtsBootstrap.Button>
           <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>

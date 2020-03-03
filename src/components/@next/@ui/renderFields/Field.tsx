@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isArray, isString, isNullOrUndefined } from 'util';
 
 import StringField from 'components/@next/@ui/renderFields/StringField/StringField';
 import TextAreaField from 'components/@next/@ui/renderFields/TextAreaField/TextAreaField';
@@ -7,29 +8,117 @@ import NumberField from 'components/@next/@ui/renderFields/NumberField/NumberFie
 import DateField from 'components/@next/@ui/renderFields/DateField/DateField';
 import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
-import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldType, ExtFieldTypeByKey } from 'components/@next/@ui/renderFields/@types';
 
-const Field: React.FC<ExtFieldType> = React.memo(
-  (props) => {
-    switch (props.type) {
-      case 'string':
-        return <StringField {...props} />;
-      case 'text':
-        return <TextAreaField {...props} />;
-      case 'select':
-        return <SelectField {...props}/>;
-      case 'date':
-        return <DateField {...props} />;
-      case 'file':
-        return <FileField {...props} />;
-      case 'number':
-        return <NumberField {...props}/>;
-      case 'boolean':
-        return <CheckBoxField {...props}/>;
-      default:
-        return null;
+const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<ExtFieldTypeByKey[K]> } = {
+  string: StringField,
+  text: TextAreaField,
+  select: SelectField,
+  date: DateField,
+  file: FileField,
+  number: NumberField,
+  boolean: CheckBoxField,
+};
+
+const numberToFixed = {
+  toFixed2: 2,
+  toFixed3: 3,
+};
+
+const ExtField: React.FC<ExtFieldType> = React.memo(
+  ({ boundKeys, ...props }) => {
+    const Component = ComponentByType[props.type] || ComponentByType.string;
+
+    const [ isFocus, setIsFocus ] = React.useState(false);
+    const [ localStateValue, setLocalStateValue ] = React.useState(props.value);
+
+    const onChange = React.useCallback(
+      (...arg) => {
+        if (props.onChange) {
+          const addKeys = !isNullOrUndefined(boundKeys) ? boundKeys : [];
+          if (!isArray(addKeys)) {
+            props.onChange(addKeys, ...arg);
+          } else {
+            props.onChange(...addKeys, ...arg);
+          }
+        }
+        setLocalStateValue(props.value);
+      },
+      [boundKeys, props.onChange, props.value,],
+    );
+
+    const onFocus = React.useCallback(
+      () => {
+        setIsFocus(true);
+      },
+      [],
+    );
+
+    const onBlur = React.useCallback(
+      () => {
+        setIsFocus(false);
+      },
+      [],
+    );
+
+    React.useEffect( () => {
+      setLocalStateValue(props.value);
+    }, [isFocus, props.type, props.value]);
+
+    // выводить 2-3 знака после запятой { format === 'toFixed3' | 'toFixed2' }
+    React.useEffect( () => {
+      if (!isFocus
+        && numberToFixed[props.format]
+        && !isNullOrUndefined(props.value)
+        && (props.value || props.value === 0)
+      ){
+        const newVal = Number(props.value).toFixed(numberToFixed[props.format]);
+        const decimal = Number(props.value).toString()?.split('.')?.[1]?.length ?? 0; // кол-во знаков после запятой в исходном значении
+
+        if (decimal <= numberToFixed[props.format] || props.disabled) { // Если пользак ввел больше 2-3x знаков, то не перетираем state
+          setLocalStateValue(newVal);
+        }
+      }
+    }, [isFocus, props.format, props.type, props.value]);
+
+    // меняем точку на запятую во всех полях type === 'number'
+    React.useEffect( () => {
+      if (!isFocus
+        && !props.format
+        && props.type === 'number'
+        && !isNullOrUndefined(props.value)
+        && (props.value || props.value === 0)
+      ){
+        const newVal = Number(props.value).toString().replace('.', ',');
+        setLocalStateValue(newVal);
+      }
+    }, [isFocus, props.format, props.type, props.value]);
+
+    if (props.disabled && props.value_string) {
+      return (
+        <StringField
+          {...props as any}
+          type="string"
+          value={props.value_string.toString()}
+        />
+      );
     }
+
+    return (
+      <Component {...props as any}
+        value={
+          isFocus
+            ? props.value
+            : (isString(localStateValue) && props.type === 'number')
+              ? localStateValue.replace(',', '.')
+              : localStateValue
+        }
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
+      />
+    );
   },
 );
 
-export default Field;
+export default ExtField;

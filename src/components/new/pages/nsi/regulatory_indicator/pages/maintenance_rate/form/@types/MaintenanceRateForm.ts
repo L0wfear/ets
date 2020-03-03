@@ -3,19 +3,9 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { HandleThunkActionCreator } from 'react-redux';
-
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
-
-export type PropsMaintenanceRateFormLazy = {
-  element: Partial<MaintenanceRate>;
-  onFormHide: OnFormHideType;
-  type: string | null;
-
-  registryKey?: string;
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { actionGetAndSetInStoreMaintenanceWork, actionResetMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
+import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMaintenanceRate = {
   technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];
@@ -31,26 +21,20 @@ export type DispatchPropsMaintenanceRate = {
     typeof someUniqActions.actionResetTechnicalOperationRegistry
   >;
   actionGetAndSetInStoreMaintenanceWork: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreMaintenanceWork
+    typeof actionGetAndSetInStoreMaintenanceWork
   >;
   actionResetMaintenanceWork: HandleThunkActionCreator<
-    typeof someUniqActions.actionResetMaintenanceWork
+    typeof actionResetMaintenanceWork
   >;
   actionGetAndSetInStoreCleanCategories: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreCleanCategories
+    typeof actionGetAndSetInStoreCleanCategories
   >;
   actionResetCleanCategories: HandleThunkActionCreator<
-    typeof someUniqActions.actionResetCleanCategories
+    typeof actionResetCleanCategories
   >;
 };
 
-export type OwnMaintenanceRateProps = {
-  element: Partial<MaintenanceRate>;
-  handleHide: OnFormHideType;
-  page: string;
-  path?: string;
-  type?: any;
-};
+export type OwnMaintenanceRateProps = WithFormRegistrySearchAddProps<MaintenanceRate>;
 
 export type PropsMaintenanceRateWithForm = StatePropsMaintenanceRate &
   DispatchPropsMaintenanceRate &

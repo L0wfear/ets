@@ -1,9 +1,10 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { YES_NO_SELECT_OPTIONS_INT, MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 import missionPermissions from '../../mission/_config-data/permissions';
+import { MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { MissionArchiveCarService } from 'api/Services';
 
 export const registryKey = 'MissionArchive';

@@ -39,10 +39,10 @@ export const updateFuelCard = async (fuelCards): Promise<FuelCard> => {
   };
 };
 
-export const getFuelCards = async (payload: any): Promise<{ data: FuelCard[] }> => {
+export const getFuelCards = async (payload: any): Promise<{ data: Array<FuelCard>; }> => {
   return FuelCardsService.get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+      console.info(error); // eslint-disable-line
       return null;
     })
     .then((ans) => ({

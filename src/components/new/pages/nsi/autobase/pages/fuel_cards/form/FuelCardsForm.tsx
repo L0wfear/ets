@@ -1,6 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { get } from 'lodash';
@@ -9,11 +9,11 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  OwnFuelCardsProps,
   PropsFuelCards,
-  StatePropsFuelCards,
-  DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
+  OwnFuelCardsProps,
+  DispatchPropsFuelCards,
+  StatePropsFuelCards,
 } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
@@ -84,15 +84,15 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
 
     const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
-    const companiesDefaultValue =
-      IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
+    const companiesDefaultValue
+      = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -176,20 +176,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-            {
-              isPermitted
-                ? (
-                  <EtsBootstrap.Button
-                    disabled={!props.canSave}
-                    onClick={handleSubmit}
-                  >
+          {
+            isPermitted
+              ? (
+                <EtsBootstrap.Button
+                  disabled={!props.canSave}
+                  onClick={handleSubmit}
+                >
                     Сохранить
-                  </EtsBootstrap.Button>
-                ) : (
-                  <DivNone />
-                )
-            }
-            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
+                </EtsBootstrap.Button>
+              ) : (
+                <DivNone />
+              )
+          }
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
@@ -211,13 +211,15 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     updateAction: autobaseActions.fuelCardsUpdate,
     getRecordAction: autobaseActions.actionLoadFuelCardById,
     mergeElement: (props) => {
-      const { companyOptions, userCompanyId, userStructureId } = props;
+      const { companyOptions, userData } = props;
+      const userCompanyId = userData.company_id;
+      const userStructureId = userData.structure_id;
 
       const IS_CREATING = !get(props, 'element.id', null);
       const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
-      const companiesDefaultValue =
-        IS_CREATING && companiesFieldIsDisable
+      const companiesDefaultValue
+        = IS_CREATING && companiesFieldIsDisable
           ? userCompanyId
           : props.element.company_id;
 

@@ -1,14 +1,12 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import { isNullOrUndefined, isArray } from 'util';
+
 import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 require('components/old/ui/table/simple-griddle/SimpleGriddle.scss');
-
-const EtsTheadThL: any = EtsTheadTh;
 
 const emptyArr = [];
 
@@ -97,7 +95,7 @@ class SimpleGriddle extends React.Component<any, any> {
       this.state.shortResult,
       e,
     );
-  }
+  };
 
   getGlobalCheckboxState = (shortResult) => shortResult.length && !shortResult.some((item) => !item.isChecked);
 
@@ -110,24 +108,23 @@ class SimpleGriddle extends React.Component<any, any> {
     if (columnName === 'isChecked') {
       const isCheckedAll = this.getGlobalCheckboxState(shortResult);
       return (
-        <EtsTheadThL key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })}>
+        <EtsBootstrap.Grid.GridBootstrapThead.Th key={columnName} data-title={columnName} canClick={field.sortable} className={cx(field.cssClassName, { sortable: field.sortable })}>
           <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={isCheckedAll} />
-        </EtsTheadThL>
+        </EtsBootstrap.Grid.GridBootstrapThead.Th>
       );
     }
 
     return (
-      <EtsTheadThL canClick key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
+      <EtsBootstrap.Grid.GridBootstrapThead.Th key={columnName} canClick={field.sortable} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
-          this.state.initialSort === sortByName ?
-            <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
-          :
-            <span></span>
+          this.state.initialSort === sortByName
+            ? <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
+            :            <span></span>
         }
-      </EtsTheadThL>
+      </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
-  }
+  };
 
   mapTbodyTr = (rowData, index) => (
     <TrTable
@@ -145,10 +142,11 @@ class SimpleGriddle extends React.Component<any, any> {
       selectField={this.props.selectField}
       currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
+      localState={this.props.localState}
     />
   );
 
-  reduceTbodyTrFuelCardsReport = (objData: { array: any[], index: number }, rowData, indexArr) => {
+  reduceTbodyTrFuelCardsReport = (objData: { array: Array<any>; index: number; }, rowData, indexArr) => {
     objData.array.push(
       <TrTableFuelCardsReport
         key={rowData._uniq_field}
@@ -169,7 +167,7 @@ class SimpleGriddle extends React.Component<any, any> {
     objData.index = objData.index + rowData.rows.length;
 
     return objData;
-  }
+  };
 
   onRowDoubleClick: any = (rowData, index) => {
     const { onRowDoubleClick } = this.props;
@@ -185,7 +183,7 @@ class SimpleGriddle extends React.Component<any, any> {
       } = rowData;
       onRowDoubleClick({ props: { data }});
     }
-  }
+  };
   handleClickTbodyTr: any = (rowData, index) => {
     const numberIndex = index;
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
@@ -244,7 +242,7 @@ class SimpleGriddle extends React.Component<any, any> {
         shortResult,
       });
     }
-  }
+  };
 
   handleThClick: any = ({ currentTarget: { dataset: { title } } }) => {
     if (this.props.enableSort) {
@@ -253,7 +251,7 @@ class SimpleGriddle extends React.Component<any, any> {
       if (fieldMeta && fieldMeta.sortable) {
         const initialSortAscending = fieldMeta.sortByName === this.state.initialSort ? !this.state.initialSortAscending : true;
 
-        console.log('CHANGE SORT', fieldMeta.sortByName, initialSortAscending); // tslint:disable-line:no-console
+        console.info('CHANGE SORT', fieldMeta.sortByName, initialSortAscending); // eslint-disable-line
 
         this.props.externalChangeSort(fieldMeta.sortByName, initialSortAscending);
         this.setState({
@@ -262,7 +260,7 @@ class SimpleGriddle extends React.Component<any, any> {
         });
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -295,12 +293,12 @@ class SimpleGriddle extends React.Component<any, any> {
                 <tbody>
                   {
                     !shortResult.length
-                    ? (
-                      <tr>
-                        <td colSpan={99999}>{this.props.noDataMessage}</td>
-                      </tr>
-                    )
-                    : tbodyData
+                      ? (
+                        <tr>
+                          <td colSpan={99999}>{this.props.noDataMessage}</td>
+                        </tr>
+                      )
+                      : tbodyData
                   }
                 </tbody>
               </table>

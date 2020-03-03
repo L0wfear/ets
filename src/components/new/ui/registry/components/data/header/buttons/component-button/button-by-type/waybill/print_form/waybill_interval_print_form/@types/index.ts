@@ -10,13 +10,13 @@ export type WaybillsReportForm = {
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type StatePropsWaybillIntervalPrint = {
-  filter: OneRegistryData['list']['processed']['filterValues'],
+  filter: OneRegistryData['list']['processed']['filterValues'];
 };
 export type DispatchPropsWaybillIntervalPrint = {
 };
 export type OwnWaybillIntervalPrintProps = {
-  element: null,
-  handleHide: OnFormHideType
+  element: null;
+  handleHide: OnFormHideType;
   registryKey: string;
   page: string;
   path?: string;

@@ -24,7 +24,7 @@ import {
   PointInputContainer,
   RouteFormGeoList,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/styled/styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
 
 import {
@@ -39,12 +39,11 @@ import {
   setCacheDataForRoute,
   getCacheDataForRoute,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
-import { ExtButton } from 'components/old/ui/new/button/ExtButton';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { get } from 'lodash';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionGetAndSetInStoreGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
 
 class CreatingMap extends React.PureComponent<
   PropsCreatingMap,
@@ -119,9 +118,9 @@ class CreatingMap extends React.PureComponent<
       changeObj = {
         ...changeObj,
         manual:
-          type &&
-          routeTypesByKey[type].slug &&
-          routeTypesByKey[type].slug === 'points',
+          type
+          && routeTypesByKey[type].slug
+          && routeTypesByKey[type].slug === 'points',
         hand: false,
         type,
       };
@@ -171,9 +170,9 @@ class CreatingMap extends React.PureComponent<
           needUpdateObjectData,
         );
       } else if (
-        prevType &&
-        prevMunicipalFacilityId &&
-        prevTechnicalOperationId
+        prevType
+        && prevMunicipalFacilityId
+        && prevTechnicalOperationId
       ) {
         setCacheDataForRoute(prevType, {
           object_list: prevProps.object_list,
@@ -212,11 +211,7 @@ class CreatingMap extends React.PureComponent<
           },
           { page, path },
         );
-        const geozoneMunicipalFacility = get(
-          resolve,
-          'geozoneMunicipalFacility',
-          someUniq.initialState.geozoneMunicipalFacility,
-        );
+        const geozoneMunicipalFacility = resolve.data || someUniq.initialState.geozoneMunicipalFacility;
 
         const {
           geozone_municipal_facility_by_id,
@@ -261,8 +256,8 @@ class CreatingMap extends React.PureComponent<
 
       const triggerOnAddPoint = !object_list.some(
         ({ coordinates }) =>
-          coordinates[0] === newPointObject.coordinates[0] &&
-          coordinates[1] === newPointObject.coordinates[1],
+          coordinates[0] === newPointObject.coordinates[0]
+          && coordinates[1] === newPointObject.coordinates[1],
       );
 
       if (triggerOnAddPoint) {
@@ -332,7 +327,7 @@ class CreatingMap extends React.PureComponent<
       }
     }
   };
-  handleChangeSelectedObjectList = (objectListIdArr: number[]) => {
+  handleChangeSelectedObjectList = (objectListIdArr: Array<number>) => {
     if (this.props.isPermitted) {
       this.props.onChange({
         object_list: makeObjectListByObjectListIdArr(
@@ -476,6 +471,7 @@ class CreatingMap extends React.PureComponent<
                 </span>
                 <FlexContainer>
                   <ExtField
+                    id={`route_edit_pn_${index}`}
                     type="string"
                     label={false}
                     error={false}
@@ -484,12 +480,13 @@ class CreatingMap extends React.PureComponent<
                     boundKeys={index}
                     disabled={!isPermitted}
                   />
-                  <ExtButton
+                  <EtsBootstrap.Button
+                    id={`route_edit_pn_remove_${index}`}
                     disabled={!isPermitted}
                     boundKeys={index}
                     onClick={this.handleRemovePoint}>
                     <EtsBootstrap.Glyphicon glyph="remove" />
-                  </ExtButton>
+                  </EtsBootstrap.Button>
                 </FlexContainer>
               </PointInputContainer>
             ))
@@ -518,7 +515,7 @@ export default connect<
   (dispatch: any) => ({
     actionGetAndSetInStoreGeozoneMunicipalFacility: (...arg) => (
       dispatch(
-        someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
+        actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
       )
     ),
     dispatch,

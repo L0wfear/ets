@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/company/_config-data/permissions';
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
@@ -24,9 +24,14 @@ export const config: TypeConfigData<Company> = {
   filter: {
     fields: [
       {
+        valueKey: 'company_name',
+        type: 'multiselect',
+        title: 'Полное наименование',
+      },
+      {
         valueKey: 'short_name',
         type: 'multiselect',
-        title: 'Наименование',
+        title: 'Краткое наименование',
       },
       {
         valueKey: 'has_remote_checkup',
@@ -50,8 +55,13 @@ export const config: TypeConfigData<Company> = {
           title: '№',
         },
         {
-          key: 'short_name',
+          key: 'company_name',
           title: 'Полное наименование',
+          width: 300,
+        },
+        {
+          key: 'short_name',
+          title: 'Краткое наименование',
           width: 300,
         },
         {

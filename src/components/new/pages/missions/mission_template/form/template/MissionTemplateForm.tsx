@@ -20,7 +20,7 @@ import { missionTemplateFormSchema } from './schema';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
@@ -28,9 +28,7 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
 
-import FieldForColumnMission from 'components/new/pages/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission';
 import FieldCarIdsMission from 'components/new/pages/missions/mission/form/main/inside_fields/car_ids/FieldCarIdsMission';
-import FieldStructureMission from 'components/new/pages/missions/mission/form/main/inside_fields/structure/FieldStructureMission';
 import FieldTechnicalOperationMission from 'components/new/pages/missions/mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationMission';
 import FieldMunicipalFacilityIdMission from 'components/new/pages/missions/mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdMission';
 import FieldRouteIdMission from 'components/new/pages/missions/mission/form/main/inside_fields/route_id/FieldRouteIdMission';
@@ -40,6 +38,8 @@ import {
   DisplayFlexAlignCenterFooterForm,
 } from 'global-styled/global-styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import FieldStructureMission from 'components/new/pages/missions/mission_template/form/template/structure/FieldStructureMission';
+import FieldForColumnMission from 'components/new/pages/missions/mission_template/form/template/for_column/FieldForColumnMission';
 
 const printMapKeyBig = 'printMapKeyBig';
 const printMapKeySmall = 'printMapKeySmall';
@@ -60,7 +60,7 @@ const hiddenMapConfig: IPropsHiddenMapForPrint['hiddenMapConfig'] = [
 
 class MissionTemplateForm extends React.PureComponent<
   PropsMissionTemplateForm,
-  { date_start: string }
+  { date_start: string; }
 > {
   state = {
     date_start: createValidDateTime(getDateWithMoscowTz()),
@@ -174,21 +174,21 @@ class MissionTemplateForm extends React.PureComponent<
             </EtsBootstrap.Col>
             {
               STRUCTURE_FIELD_VIEW
-              ? (
-                <EtsBootstrap.Col md={6}>
-                  <FieldStructureMission
-                    value={state.structure_id}
-                    name={state.structure_name}
-                    disabled={!isPermitted}
-                    error={errors.structure_id}
-                    onChange={this.props.handleChange}
-                    page={page}
-                    path={path}
-                  />
-                </EtsBootstrap.Col>
-            ) : (
-              <DivNone />
-            )
+                ? (
+                  <EtsBootstrap.Col md={6}>
+                    <FieldStructureMission
+                      value={state.structure_id}
+                      name={state.structure_name}
+                      disabled={!isPermitted}
+                      error={errors.structure_id}
+                      handleChange={this.props.handleChange}
+                      page={page}
+                      path={path}
+                    />
+                  </EtsBootstrap.Col>
+                ) : (
+                  <DivNone />
+                )
             }
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>

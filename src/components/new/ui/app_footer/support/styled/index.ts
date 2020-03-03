@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { lighten } from 'polished';
 
-export const SupportTextContainer = styled.a<{ color?: string }>`
+export const SupportTextContainer = styled.a<{ color?: string; }>`
   color: ${({ color }) => color || 'white'};
   font-weight: bold;
   cursor: pointer;

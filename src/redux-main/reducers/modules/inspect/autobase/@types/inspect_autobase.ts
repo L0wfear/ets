@@ -3,6 +3,7 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {
+  is_coating_defects: boolean;
   is_under_construction: boolean;
   is_less_than_two_entrances: boolean;
   absence_of_a_shield_with_a_scheme_of_movement: boolean;
@@ -13,7 +14,7 @@ type InspectAutobaseData = {
   is_not_protected: boolean;
   protection_is_carried: string;
   lack_of_video_surveillance: boolean;
-  is_hard_surface: string[];
+  is_hard_surface: Array<string>;
   surface_in_poor_condition: boolean;
   surface_area_of_destruction: number | null;
   presence_of_pits_potholes: boolean;
@@ -58,14 +59,14 @@ export type InspectAutobase = {
   close_employee_assignment: string;
   close_employee_assignment_date_start: string;
   action: string;
-  files: any[],
-  type: 'autobase',
+  files: Array<any>;
+  type: 'autobase';
 } & DefaultPartInspect;
 
 export type IStateInspectAutobase = {
-  companyList: Company[],
-  carpoolList: Carpool[],
-  inspectAutobaseList: InspectAutobase[];
+  companyList: Array<Company>;
+  carpoolList: Array<Carpool>;
+  inspectAutobaseList: Array<InspectAutobase>;
   lastConductingInspect: InspectAutobase;
   lastCompletedInspect: InspectAutobase;
 };

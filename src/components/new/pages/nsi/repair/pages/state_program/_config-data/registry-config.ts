@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import stateProgramPermissions from './permissions';
 import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@types/stateProgram';
 

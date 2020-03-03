@@ -7,11 +7,12 @@ import inspectCarsConditionPermissions from 'components/new/pages/inspection/car
 import { carsConditionCarFormSchema } from './schema';
 import BlockCarInfoMainData from './blocks/main_data/BlockCarInfoMainData';
 import BlockCarInfoMainCheckData from './blocks/check_data/BlockCarInfoMainCheckData';
-import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
-import { DivNone, FooterEnd } from 'global-styled/global-styled';
+import { DivNone, FooterEnd, HrDelimiter } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import { get } from 'lodash';
 
 const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
   (props) => {
@@ -19,39 +20,45 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
       formState: state,
       formErrors: errors,
       IS_CREATING,
-      isPermitted: isPermittedOwn,
+      isPermittedChangeListParams,
     } = props;
 
-    const isPermitted = (
-      isPermittedOwn
-      && props.type === INSPECT_TYPE_FORM.list
-    );
+    const isCustomUserCard = !Boolean(get(state, 'car_id'));
+    const cardTitle = !IS_CREATING
+      ? isCustomUserCard
+        ? 'Карточка выбранного ТС (создана вручную)'
+        : 'Карточка выбранного ТС'
+      : 'Создание карточки ТС';
 
     return (
-      <div>
-        <h4>Карточка выбранного ТС</h4>
+      <BoxContainer>
+        <h2>{cardTitle}</h2>
         <BlockCarInfoMainData
           IS_CREATING={IS_CREATING}
           formState={state}
           formErrors={errors}
           handleChange={props.handleChange}
-          isPermitted={isPermitted}
+          handleChangeBoolean={props.handleChangeBoolean}
+          isPermitted={isPermittedChangeListParams}
+          isCustomUserCard={isCustomUserCard}
 
           page={props.page}
           path={props.path}
         />
+        <HrDelimiter />
         <BlockCarInfoMainCheckData
           IS_CREATING={IS_CREATING}
           formState={state}
           formErrors={errors}
           handleChange={props.handleChange}
-          isPermitted={isPermitted}
+          isPermitted={isPermittedChangeListParams}
+          isCustomUserCard={isCustomUserCard}
         />
         <FooterEnd>
           {
-            isPermitted
+            isPermittedChangeListParams
               ? (
-                <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
+                <EtsBootstrap.Button disabled={props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
               )
               : (
                 <DivNone />
@@ -59,7 +66,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           }
           <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Закрыть</EtsBootstrap.Button>
         </FooterEnd>
-      </div>
+      </BoxContainer>
     );
   },
 );

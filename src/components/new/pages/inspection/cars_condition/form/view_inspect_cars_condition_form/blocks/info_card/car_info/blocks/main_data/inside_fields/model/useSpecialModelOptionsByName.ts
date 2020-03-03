@@ -5,7 +5,7 @@ import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_mode
 import { actionLoadSpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/actions';
 
 type UseSpecialModelOptionsByNameAns = {
-  specialModelOptions: DefaultSelectOption<SpecialModel['name'], SpecialModel['name'], SpecialModel>[],
+  specialModelOptions: Array<DefaultSelectOption<SpecialModel['name'], SpecialModel['name'], SpecialModel>>;
 };
 
 type UseSpecialModelOptionsByName = (
@@ -14,23 +14,27 @@ type UseSpecialModelOptionsByName = (
   path: string,
 ) => UseSpecialModelOptionsByNameAns;
 
+export const getSpecialModelOptions = (data: Array<SpecialModel>) => {
+  return data.map((rowData) => ({
+    value: rowData.name,
+    label: rowData.name,
+    rowData,
+  }));
+};
+
 const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpecialModelList, page, path) => {
   const [specialModelOptions, setSpecialModelOptions] = React.useState<UseSpecialModelOptionsByNameAns['specialModelOptions']>([]);
 
   React.useEffect(
     () => {
       loadLoadSpecialModelList({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setSpecialModelOptions(
-            (data as SpecialModel[]).map((rowData) => ({
-              value: rowData.name,
-              label: rowData.name,
-              rowData,
-            })),
+            getSpecialModelOptions(data),
           )
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

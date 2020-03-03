@@ -24,8 +24,8 @@ import { WaybillClosedInfoDataType } from 'components/new/pages/dashboard/redux-
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
-import { ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import { get } from 'lodash';
+import { ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -183,8 +183,8 @@ export const dashboardSetInfoDataInWaybillClosed = (infoData: WaybillClosedInfoD
 
 export const dashboardLoadCardData = (path: string, payloadAction: ConfigType['payloadAction']) => {
   const dashboardServiceWithParams = (
-      defAns.backEndKeys[path] || path
-    )
+    defAns.backEndKeys[path] || path
+  )
     .split('/')
     .reduce((ApiService, pathPart) => ApiService.path(pathPart), DashboardService);
 
@@ -197,9 +197,18 @@ export const dashboardLoadCardData = (path: string, payloadAction: ConfigType['p
         result: defAns[path.split('/').join('_')],
       };
     })
-    .then(({ result }) => ({
-      [path.split('/').join('_')]: result,
-    }));
+    .then((res) => {
+      const result = get(res, 'result');
+      if (result) {
+        return ({
+          [path.split('/').join('_')]: result,
+        });
+      } else {
+        return {
+          result: defAns[path.split('/').join('_')],
+        };
+      }
+    });
 
   return ({
     type: DASHBOARD_CHANGE_CART_DATA,

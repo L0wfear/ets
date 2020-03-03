@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { factStatusOptions, statusAtCheckOptions } from '../options';
-import { DivNone } from 'global-styled/global-styled';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { get } from 'lodash';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
+import { fadeInAnimation } from 'global-styled/global-animation';
+
+const FieldCarsConditionsCarSelectFactStatusWrapper = styled(EtsBootstrap.Row)`
+  animation: ${fadeInAnimation} .3s ease-in;
+`;
 
 type FieldCarsConditionsCarSelectFactStatusProps = (
   {
@@ -16,7 +21,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
     const {
       formState: state,
       formErrors: errors,
-      isPermitted,
     } = props;
 
     const handleChangeData = React.useCallback(
@@ -39,84 +43,48 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
     );
 
     return (
-      <React.Fragment>
-        <ExtField
-          id="fact_status"
-          type="select"
-          label="Фактический статус ТС:"
-          clearable={false}
-          value={state.fact_status}
-          error={errors.fact_status}
-          options={factStatusOptions}
-          onChange={props.handleChange}
-          boundKeys="fact_status"
-          disabled={!isPermitted}
-        />
-        <ExtField
-          id="status_at_check"
-          type="select"
-          label="Нахождение ТС на момент проверки:"
-          clearable={false}
-          value={state.status_at_check}
-          error={errors.status_at_check}
-          options={statusAtCheckOptions}
-          onChange={props.handleChange}
-          boundKeys="status_at_check"
-          disabled={!isPermitted}
-        />
+      <FieldCarsConditionsCarSelectFactStatusWrapper>
         {
           state.fact_status === 'on_line'
-            ? (
+            && (
               <React.Fragment>
-                <ExtField
-                  id="waybill_number"
-                  type="number"
-                  label="Выдан ПЛ номер:"
-                  value={state.data.waybill_number}
-                  error={errors.data.waybill_number}
-                  disabled
-                />
-                <ExtField
-                  id="mission_numbers"
-                  type="string"
-                  label="Активное задание:"
-                  value={state.data.mission_numbers}
-                  error={errors.data.mission_numbers}
-                  disabled
-                />
-                <ExtField
-                  id="data-not_passed_verification_glonass"
-                  type="boolean"
-                  label="Не пройдена проверка фактической работы техники с использованием ГЛОНАСС"
-                  value={state.data.not_passed_verification_glonass}
-                  error={errors.data.not_passed_verification_glonass}
-                  onChange={handleChangeDataBoolean}
-                  boundKeys="not_passed_verification_glonass"
-                  className="checkbox-input flex-reverse"
-                  disabled={!props.isPermitted}
-                />
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="waybill_number"
+                    type="number"
+                    label="Выдан ПЛ номер:"
+                    value={state.data.waybill_number}
+                    error={errors.data.waybill_number}
+                    disabled
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="mission_numbers"
+                    type="string"
+                    label="Активное задание:"
+                    value={state.data.mission_numbers}
+                    error={errors.data.mission_numbers}
+                    disabled
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="data-not_passed_verification_glonass"
+                    type="boolean"
+                    label="Не пройдена проверка фактической работы техники с использованием ГЛОНАСС"
+                    value={state.data.not_passed_verification_glonass}
+                    error={errors.data.not_passed_verification_glonass}
+                    onChange={handleChangeDataBoolean}
+                    boundKeys="not_passed_verification_glonass"
+                    className="checkbox-input flex-reverse"
+                    disabled={!props.isPermitted}
+                  />
+                </EtsBootstrap.Col>
               </React.Fragment>
             )
-            : (
-              state.fact_status === 'repair'
-                ? (
-                  <ExtField
-                    id="reason_repair"
-                    type="string"
-                    label="Причина ремонта:"
-                    value={state.data.reason_repair}
-                    error={errors.data.reason_repair}
-                    disabled={!isPermitted}
-                    onChange={handleChangeData}
-                    boundKeys="reason_repair"
-                  />
-                )
-                : (
-                  <DivNone />
-                )
-            )
         }
-      </React.Fragment>
+      </FieldCarsConditionsCarSelectFactStatusWrapper>
     );
   },
 );

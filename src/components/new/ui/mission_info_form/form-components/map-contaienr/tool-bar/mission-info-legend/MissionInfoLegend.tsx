@@ -7,7 +7,7 @@ import { TrackTitleContainer, TrackLegentContainer } from './styled';
 class MissionInfoLegend extends React.PureComponent<any, any> {
   handleClick: React.MouseEventHandler<HTMLDivElement> = ({ currentTarget: { dataset: { type } } }) => {
     this.props.toggleStatusShow(type);
-  }
+  };
 
   render() {
     const {
@@ -37,25 +37,24 @@ class MissionInfoLegend extends React.PureComponent<any, any> {
                   <div>{`${speed_lim}+ км/ч`}</div>
                 </div>
                 {
-                  has_mkad ?
-                  (
-                    <>
-                      <div key="devider">---------------------------</div>
-                      <div className="legen_option not_allow">
-                        <div className={`car_data-color track_green`}></div>
-                        <div>{`0 - ${mkad_speed_lim} км/ч`}</div>
-                        <div>{`${mkad_speed_lim}+ км/ч`}</div>
-                      </div>
-                      <div className="legen_option not_allow">
-                        <div className={`car_data-color track_red`}></div>
-                        <div>{`${mkad_speed_lim}+ км/ч`}</div>
-                      </div>
-                    </>
-                  )
-                  :
-                  (
-                    <DivNone />
-                  )
+                  has_mkad
+                    ? (
+                      <>
+                        <div key="devider">---------------------------</div>
+                        <div className="legen_option not_allow">
+                          <div className={`car_data-color track_green`}></div>
+                          <div>{`0 - ${mkad_speed_lim} км/ч`}</div>
+                          <div>{`${mkad_speed_lim}+ км/ч`}</div>
+                        </div>
+                        <div className="legen_option not_allow">
+                          <div className={`car_data-color track_red`}></div>
+                          <div>{`${mkad_speed_lim}+ км/ч`}</div>
+                        </div>
+                      </>
+                    )
+                    :                  (
+                      <DivNone />
+                    )
                 }
               </div>
             </TrackLegentContainer>

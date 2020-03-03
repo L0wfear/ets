@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import tirePermissions from './permissions';
 
@@ -59,6 +59,12 @@ export const getToConfig = (): TypeConfigData<Tire> => {
         {
           valueKey: 'odometr_diff',
           title: 'Общий пробег, км',
+          type: 'advanced-number',
+          step: 1,
+        },
+        {
+          valueKey: 'sum_track_length_km',
+          title: 'Общий пробег по ГЛОНАСС, км',
           type: 'advanced-number',
           step: 1,
         },
@@ -131,6 +137,12 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           {
             key: 'odometr_diff',
             title: 'Общий пробег, км',
+            width: 150,
+          },
+          {
+            key: 'sum_track_length',
+            title: 'Общий пробег по ГЛОНАСС, км',
+            format: 'metresToKilometeres',
             width: 150,
           },
           {

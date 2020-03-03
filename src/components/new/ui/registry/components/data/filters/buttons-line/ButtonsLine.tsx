@@ -20,27 +20,35 @@ import { ReduxState } from 'redux-main/@types/state';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsButtonsLIne = {
   registryKey: string;
   isOpen: boolean;
   canApply: boolean;
   canResetFilters: boolean;
-
-  handleClose: any;
-  registryResetAllTypeFilter: any;
 } & WithSearchProps;
 
 const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
   (props) => {
+    const dispatch = etsUseDispatch();
     const resetAllTypeFilter = React.useCallback(
       () => {
         const filterKey = `${props.registryKey}_filters`;
+        const timeKey = `${props.registryKey}_time`;
         props.setDataInSearch({
           [filterKey]: null,
+          [timeKey]: null
         });
 
-        props.registryResetAllTypeFilter(props.registryKey);
+        dispatch(registryResetAllTypeFilter(props.registryKey));
+      },
+      [props.setDataInSearch, props.match.params, props.searchState],
+    );
+
+    const handleClose = React.useCallback(
+      () => {
+        dispatch(registryToggleIsOpenFilter(props.registryKey));
       },
       [],
     );
@@ -49,14 +57,14 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
       <EtsFiltersButtonsLine>
         <div />
         <EtsFilterActionButtonConteiner>
-          <EtsFilterActionButton type="submit">Применить</EtsFilterActionButton>
+          <EtsFilterActionButton id="submit" type="submit">Применить</EtsFilterActionButton>
           <EtsFilterActionButton
             onClick={resetAllTypeFilter}
             disabled={!props.canResetFilters}>
             Сброс
           </EtsFilterActionButton>
         </EtsFilterActionButtonConteiner>
-        <EtsFiltersCloseContainer onClick={props.handleClose}>
+        <EtsFiltersCloseContainer onClick={handleClose}>
           <EtsBootstrap.Glyphicon glyph="remove" />
         </EtsFiltersCloseContainer>
       </EtsFiltersButtonsLine>
@@ -64,41 +72,33 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
   },
 );
 
-const mapStateToProps = (state, { registryKey }) => {
-  const canApply = Object.values(
-    getFilterData(state.registry, registryKey).rawFilterValues,
-  ).some((valuesObj) =>
-    Object.values(valuesObj).some(
-      ({ value }: any) =>
-        isNumber(value) ||
-        isBoolean(value) ||
-        (isString(value) && !!value.length) ||
-        (value &&
-          (!Array.isArray(value) || (Array.isArray(value) && !!value.length))),
-    ),
-  );
-
-  return {
-    canApply,
-    canResetFilters:
-      canApply ||
-      Boolean(
-        Object.values(
-          getListData(state.registry, registryKey).processed.filterValues,
-        ).length,
-      ),
-  };
-};
-
-const mapDispatchToProps = (dispatch: any, { registryKey }) => ({
-  handleClose: () => dispatch(registryToggleIsOpenFilter(registryKey)),
-  registryResetAllTypeFilter: () => dispatch(registryResetAllTypeFilter(registryKey)),
-});
-
 export default compose<any, any>(
   connect<any, any, any, ReduxState>(
-    mapStateToProps,
-    mapDispatchToProps,
+    (state, { registryKey }) => {
+      const canApply = Object.values(
+        getFilterData(state.registry, registryKey).rawFilterValues,
+      ).some((valuesObj) =>
+        Object.values(valuesObj).some(
+          ({ value }: any) =>
+            isNumber(value)
+            || isBoolean(value)
+            || (isString(value) && !!value.length)
+            || (value
+              && (!Array.isArray(value) || (Array.isArray(value) && !!value.length))),
+        ),
+      );
+
+      return {
+        canApply,
+        canResetFilters:
+          canApply
+          || Boolean(
+            Object.values(
+              getListData(state.registry, registryKey).processed.filterValues,
+            ).length,
+          ),
+      };
+    },
   ),
   withSearch,
 )(ButtonsLIne);

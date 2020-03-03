@@ -5,7 +5,7 @@ import { PropulsionType } from 'redux-main/reducers/modules/autobase/@types/auto
 import { defaultSelectListMapper, DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 type UsePropulsionTypeOptionsAns = {
-  propulsionTypeOptions: DefaultSelectListMapper<PropulsionType>,
+  propulsionTypeOptions: DefaultSelectListMapper<PropulsionType>;
 };
 
 type UsePropulsionTypeOptions = (
@@ -20,13 +20,13 @@ const usePropulsionTypeOptions: UsePropulsionTypeOptions = (loadPropulsionType, 
   React.useEffect(
     () => {
       loadPropulsionType({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setPropulsionTypeList(
             data.map(defaultSelectListMapper),
           )
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

@@ -1,5 +1,5 @@
-import { SchemaType } from "components/old/ui/form/new/@types/validate.h";
-import { WaybillsReportForm } from "./@types";
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { WaybillsReportForm } from './@types';
 
 export const waybillsReportFormSchema: SchemaType<WaybillsReportForm, any> = {
   properties: {

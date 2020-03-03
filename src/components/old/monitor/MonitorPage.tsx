@@ -16,7 +16,7 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { MonitorPageContainer } from 'components/old/monitor/styled';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';
@@ -58,6 +58,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
                     result.data,
                     'gps_code',
                   ),
+                  result.data.length,
                 ),
               );
             }
@@ -87,28 +88,37 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
     );
     React.useLayoutEffect(
       () => {
+        const meta = document.querySelector('meta[property="og:title"]');
         const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        const new_title = `${etsName} Карта`;
+
         if (document) {
-          document.title = `${etsName} Карта`;
+          document.title = new_title;
+        }
+        if (meta) {
+          meta.setAttribute('content', new_title);
         }
 
         return () => {
+          const metaNew = document.querySelector('meta[property="og:title"]');
           if (document) {
             document.title = etsName;
+          }
+          if (metaNew) {
+            metaNew.setAttribute('content', etsName);
           }
         };
       },
     );
 
     return (
-      props.token ?
-        <MonitorPageContainer>
+      props.token
+        ? <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
           <MonitorSearchParams />
         </MonitorPageContainer>
-      :
-        <div>загрузка...</div>
+        :        <div>загрузка...</div>
     );
   },
 );

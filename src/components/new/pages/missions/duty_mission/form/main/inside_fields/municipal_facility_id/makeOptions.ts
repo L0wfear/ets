@@ -5,7 +5,7 @@ import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeOptionsByMunicipalFacilityIdRegistryForDutyMissionList = (
   memoize(
-    (municipalFacilityIdRegistryForMissionList: MunicipalFacility[]) => (
+    (municipalFacilityIdRegistryForMissionList: Array<MunicipalFacility>) => (
       municipalFacilityIdRegistryForMissionList
         .map<DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>>((mfData) => ({
           value: mfData.municipal_facility_id,

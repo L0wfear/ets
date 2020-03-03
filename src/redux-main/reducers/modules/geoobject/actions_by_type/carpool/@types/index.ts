@@ -7,9 +7,3 @@ export type Carpool = {
   name: string;
   shape: object;
 };
-
-export type CreateCarpool = any;
-
-export type UpdateCarpool = any;
-
-export type GetCarpool = () => Promise<any>;

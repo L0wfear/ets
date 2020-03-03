@@ -6,10 +6,10 @@ import reportProps, { serviceUrl, renderers } from 'components/old/reports/opera
 
 import ReportFormWrap from 'components/old/reports/operational/track_events/form/ReportFormWrap';
 
-interface IStateTrackEventReport {
+type IStateTrackEventReport = {
   mapFormVisibility: boolean;
   coords: [number, number];
-}
+};
 const exportableTSX: any = exportable;
 
 @exportableTSX({
@@ -30,12 +30,12 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
       coords: [x, y],
       mapFormVisibility: true,
     });
-  }
+  };
   onMapFormHide = () => {
     this.setState({
       mapFormVisibility: false,
     });
-  }
+  };
 
   render() {
     return (

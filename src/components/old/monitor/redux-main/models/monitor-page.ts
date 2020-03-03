@@ -34,24 +34,25 @@ export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUE
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
+  carActualGpsCount: number;
   carInfo: IStateCarInfo;
   carsByStatus: {
     in_move: number;
     stop: number;
     parking: number;
     not_in_touch: number;
-  }
+  };
   SHOW_GOV_NUMBER: boolean;
   status: {
     in_move: boolean;
     stop: boolean;
     parking: boolean;
     not_in_touch: boolean;
-  },
+  };
   statusGeo: {
     SHOW_TRACK: boolean;
     SHOW_GEOOBJECTS: boolean;
-  },
+  };
   geoobjects: {
     [k in typeof GEOOBJECTS_OBJ[keyof typeof GEOOBJECTS_OBJ]['serverName']]: {
       show: boolean;
@@ -60,36 +61,37 @@ export type IStateMonitorPage = {
   };
   selectedGeoobjects: {
     [k in typeof GEOOBJECTS_OBJ[keyof typeof GEOOBJECTS_OBJ]['serverName']]: object;
-  },
+  };
   filters: {
     data: {
       carFilterText: string;
-      carFilterMultyType: Array<number>,
-      carFilterMultyStructure: Array<number>,
-      carFilterMultyOwner: Array<number>,
-      featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>}, // DITETSSUP-2007
-    },
-    filtredCarGpsCode: Array<number>,
-  },
+      carFilterMultyType: Array<number>;
+      carFilterMultyStructure: Array<number>;
+      carFilterMultyOwner: Array<number>;
+      featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
+    };
+    filtredCarGpsCode: Array<number>;
+  };
   companiesIndex: -1 | object;
   drawActive: {
     all: boolean;
     measureActive: boolean;
     polygonBuffer: boolean;
-  },
+  };
   fuelEvents: {
     leak: {
       show: boolean;
       overlayData: any;
-      data: object,
+      data: object;
       date_from: any;
       date_to: any;
-    },
-  },
+    };
+  };
 };
 
-const initialState: IStateMonitorPage = {
+export const initialMonitorState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
+  carActualGpsCount: 0,
   carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
   status: {
@@ -151,12 +153,13 @@ const initialState: IStateMonitorPage = {
   },
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialMonitorState, { type, payload }) => {
   switch (type) {
     case MONITOR_PAGE_SET_CAR_ACTUAL_INDEX: {
       return {
         ...state,
         carActualGpsNumberIndex: payload.carActualGpsNumberIndex,
+        carActualGpsCount: payload.carActualGpsCount,
       };
     }
     case MONITOR_PAGE_SET_COMPANY: {
@@ -235,16 +238,16 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         status: {
-          ...initialState.status,
+          ...initialMonitorState.status,
         },
         carsByStatus: {
-          ...initialState.carsByStatus,
+          ...initialMonitorState.carsByStatus,
         },
       };
     }
     case MONITOR_PAGE_RESER: {
       return {
-        ...initialState,
+        ...initialMonitorState,
       };
     }
     case MONITOR_PAGE_ADD_TO_SELECTED_GEOMETRY: {

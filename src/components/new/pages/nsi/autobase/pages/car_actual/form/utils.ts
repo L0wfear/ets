@@ -4,6 +4,7 @@ import { CarWrap } from './@types/CarForm';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isFourDigitGovNumber } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { get } from 'lodash';
 
 export const getDefaultCar = (): CarWrap => ({
   asuods_id: null,
@@ -24,6 +25,7 @@ export const getDefaultCar = (): CarWrap => ({
   equipment_sensors_str: '',
   equipment_sensors_types_ids: [],
   exploitation_date_start: '',
+  factory_number: '',
   for_driver_license: null,
   for_special_license: null,
   fuel_correction_rate: null,
@@ -52,6 +54,7 @@ export const getDefaultCar = (): CarWrap => ({
   type_id: null,
   type_image_name: '',
   type_name: '',
+  vin: '',
 
   drivers_data: {
     car_id: null,
@@ -162,25 +165,39 @@ export const memoizeMergeElement = memoizeOne(
  * Проверка доступности водителя на прикрепление к ТС
  * @param employeeData данные по водителю из employee
  * @param gov_number номер ТС
+ * @param payload Дополнительные параметры фильтрыции
  */
-export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number']) => {
+export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number'], payload?: { includeNotActive?: boolean; isValidSpecialLicense?: boolean; isValidDriverlLicense?: boolean; isValidOneOfLicense?: boolean; }) => {
   if (employeeData) {
     const isFourInGovNumver = isFourDigitGovNumber(gov_number);
 
-    if (employeeData.active) {                                                  // сотрудник активен
-      if (isFourInGovNumver) {
-        return (
-          employeeData.special_license                                          // есть специальное удостоверение
-          && employeeData.special_license_date_end                              // есть дата окончания специального удостоверения
-          && diffDates(employeeData.special_license_date_end, new Date()) > 0   // срок действия специального удостоверения не закончился
-        );
+    if (employeeData.active || get(payload, 'includeNotActive')) {             // сотрудник активен || включить некактивных
+
+      const validSpecialLicense = employeeData.special_license                 // есть специальное удостоверение
+        && employeeData.special_license_date_end                               // есть дата окончания специального удостоверения
+        && diffDates(employeeData.special_license_date_end, new Date()) > 0;   // срок действия специального удостоверения не закончился
+
+      const validDriverLicense = employeeData.drivers_license                                            // есть водительское удостоверение
+        && employeeData.drivers_license_date_end                                // есть дата окончания водительского удостоверения
+        && diffDates(employeeData.drivers_license_date_end, new Date()) > 0;    // срок действия водительского удостоверения не закончился
+      
+      if (payload?.isValidOneOfLicense){   
+        return validSpecialLicense || validDriverLicense;
       }
 
-      return (
-        employeeData.drivers_license                                            // есть водительское удостоверение
-        && employeeData.drivers_license_date_end                                // есть дата окончания водительского удостоверения
-        && diffDates(employeeData.drivers_license_date_end, new Date()) > 0     // срок действия водительского удостоверения не закончился
-      );
+      if (payload?.isValidSpecialLicense){                                       // у сотрудника есть спец. удостоверение и оно валидно
+        return validSpecialLicense;
+      }
+
+      if (payload?.isValidDriverlLicense){                                       // у сотрудника есть вод. удостоверение и оно валидно
+        return validDriverLicense;
+      }
+
+      if (isFourInGovNumver) {
+        return validSpecialLicense;
+      }
+
+      return validDriverLicense;
     }
   }
 

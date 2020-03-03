@@ -11,6 +11,10 @@ import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,
+  getMultiValueId,
+  getInstanceId,
+  geContainertId,
+  getValueId,
 } from 'components/old/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
@@ -18,10 +22,17 @@ import { SingleValue, MultiValue, MenuList } from 'components/old/ui/input/React
 import { DivRelative } from 'global-styled/global-styled';
 import VirtualizedSelectList from '../VirtualizedSelectList/VirtualizedSelectList';
 import { detectIE } from 'utils/functions';
+import memoizeOne from 'memoize-one';
 
 require('components/old/ui/input/ReactSelect/ReactSelect.scss');
 
 const openMenuIds = {};
+
+const formatStr = (str) => (
+  isString(str)
+    ? str.trim().toLocaleLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ')
+    : ''
+);
 
 /**
  * @todo уйти от легаси
@@ -74,10 +85,10 @@ export default class ReactSelect extends React.Component<any, any> {
       } else {
         openMenuIds[key] = true;
       }
-      console.log('%cСлушаюсь', 'font-size: 18px; background: #222; color: #bada55'); // tslint:disable-line:no-console
+      console.info('%cСлушаюсь', 'font-size: 18px; background: #222; color: #bada55'); // eslint-disable-line
       this.forceUpdate();
     }
-  }
+  };
 
   handleChange = (objectValue) => {
     const {
@@ -97,18 +108,18 @@ export default class ReactSelect extends React.Component<any, any> {
       ),
       !multi
         ? objectValue
-        : objectValue ?
-          objectValue
+        : objectValue
+          ? objectValue
           : [],
     );
-  }
+  };
 
   menuListRender = (props: any) => {
     if (props.children.length > 500 && !detectIE()) {
-      return <VirtualizedSelectList {...props} />;
+      return <VirtualizedSelectList {...props} id={this.props.id} modalKey={this.props.modalKey} />;
     }
     return <MenuList {...props} />;
-  }
+  };
 
   multiValueContainerReander = (props: any) => {
     if (this.props.multiValueContainerReander) {
@@ -116,7 +127,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <components.MultiValueContainer {...props} />;
-  }
+  };
 
   optionRenderer = ({ innerProps, ...props }: any) => {
     const { components: propsComponents } = this.props;
@@ -131,7 +142,7 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <components.Option innerProps={newInnerProps} {...props} />;
-  }
+  };
 
   noOptionsMessage = () => this.props.noResultsText || 'Нет данных';
 
@@ -145,26 +156,26 @@ export default class ReactSelect extends React.Component<any, any> {
     const { value } = this.props;
 
     return !isNotVisible && (
-      label.trim().toLocaleLowerCase().includes(
-        filterValue.trim().toLocaleLowerCase(),
+      formatStr(label).includes(
+        formatStr(filterValue),
       )
       && (
         isArray(value)
-        ? (
-          !value.includes(valueOpt)
-        )
-        : (
-          !isNullOrUndefined(value)
-            ? (
-              value !== valueOpt
-            )
-            : (
-              true
-            )
-        )
+          ? (
+            !value.includes(valueOpt)
+          )
+          : (
+            !isNullOrUndefined(value)
+              ? (
+                value !== valueOpt
+              )
+              : (
+                true
+              )
+          )
       )
     );
-  }
+  };
 
   singleValueRender = ({ innerProps, ...props }: SingleValueProps<any>) => {
     const {
@@ -172,7 +183,7 @@ export default class ReactSelect extends React.Component<any, any> {
       components: propsComponents ,
     } = this.props;
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-value` : undefined;
+    const id = getValueId(this.props.id, modalKey);
 
     const newInnerProps = {
       ...innerProps,
@@ -188,17 +199,16 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <SingleValue innerProps={newInnerProps} {...props}  />;
-  }
+  };
 
   multiValueRender = ({ innerProps, ...props }: MultiValueProps<any>) => {
     const { components: propsComponents } = this.props;
 
     const {
-      selectProps: { instanceId },
       data: { value },
     } = props;
 
-    const id = instanceId ? `${instanceId}-value-${value}` : undefined;
+    const id = getMultiValueId(this.props.id, this.props.modalKey, value);
 
     const newInnerProps = {
       ...innerProps,
@@ -210,7 +220,11 @@ export default class ReactSelect extends React.Component<any, any> {
     }
 
     return <MultiValue innerProps={newInnerProps} {...props} />;
-  }
+  };
+  makeOptions = memoizeOne(
+    (options, sortingFunction) => options.sort(sortingFunction),
+  );
+
   render() {
     const {
       placeholder = 'Выберите...',
@@ -226,22 +240,22 @@ export default class ReactSelect extends React.Component<any, any> {
       ...props
     } = this.props;
 
-    const sortedOptions = options.sort(sortingFunction);
-    const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
+    const sortedOptions = this.makeOptions(options, sortingFunction);
+    const instanceId = getInstanceId(this.props.id, modalKey);
 
     let value = props.value;
 
     if (legacy) {
-      value = value !== null && value !== undefined ?
-          multi ?
-              sortedOptions.filter(({ value: op_value }) => value.includes(op_value))
-            :
-              sortedOptions.find(({ value: op_value }) => op_value === value)
-        :
-          null;
+      value = value !== null && value !== undefined
+        ? multi
+          ? sortedOptions.filter(({ value: op_value }) => isArray(value)
+            ? value.includes(op_value)
+            : value === op_value )
+          : sortedOptions.find(({ value: op_value }) => op_value === value)
+        : null;
     }
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;
+    const id = geContainertId(this.props.id, modalKey);
 
     return (
       <DivRelative>

@@ -8,7 +8,7 @@ import { IPropsDataTableInput, IStateDataTableInput } from 'components/old/ui/ta
 import DataTableComponent from 'components/old/ui/table/DataTable';
 import DataTableInputWrapper from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
@@ -26,19 +26,19 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
       selected: {...selected.props.data, rowNumber },
     });
     this.props.onRowSelected(selected); // DataTableInputWrapper.tsx handleRowSelected()
-  }
+  };
   handleAddVehicle = () => {
     this.props.onItemAdd();
     this.setState({
       selected: null,
     });
-  }
+  };
   handleRemoveVehicle = () => {
     this.props.onItemRemove(this.state.selected.rowNumber - 1);
     this.setState({
       selected: null,
     });
-  }
+  };
   render() {
     const {
       addButtonLabel = 'Добавить',
@@ -48,13 +48,20 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
 
     return (
       <div className="date-table-input">
-        <EtsHeaderContainer padding={'0px'} alignItems={'center'}>
-          <EtsHeaderTitle>{this.props.tableTitle ? this.props.tableTitle : ''}</EtsHeaderTitle>
-          <EtsButtonsContainer marginContainerY={5}>
-            <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
-            <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
-          </EtsButtonsContainer>
-        </EtsHeaderContainer>
+        <EtsHeaderContainerWrap padding={'0px'}>
+          <EtsHeaderContainer alignItems={'center'}>
+            <EtsHeaderTitle>{this.props.tableTitle ? this.props.tableTitle : ''}</EtsHeaderTitle>
+            <EtsButtonsContainer marginContainerY={5}>
+              {
+                !this.props.hideButtons
+                  && <React.Fragment>
+                    <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
+                    <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
+                  </React.Fragment>
+              }
+            </EtsButtonsContainer>
+          </EtsHeaderContainer>
+        </EtsHeaderContainerWrap>
         <DataTable
           title=""
           results={this.props.inputList}

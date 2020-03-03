@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, HandleThunkActionCreator, TypedUseSelectorHook } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
-export type EtsDispatch = <F extends ((...args: any[]) => any) | object>(
+export type EtsDispatch = <F extends ((...args: Array<any>) => any) | object>(
   f: F,
 ) => (
-  F extends (...args: any[]) => any
+  F extends (...args: Array<any>) => any
     ? ReturnType<F>
     : F
 );
@@ -13,11 +13,9 @@ export type EtsAction<ReturnType> = (
   getState: () => ReduxState,
 ) => ReturnType;
 
+export type EtsActionReturnType<Action extends (...arg: any) => any> = ReturnType<HandleThunkActionCreator<Action>>;
+
 type EtsUseDispatch = () => EtsDispatch;
-type EtsUseSelector = <TSelected>(
-  selector: (state: ReduxState) => TSelected,
-  equalityFn?: (left: TSelected, right: TSelected) => boolean,
-) => TSelected;
 
 export const etsUseDispatch = useDispatch as EtsUseDispatch;
-export const etsUseSelector = useSelector as EtsUseSelector;
+export const etsUseSelector: TypedUseSelectorHook<ReduxState> = useSelector;

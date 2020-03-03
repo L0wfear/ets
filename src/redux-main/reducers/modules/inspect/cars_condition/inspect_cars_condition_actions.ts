@@ -1,6 +1,5 @@
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { IStateInspectCarsCondition, InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { getInspectCarsCondition } from 'redux-main/reducers/selectors';
 import { INSPECT_CARS_CONDITION, initialStateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition';
@@ -17,8 +16,34 @@ import {
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
+import { get } from 'lodash';
+import { isNullOrUndefined } from 'util';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+
+const formatedData = (dataOwn: InspectCarsCondition['data']) => {
+  const data = cloneDeep(dataOwn);
+  data.types_cars = get(data, 'types_cars').map(
+    (rowData) => ({
+      ...rowData,
+      will_checked_cnt: getNumberValueFromSerch(rowData.will_checked_cnt),
+      allseason_use_cnt: getNumberValueFromSerch(rowData.allseason_use_cnt),
+      checks_period_use_cnt: getNumberValueFromSerch(rowData.checks_period_use_cnt),
+    }),
+  );
+
+  data.types_harvesting_unit = get(data, 'types_harvesting_unit').map(
+    (rowData) => ({
+      ...rowData,
+      will_checked_cnt: getNumberValueFromSerch(rowData.will_checked_cnt),
+      not_ready_cnt: getNumberValueFromSerch(rowData.not_ready_cnt),
+      ready_cnt: getNumberValueFromSerch(rowData.ready_cnt),
+    }),
+  );
+
+  return data;
+};
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -36,7 +61,7 @@ export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspec
   return stateInspectCarsCondition;
 };
 
-export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
+export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionLoadCompany>> => async (dispatch) => {
   const response = await dispatch(
     actionLoadCompany(payload, meta),
   );
@@ -50,17 +75,14 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
   return response;
 };
 
-export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseGetInspectCarsConditionById>>> => async (dispatch, getState) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetInspectCarsConditionById(id),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetInspectCarsConditionById>> => async (dispatch, getState) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    promiseGetInspectCarsConditionById(id),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 
 export const actionResetCompany = (): EtsAction<null> => (dispatch) => {
@@ -89,7 +111,7 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
 export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateInspectionCarsCondition>> => async (dispatch) => {
   if (inspectCarsConditionOwn.status !== 'completed' && inspectCarsConditionOwn.status !== 'conducting') {
     const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
-    const data = cloneDeep(inspectCarsCondition.data);
+    const data = formatedData(cloneDeep(inspectCarsCondition.data));
 
     delete inspectCarsCondition.data;
 
@@ -114,13 +136,12 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     return inspectionCarsCondition;
   } else {
     const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
-    inspectCarsCondition.resolve_to = createValidDateTime(inspectCarsCondition.resolve_to);
 
     const payload = {
-      data: inspectCarsCondition.data,
+      data: formatedData(inspectCarsCondition.data),
       agents_from_gbu: inspectCarsCondition.agents_from_gbu,
       commission_members: inspectCarsCondition.commission_members,
-      resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+      resolve_to: inspectCarsCondition.resolve_to,
       action: inspectCarsCondition.action ? inspectCarsCondition.action : 'save',
     };
 
@@ -157,7 +178,7 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
     data,
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,
     commission_members: inspectCarsCondition.commission_members,
-    resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+    resolve_to: inspectCarsCondition.resolve_to,
     action: 'close',
   };
 
@@ -212,7 +233,27 @@ export const actionCreateCarsConditionsCar = (carsConditionsCarRaw: Partial<Cars
   return response;
 };
 
-export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: Partial<CarsConditionCars>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+export const actionUpdateCarsConditionsCar = (carsConditionsCarRawOwn: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+  let carsConditionsCarRaw = carsConditionsCarRawOwn;
+  if (isNullOrUndefined(carsConditionsCarRaw.data)) {
+    const defaultCarsConditionCarDataKeys = Object.keys(defaultCarsConditionCar.data);
+    const CarsConditionCarData: Partial<CarsConditionCars['data']> = defaultCarsConditionCarDataKeys.reduce((newElem, currentElemKey) => {
+      const val =  get(carsConditionsCarRaw, currentElemKey, defaultCarsConditionCar[currentElemKey]);
+      delete carsConditionsCarRaw[currentElemKey];
+      return {
+        [currentElemKey]: val,
+        ...newElem,
+      };
+    }, {});
+
+    carsConditionsCarRaw = {
+      ...carsConditionsCarRawOwn,
+      data: {
+        ...CarsConditionCarData,
+      },
+    };
+  }
+
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCarsConditionsCar(carsConditionsCarRaw),

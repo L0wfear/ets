@@ -7,40 +7,9 @@ import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { repairType } from 'redux-main/reducers/modules/autobase/constants';
+import { RepairType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getRepairType = autobaseLoadByType(repairType);
-export const createRepairType = autobaseCreateByType(repairType);
-export const updateRepairType = autobaseUpdateByType(repairType);
-export const removeRepairType = autobaseRemoveByType(repairType);
-
-export const getSetRepairType = async (payload) => {
-  const { data } = await getRepairType(payload);
-
-  return {
-    data,
-  };
-};
-
-export const createSetRepairType = (rawRepairType) => {
-  const payload = {
-    ...rawRepairType,
-  };
-
-  return createRepairType(
-    payload,
-  );
-};
-export const updateSetRepairType = (oldRepairType) => {
-  const payload = {
-    ...oldRepairType,
-  };
-
-  return updateRepairType(
-    payload,
-  );
-};
-export const autobaseDeleteRepairType = (id) => {
-  return removeRepairType(
-    id,
-  );
-};
+export const getSetRepairType = autobaseLoadByType<RepairType>(repairType);
+export const createSetRepairType = autobaseCreateByType<RepairType>(repairType);
+export const updateSetRepairType = autobaseUpdateByType<RepairType>(repairType);
+export const autobaseDeleteRepairType = autobaseRemoveByType(repairType);

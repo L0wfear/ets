@@ -6,70 +6,20 @@ import {
   config,
 } from 'components/new/pages/waybill/_config-data/registry-config';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
 import WaybilFormlLazy from 'components/new/pages/waybill/form';
 
-import { HandleThunkActionCreator } from "react-redux";
+import { WaybillRegistryRow } from 'redux-main/reducers/modules/waybill/@types';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 
-export type WaybillListStateProps = {};
-export type WaybillListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type WaybillListOwnProps = {};
-export type WaybillListMergedProps = (
-  WaybillListStateProps
-  & WaybillListDispatchProps
-  & WaybillListOwnProps
-);
-export type WaybillListProps = (
-  WaybillListMergedProps
+type OwnProps = {};
+const WaybillList: React.FC<OwnProps> = React.memo(
+  () => {
+    return (
+      <Registry registryKey={registryWaybillKey}>
+        <WaybilFormlLazy registryKey={registryWaybillKey} />
+      </Registry>
+    );
+  },
 );
 
-const WaybillList: React.FC<WaybillListProps> = (props) => {
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(config);
-
-      return () => {
-        props.registryRemoveData(registryWaybillKey);
-      };
-    },
-    [],
-  );
-
-  return (
-    <>
-      <Registry registryKey={registryWaybillKey} />
-      <WaybilFormlLazy registryKey={registryWaybillKey} />
-    </>
-  );
-};
-
-export default compose<WaybillListProps, WaybillListOwnProps>(
-  withPreloader({
-    page: config.registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<WaybillListStateProps, WaybillListDispatchProps, WaybillListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(WaybillList);
+export default withRegistry<WaybillRegistryRow, OwnProps>(config)(WaybillList);

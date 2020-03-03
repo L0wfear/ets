@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
@@ -6,70 +7,19 @@ import {
   config,
 } from 'components/new/pages/missions/mission_template/_config-data/registry-config';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
 import MissionTemplateFormWrap from 'components/new/pages/missions/mission_template/form/MissionTemplateFormWrap';
+import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 
-import { HandleThunkActionCreator } from "react-redux";
-
-export type MissionTemplateListStateProps = {};
-export type MissionTemplateListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type MissionTemplateListOwnProps = {};
-export type MissionTemplateListMergedProps = (
-  MissionTemplateListStateProps
-  & MissionTemplateListDispatchProps
-  & MissionTemplateListOwnProps
-);
-export type MissionTemplateListProps = (
-  MissionTemplateListMergedProps
+type OwnProps = {};
+const MissionTemplateList: React.FC<OwnProps> = React.memo(
+  () => {
+    return (
+      <Registry registryKey={registryKey}>
+        <MissionTemplateFormWrap registryKey={registryKey} />
+      </Registry>
+    );
+  },
 );
 
-const MissionTemplateList: React.FC<MissionTemplateListProps> = (props) => {
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(config);
-
-      return () => {
-        props.registryRemoveData(registryKey);
-      };
-    },
-    [],
-  );
-
-  return (
-    <>
-      <Registry registryKey={registryKey} />
-      <MissionTemplateFormWrap registryKey={registryKey} />
-    </>
-  );
-};
-
-export default compose<MissionTemplateListProps, MissionTemplateListOwnProps>(
-  withPreloader({
-    page: config.registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<MissionTemplateListStateProps, MissionTemplateListDispatchProps, MissionTemplateListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(MissionTemplateList);
+export default withRegistry<MissionTemplate, OwnProps>(config)(MissionTemplateList);

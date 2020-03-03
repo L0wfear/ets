@@ -8,7 +8,7 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import createFio from 'utils/create-fio';
+import { createFio } from 'utils/labelFunctions';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';
 import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';
 
@@ -54,7 +54,7 @@ export const getDefaultDutyMissionTemplateElement = (element?: Partial<DutyMissi
 };
 
 export const getAvailableRouteTypesForDutyMission = (
-  municipalFacilityForMissionList: MunicipalFacility[],
+  municipalFacilityForMissionList: Array<MunicipalFacility>,
   municipal_facility_id: DutyMissionTemplate['municipal_facility_id'],
 ) => {
   return get(
@@ -71,10 +71,10 @@ export const getAvailableRouteTypesForDutyMission = (
 export const makeOptionsByEmployee = (
   memoize(
     (
-      employeeList: Employee[],
+      employeeList: Array<Employee>,
       structure_id: DutyMissionTemplate['structure_id'],
     ) => {
-      const FOREMANS = employeeList.reduce<DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>[]>((newArr, employee) => {
+      const FOREMANS = employeeList.reduce<Array<DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean; }>>>((newArr, employee) => {
         const isPermitted = isPermittedEmployeeForDutyMission(
           employee,
           structure_id,

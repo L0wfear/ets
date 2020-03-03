@@ -5,7 +5,7 @@ export const LegenCompanyLegendOption = styled.div.attrs({ className: 'legen_opt
   justify-content: space-between;
 `;
 
-export const CubeColor = styled.div<{ backgroundColor: string }>`
+export const CubeColor = styled.div<{ backgroundColor: string; }>`
   width: 20px;
   height: 10px;
   background-color: ${({ backgroundColor }) => backgroundColor};

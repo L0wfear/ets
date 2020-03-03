@@ -15,24 +15,24 @@ import { carInfoSetFuelEventPoint } from 'components/old/monitor/info/car-info/r
 import OverlayFuelEventPoint from 'components/old/monitor/layers/track/events/fuel-event/OverlayFuelEventPoint';
 
 type PropsLayerFuelEventPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  zoom: number;
   map: Map;
 
-  front_events_list: any[];
-  front_cars_sensors_level: any,
+  front_events_list: Array<any>;
+  front_cars_sensors_level: any;
   carInfoSetFuelEventPoint: any;
   fuelEventPoint: any;
 };
 
 class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, {}> {
   componentDidMount() {
-    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
+    this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4, renderMode: 'hybrid' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawTrackPoints(
@@ -84,7 +84,7 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   addOneFuelEventPoint(fuelEventPoint) {
     if (fuelEventPoint) {

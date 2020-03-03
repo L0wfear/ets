@@ -1,4 +1,4 @@
-import { FuelOperation } from "../../fuel_operations/@types/fuelOperations";
+import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
 export type FuelRate = {
   body_capacity: number | null;
@@ -30,18 +30,7 @@ export type FuelRate = {
 };
 
 export type IStateFuelRates = {
-  fuelRatesList: FuelRate[],
-  fuelRateOperationsList: FuelOperation[],
-  fuelRateOperationsIsActiveList: FuelOperation[],
-};
-
-export type IFuelRatesByCarModel = {
-  car_id?: number | null;
-  datetime?: string | null;
-};
-
-export type IEquipmentFuelRatesByCarModel = {
-  car_id?: number | null;
-  datetime?: string | null;
-  for_equipment?: boolean | null;
+  fuelRatesList: Array<FuelRate>;
+  fuelRateOperationsList: Array<FuelOperation>;
+  fuelRateOperationsIsActiveList: Array<FuelOperation>;
 };

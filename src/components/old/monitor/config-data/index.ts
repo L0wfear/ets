@@ -1,12 +1,17 @@
 import permissions from 'components/old/monitor/config-data/permissions';
 import component from 'components/old/monitor/config-data/components';
+import { ConfigPageData } from 'components/@next/@types/config_data';
 
-export default {
+const monitor_page_data: ConfigPageData = {
   path: '/monitor',
   routePath: '/monitor/:gov_number?',
   title: 'Карта',
   entyity: 'monitor',
-  noDotList: true,
+
   component,
   permissions,
+
+  isNewRegistry: false,
 };
+
+export default monitor_page_data;

@@ -1,30 +1,27 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { insurancePolicyFormSchema } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/schema';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { getDefaultInsurancePolicyElement } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnInsurancePolicyProps,
   PropsInsurancePolicy,
-  StatePropsInsurancePolicy,
-  DispatchPropsInsurancePolicy,
   PropsInsurancePolicyWithForm,
 } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/@types/InsurancePolicyForm';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
 
-import { get } from 'lodash';
 import insurancePolicyPermissions from '../_config-data/permissions';
+import { autobaseCreateInsurancePolicy, autobaseUpdateInsurancePolicy } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/actions';
+import { autobaseGetInsuranceType } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/actions';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 
 const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const [insuranceTypeOptions, setInsuranceTypeOptions] = React.useState([]);
@@ -45,12 +42,14 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
     !IS_CREATING
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
-    );
+  );
 
   React.useEffect(
     () => {
-      props.autobaseGetInsuranceType({}, { page, path }).then(
-        ({ payload: { data } }) => {
+      props.dispatch(
+        autobaseGetInsuranceType({}, props),
+      ).then(
+        ({ data }) => {
           setInsuranceTypeOptions(
             data.map(defaultSelectListMapper),
           );
@@ -58,7 +57,9 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       );
 
       if (!car_id) {
-        props.autobaseGetSetCar({}, { page, path }).then(
+        props.dispatch(
+          autobaseGetSetCar({}, props),
+        ).then(
           ({ data }) => {
             setCarList(
               data,
@@ -242,22 +243,11 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   );
 };
 
-export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
-  connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
-    null,
-    (dispatch: any, { page, path }) => ({
-      autobaseGetInsuranceType: () => (
-        dispatch(autobaseActions.autobaseGetInsuranceType({}, { page, path }))
-      ),
-      autobaseGetSetCar: (...arg) => (
-        dispatch(autobaseActions.autobaseGetSetCar(...arg))
-      ),
-    }),
-  ),
+export default compose<PropsInsurancePolicy, PropsInsurancePolicyWithForm>(
   withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateInsurancePolicy,
-    updateAction: autobaseActions.autobaseUpdateInsurancePolicy,
+    createAction: autobaseCreateInsurancePolicy,
+    updateAction: autobaseUpdateInsurancePolicy,
     mergeElement: (props) => {
       return getDefaultInsurancePolicyElement(props.element);
     },

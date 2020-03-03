@@ -68,8 +68,6 @@ class Fiter extends React.Component<any, any> {
 
   getName(name, type) {
     switch (type) {
-      case 'advanced-select-like':
-        return `${name}__like`;
       default:
         return name;
     }
@@ -117,7 +115,7 @@ class Fiter extends React.Component<any, any> {
         <EtsBootstrap.Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <EtsBootstrap.Button type="submit">Применить</EtsBootstrap.Button>
+              <EtsBootstrap.Button id="submit" type="submit">Применить</EtsBootstrap.Button>
               <EtsBootstrap.Button
                 onClick={this.reset}
                 disabled={!this.props.haveActiveFilter}>

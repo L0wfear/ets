@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TextAreaFieldUi } from 'components/@next/@ui/renderFields/TextAreaField/styled';
-import { ExtFieldText } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldText } from 'components/@next/@ui/renderFields/@types';
 
 const TextAreaField: React.FC<ExtFieldText> = React.memo(
   (props) => {
@@ -34,9 +34,11 @@ const TextAreaField: React.FC<ExtFieldText> = React.memo(
 
     return (
       <SingleUiElementWrapper hidden={hidden} className={wrapperClassName}>
-        <FieldLabel>
-          <span>{label}</span>
-        </FieldLabel>
+        {typeof props.label === 'string' && (
+          <FieldLabel>
+            <span>{label}</span>
+          </FieldLabel>
+        )}
         <TextAreaFieldUi
           id={id}
           style={textAreaStyle}

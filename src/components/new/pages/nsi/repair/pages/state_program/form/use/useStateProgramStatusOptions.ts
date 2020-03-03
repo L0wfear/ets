@@ -1,30 +1,26 @@
 import * as React from 'react';
-import { HandleThunkActionCreator } from 'react-redux';
-import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper, DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { actionLoadStateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/actions_state_program_status';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { StateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/@types/stateProgramStatus';
 
-type UseTechnicalOperationOptionsAns = DefaultSelectListMapper<StateProgramStatus>;
-
-type UseTechnicalOperationOptions = (
-  loadActions: HandleThunkActionCreator<typeof actionLoadStateProgramStatus>,
-  page: string,
-  path: string,
-) => UseTechnicalOperationOptionsAns;
-
-const useStateProgramStatusOptions: UseTechnicalOperationOptions = (loadActions, page, path) => {
-  const [options, setOptions] = React.useState<UseTechnicalOperationOptionsAns>([]);
+const useStateProgramStatusOptions = (meta: LoadingMeta) => {
+  const [options, setOptions] = React.useState<DefaultSelectListMapper<StateProgramStatus>>([]);
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      loadActions({}, { page, path }).then(
+      dispatch(
+        actionLoadStateProgramStatus({}, meta),
+      ).then(
         (result) => (
           setOptions(
             result.map(defaultSelectListMapper),
           )
         ),
       ).catch((error) => {
-        console.error(error); //tslint:disable-line
+        console.error(error);
       });
     },
     [],

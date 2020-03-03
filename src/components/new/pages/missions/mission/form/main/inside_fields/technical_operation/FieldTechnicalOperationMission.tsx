@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldTechnicalOperationMission,
@@ -72,12 +72,13 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
     const {
       car_ids,
       for_column,
+      order_operation_id,
     } = this.props;
 
-    if (car_ids !== prevProps.car_ids) {
+    if (car_ids !== prevProps.car_ids || for_column !== prevProps.for_column) {
       if (car_ids.length) {
         this.getTechnicalOperations(car_ids, for_column);
-      } else {
+      } else if (!order_operation_id) {
         this.handleChange(null);
       }
     }
@@ -125,9 +126,16 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
       props.onChange({
         technical_operation_id: value,
         technical_operation_name: get(option, 'label', ''),
+        municipal_facility_id: null,
+        municipal_facility_name: '',
+        route_id: null,
+        route_name: '',
+        route_type: null,
+        object_type_id: null,
+        object_type_name: '',
       });
     }
-  }
+  };
 
   render() {
     const {

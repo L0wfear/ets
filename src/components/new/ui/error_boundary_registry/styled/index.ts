@@ -12,7 +12,7 @@ export const ErrorBoundaryRegistryContainer = styled(EtsPageWrap)`
   height: 100%;
 `;
 
-export const ErorText = styled.div<{ font_size: number }>`
+export const ErorText = styled.div<{ font_size: number; }>`
   font-size: ${({ font_size }) => font_size}px;
   text-align: center;
 `;

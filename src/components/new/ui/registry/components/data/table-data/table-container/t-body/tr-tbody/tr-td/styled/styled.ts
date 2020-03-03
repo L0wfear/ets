@@ -1,12 +1,6 @@
-import styled, { css } from 'styled-components';
-
-import { constantColor } from 'global-styled/global-constants';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
-
-const redColor = css`
-  color: ${UiConstants.colorError};
-`;
+import styled from 'styled-components';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
+import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
 
 export const EtsTbodyScrollContainer = styled.div`
   max-height: 120px;
@@ -41,64 +35,31 @@ export const EtsTdInnerWrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean, }>`
+export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; }>`
   &&& {
     padding: 8px;
     border: 1px solid white;
-    vertical-align: top;
-    text-align: ${ ({ alignCenter }) => alignCenter ? 'center' : 'left' };
+    vertical-align: ${({ alignCenter }) => alignCenter ? 'center' : 'top'};
+    text-align: ${({ alignCenter }) => alignCenter ? 'center' : 'left'};
     word-break: break-word;
     input {
       cursor: pointer;
     }
+
+    ${ButtonStyled} {
+      margin: 0 1px;
+      min-height: 38px;
+    }
+    ${SingleUiElementWrapperStyled} {
+      width: 100%
+    }
+    input {
+      &[disabled] {
+        background: #eee;
+      }
+    }
   }
   .col-md-12 {
     position: initial;
-  }
-`;
-
-export const EtsTbodyTrTdMisionData = styled(EtsTbodyTrTd)`
-  &&& {
-    vertical-align: inherit;
-}
-`;
-
-export const MissionInfoStatusDiv = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const GlyphiconContainer32 = styled.div<{ notFull: boolean }>`
-  font-size: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  ${({ notFull }) => notFull && redColor};
-`;
-
-const cssActiveGreenButton = css`
-  background-color: green !important;;
-`;
-const cssActiveRedButton = css`
-  background-color: UiConstants.colorError !important;
-`;
-const cssNotActiveButton = css`
-  background-color: ${constantColor.colorGray} !important;;
-`;
-
-export const ButtonGreenActive = styled(EtsBootstrap.Button)`
-  &&& {
-    ${({ active }) => active ? cssActiveGreenButton : cssNotActiveButton}
-  }
-`;
-
-export const ButtonRedActive = styled(EtsBootstrap.Button)`
-  &&& {
-    ${({ active }) => active ? cssActiveRedButton : cssNotActiveButton}
   }
 `;

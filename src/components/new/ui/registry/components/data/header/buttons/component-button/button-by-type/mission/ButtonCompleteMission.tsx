@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -13,6 +13,7 @@ import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { get } from 'lodash';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 // import { promiseSetTestDataToDatabase } from 'redux-main/reducers/modules/edc_request/edc_request_promise';
 
 export type ButtonCompleteMissionStateProps = {
@@ -23,11 +24,9 @@ export type ButtonCompleteMissionStateProps = {
 type ButtonCompleteMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionCompleteMissionByIds: HandleThunkActionCreator<typeof actionCompleteMissionByIds>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonCompleteMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCompleteMissionOwnProps = CommonTypesForButton & {};
 type ButtonCompleteMissionMergeProps = {};
 
 type ButtonCompleteMissionProps = (
@@ -102,7 +101,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="duty_mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
+      <EtsBootstrap.Button id="mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ok" /> Выполнено
       </EtsBootstrap.Button>
       {
@@ -118,12 +117,12 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 };
 
 export default compose<ButtonCompleteMissionProps, ButtonCompleteMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCompleteMissionStateProps, ButtonCompleteMissionDispatchProps, ButtonCompleteMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

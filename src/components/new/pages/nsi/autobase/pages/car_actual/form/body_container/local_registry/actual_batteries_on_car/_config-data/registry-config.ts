@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import batteryRegistryPermissions from './permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -25,7 +25,11 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
     header: {
       title: 'Установленные аккумуляторы на текущую дату',
       buttons: [
-        buttonsTypes.car_actual_add_battery,
+        {
+          id: 'add_battery',
+          type: buttonsTypes.create,
+          title: 'Добавить',
+        },
         buttonsTypes.read,
       ],
     },

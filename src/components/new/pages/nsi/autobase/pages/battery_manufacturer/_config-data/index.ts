@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Производители аккумуляторов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_battery_manufacturer',
-  noDotList: false,
+
   component,
   permissions,
 };

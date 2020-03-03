@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { get } from 'lodash';
-import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { SchemaType, FormErrorType } from 'components/old/ui/form/new/@types/validate.h';
-import { validate } from 'components/old/ui/form/new/validate';
-import { compose } from 'recompose';
+import { cloneDeep, get } from 'lodash';
+import { isFunction, isString, isBoolean } from 'util';
+import { compose, withProps } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
+
+import { SchemaType, FormErrorType, PropertieType } from 'components/old/ui/form/new/@types/validate.h';
+import { validate } from 'components/old/ui/form/new/validate';
 import { ReduxState } from 'redux-main/@types/state';
-import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { canSaveTest } from 'components/@next/@form/validate/validate';
+import { removeEmptyString, getFormatedValue } from 'redux-main/reducers/modules/form_data_record/actions';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -22,17 +27,21 @@ type ConfigWithForm<P, F> = {
   getRecordAction?: any;              // Экшен загрузки записи по uniqField
   mergeElement?: (props: P) => F;     // Получение дефолтного элемента
   noMessage?: boolean;                // Не показывать уведомление после сабмита
-  schema: SchemaType<F, P>,           // Схема валиадции
+  schema: SchemaType<F, P>;           // Схема валиадции
   permissions: {                      // Разрешения
-    create: string | string[];
-    update: string | string[];
+    create: string | Array<string>;
+    update: string | Array<string>;
     [k: string]: any;
+  };
+  askBeforeCloseIfChanged?: {         // спрашивать перед закрытие формы
+    askTitle?: string;
+    askBody?: string;
   };
 };
 
 type WithFormConfigProps = {
-  element: any,
-  handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
+  element: any;
+  handleHide?: (isSubmitted: boolean, result?: any) => any;
   readOnly?: boolean;
 
   page: string;
@@ -41,7 +50,7 @@ type WithFormConfigProps = {
 
 type WithFormState<F, P> = {
   formState: F;
-  originalFormState: F,
+  originalFormState: F;
   formErrors: FormErrorType<SchemaType<F, P>>;
   canSave: boolean;
 
@@ -50,7 +59,11 @@ type WithFormState<F, P> = {
   inSubmit: boolean;
 };
 
-type WithFormProps<P> = P & DispatchProp & {
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+
+type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch; } & {
   IS_CREATING: boolean;
   isPermitted: boolean;
   isPermittedToUpdate: boolean;
@@ -59,10 +72,10 @@ type WithFormProps<P> = P & DispatchProp & {
 
 export type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
 export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
-type FormWithSubmitAction = (...arg: any[]) => Promise<any>;
+type FormWithSubmitAction = (...arg: Array<any>) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
-export type OutputWithFormProps<P, F, T extends any[], A> = (
+export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> = (
   WithFormProps<P>
   & WithFormState<F, P>
   & Pick<ConfigWithForm<P, F>, 'mergeElement' | 'schema'>
@@ -71,22 +84,11 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
     handleChangeBoolean: FormWithHandleChangeBoolean<F>;
     submitAction: FormWithSubmitAction;
     defaultSubmit: FormWithDefaultSubmit;
-    hideWithoutChanges: (...arg: any[]) => void;
+    hideWithoutChanges: (...arg: Array<any>) => void;
 
     actionWrap: <PromiseAns extends any>(promiseFunc: () => Promise<PromiseAns>) => Promise<PromiseAns>;
   }
 );
-
-const canSaveTest = (errorsData: any) => {
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).every((error) => canSaveTest(error));
-  }
-  if (isArray(errorsData)) {
-    return errorsData.every((error) => canSaveTest(error));
-  }
-
-  return !errorsData;
-};
 
 const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataForm) => {
   let formState = propsForm.element;
@@ -106,39 +108,19 @@ const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataFor
   };
 };
 
-export const removeEmptyString = (formState: any) => {
-  Object.keys(formState).forEach((key) => {
-    if (formState[key] === '') {
-      formState[key] = null;
-      return;
-    }
-
-    if (isObject(formState[key])) {
-      removeEmptyString(formState[key]);
-      return;
-    }
-    if (isArray(formState[key]) && isObject(formState[key][0])) {
-      formState[key].forEach((obj) => {
-        removeEmptyString(obj);
-      });
-    }
-  });
-};
-
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithFormProps<P>, F>) => (Component) => (
   compose<any, any>(
-    withRequirePermissionsNew({
-      permissions: config.permissions.update,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToUpdate',
-    }),
-    withRequirePermissionsNew({
-      permissions: config.permissions.create,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToCreate',
-    }),
-    connect<{}, DispatchProp, any, ReduxState>(
-      null,
+    connect<StateProps, DispatchProp, any, ReduxState>(
+      (state) => ({
+        userData: getSessionState(state).userData,
+      }),
+    ),
+    withProps<StateProps & { isPermittedToCreate: boolean; isPermittedToUpdate: boolean; }, any>(
+      (props) => ({
+        ...props,
+        isPermittedToCreate: validatePermissions(config.permissions.create, props.userData.permissionsSet),
+        isPermittedToUpdate: validatePermissions(config.permissions.update, props.userData.permissionsSet),
+      }),
     ),
   )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F, P>> {
@@ -268,13 +250,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
       validate = (formState: F) => {
         return validate(config.schema, formState, this.props, formState);
-      }
+      };
       canSave = (state: WithFormState<F, P>) => {
         return canSaveTest(state.formErrors);
-      }
+      };
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
         this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
-      }
+      };
       /**
        * @todo 1 сделать, чтобы шагал вглубь (по свойствам/массивам свойств)
        */
@@ -287,43 +269,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
         this.setState(({ formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
-            let newValue = value;
-            if (key in config.schema.properties) {
-              switch (config.schema.properties[key].type) {
-                case 'number':
-                  const valueNumberString: number | string = (value as number | string);
-
-                  if (valueNumberString || valueNumberString === 0) {
-                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
-                    if (!isNaN(Number(valueReplaced))) {
-                      if (valueReplaced.match(/^.\d*$/)) {
-                        newValue = `0${valueReplaced}`;
-                      }
-                      newValue = valueReplaced;
-                    } else {
-                      newValue = valueReplaced;
-                    }
-                  } else {
-                    newValue = null;
-                  }
-                  break;
-                case 'string':
-                case 'boolean':
-                  newValue = value;
-                  break;
-                case 'date':
-                  newValue = createValidDate(value);
-                  break;
-                case 'datetime':
-                  newValue = createValidDateTime(value);
-                  break;
-                default:
-                  newValue = Boolean(value) || value === 0 ? value : null;
-              }
-            }
-            formState[key] = newValue;
-
-            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
+            formState[key] = getFormatedValue(config.schema.properties[key], value);
+            console.info('FORM CHANGE STATE', key, formState[key]); // eslint-disable-line
           });
 
           const formErrors = this.validate(formState);
@@ -333,7 +280,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             canSave: this.state.canSave,
           };
 
-          console.log('ERROR CHANGE STATE', formErrors); // tslint:disable-line:no-console
+          console.info('ERROR CHANGE STATE', formErrors); // eslint-disable-line
           return {
             ...newState,
             canSave: this.canSave({
@@ -342,7 +289,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             }),
           };
         });
-      }
+      };
 
       actionWrap = async <T extends any>(promiseFunc: () => Promise<T>): Promise<T> => {
         let result = null;
@@ -370,11 +317,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             inSubmit: false,
           });
         } else {
-          console.log('i want more request'); // tslint:disable-line
+          console.info('i want more request'); // tslint:disable-line
         }
 
         return result;
-      }
+      };
 
       createAction = async (...payload) => {
         const {
@@ -407,7 +354,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
       updateAction = async (...payload) => {
         const {
@@ -436,9 +383,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
-      submitAction = async (...payload: any[]) => {
+      submitAction = async (...payload: Array<any>) => {
         const uniqValue = (
           !isBoolean(config.uniqField)
             ? get(this.state.formState, config.uniqField, null)
@@ -467,25 +414,18 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           }
           return null;
         }
-      }
+      };
 
       defaultSubmit: FormWithDefaultSubmit = async () => {
-        const formatedFormState = { ...this.state.formState };
-        Object.entries(config.schema.properties).forEach(([key, { type }]: any) => {
-          let value: any = formatedFormState[key];
+        const formatedFormState = cloneDeep(this.state.formState);
+        Object.entries(config.schema.properties).forEach(
+          (validateFieldEntrie) => {
+            const key = validateFieldEntrie[0] as keyof F;
+            const validateFieldData = validateFieldEntrie[1] as PropertieType<F, any>;
 
-          if (type === 'number' && value) {
-            value = Number(value);
-          }
-
-          if (type === 'date' && value) {
-            value = createValidDate(value);
-          }
-          if (type === 'datetime' && value) {
-            value = createValidDateTime(value);
-          }
-          formatedFormState[key] = value;
-        });
+            formatedFormState[key] = getFormatedValue(validateFieldData as any, formatedFormState[key], true);
+          },
+        );
 
         removeEmptyString(formatedFormState);
 
@@ -498,11 +438,25 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         }
 
         return result;
-      }
+      };
 
-      hideWithoutChanges = () => {
+      hideWithoutChanges = async () => {
+        if (config.askBeforeCloseIfChanged) {
+          if (this.state.originalFormState !== this.state.formState) {
+            try {
+              await global.confirmDialog({
+                title: config.askBeforeCloseIfChanged.askTitle || 'Покинуть страницу?',
+                body: config.askBeforeCloseIfChanged.askBody || 'Возможно, внесенные изменения не сохранятся.',
+                okName: 'Закрыть',
+                cancelName: 'Остаться',
+              });
+            } catch {
+              return;
+            }
+          }
+        }
         this.props.handleHide(false);
-      }
+      };
 
       render() {
         const IS_CREATING = !Boolean(get(this.state.formState, `${config.uniqField}`, !config.uniqField));

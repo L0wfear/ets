@@ -1,13 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 // types
 export type TriggerDateProps = {
-  events: string[],
-  date: string,
+  events: Array<string>;
+  date: string;
 };
 
 // style
@@ -66,19 +65,19 @@ export const TriggerDate: React.FC<TriggerDateProps> = (props) => {
           )
         }
       </TriggerCarpoolDate>
-      {showEvents ? (
-        <TriggerCarpoolEvents>
-          {
-            props.events.length === 0 ?
-              <span> Нет данных</span>
-            : (
-              props.events.join(', ')
-            )
-          }
-        </TriggerCarpoolEvents>
-      ) : (
-        <DivNone />
-      )}
+      {
+        showEvents && (
+          <TriggerCarpoolEvents>
+            {
+              props.events.length === 0
+                ? <span> Нет данных</span>
+                : (
+                  props.events.join(', ')
+                )
+            }
+          </TriggerCarpoolEvents>
+        )
+      }
     </TriggerCarpoolWrapper>
   );
 

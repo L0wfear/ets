@@ -1,19 +1,19 @@
-export interface IResponseRowObject<IdType> {
+export type IResponseRowObject<IdType> = {
   id: IdType;
-}
+};
 
-export interface IResponseDataResult<RowType, MetaType> {
+export type IResponseDataResult<RowType, MetaType> = {
   meta?: MetaType;
-  rows: RowType[];
-  warnings?: any[];
-  errors?: any[];
-}
+  rows: Array<RowType>;
+  warnings?: Array<any>;
+  errors?: Array<any>;
+};
 
-export interface IResponseData<RowType, MetaType> {
+export type IResponseData<RowType, MetaType> = {
   result: IResponseDataResult<RowType, MetaType>;
-}
+};
 
-export interface INamedObject {
+export type INamedObject = {
   id: number;
   name: string;
-}
+};

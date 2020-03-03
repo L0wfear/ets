@@ -1,68 +1,58 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { isNumber } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import DangerZonePermissions from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DangerZoneFormSchema } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/schema';
 
 import { getDefaultDangerZoneFormElement } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnPropsDangerZoneForm,
   PropsDangerZoneForm,
-  StateDangerZoneForm,
-  StatePropsDangerZoneForm,
-  DispatchPropsDangerZoneForm,
   PropsDangerZoneFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/@types/DangerZoneForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { isNumber } from 'util';
+import { actionsDangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/actions';
 
-class DangerZoneForm extends React.PureComponent<
-  PropsDangerZoneForm,
-  StateDangerZoneForm
-> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const DangerZoneForm: React.FC<PropsDangerZoneForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-DangerZone"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -120,34 +110,26 @@ class DangerZoneForm extends React.PureComponent<
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsDangerZoneForm, OwnPropsDangerZoneForm>(
-  connect<
-    StatePropsDangerZoneForm,
-    DispatchPropsDangerZoneForm,
-    OwnPropsDangerZoneForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
+export default compose<PropsDangerZoneForm, PropsDangerZoneFormWithForm>(
   withForm<PropsDangerZoneFormWithForm, DangerZone>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateDangerZone,
-    updateAction: geoobjectActions.actionUpdateDangerZone,
+    createAction: actionsDangerZone.post,
+    updateAction: actionsDangerZone.put,
     mergeElement: (props) => {
       return getDefaultDangerZoneFormElement(props.element);
     },

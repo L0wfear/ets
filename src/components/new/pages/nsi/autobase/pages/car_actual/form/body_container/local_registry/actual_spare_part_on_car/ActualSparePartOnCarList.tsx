@@ -1,77 +1,40 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_spare_part_on_car/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-import { get } from 'lodash';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type ActualSparePartOnCarListStateProps = {};
-export type ActualSparePartOnCarListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type ActualSparePartOnCarListOwnProps = {
+type Props = {
   selectedCarData?: Car;
 };
-export type ActualSparePartOnCarListMergedProps = (
-  ActualSparePartOnCarListStateProps
-  & ActualSparePartOnCarListDispatchProps
-  & ActualSparePartOnCarListOwnProps
-);
-export type ActualSparePartOnCarListProps = (
-  ActualSparePartOnCarListMergedProps
-);
 
-const ActualSparePartOnCarList: React.FC<ActualSparePartOnCarListProps> = (props) => {
+const ActualSparePartOnCarList: React.FC<Props> = (props) => {
   const {
     selectedCarData,
   } = props;
 
   const car_id = get(selectedCarData, 'asuods_id', null);
-
+  const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(car_id));
+      dispatch(registryAddInitialData(getToConfig(car_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [car_id],
   );
 
   return (
-    <>
-      <Registry registryKey={registryKey} />
-    </>
+    <Registry registryKey={registryKey} />
   );
 };
 
-export default compose<ActualSparePartOnCarListProps, ActualSparePartOnCarListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<ActualSparePartOnCarListStateProps, ActualSparePartOnCarListDispatchProps, ActualSparePartOnCarListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(ActualSparePartOnCarList);
+export default ActualSparePartOnCarList;

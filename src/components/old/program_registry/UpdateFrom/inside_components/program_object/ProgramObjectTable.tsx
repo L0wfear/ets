@@ -5,7 +5,7 @@ import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/old/ui/table/DataTable';
-import DateFormatter from 'components/old/ui/DateFormatter';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -68,11 +68,11 @@ export function tableMeta({
 }
 
 const renderers: ISchemaRenderer = {
-  created_at: ({ data }) => (<DateFormatter date={data} />),
-  plan_date_start: ({ data }) => (<DateFormatter date={data} />),
-  plan_date_end: ({ data }) => (<DateFormatter date={data} />),
-  fact_date_start: ({ data }) => (<DateFormatter date={data} />),
-  fact_date_end: ({ data }) => (<DateFormatter date={data} />),
+  created_at: ({ data }) => makeDateFormated(data),
+  plan_date_start: ({ data }) => makeDateFormated(data),
+  plan_date_end: ({ data }) => makeDateFormated(data),
+  fact_date_start: ({ data }) => makeDateFormated(data),
+  fact_date_end: ({ data }) => makeDateFormated(data),
 };
 
 const Table: React.FC<any> = (props) => (

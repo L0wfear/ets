@@ -59,10 +59,10 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-closed.h';
 
 export type DefaultCardType<T, I> = {
-  data: T,
+  data: T;
   isLoading: boolean;
-  dateLoad: Date | void;
-  infoData: I | void;
+  dateLoad: Date;
+  infoData: I | null;
 };
 
 export type InitialStateDashboard = {

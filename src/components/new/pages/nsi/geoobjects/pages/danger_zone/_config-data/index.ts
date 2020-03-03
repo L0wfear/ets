@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/danger_zone',
   routePath: `/nsi/geoobjects/danger_zone/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник особо опасных мест',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'danger_zone',
-  noDotList: false,
+
   component,
   permissions,
 };

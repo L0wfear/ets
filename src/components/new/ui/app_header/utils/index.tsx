@@ -1,26 +1,13 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
 import { isArray } from 'util';
-import { DivNone } from 'global-styled/global-styled';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
-export const withRouterMatchUrl: any = (Component) => (
-  withRouter(
-    ({ match, history, location, ...props }) => {
-      return (
-        <Component
-          {...props}
-          matchUrl={match.url}
-        />
-      );
-    },
-  )
-);
-
-export const isActivemenu = (url: string, path: string | null | undefined, childrenPath: string[] | null | undefined) => {
-  const pathArr = ['--'];
+export const isActivemenu = (url: string, path: string | null | undefined, childrenPath: Array<string> | null | undefined) => {
+  const pathArr = [];
 
   if (path) {
     pathArr.push(path);
@@ -29,54 +16,51 @@ export const isActivemenu = (url: string, path: string | null | undefined, child
     pathArr.push(...childrenPath);
   }
 
-  return pathArr.some((pathData) => !pathData.localeCompare(`/${url.split('/')[1]}`));
+  return pathArr.some((pathData) => !pathData.localeCompare(url) && pathData.length === url.length);
 };
 
-export const checkShow = (props) => {
+type CheckShowFunc = (
+  data: {
+    hiddenNav?: boolean;
+    divider?: boolean;
+    checkHidden?: (isShow: boolean, userData: InitialStateSession['userData']) => boolean;
+    permissions: { list: Parameters<typeof validatePermissions>[0]; };
+  },
+  userData: InitialStateSession['userData'],
+) => boolean;
+
+export const checkShow: CheckShowFunc = (data, userData) => {
+  if (data.divider) {
+    return true;
+  }
+  if (data.hiddenNav) {
+    return false;
+  }
+
   let isShow = false;
+  if (data.permissions) {
+    isShow = validatePermissions(data.permissions.list, userData.permissionsSet);
+  }
 
-  if (props.data.hiddenNav) {
-    isShow = false;
-  } else {
-    const {
-      data,
-      data: { permissions },
-    } = props;
-    if (data.alwaysShow || data.divider) {
-      isShow = true;
-    } else if (!data.alwaysShow && permissions) {
-      const { permissionsSet } = props;
-      const { list } = permissions;
-      if (Array.isArray(list)) {
-        isShow = list.some((permission) => permission === true || permissionsSet.has(permission));
-      } else {
-        isShow = list === true || permissionsSet.has(list);
-      }
-    }
-
-    if (props.data.checkHidden) {
-      isShow = props.data.checkHidden(isShow, props);
-    }
+  if (data.checkHidden) {
+    isShow = data.checkHidden(isShow, userData);
   }
 
   return isShow;
 };
 
-export const showHeaderMenu = (Component) => (
-  connect<any, any, any, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-      permissionsSet: getSessionState(state).userData.permissionsSet,
-    }),
-  )(
-    (props) => (
-      checkShow(props)
-      ? (
+export const showHeaderMenu = <OwnProps extends any>(Component: React.ComponentType<OwnProps>) => {
+  const ShowHeaderMenuContainer: React.FC<OwnProps> = React.memo(
+    (props) => {
+      const userData = etsUseSelector(
+        (state) => getSessionState(state).userData,
+      );
+
+      return Boolean(checkShow(props.data, userData)) && (
         <Component {...props} />
-      )
-      : (
-        <DivNone />
-      )
-    ),
-  )
-);
+      );
+    },
+  );
+
+  return ShowHeaderMenuContainer;
+};

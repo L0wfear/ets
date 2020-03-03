@@ -8,25 +8,17 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/registry-config';
 
-import {
-  PropsCarpoolList,
-  StateCarpoolList,
-} from 'components/new/pages/nsi/geoobjects/pages/carpool/CarpoolList.h';
+type Props = {};
 
-class CarpoolList extends React.Component<PropsCarpoolList, StateCarpoolList> {
-  render() {
+const CarpoolList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <CarpoolFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <Registry registryKey={registryKey}>
+        <CarpoolFormWrap registryKey={registryKey} />
+      </Registry>
     );
-  }
-}
+  },
+);
 
 export default withRegistry(
   config,

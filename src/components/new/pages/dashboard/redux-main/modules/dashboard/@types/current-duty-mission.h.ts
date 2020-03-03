@@ -13,28 +13,34 @@ export type CurrentDutyMissionsItemsSubItemDatasType = {
   technical_operation_name: string;
 };
 
+export type CurrentDutyMissionsItemsSubItemsSubItemsType = {
+  data: CurrentDutyMissionsItemsSubItemDatasType;
+  tooltip?: string;
+  title: string;
+};
+
 export type CurrentDutyMissionsItemsSubItemsType = {
-  data: CurrentDutyMissionsItemsSubItemDatasType,
+  subItems: Array<CurrentDutyMissionsItemsSubItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CurrentDutyMissionsItemsType = {
-  subItems: CurrentDutyMissionsItemsSubItemsType[],
+  subItems: Array<CurrentDutyMissionsItemsSubItemsType>;
   tooltip?: string;
   title: string;
 };
 
 export type CurrentDutyMissionsAnsType = {
   tooltip?: string;
-  items: CurrentDutyMissionsItemsType[];
-  items_centralized: CurrentDutyMissionsItemsType[];
-  items_decentralized: CurrentDutyMissionsItemsType[];
+  items: Array<CurrentDutyMissionsItemsType>;
+  items_centralized: Array<CurrentDutyMissionsItemsType>;
+  items_decentralized: Array<CurrentDutyMissionsItemsType>;
   title: string;
   title_centralized: string;
   title_decentralized: string;
 };
 
 export type CurrentDutyMissionsInfoDataType = Route & {
-  duty_mission_data: CurrentDutyMissionsItemsSubItemDatasType,
+  duty_mission_data: CurrentDutyMissionsItemsSubItemDatasType;
 };

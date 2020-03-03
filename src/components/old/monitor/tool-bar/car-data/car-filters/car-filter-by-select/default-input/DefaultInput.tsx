@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 import {
@@ -39,4 +39,4 @@ const mapDispatchToProps = (dispatch, { keyField }) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
- )(DefaultInput);
+)(DefaultInput);

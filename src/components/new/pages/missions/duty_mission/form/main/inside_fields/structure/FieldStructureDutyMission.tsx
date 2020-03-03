@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionStructuresParams, getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { DivNone } from 'global-styled/global-styled';
@@ -24,12 +24,26 @@ class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureD
     const { props } = this;
 
     if (value !== props.value) {
-      props.onChange({
-        structure_id: value,
-        structure_name: get(option, 'label', null),
-      });
+
+      if (this.props.formDataKey === 'duty_mission') {
+        (props.onChange as any)({
+          structure_id: value,
+          structure_name: get(option, 'label', null),
+
+          route_id: null,
+          route_name: '',
+          route_type: '',
+          object_type_id: null,
+          object_type_name: '',
+        });
+      } else {
+        props.onChange({
+          structure_id: value,
+          structure_name: get(option, 'label', null),
+        });
+      }
     }
-  }
+  };
 
   render() {
     const {
@@ -46,22 +60,22 @@ class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureD
     return (
       STRUCTURE_FIELD_VIEW
         ? (
-            <ExtField
-              type="select"
-              id="structure_id"
-              modalKey={props.page}
-              label="Подразделение"
-              disabled={STRUCTURE_FIELD_READONLY || this.props.disabled}
-              clearable={STRUCTURE_FIELD_DELETABLE}
-              options={STRUCTURES}
-              emptyValue={null}
-              value={props.value}
-              error={props.error}
-              onChange={this.handleChange}
-            />
+          <ExtField
+            type="select"
+            id="structure_id"
+            modalKey={props.page}
+            label="Подразделение"
+            disabled={STRUCTURE_FIELD_READONLY || this.props.disabled}
+            clearable={STRUCTURE_FIELD_DELETABLE}
+            options={STRUCTURES}
+            emptyValue={null}
+            value={props.value}
+            error={props.error}
+            onChange={this.handleChange}
+          />
         )
         : (
-            <DivNone />
+          <DivNone />
         )
     );
   }

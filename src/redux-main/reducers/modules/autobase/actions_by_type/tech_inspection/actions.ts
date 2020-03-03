@@ -6,78 +6,59 @@ import {
   updateSetTechInspection,
   autobaseDeleteTechInspection,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/promise';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- TechInspection ---------- */
-export const autobaseSetTechInspection = (techInspectionList: TechInspection[]) => (dispatch) => (
+export const autobaseSetTechInspection = (techInspectionList: Array<TechInspection>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       techInspectionList,
     }),
   )
 );
-export const autobaseResetSetTechInspection = () => (dispatch) => (
+export const autobaseResetSetTechInspection = (): EtsAction<EtsActionReturnType<typeof autobaseSetTechInspection>> => (dispatch) => (
   dispatch(
     autobaseSetTechInspection([]),
   )
 );
-export const autobaseGetSetTechInspection = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSetTechInspection(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const techInspectionGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetTechInspection(payload, { page, path }),
+export const autobaseGetSetTechInspection = (payloadOwn = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSetTechInspection>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getSetTechInspection(payloadOwn),
+    meta,
+  );
+};
+export const techInspectionGetAndSetInStore = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseGetSetTechInspection>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetTechInspection(payload, meta),
   );
 
   dispatch(
-    autobaseSetTechInspection(data),
+    autobaseSetTechInspection(result.data),
   );
 
-  return {
-    techInspectionList: data,
-  };
+  return result;
 };
-export const autobaseCreateTechInspection: any = (techInspectionOld: TechInspection, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: techInspection } = await dispatch({
-    type: 'none',
-    payload: createSetTechInspection(techInspectionOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return techInspection;
+export const autobaseCreateTechInspection = (techInspectionOld: TechInspection, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createSetTechInspection>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    createSetTechInspection(techInspectionOld),
+    meta,
+  );
 };
-export const autobaseUpdateTechInspection: any = (techInspectionOld: TechInspection, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: techInspection } = await dispatch({
-    type: 'none',
-    payload: updateSetTechInspection(techInspectionOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return techInspection;
+export const autobaseUpdateTechInspection = (techInspectionOld: TechInspection, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetTechInspection>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    updateSetTechInspection(techInspectionOld),
+    meta,
+  );
 };
-export const autobaseRemoveTechInspection = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: autobaseDeleteTechInspection(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
+export const autobaseRemoveTechInspection = (id: TechInspection['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteTechInspection>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    autobaseDeleteTechInspection(id),
+    meta,
+  );
+};

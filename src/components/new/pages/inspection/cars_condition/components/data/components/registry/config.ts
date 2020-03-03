@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
@@ -52,19 +52,19 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'monitoring_kind',
           labelKey: 'monitoring_kind_text',
           type: 'multiselect',
-          title: 'Вид проверки',
+          title: 'Вид мониторинга',
         },
         {
-          valueKey: 'status',
-          labelKey: 'status_text',
+          valueKey: 'checks_period',
+          labelKey: 'checks_period_text',
           type: 'multiselect',
-          title: 'Статус проверки',
+          title: 'Период проверки',
         },
         {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
+          valueKey: 'checks_type',
+          labelKey: 'checks_type_text',
           type: 'multiselect',
-          title: 'Организация',
+          title: 'Тип проверки',
         },
         {
           valueKey: 'cars_cnt',
@@ -73,10 +73,14 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           step: 1,
         },
         {
-          valueKey: 'checked_cars_cnt',
-          type: 'advanced-number',
-          title: 'Проверено ТС',
-          step: 1,
+          valueKey: 'open_employee_fio',
+          title: 'Открыта',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'close_employee_fio',
+          title: 'Завершена',
+          type: 'multiselect',
         },
       ],
     },
@@ -117,7 +121,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           },
           {
             key: 'monitoring_kind_text',
-            title: 'Вид проверки',
+            title: 'Вид мониторинга',
             width: 200,
           },
           {
@@ -126,9 +130,15 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
             width: 200,
           },
           {
-            key: 'company_name',
-            title: 'Организация',
-            width: 200,
+            key: 'checks_period_text',
+            title: 'Период проверки',
+            width: 150,
+            dashIfEmpty: true,
+          },
+          {
+            key: 'checks_type_text',
+            title: 'Тип проверки',
+            width: 150,
           },
           {
             key: 'cars_cnt',
@@ -136,9 +146,14 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
             width: 250,
           },
           {
-            key: 'checked_cars_cnt',
-            title: 'Проверено ТС',
-            width: 150,
+            key: 'open_employee_fio',
+            title: 'Открыта',
+            width: 200,
+          },
+          {
+            key: 'close_employee_fio',
+            title: 'Завершена',
+            width: 200,
           },
         ],
       },

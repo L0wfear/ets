@@ -1,11 +1,11 @@
-import { DriverService, EmployeeService, PositionService } from 'api/Services';
+import { DriverService, EmployeeService } from 'api/Services';
 import { get } from 'lodash';
 
 /* ------------- EMPLOYEE ------------- */
 export const employeeLoadEmployee = (payload = {}) => (
   EmployeeService.get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+      console.info(error); // eslint-disable-line
 
       return {
         result: {
@@ -52,7 +52,7 @@ export const employeeDeleteEmployee = (id) => {
 export const employeeLoadDriver = (payload = {}) => (
   DriverService.get({ ...payload })
     .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
+      console.info(error); // eslint-disable-line
 
       return {
         result: [],
@@ -61,22 +61,6 @@ export const employeeLoadDriver = (payload = {}) => (
     .then((ans) => {
       return ({
         data: get(ans, ['result'], []),
-      });
-    })
-);
-/* ------------- POSITIONS ------------- */
-export const employeeLoadPosition = (payload = {}) => (
-  PositionService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-
-      return {
-        result: [],
-      };
-    })
-    .then((ans) => {
-      return ({
-        data: get(ans, ['result', 'rows'], []),
       });
     })
 );

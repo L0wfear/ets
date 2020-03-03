@@ -1,23 +1,27 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { CarsConditionCars, InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
-import { ExtFieldContainer } from './styled';
+import { ExtFieldContainer, GreyTextContainer, SelectCarConditionTitleWrapper, CarConditionTitle } from './styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import { get } from 'lodash';
 import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
+import ButtonShowTableForm from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/ButtonShowTableForm';
+import { canCreateCarInCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { HrDelimiter } from 'global-styled/global-styled';
 
 type BlockCarsConditionSelectCarOwnProps = {
-  cars_cnt: InspectCarsCondition['cars_cnt'];
+  monitoring_kind: InspectCarsCondition['monitoring_kind'];
+  awaitCarsCnt: number;
   checked_cars_cnt: InspectCarsCondition['checked_cars_cnt'];
   error_checked_cars_cnt: string;
-  carsConditionCarsList: CarsConditionCars[];
+  carsConditionCarsList: Array<CarsConditionCars>;
   isActiveInspect: boolean;
   isPermitted: boolean;
+  loadingPage?: string;
 };
 
 type BlockCarsConditionSelectCarProps = (
@@ -28,6 +32,7 @@ type BlockCarsConditionSelectCarProps = (
 const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = React.memo(
   (props) => {
     const {
+      monitoring_kind,
       carsConditionCarsList,
     } = props;
 
@@ -51,7 +56,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           });
         }
       },
-      [props.setParams],
+      [props.setParams, props.searchState],
     );
 
     const handleCreateNewCardCar = React.useCallback(
@@ -77,14 +82,22 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       },
       [carsConditionCarsList],
     );
-    const monitoringKind = get(props, 'searchState.monitoringKind', null);
-    const showCreateBtn = props.isActiveInspect && monitoringKindSeasonReadiness.key !== monitoringKind;
+    const showCreateBtn = canCreateCarInCondition(monitoring_kind, props.isActiveInspect);
+
+    const disableCreateBtn = Boolean(props.match.params.selectedCarsConditionsCar);
+
     return (
       <BoxContainer>
-        <h4>Выбор ТС для просмотра карточки</h4>
-        <div>
-          <span>Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице</span>
-        </div>
+        <SelectCarConditionTitleWrapper>
+          <CarConditionTitle>Выбор ТС для просмотра карточки</CarConditionTitle>
+          <ButtonShowTableForm loadingPage={props.loadingPage} />
+        </SelectCarConditionTitleWrapper>
+
+        <GreyTextContainer>
+          <p>
+            Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице
+          </p>
+        </GreyTextContainer>
         <ExtFieldContainer>
           <ExtField
             id="selected_car"
@@ -92,27 +105,32 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             value={selectedCarsConditionsCar}
             options={carsData.carsConditionCarsOptions}
             onChange={handleSelectCar}
+            label={false}
           />
         </ExtFieldContainer>
         {
-          monitoringKindSeasonReadiness.key !== monitoringKind &&
-          (
-            <p>
-              <span>
-                Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
-                После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
-              </span>
-            </p>
+          monitoringKindSeasonReadiness.key !== monitoring_kind && showCreateBtn
+          && (
+            <React.Fragment>
+              <HrDelimiter />
+              <GreyTextContainer>
+                <p>
+                  Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
+                  После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
+                </p>
+              </GreyTextContainer>
+            </React.Fragment>
           )
         }
         {
-          showCreateBtn &&
-          (
-            <EtsBootstrap.Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>
+          showCreateBtn
+          && (
+            <EtsBootstrap.Button disabled={!props.isPermitted || disableCreateBtn} onClick={handleCreateNewCardCar}>
               Создать карточку
             </EtsBootstrap.Button>
           )
         }
+        <HrDelimiter />
         <EtsBootstrap.Row>
           <BlockCarsConditionSelectCarList
             carsConditionCarsList={carsConditionCarsList}
@@ -128,10 +146,9 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         <ExtField
           type="string"
           label="Ожидают проверки:"
-          value={props.cars_cnt}
+          value={props.awaitCarsCnt}
           readOnly
           inline
-          error="hello"
         />
         <ErrorsBlock
           error={props.error_checked_cars_cnt}

@@ -7,6 +7,8 @@ import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autoba
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { CommissionEmployeeWrapper, CommissionMembersDataContainer, CommissionMembersAddBtn } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/commission_members/styled';
+import { SlimH4, HrDelimiter } from 'global-styled/global-styled';
 
 type CommissionMembersProps = {
   isPermittedChangeListParams: boolean;
@@ -26,6 +28,9 @@ type CommissionMembersProps = {
 
 const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
   (props) => {
+    const [showCommissionMembers, setShowCommissionMembers] = React.useState(false);
+    const [showCloseBtn, setShowCloseBtn] = React.useState(false);
+
     const handleRemove = React.useCallback(
       (index) => {
         props.handleChange({
@@ -46,24 +51,45 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
       },
       [props.commission_members, props.handleChange],
     );
+    const handleShowCommissionMembers = React.useCallback( () => {
+      setShowCommissionMembers(true);
+    },
+    [props.commission_members],
+    );
+
+    const handleCloseCommissionMembers = React.useCallback( () => {
+      setShowCommissionMembers(false);
+    },
+    [props.commission_members],
+    );
+
+    React.useEffect(() => {
+      if (!props.commission_members.length) { // Если нет сотркдников ГБУ, то отображаем блок
+        setShowCommissionMembers(true);
+        setShowCloseBtn(false);
+      } else {
+        setShowCloseBtn(true);
+      }
+    }, [props.commission_members]);
 
     return (
-      <React.Fragment>
-        <h4>Подписанты:</h4>
-        {
-          Boolean(props.error) && (
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <ErrorsBlock
-                  error={props.error}
-                />
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-          )
-        }
+      <CommissionEmployeeWrapper>
+        <HrDelimiter />
+        <h3>Подписанты</h3>
         <div>
-          <h5>Проверяющие от Доринвеста:</h5>
-          <div>
+          <SlimH4>Проверяющие от Доринвеста</SlimH4>
+          {
+            Boolean(props.error) && (
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
+                  <ErrorsBlock
+                    error={props.error}
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            )
+          }
+          <CommissionMembersDataContainer>
             {
               props.commission_members.map((commissionEmployee, index) => (
                 <ViewCommissionEmployee
@@ -79,21 +105,35 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
                 />
               ))
             }
-            {
-              props.isPermittedChangeListParams && (
-                <RowAddCommissionMembers
-                  handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
-                  commission_members={props.commission_members}
-                  company_id={props.company_id}
-
-                  page={props.page}
-                  path={props.path}
-                />
+          </CommissionMembersDataContainer>
+          {
+            props.isPermittedChangeListParams
+              && (
+                <CommissionMembersAddBtn
+                  disabled={showCommissionMembers}
+                  onClick={handleShowCommissionMembers}
+                >
+                  <EtsBootstrap.Glyphicon glyph='plus' />
+                  Добавить проверяющего
+                </CommissionMembersAddBtn>
               )
-            }
-          </div>
+          }
+          {
+            props.isPermittedChangeListParams && showCommissionMembers && (
+              <RowAddCommissionMembers
+                handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
+                commission_members={props.commission_members}
+                company_id={props.company_id}
+                handleCloseCommissionMembers={handleCloseCommissionMembers}
+                showCloseBtn={showCloseBtn}
+
+                page={props.page}
+                path={props.path}
+              />
+            )
+          }
         </div>
-      </React.Fragment>
+      </CommissionEmployeeWrapper>
     );
   },
 );

@@ -16,7 +16,14 @@ const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field
       return filter_value.every((oneValue) => !row_value.includes(oneValue));
     }
     if (isString(row_value)) {
-      return filter_value.every((oneValue) => !row_value.includes(oneValue));
+      return filter_value.every((oneValue) => {
+        if (!isNullOrUndefined(oneValue) && !row_value.includes(',')) {
+          const rowSpaceBeginEndLessInUppercase = row_value.trim().toLowerCase().replace(/ё/g, 'е'); // удааляем пробелы в начале и в конце и преобразуем результат в upperCase
+          return rowSpaceBeginEndLessInUppercase !== oneValue.toString().trim().toLowerCase().replace(/ё/g, 'е');
+        }
+        return !row_value.includes(oneValue);
+
+      });
     }
     return !filter_value.includes(row_value);
   }
@@ -100,7 +107,7 @@ const filterArrayByLt = <F extends any>(row_value: any, filter_value: any, field
 
 type FiltersValidate = Array<{
   type: string;
-  filterFunc: <F extends any>(row_value: any, filter_value: any, field_data: ValuesOf<FilterFields<F>>) => boolean
+  filterFunc: <F extends any>(row_value: any, filter_value: any, field_data: ValuesOf<FilterFields<F>>) => boolean;
 }>;
 const filtersValidate: FiltersValidate = [
   {
@@ -146,16 +153,11 @@ export const filterArray = <F extends any>(array: ArrayRegisrty<F>, filter_value
           (filterData) => valueKeyType.match(new RegExp(`${filterData.type}$`)),
         );
 
-        if (dataForFilter) {
-          const valueKey = valueKeyType.replace(new RegExp(`${dataForFilter.type}$`), '');
-          const row_value = row[valueKey];
-          const field_data = fieldsAsObj[valueKey];
+        const valueKey = valueKeyType.replace(new RegExp(`${dataForFilter.type}$`), '');
+        const row_value = row[valueKey];
+        const field_data = fieldsAsObj[valueKey];
 
-          return dataForFilter.filterFunc(row_value, value, field_data);
-        }
-
-        console.log('НЕ ОПРЕДЕЛЕНА ФИЛЬТРАЦИЯ ДЛЯ ТИПА', valueKeyType); // tslint:disable-line:no-console
-        return false;
+        return dataForFilter.filterFunc(row_value, value, field_data);
       });
     });
   }

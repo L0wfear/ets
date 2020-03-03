@@ -1,11 +1,12 @@
+import { get } from 'lodash';
+import memoizeOne from 'memoize-one';
+
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import memoizeOne from 'memoize-one';
-import { get } from 'lodash';
-
 import { diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
-import { validateDateInsideOther, oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
+import { oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
+import { validateDateInsideOther } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 
 export const tireFormSchema: SchemaType<Tire, PropsTire> = {
   properties: {
@@ -32,6 +33,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
       type: 'number',
       min: 0,
       required: true,
+      integer: true,
     },
     tire_to_car: {
       title: 'Транспортное средство, на котором установлена шина',
@@ -46,17 +48,17 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
               return ({
                 car_id: (
                   !d.car_id
-                  ? 'Поле "Рег. номер ТС" должно быть заполнено'
-                  : ''
+                    ? 'Поле "Рег. номер ТС" должно быть заполнено'
+                    : ''
                 ),
                 installed_at: (
                   !d.installed_at
-                  ? 'Поле "Дата монтажа" должно быть заполнено'
-                  : (
+                    ? 'Поле "Дата монтажа" должно быть заполнено'
+                    : (
                       validateDateInsideOther(d, [...tire_to_car.slice(0, index), ...tire_to_car.slice(index + 1)])
-                      ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
-                      : ''
-                  )
+                        ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
+                        : ''
+                    )
                 ),
                 uninstalled_at: (
                   !d.uninstalled_at && installed_at_oldest !== installed_at_current
@@ -65,7 +67,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                       d.uninstalled_at
                         ? (
                           validateDateInsideOther(d, [...tire_to_car.slice(0, index), ...tire_to_car.slice(index + 1)])
-                          ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
+                            ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                             : (
                               diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                 ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'
@@ -77,7 +79,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                 ),
               });
             },
-          );
+            );
           },
         ),
       ],

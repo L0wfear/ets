@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/msp',
   routePath: `/nsi/geoobjects/msp/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник МСП',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'type',
-  noDotList: false,
+
   component,
   permissions,
 };

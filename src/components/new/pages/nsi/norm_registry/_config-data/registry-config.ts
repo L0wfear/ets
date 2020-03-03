@@ -1,14 +1,15 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/norm_registry/_config-data/permissions';
-import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { CleaningNormRegistryService } from 'api/Services';
 
 export const registryKey = 'normRegistry';
 
 export const config: TypeConfigData<Norm> = {
   Service: {
     getRegistryData: {
-      entity: 'cleaning/norm_registry',
+      entity: CleaningNormRegistryService._path,
       format: 'normRegistry',
     },
   },
@@ -102,6 +103,11 @@ export const config: TypeConfigData<Norm> = {
           mergeWithArray: true,
         },
       },
+      {
+        valueKey: 'consumable_materials_names',
+        title: 'Расходные материалы',
+        type: 'multiselect',
+      },
     ],
   },
   list: {
@@ -151,7 +157,7 @@ export const config: TypeConfigData<Norm> = {
         {
           key: 'conditions',
           title: 'Условия',
-          width: 100,
+          width: 200,
         },
         {
           key: 'norm_period',
@@ -177,6 +183,13 @@ export const config: TypeConfigData<Norm> = {
           key: 'sensor_types_text',
           title: 'Типы навесного оборудования',
           width: 200,
+        },
+        {
+          key: 'consumable_materials_names',
+          title: 'Расходные материалы',
+          width: 400,
+          format: 'array',
+          max_size_to_scroll: 300,
         },
       ],
     },

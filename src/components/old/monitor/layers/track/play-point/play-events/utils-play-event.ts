@@ -4,7 +4,7 @@ import Point from 'ol/geom/Point';
 type TypeActionOnPlay = (props: PropsLayerPlayPoint) => void;
 type TypeActionOnStop = (props: PropsLayerPlayPoint) => void;
 
-type TypeMakeExtent = (coords_msk: number[]) => [number, number, number, number];
+type TypeMakeExtent = (coords_msk: Array<number>) => [number, number, number, number];
 
 const opt_options = {
   padding: [50, 550, 50, 50],

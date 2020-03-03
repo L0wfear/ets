@@ -11,26 +11,26 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { EdcRequest } from '../../edc_request/@types';
 
 export type IStateMissions = {
-  missionTemplateList: MissionTemplate[];
-  carForMissionTemplateList: Car[];
+  missionTemplateList: Array<MissionTemplate>;
+  carForMissionTemplateList: Array<Car>;
   carForMissionTemplateIndex: Record<Car['asuods_id'], Car>;
-  dutyMissionTemplateList: DutyMissionTemplate[];
+  dutyMissionTemplateList: Array<DutyMissionTemplate>;
 
   dutyMissionData: {
-    dutyMissionList: DutyMission[],
-    availableMissionsToBind: Mission[];
+    dutyMissionList: Array<DutyMission>;
+    availableMissionsToBind: Array<Mission>;
     edcRequest: EdcRequest;
     dependeceOrder: Order;
     dependeceTechnicalOperation: OrderTechnicalOperation;
     total_count: number;
   };
   missionData: {
-    list: Mission[];
+    list: Array<Mission>;
     waybillData: Waybill;
     dependeceOrder: Order;
     dependeceTechnicalOperation: OrderTechnicalOperation;
     edcRequest: EdcRequest;
-    carsList: Car[];
+    carsList: Array<Car>;
     carsIndex: Record<Car['asuods_id'], Car>;
     total_count: number;
   };

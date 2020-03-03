@@ -10,28 +10,30 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/feature-style';
 import OverlayTrackPoint from 'components/old/monitor/layers/track/points/OverlayTrackPoint';
 import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { ReduxState } from 'redux-main/@types/state';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsLayerTrackPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
+  zoom: number;
   lastPoint: any;
   mkad_speed_lim: number;
   speed_lim: number;
   map: Map;
   SHOW_TRACK: boolean;
 
-  carInfoSetTrackPoint: any;
+  dispatch: EtsDispatch;
 };
 
 type StateLayerTrackPoints = {
-  zoomMore8: boolean,
+  zoomMore8: boolean;
   lastPoint: any;
   trackLineIsDraw: boolean;
   SHOW_TRACK: boolean;
@@ -66,7 +68,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
   }
 
   componentDidUpdate(prevProps) {
-    const { SHOW_TRACK } = this.props;
+    const { SHOW_TRACK, speed_lim, mkad_speed_lim } = this.props;
     if (!(prevProps.track.length > 1)) {
       const { track } = this.props;
       if (track.length > 1) {
@@ -79,13 +81,16 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
       } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {
         const { track } = this.props;
         this.changeStyleForPoint(track, SHOW_TRACK);
+      } else if (speed_lim !== prevProps.speed_lim || mkad_speed_lim !== prevProps.mkad_speed_lim) {
+        this.props.removeFeaturesFromSource(null, true);
+        this.drawTrackPoints(this.props.track, SHOW_TRACK);
       }
     }
   }
 
   componentWillUnmount() {
     this.props.removeLayer();
-    this.props.carInfoSetTrackPoint();
+    this.props.dispatch(carInfoSetTrackPoint());
   }
 
   singleclick = (feature) => {
@@ -93,12 +98,12 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
     const trackPoint = this.props.track.find((point) => point.timestamp === timestamp);
 
     if (trackPoint) {
-      this.props.carInfoSetTrackPoint(trackPoint);
+      this.props.dispatch(carInfoSetTrackPoint(trackPoint));
     } else {
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   drawTrackPoints(track, SHOW_TRACK) {
     for (let index = 0, length = track.length; index < length; index++) {
@@ -135,34 +140,19 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
   }
 }
 
-const mapStateToProps = (state) => ({
-  SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
-  track: state.monitorPage.carInfo.trackCaching.track,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-  mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-  speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  carInfoSetTrackPoint: (trackPoint) => (
-    dispatch(
-      carInfoSetTrackPoint(trackPoint),
-    )
-  ),
-});
-
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',
   }),
-  withShowByProps({
-    path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
-    type: 'none',
-  }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
+      track: state.monitorPage.carInfo.trackCaching.track,
+      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+      mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
+      speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+    }),
   ),
   withLayerProps({
     zoom: true,

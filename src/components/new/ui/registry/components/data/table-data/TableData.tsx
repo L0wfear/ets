@@ -3,26 +3,18 @@ import * as React from 'react';
 import TableContainer from 'components/new/ui/registry/components/data/table-data/table-container/TableContainer';
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
 
-type PropsTableData = {
+type Props = {
   registryKey: string;
 };
 
-type StateTableData = {
-};
-
-class TableData extends React.PureComponent<PropsTableData, StateTableData> {
-  render() {
-    const { props } = this;
-    const {
-      registryKey,
-    } = props;
-
+const TableData: React.FC<Props> = React.memo(
+  (props) => {
     return (
       <EtsTableDataContainer>
-        <TableContainer registryKey={registryKey} />
+        <TableContainer registryKey={props.registryKey} />
       </EtsTableDataContainer>
     );
-  }
-}
+  },
+);
 
 export default TableData;

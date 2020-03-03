@@ -5,7 +5,7 @@ export default {
   hiddenNav: true,
   title: 'Замечания',
   entyity: 'repair_program_version',
-  noDotList: false,
+
   component,
   permissions,
 };

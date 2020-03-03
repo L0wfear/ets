@@ -9,14 +9,14 @@ import OverlayTrackPoint from 'components/new/ui/mission_info_form/form-componen
 import { DivNone } from 'global-styled/global-styled';
 
 type PropsLayerTrackPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
-  track: any[];
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures;
+  track: Array<any>;
   mkad_speed_lim: number;
   speed_lim: number;
   gov_number: string;
@@ -79,13 +79,13 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   hidePopup = () => {
     this.setState({
       selectedPoint: null,
     });
-  }
+  };
 
   drawTrackPoints(track) {
     for (let index = 0, length = track.length; index < length; index++) {
@@ -108,22 +108,21 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
     return (
       <div>
         {
-          selectedPoint ?
-          (
-            <OverlayTrackPoint
-              map={this.props.map}
-              gov_number={this.props.gov_number}
-              missionNumber={this.props.missionNumber}
-              trackPoint={selectedPoint}
-              track={this.props.track}
-              hidePopup={this.hidePopup}
-              cars_sensors={this.props.cars_sensors}
-            />
-          )
-          :
-          (
-            <DivNone />
-          )
+          selectedPoint
+            ? (
+              <OverlayTrackPoint
+                map={this.props.map}
+                gov_number={this.props.gov_number}
+                missionNumber={this.props.missionNumber}
+                trackPoint={selectedPoint}
+                track={this.props.track}
+                hidePopup={this.hidePopup}
+                cars_sensors={this.props.cars_sensors}
+              />
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

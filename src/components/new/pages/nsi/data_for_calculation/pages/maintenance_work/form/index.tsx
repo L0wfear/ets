@@ -1,22 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsMaintenanceWorkFormLazy } from 'components/new/pages/nsi/data_for_calculation/pages/maintenance_work/form/@types/MaintenanceWorkForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { compose } from 'recompose';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 const MaintenanceWorkFrom = React.lazy(() => (
   import(/* webpackChunkName: "maintenance_work_form" */ 'components/new/pages/nsi/data_for_calculation/pages/maintenance_work/form/context/MaintenanceWorkFormContext')
 ));
 
-const MaintenanceWorkFormLazy: React.FC<PropsMaintenanceWorkFormLazy> = React.memo(
+const MaintenanceWorkFormLazy: React.FC<WithFormRegistrySearchAddProps<MaintenanceWork>> = React.memo(
   (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}cleaning-rate-form`;
     const type = props.match.params.selected_odh_dt_value;
 
     const element = React.useMemo(
@@ -36,28 +28,14 @@ const MaintenanceWorkFormLazy: React.FC<PropsMaintenanceWorkFormLazy> = React.me
     );
 
     return (
-      element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <MaintenanceWorkFrom
-                element={element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        : (
-          <DivNone />
-        )
+      <MaintenanceWorkFrom
+        {...props}
+        element={element}
+      />
     );
   },
 );
 
-export default compose<PropsMaintenanceWorkFormLazy, any>(
-  withFormRegistrySearch({}),
-  withSearch,
-)(MaintenanceWorkFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<MaintenanceWork>, MaintenanceWork>({
+  add_path: 'maintenance_work',
+})(MaintenanceWorkFormLazy);

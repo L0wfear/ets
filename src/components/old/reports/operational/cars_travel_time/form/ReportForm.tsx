@@ -184,24 +184,24 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <MapContainer
-                gov_number={gov_number}
-                gps_code={gps_code}
-                track={track}
-                geoobjects={geoobjects}
-                inputLines={[]} //
-                front_parkings={front_parkings}
-                speed_limits={{mkad_speed_lim: 60, speed_lim: 60}}
-                cars_sensors={cars_sensors} //
-                missionNumber={777} //
-                has_mkad={has_mkad}
-                object_type_name={type}
-              />
+              gov_number={gov_number}
+              gps_code={gps_code}
+              track={track}
+              geoobjects={geoobjects}
+              inputLines={[]} //
+              front_parkings={front_parkings}
+              speed_limits={{mkad_speed_lim: 60, speed_lim: 60}}
+              cars_sensors={cars_sensors} //
+              missionNumber={777} //
+              has_mkad={has_mkad}
+              object_type_name={type}
+            />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ReportFormRightWrapper>
               {
-                props.carsTravelTimeList.length ?
-                  (
+                props.carsTravelTimeList.length
+                  ? (
                     <Table
                       noTitle={true}
                       noFilter
@@ -218,7 +218,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
               }
             </ReportFormRightWrapper>
             <b>{distance_out_mission_text} <br/>
-            {travel_time_out_mission_text}</b>
+              {travel_time_out_mission_text}</b>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </ModalBodyPreloader>

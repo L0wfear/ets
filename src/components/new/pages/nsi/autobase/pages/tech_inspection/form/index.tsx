@@ -1,37 +1,39 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-import { PropsTechInspectionFormLazy } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { memoizeMergeElement } from '../../car_actual/form/utils';
-
-const TechInspectionFrom = React.lazy(() =>
+const TechInspectionFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "tech_inspection_form" */ 'components/new/pages/nsi/autobase/pages/tech_inspection/form/TechInspectionForm'),
 );
 
-const TechInspectionFormLazy: React.FC<PropsTechInspectionFormLazy> = (props) => {
-  const page = props.loadingPageName || props.page;
-  const path = `${props.path ? `${props.path}-` : ''}insurance-policy-form`;
+const TechInspectionFormLazy: React.FC<WithFormRegistrySearchAddProps<TechInspection> & { selectedCarData?: CarWrap; }> = React.memo(
+  (props) => {
+    const element = React.useMemo(
+      () => {
+        if (!props.element.car_id && props.selectedCarData) {
+          return {
+            ...props.element,
+            car_id: props.selectedCarData.asuods_id,
+            car_gov_number: props.selectedCarData.gov_number,
+          };
+        }
 
-  return props.element ? (
-    <ErrorBoundaryForm>
-      <React.Suspense fallback={<LoadingComponent />}>
-        <TechInspectionFrom
-          element={memoizeMergeElement(props.element, props.selectedCarData)}
-          handleHide={props.onFormHide}
-          selectedCarData={props.selectedCarData}
+        return props.element;
+      },
+      [props.element, props.selectedCarData],
+    );
 
-          page={page}
-          path={path}
-        />
-      </React.Suspense>
-    </ErrorBoundaryForm>
-  ) : (
-    <DivNone />
-  );
-};
+    return (
+      <TechInspectionFromReactLazy
+        {...props}
+        element={element}
+      />
+    );
+  },
+);
 
-export default withFormRegistrySearch<Pick<PropsTechInspectionFormLazy, 'selectedCarData'>>({})(TechInspectionFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<TechInspection> & { selectedCarData?: CarWrap; }, TechInspection>({
+  add_path: 'tech_inspection',
+})(TechInspectionFormLazy);

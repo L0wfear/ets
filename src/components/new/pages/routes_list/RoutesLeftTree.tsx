@@ -48,7 +48,7 @@ class RoutesLeftTree extends React.PureComponent<any, any> {
     }
 
     this.props.changeShowId(showId);
-  }
+  };
 
   renderItem = (collection, parentName) => {
     if (Array.isArray(collection)) {
@@ -94,19 +94,19 @@ class RoutesLeftTree extends React.PureComponent<any, any> {
           </h5>
           {
             !hidden
-            ? (
-              <TreeDivChildren>
-                { this.renderItem(childrenCollection, parentName + name) }
-              </TreeDivChildren>
-            )
-            : (
-              <DivNone />
-            )
+              ? (
+                <TreeDivChildren>
+                  { this.renderItem(childrenCollection, parentName + name) }
+                </TreeDivChildren>
+              )
+              : (
+                <DivNone />
+              )
           }
         </div>
       );
     });
-  }
+  };
 
   render() {
     const {
@@ -114,21 +114,21 @@ class RoutesLeftTree extends React.PureComponent<any, any> {
     } = this.props;
 
     return (
-        <RouteTreeContainer>
-          <RouteTreeH4>
+      <RouteTreeContainer>
+        <RouteTreeH4>
             Список маршрутов
-          </RouteTreeH4>
-          <SidebarListContainer>
-            <div>
-              <SpanTitleRouteGroup>Основные:</SpanTitleRouteGroup>
-              {this.renderItem(ROUTES.main, 'main')}
-            </div>
-            <div>
-              <SpanTitleRouteGroup className="second">Дополнительные:</SpanTitleRouteGroup>
-              {this.renderItem(ROUTES.other, 'other')}
-            </div>
-          </SidebarListContainer>
-        </RouteTreeContainer>
+        </RouteTreeH4>
+        <SidebarListContainer>
+          <div>
+            <SpanTitleRouteGroup>Основные:</SpanTitleRouteGroup>
+            {this.renderItem(ROUTES.main, 'main')}
+          </div>
+          <div>
+            <SpanTitleRouteGroup className="second">Дополнительные:</SpanTitleRouteGroup>
+            {this.renderItem(ROUTES.other, 'other')}
+          </div>
+        </SidebarListContainer>
+      </RouteTreeContainer>
     );
   }
 }

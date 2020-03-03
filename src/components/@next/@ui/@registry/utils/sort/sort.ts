@@ -2,7 +2,7 @@ import {
   isString,
   isNumber,
   isArray,
-} from "util";
+} from 'util';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
@@ -18,9 +18,9 @@ export const makeStirngNameFormArray = (item: string | number | ObjWithName) => 
   return item.name;
 };
 
-export const makeStringFromField = (value: number | string | ObjWithName[]) => {
+export const makeStringFromField = (value: number | string | Array<ObjWithName>) => {
   if (isArray(value)) {
-   return value.map((item) => makeStirngNameFormArray(item)).join(', ');
+    return value.map((item) => makeStirngNameFormArray(item)).join(', ');
   }
 
   return value;
@@ -89,7 +89,7 @@ export const sortArrayFunc = <T extends any>(firstRowData: T, secondRowData: T, 
   return 0;
 };
 
-export const sortArray = <F extends any>(array: OneRegistryData<F>['list']['data']['array'], sort: OneRegistryData<F>['list']['processed']['sort']): F[] => {
+export const sortArray = <F extends any>(array: OneRegistryData<F>['list']['data']['array'], sort: OneRegistryData<F>['list']['processed']['sort']): Array<F> => {
   const newArray = [...array];
 
   if (sort.field) {

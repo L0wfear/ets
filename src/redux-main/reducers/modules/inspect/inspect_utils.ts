@@ -19,7 +19,7 @@ export const isInspectIsCompleted = (status: 'conducting' | 'completed') => (
 /**
  * Получаем последнюю за текущий день закрытую испекцию
  */
-export const getTodayCompletedInspect = (inspectArray: any[]) => (
+export const getTodayCompletedInspect = (inspectArray: Array<any>) => (
   inspectArray.find((inspect) => (
     isInspectIsCompleted(inspect.status)
     && diffDatesByDays(getDateWithMoscowTz(), inspect.date_end) === 0
@@ -32,6 +32,6 @@ export const isInspectIsConducting = (status: 'conducting' | 'completed') => (
 /**
  * Получаем последнюю открытую испекцию
  */
-export const getTodayConductingInspect = (inspectArray: any[]) => (
+export const getTodayConductingInspect = (inspectArray: Array<any>) => (
   inspectArray.find((inspect) => isInspectIsConducting(inspect.status))
 );

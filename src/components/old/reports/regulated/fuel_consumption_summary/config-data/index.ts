@@ -5,7 +5,7 @@ export default {
   path: '/fuel-consumption-summary-report',
   title: 'Сводный отчет расхода топлива',
   entyity: 'fuel_consumption_summary_report',
-  noDotList: false,
+
   hiddenNav: true,
   component,
   permissions,

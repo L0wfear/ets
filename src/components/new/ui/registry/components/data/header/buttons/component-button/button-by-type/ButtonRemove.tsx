@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -11,6 +11,8 @@ import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/ne
 import { compose } from 'recompose';
 import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -21,12 +23,7 @@ type ButtonRemoveDispatchProps = {
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
-type ButtonRemoveOwnProps = {
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-  registryKey: string;
-
-  format?: 'yesno' | 'default';
-
+type ButtonRemoveOwnProps = CommonTypesForButton & {
   onClick?: (selectedRow: any, checkedRows?: Record<string, any>) => Promise<any>;
 };
 type ButtonRemoveMergeProps = {};
@@ -73,6 +70,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.onClick, props.selectedRow, props.checkedRows],
   );
   const checkedRowsAsArray = Object.values(props.checkedRows);
+  const checkedRowsLength = checkedRowsAsArray.length;
 
   const data = React.useMemo(
     () => (
@@ -81,10 +79,17 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
+  const disableBtnByRegistry = React.useMemo(() => {
+    return props.registryKey === registryWaybillKey
+      && ( !Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
+      ? true
+      : false;
+  }, [ props.selectedRow, props.registryKey, checkedRowsAsArray, ]);
+
   return (
     <>
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
-        <EtsBootstrap.Glyphicon glyph={data.glyph || 'remove'} />{data.title || 'Удалить'}
+      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry}>
+        <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>
       <ModalYesNo
@@ -93,25 +98,25 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleSubmit={handleClickRemoveSelectedRows}
 
         message={
-          Boolean(checkedRowsAsArray[1])
-            ? data.message_multi || 'Вы уверены, что хотите удалить выбранные элементы?'
-            : data.message_single || 'Вы уверены, что хотите удалить выбранный элемент?'
+          checkedRowsLength === 1 || checkedRowsLength === 0
+            ? data.message_multi || 'Вы уверены, что хотите удалить выбранный элемент?'
+            : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
         }
 
-        titleOk={props.format === 'yesno' ? 'Да' : null}
-        titleCancel={props.format === 'yesno' ? 'Нет' : null}
+        titleOk={data.format === 'yesno' ? 'Да' : null}
+        titleCancel={data.format === 'yesno' ? 'Нет' : null}
       />
     </>
   );
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonRemoveStateProps, ButtonRemoveDispatchProps, ButtonRemoveOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

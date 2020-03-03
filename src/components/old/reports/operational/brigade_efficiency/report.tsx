@@ -5,7 +5,7 @@ import { IStateBrigadeEfficiency } from 'components/old/reports/operational/brig
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from 'components/old/reports/operational/brigade_efficiency/reportProps';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import { compose } from 'recompose';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { connect, HandleThunkActionCreator } from 'react-redux';
@@ -52,19 +52,21 @@ class BrigadeEfficiencyReport extends React.Component<PropsBrigadeEfficiencyRepo
       // tslint:disable-next-line
       console.warn(error_text);
     }
-  }
+  };
   handleDutyMissionFormVisibility = () => {
     this.setState({ dutyMissionFormVisibility: false });
-  }
+  };
   render() {
     const dutyNumberForm = (
-      <DutyMissionFormLazy
-        key={'BrigadesEfficiency_DutyMissionForm'}
-        onFormHide={this.handleDutyMissionFormVisibility}
+      <DutyMissionFormWithoutRegistry
+        handleHide={this.handleDutyMissionFormVisibility}
         showForm={this.state.dutyMissionFormVisibility}
         element={this.state.dutyMissionSelectedItem}
         readOnly={true}
+        type={null}
+        registryKey="duty_mission"
         page="duty_mission"
+        path="duty_mission_form"
       />
     );
 

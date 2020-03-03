@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import fuelRatesPermissions from './permissions';
 import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';

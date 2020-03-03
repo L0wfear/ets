@@ -5,7 +5,7 @@ import { IDataTableColSchema } from 'components/old/ui/table/@types/schema.h';
 /**
  * Когда с сервера будут приходить типы полей, то такая штука будет не нужна.
  */
-export const defaultSchemaMaker = (list: any[] = []) => (schema: IDataTableColSchema): IDataTableColSchema => {
+export const defaultSchemaMaker = (list: Array<any> = []) => (schema: IDataTableColSchema): IDataTableColSchema => {
   if (list.length === 0) {
     return schema;
   }
@@ -13,9 +13,9 @@ export const defaultSchemaMaker = (list: any[] = []) => (schema: IDataTableColSc
   if (isArray(list[0][schema.name])) {
     return {
       ...schema,
-        filter: {
-          type: 'string',
-        },
+      filter: {
+        type: 'string',
+      },
     };
   }
 
@@ -60,5 +60,5 @@ export function parseMultiSelectListQueryParams(query: any, params: Array<string
 
     return newQuery;
   })
-  .reduce((prev, curr) => ({ ...prev, ...curr }), query);
+    .reduce((prev, curr) => ({ ...prev, ...curr }), query);
 }

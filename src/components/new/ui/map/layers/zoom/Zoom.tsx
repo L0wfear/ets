@@ -6,8 +6,8 @@ import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerPro
 import { ButtonContainer } from 'components/old/monitor/layers/polygon_buffer/styled/styled';
 
 type PropsLayerZoom = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
   map: Map;
 };
 
@@ -16,13 +16,13 @@ class LayerZoom extends React.PureComponent<PropsLayerZoom, {}> {
     const { map } = this.props;
 
     map.getView().setZoom(map.getView().getZoom() + 1);
-  }
+  };
 
   handleClickDec = () => {
     const { map } = this.props;
 
     map.getView().setZoom(map.getView().getZoom() - 1);
-  }
+  };
 
   render() {
     return (

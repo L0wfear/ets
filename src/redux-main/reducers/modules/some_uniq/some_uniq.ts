@@ -12,6 +12,7 @@ export const initialState: IStateSomeUniq = {
   technicalOperationRegistryForMissionList: [],
   technicalOperationRegistryForDutyMissionList: [],
   municipalFacilityList: [],
+  municipalFacilityMeasureUnitList: [],
   municipalFacilityForMissionList: [],
   municipalFacilityForDutyMissionList: [],
   missionSource: {
@@ -25,7 +26,6 @@ export const initialState: IStateSomeUniq = {
     list: [],
     byId: null,
   },
-  consumptionRateMaterialList: [],
   workKindList: [],
   technicalOperationObjectsList: [],
   technicalOperationTypesList: [],
@@ -37,6 +37,15 @@ export const initialState: IStateSomeUniq = {
   tracksCaching: null,
 
   edcRequestInfoList: [],
+  workModeList: [],
+  inspectionConfig: null,
+
+  normList: [],
+  consumableMaterialCountMissionList: [],
+  moscowTimeServer: {
+    timestamp: null,
+    date: '',
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

@@ -99,7 +99,7 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
         state: newState > countPolyState ? 1 : newState,
       });
     }
-  }
+  };
 
   render() {
     return null;

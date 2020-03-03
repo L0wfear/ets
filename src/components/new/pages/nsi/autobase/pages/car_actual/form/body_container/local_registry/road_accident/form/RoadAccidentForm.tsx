@@ -1,30 +1,28 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/schema';
-
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnRoadAccidentProps,
   PropsRoadAccident,
   PropsRoadAccidentWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/@types/RoadAccident';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
-import { isNullOrUndefined } from 'util';
 import { getDefaultRoadAccidentElement } from './utils';
 import roadAccidentPermissions from '../_config-data/permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { get } from 'lodash';
 import FieldRoadAccidentDriverId from './inside_fields/driver_id/FieldRoadAccidentDriverId';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { autobaseGetSetRoadAccidentCause } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/actions';
+import { autobaseCreateRoadAccident, autobaseUpdateRoadAccident } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/actions';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const [roadAccidentCauseOptions, setRoadAccidentCauseOptions] = React.useState([]);
@@ -37,9 +35,8 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     formErrors: errors,
 
     page, path,
+    IS_CREATING,
   } = props;
-
-  const IS_CREATING = !state.id;
 
   const title = !IS_CREATING
     ? 'Изменение записи'
@@ -49,23 +46,23 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     ? props.isPermittedToUpdate
     : props.isPermittedToCreate;
 
-  const isPermitted =
-    ownIsPermitted &&
-    (isNullOrUndefined(state.company_id) ||
-      state.company_id === userCompanyId);
+  const isPermitted
+    = ownIsPermitted
+    && (isNullOrUndefined(state.company_id)
+      || state.company_id === userCompanyId);
 
-  const roadAccidentCauseOptionsLoad = React.useCallback (async () => {
+  const roadAccidentCauseOptionsLoad = React.useCallback(async () => {
     try {
       setRoadAccidentCauseIsLoading(true);
-      const RoadAccidentCauseOptionsData = await dispatch(
-        autobaseActions.autobaseGetSetRoadAccidentCause(
+      const { data } = await dispatch(
+        autobaseGetSetRoadAccidentCause(
           {},
-          { page, path },
+          props,
         ),
       );
 
       setRoadAccidentCauseOptions(
-        get(RoadAccidentCauseOptionsData, 'payload.data', []).map(defaultSelectListMapper),
+        data.map(defaultSelectListMapper),
       );
 
     } catch (error) {
@@ -210,11 +207,11 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   );
 };
 
-export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
+export default compose<PropsRoadAccident, PropsRoadAccidentWithForm>(
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateRoadAccident,
-    updateAction: autobaseActions.autobaseUpdateRoadAccident,
+    createAction: autobaseCreateRoadAccident,
+    updateAction: autobaseUpdateRoadAccident,
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

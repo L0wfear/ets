@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get, uniqBy } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 import {
@@ -9,7 +9,7 @@ import {
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { ISpareAvailableCar } from 'api/@types/services/autobase.h';
+import { SpareAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const validationSchema: IValidationSchema = {
   properties: [
@@ -63,9 +63,9 @@ export const meta: IDataTableSchema = {
   ],
 };
 
-interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: ISpareAvailableCar[];
-}
+type IPropsCarIdRenderer = {
+  vehicleList: Array<SpareAvailableCar>;
+} & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   value,

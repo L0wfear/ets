@@ -7,14 +7,14 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldTechnicalOperationMission = {
-  TECHNICAL_OPERATION_OPTIONS: DefaultSelectListMapper<TechnicalOperationRegistry>[];
+  TECHNICAL_OPERATION_OPTIONS: Array<DefaultSelectListMapper<TechnicalOperationRegistry>>;
 };
 
 export type StatePropsFieldTechnicalOperationMission = {
   technicalOperationRegistryForMissionList: IStateSomeUniq['technicalOperationRegistryForMissionList'];
 };
 export type DispatchPropsFieldTechnicalOperationMission = {
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
   actionResetTechnicalOperationRegistryForMission: HandleThunkActionCreator<typeof someUniqActions.actionResetTechnicalOperationRegistryForMission>;
 };
 
@@ -24,13 +24,14 @@ export type OwnPropsFieldTechnicalOperationMission = {
   disabled: boolean;
   isPermitted: boolean;
   error: string;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 
   IS_TEMPLATE: boolean;
   MISSION_IS_ORDER_SOURCE: boolean;
 
   car_ids: Mission['car_ids'];
   for_column: Mission['for_column'];
+  order_operation_id?: Mission['order_operation_id'];
 
   page: string;
   path: string;

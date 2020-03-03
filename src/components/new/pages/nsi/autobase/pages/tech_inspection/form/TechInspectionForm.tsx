@@ -1,31 +1,31 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { isNullOrUndefined } from 'util';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import techInspectionPermissions from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/shema';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnTechInspectionProps,
   PropsTechInspection,
   StatePropsTechInspection,
-  DispatchPropsTechInspection,
   PropsTechInspectionWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
-import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-import { get } from 'lodash';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const [carListOptions, setCarListOptions] = React.useState([]);
@@ -61,7 +61,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   React.useEffect(
     () => {
       if (!car_id) {
-        props.autobaseGetSetCar({}, { page, path }).then(
+        props.dispatch(autobaseGetSetCar({}, { page, path })).then(
           ({ data }) => (
             setCarListOptions(
               data.map(
@@ -101,7 +101,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       id="modal-tech-inspection"
       show
       onHide={props.hideWithoutChanges}
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
@@ -237,22 +237,18 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
 export default compose<PropsTechInspection, OwnTechInspectionProps>(
   connect<
     StatePropsTechInspection,
-    DispatchPropsTechInspection,
+    {},
     OwnTechInspectionProps,
     ReduxState
   >(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch: any) => ({
-      autobaseGetSetCar: (...arg) =>
-        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
-    }),
   ),
   withForm<PropsTechInspectionWithForm, TechInspection>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTechInspection,
-    updateAction: autobaseActions.autobaseUpdateTechInspection,
+    createAction: autobaseCreateTechInspection,
+    updateAction: autobaseUpdateTechInspection,
     mergeElement: (props) => {
       return getDefaultTechInspectionElement(props.element);
     },

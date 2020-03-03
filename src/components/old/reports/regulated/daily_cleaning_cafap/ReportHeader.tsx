@@ -1,7 +1,8 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { get } from 'lodash';
-import * as R from 'ramda';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import {
   IPropsReportHeaderCommon,
@@ -10,35 +11,41 @@ import {
 
 import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
-import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionSessionUpdateCurrentSeason } from 'redux-main/reducers/modules/session/action_get_config';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   date_start: string;
   date_end: string;
   geozone_type: string;
   element_type: string;
   car_func_types_groups: any;
-  appConfig: InitialStateSession['appConfig'];
-}
+  current_season: InitialStateSession['appConfig']['current_season'];
+  dispatch: EtsDispatch;
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
+  componentDidMount() {
+    this.props.dispatch(actionSessionUpdateCurrentSeason({ page: 'mainpage' }));
+  }
+
   getState() {
     const {
       date_start = getYesterday9am(),
       date_end = getToday859am(),
       geozone_type = 'odh',
       element_type = 'roadway',
-      car_func_types_groups = 'pm,pu',
+      car_func_types_groups = ['pm', 'pu'],
     } = this.props;
 
     return {
@@ -61,7 +68,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange('geozone_type', value);
-  }
+  };
   handleChangeElement = (field, value) => {
     const { element_type } = this.props;
 
@@ -70,7 +77,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     this.props.handleChange(field, value);
-  }
+  };
   handleSubmit = () => {
     const {
       date_start,
@@ -80,22 +87,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const getRequestBody = R.cond([
-      [R.complement(R.propEq('carTypeGroups', '')),
-      ({ state, carTypeGroups }) => {
-        const carTypeStrings = carTypeGroups
-          .split(',')
-          .map((item) => `"${item}"`)
-          .join(',');
-
-        return {
-          ...state,
-          car_func_types_groups: `[${carTypeStrings}]`,
-        };
-      }],
-      [R.T, R.identity(R.prop('state'))],
-    ]);
-
     const initialState = {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
@@ -103,15 +94,18 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       element_type,
     };
 
-    const requestBody = getRequestBody({
-      state: initialState,
-      carTypeGroups: car_func_types_groups,
-    });
+    const requestBody: Record<string, any> = {
+      ...initialState,
+    };
+
+    requestBody.car_func_types_groups = `[${
+      car_func_types_groups.map((item) => `"${item}"`).join(',')
+    }]`;
 
     this.props.onClick(requestBody);
-  }
+  };
   render() {
-    const { readOnly } = this.props;
+    const { readOnly, current_season } = this.props;
     const {
       date_start,
       date_end,
@@ -120,8 +114,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const season = getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date);
-    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season], {});
+    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, current_season], {});
     const CAR_TYPES =  Object.keys(carTypes).reduce((newArr, t) => {
       if (element_type !== 'roadway' || t !== 'tu') {
         newArr.push({ value: `${t}`, label: carTypes[t] });
@@ -160,7 +153,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={5}>
-            <label htmlFor=" ">Период формирования</label>
+            <FieldLabel>
+              Период формирования
+            </FieldLabel>
             <DatePickerRange
               date_start_id="date_start"
               date_start_value={date_start}
@@ -191,7 +186,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
-            >Сформировать отчет</EtsBootstrap.Button>
+            >Сформировать отчетsss</EtsBootstrap.Button>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </>
@@ -202,7 +197,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
-      appConfig: getSessionState(state).appConfig,
+      current_season: getSessionState(state).appConfig.current_season,
     }),
   ),
   ReportHeaderWrapper,

@@ -9,7 +9,7 @@ export default {
   title: 'Реестр технологических операций',
   isNewRegistry: true,
   entyity: 'technical_operation',
-  noDotList: false,
+
   component,
   permissions,
 };

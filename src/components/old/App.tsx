@@ -64,8 +64,8 @@ class App extends React.Component<any, any> {
     );
 
     if (
-      prevProps.token !== this.props.token &&
-      localStorageToken !== this.props.token
+      prevProps.token !== this.props.token
+      && localStorageToken !== this.props.token
     ) {
       this.checkToken();
     }
@@ -81,15 +81,15 @@ class App extends React.Component<any, any> {
       const { error_text, errorIsShow } = ErrorData;
       const t_error = error_text || ErrorData;
 
-      console.log(t_error); // tslint:disable-line:no-console
+      console.info(t_error); // eslint-disable-line
 
       if (t_error === 401) {
         this.props.sessionResetData();
         return global.NOTIFICATION_SYSTEM.notify(loginErrorNotification);
       }
       return (
-        !errorIsShow &&
-        global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error))
+        !errorIsShow
+        && global.NOTIFICATION_SYSTEM.notify(getErrorNotification(t_error))
       );
     }
 

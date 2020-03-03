@@ -1,14 +1,11 @@
-import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import {
-  OneSessionStructure,
   InitialStateSession,
-} from 'redux-main/reducers/modules/session/session.d';
-import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
+} from 'redux-main/reducers/modules/session/@types/session';
 import {
   getSessionStructuresParams,
   getSessionStructuresOptions,
 } from 'redux-main/reducers/modules/session/selectors';
-import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StateFieldStructureDutyMission = {};
 
@@ -33,6 +30,8 @@ export type OwnPropsFieldStructureDutyMission = {
 
   page: string;
   path: string;
+
+  formDataKey?: FormKeys;
 };
 
 export type PropsFieldStructureDutyMission = StatePropsFieldStructureDutyMission &

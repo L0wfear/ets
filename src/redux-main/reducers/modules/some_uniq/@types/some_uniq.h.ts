@@ -1,12 +1,11 @@
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import { MunicipalFacility, MunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
 import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/@types';
 import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
-import { ConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/@types';
 import { WorkKind } from '../work_kind/@types/work_kind';
 import { TechnicalOperationObjects } from '../technical_operation_objects/@types/technical_operation_objects';
 import { TechnicalOperationTypes } from '../technical_operation_types/@types/technical_operation_types';
@@ -16,6 +15,9 @@ import { RefillType } from '../../refill_type/@types/refillType';
 import { CarsTravelTime } from '../cars_travel_time/@types';
 import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
+import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -32,35 +34,48 @@ export type CancelReasons = {
 };
 
 export type IStateSomeUniq = {
-  specialModelList: SpecialModel[];
-  modelsList: ModelElement[];
-  technicalOperationRegistryList: TechnicalOperationRegistry[];
-  technicalOperationRegistryForMissionList: TechnicalOperationRegistry[];
-  technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[];
-  municipalFacilityList: MunicipalFacility[];
-  municipalFacilityForMissionList: MunicipalFacility[];
-  municipalFacilityForDutyMissionList: MunicipalFacility[];
+  specialModelList: Array<SpecialModel>;
+  modelsList: Array<ModelElement>;
+  technicalOperationRegistryList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForMissionList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForDutyMissionList: Array<TechnicalOperationRegistry>;
+  municipalFacilityList: Array<MunicipalFacility>;
+  municipalFacilityMeasureUnitList: Array<MunicipalFacilityMeasureUnit>;
+  municipalFacilityForMissionList: Array<MunicipalFacility>;
+  municipalFacilityForDutyMissionList: Array<MunicipalFacility>;
   missionSource: {
-    list: MissionSource[];
+    list: Array<MissionSource>;
     order_mission_source_id: number | null;
   };
-  maintenanceWorkList: MaintenanceWork[];
-  cleanCategoriesList: CleanCategories[];
-  missionCancelReasonsList: CancelReasons[];
+  maintenanceWorkList: Array<MaintenanceWork>;
+  cleanCategoriesList: Array<CleanCategories>;
+  missionCancelReasonsList: Array<CancelReasons>;
   geozoneMunicipalFacility: {
-    list: GeozoneMunicipalFacility[];
+    list: Array<GeozoneMunicipalFacility>;
     byId: GeozoneMunicipalFacilityById | null;
   };
-  consumptionRateMaterialList: ConsumptionRateMaterial[];
-  workKindList: WorkKind[];
-  technicalOperationObjectsList: TechnicalOperationObjects[];
-  technicalOperationTypesList: TechnicalOperationTypes[];
-  sensorTypeList: SensorType[];
-  measureUnitList: MeasureUnit[];
+  workKindList: Array<WorkKind>;
+  technicalOperationObjectsList: Array<TechnicalOperationObjects>;
+  technicalOperationTypesList: Array<TechnicalOperationTypes>;
+  sensorTypeList: Array<SensorType>;
+  measureUnitList: Array<MeasureUnit>;
 
-  refillTypeList: RefillType[];
+  refillTypeList: Array<RefillType>;
 
-  carsTravelTimeList: CarsTravelTime[];
-  edcRequestInfoList: EdcRequestInfo[];
+  carsTravelTimeList: Array<CarsTravelTime>;
+  edcRequestInfoList: Array<EdcRequestInfo>;
   tracksCaching: TracksCaching;
+
+  workModeList: Array<WorkMode>;
+  normList: Array<Norm>;
+
+  inspectionConfig: {
+    [key: string]: {};
+  } | null;
+
+  consumableMaterialCountMissionList: Array<ConsumableMaterialCountMission>;
+  moscowTimeServer: {
+    timestamp: number;
+    date: string;
+  };
 };

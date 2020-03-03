@@ -53,11 +53,11 @@ class LayerEditDrawRoute extends React.PureComponent<PropsLayerEditDrawRoute, St
         ...objData,
         index,
         state: objData.state === linesState.SELECTED
-        ? linesState.SELECTED_IDLING
-        : linesState.SELECTED,
+          ? linesState.SELECTED_IDLING
+          : linesState.SELECTED,
       });
     }
-  }
+  };
 
   componentWillUnmount() {
     this.props.removeLayer();

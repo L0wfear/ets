@@ -49,7 +49,7 @@ export type EdcRequest = {
   object_type: string;
   ods: string;
   okrug_name: string;
-  pay_status_id: number
+  pay_status_id: number;
   pay_status_name: string;
   payable_type_id: number;
   payable_type_name: string;
@@ -78,9 +78,9 @@ export type EdcRequest = {
   uk_name: string;
   work_type: string;
 
-  mission_numbers: number[];
+  mission_numbers: Array<number>;
   mission_numbers_text: string;
-  duty_mission_numbers: number[];
+  duty_mission_numbers: Array<number>;
   duty_mission_numbers_text: string;
 
   peredano_v_ppoz: any;
@@ -88,5 +88,32 @@ export type EdcRequest = {
 };
 
 export type IStateEdcRequest = {
-  EdcRequestList: EdcRequest[];
+  EdcRequestList: Array<EdcRequest>;
+};
+
+export type EdcCancelReason = {
+  code: any;
+  edc_id: number;
+  end_date: string | null;
+  id: number;
+  is_active: boolean;
+  is_last: boolean;
+  name: string;
+  root_id: number;
+  start_date: string;
+};
+
+export type EdcRejectionReason = {
+  attribute: {
+    name: string;
+    attribute: any;
+    reason_type_id: number;
+  };
+  create_date: string;
+  deleted_at: any;
+  edc_id: number;
+  end_date: string;
+  id: number;
+  is_deleted: boolean;
+  name: string;
 };

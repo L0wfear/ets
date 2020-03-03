@@ -1,5 +1,5 @@
-import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
-import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
+import { FiledToCheck } from 'components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
 export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   {
@@ -88,6 +88,12 @@ export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
     className: 'checkbox-input flex-reverse',
   },
   {
+    key: 'is_coating_defects',
+    title: 'Дефекты на покрытии',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
     key: 'surface_area_of_destruction',
     title: 'Площадь разрушения покрытия на базе (кв. м)',
     type: 'number',
@@ -106,7 +112,7 @@ export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   },
   {
     key: 'cnt_defective_light',
-    title: 'Количество неисправных мачт освещения (шт.)',
+    title: 'Количество неисправных опор освещения (шт.)',
     type: 'number',
     sub: 20,
     hidden: 'lack_of_lighting',

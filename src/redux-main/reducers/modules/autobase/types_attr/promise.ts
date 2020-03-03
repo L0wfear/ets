@@ -2,7 +2,7 @@ import { TypesAttrService } from 'api/Services';
 import { get } from 'lodash';
 import { TypesAttr } from '../@types/autobase.h';
 
-export const getFrontTypesAttr = (typesAttr: TypesAttr, index) => {
+export const getFrontTypesAttr = (typesAttr: TypesAttr, index: number) => {
   typesAttr.id = index + 1;
 
   return typesAttr;
@@ -13,11 +13,13 @@ export const promiseLoadTypesAttr = async (payload = {}) => {
   try {
     result = await TypesAttrService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
+  const data: Array<TypesAttr> = get(result, 'result.rows', []);
+
   return {
-    data: get(result, ['result', 'rows'], []),
+    data,
   };
 };
 

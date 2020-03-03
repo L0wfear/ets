@@ -1,15 +1,20 @@
-import {
-  employeeLoadPosition,
-} from 'redux-main/reducers/modules/employee/promises';
-import { keyBy } from 'lodash';
+import { keyBy, get } from 'lodash';
+import { PositionService } from 'api/Services';
+import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
-export const getPosition = employeeLoadPosition;
+export const getSetPosition = async (payload: object) => {
+  let response = null;
 
-export const getSetPosition = async (...payload) => {
-  const { data } = await getPosition(...payload);
+  try {
+    response = await PositionService.get({ ...payload });
+  } catch {
+    //
+  }
+
+  const result: Array<Position> = get(response, 'result.rows', []);
 
   return {
-    data,
-    dataIndex: keyBy(data, 'id'),
+    data: result,
+    dataIndex: keyBy(result, 'id'),
   };
 };

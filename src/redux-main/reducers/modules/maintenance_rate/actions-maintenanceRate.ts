@@ -7,73 +7,62 @@ import {
 
 import {
   MaintenanceRate,
- } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
+} from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-export const maintenanceRateGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getMaintenanceRate(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export const maintenanceRateCreate: any = (payload: MaintenanceRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const newMaintenanceRate = await dispatch({
-    type: 'none',
-    payload: createMaintenanceRate(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-  await maintenanceRateGetAndSetInStore({}, {page, path});
-  return newMaintenanceRate;
-};
-
-export const maintenanceRateSetNewData = (newStateData) => ({
+export const maintenanceRateSetNewData = (newStateData: { maintenanceRateList: Array<MaintenanceRate>; }) => ({
   type: MAINTENANCE_RATE_SET_DATA,
   payload: newStateData,
 });
 
-export const maintenanceRateGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { maintenanceRateList } } = await dispatch(
-    maintenanceRateGet(payload, { page, path, }),
+export const maintenanceRateGet = (payload: Parameters<typeof getMaintenanceRate>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getMaintenanceRate>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getMaintenanceRate(payload),
+    meta,
+  )
+);
+
+export const maintenanceRateGetAndSetInStore = (...arg: Parameters<typeof maintenanceRateGet>): EtsAction<EtsActionReturnType<typeof maintenanceRateGet>> => async (dispatch) => {
+  const result = await dispatch(
+    maintenanceRateGet(...arg),
   );
 
   dispatch(
-    maintenanceRateSetNewData({maintenanceRateList}),
+    maintenanceRateSetNewData({ maintenanceRateList: result.maintenanceRateList }),
   );
 
-  return {
-    maintenanceRateList,
-  };
+  return result;
 };
 
-export const maintenanceRateUpdate: any = (payload: MaintenanceRate, { page, path }: {page: string, path?: string }) => async (dispatch) => {
-  const maintenanceRateUpd = await dispatch({
-    type: 'none',
-    payload: updateMaintenanceRate(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-  await maintenanceRateGetAndSetInStore({}, {page, path});
-  return maintenanceRateUpd;
+export const maintenanceRateCreate = (payload: Parameters<typeof createMaintenanceRate>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createMaintenanceRate>> => async (dispatch) => {
+  const newMaintenanceRate = await etsLoadingCounter(
+    dispatch,
+    createMaintenanceRate(payload),
+    meta,
+  );
+  await maintenanceRateGetAndSetInStore({}, meta);
+  return newMaintenanceRate;
 };
 
-export const maintenanceRateDelete = (id: number) => ({
-  type: 'none',
-  payload: deleteMaintenanceRate(id),
-  meta: {
-    promise: true,
-  },
-});
+export const maintenanceRateUpdate = (payload: Parameters<typeof updateMaintenanceRate>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateMaintenanceRate>> => async (dispatch) => {
+  const newMaintenanceRate = await etsLoadingCounter(
+    dispatch,
+    updateMaintenanceRate(payload),
+    meta,
+  );
+  await maintenanceRateGetAndSetInStore({}, meta);
+  return newMaintenanceRate;
+};
+
+export const maintenanceRateDelete = (id: Parameters<typeof deleteMaintenanceRate>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateMaintenanceRate>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    deleteMaintenanceRate(id),
+    meta,
+  );
+};

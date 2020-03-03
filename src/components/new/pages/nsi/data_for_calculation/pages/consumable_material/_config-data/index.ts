@@ -18,7 +18,7 @@ export default {
   title: 'Расходные материалы',
   isNewRegistry: true,
   entyity: 'odh_norm',
-  noDotList: false,
+
   component,
   permissions,
 };

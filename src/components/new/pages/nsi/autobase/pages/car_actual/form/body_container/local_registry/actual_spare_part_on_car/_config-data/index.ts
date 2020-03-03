@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Реестр запчастей',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobasespare_part',
-  noDotList: false,
+
   component,
   permissions,
 };

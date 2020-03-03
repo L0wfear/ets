@@ -1,41 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsEmployeeFormLazy } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 const EmployeeFrom = React.lazy(() => (
   import(/* webpackChunkName: "employee_form" */ 'components/new/pages/nsi/employee/form/EmployeeForm')
 ));
 
-class EmployeeFormLazy extends React.Component<PropsEmployeeFormLazy, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.loadingPageName || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}employee-form`;
+type OwnProps = WithFormRegistrySearchProps<Employee>;
 
-    return element ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <EmployeeFrom
-              element={element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default withFormRegistrySearch({})(EmployeeFormLazy);
+export default withFormRegistrySearch<OwnProps, Employee>({
+  add_path: 'employee',
+})(EmployeeFrom);

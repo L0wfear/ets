@@ -4,7 +4,7 @@ import Stroke from 'ol/style/Stroke';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
-const CACHE_ICON: any = {};
+const CACHE_ICON: Record<string, Style> = {};
 
 const makeCacheStyle = (cacheStyleName, { countWork, SHOW_TRACK } ) => {
   if (!SHOW_TRACK) {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const useEscapeEvent = (handler: (...arg: any[]) => void) => {
+const useEscapeEvent = (handler: (...arg: Array<any>) => void) => {
   const [saveEvent, setSaveEvent] = React.useState(null);
 
   React.useEffect(
@@ -8,7 +8,7 @@ const useEscapeEvent = (handler: (...arg: any[]) => void) => {
       setSaveEvent(
         (oldSaveEvent) => {
           if (oldSaveEvent) {
-            document.removeEventListener("keydown", oldSaveEvent, false);
+            document.removeEventListener('keydown', oldSaveEvent, false);
           }
           const escFunction = (event: KeyboardEvent) => {
 
@@ -17,7 +17,7 @@ const useEscapeEvent = (handler: (...arg: any[]) => void) => {
             }
           };
 
-          document.addEventListener("keydown", escFunction, false);
+          document.addEventListener('keydown', escFunction, false);
 
           return escFunction;
         },
@@ -29,7 +29,7 @@ const useEscapeEvent = (handler: (...arg: any[]) => void) => {
   React.useEffect(
     () => {
       return () => {
-        document.removeEventListener("keydown", saveEvent, false);
+        document.removeEventListener('keydown', saveEvent, false);
       };
     },
     [saveEvent],

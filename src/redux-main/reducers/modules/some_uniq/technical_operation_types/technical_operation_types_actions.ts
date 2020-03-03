@@ -23,7 +23,7 @@ export const actionResetTechnicalOperationTypes = (): EtsAction<IStateSomeUniq['
   return technicalOperationTypesList;
 };
 
-export const actionGetTechnicalOperationTypes = (payload: any, meta: LoadingMeta): EtsAction<Promise<TechnicalOperationTypes[]>> => async (dispatch) => {
+export const actionGetTechnicalOperationTypes = (payload: any, meta: LoadingMeta): EtsAction<Promise<Array<TechnicalOperationTypes>>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetTechnicalOperationTypes(payload),
@@ -33,7 +33,7 @@ export const actionGetTechnicalOperationTypes = (payload: any, meta: LoadingMeta
   return response;
 };
 
-export const actionGetAndSetInStoreTechnicalOperationTypes = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<TechnicalOperationTypes[]>> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationTypes = (payloadOwn: object, meta: LoadingMeta): EtsAction<Promise<Array<TechnicalOperationTypes>>> => async (dispatch) => {
   const technicalOperationTypesList = await dispatch(
     actionGetTechnicalOperationTypes(payloadOwn, meta),
   );

@@ -1,10 +1,8 @@
 import * as React from 'react';
-import Div from 'components/old/ui/Div';
 import * as cx from 'classnames';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const EtsTheadThL: any = EtsTheadTh;
+import Div from 'components/old/ui/Div';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class ThHead extends React.Component<any, any> {
   handleClick = (e) => {
@@ -14,7 +12,7 @@ class ThHead extends React.Component<any, any> {
     }
 
     e.preventDefault();
-  }
+  };
 
   render() {
     const { thData } = this.props;
@@ -26,18 +24,18 @@ class ThHead extends React.Component<any, any> {
     );
 
     return (
-      <EtsTheadThL canClick className={thClassName} data-title={thData.name} onClick={this.handleClick}>
+      <EtsBootstrap.Grid.GridBootstrapThead.Th canClick className={thClassName} data-title={thData.name} onClick={this.handleClick}>
         <Div className={'th-container'} >
           <Div>
             <Div>{thData.displayName}</Div>
           </Div>
-          { !thData.notAvailableSort &&
-            <Div className={className}>
+          { !thData.notAvailableSort
+            && <Div className={className}>
               <EtsBootstrap.Glyphicon glyph={this.props.sortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
             </Div>
           }
         </Div>
-      </EtsTheadThL>
+      </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
   }
 }

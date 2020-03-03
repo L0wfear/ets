@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { groupBy, get } from 'lodash';
 import { DivNone } from 'global-styled/global-styled';
-import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { FiledToCheck } from 'components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning';
 import { IAVisibleWarningInputContainer } from '../../autobase/components/vsible_warning/styled/IAVisibleWarning';
-import { isBoolean } from 'util';
+import { isBoolean, isString } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { SubHeader } from '../../pgm_base/components/vsible_warning/styled/IAVisibleWarning';
@@ -21,7 +21,16 @@ type IAVisibleWarningProps = {
 const getValueFromEvent = (key, value, filedToCheckByKey) => {
   switch (filedToCheckByKey[key][0].type) {
     case 'boolean': return get(value, 'target.checked', null);
-    case 'number':
+    case 'number': {
+      const valNumber = get(value, 'target.value', null);
+      if(valNumber || valNumber === 0) {
+        return parseFloat(
+          isString(valNumber)
+            ? valNumber.replace(',', '.')
+            : valNumber
+        );
+      }
+    }
     case 'text':
     case 'string': return get(value, 'target.value', null) || null;
     case 'select': return value;
@@ -58,7 +67,7 @@ const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
     <>
       {
         filedToCheck.map((fieldData) => (
-            <IAVisibleWarningInputContainer key={fieldData.key.toString()} sub={fieldData.sub}>
+          <IAVisibleWarningInputContainer key={fieldData.key.toString()} sub={fieldData.sub}>
             {
               fieldData.sub_header ? (
                 <SubHeader>

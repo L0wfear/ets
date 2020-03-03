@@ -75,17 +75,17 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                 return ({
                   car_id: (
                     !d.car_id
-                    ? 'Поле "Рег. номер ТС" должно быть заполнено'
-                    : ''
+                      ? 'Поле "Рег. номер ТС" должно быть заполнено'
+                      : ''
                   ),
                   installed_at: (
                     !d.installed_at
-                    ? 'Поле "Дата монтажа" должно быть заполнено'
-                    : (
-                          validateDateInsideOther(d, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)])
-                        ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
-                        : ''
-                    )
+                      ? 'Поле "Дата монтажа" должно быть заполнено'
+                      : (
+                        validateDateInsideOther(d, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)])
+                          ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
+                          : ''
+                      )
                   ),
                   uninstalled_at: (
                     !d.uninstalled_at && installed_at_oldest !== installed_at_current

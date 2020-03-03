@@ -1,55 +1,42 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
   registryKey,
   getToConfig,
 } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_registry_form/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import BatteryRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/battery_registry/form';
 import { CarActualRegistryFormContext } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/CarFormContext';
-import { get } from 'lodash';
 import * as registryAddButtonConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type CarActualAddBatteryRegistryFormStateProps = {};
-export type CarActualAddBatteryRegistryFormDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-};
-export type CarActualAddBatteryRegistryFormOwnProps = {
+type OwnProps = {
   // form props
   element: any;
   handleHide: () => any;
 
   page: string;
 };
-export type CarActualAddBatteryRegistryFormMergedProps = (
-  CarActualAddBatteryRegistryFormStateProps
-  & CarActualAddBatteryRegistryFormDispatchProps
-  & CarActualAddBatteryRegistryFormOwnProps
-);
-export type CarActualAddBatteryRegistryFormProps = (
-  CarActualAddBatteryRegistryFormMergedProps
+type Props = (
+  OwnProps
 );
 
-const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormProps> = (props) => {
+const CarActualAddBatteryRegistryForm: React.FC<Props> = (props) => {
   // Переписать на useDispatch
   const CarActualRegistryFormValue = React.useContext(CarActualRegistryFormContext);
   const company_id = get(CarActualRegistryFormValue, 'currentSelectedCar.company_id', null);
 
+  const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(company_id));
+      dispatch(registryAddInitialData(getToConfig(company_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [],
@@ -58,11 +45,11 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
   const handleHideForm = React.useCallback(
     (isSubmitted) => {
       if (isSubmitted) {
-        props.registryLoadDataByKey(registryAddButtonConfig.registryKey);
+        dispatch(registryLoadDataByKey(registryAddButtonConfig.registryKey));
         props.handleHide();
       }
     },
-    [props.handleHide, props.page, props.registryLoadDataByKey, ],
+    [props.handleHide, props.page],
   );
 
   return (
@@ -71,13 +58,14 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
       onHide={props.handleHide}
       show
       bsSize="large"
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{`Добавить запись`}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={props.page} typePreloader="mainpage">
-        <Registry registryKey={registryKey} />
-        <BatteryRegistryFormLazy registryKey={registryKey} handleHide={handleHideForm} />
+        <Registry registryKey={registryKey}>
+          <BatteryRegistryFormLazy registryKey={registryKey} handleHide={handleHideForm} />
+        </Registry>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
         <EtsBootstrap.Button onClick={props.handleHide}>Закрыть</EtsBootstrap.Button>
@@ -86,30 +74,4 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
   );
 };
 
-export default compose<CarActualAddBatteryRegistryFormProps, CarActualAddBatteryRegistryFormOwnProps>(
-  withSearch,
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<CarActualAddBatteryRegistryFormStateProps, CarActualAddBatteryRegistryFormDispatchProps, CarActualAddBatteryRegistryFormOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-      registryLoadDataByKey: (...arg) => (
-        dispatch(
-          registryLoadDataByKey(...arg),
-        )
-      ),
-    }),
-  ),
-)(CarActualAddBatteryRegistryForm);
+export default CarActualAddBatteryRegistryForm;

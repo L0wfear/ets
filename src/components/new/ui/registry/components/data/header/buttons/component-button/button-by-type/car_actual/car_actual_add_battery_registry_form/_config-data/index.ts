@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Реестр аккумуляторов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_battery',
-  noDotList: false,
+
   component,
   permissions,
 };

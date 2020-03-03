@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import List from 'components/new/pages/dashboard/menu/cards/waybill-completed/list/List';
 import {
   dashboardLoadWaybillCompleted,
   dashboardSetInfoDataInWaybillCompleted,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import WaybillCompletedInfo from 'components/new/pages/dashboard/menu/cards/waybill-completed/info/WaybillCompletedInfo';
 import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 
@@ -21,7 +21,6 @@ import {
 import { compose } from 'recompose';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
@@ -30,7 +29,7 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
     this.props.setInfoData(
       this.props.items[index],
     );
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -43,16 +42,15 @@ class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybi
       <div>
         <List items={firstTwoItem} handleClick={this.handleClick} addIndex={0} classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClick} classNameContainer="line_data" addIndex={2} />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

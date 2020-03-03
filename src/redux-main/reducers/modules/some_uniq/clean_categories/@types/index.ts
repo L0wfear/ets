@@ -6,5 +6,5 @@ export type CleanSubcategories = {
 export type CleanCategories = {
   id: number | null;
   name: string | null;
-  subcategories: CleanSubcategories[];
+  subcategories: Array<CleanSubcategories>;
 };

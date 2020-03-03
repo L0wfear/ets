@@ -6,7 +6,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type StateFieldTechnicalOperationDutyMission = {
-  TECHNICAL_OPERATION_OPTIONS: DefaultSelectListMapper<TechnicalOperationRegistry>[];
+  TECHNICAL_OPERATION_OPTIONS: Array<DefaultSelectListMapper<TechnicalOperationRegistry>>;
 };
 
 export type StatePropsFieldTechnicalOperationDutyMission = {

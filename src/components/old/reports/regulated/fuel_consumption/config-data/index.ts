@@ -3,9 +3,9 @@ import component from 'components/old/reports/regulated/fuel_consumption/config-
 
 export default {
   path: '/fuel-consumption-report',
-  title: 'Расход топлива',
+  title: 'Отчёт по топливу',
   entyity: 'fuel_consumption_report',
-  noDotList: false,
+
   component,
   permissions,
 };

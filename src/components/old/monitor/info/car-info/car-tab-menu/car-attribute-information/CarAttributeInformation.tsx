@@ -18,20 +18,22 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
+export const makeLastPointTrack = (trackCaching) => trackCaching.track === -1 ? false : (trackCaching.track.slice(-1)[0] || null);
+
 export type TypeLastPoint = {
   timestamp: number;
-  coords_msk: [number, number],
+  coords_msk: [number, number];
 };
 
 export type PropsCarAttributeInformation = {
-  company_name: string,
-  gov_number: string,
-  garage_number: string,
-  gps_code: number,
-  status: number,
-  type_name: string,
-  model_name: string,
-  lastPoint: TypeLastPoint,
+  company_name: string;
+  gov_number: string;
+  garage_number: string;
+  gps_code: number;
+  status: number;
+  type_name: string;
+  model_name: string;
+  lastPoint: TypeLastPoint;
   errorInLoadTrack: boolean;
   map: Map;
   carActualGpsNumberIndex: any;
@@ -40,15 +42,15 @@ export type PropsCarAttributeInformation = {
 };
 
 type OneAtt<P> = {
-  key?: string,
-  title: string,
-  value: (props: P) => string | number | JSX.Element | JSX.Element[],
+  key?: string;
+  title: string;
+  value: (props: P) => string | number | JSX.Element | Array<JSX.Element>;
   loader?: boolean;
   carActualGpsNumberIndex?: boolean;
   missionsData?: boolean;
 };
 
-export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
+export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
   {
     key: 'company_name',
     title: 'Организация',
@@ -113,7 +115,6 @@ export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
 const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.memo(
   (props) => {
     const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
-
     return (
       <div>
         <CarInfoBlockTabData>
@@ -138,18 +139,18 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
               <span className="car_info-attr_title">{'Последняя точка: '}</span>
               {
                 !lastPoint && lastPoint !== null
-                ? (
-                  errorInLoadTrack
                   ? (
-                    'Ошибка загрузки трека'
+                    errorInLoadTrack
+                      ? (
+                        'Ошибка загрузки трека'
+                      )
+                      : (
+                        <PreloadNew typePreloader="field" />
+                      )
                   )
                   : (
-                    <PreloadNew typePreloader="field" />
+                    <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
                   )
-                )
-                : (
-                  <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
-                )
               }
             </div>
           </div>
@@ -174,7 +175,7 @@ const mapStateToProps = (state) => ({
     return newObj;
   }, {}),
   status: state.monitorPage.carInfo.status,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+  lastPoint: makeLastPointTrack(state.monitorPage.carInfo.trackCaching),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   missionsData: state.monitorPage.carInfo.missionsData,

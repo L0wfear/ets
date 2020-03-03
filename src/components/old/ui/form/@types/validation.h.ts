@@ -1,4 +1,4 @@
-interface IValidationSchemaProperties<TValue, TFormData> {
+type IValidationSchemaProperties<TValue, TFormData> = {
   key: string;
   required?: boolean;
   float?: number;
@@ -20,16 +20,16 @@ interface IValidationSchemaProperties<TValue, TFormData> {
     'boolean' |
     'array'
   ;
-}
+};
 
-interface IValidationSchemaDependensyField<TValue, TFormData> {
+type IValidationSchemaDependensyField<TValue, TFormData> = {
   validator?(value: TValue, formData: TFormData): boolean | string;
-}
-interface IValidationSchemaDependencies<TValue, TFormData> {
-  [field: string]: IValidationSchemaDependensyField<TValue, TFormData>[];
-}
+};
+type IValidationSchemaDependencies<TValue, TFormData> = {
+  [field: string]: Array<IValidationSchemaDependensyField<TValue, TFormData>>;
+};
 
-export interface IValidationSchema<TValue = any, TFormData = any> {
-  properties: IValidationSchemaProperties<TValue, TFormData>[];
+export type IValidationSchema<TValue = any, TFormData = any> = {
+  properties: Array<IValidationSchemaProperties<TValue, TFormData>>;
   dependencies?: IValidationSchemaDependencies<TValue, TFormData>;
-}
+};

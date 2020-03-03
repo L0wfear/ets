@@ -2,38 +2,37 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { promiseLoadMeasureUnit } from './promise';
 import { MeasureUnit } from './@types';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export const actionSetMeasureUnit = (measureUnitList: MeasureUnit[]) => (dispatch) => (
+export const actionSetMeasureUnit = (measureUnitList: Array<MeasureUnit>): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
     someUniqSetNewData({
       measureUnitList,
     }),
   )
 );
-export const actionResetSetMeasureUnit = () => (dispatch) => (
+export const actionResetSetMeasureUnit = (): EtsAction<EtsActionReturnType<typeof actionSetMeasureUnit>> => (dispatch) => (
   dispatch(
     actionSetMeasureUnit([]),
   )
 );
-export const actionLoadMeasureUnit: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const data = await etsLoadingCounter(
+export const actionLoadMeasureUnit = (payload: Parameters<typeof promiseLoadMeasureUnit>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadMeasureUnit>> => async (dispatch) => {
+  return etsLoadingCounter(
     dispatch,
     promiseLoadMeasureUnit(payload),
-    { page, path },
+    meta,
   );
-
-  return data;
 };
-export const actionmeasureUnitGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const data = await dispatch(
-    actionLoadMeasureUnit(payload, { page, path }),
+
+export const actionMeasureUnitGetAndSetInStore = (...arg: Parameters<typeof actionLoadMeasureUnit>): EtsAction<EtsActionReturnType<typeof actionLoadMeasureUnit>> => async (dispatch) => {
+  const result = await dispatch(
+    actionLoadMeasureUnit(...arg),
   );
 
   dispatch(
-    actionSetMeasureUnit(data),
+    actionSetMeasureUnit(result.data),
   );
 
-  return {
-    measureUnitList: data,
-  };
+  return result;
 };

@@ -1,6 +1,45 @@
-import { ConsumableMaterial } from "./@types/consumableMaterial";
-import { ConsumableMaterialService } from "api/Services";
-import { get } from 'lodash';
+import { get, uniqBy, uniq } from 'lodash';
+
+import { ConsumableMaterial, ConsumableMaterialWrap } from './@types/consumableMaterial';
+import { ConsumableMaterialService } from 'api/Services';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+
+export const makeConsumableMaterialFront = (array: Array<ConsumableMaterial>) => (
+  (array).map(
+    (rowData): ConsumableMaterialWrap => ({
+      ...rowData,
+      technical_operation_ids: uniqBy(rowData.norms, 'technical_operation_id')
+        .map(({ technical_operation_id }) => technical_operation_id),
+      technical_operation_names: uniqBy(rowData.norms, 'technical_operation_name')
+        .map(({ technical_operation_name }) => technical_operation_name),
+      municipal_facility_ids: uniqBy(rowData.norms, 'municipal_facility_id')
+        .map(({ municipal_facility_id }) => municipal_facility_id),
+      municipal_facility_names: uniqBy(rowData.norms, 'municipal_facility_name')
+        .map(({ municipal_facility_name }) => municipal_facility_name),
+      to_element: uniq(
+        rowData.norms.map(({ technical_operation_name, municipal_facility_name }) => (
+          `${technical_operation_name} [${municipal_facility_name}]`
+        )),
+      ),
+    }),
+  )
+);
+
+export const promiseSubmitConsumableMaterial = (consumableMateriaOwn: ConsumableMaterial) => {
+  const consumableMateria = {
+    ...consumableMateriaOwn,
+    norms: consumableMateriaOwn.norms.map((rowData) => ({
+      ...rowData,
+      value: getNumberValueFromSerch(rowData.value),
+    })),
+  };
+
+  if (!consumableMateria.id) {
+    return promiseCreateConsumableMaterial(consumableMateria);
+  }
+
+  return promiseUpdateConsumableMaterial(consumableMateria);
+};
 
 export const promiseCreateConsumableMaterial = async (consumableMaterialNew: ConsumableMaterial) => {
   const response = await ConsumableMaterialService.post(
@@ -35,4 +74,11 @@ export const promiseUpdateConsumableMaterial = async (consumableMaterial: Consum
   };
 
   return result;
+};
+
+export const promiseGetConsumableMaterialById = async (id: ConsumableMaterial['id']) => {
+  const response = await ConsumableMaterialService.path(id).get();
+  const consumable_material: ConsumableMaterial = get(response, 'result.rows.0', null);
+
+  return consumable_material;
 };

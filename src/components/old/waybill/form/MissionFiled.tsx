@@ -1,31 +1,45 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { components } from 'react-select';
 
+import { isEmpty } from 'utils/functions';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+
 import { getWarningNotification } from 'utils/notifications';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
-import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import styled from 'styled-components';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { componentsForMissionSelect } from './MultiValueMissionField';
+import { diffDates } from 'components/@next/@utils/dates/dates';
+import memoizeOne from 'memoize-one';
 
-const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: missionPermissions.create,
-})(EtsBootstrap.Button);
+const MissionFieldStyled = styled.div`
+  margin-bottom: 15px;
+  ${FieldLabel} {
+    display: none;
+  }
+`;
 
 type Props = {
   dispatch: EtsDispatch;
+  page: string;
+  path: string;
+  moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
   [k: string]: any;
 };
 
@@ -38,6 +52,10 @@ class MissionField extends React.Component<Props, any> {
     action_at: '',
     mission_id_list: [],
     rejectedMission: null,
+    missionHasError: {
+      hasError: false,
+      errorText: '',
+    },
   };
 
   multiValueContainerReander({ innerProps, data, ...props }) {
@@ -77,7 +95,7 @@ class MissionField extends React.Component<Props, any> {
       }
     }
     this.props.handleChange('mission_id_list', newFormData);
-  }
+  };
 
   onMissionFormHide = (isSubmitted, result) => {
     if (isSubmitted) {
@@ -106,16 +124,16 @@ class MissionField extends React.Component<Props, any> {
 
   createMission = () => {
     const {
-      carsList = [],
+      carList = [],
       state,
       state: { car_id },
     } = this.props;
 
-    const carData: Car = carsList.find(
+    const carData: Car = carList.find(
       ({ asuods_id }) => asuods_id === car_id,
     );
 
-    this.props.actionSetDependenceWaybillDataForMission(this.props.state);
+    this.props.dispatch(missionsActions.actionSetDependenceWaybillDataForMission(this.props.state));
 
     const selectedMission: Partial<Mission> = {
       car_gov_numbers: [get(carData, 'gov_number', null)],
@@ -138,21 +156,15 @@ class MissionField extends React.Component<Props, any> {
 
   rejectMission = (rejectedMission) => {
     this.props.dispatch(
-      actionLoadTimeMoscow(
-        {},
-        {
-          page: this.props.page,
-          path: this.props.path,
-        },
-      ),
+      actionLoadTimeMoscow({}, this.props),
     ).then((time) => {
-        const action_at = time.date;
-        this.setState({
-          showMissionRejectForm: true,
-          action_at,
-          rejectedMission,
-        });
-      })
+      const action_at = time.date;
+      this.setState({
+        showMissionRejectForm: true,
+        action_at,
+        rejectedMission,
+      });
+    })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
           global.NOTIFICATION_SYSTEM.notify(
@@ -187,7 +199,50 @@ class MissionField extends React.Component<Props, any> {
       showMissionRejectForm: false,
       rejectedMission: null,
     });
-  }
+  };
+
+  setMissionTimeError = memoizeOne(( // для будущего перехода компонента на хуки, использовать useMemo
+    mission_id_list,
+    missionOptions,
+  ) => {
+    const errorInvalidTimeShow = mission_id_list.some((mission_id) => {
+      return missionOptions.some((elem) => mission_id === elem.value && elem.rowData.invalidMission);
+    });
+    const errorInvalidTimeText = 'Выдавать задания можно с временем начала выполнения не раньше 15 минут от текущего. Измените время начала работ в выделенном задании или удалите его из путевого листа';
+
+    if(this.state.missionHasError?.hasError !== errorInvalidTimeShow){
+      const missionHasError =  {
+        hasError: errorInvalidTimeShow,
+        errorText: errorInvalidTimeText,
+      };
+      this.setState({
+        missionHasError,
+      });
+      this.props.setMissionHasError(missionHasError);
+    }
+  });
+
+  getInvalidMissionFlag = (missionElem) => {
+    const {
+      moscowTimeServer,
+      IS_ACTIVE,
+    } = this.props;
+    if (moscowTimeServer?.date) {
+      const minutesDiff = diffDates(moscowTimeServer?.date, missionElem.plan_date_start, 'minutes', false);
+
+      const isInvalidMission = (
+        IS_ACTIVE
+        && missionElem.status === 'not_assigned'
+        && missionElem.plan_date_start
+        && minutesDiff > 15
+      );
+
+      return missionElem.plan_date_start
+        ? isInvalidMission
+        : false;
+    }
+    return false;
+  };
 
   render() {
     const {
@@ -196,6 +251,7 @@ class MissionField extends React.Component<Props, any> {
       missionsList,
       notAvailableMissions,
       IS_CLOSED,
+      IS_DELETE,
       isPermittedByKey,
       origFormState,
     } = this.props;
@@ -206,110 +262,123 @@ class MissionField extends React.Component<Props, any> {
 
     const MISSIONS = missionsList // удалить отсюда задания, которые были отменены( записаны в кеш отмены)
       .map(
-        ({
-          id,
-          number,
-          technical_operation_name,
-          municipal_facility_name,
-        }) => ({
-          value: id,
-          label: `№${number} (${technical_operation_name})`,
+        (elem) => ({
+          value: elem.id,
+          label: `№${elem.number} (${elem.technical_operation_name})`,
           clearableValue: countMissionMoreOne,
-          title: `${number} - ${technical_operation_name} - ${municipal_facility_name}`,
+          title: `${elem.number} - ${elem.technical_operation_name} - ${elem.municipal_facility_name}`,
+          rowData: {
+            // date_start
+            invalidMission: this.getInvalidMissionFlag(elem),
+            ...elem
+          },
         }),
       );
 
     const OUTSIDEMISSIONS = notAvailableMissions.map(
-      ({ id, number, technical_operation_name }) => ({
-        value: id,
-        label: `№${number} (${technical_operation_name})`,
+      (elem) => ({
+        value: elem.id,
+        label: `№${elem.number} (${elem.technical_operation_name})`,
         clearableValue: countMissionMoreOne,
-        number,
+        number: elem.number,
         className: 'yellow',        // <<< не работает Сделать "в выпадающем списке и выбранном"
+        rowData: {...elem},
       }),
     );
 
     const missionOptions = [...MISSIONS, ...OUTSIDEMISSIONS].reduce(
       (newArr, item) => {
         if (!newArr.some((innerItem) => innerItem.value === item.value)) {
-          newArr.push(item);
+          newArr.push({
+            ...item,
+            isNotVisible: item.rowData.invalidMission,
+          });
         }
         return newArr;
       },
       [],
     );
 
+    const errorIntervalShow = new Date(origFormState?.fact_arrival_date)?.getTime()
+      > new Date(state?.fact_arrival_date)?.getTime()
+      && state.status === 'active';
+
+    const errorIntervalText = `Задания:
+      ${OUTSIDEMISSIONS.map((m) => `№${m.number}`,).join(', ',)}
+      не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`;
+
+    this.setMissionTimeError(state.mission_id_list, missionOptions);
+
     return (
-      <>
+      <MissionFieldStyled>
         <h4>Задание</h4>
         <ExtField
           id="mission-id-list"
           type="select"
-          label="&nbsp;"
+          label={false}
           error={errors.mission_id_list}
           multi
           className="task-container"
           options={missionOptions}
           value={state.mission_id_list}
           disabled={
-            isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
+            IS_DELETE || isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
           }
           clearable={false}
           onChange={this.handleMissionsChange}
           multiValueContainerReander={this.multiValueContainerReander}
+          components={componentsForMissionSelect}
         />
-        {new Date(origFormState.fact_arrival_date).getTime() >
-          new Date(state.fact_arrival_date).getTime() &&
-          state.status === 'active' && (
-            <div style={{ color: UiConstants.colorError }}>{`Задания: ${OUTSIDEMISSIONS.map(
-              (m) => `№${m.number}`,
-            ).join(
-              ', ',
-            )} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
-          )}
-        <ButtonCreateMission
+        <ErrorsBlock
+          hidden={!errorIntervalShow}
+          error={errorIntervalText}
+        />
+        <ErrorsBlock
+          hidden={!this.state.missionHasError.hasError}
+          error={this.state.missionHasError.errorText}
+        />
+
+        <EtsBootstrap.Button
           id="create-mission"
           style={{ marginTop: 10 }}
           onClick={this.createMission}
+          permissions={missionPermissions.create}
           disabled={
-            isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
+            IS_DELETE || isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
           }>
           Создать задание
-        </ButtonCreateMission>
+        </EtsBootstrap.Button>
         <MissionFormLazy
-          onFormHide={this.onMissionFormHide}
+          handleHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
           notChangeCar
+          type={null}
+
+          registryKey={this.props.registryKey}
+          page={this.props.page}
+          path={this.props.path}
         />
         {this.state.showMissionRejectForm && (
           <MissionRejectForm
             show={this.state.showMissionRejectForm}
-            onReject={this.onReject}
+            onRejectForWaybill={this.onReject}
             mission={rejectedMission}
             // missions={missionsList}
             action_at={this.state.action_at}
             isWaybillForm
           />
         )}
-      </>
+      </MissionFieldStyled>
     );
   }
 }
 
 export default compose<any, any>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: missionPermissions.read,
   }),
-  connect<null, { dispatch: EtsDispatch; actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
+  connect<null, { dispatch: EtsDispatch; }, any, ReduxState>(
     null,
-    (dispatch: any) => ({
-      dispatch,
-      actionSetDependenceWaybillDataForMission: (...arg) => (
-        dispatch(
-          missionsActions.actionSetDependenceWaybillDataForMission(...arg),
-        )
-      ),
-    }),
   ),
 )(MissionField);

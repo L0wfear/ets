@@ -9,13 +9,13 @@ export type WaybillDraftItemsSubItemsType = {
 };
 
 export type WaybillDraftItemsType = {
-  subItems: WaybillDraftItemsSubItemsType[],
+  subItems: Array<WaybillDraftItemsSubItemsType>;
   tooltip?: string;
   value: string;
 };
 
 export type WaybillDraftAnsType = {
-  items: WaybillDraftItemsType[];
+  items: Array<WaybillDraftItemsType>;
   tooltip?: string;
   title: string;
 };

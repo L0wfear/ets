@@ -39,7 +39,7 @@ const buPosition = {
   `,
 };
 
-export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right' }>`
+export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right'; }>`
   position: relative;
   position: absolute;
   display: flex;
@@ -63,7 +63,7 @@ export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right
   ${({ position }) => get(buPosition, position) || get(buPosition, 'default')};
 `;
 
-export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boolean  }>`
+export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boolean;  }>`
   pointer-events: all;
   min-width: 250px;
   cursor: ${({ noneEffect }) => noneEffect ? 'default' : 'pointer'};
@@ -72,11 +72,11 @@ export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boo
   color: #000;
   :hover {
     background-color: ${({ noneEffect, active }) => (
-      noneEffect
-        ? 'initial'
-        : active
+    noneEffect
+      ? 'initial'
+      : active
         ? 'rgba(110, 158, 88, 0.4)'
         : '#f5f5f5'
-    )};
+  )};
   }
 `;

@@ -11,10 +11,10 @@ import { getDatesByShift, createValidDate } from 'components/@next/@utils/dates/
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   start_date: string;
   end_date: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   handleSubmit = () => {
@@ -28,7 +28,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       start_date: createValidDate(start_date),
       end_date: createValidDate(end_date),
     });
-  }
+  };
   render() {
     const timeShift = getDatesByShift();
     const {

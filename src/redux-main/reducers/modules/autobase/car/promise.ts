@@ -121,7 +121,7 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
 };
 
 export const promiseLoadCarDrivers = (car_id: Car['asuods_id']): Promise<CarDriversData> => {
-  return CarDrivers.get({ car_id });
+  return CarDrivers.get<CarDriversData>({ car_id });
 };
 
 export const promiseLoadCarRegistration = async (car_id: Car['asuods_id']) => {
@@ -141,8 +141,8 @@ export const promiseLoadCarPassport = async (car_id: Car['asuods_id']) => {
 };
 
 type Paylaod = (
-  { car_id: Car['asuods_id'], point_timestamp: number }
-  | { car_id: Car['asuods_id'], date_start: string; date_end: string }
+  { car_id: Car['asuods_id']; point_timestamp: number; }
+  | { car_id: Car['asuods_id']; date_start: string; date_end: string; }
 );
 
 export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {

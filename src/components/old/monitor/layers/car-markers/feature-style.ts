@@ -58,7 +58,7 @@ Object.entries(images).forEach(([name, src]) => {
   img.src = src;
 });
 
-const CACHE_ICON: any = {};
+const CACHE_ICON: Record<string, Style> = {};
 
 const getCanvasWH = (width, ctx, show_gov_number, gov_number, checkZoomSelect) => {
   let canvasWidth = width + 4;

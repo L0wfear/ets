@@ -19,7 +19,7 @@ export type PropsCarFuelChart = (
 );
 
 export type StateCarFuelChart = {
-  sensorRawData: boolean,
+  sensorRawData: boolean;
 };
 
 export type StatePropsCarSpeedChart = {
@@ -43,8 +43,8 @@ export type PropsCarSpeedChart = (
 );
 
 export type StateCarSpeedChart = {
-  lastPoint: any,
-  data: any[],
+  lastPoint: any;
+  data: Array<any>;
   front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   mkad_speed_lim: number;
   speed_lim: number;

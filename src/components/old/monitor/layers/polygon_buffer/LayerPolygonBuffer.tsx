@@ -39,12 +39,12 @@ const createBuffer = (feature: Feature, distance, options: any = {}) => {
 };
 
 type PropsLayerPolygonBuffer = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  getVectorSource: ETSCore.Map.InjectetLayerProps.FuncGetVectorSource;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
   map: Map;
 
   monitorPageTogglePolygonBufferActive: any;
@@ -120,18 +120,18 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     if (!this.props.drawActivePolygonBuffer) {
       this.props.removeFeaturesFromSource(null, true);
     }
-  }
+  };
 
   handleClickRemove = () => {
     this.props.removeFeaturesFromSource(null, true);
     this.props.monitorPageChangeFilter('featureBufferPolygon', null);
     localStorage.setItem('featureBufferPolygon', '');
-  }
+  };
 
   handleStartDraw = () => {
     this.setState({ activeDraw: true });
     this.handleClickRemove();
-  }
+  };
 
   handleEndDraw = (feature: Feature) => { // конец рисования буфера
     const buffer = createBuffer(feature, 1000);
@@ -142,7 +142,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     if (buffer) {
       localStorage.setItem('featureBufferPolygon', JSON.stringify(buffer));
     }
-  }
+  };
 
   render() {
     return (

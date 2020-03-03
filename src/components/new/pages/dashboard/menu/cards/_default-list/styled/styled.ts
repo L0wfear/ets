@@ -6,7 +6,7 @@ import {
 } from 'components/old/ui/collapse/text/styled/styled';
 
 export const CollapseContainer = styled(CollapseContainerOriginal)`
-  border-bottom: 1px solid #d6d6d6;
+  /* border-bottom: 1px solid #d6d6d6; */
   padding: 15px 0;
 `;
 

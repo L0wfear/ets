@@ -2,12 +2,9 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import DivForEnhance from 'components/old/ui/Div';
+import Div from 'components/old/ui/Div';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-
-const Div = withRequirePermissionsNew({})(DivForEnhance);
 
 const savePermissions = [
   waybillPermissions.update_closed,
@@ -15,11 +12,13 @@ const savePermissions = [
   waybillPermissions.departure_and_arrival_values,
 ];
 
-interface IPropsWaybillFooter {
+type IPropsWaybillFooter = {
   isCreating: boolean;
   isDraft: boolean;
   canSave: boolean;
   canClose: boolean;
+  canPrint: boolean;
+  canGiveOutRead: boolean;
   formState: any;
   state: any;
   canEditIfClose: boolean;
@@ -30,27 +29,35 @@ interface IPropsWaybillFooter {
   handlePrintFromMiniButton(): void;
   handleClose(taxes: any): void;
   handlePrint(is: boolean): void;
-  message: string;
   isPermittedByKey: {
     refill: boolean;
     update: boolean;
     departure_and_arrival_values: boolean;
   };
-}
+  canEditIfCloseUpdPermission: boolean;
+};
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
 
 const popoverHoverFocus = (
   <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
-   {message}
+    {message}
   </EtsBootstrap.Popover>
 );
 
-class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
-  render() {
-    const { props } = this;
+class WaybillFooter extends React.Component<IPropsWaybillFooter> {
+  private get isDisabledWaybillSubmitButton(): boolean {
+    const { isDraft, canSave, state, canEditIfCloseUpdPermission } = this.props;
 
-    const waybillPrintDropdownPrintToggleElement = <EtsBootstrap.Glyphicon glyph="print" />;
+    if (isDraft) {
+      return !canSave && !state.canEditIfClose;
+    }
+
+    return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
+  }
+
+  public render(): JSX.Element {
+    const { props } = this;
     const waybillSaveDropdownPrintToggleElement = (
       <React.Fragment>
         <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
@@ -70,9 +77,9 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               id="waybill-print-dropdown_ptint"
               className="print"
               dropup
-              disabled={!props.canSave || !props.state.id}
+              disabled={!props.canPrint || !props.state.id}
 
-              toggleElement={waybillPrintDropdownPrintToggleElement}
+              toggleElement={<EtsBootstrap.Glyphicon glyph="print" />}
             >
               <EtsBootstrap.DropdownMenu dropup>
                 <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>
@@ -85,7 +92,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               id="waybill-print-dropdown_save"
               className="pdf"
               dropup
-              disabled={!props.canSave}
+              disabled={!props.canGiveOutRead}
 
               toggleElement={waybillSaveDropdownPrintToggleElement}
             >
@@ -102,9 +109,9 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           <Div
             permissions={savePermissions}
             className={'inline-block'}
-            hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
+            hidden={(props.state.status === 'closed' && !props.canEditIfClose && !props.canEditIfCloseUpdPermission) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
           >
-            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={this.isDisabledWaybillSubmitButton}>Сохранить</EtsBootstrap.Button>
           </Div>
           <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
             <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>

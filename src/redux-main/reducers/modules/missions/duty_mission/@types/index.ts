@@ -1,13 +1,14 @@
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
 export type DutyMission = {
   author: string;
-  brigade_employee_id_list: {
+  brigade_employee_id_list: Array<{
     employee_fio: string;
     employee_id: number;
-  }[];
-  brigade_employee_id_list_id: number[];
-  brigade_employee_id_list_fio: string[];
+  }>;
+  brigade_employee_id_list_id: Array<number>;
+  brigade_employee_id_list_fio: Array<string>;
   brigade_id: number | null;
   car_mission_id: null | number;
   car_mission_name: null | string;
@@ -33,7 +34,7 @@ export type DutyMission = {
   number: number | null;
   object_type_id: number | null;
   object_type_name: string | null;
-  operation_num_execution: null
+  operation_num_execution: null;
   order_number: string | null;
   order_operation_id: number | null;
   order_status: string | null;
@@ -51,4 +52,7 @@ export type DutyMission = {
   technical_operation_id: number | null;
   technical_operation_name: string;
   work_class_id: number | null;
+
+  is_mission_progress_countable: boolean | null;
+  consumable_materials: Array<ConsumableMaterialCountMission>;
 };

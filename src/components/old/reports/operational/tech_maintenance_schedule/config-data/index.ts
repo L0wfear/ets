@@ -5,7 +5,7 @@ export default {
   path: '/tech-maintenance-schedule',
   title: 'График проведения технического обслуживания транспортных средств',
   entyity: 'autobase_tech_maintenance_schedule_report',
-  noDotList: false,
+
   component,
   permissions,
 };

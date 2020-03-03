@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { SelectField } from '../../styled/InspectionCarsConditionStyled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
@@ -57,30 +57,33 @@ const SelectCarsConditionCompany: React.FC<SelectCarsConditionCompanyProps> = (p
       };
 
       newPartialSearch.companyId = selectedCompanyId;
+      newPartialSearch.checksType = null;
+      newPartialSearch.monitoringKind = null;
+      newPartialSearch.checksPeriod = null;
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={2} sm={2}>
-          <h5>
+      <SelectLabel md={3} sm={2}>
+        <h5>
             Организация
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={companyId}
-            options={compnayOptions}
-            onChange={setCompanyId}
-            clearable={false}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={6}>
+        <ExtField
+          type="select"
+          label={false}
+          value={companyId}
+          options={compnayOptions}
+          onChange={setCompanyId}
+          clearable={false}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 
 import { get } from 'lodash';
-import { ExtFieldCommon } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldCommon } from 'components/@next/@ui/renderFields/@types';
 
 // ErrorsBlock
 
-export type ErrorsBlockProps = {
+type ErrorsBlockProps = {
   showError?: boolean;
   error: ExtFieldCommon['error'];
   hidden?: boolean;

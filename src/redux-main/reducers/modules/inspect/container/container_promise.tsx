@@ -1,7 +1,8 @@
 import { get } from 'lodash';
-import { InspectContainer } from "./@types/container";
-import { InspectContainerService } from "api/Services";
-import { PgmStore } from "../../geoobject/actions_by_type/pgm_store/@types";
+import { InspectContainer } from './@types/container';
+import { InspectContainerService } from 'api/Services';
+import { PgmStore } from '../../geoobject/actions_by_type/pgm_store/@types';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const promiseGetInspectContainer = async (inspection_id: PgmStore['id']) => {
   const reposnse = await InspectContainerService.get(
@@ -26,9 +27,21 @@ export const promiseCreateInspectContainer = async (inspectContainer: InspectCon
 };
 
 export const promiseUpdateInspectContainer = async (inspectContainer: InspectContainer) => {
+  const payloadActions = inspectContainer?.actions?.map(
+    (elem) => ({
+      ...elem,
+      date_start: createValidDate(elem.date_start),
+      date_end: createValidDate(elem.date_end),
+    }));
+
+  const payload = {
+    ...inspectContainer,
+    actions: [...payloadActions],
+  };
+
   const reposnse = await InspectContainerService.path(inspectContainer.id).put(
     {
-      ...inspectContainer,
+      ...payload,
     },
     false,
     'json',

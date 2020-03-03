@@ -1,20 +1,15 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnSparePartProps,
   PropsSparePart,
   StateSparePart,
-  StatePropsSparePart,
-  DispatchPropsSparePart,
   PropsSparePartWithForm,
 } from 'components/new/pages/nsi/autobase/pages/spare_part/form/@types/SparePartForm';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -24,6 +19,9 @@ import { sparePartFormSchema } from './schema';
 import { getDefaultSparePartElement } from './utils';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import SpareToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/spare_part/form/vehicle-block/SpareToVehicleBlock';
+import { autobaseGetMeasureUnit } from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit/actions';
+import { autobaseGetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/actions';
+import { autobaseCreateSparePart, autobaseUpdateSparePart } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part/actions';
 
 const SpareToVehicleBlock: any = onChangeWithKeys(SpareToVehicleBlockComponent);
 
@@ -31,25 +29,29 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
   state = {
     measureUnitOptions: [],
     sparePartGroupOptions: [],
-    canSave: true,
   };
 
   componentDidMount() {
     this.loadMeasureUnit();
     this.loadSparePartGroup();
   }
-  handleSpareToCarValidity = ({ isValidInput }) => {
-    this.setState({
-      canSave: isValidInput,
-    });
-  }
   async loadMeasureUnit() {
-    const { payload: { data } } = await this.props.autobaseGetSetMeasureUnit();
+    const { data } = await this.props.dispatch(
+      autobaseGetMeasureUnit(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ measureUnitOptions: data.map(defaultSelectListMapper) });
   }
   async loadSparePartGroup() {
-    const { payload: { data } } = await this.props.autobaseGetSetSparePartGroup();
+    const { data } = await this.props.dispatch(
+      autobaseGetSparePartGroup(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ sparePartGroupOptions: data.map(defaultSelectListMapper) });
   }
@@ -60,6 +62,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
       formErrors: errors,
       page,
       path,
+      canSave,
     } = this.props;
     const {
       measureUnitOptions,
@@ -70,10 +73,6 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-    const canSave = (
-      this.state.canSave
-      && this.props.canSave
-    );
 
     return (
       <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -142,17 +141,17 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
-            <ExtField
-              type="date"
-              label="Дата поставки"
-              date={state.supplied_at}
-              time={false}
-              error={errors.supplied_at}
-              onChange={this.props.handleChange}
-              boundKeys="supplied_at"
-              disabled={!isPermitted}
-            />
-          </EtsBootstrap.Col>
+              <ExtField
+                type="date"
+                label="Дата поставки"
+                date={state.supplied_at}
+                time={false}
+                error={errors.supplied_at}
+                onChange={this.props.handleChange}
+                boundKeys="supplied_at"
+                disabled={!isPermitted}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
@@ -160,7 +159,6 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 onChange={this.props.handleChange}
                 boundKeys="spare_part_to_car"
                 inputList={state.spare_part_to_car}
-                onValidation={this.handleSpareToCarValidity}
                 outerValidate
                 errors={errors.spare_part_to_car}
                 disabled={!isPermitted}
@@ -175,12 +173,12 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
         <EtsBootstrap.ModalFooter>
           {
             isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
+              ? (
+                <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
           }
           <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
@@ -189,32 +187,11 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
   }
 }
 
-export default compose<PropsSparePart, OwnSparePartProps>(
-  connect<StatePropsSparePart, DispatchPropsSparePart, OwnSparePartProps, ReduxState>(
-    null,
-    (dispatch, { page, path }) => ({
-      autobaseGetSetMeasureUnit: () => (
-        dispatch(
-          autobaseActions.autobaseGetMeasureUnit(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetSparePartGroup: () => (
-        dispatch(
-          autobaseActions.autobaseGetSparePartGroup(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
-  ),
+export default compose<PropsSparePart, PropsSparePartWithForm>(
   withForm<PropsSparePartWithForm, SparePart>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateSparePart,
-    updateAction: autobaseActions.autobaseUpdateSparePart,
+    createAction: autobaseCreateSparePart,
+    updateAction: autobaseUpdateSparePart,
     mergeElement: (props) => {
       return getDefaultSparePartElement(props.element);
     },

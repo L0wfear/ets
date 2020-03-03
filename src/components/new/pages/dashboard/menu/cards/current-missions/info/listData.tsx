@@ -1,10 +1,6 @@
 import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
-import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/listData.h';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
@@ -15,7 +11,7 @@ const getEstimatedFinishTime = (data) => {
   return getFormattedDateTime(data);
 };
 
-export const listData: ListDataType = [
+export const listData: Array<any> = [
   {
     path: ['mission_data', 'name'],
     title: 'Задание',
@@ -40,14 +36,10 @@ export const listData: ListDataType = [
     path: ['car_data', 'driver_allowed'],
     title: 'Задание',
     RenderComponent: ({ infoData }) => (
-      infoData.car_data.driver_allowed
-      ? (
+      Boolean(infoData.car_data.driver_allowed) && (
         <div style={{ marginBottom: 5, marginTop: 5 }}>
           <span style={{ fontSize: 16, color: UiConstants.colorError }}>Не пройден внеплановый мед. осмотр</span>
         </div>
-      )
-      : (
-        <DivNone />
       )
     ),
   },
@@ -138,10 +130,9 @@ export const listData: ListDataType = [
 
       return (
         <li><b>Общий пробег с работающим оборудованием: </b>
-          {`${sensor_traveled_working ?
-            getDataTraveledYet(sensor_traveled_workingAndCheck_unit)
-            :
-            'Данные будут отображены после выполнения задания'
+          {`${sensor_traveled_working
+            ? getDataTraveledYet(sensor_traveled_workingAndCheck_unit)
+            :            'Данные будут отображены после выполнения задания'
           }`}
         </li>
       );

@@ -14,7 +14,7 @@ class AppHeader extends React.Component<any, any> {
     this.setState((state) => ({
       staticNodeWidth: state.staticNodeWidth + changedWidth,
     }));
-  }
+  };
 
   render() {
     const {

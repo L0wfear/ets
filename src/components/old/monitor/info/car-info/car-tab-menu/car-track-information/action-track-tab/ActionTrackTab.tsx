@@ -91,9 +91,9 @@ class ActionTrackTab extends React.Component<
         <div className="car_info-track_player">
           <EtsBootstrap.Button
             disabled={
-              STATUS_TC_FOLLOW_ON_CAR ||
-              track === -1 ||
-              (Array.isArray(track) && track.length <= 1)
+              STATUS_TC_FOLLOW_ON_CAR
+              || track === -1
+              || (Array.isArray(track) && track.length <= 1)
             }
             onClick={this.togglePlayTrack}>
             <EtsBootstrap.Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />

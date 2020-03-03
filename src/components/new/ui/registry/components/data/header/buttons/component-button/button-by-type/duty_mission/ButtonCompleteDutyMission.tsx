@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -10,10 +10,11 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionCompleteDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCompleteDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -23,11 +24,9 @@ type ButtonCompleteDutyMissionStateProps = {
 type ButtonCompleteDutyMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionCompleteDutyMissionByIds: HandleThunkActionCreator<typeof actionCompleteDutyMissionByIds>;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonCompleteDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCompleteDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonCompleteDutyMissionMergeProps = {};
 
 type ButtonCompleteDutyMissionProps = (
@@ -59,7 +58,7 @@ const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (pro
       }
 
       try {
-        const response = await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        const response = await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
         const successEdcRequestIds = response.filter(
           (value) => value,
         ).filter(
@@ -111,12 +110,12 @@ const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (pro
 };
 
 export default compose<ButtonCompleteDutyMissionProps, ButtonCompleteDutyMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCompleteDutyMissionStateProps, ButtonCompleteDutyMissionDispatchProps, ButtonCompleteDutyMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

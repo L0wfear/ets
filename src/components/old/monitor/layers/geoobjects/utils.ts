@@ -116,9 +116,9 @@ export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithC
 
   return {
     hasDiff:
-      retValue.hasDiff ||
-      checkShowStatusInFunc.hasDiff ||
-      checkDataInFunck.hasDiff,
+      retValue.hasDiff
+      || checkShowStatusInFunc.hasDiff
+      || checkDataInFunck.hasDiff,
     diffGeoobjects: {
       ...retValue.diffGeoobjects,
       ...checkShowStatusInFunc.changedGeoobjects,

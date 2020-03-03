@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 
 import { sessionCahngeCompanyOnAnother } from 'redux-main/reducers/modules/session/actions-session';
 
-import { withRouter } from 'react-router-dom';
-
 import {
   DivNone,
 } from 'global-styled/global-styled';
@@ -14,6 +12,7 @@ import { isNull } from 'util';
 import { BackToGorodContainer } from 'components/new/ui/app_header/desktop/right/back_to_gorod/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class BackToGorod extends React.Component<any, any> {
   context!: ETSCore.LegacyContext;
@@ -54,7 +53,7 @@ class BackToGorod extends React.Component<any, any> {
     } catch (e) {
       console.warn(e); // tslint:disable-line
     }
-  }
+  };
 
   render() {
     const {
@@ -76,7 +75,7 @@ class BackToGorod extends React.Component<any, any> {
 }
 
 export default compose<any, any>(
-  withRouter,
+  withSearch,
   connect<any, any, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,

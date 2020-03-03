@@ -5,7 +5,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type BlockDataFilesProps = {
   isPermittedListPhotosOfSupportingDocuments: boolean;
   isPermittedListPhotosDefect: boolean;
-  files: any[];
+  files: Array<any>;
   onChange: (obj: Partial<object>) => any;
 };
 
@@ -50,13 +50,13 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Row>
+      <React.Fragment>
         {
           Boolean(isPermittedListPhotosOfSupportingDocuments || valuePhotosOfSupportingDocuments.length) && (
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <FileField
                 id="file"
-                label="Фотографии подтверждающих документов"
+                label={'Фотографии подтверждающих\nдокументов'}
                 multiple
                 value={valuePhotosOfSupportingDocuments}
                 onChange={onChangeDataFile}
@@ -68,7 +68,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
         }
         {
           Boolean(isPermittedListPhotosDefect || valuePhotosDefect.length) && (
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <FileField
                 id="file"
                 label="Фотографии дефектов"
@@ -81,8 +81,8 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
             </EtsBootstrap.Col>
           )
         }
-      </EtsBootstrap.Row>
-      );
+      </React.Fragment>
+    );
   },
 );
 

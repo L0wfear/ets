@@ -1,11 +1,9 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import materialConsumptionRateList from 'components/new/pages/nsi/regulatory_indicator/pages/material_consumption_rate/_config-data/';
 import fuelConsumptionRateList from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/_config-data/';
 import maintenanceRateList from 'components/new/pages/nsi/regulatory_indicator/pages/maintenance_rate/_config-data/';
 
 const children = {
-  materialConsumptionRateList,
   fuelConsumptionRateList,
   maintenanceRateList,
 };

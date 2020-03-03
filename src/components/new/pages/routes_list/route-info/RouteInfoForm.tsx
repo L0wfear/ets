@@ -6,6 +6,7 @@ import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteI
 
 import { PropsRouteInfoForm } from 'components/new/pages/routes_list/route-info/RouteInfoForm.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
 
 class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
   render() {
@@ -20,12 +21,23 @@ class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
         </EtsBootstrap.ModalHeader>
 
         <ModalBodyPreloader>
-          <RouteInfoMap
-            input_lines={route.input_lines}
-            object_list={route.object_list}
-            type={route.type}
-            mapKey={this.props.mapKey}
-          />
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={8}>
+              <RouteInfoMap
+                input_lines={route.input_lines}
+                object_list={route.object_list}
+                type={route.type}
+                mapKey={this.props.mapKey}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
+              <RouteGeoList
+                type={route.type}
+                object_list={route.object_list}
+                draw_object_list={route.draw_object_list}
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
 
       </EtsBootstrap.ModalContainer>

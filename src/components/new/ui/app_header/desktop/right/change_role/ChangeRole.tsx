@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
 
 import CompanyOptionsNew from 'components/new/ui/app_header/desktop/right/change_role/CompanyOptionsNew';
 import { ChangeRoleContainer, CompanyOptionsNewContainer } from 'components/new/ui/app_header/desktop/right/change_role/styled';
@@ -10,6 +9,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class ChangeRole extends React.Component<any, {}> {
   node = React.createRef<any>();
@@ -63,7 +63,7 @@ class ChangeRole extends React.Component<any, {}> {
 }
 
 export default compose<any, any>(
-  withRouter,
+  withSearch,
   connect<any, any, any, ReduxState>(
     (state) => ({
       isGlavControl: getSessionState(state).userData.isGlavControl,

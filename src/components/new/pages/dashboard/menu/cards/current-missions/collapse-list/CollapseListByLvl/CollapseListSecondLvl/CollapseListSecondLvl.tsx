@@ -1,29 +1,27 @@
 import * as React from 'react';
 
-import {
-  PropsCollapseListSecondLvl,
-  StateCollapseListSecondLvl,
-} from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListSecondLvl/CollapseListSecondLvl.h';
-
 import LiData from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/LiData/LiData';
+import {
+  CurrentMissionsItemsSubItemsSubItemsType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
-class CollapseListSecondLvl extends React.PureComponent<PropsCollapseListSecondLvl, StateCollapseListSecondLvl> {
-  rednerMap = (subItem) => {
-    return (
-      <LiData key={subItem.id} handleClick={this.props.handleClick} subItem={subItem}/>
-    );
-  }
-  render() {
-    const {
-      props,
-    } = this;
+type Props = {
+  collapsetItems: Array<CurrentMissionsItemsSubItemsSubItemsType>;
+  handleClick: (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => any;
+};
 
+const CollapseListSecondLvl: React.FC<Props> = React.memo(
+  (props) => {
     return (
       <ul>
-        { props.collapsetItems.map(this.rednerMap) }
+        {
+          props.collapsetItems.map((subItem) => (
+            <LiData key={subItem.id} handleClick={props.handleClick} subItem={subItem}/>
+          ))
+        }
       </ul>
     );
-  }
-}
+  },
+);
 
 export default CollapseListSecondLvl;

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
 
 export const TitleForm = styled(EtsBootstrap.Col)`
   display: flex;
@@ -8,27 +9,38 @@ export const TitleForm = styled(EtsBootstrap.Col)`
   align-items: center;
 
   padding: 5px 20px;
-  background-color: #f1f1f1;
+  background-color: #6a9e56;
+  color: #ffffff;
   flex-shrink: 0;
-  border-bottom: 1px solid black;
+  &&& ${ButtonStyled} {
+    background-color: transparent;
+  }
 `;
 
 export const ContainerForm = styled.div`
-  padding: 5px 0px;
-
+  padding: 10px 0px;
   flex-grow: 10;
-
   overflow: auto;
+
+  &>.col-md-6 {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  &>.col-md-12 {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
 `;
 
 export const FooterForm = styled(EtsBootstrap.Col)`
-  border-top: 1px solid black;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
+  border-top: solid 1px #4c4c4c;
   padding: 5px 20px;
   flex-shrink: 0;
 `;
 
-export const HiddenPageEtsContainer = styled.div`
+export const HiddenPageEtsContainer = styled.div<{z_index?: number;}>`
   position: absolute;
   width: 100%;
   top: 0;
@@ -38,17 +50,17 @@ export const HiddenPageEtsContainer = styled.div`
   height: 100%;
   overflow: hidden;
 
-  z-index: 1000;
+  z-index: ${ ({z_index}) => z_index ? z_index : 1000 };
 `;
 
-export const PopupBottomForm = styled.form<{ show: boolean }>`
+export const PopupBottomForm = styled.form<{ show: boolean; }>`
   pointer-events: ${({ show }) => show ? 'all' : 'none'};
   height: 100%;
 
   transition: all 500ms;
   opacity: ${({ show }) => show ? 1 : 0};
   transform: ${({ show }) => show ? 'translate(0, 0)' : 'translate(0, 100%)'};
-  background-color: #fafafa;
+  background-color: #eeeeee;
 
   display: flex;
   flex-direction: column;
@@ -65,7 +77,7 @@ export const CheckContainerTd = styled.div`
   justify-content: center;
 `;
 
-export const CheckContainerRow = styled.div<{ was_resaved: boolean }>`
+export const CheckContainerRow = styled.div<{ was_resaved: boolean; }>`
   display: flex;
   justify-content: space-between;
   align-items: center;

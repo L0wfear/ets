@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { Flex } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -62,37 +62,37 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
     this.props.dispatch(
       actionGetMunicipalFacility(outerPayload, { page: this.props.page, path: this.props.path }),
     ).then((municipal_facility_list) => {
-        const { value } = this.props;
+      const { value } = this.props;
 
-        const MUNICIPAL_FACILITY_OPTIONS = municipal_facility_list.map((mfData) => ({
-          value: mfData.municipal_facility_id,
-          label: mfData.municipal_facility_name,
-          mfData,
-        }));
+      const MUNICIPAL_FACILITY_OPTIONS = municipal_facility_list.map((mfData) => ({
+        value: mfData.municipal_facility_id,
+        label: mfData.municipal_facility_name,
+        mfData,
+      }));
 
-        if (value) {
-          const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOptionData) => mfOptionData.value === value);
-          if (mfOption) {
-            let available_route_types = get(mfOption, ['mfData', 'route_types'], []);
-            const { missionAvailableRouteTypes } = this.props;
+      if (value) {
+        const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOptionData) => mfOptionData.value === value);
+        if (mfOption) {
+          let available_route_types = get(mfOption, ['mfData', 'route_types'], []);
+          const { missionAvailableRouteTypes } = this.props;
 
-            if (isArray(missionAvailableRouteTypes)) {
-              available_route_types = available_route_types.filter((slug) => missionAvailableRouteTypes.includes(slug));
-            }
-            this.props.onChange({
-              available_route_types,
-            });
-          } else {
-            this.props.onChange({
-              available_route_types: [],
-              municipal_facility_id: null,
-              municipal_facility_name: null,
-            });
+          if (isArray(missionAvailableRouteTypes)) {
+            available_route_types = available_route_types.filter((slug) => missionAvailableRouteTypes.includes(slug));
           }
+          this.props.onChange({
+            available_route_types,
+          });
+        } else {
+          this.props.onChange({
+            available_route_types: [],
+            municipal_facility_id: null,
+            municipal_facility_name: null,
+          });
         }
+      }
 
-        this.setState({ MUNICIPAL_FACILITY_OPTIONS });
-      });
+      this.setState({ MUNICIPAL_FACILITY_OPTIONS });
+    });
   }
 
   handleChange = (value, option) => {
@@ -104,7 +104,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         type: null,
       });
     }
-  }
+  };
 
   render() {
     const {

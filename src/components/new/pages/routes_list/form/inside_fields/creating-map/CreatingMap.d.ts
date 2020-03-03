@@ -1,24 +1,22 @@
+import { HandleThunkActionCreator } from 'react-redux';
 import {
   GeozoneMunicipalFacilityById,
-  GeozonesDataByIndex,
 } from 'redux-main/trash-actions/geometry/geometry.h';
 import {
-  StateRouteForm,
   ModifyBridgesForRoute,
 } from 'components/new/pages/routes_list/form/RouteForm.h';
-import { HandleThunkActionCreator } from 'react-redux';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { TechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/@types/technical_operation_objects';
+import { actionGetAndSetInStoreGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
 
 export type StateCreatingMap = {
-  technical_operations_object_list: TechnicalOperationObjects[];
+  technical_operations_object_list: Array<TechnicalOperationObjects>;
   geozone_municipal_facility_by_id: GeozoneMunicipalFacilityById;
   object_list: PropsCreatingMap['object_list'];
-  OBJECT_LIST_OPTIONS: any[];
-  objectListIdArr: number[];
+  OBJECT_LIST_OPTIONS: Array<any>;
+  objectListIdArr: Array<number>;
   type: PropsCreatingMap['type'];
   manual: boolean;
   hand: boolean;
@@ -31,9 +29,9 @@ export type StatePropsCreatingMap = {
 
 export type DispatchPropsCreatingMap = {
   actionGetAndSetInStoreGeozoneMunicipalFacility: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility
+    typeof actionGetAndSetInStoreGeozoneMunicipalFacility
   >;
-  dispatch: EtsDispatch,
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsCreatingMap = {
@@ -41,10 +39,10 @@ export type OwnPropsCreatingMap = {
   technical_operation_id: number | null;
   structure_id: Route['structure_id'];
   bridges?: ModifyBridgesForRoute;
-  input_lines: any[];
-  object_list: any[];
+  input_lines: Array<any>;
+  object_list: Array<any>;
   error: string;
-  draw_object_list: any[];
+  draw_object_list: Array<any>;
   type: any | null;
   isPermitted: boolean;
 
@@ -52,7 +50,7 @@ export type OwnPropsCreatingMap = {
   path: string;
 
   checkRoute: () => any;
-  onChange: (changeObj: { [key: string]: any }) => any;
+  onChange: (changeObj: { [key: string]: any; }) => any;
 };
 
 export type PropsCreatingMap = StatePropsCreatingMap &

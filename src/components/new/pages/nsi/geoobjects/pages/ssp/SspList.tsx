@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import Registry from 'components/new/ui/registry/components/Registry';
 import SspFormWrap from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/SspFormWrap';
@@ -7,27 +8,20 @@ import {
   registryKey,
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/registry-config';
+import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 
-import {
-  PropsSspList,
-  StateSspList,
-} from 'components/new/pages/nsi/geoobjects/pages/ssp/SspList.h';
+type OwnProps = {};
 
-class SspList extends React.Component<PropsSspList, StateSspList> {
-  render() {
+const SspList: React.FC<OwnProps> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <SspFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <Registry registryKey={registryKey}>
+        <SspFormWrap registryKey={registryKey} />
+      </Registry>
     );
-  }
-}
+  },
+);
 
-export default withRegistry<any>(
+export default withRegistry<Ssp, OwnProps>(
   config,
 )(SspList);

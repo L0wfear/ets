@@ -13,7 +13,7 @@ export const promiseLoadRefillType = async (payload: any) => {
     console.error(error); // tslint:disable-line
   }
 
-  const result: RefillType[] = get(response, 'result.rows', []);
+  const result: Array<RefillType> = get(response, 'result.rows', []);
 
   return result;
 };

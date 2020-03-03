@@ -9,12 +9,12 @@ import OverlayParkingPoint from 'components/new/ui/mission_info_form/form-compon
 import { DivNone } from 'global-styled/global-styled';
 
 type PropsLayerParkingPoints = {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  zoom: number,
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
+  zoom: number;
   map: Map;
 
   front_parkings: any;
@@ -63,13 +63,13 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);
     }
-  }
+  };
 
   hidePopup = () => {
     this.setState({
       parkingPoint: null,
     });
-  }
+  };
 
   drawTrackPoints(front_parkings) {
     for (let index = 0, length = front_parkings.length; index < length; index++) {
@@ -91,18 +91,17 @@ class LayerParkingPoints extends React.Component<PropsLayerParkingPoints, StateL
     return (
       <div>
         {
-          parkingPoint ?
-          (
-            <OverlayParkingPoint
-              map={this.props.map}
-              hidePopup={this.hidePopup}
-              parkingPoint={parkingPoint}
-            />
-          )
-          :
-          (
-            <DivNone />
-          )
+          parkingPoint
+            ? (
+              <OverlayParkingPoint
+                map={this.props.map}
+                hidePopup={this.hidePopup}
+                parkingPoint={parkingPoint}
+              />
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

@@ -1,6 +1,6 @@
 export type OneSchema = {
   name: string;
-  has: string[];
+  has: Array<string>;
   disabled: boolean;
 };
 

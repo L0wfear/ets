@@ -49,7 +49,7 @@ class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateL
       id,
       this.props.geoobjects[serverName].data[id],
     );
-  }
+  };
 
   render() {
     return <div></div>;

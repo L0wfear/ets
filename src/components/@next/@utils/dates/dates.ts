@@ -2,7 +2,6 @@ import * as Moment from 'moment';
 
 import * as MomentTimezone from 'moment-timezone';
 
-import { isEqualOr } from 'utils/functions';
 import momentLocalizer from 'components/@next/@utils/dates/localizer';
 
 import { extendMoment } from 'moment-range';
@@ -66,7 +65,8 @@ export function makeDate(date) {
   return moment(date).format(`${global.APP_DATE_FORMAT}`);
 }
 
-export function makeUnixTime(time) {
+export function makeUnixTime(timeOwn) {
+  let time = timeOwn;
   if (typeof time === 'string') {
     time = moment(time).toDate();
   }
@@ -80,8 +80,8 @@ export function makeUnixTimeMskTimezone(time) {
   return Math.floor(time / 1000);
 }
 
-export function makeTime(date: string | Date, withSeconds?: boolean) {
-  date = new Date(date);
+export function makeTime(dateOwn: string | Date, withSeconds?: boolean) {
+  let date = new Date(dateOwn);
   return moment(date).format(
     `${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`,
   );
@@ -113,13 +113,19 @@ export function createValidDateHM(date: string | Date) {
   return moment(date).format('YYYY.MM.DD HH:mm');
 }
 
-export function createValidDateTime(date: string | Date) {
+export function createValidDateTimeDots(date: string | Date) {
   if (!date) {
     return null;
   }
-  return moment(date)
-    .seconds(0)
-    .format('YYYY-MM-DDTHH:mm:ss');
+  return moment(date).format('DD.MM.YYYY HH:mm');
+}
+
+export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false) {
+  if (!date) {
+    return null;
+  }
+  const newData = !withSeconds ? moment(date).seconds(0) : moment(date);
+  return newData.format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function formatDate(date: string | Date, format: string) {
@@ -130,7 +136,7 @@ export function formatDate(date: string | Date, format: string) {
   return moment(date).format(format);
 }
 
-export function getFormattedDateTime(date: string | Date) {
+export function getFormattedDateTime(date: string | number | Date) {
   if (!date) {
     return '';
   }
@@ -155,11 +161,15 @@ export function getFormattedTimeWithSecond(date: string | Date) {
   return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
-export function getFormattedDateTimeSeconds(date: string | Date) {
+export function getFormattedDateTimeSeconds(date: string | Date | Moment.Moment) {
   if (!date) {
     return '';
   }
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
+}
+
+export function makeUnixDate(date: number) {
+  return moment(date).unix();
 }
 
 export function makeDateFromUnix(date: number) {
@@ -232,9 +242,16 @@ export function getToday0am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
 }
 
+export function setDateTime2359(dateOwn) {
+  const date = moment(dateOwn);
+  date.hours(23);
+  date.minutes(59);
+
+  return date.toDate();
+}
+
 export function getToday2359() {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59);
+  return setDateTime2359(new Date());
 }
 
 export function getTomorrow9am(seconds = 0) {
@@ -297,10 +314,6 @@ export function secondsToTime(secs: number) {
 }
 
 export const getCurrentSeason = (summer_start_date: string = null, summer_end_date: string = null, input_date = null) => {
-  if (isEqualOr([summer_start_date, summer_end_date], null)) {
-    return '';
-  }
-
   const date = input_date || new Date();
 
   if (diffDates(date, summer_start_date) >= 0 && diffDates(summer_end_date, date) >= 0) {
@@ -319,14 +332,6 @@ export const addTime = (date: string | Date, count: number, typeAdd: Moment.unit
   moment(date)
     .add(count, typeAdd)
     .format();
-
-export const minusTime = (date, count, typeAdd) =>
-  moment(date)
-    .subtract(count, typeAdd)
-    .format();
-
-export const diffDayOfDate = (dateA, dateB) =>
-  diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
 
 export const diffDatesByDays = (dateA: string | Date, dateB: string | Date) =>
   diffDates(createValidDate(dateA), createValidDate(dateB), 'days');
@@ -351,3 +356,8 @@ export const makeDateFormated = (date: string | Date, time?: boolean, empty?: st
   }
   return makeDate(date);
 };
+
+export const minusTime = (date, count, typeAdd) =>
+  moment(date)
+    .subtract(count, typeAdd)
+    .format();

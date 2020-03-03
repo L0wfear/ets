@@ -6,37 +6,31 @@ import ListNumber from 'components/new/pages/dashboard/menu/cards/_default-card-
 import {
   dashboardLoadWaybillInProgress,
   dashboardSetInfoDataInWaybillInProgress,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import WaybillInProgressInfo from 'components/new/pages/dashboard/menu/cards/waybill-in-progress/info/WaybillInProgressInfo';
 
-import {
-  PropsWaybillInProgress,
-  StateWaybillInProgress,
-} from 'components/new/pages/dashboard/menu/cards/waybill-in-progress/WaybillInProgress.h';
-import { compose } from 'recompose';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
-class WaybillInProgress extends React.Component<PropsWaybillInProgress, StateWaybillInProgress> {
-  render() {
+type Props = {};
+const WaybillInProgress: React.FC<Props> = React.memo(
+  () => {
     return (
       <div className="waybill_in_progress">
       </div>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsWaybillInProgress, PropsToDefaultCard>(
-  withDefaultWaybill({
-    path: 'waybill_in_progress',
-    loadData: dashboardLoadWaybillInProgress,
-    InfoComponent: WaybillInProgressInfo,
-    setInfoData: dashboardSetInfoDataInWaybillInProgress,
-    ListComponent: ListNumber,
-    setInfoDataPropsMake: ({ items }, path: string) => (
-      items[
-        path.split('/').slice(-1)[0]
-      ]
-    ),
-  }),
-)(WaybillInProgress);
+export default withDefaultWaybill<PropsToDefaultCard>({
+  path: 'waybill_in_progress',
+  loadData: dashboardLoadWaybillInProgress,
+  InfoComponent: WaybillInProgressInfo,
+  setInfoData: dashboardSetInfoDataInWaybillInProgress,
+  ListComponent: ListNumber,
+  setInfoDataPropsMake: (items, path: string) => (
+    items[
+      path.split('/').slice(-1)[0]
+    ]
+  ),
+})(WaybillInProgress);

@@ -7,12 +7,12 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 export const makeFuelCardIdOptions = memoizeOne(
   (
-    fuelCardsList: FuelCard[],
+    fuelCardsList: Array<FuelCard>,
     car_refill: Waybill['car_refill'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
   ) => {
     const car_refillIndex = keyBy(car_refill, 'fuel_card_id');
-    const option = fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
+    const option = fuelCardsList.reduce<Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>>(
       (newArr, rowData) => {
 
         delete car_refillIndex[rowData.id];

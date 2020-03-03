@@ -63,7 +63,7 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
                       glyphDirection
                         ? 'triangle-bottom'
                         : 'triangle-top'}
-                      />
+                  />
                 </EtsDropdownCaretContainer>
               )
             }

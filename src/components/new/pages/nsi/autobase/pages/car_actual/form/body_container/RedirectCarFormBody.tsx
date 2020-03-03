@@ -2,7 +2,8 @@ import * as React from 'react';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { mainInfo } from './formConfig';
 
-type Props = {} & WithSearchProps;
+type OwnProps = {};
+type Props = OwnProps & WithSearchProps;
 
 const RedirectCarFormBody: React.FC<Props> = React.memo(
   (props) => {
@@ -15,10 +16,8 @@ const RedirectCarFormBody: React.FC<Props> = React.memo(
       [props.setParams, props.match.params],
     );
 
-    return (
-      <div></div>
-    );
+    return null;
   },
 );
 
-export default withSearch(RedirectCarFormBody);
+export default withSearch<OwnProps>(RedirectCarFormBody);

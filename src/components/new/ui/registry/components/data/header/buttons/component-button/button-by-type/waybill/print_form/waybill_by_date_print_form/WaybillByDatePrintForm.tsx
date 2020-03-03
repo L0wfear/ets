@@ -1,21 +1,21 @@
 import * as React from 'react';
+
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
-import { WaybillPrintJournalForm, PropsWaybillByDatePrintWithForm, PropsWaybillByDatePrint, OwnWaybillByDatePrintProps, StatePropsWaybillByDatePrint } from './@types';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+
+import { WaybillPrintJournalForm, PropsWaybillByDatePrintWithForm, PropsWaybillByDatePrint } from './@types';
 import { getDefaultWaybillPrintJournalFormElement, defaultWaybillPrintJournalFormFunc, YEARS_FORM_2016, FORMATION_PERIOD_OPTIONS, sortingMonthFunction } from './utils';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { waybillPrintJournalFormSchema } from './schema';
-import { compose } from 'recompose';
 import { monthOptions } from 'components/@next/@utils/dates/dates';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { saveData } from 'utils/functions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionGetBlobWaybillJournalReport } from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
   (props) => {
@@ -24,6 +24,8 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
       formErrors: errors,
       page, path,
     } = props;
+
+    const filterValues = etsUseSelector((stateRedux) => getListData(getRegistryState(stateRedux), props.registryKey).processed.filterValues);
 
     const title = 'Печать Журнала путевых листов (ТМФ №8)';
 
@@ -75,7 +77,7 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
 
         const result = await props.submitAction(
           payload,
-          props.filter,
+          filterValues,
           {
             page, path,
           },
@@ -87,7 +89,7 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
         }
         global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintForm');
       },
-      [props.filter, state],
+      [filterValues, state],
     );
 
     return (
@@ -115,7 +117,7 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
                         type="select"
                         label="Месяц"
                         options={monthOptions}
-                        value={state.month}
+                        value={Number(state.month)}
                         sortingFunction={sortingMonthFunction}
                         error={errors.month}
                         clearable={false}
@@ -126,7 +128,7 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
                         type="select"
                         label="Год"
                         options={YEARS_FORM_2016}
-                        value={state.year}
+                        value={Number(state.year)}
                         error={errors.year}
                         clearable={false}
                         onChange={props.handleChange}
@@ -138,15 +140,15 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
               {
                 state.formationPeriod === 'day'
                 && (
-                    <ExtField
-                      type="date"
-                      time={false}
-                      label="Дата"
-                      value={state.date}
-                      error={errors.date}
-                      onChange={props.handleChange}
-                      boundKeys="date"
-                    />
+                  <ExtField
+                    type="date"
+                    time={false}
+                    label="Дата"
+                    value={state.date}
+                    error={errors.date}
+                    onChange={props.handleChange}
+                    boundKeys="date"
+                  />
                 )
               }
             </EtsBootstrap.Col>
@@ -161,23 +163,16 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
   },
 );
 
-export default compose<PropsWaybillByDatePrint, OwnWaybillByDatePrintProps>(
-  connect<StatePropsWaybillByDatePrint, DispatchProp, OwnWaybillByDatePrintProps, ReduxState>(
-    (state, { registryKey }) => ({
-      filter: getListData(getRegistryState(state), registryKey).processed.filterValues,
-    }),
-  ),
-  withForm<PropsWaybillByDatePrintWithForm, WaybillPrintJournalForm>({
-    uniqField: false,
-    createAction: waybillActions.actionGetBlobWaybillJournalReport,
-    mergeElement: (props) => {
-      return getDefaultWaybillPrintJournalFormElement(props.element);
-    },
-    noMessage: true,
-    schema: waybillPrintJournalFormSchema,
-    permissions: {
-      create: waybillPermissions.list,
-      update: waybillPermissions.list,
-    },
-  }),
-)(WaybillByDatePrintForm);
+export default withForm<PropsWaybillByDatePrintWithForm, WaybillPrintJournalForm>({
+  uniqField: false,
+  createAction: actionGetBlobWaybillJournalReport,
+  mergeElement: (props) => {
+    return getDefaultWaybillPrintJournalFormElement(props.element);
+  },
+  noMessage: true,
+  schema: waybillPrintJournalFormSchema,
+  permissions: {
+    create: waybillPermissions.list,
+    update: waybillPermissions.list,
+  },
+})(WaybillByDatePrintForm);

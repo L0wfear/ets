@@ -38,15 +38,15 @@ const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
           disabled={false}
         />
         <ImgContainer>
-        {
-          img
-          ? (
-            <ImgBackground src={img.src} />
-          )
-          : (
-            <PreloadNew typePreloader="mainpage" />
-          )
-        }
+          {
+            img
+              ? (
+                <ImgBackground src={img.src} />
+              )
+              : (
+                <PreloadNew typePreloader="mainpage" />
+              )
+          }
         </ImgContainer>
         <NextImage
           indexImage={props.indexImage}

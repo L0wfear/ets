@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
-  MultiSelectField,
-  DataTimeField,
   FileField,
 } from 'components/old/ui/input/fields';
 
@@ -13,16 +14,12 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import {
   OwnTechMaintenanceProps,
   PropsTechMaintenance,
   StatePropsTechMaintenance,
-  DispatchPropsTechMaintenance,
   PropsTechMaintenanceWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 import {
@@ -31,12 +28,14 @@ import {
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { hasMotohours } from 'utils/functions';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { getDefaultTechMaintenanceElement } from './utils';
 import { techMaintFormSchema } from './shema';
 import techMaintenancePermissions from '../_config-data/permissions';
-import { get } from 'lodash';
+import { autobaseCreateTechMaintenance, autobaseUpdateTechMaintenance } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/actions';
+import { repairCompanyGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
+import { techMaintOrderGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/actions';
 
 const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
   const {
@@ -47,27 +46,33 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     repairCompanyList,
     techMaintOrderList,
     selectedCarData,
+
+    IS_CREATING,
+    isPermitted,
   } = props;
 
-  const IS_CREATING = !state.id;
-
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-  const isPermitted = (
-    !IS_CREATING
-      ? props.isPermittedToUpdate
-      : props.isPermittedToCreate
-  );
 
   React.useEffect(
     () => {
-      props.repairCompanyGetAndSetInStore();
+      props.dispatch(
+        repairCompanyGetAndSetInStore(
+          {},
+          props,
+        ),
+      );
     },
     [],
   );
 
   React.useEffect(
     () => {
-      props.techMaintOrderGetAndSetInStore(get(props.selectedCarData, 'special_model_id', null));
+      props.dispatch(
+        techMaintOrderGetAndSetInStore(
+          { car_model_id: get(props.selectedCarData, 'special_model_id', null) },
+          props,
+        ),
+      );
     },
     [props.selectedCarData],
   );
@@ -97,7 +102,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
       show
 
       onHide={props.hideWithoutChanges}
-     >
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
@@ -116,8 +121,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
-            <MultiSelectField
-              integer
+            <ExtField
+              type="select"
+              multi={true}
               label="Регламент ТО"
               options={TECH_MAINT_ORDERS}
               value={state.tech_maintenance_order_ids}
@@ -139,7 +145,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Плановая дата начала"
               date={state.plan_date_start}
@@ -150,7 +158,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Плановая дата окончания"
               date={state.plan_date_end}
@@ -161,7 +171,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Фактическая дата начала"
               date={state.fact_date_start}
@@ -172,7 +184,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Фактическая дата окончания"
               date={state.fact_date_end}
@@ -252,29 +266,16 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
 };
 
 export default compose<PropsTechMaintenance, OwnTechMaintenanceProps>(
-  connect<StatePropsTechMaintenance, DispatchPropsTechMaintenance, OwnTechMaintenanceProps, ReduxState>(
+  connect<StatePropsTechMaintenance, {}, OwnTechMaintenanceProps, ReduxState>(
     (state) => ({
       repairCompanyList: getAutobaseState(state).repairCompanyList,
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
     }),
-    (dispatch, { page, path }) => ({
-      techMaintOrderGetAndSetInStore: (car_model_id) =>
-        dispatch(
-          autobaseActions.techMaintOrderGetAndSetInStore(
-            { car_model_id },
-            { page, path },
-          ),
-        ),
-      repairCompanyGetAndSetInStore: () =>
-        dispatch(
-          autobaseActions.repairCompanyGetAndSetInStore({}, { page, path }),
-        ),
-    }),
   ),
   withForm<PropsTechMaintenanceWithForm, TechMaintenance>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTechMaintenance,
-    updateAction: autobaseActions.autobaseUpdateTechMaintenance,
+    createAction: autobaseCreateTechMaintenance,
+    updateAction: autobaseUpdateTechMaintenance,
     mergeElement: (props) => {
       return getDefaultTechMaintenanceElement(props.element);
     },

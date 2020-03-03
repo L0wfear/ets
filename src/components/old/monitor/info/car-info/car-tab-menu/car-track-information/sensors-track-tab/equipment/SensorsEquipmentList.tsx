@@ -109,9 +109,9 @@ const mergedProps = (stateProps, { dispatch }) => ({
     } = stateProps;
     let canChange = false;
 
-    canChange =
-      sensorData.data.length > 0 &&
-      sensorData.data.some(([t, value]) => !!value);
+    canChange
+      = sensorData.data.length > 0
+      && sensorData.data.some(([t, value]) => !!value);
 
     if (canChange) {
       dispatch(carInfoToggleSensorShow('equipment', key));

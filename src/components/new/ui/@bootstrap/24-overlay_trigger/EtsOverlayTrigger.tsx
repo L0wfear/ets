@@ -1,17 +1,7 @@
-import * as React from 'react';
-import styled from 'styled-components';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
-export const OverlayTriggerStyled = styled(OverlayTrigger)``;
+// export const OverlayTriggerStyled = styled(OverlayTrigger)``;
 
-export type EtsOverlayTriggerProps = any;
-
-const EtsOverlayTrigger: React.FC<EtsOverlayTriggerProps> = React.memo(
-  (props) => {
-    return (
-      <OverlayTriggerStyled {...props} />
-    );
-  },
-);
+const EtsOverlayTrigger = OverlayTrigger;
 
 export default EtsOverlayTrigger;

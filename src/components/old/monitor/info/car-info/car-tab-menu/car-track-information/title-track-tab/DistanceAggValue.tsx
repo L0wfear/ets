@@ -15,15 +15,15 @@ export const getDistanceValue = (distance) => {
 };
 
 const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
-    <span>
-      <span>{getDistanceValue(distance)}</span>
-    </span>
+  <span>
+    <span>{getDistanceValue(distance)}</span>
+  </span>
 );
 
 export default compose<PropsDistanceAggValue, {}>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
-    type: 'small-loader-field',
+    type: 'field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
     canNull: true,
   }),

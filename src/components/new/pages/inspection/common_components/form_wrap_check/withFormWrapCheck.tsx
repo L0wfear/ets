@@ -1,43 +1,46 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { createPortal } from 'react-dom';
+import { compose, withProps } from 'recompose';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import { isBoolean } from 'util';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { isBoolean } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
 import { INSPECT_TYPE_FORM } from '../../autobase/global_constants';
 import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
-
-import { createPortal } from 'react-dom';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { HiddenPageEtsContainer, PopupBottomForm } from './styled';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
   loadInpectById: any;
   inspectPermissions: (
     {
-      update: string | string[];
-      update_closed: string | string[];
-    } & Record<string, string | string[]>
+      update: string | Array<string>;
+      update_closed: string | Array<string>;
+    } & Record<string, string | Array<string>>
   );
   title: React.ReactNode;
 };
 
-type InspectionFormWrapStateProps = {};
+type InspectionFormWrapStateProps = {
+  userData: InitialStateSession['userData'];
+};
 type InspectionFormWrapDispatchProps = {
   actionGetInspectById: any;
-  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
-  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type InspectionFormWrapOwnProps = {
   loadingPage: string;
@@ -186,20 +189,6 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
 
     const handleCloseWithoutChanges = React.useCallback(
       async () => {
-        if (inspectType !== INSPECT_TYPE_FORM.closed) {
-          try {
-            await global.confirmDialog({
-              title: 'Покинуть страницу?',
-              body: 'Возможно, внесенные изменения не сохранятся.',
-              okName: 'Закрыть',
-              cancelName: 'Остаться',
-            });
-          } catch (error) {
-            // no
-            return;
-          }
-        }
-
         handleCloseForm(
           inspectType !== INSPECT_TYPE_FORM.closed,
         );
@@ -212,18 +201,15 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
     return createPortal(
       <HiddenPageEtsContainer>
         <PopupBottomForm show={Boolean(selectedInspect) && Boolean(inspectId) && inspectType}>
-        {
+          {
             inspectId && selectedInspect && inspectType
               ? (
                 <React.Fragment>
-                  <TitleForm md={12} sm={12}>
-                    <h4>{config.title}</h4>
-                    <EtsBootstrap.Button onClick={handleCloseWithoutChanges}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
-                  </TitleForm>
                   <Component
                     selectedInspect={selectedInspect}
                     element={selectedInspect}
                     type={inspectType}
+                    title={config.title}
                     handleHide={handleCloseForm}
                     handleCloseWithoutChanges={handleCloseWithoutChanges}
                     isPermitted={inspectType === INSPECT_TYPE_FORM.closed ? props.isPermittedToUpdateClose : props.isPermitted}
@@ -240,7 +226,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
               : (
                 <DivNone />
               )
-            }
+          }
         </PopupBottomForm>
       </HiddenPageEtsContainer>,
       document.getElementById('container'),
@@ -253,7 +239,9 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       typePreloader: 'mainpage',
     }),
     connect<InspectionFormWrapStateProps, InspectionFormWrapDispatchProps, InspectionFormWrapOwnProps, ReduxState>(
-      null,
+      (state) => ({
+        userData: getSessionState(state).userData,
+      }),
       (dispatch: any) => ({
         actionGetInspectById: (...arg) => (
           dispatch(
@@ -273,15 +261,16 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       }),
     ),
     withSearch,
-    withRequirePermissionsNew({
+    withRequirePermission({
       permissions: config.inspectPermissions.update,
       withIsPermittedProps: true,
     }),
-    withRequirePermissionsNew({
-      permissions: config.inspectPermissions.update_closed,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToUpdateClose',
-    }),
+    withProps<InspectionFormWrapStateProps & { isPermittedToUpdateClose: boolean; }, any>(
+      (props) => ({
+        ...props,
+        isPermittedToUpdateClose: validatePermissions(config.inspectPermissions.update_closed, props.userData.permissionsSet),
+      }),
+    ),
   )(InspectionFormWrap);
 };
 

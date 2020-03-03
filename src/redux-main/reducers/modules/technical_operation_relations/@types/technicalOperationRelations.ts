@@ -13,6 +13,6 @@ export type TechnicalOperationRelations = {
   gov_number: string;
   route_names: string;
   route_names_string: string;
-  route_names_only: string[];
-  routes: TechnicalOperationRelationsRoute[];
+  route_names_only: Array<string>;
+  routes: Array<TechnicalOperationRelationsRoute>;
 };

@@ -103,7 +103,7 @@ class PageMenu extends React.Component<any, any> {
         },
       };
     });
-  }
+  };
 
   mapFirstLvl = ([keyName, data]) => {
     return (
@@ -117,7 +117,7 @@ class PageMenu extends React.Component<any, any> {
         positionChildren={data.position === 'bottom_left' ? 'left' : 'right'}
       />
     );
-  }
+  };
 
   mapFirstLvlHidden = ([keyName, data]) => {
     return (
@@ -130,7 +130,7 @@ class PageMenu extends React.Component<any, any> {
         positionChildren="left"
       />
     );
-  }
+  };
 
   render() {
     return (
@@ -139,7 +139,9 @@ class PageMenu extends React.Component<any, any> {
           Object.entries(this.state.widthAndShowByKey).map(this.mapFirstLvl)
         }
         {
-          Object.entries(this.state.widthAndShowByKeyHidden).map(this.mapFirstLvlHidden)
+          Boolean(Object.values(this.state.widthAndShowByKeyHidden.hidden.children)[1]) && (
+            Object.entries(this.state.widthAndShowByKeyHidden).map(this.mapFirstLvlHidden)
+          )
         }
       </PageMenuMainDl>
     );

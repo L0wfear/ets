@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 
@@ -8,7 +8,7 @@ import List from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-r
 import {
   dashboardLoadOdhNotCoveredByRoutes,
   dashboardSetInfoDataInOdhNotCoveredByRoutes,
- } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import OdhNotCoveredByRoutesInfo from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-routes/info/OdhNotCoveredByRoutesInfo';
 
 import {
@@ -22,14 +22,13 @@ import {
 import { compose } from 'recompose';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, StateOdhNotCoveredByRoutes> {
   handleClickMission: any = ({ currentTarget: { dataset: { path } } }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
 
     this.props.setInfoData(this.props.items[index]);
-  }
+  };
 
   render() {
     const { items } = this.props;
@@ -42,16 +41,15 @@ class OdhNotCoveredByRoutes extends React.Component<PropsOdhNotCoveredByRoutes, 
       <div>
         <List items={firstTwoItem} handleClick={this.handleClickMission} addIndex={0}  classNameContainer="line_data" />
         {
-          collapsetItems.length ?
-          (
-            <CollapseButton>
-              <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
+          collapsetItems.length
+            ? (
+              <CollapseButton>
+                <List items={collapsetItems} handleClick={this.handleClickMission} addIndex={counttoFirstShow}  classNameContainer="line_data" />
+              </CollapseButton>
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

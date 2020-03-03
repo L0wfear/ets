@@ -1,7 +1,8 @@
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldStructure = {
-  STRUCTURE_OPTIONS: any[];
+  STRUCTURE_OPTIONS: Array<any>;
 };
 
 export type StatePropsFieldStructure = {
@@ -10,7 +11,7 @@ export type StatePropsFieldStructure = {
 };
 
 export type DispatchPropsFieldStructure = {
-  getAndSetInStoreCompanyStructureLinear: () => Promise<any>;
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsFieldStructure = {
@@ -20,7 +21,7 @@ export type OwnPropsFieldStructure = {
   error: string;
   page: string;
   path: string;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 };
 
 export type PropsFieldStructure = (

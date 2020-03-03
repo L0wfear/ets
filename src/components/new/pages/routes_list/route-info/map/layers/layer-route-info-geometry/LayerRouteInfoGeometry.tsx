@@ -81,11 +81,11 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
         },
       });
     }
-  }
+  };
 
   hidePopup = () => {
     this.setState({ selectedGeoobj: null });
-  }
+  };
 
   componentWillUnmount() {
     this.props.removeLayer();
@@ -96,20 +96,19 @@ class LayerOneGeometry extends React.PureComponent<PropsLayerPlayPoint, StateLay
     return (
       <div>
         {
-          selectedGeoobj ?
-          (
-            <OverlayLayerRouteInfoGeometry
-              map={this.props.map}
-              hidePopup={this.hidePopup}
-              coordinate={selectedGeoobj.coordinate}
-              type={GEOOBJECTS_OBJ[selectedGeoobj.type].labelSingl}
-              name={selectedGeoobj.name}
-            />
-          )
-          :
-          (
-            <DivNone />
-          )
+          selectedGeoobj
+            ? (
+              <OverlayLayerRouteInfoGeometry
+                map={this.props.map}
+                hidePopup={this.hidePopup}
+                coordinate={selectedGeoobj.coordinate}
+                type={GEOOBJECTS_OBJ[selectedGeoobj.type].labelSingl}
+                name={selectedGeoobj.name}
+              />
+            )
+            :          (
+              <DivNone />
+            )
         }
       </div>
     );

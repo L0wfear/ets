@@ -6,6 +6,7 @@ import {
 import config from 'config';
 import { makeUnixTimeMskTimezone } from 'components/@next/@utils/dates/dates';
 import { Car } from '../../autobase/@types/autobase.h';
+import { initialMonitorState } from 'components/old/monitor/redux-main/models/monitor-page';
 
 type PromiseGetTracksCachingPayload = {
   car_id: Car['asuods_id'];
@@ -44,16 +45,17 @@ export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPa
 
   try {
     response = await TrackService.get(payloadToTrack).then(
-      (ans) => {
+      async (ans) => {
+        const partialTrackCaching = await checkAndModifyTrack(ans, odh_mkad);
         return ({
           ...ans,
-          ...checkAndModifyTrack(ans, odh_mkad),
+          ...partialTrackCaching,
         });
       },
     );
   } catch (error) {
-    console.warn(error); //tslint:disable-line
-    response = null;
+    global.NOTIFICATION_SYSTEM.notify('Ошибка загрузки данных трека', 'error', 'tr');
+    response = initialMonitorState.carInfo.trackCaching;
   }
 
   return response;

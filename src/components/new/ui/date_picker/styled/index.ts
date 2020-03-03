@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { mobiSize } from 'global-styled/global-constants';
 import EtsBootstrap from '../../@bootstrap';
 
-export const DividerDatePickerRange = styled.div<{ label: boolean; date_start_label: any }>`
+export const DividerDatePickerRange = styled.div<{ hasLabel: boolean; }>`
   &&& {
     display: none;
     text-align: center;
@@ -10,7 +10,7 @@ export const DividerDatePickerRange = styled.div<{ label: boolean; date_start_la
       width: auto;
       left: 50%;
       transform: translate(-50%, 0);
-      top: ${({ label }) => label ? '25%' : '0'};
+      top: ${({ hasLabel }) => hasLabel ? '25%' : '0'};
       position: absolute;
       margin: 0;
       padding: 8px 0 0 0;
@@ -19,7 +19,7 @@ export const DividerDatePickerRange = styled.div<{ label: boolean; date_start_la
     }
   }
 `;
-export const DatePickerRangeContainer = styled(EtsBootstrap.Row)<{ allWidth?: boolean }>`
+export const DatePickerRangeContainer = styled(EtsBootstrap.Row)<{ allWidth?: boolean; }>`
   width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
   position: relative;

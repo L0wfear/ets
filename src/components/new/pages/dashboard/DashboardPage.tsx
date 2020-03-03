@@ -17,14 +17,24 @@ const DashboardPage: React.FC<{}> = React.memo(
   () => {
     React.useLayoutEffect(
       () => {
+        const meta = document.querySelector('meta[property="og:title"]');
         const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        const new_title = `${etsName} Рабочий стол`;
+
         if (document) {
-          document.title = `${etsName} Рабочий стол`;
+          document.title = new_title;
+        }
+        if (meta) {
+          meta.setAttribute('content', new_title);
         }
 
         return () => {
           if (document) {
             document.title = etsName;
+          }
+          const metaNew = document.querySelector('meta[property="og:title"]');
+          if (metaNew) {
+            metaNew.setAttribute('content', etsName);
           }
         };
       },

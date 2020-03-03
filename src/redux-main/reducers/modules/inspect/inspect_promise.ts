@@ -5,7 +5,8 @@ import {
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -23,7 +24,7 @@ export const promiseGetInspectRegistry = async <T>(payload: object) => {
     console.error(error); // tslint:disable-line
   }
 
-  const data: T[] = get(response, ['result', 'rows'], []);
+  const data: Array<T> = get(response, ['result', 'rows'], []);
 
   return {
     data,
@@ -58,18 +59,17 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
   return inspectAutobase;
 };
 
-export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], payload: any) => {
-
+export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
   const newPayload = {
     ...payload,
-    resolve_to: createValidDateTime(payload.resolve_to),
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
   };
 
   const response = await InspectRegistryService.path(id).put(
     {
+      ...newPayload,
       data,
       files,
-      ...newPayload,
     },
     false,
     'json',
@@ -89,4 +89,22 @@ export const promiseGetBlobActInspection = async (inspection_id: number) => {
   }
 
   return response;
+};
+
+export const promiseUpdatePreparePlan = async (id: number, payload: {types_cars: InspectCarsCondition['data']['types_cars']; types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];}) => {
+  const newPayload = {
+    ...payload,
+  };
+
+  const response = await InspectRegistryService.path(`${id}/cars_preparation_plan`).put(
+    {
+      ...newPayload,
+    },
+    false,
+    'json',
+  );
+
+  const inspectAutobase = get(response, 'result.rows.0', null);
+
+  return inspectAutobase;
 };

@@ -1,19 +1,39 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+
 import { Flex } from 'global-styled/global-styled';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
-import {
-  PropsFieldTechnicalOperation,
-  StatePropsFieldTechnicalOperation,
-  DispatchPropsFieldTechnicalOperation,
-  OwnPropsFieldTechnicalOperation,
-  StateFieldTechnicalOperation,
-} from 'components/new/pages/routes_list/form/inside_fields/technical-operation/FieldTechnicalOperation.d';
 import { actionGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOperation, StateFieldTechnicalOperation> {
+type State = {
+  TECHNICAL_OPERATION_OPTIONS: Array<any>;
+};
+
+type StateProps = {};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+type OwnProps = {
+  value: number | void;
+  name: string | void;
+  disabled: boolean;
+  error: string;
+  onChange: (obj: { [key: string]: any; }) => any;
+  page: string;
+  path: string;
+};
+
+type PropsFieldTechnicalOperation = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOperation, State> {
   constructor(props) {
     super(props);
     const TECHNICAL_OPERATION_OPTIONS = [];
@@ -85,7 +105,7 @@ class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOpe
         normatives: option.toData.normatives,
       });
     }
-  }
+  };
 
   render() {
     const {
@@ -111,7 +131,7 @@ class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOpe
   }
 }
 
-export default connect<StatePropsFieldTechnicalOperation, DispatchPropsFieldTechnicalOperation, OwnPropsFieldTechnicalOperation, ReduxState>(
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   null,
   (dispatch: any) => ({
     dispatch,

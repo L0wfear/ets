@@ -3,25 +3,25 @@ import * as React from 'react';
 import MissionReportByODH from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByODH';
 import MissionReportByDT from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByDT';
 import MissionReportByPoints from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByPoints';
-import { DivNone } from 'global-styled/global-styled';
 
-import { PropsMissionInfoTableContainer } from 'components/new/ui/mission_info_form/form-components/table-continer/MissionInfoTableContainer.h';
+type PropsMissionInfoTableContainer = {
+  type: 'mixed' | 'simple_dt' | 'points';
+  missionReport: Array<any>;
+  handleSelectedElementChange: (id: number) => any;
+};
 
-class MissionInfoTableContainer extends React.PureComponent<PropsMissionInfoTableContainer, {}> {
-  render() {
+const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = React.memo(
+  (props) => {
     const {
       type,
       missionReport,
       handleSelectedElementChange,
-    } = this.props;
+    } = props;
 
     return (
       <>
         {
-          type !== 'mixed' ?
-          ( <DivNone /> )
-          :
-          (
+          type === 'mixed' && (
             <MissionReportByODH
               renderOnly
               enumerated={false}
@@ -33,10 +33,7 @@ class MissionInfoTableContainer extends React.PureComponent<PropsMissionInfoTabl
           )
         }
         {
-          type !== 'simple_dt' ?
-          ( <DivNone /> )
-          :
-          (
+          type === 'simple_dt' && (
             <MissionReportByDT
               renderOnly
               enumerated={false}
@@ -48,10 +45,7 @@ class MissionInfoTableContainer extends React.PureComponent<PropsMissionInfoTabl
           )
         }
         {
-          type !== 'points' ?
-          ( <DivNone /> )
-          :
-          (
+          type === 'points' && (
             <MissionReportByPoints
               renderOnly
               enumerated={false}
@@ -64,7 +58,7 @@ class MissionInfoTableContainer extends React.PureComponent<PropsMissionInfoTabl
         }
       </>
     );
-  }
-}
+  },
+);
 
 export default MissionInfoTableContainer;

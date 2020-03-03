@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import {
   FlexContainer,
@@ -7,58 +8,48 @@ import {
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 
 import carpoolPermissions from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { carpoolSchema } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/schema';
 
 import { getDefaultCarpoolElement } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnPropsCarpoolForm,
   PropsCarpoolForm,
-  StateCarpoolForm,
-  StatePropsCarpoolForm,
-  DispatchPropsCarpoolForm,
   PropsCarpoolFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/@types/CarpoolForm.h';
 
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 
-class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm> {
-  render() {
+const CarpoolForm: React.FC<PropsCarpoolForm> = React.memo(
+  (props) => {
     const {
       formState: state,
       page,
       path,
-    } = this.props;
-
-    const IS_CREATING = !state.id;
+      IS_CREATING,
+    } = props;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large">
+      <EtsBootstrap.ModalContainer id="modal-carpool" show onHide={props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <FlexContainer isWrap>
+          <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
               {
-                this.props.userData.isKgh || this.props.userData.isOkrug
+                props.userData.isKgh || props.userData.isOkrug
                   ? (
                     <ExtField
                       type="string"
                       value={state.company_name || '-'}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
+                      label={props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
                       readOnly
                     />
                   )
@@ -91,19 +82,14 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
-  connect<StatePropsCarpoolForm, DispatchPropsCarpoolForm, OwnPropsCarpoolForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+export default compose<PropsCarpoolForm, PropsCarpoolFormWithForm>(
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateCarpool,
-    updateAction: geoobjectActions.actionUpdateCarpool,
+    createAction: actionsCarpool.post,
+    updateAction: actionsCarpool.put,
     mergeElement: (props) => {
       return getDefaultCarpoolElement(props.element);
     },

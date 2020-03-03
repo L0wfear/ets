@@ -796,36 +796,6 @@ body.application {
   overflow: visible;
 }
 
-.taxi-calc-block  {
-  margin-bottom: 50px;
-  .form-group {
-    margin-bottom: 0;
-  }
-
-  .taxes-result {
-    float: right;
-    div {
-      display: inline-block;
-      font-weight: bold;
-    }
-    .taxes-result-label {
-      width: 180px;
-
-      &-positive {
-        color: green;
-      }
-
-      &-negative {
-        color: $colorError;
-      }
-    }
-    .taxes-result-value {
-      min-width: 91px;
-    }
-
-  }
-}
-
 .pointer {
   cursor: pointer;
 }

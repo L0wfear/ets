@@ -1,10 +1,8 @@
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
-import { HandleThunkActionCreator } from 'react-redux';
-import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 
 export type EdcRequestCancel = {
-  id: EdcRequest['id'],
+  id: EdcRequest['id'];
   cancel_reason_id: number;
   cancel_reason_name: string;
 };
@@ -23,13 +21,7 @@ export type EdcRequestCancelFormLazyProps = {
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type EdcRequestCancelFormStateProps = {
-};
-
-export type EdcRequestCancelFormDispatchProps = {
-  actionLoadRefusalReason: HandleThunkActionCreator<typeof edcRequestActions.actionLoadRefusalReason>;
-};
-export type EdcRequestCancelFormOwnProps = {
+export type EdcRequestCancelFormPropsWithForm = {
   element: Partial<EdcRequestCancel>;
 
   edcReques: EdcRequest;
@@ -38,12 +30,6 @@ export type EdcRequestCancelFormOwnProps = {
   page: string;
   path?: string;
 };
-
-export type EdcRequestCancelFormPropsWithForm = (
-  EdcRequestCancelFormStateProps
-  & EdcRequestCancelFormDispatchProps
-  & EdcRequestCancelFormOwnProps
-);
 
 export type EdcRequestCancelFormProps = OutputWithFormProps<
   EdcRequestCancelFormPropsWithForm,

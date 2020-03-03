@@ -1,6 +1,6 @@
 export type FountainsWorkingHour = {
-  Hours: string,
-  DayOfWeek: string,
+  Hours: string;
+  DayOfWeek: string;
 };
 
 export type Fountains = {
@@ -25,12 +25,6 @@ export type Fountains = {
   operation_organization_phone: string;
   shape: object;
   updated_at: string | null;
-  working_hours: FountainsWorkingHour[],
+  working_hours: Array<FountainsWorkingHour>;
   working_hours_text: string;
 };
-
-export type CreateFountains = any;
-
-export type UpdateFountains = any;
-
-export type GetFountains = () => Promise<any>;

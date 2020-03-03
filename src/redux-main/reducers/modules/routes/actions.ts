@@ -9,8 +9,7 @@ import {
 } from 'redux-main/reducers/modules/routes/promise';
 import { IStateRoutes, Route } from 'redux-main/reducers/modules/routes/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { HandleThunkActionCreator } from 'react-redux';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const actionSetRoutes = (
   routesList: IStateRoutes['routesList'],
@@ -57,7 +56,7 @@ const actionLoadRoutes = (
 const actionLoadAndSetInStoreRoutes = (
   payload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadRoutes>>, > => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionLoadRoutes>> => async (dispatch) => {
   const response = await dispatch(actionLoadRoutes(payload, meta));
 
   dispatch(actionSetRoutes(response.data, response.dataIndex));
@@ -67,7 +66,7 @@ const actionLoadAndSetInStoreRoutes = (
 const actionLoadRouteById = (
   id: number,
   meta: LoadingMeta,
-): EtsAction<ReturnType<typeof promiseLoadRouteById>, > => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseLoadRouteById>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRouteById(id),

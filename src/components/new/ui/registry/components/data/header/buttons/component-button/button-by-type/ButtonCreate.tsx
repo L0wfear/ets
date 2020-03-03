@@ -1,28 +1,25 @@
 import * as React from 'react';
-import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
+  selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCreateDispatchProps = {
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateOwnProps = {
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-  registryKey: string;
-};
+type ButtonCreateOwnProps = CommonTypesForButton & {};
 type ButtonCreateMergeProps = {};
 
 type ButtonCreateProps = (
@@ -35,47 +32,44 @@ type ButtonCreateProps = (
 const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   const data = React.useMemo(
     () => (
-      get(props, 'data', {} as ButtonCreateOwnProps['data'])
+      get(props, 'data', {}) as ButtonCreateOwnProps['data']
     ),
     [props.data],
   );
 
   const handleClick = React.useCallback(
     () => {
-      props.registrySetSelectedRowToShowInForm({});
+      const uniqKeyForParams = get(data, 'other_params.uniqKeyForParams.key') || props.uniqKeyForParams;
+      const path = get(data, 'other_params.uniqKeyForParams.path');
+      const paramsValue = path ? get(props.selectedRow, path) : buttonsTypes.create;
+
       props.setParams({
-        [props.uniqKeyForParams]: buttonsTypes.create,
-        ...get(data, 'objChangeParams', {}),
+        [uniqKeyForParams]: paramsValue,
+        type: get(data, 'other_params.type', null),
       });
     },
-    [data],
+    [data, props.setParams, props.match.params, props.setDataInSearch, props.searchState],
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph={data.glyph || 'plus'} />{data.title || 'Создать'}
+    <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
+      <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'plus') : null} />{data.title || 'Создать'}
     </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   withSearch,
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{ permissions: OneRegistryData['list']['permissions']['create']; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
-    }),
-    (dispatch: any, { registryKey }) => ({
-      registrySetSelectedRowToShowInForm: () => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(registryKey),
-        )
-      ),
+      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
   ),
 )(ButtonCreate);

@@ -1,18 +1,15 @@
 import * as React from 'react';
-import { get } from 'lodash';
 
 import { registyLoadPrintForm } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type PropsButtonExport = {
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-  registryKey: string;
-};
+type PropsButtonExport = CommonTypesForButton & {};
 
 const ButtonExport: React.FC<PropsButtonExport> = React.memo(
   (props) => {
+    const { data } = props;
     const dispatch = etsUseDispatch();
     const handleClick = React.useCallback(
       () => (
@@ -23,9 +20,9 @@ const ButtonExport: React.FC<PropsButtonExport> = React.memo(
       [props.registryKey],
     );
 
-    const data = React.useMemo(
+    const glyph = React.useMemo(
       () => (
-        get(props, 'data', {} as PropsButtonExport['data'])
+        data && data.glyph
       ),
       [props.data],
     );
@@ -36,7 +33,7 @@ const ButtonExport: React.FC<PropsButtonExport> = React.memo(
         bsSize="small"
         onClick={handleClick}
       >
-        <EtsBootstrap.Glyphicon glyph={data.glyph || 'download-alt'} />
+        <EtsBootstrap.Glyphicon glyph={glyph || 'download-alt'} />
       </EtsBootstrap.Button>
     );
   },

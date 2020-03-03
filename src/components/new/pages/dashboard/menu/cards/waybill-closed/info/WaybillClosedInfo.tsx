@@ -17,7 +17,7 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/waybill-closed/info/WaybillClosedInfo.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -37,21 +37,21 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
     },
   }) => {
     this.props.dispatch(
-      waybillActions.actionGetWaybillById(
+      actionGetWaybillById(
         Number.parseInt(path, 0),
         { page: 'dashboard' },
       ),
     ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
-        }
-      });
+      if (waybill_data) {
+        this.setState({
+          showWaybillFormWrap: true,
+          elementWaybillFormWrap: waybill_data,
+        });
+      } else {
+        // tslint:disable-next-line
+        console.warn('not find waybill');
+      }
+    });
   };
 
   handleWaybillFormWrapHide = () => {

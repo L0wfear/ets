@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+
 import { ReduxState } from 'redux-main/@types/state';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
-
-import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import { ContainerForm, FooterForm, TitleForm } from '../../../common_components/form_wrap_check/styled';
 import { FooterEnd } from 'global-styled/global-styled';
 import ViewInspectCarsConditionButtonSubmit from './button_submit/ViewInspectCarsConditionButtonSubmit';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
@@ -24,12 +24,19 @@ import { ColScroll } from './styled';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { get } from 'lodash';
+import { DataTableInputOutputListErrors, isValidDataTableInput } from 'components/old/ui/table/utils';
+import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
+import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { isNullOrUndefined } from 'util';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
-    const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
-    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
-
+    const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<Array<CarsConditionCars>>([]);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
+    const [awaitCarsCnt, setAwaitCarsCnt] = React.useState(0);
+    const [prevSearchState, setPrevSearchState] = React.useState(props.searchState);
     const {
       formState: state,
       formErrors: errors,
@@ -56,6 +63,21 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       || isPermittedChangeCloseParams
     );
 
+    const canSavePreparePlanHandler = React.useCallback(
+      (preparePlanCanSaveNew: boolean) => {
+        setPreparePlanCanSave(preparePlanCanSaveNew);
+      },
+      [preparePlanCanSave, props.canSave, isHasPeriod],
+    );
+
+    // Вызов колбека при закрытии формы заполнения
+    React.useEffect(() => {
+      if (!isNullOrUndefined(prevSearchState.inspectId) && !get(props, 'searchState.inspectId')) {
+        callBackToLoadCars();
+      }
+      setPrevSearchState(props.searchState);
+    }, [props.searchState, props.match.params, props.setDataInSearch, props.setParams]);
+
     const callBackToLoadCars = React.useCallback(
       () => {
         const loadData = async () => {
@@ -63,18 +85,19 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             const result = await props.autobaseGetCarsConditionCars(state.id, { page, path });
             setCarsConditionCarsList(result);
             const checked_cars_cnt = result.reduce((summ, { was_resaved }) => summ + Number(was_resaved), 0);
-            const cars_cnt = result.length - checked_cars_cnt;
-            props.handleChange({
-              cars_cnt,
-              checked_cars_cnt,
-            });
+            setAwaitCarsCnt(result.length - checked_cars_cnt);
+            if (state.checked_cars_cnt !== checked_cars_cnt) { // что бы небыло изменения в formState DITETS-7050
+              props.handleChange({
+                checked_cars_cnt,
+              });
+            }
           } catch (error) {
-            console.error(error); //tslint:disable-line
+            console.error(error);
           }
         };
 
         setCarsConditionCarsList([]);
-        loadData();
+        return loadData();
       },
       [state.id],
     );
@@ -82,10 +105,21 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     React.useEffect(
       () => {
         if (!isHasPeriod) {
-          setPreparePlanCanSave(true);
+          canSavePreparePlanHandler(true);
+        } else {
+          // т.к. компонент не рендерится, а валидация происходит в prepareCars
+          const types_cars = get(props, 'element.data.types_cars');
+          const types_harvesting_unit = get(props, 'element.data.types_harvesting_unit');
+
+          const outputListErrorsTypesCars = DataTableInputOutputListErrors(types_cars, [], TypesCars.validationSchema);
+          const isValidInputTypesCars = isValidDataTableInput(outputListErrorsTypesCars);
+          const outputListErrorsTypesHarvestingUnit = DataTableInputOutputListErrors(types_harvesting_unit, [], TypesHarvestingUnit.validationSchema);
+          const isValidInputTypesHarvestingUnit = isValidDataTableInput(outputListErrorsTypesHarvestingUnit);
+
+          canSavePreparePlanHandler(isValidInputTypesCars && isValidInputTypesHarvestingUnit);
         }
       },
-      [isHasPeriod],
+      [isHasPeriod, preparePlanCanSave],
     );
 
     React.useEffect(
@@ -119,6 +153,12 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
     return (
       <React.Fragment>
+        <TitleForm md={12} sm={12}>
+          <h4>{props.title}</h4>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
+        </TitleForm>
         <ContainerForm>
           <ColScroll md={6} sm={6}>
             <BlockCarSConditionInfo
@@ -135,6 +175,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               checks_type_text={state.checks_type_text}
               checks_period_text={state.checks_period_text}
               onChange={props.handleChange}
+              inspectionState={state}
             />
             {
               isHasPeriod
@@ -174,9 +215,11 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isPermitted={isPermittedChangeListParams}
               isActiveInspect={isActiveInspect}
               carsConditionCarsList={carsConditionCarsList}
-              cars_cnt={state.cars_cnt}
+              awaitCarsCnt={awaitCarsCnt}
               checked_cars_cnt={state.checked_cars_cnt}
               error_checked_cars_cnt={errors.checked_cars_cnt}
+              loadingPage={props.loadingPage}
+              monitoring_kind={state.monitoring_kind}
             />
             <BlockCarsConditionSetInspectEmployee
               type={props.type}
@@ -208,8 +251,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
               types_cars={state.data.types_cars}
               types_harvesting_unit={state.data.types_harvesting_unit}
-              canSavePreparePlanHandler={setPreparePlanCanSave}
+              canSavePreparePlanHandler={canSavePreparePlanHandler}
               handleChangeData={handleChangeData}
+              isPermitted={isPermittedChangeListParams}
 
               page={props.page}
               type={props.type}
@@ -230,7 +274,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               id={state.id}
               registryPage={props.page}
             />
-            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>
@@ -249,6 +293,7 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
       ),
     }),
   ),
+  withSearch,
   withForm<PropsViewInspectCarsConditionWithForm, InspectCarsCondition>({
     uniqField: 'id',
     updateAction: inspectionCarsConditionActions.actionUpdateInspectCarsCondition,
@@ -258,9 +303,9 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
     },
     permissions: inspectCarsConditionPermissions,
     schema: inspectcarsConditionormSchema,
+    askBeforeCloseIfChanged: {},
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectCarsCondition);

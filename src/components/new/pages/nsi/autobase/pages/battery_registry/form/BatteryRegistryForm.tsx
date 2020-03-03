@@ -1,34 +1,28 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { get } from 'lodash';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnBatteryRegistryProps,
   PropsBatteryRegistry,
   StateBatteryRegistry,
-  StatePropsBatteryRegistry,
-  DispatchPropsBatteryRegistry,
   PropsBatteryRegistryWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry, BatteryOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DivNone } from 'global-styled/global-styled';
 import BatteryToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/BatteryToVehicleBlock';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { getDefaultBatteryRegistryElement } from './utils';
 import { batteryRegistryFormSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data/permissions';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
+import { autobaseGetSetBatteryBrand } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/actions';
+import { autobaseCreateBatteryRegistry, autobaseUpdateBatteryRegistry } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_registry/actions';
 
 const BatteryVehicleBlock: any = onChangeWithKeys(
   BatteryToVehicleBlockComponent,
@@ -49,7 +43,6 @@ class BatteryRegistryForm extends React.PureComponent<
   StateBatteryRegistry
 > {
   state = {
-    canSave: true,
     batteryBrandOptions: [],
   };
 
@@ -79,18 +72,19 @@ class BatteryRegistryForm extends React.PureComponent<
 
   async loadBatteryBrand() {
     const {
-      payload: { data },
-    } = await this.props.autobaseGetSetBatteryBrand();
+      data,
+    } = await this.props.dispatch(
+      autobaseGetSetBatteryBrand(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({
-      batteryBrandOptions: data.map(({ id, name, ...other }) => ({
-        value: id,
-        label: name,
-        batteryBrand: {
-          id,
-          name,
-          ...other,
-        },
+      batteryBrandOptions: data.map((rowData) => ({
+        value: rowData.id,
+        label: rowData.name,
+        batteryBrand: rowData,
       })),
     });
   }
@@ -98,12 +92,10 @@ class BatteryRegistryForm extends React.PureComponent<
   handleChangeBrandId = (name, value, option) => {
     this.props.handleChange({
       [name]: value,
-      brand_name: get(option, ['batteryBrand', 'brand_name'], null),
+      brand_name: get(option, 'batteryBrand.name', null),
     });
   };
 
-  handleBatteryToCarValidity = ({ isValidInput }) =>
-    this.setState({ canSave: isValidInput });
   render() {
     const { formState: state, formErrors: errors, page, path } = this.props;
     const { batteryBrandOptions } = this.state;
@@ -122,7 +114,7 @@ class BatteryRegistryForm extends React.PureComponent<
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-       >
+      >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -145,12 +137,12 @@ class BatteryRegistryForm extends React.PureComponent<
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <ExtField
-                  id="manufacturer_name"
-                  type={'string'}
-                  label={'Изготовитель'}
-                  value={state.manufacturer_name}
-                  disabled
-                  modalKey={page}
+                id="manufacturer_name"
+                type={'string'}
+                label={'Изготовитель'}
+                value={state.manufacturer_name}
+                disabled
+                modalKey={page}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
@@ -215,7 +207,6 @@ class BatteryRegistryForm extends React.PureComponent<
                     onChange={this.props.handleChange}
                     boundKeys="battery_to_car"
                     inputList={state.battery_to_car || []}
-                    onValidation={this.handleBatteryToCarValidity}
                     outerValidate
                     errors={errors.battery_to_car}
                     batteryId={state.id}
@@ -232,41 +223,26 @@ class BatteryRegistryForm extends React.PureComponent<
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            isPermitted && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!this.props.canSave}
+                onClick={this.props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   }
 }
 
-export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
-  connect<
-    StatePropsBatteryRegistry,
-    DispatchPropsBatteryRegistry,
-    OwnBatteryRegistryProps,
-    ReduxState
-  >(
-    null,
-    (dispatch, { page, path }) => ({
-      autobaseGetSetBatteryBrand: () =>
-        dispatch(
-          autobaseActions.autobaseGetSetBatteryBrand({}, { page, path }),
-        ),
-    }),
-  ),
-  withSearch,
+export default compose<PropsBatteryRegistry, PropsBatteryRegistryWithForm>(
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateBatteryRegistry,
-    updateAction: autobaseActions.autobaseUpdateBatteryRegistry,
+    createAction: autobaseCreateBatteryRegistry,
+    updateAction: autobaseUpdateBatteryRegistry,
     mergeElement: (props) => {
       return getDefaultBatteryRegistryElement(props.element);
     },

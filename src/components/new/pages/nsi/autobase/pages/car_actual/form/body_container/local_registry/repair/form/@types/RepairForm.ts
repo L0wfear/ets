@@ -7,41 +7,17 @@ import {
   DefaultSelectListMapper,
 } from 'components/old/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
-import { GetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/@types';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { CarWrap } from '../../../../../@types/CarForm';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsRepairFormWrap = {
-  element: Repair | null;
-  selectedCarData?: CarWrap;
-  onFormHide: OnFormHideType;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
-export type DispatchPropsRepair = {
-  autobaseGetRepairCompany: GetRepairCompany;
-  autobaseGetRepairType: GetRepairType;
-};
-export type OwnRepairProps = {
-  element: Repair | null;
-  handleHide: OnFormHideType;
-  selectedCarData?: CarWrap;
 
-  page: string;
-  path?: string;
-};
+export type OwnRepairProps = WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap; };
 
 export type PropsRepairWithForm = StatePropsRepair &
-  DispatchPropsRepair &
   OwnRepairProps;
 
 export type PropsRepair = OutputWithFormProps<

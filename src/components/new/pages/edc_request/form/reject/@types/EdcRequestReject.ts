@@ -4,7 +4,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 
 export type EdcRequestReject = {
-  id: EdcRequest['id'],
+  id: EdcRequest['id'];
   rejection_reason_id: number;
   rejection_reason_name: string;
 };

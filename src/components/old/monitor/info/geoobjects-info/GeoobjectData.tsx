@@ -35,19 +35,19 @@ const GeoobjectData: React.FC<PropsGeoobjectData> = ({ selectedGeoobjectData, se
           </CarInfoClose>
         </CarInfoTrackDateTitle>
         <div className="selected_geoobjects-container">
-        {
-          Object.entries(selectedGeoobjectData).sort(([a_id, a_data], [b_id, b_data]) => a_data.front_add_at - b_data.front_add_at).map(([id, data]) => (
-            data.front_show && (
-              <GeoDataTemplate
-                key={id}
-                serverName={serverName}
-                data={data}
-                id={id}
-                centerOn={props.centerOn}
-              />
-            )
-          ))
-        }
+          {
+            Object.entries(selectedGeoobjectData).sort(([a_id, a_data], [b_id, b_data]) => a_data.front_add_at - b_data.front_add_at).map(([id, data]) => (
+              data.front_show && (
+                <GeoDataTemplate
+                  key={id}
+                  serverName={serverName}
+                  data={data}
+                  id={id}
+                  centerOn={props.centerOn}
+                />
+              )
+            ))
+          }
         </div>
       </div>
     </CarInfoBlock>
@@ -74,5 +74,4 @@ const mapDispatchToProps = (dispatch, { serverName }) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)
-(GeoobjectData);
+)(GeoobjectData);

@@ -6,7 +6,7 @@ const disabledCss = css`
   pointer-events: none;
 `;
 
-export const CarInfoToggleForToday = styled.div<{ isDisabled: boolean }>`
+export const CarInfoToggleForToday = styled.div<{ isDisabled: boolean; }>`
   cursor: pointer;
 
   &&& {

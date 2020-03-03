@@ -1,30 +1,28 @@
 import { IReactSelectOption } from 'components/old/ui/@types/ReactSelect.h';
 
-export interface IDataTableSelectedRowPropsData {
+export type IDataTableSelectedRowPropsData = {
   [fieldName: string]: any;
   rowNumber?: number;
-}
+};
 
-interface IDataTableSelectedRowProps<TRowData> {
+type IDataTableSelectedRowProps<TRowData> = {
   data: any;
   rowData: TRowData;
-}
+};
 
-export interface IDataTableSelectedRow<
+export type IDataTableSelectedRow<
   TRowData = IDataTableSelectedRowPropsData
-> {
+> = {
   props: IDataTableSelectedRowProps<TRowData>;
-}
+};
 
 type FieldTypes =
   | 'multiselect'
-  | 'multiselect-boolean'
   | 'select'
   | 'string'
   | 'date'
   | 'datetime'
   | 'advanced-number'
-  | 'advanced-string'
   | 'advanced-date'
   | 'number'
   | 'customFilter';
@@ -33,22 +31,22 @@ export type ILabelFunction = (data: number | string) => string;
 
 type ITypeCustomFilterFunc = (value: any, lineData: any) => boolean;
 
-export interface IDataTableColFilter {
+export type IDataTableColFilter = {
   type: FieldTypes;
-  options?: IReactSelectOption[];
+  options?: Array<IReactSelectOption>;
   labelFunction?: ILabelFunction;
   byKey?: string;
   byLabel?: string;
   filterFunction?: ITypeCustomFilterFunc;
   notUse?: boolean;
-}
+};
 
-interface IDataTableColNotUseFilter {
+type IDataTableColNotUseFilter = {
   notUse?: boolean;
   [key: string]: any;
-}
+};
 
-export interface IDataTableColSchema {
+export type IDataTableColSchema = {
   /**
    * Field name for data binding
    */
@@ -56,7 +54,7 @@ export interface IDataTableColSchema {
   /**
    * Table field and form field displaying names
    */
-  displayName?: string;
+  displayName?: React.ReactNode;
   /**
    * Show/hide table column
    */
@@ -83,23 +81,23 @@ export interface IDataTableColSchema {
   sort?: {
     serverFieldName: string;
   };
-}
+};
 
-export interface IDataTableSchema {
-  cols: IDataTableColSchema[];
-}
+export type IDataTableSchema = {
+  cols: Array<IDataTableColSchema>;
+};
 
-export interface IExtractedDataTableSchema {
+export type IExtractedDataTableSchema = {
   [columnName: string]: IDataTableColSchema;
-}
+};
 
-export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
-  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => any;
-}
+export type ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> = {
+  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>, props: any) => any;
+};
 
-export interface ISchemaMaker {
+export type ISchemaMaker = {
   [field: string]: (
     schemaMeta: IDataTableColSchema,
     someProps?: object,
   ) => IDataTableColSchema;
-}
+};

@@ -45,13 +45,13 @@ class UserInfo extends React.Component<any, {}> {
     if (__DEVELOPMENT__) {
       this.setState({ showThemes: true });
     }
-  }
+  };
 
   handleCloseShowThemes = () => {
     if (__DEVELOPMENT__) {
       this.setState({ showThemes: false });
     }
-  }
+  };
 
   componentDidMount() {
     const { current } = this.node;

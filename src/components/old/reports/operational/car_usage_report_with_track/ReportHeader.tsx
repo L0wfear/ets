@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -7,51 +8,63 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getToday859am, getYesterday9am , createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { getYesterday0am, createValidDate } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
-  date_start: Date;
-  date_end: Date;
+type IPropsReportHeader = {
+  report_date: Date;
   geozone_type: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
+  componentDidUpdate() {
+    if (this.props.tableMeta.level !== 'company') {
+      const { show_gov_numbers } = this.getState();
+      if (show_gov_numbers) {
+        this.handleChangeShowGovNumber(false);
+      }
+    }
+  }
   getState() {
     const {
-      date_start = getYesterday9am(),
-      date_end = getToday859am(),
-      geozone_type = 'dt',
+      report_date = createValidDate(getYesterday0am()),
+      geozone_type = 'all',
+      localState: {
+        show_gov_numbers = false,
+      },
     } = this.props;
 
     return {
-      date_start,
-      date_end,
+      report_date,
       geozone_type,
+      show_gov_numbers,
     };
   }
   handleSubmit = () => {
     const {
-      date_start,
-      date_end,
+      report_date,
       geozone_type,
     } = this.getState();
 
     this.props.onClick({
-      date_start: createValidDateTime(date_start),
-      date_end: createValidDateTime(date_end),
       geozone_type,
+      report_date,
     });
-  }
+  };
+
+  handleChangeShowGovNumber = (event: object | boolean) => {
+    this.props.setLocalState({ show_gov_numbers: get(event, 'target.checked', event) });
+  };
+
   render() {
     const { readOnly } = this.props;
     const {
-      date_start,
-      date_end,
+      show_gov_numbers,
+      report_date,
       geozone_type,
     } = this.getState();
 
@@ -63,34 +76,47 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             label="Объекты"
             options={GEOZONE_OBJECTS}
             value={geozone_type}
-            boundKeys="object_type"
+            boundKeys="geozone_type"
             onChange={this.props.handleChange}
             clearable={false}
             disabled={readOnly}
           />
         </EtsBootstrap.Col>
-        <EtsBootstrap.Col md={6}>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <label htmlFor=" ">Период формирования</label>
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-          <DatePickerRange
-            date_start_id="date_start"
-            date_start_value={date_start}
-            date_end_id="date_end"
-            date_end_value={date_end}
-
-            disabled={readOnly}
+        <EtsBootstrap.Col md={3}>
+          <ExtField
+            type="date"
+            time={false}
+            label="Дата формирования"
+            value={report_date}
+            boundKeys="report_date"
             onChange={this.props.handleChange}
+            disabled={readOnly}
+            makeGoodFormat
           />
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={3}>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <label htmlFor=" "> </label>
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
+          {
+            this.props.queryState.level === 'company' && (
+              <React.Fragment>
+                <FieldLabel>
+                  &nbsp;
+                </FieldLabel>
+                <ExtField
+                  type="boolean"
+                  label={'Вывести с рег.номерами'}
+                  value={show_gov_numbers}
+                  className="checkbox-input flex-reverse"
+                  onChange={this.handleChangeShowGovNumber}
+                  disabled={readOnly}
+                />
+              </React.Fragment>
+            )
+          }
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={3}>
+          <FieldLabel>
+            &nbsp;
+          </FieldLabel>
           <EtsBootstrap.Button
             block
             bsSize="small"

@@ -3,41 +3,39 @@ import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions
 import {
   getMeasureUnitRun,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit_run/promise';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- MeasureUnitRun ---------- */
-export const autobaseSetMeasureUnitRun = (measureUnitRunList: MeasureUnitRun[]) => (dispatch) => (
+export const autobaseSetMeasureUnitRun = (measureUnitRunList: Array<MeasureUnitRun>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       measureUnitRunList,
     }),
   )
 );
-export const autobaseResetSetMeasureUnitRun = () => (dispatch) => (
+export const autobaseResetSetMeasureUnitRun = (): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetMeasureUnitRun([]),
   )
 );
-export const autobaseGetMeasureUnitRun: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getMeasureUnitRun(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+
+export const autobaseGetMeasureUnitRun = (payload: Parameters<typeof getMeasureUnitRun>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getMeasureUnitRun>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getMeasureUnitRun(payload),
+    meta,
+  )
 );
-export const measureUnitRunGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetMeasureUnitRun(payload, { page, path }),
+export const measureUnitRunGetAndSetInStore = (...arg: Parameters<typeof autobaseGetMeasureUnitRun>): EtsAction<EtsActionReturnType<typeof autobaseGetMeasureUnitRun>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetMeasureUnitRun(...arg),
   );
 
   dispatch(
-    autobaseSetMeasureUnitRun(data),
+    autobaseSetMeasureUnitRun(result.data),
   );
 
-  return {
-    measureUnitRunList: data,
-  };
+  return result;
 };

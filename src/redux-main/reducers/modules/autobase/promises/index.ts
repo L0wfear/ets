@@ -1,20 +1,30 @@
-import { AutoBase, CarActualService, TypesService } from 'api/Services';
+import { AutoBase, CarActualService } from 'api/Services';
 import { get, keyBy } from 'lodash';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 /* ------------- AUTOBASE ------------- */
-export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload = {}) => (
-  AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-    })
-    .then((ans) => ({
-      data: get(ans, ['result', 'rows'], []),
-      extraData: get(ans, ['result', 'extra'], {}),
-    }))
-);
-export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
+export const autobaseLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof AUTOBASE) => async (payload: object) => {
+  let response = null;
+
+  try {
+    response = await AutoBase.path(AUTOBASE[keyType]).get({ ...payload });
+  } catch {
+    //
+  }
+
+  const result: {
+    data: Array<F>;
+    extraData: ExtraData;
+  } = {
+    data: get(response, 'result.rows', []),
+    extraData: get(response, 'result.extra', {}),
+  };
+
+  return result;
+};
+
+export const autobaseCreateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object) => {
   const payload = {
     ...ownPayload,
   };
@@ -25,15 +35,15 @@ export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(
+  const data: F = get(
     response,
-    ['result', 'rows', 0],
-    get(response, ['result', 0], null),
+    'result.rows.0',
+    get(response, 'result.0', null),
   );
 
   return data;
 };
-export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
+export const autobaseUpdateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object & { id: number; }) => {
   const payload = {
     ...ownPayload,
   };
@@ -44,15 +54,15 @@ export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(
+  const data: F = get(
     response,
-    ['result', 'rows', 0],
-    get(response, ['result', 0], null),
+    'result.rows.0',
+    get(response, 'result.0', null),
   );
 
   return data;
 };
-export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => {
+export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id: number) => {
   return AutoBase.path(`${AUTOBASE[keyType]}/${id}`).delete(
     {},
     false,
@@ -69,10 +79,10 @@ export const autobaseLoadCars = async (payload = {}) => {
   try {
     response = await CarActualService.get({ ...payload });
   } catch (error) {
-    console.log(error); // tslint:disable-line:no-console
+    console.info(error); // eslint-disable-line
   }
 
-  const data: Car[] = get(response, ['result', 'rows'], []);
+  const data: Array<Car> = get(response, ['result', 'rows'], []);
 
   return {
     data,
@@ -81,27 +91,4 @@ export const autobaseLoadCars = async (payload = {}) => {
       'asuods_id',
     ),
   };
-};
-
-/* ------------- CAR_FUNC_TYPES ------------- */
-export const autobaseLoadCarFuncTypess = (payload = {}) => (
-  TypesService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-
-      return {
-        result: {
-          rows: [],
-        },
-      };
-    })
-    .then((ans) => ({
-      data: get(ans, ['result', 'rows'], []),
-    }))
-);
-export const autobaseCreateCarFuncTypes = (ownPayload) => {
-  return TypesService.post(ownPayload, false, 'json');
-};
-export const autobaseUpdateCarFuncTypes = (ownPayload) => {
-  return TypesService.put(ownPayload, false, 'json');
 };

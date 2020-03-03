@@ -17,9 +17,9 @@ export default {
   routePath,
   hiddenNav: true,
   title: 'Ремонты ТС',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_repair',
-  noDotList: false,
+
   component,
   permissions,
 };

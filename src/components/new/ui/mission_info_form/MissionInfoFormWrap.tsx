@@ -12,16 +12,15 @@ class MissionInfoFormWrap extends React.Component<any, {}> {
   render() {
     const { showForm, ...props } = this.props;
 
-    return showForm ?
-      (
+    return showForm
+      ? (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
             <MissionInfoForm {...props} />
           </React.Suspense>
         </ErrorBoundaryForm>
       )
-      :
-      (
+      :      (
         <DivNone />
       );
   }

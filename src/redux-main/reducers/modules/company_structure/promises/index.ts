@@ -3,26 +3,30 @@ import {
   keyBy,
   get,
 } from 'lodash';
+import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 /* ------------- COMPANY_STRUCTURE ------------- */
-export const getCompanyStructure = (payload = {}) => (
-  CompanyStructureService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-    })
-    .then((ans) => {
-      const data = get(ans, ['result'], []);
-      return {
-        data,
-        dataIndex: keyBy(data, 'id'),
-      };
-    })
-);
+export const getCompanyStructure = async <F extends any = CompanyStructure>(payload = {}) => {
+  let response = null;
+
+  try {
+    response = await CompanyStructureService.get({ ...payload });
+  } catch {
+    //
+  }
+
+  const data: Array<F> = get(response, 'result', []);
+  return {
+    data,
+    dataIndex: keyBy(data, 'id'),
+  };
+};
+
 export const getCompanyStructureLinear = (payload = {}) => (
-  getCompanyStructure({ linear: true, ...payload })
+  getCompanyStructure<CompanyStructureLinear>({ linear: true, ...payload })
 );
 export const getCompanyStructureDescendantsByUser = (payload = {}) => (
-  getCompanyStructure({ descendants_by_user: true, linear: true, ...payload })
+  getCompanyStructure<CompanyStructureLinear>({ descendants_by_user: true, linear: true, ...payload })
 );
 
 export const promiseCreateCompanyStructure = async (ownPayload) => {

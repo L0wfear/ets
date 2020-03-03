@@ -1,162 +1,133 @@
 import * as React from 'react';
-import memoize from 'memoize-one';
-
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { groupBy } from 'lodash';
 
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
-
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
-
 import {
   dashboardLoadDependentDataByWaybillInProgress,
   dashboardSetInfoDataInWaybillInProgress,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-
 import { makeDate } from 'components/@next/@utils/dates/dates';
-
 import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
-
-import {
-  PropsWaybillInProgressInfo,
-  StateWaybillInProgressInfo,
-} from 'components/new/pages/dashboard/menu/cards/waybill-in-progress/info/WaybillInProgressInfo.h';
-import { WaybillInProgressItemsSubItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-in-progress.h';
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
-class WaybillInProgressInfo extends React.PureComponent<PropsWaybillInProgressInfo, StateWaybillInProgressInfo> {
-  state = {
-    showWaybillFormWrap: false,
-    elementWaybillFormWrap: null,
-  };
+type Props = {};
 
-  filterInfoData = memoize((infoData) => {
-    if (infoData) {
-      return groupBy<WaybillInProgressItemsSubItemsType>(
-        infoData.subItems,
-        (waybill) => makeDate(waybill.data.create_date),
-      );
-    }
+const WaybillInProgressInfo: React.FC<Props> = React.memo(
+  () => {
+    const [waybillElement, setWaybillElement] = React.useState(null);
+    const dispatch = etsUseDispatch();
+    const infoData = etsUseSelector((state) => getDashboardState(state).waybill_in_progress.infoData);
 
-    return {};
-  });
+    const openWaybillFormWrap = React.useCallback(
+      ({
+        currentTarget: {
+          dataset: { path },
+        },
+      }) => {
+        dispatch(
+          actionGetWaybillById(
+            Number.parseInt(path, 0),
+            { page: 'dashboard' },
+          ),
+        ).then((waybill_data) => {
+          if (waybill_data) {
+            setWaybillElement(waybill_data);
+          } else {
+            // tslint:disable-next-line
+            console.warn('not find waybill');
+          }
+        });
+      },
+      [],
+    );
 
-  handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
-    this.props.handleClose();
-  };
+    const handleWaybillFormWrapHideAfterSubmit = React.useCallback(
+      () => {
+        dispatch(
+          dashboardLoadDependentDataByWaybillInProgress(),
+        );
+        setWaybillElement(null);
+      },
+      [],
+    );
+    const handleClose = React.useCallback(
+      () => {
+        dispatch(
+          dashboardSetInfoDataInWaybillInProgress(null),
+        );
+      },
+      [],
+    );
 
-  openWaybillFormWrap: React.MouseEventHandler<HTMLLIElement> = ({
-    currentTarget: {
-      dataset: { path },
-    },
-  }) => {
-    this.props.dispatch(
-      waybillActions.actionGetWaybillById(
-        Number.parseInt(path, 0),
-        { page: 'dashboard' },
-      ),
-    ).then((waybill_data) => {
-        if (waybill_data) {
-          this.setState({
-            showWaybillFormWrap: true,
-            elementWaybillFormWrap: waybill_data,
-          });
-        } else {
-          // tslint:disable-next-line
-          console.warn('not find waybill');
+    const infoDataGroupByDate = React.useMemo(
+      () => {
+        if (infoData) {
+          return Object.entries(
+            groupBy(
+              infoData.subItems,
+              (waybill) => makeDate(waybill.data.create_date),
+            ),
+          );
         }
-      });
-  };
 
-  handleWaybillFormWrapHide = () => {
-    this.setState({
-      showWaybillFormWrap: false,
-      elementWaybillFormWrap: null,
-    });
-  };
-
-  handleWaybillFormWrapHideAfterSubmit = (newState) => {
-    this.props.loadAllWaybillCard();
-    this.setState({
-      showWaybillFormWrap: false,
-      elementWaybillFormWrap: null,
-      ...newState,
-    });
-  };
-
-  mapArrData = ({ data: { waybill_id, ...data } }) => (
-    <li
-      key={waybill_id}
-      className="pointer"
-      data-path={waybill_id}
-      onClick={this.openWaybillFormWrap}>
-      {`№${data.waybill_number}, `}
-      <b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
-      <br />
-      {`${data.driver_fio || ''}${
-        data.driver_phone ? `, ${data.driver_phone}` : ''
-      }`}
-    </li>
-  );
-
-  mapInfoDataGroupByDate = ([key, arrData]) => (
-    <div key={key}>
-      <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
-      <div>
-        <ul>{arrData.map(this.mapArrData)}</ul>
-      </div>
-    </div>
-  );
-
-  render() {
-    const { infoData } = this.props;
-
-    const infoDataGroupByDate = this.filterInfoData(infoData);
+        return [];
+      },
+      [infoData],
+    );
 
     return (
-      <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
-        {Object.entries(infoDataGroupByDate)
-          .sort()
-          .map(this.mapInfoDataGroupByDate)
+      <InfoCard title="Информация о ПЛ" handleClose={handleClose}>
+        {
+          infoDataGroupByDate
+            .map(([key, arrData]) => (
+              <div key={key}>
+                <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
+                <div>
+                  <ul>
+                    {
+                      arrData.map(({ data: { waybill_id, ...data } }) => (
+                        <li
+                          key={waybill_id}
+                          className="pointer"
+                          data-path={waybill_id}
+                          onClick={openWaybillFormWrap}>
+                          {`№${data.waybill_number}, `}
+                          <b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
+                          <br />
+                          {`${data.driver_fio || ''}${
+                            data.driver_phone ? `, ${data.driver_phone}` : ''
+                          }`}
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              </div>
+            ))
         }
         {
-          this.state.showWaybillFormWrap
+          Boolean(waybillElement)
             && (
               <WaybillFormWrap
-                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-                element={this.state.elementWaybillFormWrap}
+                onFormHide={handleWaybillFormWrapHideAfterSubmit}
+                onCallback={handleWaybillFormWrapHideAfterSubmit}
+                element={waybillElement}
               />
             )
         }
       </InfoCard>
     );
-  }
-}
+  },
+);
 
-export default compose<any, any>(
-  withShowByProps({
-    path: ['dashboard', 'waybill_in_progress', 'infoData'],
-    type: 'none',
-  }),
-  connect<any, any, any, ReduxState>(
-    (state) => ({
-      infoData: getDashboardState(state).waybill_in_progress.infoData,
-      infoDataRaw: getDashboardState(state).waybill_in_progress.data.items[0],
-    }),
-    (dispatch) => ({
-      handleClose: () =>
-        dispatch(dashboardSetInfoDataInWaybillInProgress(null)),
-      loadAllWaybillCard: () =>
-        dispatch(dashboardLoadDependentDataByWaybillInProgress()),
-      setInfoData: (infoData) =>
-        dispatch(dashboardSetInfoDataInWaybillInProgress(infoData)),
-    }),
-  ),
-)(WaybillInProgressInfo);
+export default withShowByProps<Props>({
+  path: ['dashboard', 'waybill_in_progress', 'infoData'],
+  type: 'none',
+})(WaybillInProgressInfo);

@@ -2,16 +2,20 @@ import {
   cloneDeep,
   get,
 } from 'lodash';
-import { MissionPrintService, MissionService, MissionDataService } from 'api/missions/index';
+import { MissionPrintService, MissionService, MissionDataService, MissionReassignationService } from 'api/missions/index';
 import {
   Mission,
   GetMissionPayload,
   MissionDataType,
+  MissionReassignation,
 } from 'redux-main/reducers/modules/missions/mission/@types';
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { isNullOrUndefined } from 'util';
 
 export const getMissionDataById = async (id: number) => {
   let responce = null;
@@ -47,7 +51,7 @@ export const getFrontMission = (missionRaw: any) => {
 };
 
 export const getBackMission = (missionRaw: any, index): Mission => {
-  const mission: Mission & { action_at: string, } = cloneDeep(missionRaw);
+  const mission: Mission & { action_at: string; } = cloneDeep(missionRaw);
 
   mission.car_gov_number = get(mission.car_gov_number, index, null);
   mission.car_id = get(mission.car_ids, index, null);
@@ -89,7 +93,7 @@ export const promiseGetMission = async (payloadOwn: GetMissionPayload) => {
     response = null;
   }
 
-  const data: Mission[] = get(response, ['result', 'rows'], []).map((mission) =>
+  const data: Array<Mission> = get(response, ['result', 'rows'], []).map((mission) =>
     getFrontMission(mission),
   );
 
@@ -116,7 +120,7 @@ export const promiseGetMissionById = async (id: Mission['id']) => {
   return getFrontMission(mission);
 };
 
-export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_waybill: string[], hidden: boolean): Promise<Partial<Mission>> => {
+export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_waybill: Array<string>, hidden: boolean): Promise<Partial<Mission>> => {
   const payload: Partial<Mission> | any = cloneDeep(mission);
   payload.date_start = createValidDateTime(payload.date_start);
   payload.date_end = createValidDateTime(payload.date_end);
@@ -130,8 +134,7 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
     const responceColumn = await MissionService.path('column').post(
       {
         missions: payload.car_ids.map((car_id, index) => {
-
-          const newObj = {
+          const newObj: Mission = {
             ...payload,
             assign_to_waybill: assign_to_waybill[index],
           };
@@ -173,6 +176,25 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promis
   };
 };
 
+export const promiseSubmitMission = async (missionOwn: Mission, assign_to_waybill?: Array<string>) => {
+  const mission = cloneDeep(missionOwn);
+  try {
+    mission.consumable_materials = mission.consumable_materials.map((rowData) => ({
+      ...rowData,
+      plan_value: isNullOrUndefined(rowData.plan_value) ? rowData.plan_value : getNumberValueFromSerch(rowData.plan_value),
+      fact_value: isNullOrUndefined(rowData.fact_value) ? rowData.fact_value : getNumberValueFromSerch(rowData.fact_value),
+      consumption: isNullOrUndefined(rowData.consumption) ? rowData.consumption : getNumberValueFromSerch(rowData.consumption),
+    }));
+  } catch {
+    //
+  }
+
+  if (mission.id) {
+    return promiseUpdateMission(mission);
+  }
+  return promiseCreateMission(mission, assign_to_waybill, false);
+};
+
 export const promiseChangeArchiveMissionStatus = async (
   id: Mission['id'],
   is_archive: boolean,
@@ -186,7 +208,7 @@ export const promiseChangeArchiveMissionStatus = async (
   return getFrontMission(get(responce, 'result.rows.0', null));
 };
 
-export const promiseRemoveMissions = async (ids: number[]) => {
+export const promiseRemoveMissions = async (ids: Array<number>) => {
   return Promise.all(ids.map((idNumber) => promiseRemoveMission(idNumber)));
 };
 
@@ -194,4 +216,65 @@ export const promiseRemoveMission = async (
   id: number,
 ): Promise<Partial<Mission>> => {
   return MissionService.delete({ id }, false, 'json');
+};
+
+export const promiseGetMissionReassignationParameters = async (payload: {car_id: Car['asuods_id']; mission_id: Mission['id']; }) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.get(payload);
+  } catch {
+    //
+  }
+
+  const result: MissionReassignation = get(response, 'result');
+
+  return result;
+};
+
+type PayloadCreateMission = {
+  car_id: Mission['car_id'];
+  mission_id: Mission['id'];
+  comment: Mission['comment'];
+  date_start: Mission['date_start'];
+  date_end: Mission['date_end'];
+  action_at: string | Date;
+  reason_id: string;
+  status: string;
+};
+export const promisePostMissionReassignationParameters = async (payload: PayloadCreateMission) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.post(
+      {
+        ...payload,
+        date_start: createValidDateTime(payload.date_start),
+        date_end: createValidDateTime(payload.date_end),
+      },
+      false,
+      'json',
+    );
+  } catch {
+    //
+  }
+
+  return response;
+};
+
+export const promisePutMissionReassignationParameters = async (payload: PayloadCreateMission) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.put(
+      {
+        ...payload,
+        date_start: createValidDateTime(payload.date_start),
+        date_end: createValidDateTime(payload.date_end),
+      },
+      false,
+      'json',
+    );
+  } catch {
+    //
+  }
+
+  return response;
 };

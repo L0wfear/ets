@@ -32,7 +32,7 @@ const renderers = {
             date = {elem.date}
           >
           </TriggerDate>),
-        );
+      );
     } else {
       return '-';
     }

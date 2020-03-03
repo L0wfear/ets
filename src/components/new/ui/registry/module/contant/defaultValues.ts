@@ -1,15 +1,16 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
-const registryDefaultObj: OneRegistryData = {
+const registryDefaultObj: OneRegistryData<any> = {
   idRequestTime: 1,
   isLoading: false,
   Service: {
     getRegistryData: {
+      entity: '',
       payload: {},
     },
-    getOneData: null,
   },
+  path: null,
   filter: {
     fields: [],
     isOpen: false,
@@ -24,12 +25,11 @@ const registryDefaultObj: OneRegistryData = {
   list: {
     data: {
       array: [],
-      arrayExtra: {},
+      objectExtra: {},
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',
       selectedRow: null,
-      selectedRowToShow: null,
       checkedRows: {},
       fixedWidth: false,
       proxyCheckData: null,
@@ -43,10 +43,19 @@ const registryDefaultObj: OneRegistryData = {
     },
     meta: {
       row_double_click: true,
+      rowRequestActions: {
+        actionUpdate: null,
+        actionCreate: null,
+      },
+      is_render_field: false,
+      selected_row_in_params: false,
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],
+      row_fields_table_width: 0,
       treeFields: {},
+      renderFieldsSchema: null,
+      groupColumn: {},
     },
     paginator: {
       currentPage: 0,
@@ -60,6 +69,11 @@ const registryDefaultObj: OneRegistryData = {
         reverse: false,
       },
       total_count: 0,
+    },
+    rendersFields: {
+      errors: {},
+      values: {},
+      options: {},
     },
   },
 };

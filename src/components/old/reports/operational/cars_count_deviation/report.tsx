@@ -20,7 +20,7 @@ const schemaMakers: ISchemaMaker = {
   }),
 };
 
-const additionalSchemaMakers: IDataTableColSchema[] = [
+const additionalSchemaMakers: Array<IDataTableColSchema> = [
 ];
 
 const renderers = {

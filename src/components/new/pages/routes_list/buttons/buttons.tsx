@@ -1,30 +1,17 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Link } from 'react-router-dom';
 import permissionsRoute from 'components/new/pages/routes_list/config-data/permissions';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-export const LinkToOpenRouteInfoForm = withRequirePermissionsNew({
+export const LinkToOpenRouteInfoForm = withRequirePermission<any>({
   permissions: permissionsRoute.read,
-})((props) => (
+})((props: any) => (
   <div>
     <a className="pointer" onClick={props.openRouteInfoForm} >Подробнее...</a>
   </div>
 ));
 
-export const LinkToRouteListPermitted = withRequirePermissionsNew({
+export const LinkToRouteListPermitted = withRequirePermission<any>({
   permissions: permissionsRoute.read,
 })(Link);
-
-export const ButtonCreateRoute = withRequirePermissionsNew({
-  permissions: permissionsRoute.create,
-})(EtsBootstrap.Button);
-
-export const ButtonUpdateRoute = withRequirePermissionsNew({
-  permissions: permissionsRoute.update,
-})(EtsBootstrap.Button);
-
-export const ButtonDeleteRoute = withRequirePermissionsNew({
-  permissions: permissionsRoute.delete,
-})(EtsBootstrap.Button);

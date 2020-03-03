@@ -1,28 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { compose } from 'recompose';
+
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import SelectTechnicalOperation from './select/SelectTechnicalOperation';
 import SelectMunicipalFacility from './select/SelectMunicipalFacility';
 import SelectRouteTypeAndFuncType from './select/norm/SelectRouteTypeAndFuncType';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-type SelecteToMfRtFtStateProps = {
-};
-type SelecteToMfRtFtDispatchProps = DispatchProp;
-type SelecteToMfRtFtOwnProps = {
+type OwnProps = {
   registryKey: string;
 };
-type SelecteToMfRtFtMergedProps = (
-  SelecteToMfRtFtStateProps
-  & SelecteToMfRtFtDispatchProps
-  & SelecteToMfRtFtOwnProps
-);
 
-type SelecteToMfRtFtProps = (
-  SelecteToMfRtFtMergedProps
+type Props = (
+  OwnProps
   & WithSearchProps
 );
 
@@ -31,11 +21,11 @@ const ButtonContainer = styled.div`
   margin: 5px;
 `;
 
-const SelecteToMfRtFt: React.FC<SelecteToMfRtFtProps> = React.memo(
+const SelecteToMfRtFt: React.FC<Props> = React.memo(
   (props) => {
     return (
       <ButtonContainer>
-        <EtsBootstrap.Row>
+        <EtsBootstrap.Row margin={10}>
           <EtsBootstrap.Col md={3}>
             <SelectTechnicalOperation registryKey={props.registryKey} />
           </EtsBootstrap.Col>
@@ -51,9 +41,4 @@ const SelecteToMfRtFt: React.FC<SelecteToMfRtFtProps> = React.memo(
   },
 );
 
-export default compose<SelecteToMfRtFtProps, SelecteToMfRtFtOwnProps>(
-  connect<SelecteToMfRtFtStateProps, SelecteToMfRtFtDispatchProps, SelecteToMfRtFtOwnProps, ReduxState>(
-    null,
-  ),
-  withSearch,
-)(SelecteToMfRtFt);
+export default withSearch<OwnProps>(SelecteToMfRtFt);

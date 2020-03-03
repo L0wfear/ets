@@ -3,42 +3,38 @@ import {
   getSetPosition,
 } from 'redux-main/reducers/modules/employee/position/promise';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- Position ---------- */
-export const employeePositionSetPosition = (positionList: IStateEmployee['positionList'], dataIndex: IStateEmployee['positionIndex']) => (dispatch) => (
+export const employeePositionSetPosition = (positionList: IStateEmployee['positionList'], dataIndex: IStateEmployee['positionIndex']): EtsAction<EtsActionReturnType<typeof employeeSetNewData>> => (dispatch) => (
   dispatch(
     employeeSetNewData({
       positionList,
     }),
   )
 );
-export const employeePositionResetSetPosition = () => (dispatch) => (
+export const employeePositionResetSetPosition = (): EtsAction<EtsActionReturnType<typeof employeePositionSetPosition>> => (dispatch) => (
   dispatch(
     employeePositionSetPosition([], {}),
   )
 );
-export const employeePositionGetSetPosition: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSetPosition(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const employeePositionGetSetPosition = (payload: Parameters<typeof getSetPosition>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSetPosition>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getSetPosition(payload),
+    meta,
+  )
 );
-export const positionGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data, dataIndex } } = await dispatch(
-    employeePositionGetSetPosition(payload, { page, path }),
+export const positionGetAndSetInStore = (...arg: Parameters<typeof employeePositionGetSetPosition>): EtsAction<EtsActionReturnType<typeof employeePositionGetSetPosition>> => async (dispatch) => {
+  const result = await dispatch(
+    employeePositionGetSetPosition(...arg),
   );
 
   dispatch(
-    employeePositionSetPosition(data, dataIndex),
+    employeePositionSetPosition(result.data, result.dataIndex),
   );
 
-  return {
-    positionList: data,
-    positionIndex: dataIndex,
-  };
+  return result;
 };

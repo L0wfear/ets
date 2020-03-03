@@ -19,7 +19,7 @@ export type OwnPropsFieldMissionSourceMission = {
   isPermitted: boolean;
   disabled: boolean;
   error: string;
-  onChange: (obj: Partial<Mission>) => void;
+  onChange: (obj: Pick<Mission, 'mission_source_id' | 'mission_source_name' | 'mission_source_text'> & Record<string, any>) => void;
 
   request_id?: Mission['request_id'];
   request_number?: Mission['request_number'];

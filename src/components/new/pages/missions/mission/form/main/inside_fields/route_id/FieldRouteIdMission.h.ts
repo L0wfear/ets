@@ -8,6 +8,7 @@ import { DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { IPropsHiddenMapForPrint } from './print/HiddenMapForPrint';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StatePropsFieldRouteIdMission = {
   routesList: IStateRoutes['routesList'];
@@ -39,8 +40,9 @@ export type OwnPropsFieldRouteIdMission = {
 
   mission_id: Mission['id'];
 
-  structure_id: Mission['structure_id'],
-  structure_name: Mission['structure_name'],
+  structure_id: Mission['structure_id'];
+  structure_name: Mission['structure_name'];
+  consumable_materials?: Mission['consumable_materials'];
 
   hiddenMapConfig: IPropsHiddenMapForPrint['hiddenMapConfig'];
 
@@ -51,6 +53,7 @@ export type OwnPropsFieldRouteIdMission = {
 
   page: string;
   path: string;
+  formDataKey?: FormKeys;
 };
 
 export type PropsFieldRouteIdMission = (

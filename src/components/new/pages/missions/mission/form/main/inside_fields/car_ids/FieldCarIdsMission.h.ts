@@ -1,5 +1,6 @@
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { HandleThunkActionCreator } from 'react-redux';
+
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 
@@ -21,7 +22,7 @@ export type OwnPropsFieldCarIdsMission = {
   error: string;
   disabled: boolean;
   isPermitted: boolean;
-  onChange: (obj: { [key: string]: any }) => any;
+  onChange: (obj: { [key: string]: any; }) => any;
 
   for_column: Mission['for_column'];
   car_gov_numbers: Mission['car_gov_numbers'];
@@ -31,6 +32,7 @@ export type OwnPropsFieldCarIdsMission = {
   car_type_names: Mission['car_type_names'];
   municipal_facility_id: Mission['municipal_facility_id'];
   structure_id: Mission['structure_id'];
+  order_operation_id?: Mission['order_operation_id'];
 
   IS_TEMPLATE?: boolean;
   MISSION_IS_ORDER_SOURCE?: boolean;

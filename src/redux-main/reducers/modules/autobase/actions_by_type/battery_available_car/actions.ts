@@ -3,41 +3,38 @@ import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions
 import {
   getBatteryAvailableCar,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_available_car/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- BatteryAvailableCar ---------- */
-export const autobaseSetBatteryAvailableCar = (batteryAvailableCarList: BatteryAvailableCar[]) => (dispatch) => (
+export const autobaseSetBatteryAvailableCar = (batteryAvailableCarList: Array<BatteryAvailableCar>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       batteryAvailableCarList,
     }),
   )
 );
-export const autobaseResetSetBatteryAvailableCar = () => (dispatch) => (
+export const autobaseResetSetBatteryAvailableCar = (): EtsAction<EtsActionReturnType<typeof autobaseSetBatteryAvailableCar>> => (dispatch) => (
   dispatch(
     autobaseSetBatteryAvailableCar([]),
   )
 );
-export const autobaseGetBatteryAvailableCar: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getBatteryAvailableCar(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const autobaseGetBatteryAvailableCar = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getBatteryAvailableCar>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getBatteryAvailableCar(payload),
+    meta,
+  )
 );
-export const batteryAvailableCarGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetBatteryAvailableCar(payload, { page, path }),
+export const batteryAvailableCarGetAndSetInStore = (...arg: Parameters<typeof autobaseGetBatteryAvailableCar>): EtsAction<EtsActionReturnType<typeof autobaseGetBatteryAvailableCar>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetBatteryAvailableCar(...arg),
   );
 
   dispatch(
-    autobaseSetBatteryAvailableCar(data),
+    autobaseSetBatteryAvailableCar(result.data),
   );
 
-  return {
-    batteryAvailableCarList: data,
-  };
+  return result;
 };

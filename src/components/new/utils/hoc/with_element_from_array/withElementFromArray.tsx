@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export type WithElementFromArrayProps = {
-  array: any[];
+  array: Array<any>;
   startIndex?: number;
 };
 

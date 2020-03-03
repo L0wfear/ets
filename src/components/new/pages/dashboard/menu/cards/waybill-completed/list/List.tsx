@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as cx from 'classnames';
 
 type PropsList = {
-  items: any[];
+  items: Array<any>;
   handleClick: any;
   classNameContainer?: string;
   addIndex?: number;

@@ -10,9 +10,9 @@ export default {
   path,
   routePath,
   title: 'Журнал действий пользователей',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'user_action_log',
-  noDotList: false,
+
   component,
   permissions,
 };

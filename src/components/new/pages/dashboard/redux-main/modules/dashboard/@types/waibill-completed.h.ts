@@ -14,14 +14,14 @@ export type WaybillCompletedItemsSubItemsType = {
 };
 
 export type WaybillCompletedItemsType = {
-  subItems: WaybillCompletedItemsSubItemsType[],
+  subItems: Array<WaybillCompletedItemsSubItemsType>;
   subItemsTitle?: string;
   tooltip?: string;
   value: string;
 };
 
 export type WaybillCompletedAnsType = {
-  items: WaybillCompletedItemsType[];
+  items: Array<WaybillCompletedItemsType>;
   tooltip?: string;
   title: string;
 };

@@ -6,7 +6,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/ind
 export const makeOptionFromRouteList = (
   memoize(
     (
-      routesList: Route[],
+      routesList: Array<Route>,
       structure_id: Mission['structure_id'],
     ) => (
       routesList.reduce((newArr, route) => {

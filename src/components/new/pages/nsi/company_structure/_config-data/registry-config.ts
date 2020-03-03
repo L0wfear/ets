@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/company_structure/_config-data/permissions';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
@@ -20,7 +20,11 @@ export const config: TypeConfigData<CompanyStructure> = {
   header: {
     title: 'Структура предприятия',
     buttons: [
-      buttonsTypes.company_structure_create,
+      {
+        id: 'open-create-form',
+        type: buttonsTypes.create,
+        title: 'Добавить подразделение',
+      },
     ],
   },
   list: {

@@ -5,7 +5,7 @@ export default {
   path: '/cars_travel_time',
   title: 'Время движения ТС по заданиям',
   entyity: 'cars_travel_time',
-  noDotList: false,
+
   component,
   permissions,
 };

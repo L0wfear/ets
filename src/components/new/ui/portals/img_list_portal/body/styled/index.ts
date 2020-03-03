@@ -21,7 +21,7 @@ export const ImgListBodyContainer = styled.div`
   position: relative;
 `;
 
-export const ImgBackground = styled.div<{ src: string }>`
+export const ImgBackground = styled.div<{ src: string; }>`
   background: ${({ src }) => `url(${encodeURI(src)})`};
   background-repeat: no-repeat;
   background-position: center;
@@ -37,7 +37,7 @@ const cssLeft = css`
   left: 0;
 `;
 
-export const NavigationImageContainer = styled.div<{ type: 'left' | 'right'}>`
+export const NavigationImageContainer = styled.div<{ type: 'left' | 'right';}>`
   width: 75px;
   flex-shrink: 0;
   justify-content: center;
@@ -47,14 +47,14 @@ export const NavigationImageContainer = styled.div<{ type: 'left' | 'right'}>`
   @media screen and (max-width: ${mobiSize}px) {
     position: absolute;
     ${({ type }) => (
-      type === 'right'
-        ? cssRight
-        : (
-          type === 'left'
-            ? cssLeft
-            : null
-        )
-    )}
+    type === 'right'
+      ? cssRight
+      : (
+        type === 'left'
+          ? cssLeft
+          : null
+      )
+  )}
   }
 
   &&& {

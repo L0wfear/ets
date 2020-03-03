@@ -31,16 +31,16 @@ export type IStateCarInfo = {
   missionsData: {
     error: boolean;
     missions: -1 | Array<any>;
-    mkad_speed_lim: number,
-    speed_lim: number,
+    mkad_speed_lim: number;
+    speed_lim: number;
 
     carTabInfo: {
       contractor_name: string;
       customer_name: string;
       owner_name: string;
-    },
+    };
     isLoading: boolean;
-  },
+  };
   trackCaching: {
     error: boolean;
     cars_sensors: Record<string, {
@@ -49,7 +49,7 @@ export type IStateCarInfo = {
     }>;
     front_cars_sensors_level: Record<string, {
       sensor: IStateCarInfo['trackCaching']['cars_sensors'];
-      data: any[];
+      data: Array<any>;
       show: boolean;
       color: string;
       connectNulls: number;
@@ -57,55 +57,55 @@ export type IStateCarInfo = {
     }>;
     front_cars_sensors_equipment: Record<string, {
       sensor: IStateCarInfo['trackCaching']['cars_sensors'];
-      data: any[];
+      data: Array<any>;
       type_name: string;
       color: string;
       connectNulls: number;
       name: string;
       show: boolean;
     }>;
-    consumptions: object,
+    consumptions: object;
     distance: -1 | number;
-    duration_moving: -1 | number,
-    equipment: object,
+    duration_moving: -1 | number;
+    equipment: object;
     front_events_list: Array<{
       date: string;
       type_name: string;
       value: number;
-    }>,
+    }>;
     equipment_distance: -1 | number;
     equipment_time: -1 | number;
-    events: object,
+    events: object;
     parkings: -1 | number;
     front_parkings: -1 | number;
-    sensors: object,
+    sensors: object;
     sensors_data: {
-      cars_sensors: object,
-      consumptions: object,
-      sensors_track: object,
-    },
-    time_of_parking: -1 | number,
+      cars_sensors: object;
+      consumptions: object;
+      sensors_track: object;
+    };
+    time_of_parking: -1 | number;
     track: -1 | Array<{
       timestamp: number;
-    }>,
+    }>;
     isCorssingMKAD: boolean;
-  },
+  };
   status: number;
   forToday: boolean;
   date_start: string | Date;
   date_end: string | Date;
   playTrack: {
     status: 'stop' | 'payse' | 'play' | string;
-    trackPointIndex: number,
-  },
+    trackPointIndex: number;
+  };
   statusTC: {
     FOLLOW_ON_CAR: boolean;
-  },
+  };
   popups: {
     trackPoint: any;
     fuelEventPoint: any;
     parkingPoint: any;
-  },
+  };
 };
 
 export const getTrackDefaultDateStart = () => getStartOfToday();
@@ -179,6 +179,9 @@ export default (state = initialState, { type, payload }: any) => {
         gov_number: payload.gov_number,
         date_start: getTrackDefaultDateStart(),
         date_end: getTrackDefaultDateEnd(),
+        status: state.status
+          ? state.status
+          : initialState.status,
       };
 
       return newState;

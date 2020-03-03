@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
+
 import WaybillExportForm from './print_form';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type PropsButtonWaybillExport = {
-  registryKey: string;
-  registyLoadPrintForm: any;
-  actionChangeGlobalPaylaodInServiceData: any;
-};
+type Props = CommonTypesForButton & {};
 
-const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
+const ButtonWaybillExport: React.FC<Props> = (props) => {
   const [typeExportForm, setTypeExportForm] = React.useState(null);
 
   const handleHide = React.useCallback(
@@ -27,14 +23,12 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
     [],
   );
 
-  const toggleElement = <EtsBootstrap.Glyphicon glyph="download-alt" />;
-
   return (
     <React.Fragment>
       <EtsBootstrap.Dropdown
         id="dropdown-print"
 
-        toggleElement={toggleElement}
+        toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
         toggleElementSize="small"
       >
         <EtsBootstrap.DropdownMenu pullRight>
@@ -59,21 +53,4 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  actionChangeGlobalPaylaodInServiceData: (...arg) => (
-    dispatch(
-      actionChangeGlobalPaylaodInServiceData(...arg),
-    )
-  ),
-  registyLoadPrintForm: (...arg) => (
-    dispatch(
-      registyLoadPrintForm(...arg),
-    )
-  ),
-});
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)
-(ButtonWaybillExport);
+export default ButtonWaybillExport;

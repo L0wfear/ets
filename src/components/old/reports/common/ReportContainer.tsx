@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { withRouter } from 'react-router-dom';
 import * as queryString from 'query-string';
 import {
   difference,
@@ -31,6 +30,7 @@ import { IPropsReportHeaderCommon } from 'components/old/reports/common/@types/R
 import {
   ReportDataPromise,
   IReportTableMeta,
+  IReportMetaField,
 } from 'components/old/reports/redux-main/modules/@types/report.h';
 
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
@@ -44,7 +44,8 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNull } from 'util';
+import { isArray, isNumber, isNull } from 'util';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -62,6 +63,7 @@ class ReportContainer extends React.Component<
       selectedRow: null,
       filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
+      localState: {},
     };
   }
 
@@ -89,18 +91,28 @@ class ReportContainer extends React.Component<
     }
 
     if (this.props.titleText || this.props.title) {
+      const meta = document.querySelector('meta[property="og:title"]');
       const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+      const new_title = `${etsName} ${this.props.titleText || this.props.title}`;
+
       if (document) {
-        document.title = `${etsName} ${this.props.titleText || this.props.title}`;
+        document.title = new_title;
+      }
+      if (meta) {
+        meta.setAttribute('content', new_title);
       }
     }
   }
 
   componentWillUnmount() {
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+    const meta = document.querySelector('meta[property="og:title"]');
 
     if (document) {
       document.title = etsName;
+    }
+    if (meta) {
+      meta.setAttribute('content', etsName);
     }
   }
 
@@ -141,7 +153,7 @@ class ReportContainer extends React.Component<
       let rows = get(old_data, ['result', 'rows'], null);
       const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
       if (deepArr) {
-        rows = rows.reduce((newArr: any[], blockData) => {
+        rows = rows.reduce((newArr: Array<any>, blockData) => {
           newArr.push(...blockData.rows);
 
           return newArr;
@@ -181,7 +193,7 @@ class ReportContainer extends React.Component<
         let rows = get(old_data, ['result', 'rows'], null);
         const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
         if (deepArr) {
-          rows = rows.reduce((newArr: any[], blockData) => {
+          rows = rows.reduce((newArr: Array<any>, blockData) => {
             newArr.push(...blockData.rows);
 
             return newArr;
@@ -240,8 +252,8 @@ class ReportContainer extends React.Component<
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
-          const prevFields =
-            get(this.props.prevTableMetaInfo, 'fields', []) || [];
+          const prevFields
+            = get(this.props.prevTableMetaInfo, 'fields', []) || [];
 
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
@@ -441,22 +453,116 @@ class ReportContainer extends React.Component<
     );
   };
 
+  reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {
+    const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
+      const precision = metaFieldsByKey[key]?.precision;
+      let newVal = precision && isNumber(elemVal)
+        ? elemVal?.toFixed(precision).replace(',', '.')
+        : elemVal;
+
+      // const { //<<< перенести в 33й,
+      //   renderers
+      // } = this.props;
+
+      // if(renderers) {
+      //   const renderersFunc = renderers[key];
+      //   const newValBeforeRenderers = newVal;
+      //   newVal = renderersFunc
+      //     ? renderersFunc({ data: newVal, rowData: reportRowValue, }, this.props)
+      //     : newVal;
+      //   if(isObject(newVal)) { // в renderers иногда передаются компоненты с версткой, если так, то мы просто отправляем значение(без верстки) на печать
+      //     newVal = newValBeforeRenderers;
+      //   }
+      // }
+      
+      return {
+        ...newObj,
+        [key]: newVal,
+      };
+    }, {});
+
+    return newRow;
+  };
+
+  makeSummaryByKey = (fields: Array<IReportMetaField>) => fields.reduce((newObj, currVal) => {
+    const newKey = Object.keys(currVal)?.[0];
+    return {
+      ...newObj,
+      [newKey]: {
+        ...currVal[newKey],
+      },
+    };
+  }, {});;
+
   handleReportPrint = async () => {
     const {
       location: { search },
     } = this.props;
     const searchObject = queryString.parse(search);
+
     this.setState({ exportFetching: true });
 
+    const metaFieldsByKey = this.makeSummaryByKey(get(this.props, 'meta.fields', []));
+    const metaFieldsSummaryByKey = this.makeSummaryByKey( get(this.props, 'summaryMeta.fields', []));
+
     let payload: any = {
-      rows: [...this.props.list],
+      rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
     };
 
     if (this.props.notUseServerSummerTable) {
+      const reportKey = get(this.props, 'tableProps.reportKey', null);
+      let report = [...this.props.list];
+      let summary = [...this.props.summaryList];
+
+      if (reportKey === 'car_usage_report') {
+        const schema = Object.fromEntries(
+          this.makeTableSchema(
+            this.props.schemaMakers,
+            this.props.additionalSchemaMakers || [],
+            this.props.tableMetaInfo,
+            'mainList',
+          ).cols.map((rowData) => [rowData.name, rowData]),
+        );
+        const show_gov_numbers = get(this.state, 'localState.show_gov_numbers');
+
+        report = report.map((d: any) => {
+          Object.entries(schema).forEach(([key, metaRender]: any) => {
+            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
+              const count = get(d[key], 'count');
+              const data = get(d[key], 'gov_numbers') || [];
+
+              d[`${key}_str`] = `${count}`;
+              if (show_gov_numbers && data.length) {
+                d[`${key}_str`] = `${d[`${key}_str`]}:\n${data.sort().join('\n')}`;
+              }
+            }
+          });
+          return d;
+        });
+
+        summary = summary.map((d: any) => {
+          Object.entries(schema).forEach(([key, metaRender]: any) => {
+            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
+              const count = d[key];
+
+              d[`${key}_str`] = `${count}`;
+            }
+          });
+          return d;
+        });
+      }
+
       payload = {
         rows: {
-          report: [...this.props.list],
-          summary: [...this.props.summaryList],
+          report: report.map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
+          summary: summary.map(
+            (elem) => ({
+              ...elem,
+              children: elem?.children?.map(
+                (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
+              )
+            })
+          ),
         },
       };
     }
@@ -479,7 +585,7 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sort_by }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sortable = true, sort_by, make_str_gov_number_format, precision, }]] = Object.entries(
           field,
         );
 
@@ -491,14 +597,31 @@ class ReportContainer extends React.Component<
             displayName,
             display,
             sort_by,
+            sortable,
+            make_str_gov_number_format,
+            precision,
           };
+          let renderer: any = identity;
+          if (schemaMakers[fieldName]) {
+            renderer = schemaMakers[fieldName];
+          }
           if (filter) {
             initialSchema.filter = {
               type,
             };
             if (type === 'multiselect') {
               initialSchema.options = undefined;
-              if (forWhat === 'mainList' && this.props.data.result && type === 'multiselect') {
+              let customOptions = [];
+              if(renderer){
+                const rendererSchemaObj = renderer(initialSchema, this.props);
+                customOptions = get(rendererSchemaObj, 'filter.options', []);
+              }
+
+              if(customOptions.length) {
+                initialSchema.options = [...customOptions];
+              }
+
+              if (!customOptions.length && forWhat === 'mainList' && this.props.data.result && type === 'multiselect') {
                 (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(
                   this.props.data.result.rows.map(
                     ({ [fieldName]: value }: any) => ({ value, label: value }),
@@ -510,8 +633,6 @@ class ReportContainer extends React.Component<
           } else {
             initialSchema.filter = false;
           }
-
-          const renderer = schemaMakers[fieldName] || identity;
           tableMeta.push(renderer(initialSchema, this.props));
         }
         return tableMeta;
@@ -521,6 +642,16 @@ class ReportContainer extends React.Component<
     return { cols };
   }
 
+  setLocalState = (obj: Partial<IStateReportContainer['localState']>) => {
+    this.setState((oldState) => ({
+      ...oldState,
+      localState: {
+        ...oldState.localState,
+        ...obj,
+      },
+    }));
+  };
+
   render() {
     const {
       enumerated = false,
@@ -528,11 +659,14 @@ class ReportContainer extends React.Component<
       enableSort = true,
       initialSort = false,
       schemaMakers,
+      summarySchemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
       additionalSchemaMakers = [],
       location: { search },
     } = this.props;
+
+    const reportKey = get(this.props, 'tableProps.reportKey', null);
 
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props
       .headerComponent;
@@ -544,7 +678,7 @@ class ReportContainer extends React.Component<
       'mainList',
     );
     const summaryTableMeta = this.makeTableSchema(
-      {},
+      summarySchemaMakers,
       [],
       { fields: summaryTableMetaInfo },
       'summaryList',
@@ -553,20 +687,22 @@ class ReportContainer extends React.Component<
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
 
-    const preloader = (this.props.reportMetaFetching ||
-      this.props.reportDataFetching ||
-      this.state.exportFetching) && <PreloadNew typePreloader="mainpage" />;
+    const preloader = (this.props.reportMetaFetching
+      || this.props.reportDataFetching
+      || this.state.exportFetching) && <PreloadNew typePreloader="mainpage" />;
     const moveUpButton = moveUpIsPermitted && (
       <EtsBootstrap.Button bsSize="small" onClick={this.handleMoveUp}>
         На уровень выше
       </EtsBootstrap.Button>
     );
 
-    const isSummaryEnable =
-      'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
+    const isSummaryEnable
+      =  reportKey === 'fuel_cards_report' // fuel_cards_report - одноуровневый отчет
+        ? this.props.summaryList.length > 0
+        : 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
-    const summaryTable =
-      (this.props.notUseServerSummerTable ? (
+    const summaryTable
+      = (this.props.notUseServerSummerTable && isSummaryEnable ? (
         <DataTableNew
           title={this.props.summaryTitle || 'Итого'}
           tableMeta={summaryTableMeta}
@@ -576,8 +712,8 @@ class ReportContainer extends React.Component<
           uniqName={this.state.uniqName}
           noFilter
         />
-      ) : ( isSummaryEnable &&
-        <Table
+      ) : ( isSummaryEnable
+        && <Table
           className="data-other"
           title={'Итого'}
           tableMeta={summaryTableMeta}
@@ -619,6 +755,8 @@ class ReportContainer extends React.Component<
           queryState={queryState}
           onClick={this.handleReportSubmit}
           readOnly={false}
+          localState={this.state.localState}
+          setLocalState={this.setLocalState}
         />
         <Table
           title={title}
@@ -634,6 +772,7 @@ class ReportContainer extends React.Component<
           filterValues={this.state.filterValues}
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
+          localState={this.state.localState}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"
@@ -657,7 +796,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators<any, any>(reportActionCreators, dispatch);
 
 export default compose<IPropsReportContainer, any>(
-  withRouter,
+  withSearch,
   connect(
     mapStateToProps,
     mapDispatchToProps,

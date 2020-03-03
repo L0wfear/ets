@@ -14,7 +14,7 @@ type PropsTrTableFuelCardsReport = {
   selectField: string;
   currentPage: number;
   resultsPerPage: number;
-  columns: string[];
+  columns: Array<string>;
 };
 
 class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport, any> {
@@ -25,7 +25,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
       props.rowData,
       props.index,
     );
-  }
+  };
   handleDoubleClickTbodyTr: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
 
@@ -33,13 +33,13 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
       props.rowData,
       props.index,
     );
-  }
+  };
 
   handleRowCheck: any = () => {
     const { props } = this;
 
     props.handleRowCheck(props.rowData[props.selectField] || props.index);
-  }
+  };
 
   render() {
     const {

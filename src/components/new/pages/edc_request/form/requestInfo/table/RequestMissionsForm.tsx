@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { get } from 'lodash';
-// import withFormRegistrySearch from "components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch";
-import { DivNone } from "global-styled/global-styled";
+// import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { DivNone } from 'global-styled/global-styled';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getConfig, registryKey } from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 import { isNullOrUndefined } from 'util';
 
-type RequestMissionsFormProps = (
-  {
-    edcRequestInfoList: EdcRequestInfo[];
-  }
-) & WithSearchProps;
+type OwnProps = {
+  edcRequestInfoList: Array<EdcRequestInfo>;
+};
+type Props = OwnProps & WithSearchProps;
 
-const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
+const RequestMissionsForm: React.FC<Props> = React.memo(
   (props) => {
     const uniqKeyForParams = getConfig([], 0).list.data.uniqKeyForParams; /// <<< добавить index, для registry пока непонятно откуда
     const id = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
@@ -72,21 +71,28 @@ const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
         <MissionFormLazy
           showForm
           element={rawElement}
-          onFormHide={handleHide}
+          handleHide={handleHide}
 
+          registryKey={registryKey}
           page={registryKey}
+          path="mission"
+
+          type={null}
         />
       );
     }
 
     if (type_mission === 'duty_mission') {
       return (
-        <DutyMissionFormLazy
+        <DutyMissionFormWithoutRegistry
           showForm
           element={rawElement}
-          onFormHide={handleHide}
+          handleHide={handleHide}
 
           page={registryKey}
+          type={null}
+          registryKey={registryKey}
+          path="duty_mission_form"
         />
       );
     }
@@ -97,4 +103,4 @@ const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
   },
 );
 
-export default withSearch(RequestMissionsForm);
+export default withSearch<OwnProps>(RequestMissionsForm);

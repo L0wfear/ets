@@ -7,9 +7,9 @@ export default {
   path: '/nsi/geoobjects/fountains',
   routePath: `/nsi/geoobjects/fountains/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник фонтанов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'fountains',
-  noDotList: false,
+
   component,
   permissions,
 };

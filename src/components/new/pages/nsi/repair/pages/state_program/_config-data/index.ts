@@ -16,9 +16,9 @@ export default {
   path,
   routePath,
   title: 'Справочник государственных программ ремонта',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'repair_state_program',
-  noDotList: false,
+
   component,
   permissions,
 };

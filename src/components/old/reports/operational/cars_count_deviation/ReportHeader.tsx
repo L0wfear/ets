@@ -8,13 +8,13 @@ import {
 import { getToday0am, createValidDate } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ButtonSubmit } from 'components/old/reports/operational/cars_count_deviation/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
+type IPropsReportHeader = {
   start_date: string;
-}
+} & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   getState() {
@@ -35,7 +35,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     this.props.onClick({
       start_date: createValidDate(start_date),
     });
-  }
+  };
   render() {
     const {
       start_date,

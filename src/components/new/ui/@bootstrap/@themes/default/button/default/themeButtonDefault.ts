@@ -27,7 +27,7 @@ const themeButtonDefault: ThemeButton = {
   },
   opacity: {
     default: 1,
-    disabled: 0.65,
+    disabled: 1,
     disabledFocus: 1,
   },
 };

@@ -1,64 +1,55 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { selectors } from 'redux-main/_middleware/etsLoading';
+import { get } from 'lodash';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import PreloadNew, { Props } from 'components/old/ui/new/preloader/PreloadNew';
 
-import PreloadNew, { PropsPreloadNew } from 'components/old/ui/new/preloader/PreloadNew';
-
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getLoadingCount } from 'redux-main/_middleware/ets-loading/module/selector';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type TypeConfig = {
-  typePreloader?: PropsPreloadNew['typePreloader'];
-  page?: string;
+  typePreloader?: Props['typePreloader'];
   path?: string;
-  withPagePath?: boolean;
+  page?: string;
+  meta?: LoadingMeta;
 };
 
-type StateProps = {
-  isLoading: boolean;
-};
+type OwnPropsExtends = Partial<TypeConfig> & Record<string, any>;
 
-type OwnerProps = {
-  [key: string]: any;
-};
+const withPreloader = <OwnProps extends OwnPropsExtends>(configWithPreloader: TypeConfig) => (Component: React.ComponentType<OwnProps>) => {
+  const PreloaderWrap: React.FC<OwnProps> = React.memo(
+    (props) => {
+      const page = (
+        get(configWithPreloader, 'page')
+        || get(configWithPreloader, 'meta.page')
+        || get(props, 'page')
+        || get(props, 'meta.page')
+        || get(props, 'registryKey')
+      );
 
-type PropsPreloaderWrap = StateProps & OwnerProps;
+      const path = (
+        get(configWithPreloader, 'path')
+        || get(configWithPreloader, 'meta.path')
+        || get(props, 'path')
+        || get(props, 'meta.path')
+      );
 
-const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
-  connect<StateProps, {}, OwnerProps, ReduxState>(
-    (state, { page, path }) => ({
-      isLoading: selectors.getLoadingCount(state.etsLoading, configWithPreloader.page || page, configWithPreloader.path || path),
-    }),
-  )(
-    class PreloaderWrap extends React.Component<PropsPreloaderWrap, {}> {
-      render() {
-        const { isLoading, dispatch, page, path, typePreloader, ...props } = this.props;
+      const isLoading = etsUseSelector((state) => getLoadingCount(state.etsLoading, page, path));
 
-        return (
-          <React.Fragment>
-            {
-              isLoading ?
-              (
-                <PreloadNew typePreloader={configWithPreloader.typePreloader || typePreloader} />
-              )
-              :
-              (
-                <DivNone />
-              )
-            }
-            <Component
-              {...props}
-                page={configWithPreloader.withPagePath ? page : undefined}
-                path={configWithPreloader.withPagePath ? path : undefined}
-            />
-          </React.Fragment>
-        );
-      }
+      return (
+        <React.Fragment>
+          {
+            Boolean(isLoading) && (
+              <PreloadNew typePreloader={configWithPreloader.typePreloader || props.typePreloader} />
+            )
+          }
+          <Component {...props} />
+        </React.Fragment>
+      );
     },
-  )
-);
+  );
+
+  return PreloaderWrap;
+};
 
 export default withPreloader;

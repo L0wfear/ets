@@ -1,26 +1,20 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnBatteryManufacturerProps,
   PropsBatteryManufacturer,
-  StatePropsBatteryManufacturer,
-  DispatchPropsBatteryManufacturer,
   PropsBatteryManufacturerWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_manufacturer/form/@types/BatteryManufacturerForm';
 import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DivNone } from 'global-styled/global-styled';
 import { getDefaultBatteryManufacturerElement } from './utils';
 import { batteryManufacturerFormSchema } from './schema';
 import batteryManufacturerPermissions from '../_config-data/permissions';
+import { autobaseCreateBatteryManufacturer, autobaseUpdateBatteryManufacturer } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/actions';
 
 const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
   const {
@@ -58,28 +52,21 @@ const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-      {
-        isPermitted // либо обновление, либо создание
-        ? (
-          <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-        )
-        : (
-          <DivNone />
-        )
-      }
+        {
+          isPermitted && (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+          )
+        }
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );
 };
 
-export default compose<PropsBatteryManufacturer, OwnBatteryManufacturerProps>(
-  connect<StatePropsBatteryManufacturer, DispatchPropsBatteryManufacturer, OwnBatteryManufacturerProps, ReduxState>(
-    null,
-  ),
+export default compose<PropsBatteryManufacturer, PropsBatteryManufacturerWithForm>(
   withForm<PropsBatteryManufacturerWithForm, BatteryManufacturer>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateBatteryManufacturer,
-    updateAction: autobaseActions.autobaseUpdateBatteryManufacturer,
+    createAction: autobaseCreateBatteryManufacturer,
+    updateAction: autobaseUpdateBatteryManufacturer,
     mergeElement: (props) => {
       return getDefaultBatteryManufacturerElement(props.element);
     },

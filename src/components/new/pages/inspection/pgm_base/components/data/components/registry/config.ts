@@ -1,8 +1,8 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
 
 export const registryKey = 'inspectionPgmBase';
 
@@ -50,45 +50,37 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           title: 'Дата окончания проверки',
         },
         {
-          valueKey: 'status_text',
-          type: 'multiselect',
-          title: 'Статус проверки',
-        },
-        {
-          valueKey: 'okrug_name',
-          type: 'multiselect',
-          title: 'Округ',
-        },
-        {
-          valueKey: 'company_name',
-          type: 'multiselect',
-          title: 'Организация',
-        },
-        {
-          valueKey: 'base_address',
-          type: 'multiselect',
-          title: 'Адрес',
-        },
-        {
           valueKey: 'base_type',
           type: 'multiselect',
           title: 'Тип базы',
         },
         {
           valueKey: 'capacity_cnt',
-          type: 'multiselect',
+          type: 'advanced-number',
           title: 'Количество емкостей',
+          step: 1,
         },
         {
           valueKey: 'volume_capacity_sum',
-          type: 'multiselect',
+          type: 'advanced-number',
           title: 'Суммарная вместимость',
+          step: 1,
         },
         {
-          valueKey: 'has_pgm',
+          valueKey: 'has_pgm_text',
           type: 'multiselect',
-          options: YES_NO_SELECT_OPTIONS_BOOL,
+          options: YES_NO_DASH_SELECT_OPTIONS_STRING,
           title: 'Наличие ПГМ в емкостях',
+        },
+        {
+          valueKey: 'open_employee_fio',
+          title: 'Открыта',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'close_employee_fio',
+          title: 'Завершена',
+          type: 'multiselect',
         },
       ],
     },
@@ -132,19 +124,6 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 300,
           },
           {
-            key: 'okrug_name',
-            title: 'Округ',
-          },
-          {
-            key: 'company_name',
-            title: 'Организация',
-          },
-          {
-            key: 'base_address',
-            title: 'Адрес',
-            width: 200,
-          },
-          {
             key: 'base_type',
             title: 'Тип базы',
             width: 200,
@@ -160,9 +139,18 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 200,
           },
           {
-            key: 'has_pgm',
+            key: 'has_pgm_text',
             title: 'Наличие ПГМ в емкостях',
-            format: 'boolean',
+            width: 200,
+          },
+          {
+            key: 'open_employee_fio',
+            title: 'Открыта',
+            width: 200,
+          },
+          {
+            key: 'close_employee_fio',
+            title: 'Завершена',
             width: 200,
           },
         ],

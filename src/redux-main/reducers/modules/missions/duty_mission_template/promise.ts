@@ -11,10 +11,10 @@ export const promiseGetDutyMissionTemplate = async (payload) => {
     response = null;
   }
 
-  const data: DutyMissionTemplate[] = get(response, ['result'], []).map(
+  const data: Array<DutyMissionTemplate> = get(response, ['result'], []).map(
     (employee) => {
-      const brigade_employee_id_list =
-        get(employee, 'brigade_employee_id_list', []) || [];
+      const brigade_employee_id_list
+        = get(employee, 'brigade_employee_id_list', []) || [];
 
       employee.brigade_employee_id_list_id = brigade_employee_id_list.map(
         ({ employee_id }) => employee_id,
@@ -78,7 +78,7 @@ export const promiseUpdateDutyMissionTemplate = async (
   return data;
 };
 
-export const promiseRemoveDutyMissionTemplates = async (ids: number[]) => {
+export const promiseRemoveDutyMissionTemplates = async (ids: Array<number>) => {
   return Promise.all(
     ids.map((idNumber) => promiseRemoveDutyMissionTemplate(idNumber)),
   );

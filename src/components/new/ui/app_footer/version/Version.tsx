@@ -1,38 +1,26 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import ModalSwitchApiVersion from '../../modal_switch_api_version/ModalSwitchApiVersion';
-import { VersionContainer } from './styled';
 
-type VersionStateProps = {
-  appConfig: InitialStateSession['appConfig'];
-};
-type VersionDispatchProps = DispatchProp;
-type VersionOwnProps = {};
-type VersionMergedProps = (
-  VersionStateProps
-  & VersionDispatchProps
-  & VersionOwnProps
-);
-type VersionProps = VersionMergedProps;
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { VersionContainer } from 'components/new/ui/app_footer/version/styled';
+import ModalSwitchApiVersion from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion';
+
+type OwnProps = {};
+type Props = OwnProps & {};
 
 const VERSION_DESCRIPTION = `Версия ${process.env.VERSION}`;
 const countToShowChangeApi = 10;
 
-const Version: React.FC<VersionProps> = React.memo(
+const Version: React.FC<Props> = React.memo(
   (props) => {
     const [clickOnVersionCount, setClickOnVersionCount] = React.useState(0);
-    const {
-      appConfig,
-    } = props;
+    const appConfig = etsUseSelector((state) => getSessionState(state).appConfig);
 
     const clickOnVersion = React.useCallback(
       () => {
         const isPermittedSwitchApiVersion = appConfig.can_switch_api_version;
 
-        if (appConfig.project_name === 'ets-dev2' || isPermittedSwitchApiVersion) {
+        if (appConfig.project_name === 'ets-dev' || isPermittedSwitchApiVersion) {
           setClickOnVersionCount(clickOnVersionCount + 1);
         }
       },
@@ -61,8 +49,4 @@ const Version: React.FC<VersionProps> = React.memo(
   },
 );
 
-export default connect<VersionStateProps, VersionDispatchProps, VersionOwnProps, ReduxState>(
-  (state) => ({
-    appConfig: getSessionState(state).appConfig,
-  }),
-)(Version);
+export default Version;

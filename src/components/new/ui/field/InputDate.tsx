@@ -9,7 +9,7 @@ type PropsInputDate = {
   id?: string;
   error?: string;
   noShowError?: boolean;
-  value: number | string | string[];
+  value: number | string | Array<string>;
   hidden?: boolean;
   label?: string;
   noShowLabel?: boolean;
@@ -33,43 +33,43 @@ class InputDate extends React.PureComponent<PropsInputDate, {}> {
 
     return (
       !this.props.hidden
-      ? (
-        <div>
-          <InputContainer>
-            {
-              !noShowLabel
-              ? (
-                <span>{this.props.label}</span>
-              )
-              : (
-                <DivNone />
-              )
-            }
-            <DatePicker
-              id={this.props.id}
-              className={inputClassName}
-              date={value}
-              time={Boolean(mainProps.time)}
-              onChange={mainProps.onChange}
-              disabled={mainProps.disabled}
-              makeGoodFormat
-            />
-          </InputContainer>
-          {
-            !noShowError ? (
-              <ErrorsBlock
-                error={error}
+        ? (
+          <div>
+            <InputContainer>
+              {
+                !noShowLabel
+                  ? (
+                    <span>{this.props.label}</span>
+                  )
+                  : (
+                    <DivNone />
+                  )
+              }
+              <DatePicker
+                id={this.props.id}
+                className={inputClassName}
+                date={value}
+                time={Boolean(mainProps.time)}
+                onChange={mainProps.onChange}
+                disabled={mainProps.disabled}
+                makeGoodFormat
               />
-            )
-            : (
-              <DivNone />
-            )
-          }
-        </div>
-      )
-      : (
-        <DivNone />
-      )
+            </InputContainer>
+            {
+              !noShowError ? (
+                <ErrorsBlock
+                  error={error}
+                />
+              )
+                : (
+                  <DivNone />
+                )
+            }
+          </div>
+        )
+        : (
+          <DivNone />
+        )
     );
   }
 }

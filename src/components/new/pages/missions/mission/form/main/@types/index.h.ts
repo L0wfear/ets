@@ -1,30 +1,15 @@
-import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { HandleThunkActionCreator } from 'react-redux';
+
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
-
-export type PropsMissionFormLazy = {
-  showForm: boolean;
-  element: Partial<Mission> | null;
-  onFormHide: OnFormHideType;
-
-  notChangeCar?: boolean;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type StatePropsMission = {
-  userStructureId: InitialStateSession['userData']['structure_id'];
-  userStructureName: InitialStateSession['userData']['structure_name'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
   edcRequest: IStateMissions['missionData']['edcRequest'];
   waybillData: IStateMissions['missionData']['waybillData'];
@@ -38,27 +23,34 @@ export type DispatchPropsMission = {
   actionLoadWaybillDataByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadWaybillDataByIdForMission>;
   loadEdcRequiedByIdForMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForMission>;
   actionReseSetDependenceMissionDataForMissionForm: HandleThunkActionCreator<typeof missionsActions.actionReseSetDependenceMissionDataForMissionForm>;
-};
-export type OwnMissionProps = {
-  element: Partial<Mission> | null;
-  handleHide: OnFormHideType;
-
-  notChangeCar?: boolean;
-
-  page: string;
-  path?: string;
+  actionGetAndSetInStoreMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreMoscowTimeServer>;
+  actionResetMoscowTimeServer: HandleThunkActionCreator<typeof someUniqActions.actionResetMoscowTimeServer>;
 };
 
-export type PropsMissionWithForm = StatePropsMission &
+export type OwnMissionProps = (
+  {
+    IS_CREATING: boolean;
+    originalFormState: Mission;
+    formState: Mission;
+    formErrors: Partial<Record<keyof Mission, string>>;
+    updateFormErrors: () => any;
+    canSave: boolean;
+    isPermitted: boolean;
+    page: string;
+    path: string;
+    handleHide: (isSubmitted: any, result?: Mission | Partial<Mission> | any) => any;
+    hideWithoutChanges: (...arg: Array<any>) => any;
+    handleChange: (obj: Partial<Mission>) => any;
+    submitAction: (assign_to_waybill: Array<string>) => Promise<any>;
+
+    formDataKey: FormKeys & 'mission';  // ключ к стору
+  }
+  & {
+    notChangeCar?: boolean;
+  }
+);
+export type PropsMissionForm = StatePropsMission &
   DispatchPropsMission &
   OwnMissionProps & {
     getMapImageInBase64ByKey: GetMapImageInBase64ByKeyType;
   };
-
-export type PropsMissionForm = OutputWithFormProps<
-  PropsMissionWithForm,
-  Mission,
-  any,
-  any
->;
-export type StateMission = {};

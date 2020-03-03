@@ -6,7 +6,7 @@ import { polyState } from 'constants/polygons';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
-const CACHE_ICON: any = {};
+const CACHE_ICON: Record<string, Style> = {};
 
 const maskStatusPoint = {
   fail: 1,

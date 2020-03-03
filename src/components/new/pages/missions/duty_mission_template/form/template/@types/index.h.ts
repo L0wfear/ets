@@ -1,22 +1,11 @@
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-
-export type PropsDutyMissionTemplateFormLazy = {
-  showForm: boolean;
-  element: Partial<DutyMissionTemplate> | null;
-  onFormHide: OnFormHideType;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsDutyMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
@@ -29,13 +18,7 @@ export type DispatchPropsDutyMissionTemplate = {
   employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
   employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
 };
-export type OwnDutyMissionTemplateProps = {
-  element: Partial<DutyMissionTemplate> | null;
-  handleHide: OnFormHideType;
-
-  page: string;
-  path?: string;
-};
+export type OwnDutyMissionTemplateProps = WithFormRegistrySearchAddProps<DutyMissionTemplate>;
 
 export type PropsDutyMissionTemplateWithForm = (
   StatePropsDutyMissionTemplate
@@ -49,4 +32,3 @@ export type PropsDutyMissionTemplateForm = OutputWithFormProps<
   any,
   any
 >;
-export type StateDutyMissionTemplate = {};

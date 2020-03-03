@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 
-import { bindable } from 'utils/decorators';
 import ReportHeader from 'components/old/reports/operational/track_events/ReportHeader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -23,23 +22,16 @@ const schemaMakers = {
   }),
 };
 
-const ShowMapButtonSFC = (props) =>
-  <div>
-    <span onClick={props.onClick}>
-      <EtsBootstrap.Glyphicon glyph="info-sign" />
-    </span>
-  </div>;
-
-const ShowMapButton: any = bindable(ShowMapButtonSFC);
-
 export const renderers = (handleMapVisibility) => ({
-  okrug_name: ({ data }) => <div>{data || '-'}</div>,
-  district_name: ({ data }) => <div>{data || '-'}</div>,
-  coords_msk: (meta) =>
-    <ShowMapButton
-      onClick={handleMapVisibility}
-      bindOnClick={meta.data}
-    />,
+  okrug_name: ({ data }) => data || '-',
+  district_name: ({ data }) => data || '-',
+  coords_msk: (meta) => (
+    <div>
+      <span onClick={(event) => handleMapVisibility(meta.data, event)}>
+        <EtsBootstrap.Glyphicon glyph="info-sign" />
+      </span>
+    </div>
+  ),
 });
 
 const reportProps: IReportProps = {

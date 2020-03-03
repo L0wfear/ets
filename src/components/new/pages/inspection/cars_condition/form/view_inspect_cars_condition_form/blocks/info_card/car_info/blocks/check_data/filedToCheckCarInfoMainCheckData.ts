@@ -32,27 +32,6 @@ export const filedToCheckDefectDataOuter: FiledToCheck<CarsConditionCars['data']
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
-  {
-    key: 'no_glonass',
-    title: 'Отсутствие устройства ГЛОНАСС',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'logos_not_required',
-    title: 'Нанесение логотипов не требуется',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-    reset: ['no_logos'],
-  },
-  {
-    key: 'no_logos',
-    title: 'Отсутствие логотипа',
-    type: 'boolean',
-    sub: 20,
-    hidden: 'logos_not_required',
-    className: 'checkbox-input flex-reverse',
-  },
 ];
 
 export const filedToCheckDefectDataFirstStart: FiledToCheck<CarsConditionCars['data']> = [
@@ -131,7 +110,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     key: 'owner_not_match',
     title: 'Данные владельца (на кого зарегистрирована техника) и учреждения не совпадают с реальными данными',
     type: 'boolean',
-    sub: 20,
     className: 'checkbox-input flex-reverse',
   },
   {
@@ -144,7 +122,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     key: 'registration_not_match_vin',
     title: 'Данные свидетельства о регистрации ТС не совпадают с данными на табличке с VIN / заводским номером',
     type: 'boolean',
-    sub: 20,
     className: 'checkbox-input flex-reverse',
   },
   {
@@ -154,26 +131,10 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     className: 'checkbox-input flex-reverse',
   },
   {
-    key: 'osago_not_required',
-    title: 'ОСАГО не требуется',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-    reset: [
-      'no_valid_osago',
-    ],
-  },
-  {
     key: 'no_valid_osago',
     title: 'Отсутствие действующего полиса ОСАГО',
     type: 'boolean',
-    sub: 20,
     hidden: 'osago_not_required',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'act_readiness_not_issued',
-    title: 'Акт готовности техники не оформлен',
-    type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
 ];
@@ -185,18 +146,18 @@ export const filedToCheckDefectDataOtherFirst: FiledToCheck<CarsConditionCars['d
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
-  {
-    key: 'technical_inspection_not_passed',
-    title: 'Технический осмотр не пройден',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
 ];
 
 export const filedToCheckDefectDataOtherSecond: FiledToCheck<CarsConditionCars['data']> = [
   {
     key: 'not_ready_to_work',
     title: 'Техника не готова к работе',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'act_readiness_not_issued',
+    title: 'Акт готовности техники не оформлен',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },

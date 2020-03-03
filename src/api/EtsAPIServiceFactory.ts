@@ -1,16 +1,14 @@
 import ApiServiceFactory from './ApiServiceFactory';
 import config from 'config';
 
-const conf = config;
-
 const ETS_API_FACTORY = new ApiServiceFactory({
-  apiUrl: conf.backend,
+  apiUrl: config.backend,
   headers: () => {
     const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
     return {
-      "Authorization": `Token ${token}`,
-      "Accept": 'application/json',
+      'Authorization': `Token ${token}`,
+      'Accept': 'application/json',
       'Access-Control-Expose-Headers': 'Content-Disposition',
     };
   },

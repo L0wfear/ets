@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { CarGtnPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/old/ui/input/fields';
 import usePropulsionTypeOptions from './usePropulsionTypeOptions';

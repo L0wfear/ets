@@ -8,9 +8,3 @@ export type Ssp = {
   shape: object;
   shortname: string;
 };
-
-export type CreateSsp = any;
-
-export type UpdateSsp = any;
-
-export type GetSsp = () => Promise<any>;

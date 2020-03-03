@@ -2,18 +2,16 @@ import * as React from 'react';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
 const ReportForm = React.lazy(() => (
   import(/* webpackChunkName: "ReportForm" */ 'components/old/reports/operational/cars_travel_time/form/ReportForm')
 ));
 
 export type CarTravelTimeSelectedElement = {
   car_id: number | null;
-  carpool_events: {
+  carpool_events: Array<{
     date: string;
-    events: string[];
-  }[];
+    events: Array<string>;
+  }>;
   carpool_events_for_xls: string | null;
   carpool_time: string | null;
   cars_func_type_name: string | null;
@@ -22,14 +20,14 @@ export type CarTravelTimeSelectedElement = {
   distance_out_mission: number | null;
   gov_number: string | null;
   gps_code: string | null;
-  has_mkad: false
+  has_mkad: false;
   okrug_name: string | null;
   parking_time: string | null;
   parking_time_out_mission: string | null;
-  rowNumber: null
+  rowNumber: null;
   travel_time_in_mission: string | null;
   travel_time_out_mission: string | null;
-  _uniq_field: 1
+  _uniq_field: 1;
 };
 
 type PropsReportFormWrap = {
@@ -48,8 +46,7 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     } = this.props;
 
     return (
-      showForm ?
-      (
+      showForm && (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
             <ReportForm
@@ -61,8 +58,6 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
           </React.Suspense>
         </ErrorBoundaryForm>
       )
-      :
-      ( <DivNone /> )
     );
   }
 }

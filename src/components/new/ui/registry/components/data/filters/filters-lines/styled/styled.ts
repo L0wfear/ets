@@ -22,7 +22,7 @@ export const EtsFiltersLines = styled.div`
   margin: 0 -15px;
 `;
 
-export const EtsFilterDate = styled.div<{ noneClick?: boolean }>`
+export const EtsFilterDate = styled.div<{ noneClick?: boolean; }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -30,7 +30,7 @@ export const EtsFilterDate = styled.div<{ noneClick?: boolean }>`
   pointer-events: ${({ noneClick }) => noneClick ? 'none' : 'all'};
 `;
 
-export const EtsFilter = styled.label<{ noneClick?: boolean }>`
+export const EtsFilter = styled.label<{ noneClick?: boolean; }>`
   display: flex;
   flex-direction: column;
   width: 100%;

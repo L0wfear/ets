@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import tirePermissions from './permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -20,7 +20,11 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
     header: {
       title: 'Установленные шины на текущую дату',
       buttons: [
-        buttonsTypes.car_actual_add_tire,
+        {
+          id: 'add_tire',
+          type: buttonsTypes.create,
+          title: 'Добавить',
+        },
         buttonsTypes.read,
       ],
     },

@@ -2,7 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from './permissions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
-import { ORDER_STATUS_LABELS } from 'constants/dictionary';
+import { ORDER_STATUS_LABELS, SEASON_OPTION } from 'constants/dictionary';
 
 export const orderRegistryKey = 'order';
 
@@ -46,6 +46,7 @@ export const getToConfig = (): TypeConfigData<Order> => {
           labelKey: 'order_type_name',
           title: 'Тип',
           type: 'multiselect',
+          options: SEASON_OPTION,
         },
         {
           valueKey: 'status',

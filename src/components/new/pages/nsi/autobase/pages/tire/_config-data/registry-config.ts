@@ -45,6 +45,12 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'tire_manufacturer_id',
+          labelKey: 'tire_manufacturer_name',
+          title: 'Производитель',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'tire_size_id',
           labelKey: 'tire_size_name',
           title: 'Размер',
@@ -122,6 +128,11 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           {
             key: 'tire_model_name',
             title: 'Модель шины',
+            width: 200,
+          },
+          {
+            key: 'tire_manufacturer_name',
+            title: 'Производитель',
             width: 200,
           },
           {

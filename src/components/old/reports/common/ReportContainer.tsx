@@ -148,7 +148,7 @@ class ReportContainer extends React.Component<
     }
 
     // удаляем из фильтров значения, которых нет в основном списке
-    if (this.props.data !== this.props.data) {
+    if (this.props.data !== prevProps.data) {
       const { data: old_data } = this.props;
       let rows = get(old_data, ['result', 'rows'], null);
       const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));

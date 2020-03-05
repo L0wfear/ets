@@ -158,6 +158,11 @@ export const config: TypeConfigData<MissionTemplate> = {
           width: 200,
         },
         {
+          key: 'car_garage_numbers_text',
+          title: 'Гаражный номер',
+          width: 200,
+        },
+        {
           key: 'car_type_names_text',
           title: 'Тип техники',
           width: 200,

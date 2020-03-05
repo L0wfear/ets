@@ -16,27 +16,33 @@ const FieldForColumnMission: React.FC<Props> = React.memo(
   (props) => {
     const { page } = useForm.useFormDataMeta(props.formDataKey);
     const for_column = useForm.useFormDataFormStatePickValue<Mission, Mission['for_column']>(props.formDataKey, 'for_column');
+    const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['for_column']>(props.formDataKey, 'order_operation_id');
+    
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
       () => {
-        handleChange({
-          for_column: !for_column,
+        order_operation_id
+          ? handleChange({
+            for_column: !for_column,
+          })
+          : handleChange({
+            for_column: !for_column,
 
-          technical_operation_id: null,
-          technical_operation_name: '',
-          municipal_facility_id: null,
-          municipal_facility_name: '',
-          route_id: null,
-          route_name: '',
-          route_type: null,
-          object_type_id: null,
-          object_type_name: '',
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
 
-          consumable_materials: [],
-        });
+            consumable_materials: [],
+          });
       },
-      [handleChange, for_column],
+      [handleChange, for_column, order_operation_id,],
     );
 
     return (

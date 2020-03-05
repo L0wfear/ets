@@ -208,6 +208,7 @@ class CreatingMap extends React.PureComponent<
             technical_operation_id: props.technical_operation_id,
             object_type_id: typeData.id,
             structure_id: props.structure_id,
+            work_type_code: props.work_type_code,
           },
           { page, path },
         );

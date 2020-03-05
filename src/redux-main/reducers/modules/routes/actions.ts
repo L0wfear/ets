@@ -129,7 +129,7 @@ const actionValidateRoute = (
   route: Partial<Route> &
     Pick<
       Route,
-      'technical_operation_id' | 'input_lines' | 'municipal_facility_id'
+      'technical_operation_id' | 'input_lines' | 'municipal_facility_id' | 'work_type_code'
     >,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseValidateRoute>> => async (dispatch) => {

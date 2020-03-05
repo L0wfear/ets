@@ -250,6 +250,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               municipal_facility_id={municipal_facility_id}
               technical_operation_id={technical_operation_id}
               structure_id={formState.structure_id}
+              work_type_code={work_type_code}
               onChange={this.props.handleChange}
               checkRoute={this.checkRoute}
               bridges={this.state.bridges}

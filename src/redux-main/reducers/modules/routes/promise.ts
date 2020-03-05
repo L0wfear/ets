@@ -197,11 +197,12 @@ export const promiseDeleteRoute = async (id: Route['id']) => {
 
   return id;
 };
-export const promiseValidateRoute = async (route: Partial<Route> & Pick<Route, 'technical_operation_id' | 'input_lines' | 'municipal_facility_id'>) => {
+export const promiseValidateRoute = async (route: Partial<Route> & Pick<Route, 'technical_operation_id' | 'input_lines' | 'municipal_facility_id' | 'work_type_code'>) => {
   const payload = {
     technical_operation_id: route.technical_operation_id,
     object_list: route.input_lines,
     municipal_facility_id: route.municipal_facility_id,
+    work_type_code: route.work_type_code,
   };
 
   let response = null;

@@ -45,6 +45,7 @@ export type OwnPropsCreatingMap = {
   draw_object_list: Array<any>;
   type: any | null;
   isPermitted: boolean;
+  work_type_code: Route['work_type_code'];
 
   page: string;
   path: string;

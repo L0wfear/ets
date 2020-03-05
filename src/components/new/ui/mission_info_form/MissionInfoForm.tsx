@@ -64,12 +64,12 @@ class MissionInfoForm extends React.Component<
   }
 
   /**
-   * Исли разница дат в задании меньше 11 дней и есть данные по заданию
+   * Если разница дат в задании меньше 11 дней и есть данные по заданию
    * то загружаются маршрут и геометрии к нему по типу (ДТ/ ОДХ/ ПН)
    * и трек
    */
   componentDidMount() {
-    if (!this.state.tooLongDates && this.state.missionReport) {
+    if (!this.state.tooLongDates) {
       const { element } = this.props;
 
       this.props

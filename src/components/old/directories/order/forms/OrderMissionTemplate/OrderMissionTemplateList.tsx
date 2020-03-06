@@ -32,7 +32,7 @@ import {
 import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/old/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState, getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
+import { getSessionState, getSomeUniqState, getAutobaseState, getEmployeeState } from 'redux-main/reducers/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import LoadingOverlayLegacy from 'components/old/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
@@ -48,11 +48,14 @@ import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/ac
 import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
+import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { employeeGetAndSetInStore } from 'redux-main/reducers/modules/employee/employee/actions';
 
 type StateProps = {
   carList: Array<Car>;
   userData: InitialStateSession['userData'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
+  employeeIndex: IStateEmployee['employeeIndex'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -152,6 +155,7 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
   componentDidMount() {
     const { structures } = this.props.userData;
     this.props.dispatch(carGetAndSetInStore({}, meta));
+    this.props.dispatch(employeeGetAndSetInStore({}, meta));
 
     this.getMissionsList().then(({ data }) => {
       const missionsList = getMissionListByFilter(data);
@@ -528,5 +532,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     userData: getSessionState(state).userData,
     order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
     carList: getAutobaseState(state).carList,
+    employeeIndex: getEmployeeState(state).employeeIndex,
   }),
 )(OrderMissionTemplate);

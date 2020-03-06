@@ -43,14 +43,15 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
 import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {
-  carList: Array<Car>;
+  carList: IStateAutobase['carList'];
+  carsIndex: IStateAutobase['carIndex'];
   userData: InitialStateSession['userData'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
 };
@@ -528,5 +529,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     userData: getSessionState(state).userData,
     order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
     carList: getAutobaseState(state).carList,
+    carsIndex: getAutobaseState(state).carIndex,
   }),
 )(OrderMissionTemplate);

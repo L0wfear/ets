@@ -184,6 +184,10 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
               fieldKey: 'ready_cars',
               arrayKey: 'gov_numbers'
             },
+            not_ready_cars: {
+              fieldKey: 'not_ready_cars',
+              arrayKey: 'gov_numbers'
+            },
           }
           : null;
 

@@ -135,15 +135,17 @@ class CreatingMap extends React.PureComponent<
       municipal_facility_id: prevMunicipalFacilityId,
       technical_operation_id: prevTechnicalOperationId,
       structure_id: prevStructureId,
+      work_type_code: prevWorkTypeCode,
     } = prevProps;
 
-    const { type, municipal_facility_id, technical_operation_id, structure_id } = this.props;
+    const { type, municipal_facility_id, technical_operation_id, structure_id, work_type_code } = this.props;
 
     const trigger = (
       prevType !== type
       || prevMunicipalFacilityId !== municipal_facility_id
       || technical_operation_id !== prevTechnicalOperationId
       || structure_id !== prevStructureId
+      || work_type_code !== prevWorkTypeCode
     );
 
     if (trigger) {

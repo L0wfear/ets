@@ -20,6 +20,7 @@ export type StateCreatingMap = {
   type: PropsCreatingMap['type'];
   manual: boolean;
   hand: boolean;
+  targetDeleteMode: boolean; // режим удаления геометрии, построенной вручную
 };
 
 export type StatePropsCreatingMap = {

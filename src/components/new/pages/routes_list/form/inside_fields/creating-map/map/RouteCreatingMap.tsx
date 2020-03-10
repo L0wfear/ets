@@ -40,6 +40,7 @@ type PropsRouteCreatingMap = {
     type: 'odh' | 'dt' | 'points';
   }>;
   manual?: boolean;
+  targetDeleteMode?: boolean;
   handleClickOnStartDraw: () => any;
   canDraw: boolean;
   [key: string]: any;
@@ -50,7 +51,7 @@ type StatePropsRouteCreatingMap = {
 
 class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StatePropsRouteCreatingMap> {
   handleClickOnRemove = () => {
-    this.props.handleRemoveLastDrawFeature();
+    this.props.handleRemoveTargetDrawFeature();
   };
 
   handleEndDraw = (coordinatesArr, distance, type, lines) => {
@@ -108,8 +109,14 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
       drawObjectList,
       disabled,
       manual,
+      targetDeleteMode,
       canDraw,
     } = props;
+
+    const activeButtons = {
+      draw: Boolean(manual),
+      remove: Boolean(targetDeleteMode),
+    };
 
     return (
       <MapEtsContainer>
@@ -180,10 +187,11 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                           ? (
                             <RouteDrawButtons
                               disabledDraw={disabled}
-                              disabledRemove={disabled || !drawObjectList || !drawObjectList.length || manual}
+                              disabledRemove={disabled || !drawObjectList || !drawObjectList.length}
                               hidden={this.props.disabled || this.props.objectsType === 'points' || !objectList || !objectList.length}
                               handleClickOnStartDraw={this.props.handleClickOnStartDraw}
                               handleClickOnRemove={this.handleClickOnRemove}
+                              activeButtons={activeButtons}
                             />
                           )
                           : (

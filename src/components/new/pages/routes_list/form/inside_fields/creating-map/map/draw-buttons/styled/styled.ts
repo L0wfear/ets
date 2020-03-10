@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
 
 export const RouteDrawButtonsContaineWrapr = styled.div`
   position: absolute;
@@ -12,4 +13,7 @@ export const RouteDrawButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   pointer-events: all;
+  ${ButtonStyled} {
+    margin-bottom: 5px;
+  }
 `;

@@ -21,8 +21,8 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
   handleDrawFeatureClick = ({ index, state }) => {
     this.props.handleDrawFeatureClick({ index, state });
   };
-  handleRemoveLastDrawFeature = () => {
-    this.props.handleRemoveLastDrawFeature();
+  handleRemoveTargetDrawFeature = () => {
+    this.props.handleRemoveTargetDrawFeature();
   };
 
   setManualOnTrue = () => {
@@ -101,7 +101,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 handlePointAdd={this.handlePointAdd}
                 handleAddDrawLines={this.handleAddDrawLines}
                 handleDrawFeatureClick={this.handleDrawFeatureClick}
-                handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+                handleRemoveTargetDrawFeature={this.handleRemoveTargetDrawFeature}
                 handleClickOnStartDraw={this.setManualOnTrue}
                 disabled={!isPermittedMap}
               />

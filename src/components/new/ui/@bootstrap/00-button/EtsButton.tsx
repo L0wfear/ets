@@ -130,7 +130,7 @@ export const ButtonStyled = styled.button<EtsButtonPropsWrap>`
     }
 
     &:focus {
-      background-color: ${({ theme, disabled, themeName }) => (
+      /* background-color: ${({ theme, disabled, themeName }) => (
     !disabled
       ? theme.button[themeName || 'default'].backgroundColor.focus
       : theme.button[themeName || 'default'].backgroundColor.disabled
@@ -139,7 +139,7 @@ export const ButtonStyled = styled.button<EtsButtonPropsWrap>`
     !disabled
       ? theme.button[themeName || 'default'].color.focus
       : theme.button[themeName || 'default'].color.disabled
-  )};
+  )}; */
       outline: 5px auto -webkit-focus-ring-color;
     }
 

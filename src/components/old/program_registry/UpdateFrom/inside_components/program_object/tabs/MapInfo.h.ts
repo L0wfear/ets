@@ -3,7 +3,7 @@ type ISetManualOnFalse = () => void;
 type iHandleFeatureClick = (any) => void;
 type IHandleDrawFeatureAdd = (any) => void;
 type IHandleDrawFeatureClick = (any) => void;
-type IHandleRemoveLastDrawFeature = () => void;
+type IHandleRemoveTargetDrawFeature = () => void;
 type IStartDraw = () => void;
 
 export type IPropsMapInfo = {
@@ -24,5 +24,5 @@ export type IPropsMapInfo = {
   handleFeatureClick: iHandleFeatureClick;
   handleAddDrawLines: IHandleDrawFeatureAdd;
   handleDrawFeatureClick: IHandleDrawFeatureClick;
-  handleRemoveLastDrawFeature: IHandleRemoveLastDrawFeature;
+  handleRemoveTargetDrawFeature: IHandleRemoveTargetDrawFeature;
 };

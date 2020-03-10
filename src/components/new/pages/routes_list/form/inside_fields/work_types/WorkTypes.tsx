@@ -4,6 +4,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import { isNullOrUndefined } from 'util';
 
 export type WorkTypesProps = {
   value: number | void;
@@ -29,8 +30,8 @@ const WorkTypes: React.FC<WorkTypesProps> = React.memo(
 
     const [work_types_options, set_work_types_options] = React.useState<WorkTypesStates['work_types_options']>([]);
 
-    const handleChange = (value) => {
-      if (value) {
+    const handleChange = (_, value) => {
+      if (!isNullOrUndefined(value)) {
         props.onChange({
           work_type_code: Number(value),
         });

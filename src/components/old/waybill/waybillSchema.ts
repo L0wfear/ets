@@ -644,7 +644,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'multiValueOfArray',
       dependencies: [
         (_, { tax_data, equipment_fuel, hasEquipmentFuelRates }) => {
-          if (equipment_fuel && hasEquipmentFuelRates) {
+          if ((isArray(tax_data) && tax_data.length)) {
             return checkTaxData(tax_data);
           }
         },

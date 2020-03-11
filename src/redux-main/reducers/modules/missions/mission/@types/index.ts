@@ -66,7 +66,7 @@ export type Mission = {
   waybill_id: number | null;
   waybill_number: number | null;
   plan_date_start: string | null;
-  garage_number: string;
+  car_garage_number: string;
 
   is_mission_progress_countable: boolean | null;
   consumable_materials: Array<ConsumableMaterialCountMission>;

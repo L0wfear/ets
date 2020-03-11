@@ -401,6 +401,6 @@ export const metaMission: ConfigFormData<Mission> = {
     waybill_id: null,
     waybill_number: null,
     plan_date_start: '',
-    garage_number: '',
+    car_garage_number: '',
   }),
 };

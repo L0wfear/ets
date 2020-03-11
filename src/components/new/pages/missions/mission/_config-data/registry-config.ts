@@ -114,7 +114,7 @@ export const config: TypeConfigData<Mission> = {
         },
       },
       {
-        valueKey: 'garage_number',
+        valueKey: 'car_garage_number',
         title: 'Гаражный номер',
         type: 'multiselect',
       },
@@ -279,7 +279,7 @@ export const config: TypeConfigData<Mission> = {
           width: 150,
         },
         {
-          key: 'garage_number',
+          key: 'car_garage_number',
           title: 'Гаражный номер',
           width: 150,
         },

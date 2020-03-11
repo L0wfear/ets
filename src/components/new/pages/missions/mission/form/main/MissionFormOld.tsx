@@ -468,10 +468,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           <FieldStructureMission
                             disabled={
                               !isPermitted
-                              || (
+                              || ((
                                 !PARENT_WAYBILL_IS_DRAFT
                                 && !IS_CREATING
-                              )
+                              ) && !IS_NOT_ASSIGNED)
                             }
                             formDataKey={this.props.formDataKey}
                             MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

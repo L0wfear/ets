@@ -261,6 +261,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       if (
         this.props.element.status === 'active'
         || this.props.element.status === 'closed'
+        || this.props.element.status === 'deleted'
       ) {
         const fuelStart = !isNullOrUndefined(waybill.fuel_start)
           ? parseFloat(waybill.fuel_start.toString())
@@ -308,7 +309,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             - waybill.motohours_equip_start || 0
           : null;
 
-        if (this.props.element.status === 'active') {
+        if (this.props.element.status === 'active' || this.props.element.status === 'deleted') {
           this.schema = waybillClosingSchema;
           const formErrors: any = filterFormErrorByPerission(
             this.state.isPermittedByKey,

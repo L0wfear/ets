@@ -368,7 +368,7 @@ export const getWaybillDrivers = (
   return Promise.resolve(null);
 };
 
-export const getTitleByStatus = ({ status }) => {
+export const getTitleByStatus = ({ status, number }) => {
   switch (status) {
     case 'active':
       return 'Активный путевой лист';
@@ -376,6 +376,8 @@ export const getTitleByStatus = ({ status }) => {
       return 'Создание нового путевого листа';
     case 'closed':
       return 'Просмотр путевого листа ';
+    case 'deleted':
+      return `Удаленный ПЛ `;
     default:
       return 'Создать новый путевой лист';
   }

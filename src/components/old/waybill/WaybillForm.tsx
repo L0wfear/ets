@@ -391,8 +391,9 @@ class WaybillForm extends React.Component<Props, State> {
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
-    const IS_ACTIVE = status === 'active';
+    const IS_ACTIVE = status === 'active' || status === 'deleted'; // Удален это признак, по факту статус ПЛ, активен
     const IS_CLOSED = status === 'closed';
+    const IS_DELETE = status === 'deleted';
 
     this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
@@ -450,7 +451,7 @@ class WaybillForm extends React.Component<Props, State> {
         });
     }
 
-    if (IS_ACTIVE || IS_CLOSED) {
+    if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
 
       const currentSeason = this.props.formState.season;
@@ -1058,7 +1059,7 @@ class WaybillForm extends React.Component<Props, State> {
           this.props.dispatch(actionLoadOrderById(order_id, this.props)),
       )
         .then(async () => {
-          if (this.props.formState.status === 'active') {
+          if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
             const { rejectMissionList } = this.state;
             await this.rejectMissionHandler(rejectMissionList).then((res) => {
               const { origMissionsList } = this.state;
@@ -1398,7 +1399,7 @@ class WaybillForm extends React.Component<Props, State> {
   handleSubmit = async () => {
     if (this.checkOnValidHasEquipment()) {
       delete this.props.formState.is_bnso_broken;
-      if (this.props.formState.status === 'active') {
+      if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
         const { rejectMissionList } = this.state;
         this.rejectMissionHandler(rejectMissionList).then((res) => {
           const { origMissionsList } = this.state;
@@ -1589,10 +1590,10 @@ class WaybillForm extends React.Component<Props, State> {
     }
 
     const IS_CREATING = !state.status;
-    const IS_ACTIVE = state?.status === 'active';
+    const IS_ACTIVE = state?.status === 'active' || state?.status === 'deleted'; // Удален это признак, по факту статус ПЛ, активен
     const IS_DRAFT = state?.status === 'draft';
     const IS_CLOSED = state?.status === 'closed';
-    const IS_DELETE = state?.delete;
+    const IS_DELETE = state?.status === 'deleted';
 
     const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => {
       return ({

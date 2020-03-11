@@ -67,7 +67,7 @@ const validateFuelCardId = (
 
 const checkCarRefill = memoizeOne(
   (
-    car_refill: Waybill['car_refill'],
+    car_refill: Waybill['car_refill'] = [],
     refillTypeList: Array<RefillType>,
     fuelCardsList: Array<FuelCard>,
     fuel_type: Waybill['fuel_type'],
@@ -99,7 +99,7 @@ const checkCarRefill = memoizeOne(
 );
 const checkEquipmentCarRefill = memoizeOne(
   (
-    car_refill: Waybill['car_refill'],
+    car_refill: Waybill['car_refill'] = [],
     refillTypeList: Array<RefillType>,
     fuelCardsList: Array<FuelCard>,
     fuel_type: Waybill['fuel_type'],

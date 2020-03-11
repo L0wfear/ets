@@ -42,12 +42,14 @@ export const WAYBILL_STATUSES_KEY = {
   draft: 'draft',
   active: 'active',
   closed: 'closed',
+  deleted: 'deleted',
 };
 
 export const WAYBILL_STATUSES = {
   [WAYBILL_STATUSES_KEY.draft]: 'Черновик',
   [WAYBILL_STATUSES_KEY.active]: 'Активен',
   [WAYBILL_STATUSES_KEY.closed]: 'Закрыт',
+  [WAYBILL_STATUSES_KEY.deleted]: 'Удален',
 };
 
 export const LOAD_PROCESS_TEXT = 'Загрузка...';

@@ -4,6 +4,8 @@ import { ExtFieldType } from 'components/@next/@ui/renderFields/@types';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
+// FAQ Типизация Реестров
+
 export type FilterOptionType<F> = {
   value: F[keyof F];
   label: string | number;

@@ -37,7 +37,7 @@ import { isEmpty } from 'lodash';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-
+// FAQ работа с сокетом
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
 

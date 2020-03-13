@@ -33,6 +33,7 @@ export type IPropsDataTableInputRenderer = {
   outputListErrors: Array<ETSCore.Types.IStringKeyHashTable<string>>;
   onChange(index: number, key: string | object, value?: any): void;
   fieldKey?: string;
+  inputList: Array<any>;
 };
 
 export type TRendererFunction = (

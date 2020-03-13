@@ -1,3 +1,16 @@
+export type FuelCardOnCars = {
+  gov_number: string;
+  car_id: number;
+  company_id: number;
+  installed_at: string;
+  uninstalled_at: string;
+  // для таблички
+  customId?: number;
+  isChecked?: boolean;
+  isHighlighted?: boolean;
+  isSelected?: boolean;
+};
+
 export type FuelCard = {
   id: number | null;
   number: string | null; // Поле "Номер"
@@ -16,7 +29,7 @@ export type FuelCard = {
   date_end: string;
   car_id: number;
   gov_number_text: string;
-  gov_number: string;
+  fuel_card_on_cars: Array<FuelCardOnCars>;
 };
 
 export type StateFuelCards = {

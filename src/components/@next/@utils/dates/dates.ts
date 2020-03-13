@@ -136,7 +136,7 @@ export function formatDate(date: string | Date, format: string) {
   return moment(date).format(format);
 }
 
-export function getFormattedDateTime(date: string | number | Date) {
+export function getFormattedDateTime(date: string | number | Date | Moment.Moment) {
   if (!date) {
     return '';
   }
@@ -361,3 +361,13 @@ export const minusTime = (date, count, typeAdd) =>
   moment(date)
     .subtract(count, typeAdd)
     .format();
+
+export const dateInPeriod = (
+  startDatePeriod: Moment.Moment | Date | string,
+  endDatePeriod: Moment.Moment | Date | string,
+  checkedDate: Moment.Moment | Date | string,
+) => {
+  const range = moment().range(moment(startDatePeriod), moment(endDatePeriod));
+
+  return range.contains(moment(checkedDate));
+};

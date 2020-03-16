@@ -371,3 +371,10 @@ export const dateInPeriod = (
 
   return range.contains(moment(checkedDate));
 };
+
+export function setDateTime0am(dateOwn) {
+  const date = moment(dateOwn);
+  date.hours(0);
+  date.minutes(0);
+  return date.toDate();
+}

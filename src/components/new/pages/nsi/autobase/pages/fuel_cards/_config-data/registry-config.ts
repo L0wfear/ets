@@ -4,6 +4,7 @@ import fuelCardsPermissions from './permissions';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
+export const uniqKeyForParams = 'fuel_cards_registry_id';
 export const registryKey = 'fuelCardsRegistry';
 
 export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
@@ -92,7 +93,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'fuel_cards_registry_id',
+        uniqKeyForParams,
       },
       meta: {
         fields: [

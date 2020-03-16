@@ -19,16 +19,31 @@ export const defaultFuelCard: FuelCard = {
   date_end: null,
   car_id: null,
   gov_number_text: null,
-  gov_number: null,
+  fuel_card_on_cars: [],
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {
   const newElement = { ...defaultFuelCard };
   if (isObject(element)) {
     Object.keys(defaultFuelCard).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key])
-        ? element[key]
-        : defaultFuelCard[key];
+      if (key === 'fuel_card_on_cars') {
+        if (!isNullOrUndefined(element[key])) {
+          newElement[key] = element[key].map((rowData, index) => {
+            return {
+              ...rowData,
+              customId: index + 1,
+            };
+          });
+        } else {
+          newElement[key] = !isNullOrUndefined(element[key])
+            ? element[key]
+            : defaultFuelCard[key];
+        }
+      } else {
+        newElement[key] = !isNullOrUndefined(element[key])
+          ? element[key]
+          : defaultFuelCard[key];
+      }
     });
   }
 

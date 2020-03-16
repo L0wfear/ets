@@ -17,6 +17,7 @@ export type IExternalPropsDataTableInputWrapper<F = any> = {
   batteryAvailableCarList?: any;
   tireAvailableCarList?: any;
   spareAvailableCarList?: any;
+  fuelCardsAvailableCarList?: any;
 };
 
 /**

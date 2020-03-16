@@ -15,6 +15,7 @@ const savePermissions = [
 type IPropsWaybillFooter = {
   isCreating: boolean;
   isDraft: boolean;
+  isClosed: boolean;
   canSave: boolean;
   canClose: boolean;
   canPrint: boolean;
@@ -47,13 +48,17 @@ const popoverHoverFocus = (
 
 class WaybillFooter extends React.Component<IPropsWaybillFooter> {
   private get isDisabledWaybillSubmitButton(): boolean {
-    const { isDraft, canSave, state, canEditIfCloseUpdPermission } = this.props;
+    const { isDraft, canSave, state, canEditIfCloseUpdPermission, isClosed } = this.props;
 
     if (isDraft) {
       return !canSave && !state.canEditIfClose;
     }
 
-    return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
+    if (isClosed) {
+      return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
+    }
+
+    return !canSave;
   }
 
   public render(): JSX.Element {

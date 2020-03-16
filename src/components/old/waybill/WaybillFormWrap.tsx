@@ -208,6 +208,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           waybillPermissions.departure_and_arrival_values,
         ),
         refill: props.currentUser.permissionsSet.has(waybillPermissions.refill),
+        update_closed: props.currentUser.permissionsSet.has(waybillPermissions.update_closed),
       },
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,

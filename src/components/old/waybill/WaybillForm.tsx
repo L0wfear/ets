@@ -250,6 +250,7 @@ type OwnProps = {
     update: boolean;
     departure_and_arrival_values: boolean;
     refill: boolean;
+    update_closed: boolean;
   };
   canClose: boolean;
   canSave: boolean;
@@ -1673,11 +1674,7 @@ class WaybillForm extends React.Component<Props, State> {
       || !isPermittedByKey.update || IS_DELETE;
 
     const disableComment = (
-      IS_CLOSED
-        && (
-          !this.state.canEditIfCloseUpdPermission
-            && !this.state.canEditIfClose
-        )
+      IS_CLOSED && !isPermittedByKey.update_closed && !isPermittedByKey.update
     ) || (
       !IS_CLOSED && !isPermittedByKey.update
     );

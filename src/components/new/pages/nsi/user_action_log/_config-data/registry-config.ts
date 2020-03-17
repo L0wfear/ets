@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from './permissions';
 import { UserActionLog } from 'redux-main/reducers/modules/user_action_log/@types/userActionLog';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'userActionLogRegistry';
 

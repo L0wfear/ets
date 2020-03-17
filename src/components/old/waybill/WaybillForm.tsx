@@ -2699,6 +2699,7 @@ class WaybillForm extends React.Component<Props, State> {
           <WaybillFooter
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
+            isClosed={IS_CLOSED}
             canSave={Boolean(this.props.canSave && !this.state.missionHasError?.hasError)}
             canPrint={canWaybillPrint}
             canGiveOutRead={canWaybillGiveOutRead}

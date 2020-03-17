@@ -171,8 +171,6 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
     fieldsToChange.is_one_fuel_tank = true;
   }
 
-  console.log('fieldsToChange === ', { fieldsToChange });
-
   return fieldsToChange;
 };
 
@@ -990,7 +988,6 @@ class WaybillForm extends React.Component<Props, State> {
           ...this.getFieldsToChangeBasedOnLastWaybill(lastWaybill),
           plan_departure_date,
         };
-        console.log('refresh === ', {lastWaybill, fieldsToChange,});
 
         this.props.handleMultipleChange(fieldsToChange);
       }
@@ -1735,8 +1732,6 @@ class WaybillForm extends React.Component<Props, State> {
         && this.props.canSave
         && !this.state.missionHasError?.hasError
       : this.props.canSave && !this.state.missionHasError?.hasError;
-    
-    console.log('lastWaybill === ', { lastWaybill, state, FUEL_TYPES, });
     
     return (
       <EtsBootstrap.ModalContainer

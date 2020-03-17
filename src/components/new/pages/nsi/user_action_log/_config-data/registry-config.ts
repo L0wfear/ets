@@ -103,12 +103,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           },
           {
             key: 'company_name',
-            title: [
-              {
-                title: 'Организация',
-                displayIf: displayIfContant.isOkrug,
-              },
-            ],
+            title: 'Организация',
           },
           {
             key: 'action_at',

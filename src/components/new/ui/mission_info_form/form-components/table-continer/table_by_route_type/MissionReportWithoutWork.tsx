@@ -76,7 +76,7 @@ export const MissionReportEntriesWithoutWork: React.FC<Props> = (props) => {
     if (typeof props.onElementChange === 'function') {
       props.onElementChange(data[selectField]);
     }
-  }, [props.onElementChange, props.onElementChange, ]);
+  }, [props.onElementChange, props.onElementChange, selectField, ]);
 
   return (
     <MissionReportEntriesWithoutWorkTableStyled

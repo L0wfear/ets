@@ -93,6 +93,8 @@ class BatteryRegistryForm extends React.PureComponent<
     this.props.handleChange({
       [name]: value,
       brand_name: get(option, 'batteryBrand.name', null),
+      manufacturer_name: get(option, 'batteryBrand.manufacturer_name', null),
+      manufacturer_id: get(option, 'batteryBrand.manufacturer_id', null),
     });
   };
 

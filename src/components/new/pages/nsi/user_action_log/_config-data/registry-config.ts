@@ -78,8 +78,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
         {
           valueKey: 'repr',
           title: 'Номер/Наименование',
-          type: 'advanced-number',
-          step: 1,
+          type: 'multiselect',
         },
         {
           valueKey: 'structure_id',

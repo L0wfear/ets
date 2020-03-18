@@ -1630,10 +1630,13 @@ class WaybillForm extends React.Component<Props, State> {
     const IS_CLOSED = state?.status === 'closed';
     const IS_DELETE = state?.status === 'deleted';
 
-    const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => {
+    const EMPLOYEES = employeeList.map(({ id, full_name, active, personnel_number, }) => {
+      const personnel_number_txt = personnel_number
+        ? `[${personnel_number}] `
+        : '';
       return ({
         value: id,
-        label: `${full_name} ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
+        label: `${personnel_number_txt}${full_name}  ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
       });
     });
 

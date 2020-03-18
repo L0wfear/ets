@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { RedOptionsStyle } from 'global-styled/global-styled';
 
 export const RouteGeoListContainer = styled.div<{ height?: string; }>`
@@ -16,6 +16,13 @@ export const TitleList = styled.div`
   font-weight: 800;
 `;
 
+export const LiRouteManualInvalid = css`
+  padding: 5px 10px;
+  margin-bottom: 3px;
+  border-radius: 3px;
+`;
+
 export const LiRouteManual = styled.li<{ isInvalid: boolean; }>`
   ${({ isInvalid }) => isInvalid && RedOptionsStyle};
+  ${({ isInvalid }) => isInvalid && LiRouteManualInvalid};
 `;

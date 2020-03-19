@@ -782,8 +782,8 @@ const closingDependencies = {
   ],
   tax_data_rows: [
     {
-      validator: (_, { tax_data, equipment_fuel, hasEquipmentFuelRates }) => {
-        if (equipment_fuel && hasEquipmentFuelRates) {
+      validator: (_, { tax_data }) => {
+        if ((isArray(tax_data) && tax_data.length)) {
           return checkTaxData(tax_data);
         }
       },

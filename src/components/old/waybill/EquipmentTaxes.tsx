@@ -319,7 +319,10 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       = baseFactValue || baseFactValue === 0
         ? (baseFactValue - overallValue)
         : null;
-    tableData.push({ FACT_VALUE: value });
+    tableData.push({
+      FACT_VALUE: value,
+      OPERATION: null,
+    });
     this.setState({ tableData, errorsAll });
     this.props.onChange(tableData);
   };

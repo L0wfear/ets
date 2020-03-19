@@ -330,7 +330,11 @@ export default class Taxes extends React.Component<any, any> {
       = baseFactValue || baseFactValue === 0
         ? (baseFactValue - overallValue)
         : null;
-    tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
+    tableData.push({
+      fuel_correction_rate: correctionRate,
+      FACT_VALUE: value,
+      OPERATION: null,
+    });
     this.setState({ tableData, errorsAll });
     this.props.onChange(tableData);
   };

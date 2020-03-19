@@ -3,10 +3,18 @@ import {
 } from 'api/Services';
 import { get } from 'lodash';
 import { FuelCard } from '../@types/fuelcards.h';
+import { createValidDateTime, createValidDate } from '../../../../../../components/@next/@utils/dates/dates';
 
 export const createFuelCard = async (rawFuelCard): Promise<FuelCard> => {
   const payload = {
     ...rawFuelCard,
+    fuel_card_on_cars: get(rawFuelCard, 'fuel_card_on_cars', []).map((item) => ({
+      ...item,
+      car_id: item.car_id,
+      installed_at: createValidDate(item.installed_at),
+      uninstalled_at: createValidDate(item.uninstalled_at),
+    })),
+    released_at: createValidDateTime(rawFuelCard.released_at),
   };
 
   const response = await FuelCardsService.post(
@@ -25,6 +33,12 @@ export const createFuelCard = async (rawFuelCard): Promise<FuelCard> => {
 export const updateFuelCard = async (fuelCards): Promise<FuelCard> => {
   const payload = {
     ...fuelCards,
+    fuel_card_on_cars: get(fuelCards, 'fuel_card_on_cars', []).map((item) => ({
+      ...item,
+      car_id: item.car_id,
+      installed_at: createValidDate(item.installed_at),
+      uninstalled_at: createValidDate(item.uninstalled_at),
+    })),
   };
 
   const response = await FuelCardsService.path(fuelCards.id).put(

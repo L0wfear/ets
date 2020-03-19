@@ -366,10 +366,14 @@ export const dateInPeriod = (
   startDatePeriod: Moment.Moment | Date | string,
   endDatePeriod: Moment.Moment | Date | string,
   checkedDate: Moment.Moment | Date | string,
+  options: {
+      excludeStart: boolean;
+      excludeEnd: boolean;
+  }
 ) => {
   const range = moment().range(moment(startDatePeriod), moment(endDatePeriod));
 
-  return range.contains(moment(checkedDate));
+  return range.contains(moment(checkedDate), options);
 };
 
 export function setDateTime0am(dateOwn) {

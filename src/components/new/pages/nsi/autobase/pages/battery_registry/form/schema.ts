@@ -5,6 +5,8 @@ import memoizeOne from 'memoize-one';
 import { diffDates, diffDatesByDays, createValidDate, isCrossDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { FuelCard } from '../../../../../../../../redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { isNullOrUndefined } from 'util';
 
 export const validateDateInsideOther = (dates: Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>, battery_to_car: Array<Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>>) => {
   if (!dates.installed_at || !dates.uninstalled_at) {
@@ -18,7 +20,7 @@ export const validateDateInsideOther = (dates: Pick<ValuesOf<BatteryRegistry['ba
   );
 };
 
-export const oldestInstalledDateIndex = (list_elem_to_car: BatteryRegistry['battery_to_car'] | Tire['tire_to_car']) => {
+export const oldestInstalledDateIndex = (list_elem_to_car: BatteryRegistry['battery_to_car'] | Tire['tire_to_car'] | FuelCard['fuel_card_on_cars']) => {
   let olderIndex = 0;
   // Поиск индекса самой старой даты
   if (list_elem_to_car.length) {
@@ -33,6 +35,11 @@ export const oldestInstalledDateIndex = (list_elem_to_car: BatteryRegistry['batt
     return null;
   }
   return olderIndex;
+};
+
+export const requiredOneOfDateEnd = (list_elem_to_car: Array<any>) => {
+  const resArr = list_elem_to_car.filter((elem) => isNullOrUndefined(elem.uninstalled_at));
+  return Boolean(resArr.length > 1);
 };
 
 export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBatteryRegistry> = {
@@ -88,7 +95,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                       )
                   ),
                   uninstalled_at: (
-                    !d.uninstalled_at && installed_at_oldest !== installed_at_current
+                    (!d.uninstalled_at && (installed_at_oldest !== installed_at_current || requiredOneOfDateEnd(battery_to_car)))
                       ? 'Поле "Дата демонтажа" должно быть заполнено'
                       : (
                         d.uninstalled_at

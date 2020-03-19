@@ -10,7 +10,6 @@ import {
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { setDateTime2359, createValidDateTime, setDateTime0am, } from 'components/@next/@utils/dates/dates'
 
 export const validationSchema: SchemaType<ValuesOf<FuelCard['fuel_card_on_cars']>, any> = {
   properties: {
@@ -79,27 +78,15 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
 
 const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, outputListErrors = [], onChange, index, isPermitted, inputList }) => {
-  const prevVal = inputList[index]['installed_at'];
-
-  const handleChange = (_, key, valueNew) => {
-    onChange(
-      index,
-      {
-        [key]: !prevVal
-          ? createValidDateTime(setDateTime0am(valueNew))
-          : valueNew,
-      },
-    );
-  };
+> = ({ value, outputListErrors = [], onChange, index, isPermitted }) => {
   return (
     <ExtField
       type="date"
       label={false}
       date={value}
-      time={true}
+      time={false}
       error={outputListErrors[index]?.installed_at ?? ''}
-      onChange={handleChange}
+      onChange={onChange}
       boundKeys={[index, 'installed_at']}
       disabled={!isPermitted}
       makeGoodFormat
@@ -109,18 +96,7 @@ const InstalledAtRenderer: React.FC<
 
 const UninstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, outputListErrors = [], onChange, index, isPermitted, inputList }) => {
-  const prevVal = inputList[index]['uninstalled_at'];
-  const handleChange = (_, key, valueNew) => {
-    onChange(
-      index,
-      {
-        [key]: !prevVal
-          ? createValidDateTime(setDateTime2359(valueNew))
-          : valueNew,
-      },
-    );
-  };
+> = ({ value, outputListErrors = [], onChange, index, isPermitted }) => {
 
   return (
     <ExtField
@@ -128,8 +104,8 @@ const UninstalledAtRenderer: React.FC<
       label={false}
       date={value}
       error={outputListErrors[index]?.uninstalled_at ?? ''}
-      time={true}
-      onChange={handleChange}
+      time={false}
+      onChange={onChange}
       boundKeys={[index, 'uninstalled_at']}
       disabled={!isPermitted}
       makeGoodFormat

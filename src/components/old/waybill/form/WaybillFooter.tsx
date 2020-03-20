@@ -16,6 +16,7 @@ type IPropsWaybillFooter = {
   isCreating: boolean;
   isDraft: boolean;
   isClosed: boolean;
+  isActive: boolean;
   canSave: boolean;
   canClose: boolean;
   canPrint: boolean;
@@ -34,6 +35,7 @@ type IPropsWaybillFooter = {
     refill: boolean;
     update: boolean;
     departure_and_arrival_values: boolean;
+    update_closed: boolean;
   };
   canEditIfCloseUpdPermission: boolean;
 };
@@ -59,6 +61,22 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
     }
 
     return !canSave;
+  }
+
+  private get isHiddenWaybillSubmitButton(): boolean {
+    const {
+      isPermittedByKey,
+    } = this.props;
+
+    const isHasPermissionToEditWaybill = Boolean(isPermittedByKey.update
+      || isPermittedByKey.update_closed
+      || isPermittedByKey.refill
+      || isPermittedByKey.departure_and_arrival_values);
+
+    if(isHasPermissionToEditWaybill) {
+      return false;
+    }
+
   }
 
   public render(): JSX.Element {
@@ -114,7 +132,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
           <Div
             permissions={savePermissions}
             className={'inline-block'}
-            hidden={(props.state.status === 'closed' && !props.canEditIfClose && !props.canEditIfCloseUpdPermission) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
+            hidden={this.isHiddenWaybillSubmitButton}
           >
             <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={this.isDisabledWaybillSubmitButton}>Сохранить</EtsBootstrap.Button>
           </Div>

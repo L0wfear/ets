@@ -3,11 +3,12 @@ const waybillPermissions = {
   create: 'waybill.create',
   read: 'waybill.read',
   update: 'waybill.update',
-  update_closed: 'waybill.update_closed',
-  plate: 'waybill.plate',
   delete: 'waybill.delete',
-  departure_and_arrival_values: 'waybill.departure_and_arrival_values',
-  refill: 'waybill.refill',
+  // кастомные права
+  update_closed: 'waybill.update_closed', // Путевой лист - Изменить закрытый
+  plate: 'waybill.plate', // Путевой лист - Выдать
+  departure_and_arrival_values: 'waybill.departure_and_arrival_values', // Путевой лист - Показатели выезда и возврата
+  refill: 'waybill.refill', // Путевой лист - Заправки
 };
 
 export default waybillPermissions;

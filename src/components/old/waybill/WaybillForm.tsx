@@ -274,7 +274,6 @@ type State = {
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
-  canEditIfCloseUpdPermission: boolean;
   loadingFields: Record<string, any>;
   fuelRateAllList: Array<any>;
   tooLongFactDates: boolean;
@@ -305,7 +304,6 @@ class WaybillForm extends React.Component<Props, State> {
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
-      canEditIfCloseUpdPermission: null,
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
@@ -439,16 +437,12 @@ class WaybillForm extends React.Component<Props, State> {
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
-            canEditIfCloseUpdPermission: waybill.closed_editable
-              ? this.props.userPermissionsSet.has('waybill.update')
-              : false,
           });
         })
         .catch((e) => {
           console.error(e);  // eslint-disable-line
           this.setState({
             canEditIfClose: false,
-            canEditIfCloseUpdPermission: false,
             origFormState: formState,
           });
         });
@@ -2341,11 +2335,12 @@ class WaybillForm extends React.Component<Props, State> {
                           modalKey={modalKey}
                           hidden={
                             !(IS_CLOSED || IS_ACTIVE)
-                            || state.status === 'draft'
+                            || IS_DRAFT
                             || (IS_CLOSED
                               && state.tax_data
-                              && state.tax_data.length === 0)
-                            || (IS_CLOSED && !state.tax_data)
+                              && state.tax_data.length === 0
+                              && !this.state.canEditIfClose)
+                            || (IS_CLOSED && !state.tax_data && !this.state.canEditIfClose)
                           }
                           readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
                           IS_CLOSED={IS_CLOSED}
@@ -2556,11 +2551,12 @@ class WaybillForm extends React.Component<Props, State> {
                               modalKey={modalKey}
                               hidden={
                                 !(IS_CLOSED || IS_ACTIVE)
-                                || state.status === 'draft'
+                                || IS_DRAFT
                                 || (IS_CLOSED
                                   && state.equipment_tax_data
-                                  && state.equipment_tax_data.length === 0)
-                                || (IS_CLOSED && !state.equipment_tax_data)
+                                  && state.equipment_tax_data.length === 0
+                                  && !this.state.canEditIfClose)
+                                || (IS_CLOSED && !state.equipment_tax_data && !this.state.canEditIfClose)
                               }
                               readOnly={
                                 IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update
@@ -2765,7 +2761,6 @@ class WaybillForm extends React.Component<Props, State> {
             formState={this.props.formState}
             state={state}
             canEditIfClose={!!this.state.canEditIfClose}
-            canEditIfCloseUpdPermission={!!this.state.canEditIfCloseUpdPermission}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}

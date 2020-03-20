@@ -37,7 +37,6 @@ type IPropsWaybillFooter = {
     departure_and_arrival_values: boolean;
     update_closed: boolean;
   };
-  canEditIfCloseUpdPermission: boolean;
 };
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
@@ -49,34 +48,21 @@ const popoverHoverFocus = (
 );
 
 class WaybillFooter extends React.Component<IPropsWaybillFooter> {
-  private get isDisabledWaybillSubmitButton(): boolean {
-    const { isDraft, canSave, state, canEditIfCloseUpdPermission, isClosed } = this.props;
+  private get isHasPermissionToEditWaybill(): boolean {
+    const { isPermittedByKey } = this.props;
 
-    if (isDraft) {
-      return !canSave && !state.canEditIfClose;
-    }
-
-    if (isClosed) {
-      return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
-    }
-
-    return !canSave;
-  }
-
-  private get isHiddenWaybillSubmitButton(): boolean {
-    const {
-      isPermittedByKey,
-    } = this.props;
-
-    const isHasPermissionToEditWaybill = Boolean(isPermittedByKey.update
+    return Boolean(isPermittedByKey.update
       || isPermittedByKey.update_closed
       || isPermittedByKey.refill
       || isPermittedByKey.departure_and_arrival_values);
+  }
+  private get isDisabledWaybillSubmitButton(): boolean {
+    const { canSave } = this.props;
+    return !(canSave && this.isHasPermissionToEditWaybill);
+  }
 
-    if(isHasPermissionToEditWaybill) {
-      return false;
-    }
-
+  private get isHiddenWaybillSubmitButton(): boolean {
+    return !this.isHasPermissionToEditWaybill;
   }
 
   public render(): JSX.Element {

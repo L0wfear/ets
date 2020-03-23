@@ -71,7 +71,6 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       error={outputListErrors[index]?.car_id ?? ''}
       onChange={handleChange}
       disabled={!isPermitted}
-      placeholder="Резерв"
     />
   );
 };

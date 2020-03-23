@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { isArray } from 'util';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -9,7 +10,7 @@ import {
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { SchemaType, NumberPropertie } from 'components/old/ui/form/new/@types/validate.h';
 import { TypesHarvestingUnit } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 const seasonOptions = [
@@ -110,13 +111,21 @@ const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
 
 const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
   const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
-  const properties = get(values , 'validationSchema.properties', []);
-  const propertiesElem = properties.find(
-    (elem) => elem.key === fieldKey,
-  );
+  const properties = values?.validationSchema?.properties;
+
+  let propertiesElem: NumberPropertie<any, any, any> = null;
+  if (properties) {
+    if (isArray(properties)) {                      // если уверен, что это точно объект, то удали
+      propertiesElem = properties.find(
+        (elem) => elem.key === fieldKey,
+      );
+    } else {
+      propertiesElem = properties[fieldKey] as NumberPropertie<any, any, any>;
+    }
+  }
   const inputType = get(propertiesElem, 'type', 'string');
 
-  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+  return (<ExtField id={`${index}_${fieldKey}`} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
 };
 // "type": "ПУ", // Тип прицепа, навесного уборочного агрегата'
 // "will_checked_cnt": 10, // Всего подлежит подготовке

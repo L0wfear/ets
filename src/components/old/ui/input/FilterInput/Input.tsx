@@ -43,7 +43,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     const idValueEnd = id ? `${modalKey ? `${modalKey}-` : ''}${id}-end-value` : undefined;
 
     return (
-      <div className="datepickers">
+      <div className="inputs">
         <DatePicker
           id={idValueBeg}
           date={value[0]}

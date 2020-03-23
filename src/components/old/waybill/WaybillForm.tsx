@@ -1304,19 +1304,17 @@ class WaybillForm extends React.Component<Props, State> {
     if (isNullOrUndefined(formState.equipment_fuel)) {
       this.handleChange('equipment_fuel', false);
     } else if (formState.equipment_fuel) {
-      if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
-        await this.clearFuelEquipmentData(
-          {
-            is_one_fuel_tank: true,
-            motohours_equip_start: null,
-            equipment_fuel: false,
-            ...setEmptyFieldByKey(fieldToCheckHasData),
-          },
-          true,
-          false,
-          'equipment_fuel',
-        );
-      }
+      await this.clearFuelEquipmentData(
+        {
+          is_one_fuel_tank: true,
+          motohours_equip_start: null,
+          equipment_fuel: false,
+          ...setEmptyFieldByKey(fieldToCheckHasData),
+        },
+        true,
+        false,
+        'equipment_fuel',
+      );
     }
   };
 

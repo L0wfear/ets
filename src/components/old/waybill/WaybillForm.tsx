@@ -1234,7 +1234,7 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleIsOneFuelTank = async (is_one_fuel_tank) => {
     const {
-      formState: { car_id },
+      formState: { car_id, equipment_fuel, },
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
@@ -1253,9 +1253,11 @@ class WaybillForm extends React.Component<Props, State> {
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
         const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+
         this.handleMultipleChange({
           ...closedEquipmentData,
           ...changeObj,
+          equipment_fuel,
         });
       });
     }

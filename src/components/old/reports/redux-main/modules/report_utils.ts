@@ -99,7 +99,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
       }
     });
 
-    allCols.filter(({ keyName, abs, percent }) => {
+    allCols.filter(({ keyName, abs, percent, precision, }) => {
       if (abs) { // 2й вариант решения -- убрать abs если в значении '-'
         const absVal = Math.abs(newItem[keyName]);
         newItem[keyName] = isNaN(absVal)
@@ -115,7 +115,10 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
             newItem[keyName] = 0;
           } else {
             const percentValue = numerator / denominator * 100;
-            newItem[keyName] = percentValue > 0 ? percentValue.toFixed(2) : 0;
+            let newVal = precision || precision === 0
+              ? percentValue?.toFixed(precision).replace(',', '.')
+              : percentValue?.toFixed(2).replace(',', '.');
+            newItem[keyName] = percentValue > 0 ? newVal : 0;
           }
         } catch (e) {
           newItem[keyName] = 0;
@@ -204,8 +207,8 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             const onePercentVal = (child.route_left_percentage + child.route_traveled_percentage) / 100;
             return {
               ...child,
-              route_left_percentage: onePercentVal ? (child.route_left_percentage / onePercentVal).toFixed(2) : 0,
-              route_traveled_percentage: onePercentVal ? (child.route_traveled_percentage / onePercentVal).toFixed(2) : 0,
+              route_left_percentage: onePercentVal ? (child.route_left_percentage / onePercentVal).toFixed(0) : 0,
+              route_traveled_percentage: onePercentVal ? (child.route_traveled_percentage / onePercentVal).toFixed(0) : 0,
             };
           }
 

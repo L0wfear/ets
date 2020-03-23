@@ -42,12 +42,19 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
-export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, allCols, aggr_fields, filedsRule, uniqParams?: { [k: string]: { fieldKey: string; arrayKey: string; }; },) => {
+export const makeSummer = (
+  [...newArr],
+  [...data],
+  [col, ...cols]: Array<any>,
+  allCols,
+  aggr_fields,
+  filedsRule,
+) => {
   if (col) {
     newArr.push(
       ...Object.values(groupBy(data, col.keyName))
         .reduce((newArrTemp, rows) =>
-          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule, uniqParams),
+          makeSummer(newArrTemp, rows, cols, allCols, aggr_fields, filedsRule),
         [],
         ),
     );
@@ -63,23 +70,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: Array<any>, a
       ...data.reduce((summObj, row) => ({
         ...summObj,
         ...aggr_fields.reduce((summ, key) => {
-
-          let uniqSetList = new Set([]); // DITETS19-1556 кол-во уникальных ТС по сумме полей из uniqParams.arrayKey(gov_numbers)
-          if(uniqParams && uniqParams[key]) {
-            uniqSetList = new Set(data.reduce((setList, dataVal ) => {
-              return [
-                ...setList,
-                ...get(dataVal, `${key}.${ get(uniqParams, `${key}.arrayKey`)}`, []),
-              ];
-            }, []));
-          }
-
-          const summValByKey = uniqParams
-            ? uniqParams && uniqParams[key] && key === uniqParams[key]?.fieldKey
-              ? uniqSetList.size
-              : summRowWithAll(row[key], summObj[key] || 0)
-            : summRowWithAll(row[key], summObj[key] || 0);
-
+          const summValByKey = summRowWithAll(row[key], summObj[key] || 0);
           return ({
             ...summ,
             [key]: summValByKey,
@@ -177,24 +168,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
           return { key, value };
         });
 
-        const uniqParams = reportKey === 'car_usage_report' // пока так, если будут еще подобные отчеты, сделать switch
-          ? {
-            total_cars: {
-              fieldKey: 'total_cars',
-              arrayKey: 'gov_numbers'
-            },
-            ready_cars: {
-              fieldKey: 'ready_cars',
-              arrayKey: 'gov_numbers'
-            },
-            not_ready_cars: {
-              fieldKey: 'not_ready_cars',
-              arrayKey: 'gov_numbers'
-            },
-          }
-          : null;
-
-        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, [], uniqParams).map((child, index) => {
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
           child[uniqName] = index + 1;
 
           filedsRule.forEach(({ key, value: { force_value }}) => {

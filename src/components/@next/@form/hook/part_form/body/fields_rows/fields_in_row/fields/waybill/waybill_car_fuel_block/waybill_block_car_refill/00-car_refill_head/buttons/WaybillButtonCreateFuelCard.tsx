@@ -25,7 +25,6 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
     const { page } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(props.formDataKey, 'structure_id');
     const fuel_type = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_type']>(props.formDataKey, 'fuel_type');
-    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
 
     const handleCreateFuelCard = React.useCallback(
       () => {
@@ -61,12 +60,11 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
         if (showStatus) {
           partialFuelCard.structure_id = structure_id;
           partialFuelCard.fuel_type = fuel_type;
-          partialFuelCard.car_id = car_id;
         }
 
         return partialFuelCard;
       },
-      [structure_id, fuel_type, showStatus, car_id],
+      [structure_id, fuel_type, showStatus],
     );
 
     return (

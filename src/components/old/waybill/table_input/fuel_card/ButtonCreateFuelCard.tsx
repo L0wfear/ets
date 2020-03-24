@@ -14,7 +14,6 @@ type ButtonCreateFuelCardOwnProps = {
   handleUpdateFuelCard: () => any;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
-  car_id: Waybill['car_id'];
   buttonWidth: number;
 
   disabled: boolean;
@@ -58,12 +57,11 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
         if (showStatus) {
           partialFuelCard.structure_id = props.structure_id;
           partialFuelCard.fuel_type = props.fuel_type;
-          partialFuelCard.car_id = props.car_id;
         }
 
         return partialFuelCard;
       },
-      [props.structure_id, props.fuel_type, showStatus, props.car_id],
+      [props.structure_id, props.fuel_type, showStatus],
     );
 
     return (

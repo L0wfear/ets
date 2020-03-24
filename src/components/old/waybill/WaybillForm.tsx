@@ -2316,6 +2316,8 @@ class WaybillForm extends React.Component<Props, State> {
                           date_for_valid={{
                             fact_departure_date: state.fact_departure_date,
                             plan_departure_date: state.plan_departure_date,
+                            plan_arrival_date: state.plan_arrival_date,
+                            fact_arrival_date: state.fact_arrival_date,
                           }}
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
@@ -2531,6 +2533,8 @@ class WaybillForm extends React.Component<Props, State> {
                               date_for_valid={{
                                 fact_departure_date: state.fact_departure_date,
                                 plan_departure_date: state.plan_departure_date,
+                                plan_arrival_date: state.plan_arrival_date,
+                                fact_arrival_date: state.fact_arrival_date,
                               }}
                               IS_DRAFT_OR_ACTIVE={
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE

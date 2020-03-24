@@ -12,9 +12,7 @@ import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
-import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-import * as moment from 'moment';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -36,6 +34,8 @@ type Props = {
   date_for_valid: {
     fact_departure_date: Waybill['fact_departure_date'];
     plan_departure_date: Waybill['plan_departure_date'];
+    plan_arrival_date: Waybill['plan_arrival_date'];
+    fact_arrival_date: Waybill['fact_arrival_date'];
   };
   is_one_fuel_tank?: boolean;
   boundKey: string;
@@ -168,8 +168,11 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       },
       [fuelCardIdOptions, typeIdOptions, props.array],
     );
-    const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
-    const plan_departure_date = createValidDateTime(get(props, 'date_for_valid.plan_departure_date'));
+    const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
+    const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
+
+    const plan_departure_date = createValidDate(get(props, 'date_for_valid.plan_departure_date'));
+    const plan_arrival_date = createValidDate(get(props, 'date_for_valid.plan_arrival_date'));
 
     const handleUpdateFuelCard = React.useCallback(
       async () => {
@@ -182,24 +185,17 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           payload.fuel_type = props.fuel_type;
         }
 
-        const time = await dispatch(
-          actionLoadTimeMoscow(
-            {},
-            {
-              page: props.page,
-              path: props.path,
-            },
-          ));
-
-        const timeFromWaybill = fact_departure_date
-          ? fact_departure_date
-          : plan_departure_date;
-
-        const valid_at = moment(time.date).diff(moment(timeFromWaybill), 'minutes') <= 0
-          ? timeFromWaybill
-          : time.date;
-
-        payload.valid_at = valid_at;
+        const validPeriod = fact_departure_date && fact_arrival_date
+          ? {
+            date_start: fact_departure_date,
+            date_end: fact_arrival_date,
+          }
+          : {
+            date_start: plan_departure_date,
+            date_end: plan_arrival_date,
+          };
+        payload.date_start = validPeriod.date_start;
+        payload.date_end = validPeriod.date_end;
         payload.is_archive = false;
 
         if (isCarRefilBlock) {
@@ -231,6 +227,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         plan_departure_date,
         props.page,
         props.path,
+        fact_arrival_date,
+        plan_arrival_date,
       ],
     );
 

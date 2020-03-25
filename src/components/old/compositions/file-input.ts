@@ -94,7 +94,7 @@ export const fileCountLimiter = withHandlers({
       return;
     }
 
-    const sumFileSize = allFiles.reduce((prev, curr) => prev + getFileSize(curr), 0);
+    const sumFileSize = newFiles.reduce((prev, curr) => prev + getFileSize(curr), 0);
 
     if (sumFileSize > maxSize) {
       global.NOTIFICATION_SYSTEM.notify(`Максимальный суммарный объём всех файлов для загрузки не должен превышать ${MAX_SUM_FILE_SIZE_MB} Мб`, 'warning');

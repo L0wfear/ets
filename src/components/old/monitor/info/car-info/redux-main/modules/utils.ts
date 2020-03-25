@@ -174,7 +174,7 @@ export const checkAndModifyTrack = async (
               true,
             )}`,
             type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-            value: `${Math.abs(Number(event.event_val.toFixed(2)))} л`,
+            value: `${Math.abs(Number(event.event_val.toFixed(3)))} л`,
           };
         }),
       );

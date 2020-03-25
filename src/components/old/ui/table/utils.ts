@@ -183,7 +183,7 @@ export const DataTableInputOutputListErrors = (inputList: Array<any>, outputList
       ...validate(
         validationSchema,
         rowData,
-        rowData,
+        {},
         rowData,
       ),
     };

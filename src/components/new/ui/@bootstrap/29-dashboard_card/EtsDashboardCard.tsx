@@ -32,7 +32,7 @@ export const EtsDashboardCardContainer = styled.div<{ themeName?: keyof typeof t
 
   box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.1);
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 15px 0px; */
-  background-color: #ffffff;
+  background-color: #eeeeee;
 
   ul {
     padding-left: 20px;

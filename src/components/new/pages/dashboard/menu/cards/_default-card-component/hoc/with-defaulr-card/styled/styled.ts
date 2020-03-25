@@ -18,7 +18,7 @@ export const CardTitleContainer = styled.div`
     height: 1px;
     bottom: 1px;
     left: 20px;
-    /* background-color: #d6d6d6; */
+    background-color: #d6d6d6;
   }
 `;
 

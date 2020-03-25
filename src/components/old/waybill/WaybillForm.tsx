@@ -573,7 +573,7 @@ class WaybillForm extends React.Component<Props, State> {
         });
     }
     
-    if(car_id && IS_CREATING || IS_DRAFT) {
+    if(car_id && IS_CREATING) {
       await this.refresh(true);
     }
 

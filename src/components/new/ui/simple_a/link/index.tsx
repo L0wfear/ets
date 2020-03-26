@@ -83,8 +83,6 @@ const SimpleLinkA: React.FC<PropsSimpleLinkA> = React.memo(
       ? getShortTitle(title, 8)
       : title;
 
-    console.log('titleText === ', { titleText });
-
     return (
       <SimpleLinkAStyled
         id={id}

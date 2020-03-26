@@ -3,9 +3,9 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WaybillFormWrapProps } from 'components/old/waybill/WaybillFormWrap';
 import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
-import { getRequiredFieldToFixed } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import { isNumber, isArray } from 'util';
+import { isNumber, isArray, isString } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
@@ -596,8 +596,14 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     comment: {
       title: 'Комментарий',
       type: 'string',
-      required: false,
-      maxLength: 4000,
+      dependencies: [
+        (value, { status }) => {
+          const minLength = 4000;
+          if(status !== 'deleted' && value && isString(value) && value.length > minLength ) {
+            return getMinLengthError(minLength);
+          }
+        }
+      ],
     },
     equipment_tax_data: {
       title: 'Расчет топлива по норме для оборудования',

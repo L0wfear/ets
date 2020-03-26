@@ -17,6 +17,7 @@ type IPropsWaybillFooter = {
   isDraft: boolean;
   isClosed: boolean;
   isActive: boolean;
+  isDelete: boolean;
   canSave: boolean;
   canClose: boolean;
   canPrint: boolean;
@@ -57,8 +58,8 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
       || isPermittedByKey.departure_and_arrival_values);
   }
   private get isDisabledWaybillSubmitButton(): boolean {
-    const { canSave } = this.props;
-    return !(canSave && this.isHasPermissionToEditWaybill);
+    const { canSave, isDelete } = this.props;
+    return !((canSave || isDelete) && this.isHasPermissionToEditWaybill);
   }
 
   private get isHiddenWaybillSubmitButton(): boolean {

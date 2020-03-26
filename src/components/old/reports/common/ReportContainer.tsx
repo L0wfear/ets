@@ -153,7 +153,7 @@ class ReportContainer extends React.Component<
       let rows = get(old_data, ['result', 'rows'], null);
       const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
       if (deepArr) {
-        rows = rows.reduce((newArr: Array<any>, blockData) => {
+        rows = rows && rows.reduce((newArr: Array<any>, blockData) => {
           newArr.push(...blockData.rows);
 
           return newArr;
@@ -165,9 +165,9 @@ class ReportContainer extends React.Component<
         this.setState({
           filterValues: Object.entries(filterValues).reduce(
             (newObj, [key, data]: any) => {
-              if (rows.some((rowData) => key in rowData)) {
+              if (rows && rows.some((rowData) => key in rowData)) {
                 if (data.type === 'multiselect') {
-                  if (rows.some((rowData) => {
+                  if (rows && rows.some((rowData) => {
                     const keyValue = rowData[key];
                     return data.value.includes(keyValue);
                   })) {
@@ -193,7 +193,7 @@ class ReportContainer extends React.Component<
         let rows = get(old_data, ['result', 'rows'], null);
         const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
         if (deepArr) {
-          rows = rows.reduce((newArr: Array<any>, blockData) => {
+          rows = rows && rows.reduce((newArr: Array<any>, blockData) => {
             newArr.push(...blockData.rows);
 
             return newArr;
@@ -452,9 +452,11 @@ class ReportContainer extends React.Component<
       `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
     );
 
+    const prevMetaFields = get(this.props, 'prevMeta.fields', []);
+
     const filterValues = Object.entries(this.state.filterValues).reduce(
       (newObj, [key, data]: any) => {
-        if (this.props.prevMeta.fields.some((elem) => !isNullOrUndefined(elem[key]))) {
+        if (prevMetaFields.some((elem) => !isNullOrUndefined(elem[key]))) {
           newObj[key] = data;
         }
         return newObj;

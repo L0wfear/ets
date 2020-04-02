@@ -21,15 +21,19 @@ const validateFuelCardId = (
   fuelCardsList: Array<FuelCard>,
   fuel_type: Waybill['fuel_type'],
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
+  formState,
 ) => {
   let fuel_card_id = '';
-  const needSelectFuelCard = !rowData.fuel_card_id && (refillTypeList.find(({ id }) => id === rowData.type_id)?.is_fuel_card_required ?? false);
+  const needSelectFuelCard = !rowData.fuel_card_id;
 
   const availableFuelCard = makeFuelCardIdOptions(
     fuelCardsList,
     [rowData],
     notFiltredFuelCardsIndex,
   );
+
+  const IS_CLOSED = formState.status === 'close';
+  const IS_DELETE = formState?.delete;
 
   const isValidSelectedFuelCard = availableFuelCard.some(
     (optionData) => optionData.rowData.id === rowData.fuel_card_id,
@@ -39,11 +43,8 @@ const validateFuelCardId = (
     if (!availableFuelCard.length) {
       fuel_card_id
         = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
-    } else {
-      /**
-       * @deprecated
-       * fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
-       */
+    } else if(rowData.type_id === 1 && !IS_CLOSED && !IS_DELETE) {
+      fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
     }
   } else if (rowData.fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(
@@ -72,6 +73,7 @@ const checkCarRefill = memoizeOne(
     fuelCardsList: Array<FuelCard>,
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
+    formState,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -84,6 +86,7 @@ const checkCarRefill = memoizeOne(
           fuelCardsList,
           fuel_type,
           notFiltredFuelCardsIndex,
+          formState,
         ),
         value:
           !rowData.value && rowData.value !== 0
@@ -104,6 +107,7 @@ const checkEquipmentCarRefill = memoizeOne(
     fuelCardsList: Array<FuelCard>,
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
+    formState,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -116,6 +120,7 @@ const checkEquipmentCarRefill = memoizeOne(
           fuelCardsList,
           fuel_type,
           notFiltredFuelCardsIndex,
+          formState,
         ),
         value:
           !rowData.value && rowData.value !== 0
@@ -398,6 +403,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             fuelCardsList,
             formState.fuel_type,
             notFiltredFuelCardsIndex,
+            formState,
           );
         },
       ],
@@ -408,15 +414,16 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (
           equipment_refill,
-          formStatet,
+          formState,
           { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
         ) => {
           return checkEquipmentCarRefill(
             equipment_refill,
             refillTypeList,
             equipmentFuelCardsList,
-            formStatet.equipment_fuel_type,
+            formState.equipment_fuel_type,
             notFiltredFuelCardsIndex,
+            formState,
           );
         },
       ],

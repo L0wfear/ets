@@ -59,7 +59,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                 const released_at_date = createValidDateDots(released_at);
                 const date_end_date = createValidDateDots(date_end);
                 const validDateEnd = createValidDate(date_end);
-                const validDateReleasedAt = createValidDate(released_at_date);
+                const validDateReleasedAt = createValidDate(released_at);
 
                 return ({
                   car_id: (
@@ -75,7 +75,9 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                           ? 'Поле "Дата с" не должно пересекаться с другими записями'
                           : (
                             !dateInPeriod(validDateReleasedAt, validDateEnd, d.installed_at, { excludeStart: false, excludeEnd: false, })
-                              ? `"Дата с" должна входить в период с ${released_at_date} по ${date_end_date}`
+                              ? (!released_at_date || !date_end_date)
+                                ? '«Дата с» должна входить в период действия карты'
+                                : `"Дата с" должна входить в период с ${released_at_date} по ${date_end_date}`
                               : ''
                           )
                       )
@@ -93,7 +95,9 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                                   ? 'Поле "Дата по" должна быть позже "Дата c"'
                                   : (
                                     !dateInPeriod(validDateReleasedAt, validDateEnd, d.uninstalled_at, { excludeStart: false, excludeEnd: false, })
-                                      ? `"Дата по" должна входить в период с ${released_at_date} по ${date_end_date}`
+                                      ? (!released_at_date || !date_end_date)
+                                        ? '«Дата по» должна входить в период действия карты'  
+                                        : `"Дата по" должна входить в период с ${released_at_date} по ${date_end_date}`
                                       : ''
                                   )
                               )

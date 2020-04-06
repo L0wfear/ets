@@ -28,7 +28,7 @@ const MissionReportEntriesWithoutWorkTable = (props) => {
   const tableMeta = getTableMeta(props);
 
   if (!(props.data && props.data.length)) {
-    return <div>Нет данных о прохождении задания</div>;
+    return <div></div>;
   }
 
   return (

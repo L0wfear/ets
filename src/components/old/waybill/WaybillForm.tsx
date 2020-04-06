@@ -1743,8 +1743,6 @@ class WaybillForm extends React.Component<Props, State> {
         && !this.state.missionHasError?.hasError
       : this.props.canSave && !this.state.missionHasError?.hasError;
     
-    console.log('lastWaybill === ', { lastWaybill });
-
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"

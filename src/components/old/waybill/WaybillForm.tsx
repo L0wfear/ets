@@ -573,6 +573,13 @@ class WaybillForm extends React.Component<Props, State> {
       await this.refresh(true);
     }
 
+    if(car_id && IS_DRAFT) {
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        this.setState({ lastWaybill, });
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -1736,6 +1743,8 @@ class WaybillForm extends React.Component<Props, State> {
         && !this.state.missionHasError?.hasError
       : this.props.canSave && !this.state.missionHasError?.hasError;
     
+    console.log('lastWaybill === ', { lastWaybill });
+
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"

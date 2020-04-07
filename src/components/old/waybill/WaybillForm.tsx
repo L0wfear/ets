@@ -573,7 +573,7 @@ class WaybillForm extends React.Component<Props, State> {
       await this.refresh(true);
     }
 
-    if(car_id && IS_DRAFT) {
+    if(car_id && (IS_DRAFT || IS_ACTIVE)) {
       await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
       ).then((lastWaybill) => {

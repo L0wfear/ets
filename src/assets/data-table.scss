@@ -67,6 +67,7 @@
     & .custom-data-table {
       table-layout: auto;
       word-break: normal;
+      border-collapse: separate;
       
       [data-title^="date_"], [data-title="birthday"], [data-title="phone"] {
         width: 130px;
@@ -104,6 +105,7 @@
           background-color: rgba(247, 247, 247, 1);
           box-shadow: inset #c1c1c1 0px -2px; // бордер криво работает
           vertical-align: middle;
+          position: sticky;
           &[data-title="number"] {
             white-space: nowrap;
           }

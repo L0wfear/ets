@@ -47,7 +47,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
         },
         {
           valueKey: 'remote_ip',
-          title: 'IP адрес',
+          title: 'IP-адрес',
           type: 'multiselect',
         },
         {
@@ -110,7 +110,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           },
           {
             key: 'remote_ip',
-            title: 'IP адрес',
+            title: 'IP-адрес',
           },
           {
             key: 'user_login',

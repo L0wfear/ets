@@ -186,7 +186,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
-            >Сформировать отчетsss</EtsBootstrap.Button>
+            >Сформировать отчет</EtsBootstrap.Button>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </>

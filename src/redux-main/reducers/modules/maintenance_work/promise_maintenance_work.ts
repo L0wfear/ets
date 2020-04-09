@@ -12,7 +12,9 @@ export const submitMaintenanceWork = async (maintenanceWork: MaintenanceWork) =>
       },
       false,
       'json',
-    );
+    ).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+    });
   } else {
     response = await MaintenanceWorkService.post(
       {
@@ -21,7 +23,9 @@ export const submitMaintenanceWork = async (maintenanceWork: MaintenanceWork) =>
       },
       false,
       'json',
-    );
+    ).then(() => {
+      global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+    });
   }
 
   const result: MaintenanceWork = {

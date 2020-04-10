@@ -18,6 +18,7 @@ import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase
 import { get } from 'lodash';
 import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import {isArray} from "util";
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): EtsAction<IStateInspectAutobase> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -209,10 +210,15 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
     action,
   };
 
+  const newData = {
+    ...data,
+    is_hard_surface: isArray(data.is_hard_surface) ? data.is_hard_surface : [data.is_hard_surface],
+  };
+
   const inspectionAutobase = await dispatch(
     actionUpdateInspect(
       inspectAutobase.id,
-      data,
+      newData,
       inspectAutobase.files,
       meta,
       payload,

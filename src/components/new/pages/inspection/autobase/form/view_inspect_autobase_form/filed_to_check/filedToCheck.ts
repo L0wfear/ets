@@ -44,7 +44,7 @@ export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
     type: 'boolean',
     sub: 20,
     hidden: 'no_fencing',
-    className: 'checkbox-input flex-reverse',
+    className: 'checkbox-input flex-reverse', 
   },
   {
     key: 'is_not_protected',

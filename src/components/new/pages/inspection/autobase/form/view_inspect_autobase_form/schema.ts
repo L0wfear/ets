@@ -126,7 +126,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       dependencies: [
         (value, { cnt_repair_posts }, { type }) => {
           if (type === INSPECT_TYPE_FORM.list) {
-            if (value != null && cnt_repair_posts && value > cnt_repair_posts) {
+            if (value && cnt_repair_posts && value > cnt_repair_posts) {
               return getRequiredFieldMoreEqualThen('Постов в неудовлетворительном состоянии (шт.)', 'Количество постов для обслуживания, ремонта техники (шт.)');
             }
           }

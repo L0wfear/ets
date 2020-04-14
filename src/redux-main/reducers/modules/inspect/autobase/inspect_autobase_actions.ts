@@ -18,7 +18,7 @@ import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase
 import { get } from 'lodash';
 import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
-import {isArray} from "util";
+import { isArray, isNullOrUndefined } from "util";
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): EtsAction<IStateInspectAutobase> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -194,7 +194,7 @@ export const actionCreateInspectAutobase = (payloadOwn: Parameters<typeof promis
 };
 
 export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateInspectionAutobase>> => async (dispatch) => {
-  const data = cloneDeep(inspectAutobase.data);
+  let data = cloneDeep(inspectAutobase.data);
   const agents_from_gbu = get(inspectAutobase, 'agents_from_gbu', defaultInspectAutobase.agents_from_gbu);
   const commission_members = get(inspectAutobase, 'commission_members', defaultInspectAutobase.commission_members);
   const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
@@ -210,15 +210,17 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
     action,
   };
 
-  const newData = {
-    ...data,
-    is_hard_surface: isArray(data.is_hard_surface) ? data.is_hard_surface : [data.is_hard_surface],
-  };
+  if (!isNullOrUndefined(data)) {
+    data = {
+      ...data,
+      is_hard_surface: isArray(data.is_hard_surface) ? data.is_hard_surface : [data.is_hard_surface],
+    }
+  }
 
   const inspectionAutobase = await dispatch(
     actionUpdateInspect(
       inspectAutobase.id,
-      newData,
+      data,
       inspectAutobase.files,
       meta,
       payload,

@@ -73,6 +73,7 @@ export type Route = {
   type: 'mixed' | 'simple_dt' | 'points';
   work_types: Array<WorkTypeData>;
   work_type_code: number;
+  work_type_name: string;
 };
 
 export type IStateRoutes = {

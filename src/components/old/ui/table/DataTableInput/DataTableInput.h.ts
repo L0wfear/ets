@@ -19,6 +19,10 @@ export type ISharedPropsDataTableInput = {
   path: string;
   tableTitle?: string;
   hideButtons?: boolean;
+  buttonsDisable?: (selectedField) => {
+    addButtonDisable: boolean;
+    removeButtonDisable: boolean;
+  };
 };
 
 export type IStateDataTableInput = {

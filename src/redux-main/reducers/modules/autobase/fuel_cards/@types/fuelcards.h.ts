@@ -4,6 +4,7 @@ export type FuelCardOnCars = {
   company_id: number;
   installed_at: string;
   uninstalled_at: string;
+  is_used_in_waybill: boolean;
   // для таблички
   customId?: number;
   isChecked?: boolean;

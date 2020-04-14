@@ -45,6 +45,7 @@ const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   company_id: null,
   installed_at: null,
   uninstalled_at: null,
+  is_used_in_waybill: false,
   // для таблички
   customId: null,
   isChecked: false,

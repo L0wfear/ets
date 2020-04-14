@@ -7,10 +7,26 @@ import DataTableInput from 'components/old/ui/table/DataTableInput/DataTableInpu
 import { meta, renderers, validationSchema } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/vehicle-block/table-schema';
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { get } from 'lodash';
 
 type IPropsFuelCardsToVehicleBlock = {
   fuelCardsId: number;
 } & ISharedPropsDataTableInput & IExternalPropsDataTableInputWrapper;
+
+const buttonsDisable = (selectedField: FuelCardOnCars) => {
+  const removeButtonDisable = get(selectedField, 'is_used_in_waybill', false );
+
+  return selectedField
+    ? {
+      addButtonDisable: false,
+      removeButtonDisable,
+    }
+    : {
+      addButtonDisable: false,
+      removeButtonDisable: false,
+    };
+};
 
 const FuelCardsToVehicleBlock: React.FC<IPropsFuelCardsToVehicleBlock> = React.memo(
   (props) => {
@@ -26,6 +42,7 @@ const FuelCardsToVehicleBlock: React.FC<IPropsFuelCardsToVehicleBlock> = React.m
         removeButtonLable="Удалить ТС"
         stackOrder
         fuelCardsAvailableCarList={fuelCardsAvailableCarList}
+        buttonsDisable={buttonsDisable}
 
         {...props}
       />

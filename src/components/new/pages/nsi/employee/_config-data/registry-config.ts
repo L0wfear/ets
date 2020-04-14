@@ -16,6 +16,9 @@ export const config: TypeConfigData<Employee> = {
     getRegistryData: {
       entity: 'employee',
       format: 'employee',
+      payload: {
+        actual: true,
+      }
     },
     getBlobData: {
       entity: 'employee/export',

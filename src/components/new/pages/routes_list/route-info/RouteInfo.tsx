@@ -24,17 +24,21 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
         <RouteName isDisplay={Boolean(!props.noRouteName)}>
           <EtsBootstrap.Col md={8}>
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={4}>
+              <EtsBootstrap.Col md={3}>
                 <b>Наименование маршрута:</b>
                 <div>{route.name}</div>
               </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={4}>
+              <EtsBootstrap.Col md={3}>
                 <b>Технологическая операция:</b>
                 <div>{route.technical_operation_name}</div>
               </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={4}>
+              <EtsBootstrap.Col md={3}>
                 <b>Элемент:</b>
                 <div>{route.municipal_facility_name}</div>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
+                <b>Способ уборки:</b>
+                <div>{route.work_type_name}</div>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>

@@ -581,13 +581,13 @@ class WaybillFormWrap extends React.Component<Props, State> {
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
     console.info(field, value); // eslint-disable-line
-
+  
     formState = calculateWaybillMetersDiff(formState, field, value);
-
+  
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
       const lastTax = last(formState.tax_data);
-
+  
       if (lastTax) {
         if (field === 'odometr_end' && formState.odometr_diff >= 0) {
           if (lastTax.is_excluding_mileage) {
@@ -613,14 +613,29 @@ class WaybillFormWrap extends React.Component<Props, State> {
             lastTax.RESULT = Taxes.getResult(lastTax);
           }
         }
-        if (
-          field === 'motohours_equip_end'
-          && formState.equipment_tax_data
-          && formState.equipment_tax_data.length
-          && formState.motohours_equip_diff > 0
+      }
+    } 
+    
+    if (formState.equipment_tax_data && formState.equipment_tax_data.length) {
+      const lastEquipmentTax = last(formState.equipment_tax_data);
+      if (lastEquipmentTax) {
+        if(
+          (field === 'equipment_tax_data'
+          && !lastEquipmentTax.OPERATION
+          && formState.motohours_equip_diff > 0)
+          || (field === 'motohours_equip_end'
+          && formState.motohours_equip_diff > 0)
+          ) {
+            lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+            lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+        } else if (
+          field === 'equipment_tax_data'
+          && lastEquipmentTax.OPERATION
+          && lastEquipmentTax.FACT_VALUE > 0
         ) {
-          const lastEquipmentTax = last(formState.equipment_tax_data);
-          lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+        } else {
+          lastEquipmentTax.FACT_VALUE = null;
           lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         }
       }

@@ -526,7 +526,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-        || formErrors.motohours_equip_end
       );
 
     newState.canClose = canCloseWrap(formErrors);
@@ -609,25 +608,18 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             lastTax.RESULT = Taxes.getResult(lastTax);
           }
         }
-      }
-    }
-    
-    if (formState.equipment_tax_data && formState.equipment_tax_data.length) {
-      const lastEquipmentTax = last(formState.equipment_tax_data);
-      if (lastEquipmentTax) {
         if (
           field === 'motohours_equip_end'
+          && formState.equipment_tax_data
+          && formState.equipment_tax_data.length
           && formState.motohours_equip_diff > 0
         ) {
+          const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
-        } else {
-          lastEquipmentTax.FACT_VALUE = null;
           lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         }
       }
     }
-
     this.handleFieldsChange(formState);
   };
 

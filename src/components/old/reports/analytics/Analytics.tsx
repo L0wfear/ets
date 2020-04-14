@@ -43,7 +43,7 @@ type Props = (
 
 class Analytics extends React.Component<Props, any> {
   reports = [
-    'Маршруты',
+    'Маршруты (действующие)',
     'Задания',
     'Путевые листы',
     'Транспортные средства',

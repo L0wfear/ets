@@ -8,7 +8,6 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import { getToday859am, getYesterday9am , createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { GEOZONE_OBJECTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
@@ -55,6 +54,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end,
       object_type,
     } = this.getState();
+
+    const GEOZONE_OBJECTS = [
+      { value: 'odh', label: 'Объект дорожного хозяйства' },
+      { value: 'dt', label: 'Дворовая территория' },
+    ];
 
     return (
       <>

@@ -264,7 +264,7 @@ export const getNotifications = (): EtsAction<Promise<void>> => async (dispatch,
 };
 
 export const getAdmNotifications = () => async (dispatch, getState) => {
-  const { payload: { notify } } = await dispatch(
+  const { notify } = await dispatch(
     userNotificationAdmGet(
       {},
     ),

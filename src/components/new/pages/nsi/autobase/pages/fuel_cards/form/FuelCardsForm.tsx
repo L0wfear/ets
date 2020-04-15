@@ -46,6 +46,10 @@ const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   installed_at: null,
   uninstalled_at: null,
   is_used_in_waybill: false,
+  id: null,
+  fuel_card_id: null,
+  number: null,
+  garage_number: null,
   // для таблички
   customId: null,
   isChecked: false,
@@ -164,7 +168,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 onChange={props.handleChange}
                 error={errors.released_at}
                 boundKeys="released_at"
-                disabled={!props.isPermitted}
+                disabled={!props.isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -179,7 +183,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 onChange={props.handleChange}
                 error={errors.date_end}
                 boundKeys="date_end"
-                disabled={!props.isPermitted}
+                disabled={!props.isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -218,6 +222,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                     onChange={props.handleChange}
                     boundKeys="fuel_card_on_cars"
                     inputList={state.fuel_card_on_cars || []}
+                    origin_fuel_card_on_cars={state.origin_fuel_card_on_cars || []}
                     outerValidate
                     errors={errors.fuel_card_on_cars}
                     fuelCardsId={state.id}
@@ -285,6 +290,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
         ...props.element,
         company_id: companiesDefaultValue,
         structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : get(props, 'element.structure_id'),
+        origin_fuel_card_on_cars: get(props, 'element.fuel_card_on_cars'),
       };
 
       return getDefaultFuelCardElement(newElement);

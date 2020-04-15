@@ -307,7 +307,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           : null;
         waybill.motohours_equip_diff = waybill.motohours_equip_end
           ? waybill.motohours_equip_end || 0
-            - waybill.motohours_equip_start || 0
+          - waybill.motohours_equip_start || 0
           : null;
 
         if (this.props.element.status === 'active' || this.props.element.status === 'deleted') {
@@ -448,7 +448,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
   handleFieldsChange = (formState) => {
     let { formErrors } = this.state;
-    const newState: Partial<State>  = {};
+    const newState: Partial<State> = {};
 
     formState.fuel_start = formState.fuel_start
       ? parseFloat(formState.fuel_start)
@@ -505,7 +505,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
     if (
       formState.equipment_fuel_end
-        !== this.state.formState.equipment_fuel_end
+      !== this.state.formState.equipment_fuel_end
       || isNullOrUndefined(formState.equipment_fact_fuel_end)
     ) {
       formState.equipment_fact_fuel_end = formState.equipment_fuel_end;
@@ -526,6 +526,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
+        || formErrors.motohours_equip_end
       );
 
     newState.canClose = canCloseWrap(formErrors);
@@ -608,351 +609,358 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             lastTax.RESULT = Taxes.getResult(lastTax);
           }
         }
+      }
+    }
+    
+    if (formState.equipment_tax_data && formState.equipment_tax_data.length) {
+      const lastEquipmentTax = last(formState.equipment_tax_data);
+      if (lastEquipmentTax) {
         if (
-          field === 'motohours_equip_end'
-          && formState.equipment_tax_data
-          && formState.equipment_tax_data.length
-          && formState.motohours_equip_diff > 0
+          formState.motohours_equip_diff > 0
+          || field === 'equipment_tax_data'
         ) {
-          const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+        } else {
+          lastEquipmentTax.FACT_VALUE = null;
           lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         }
       }
     }
-    this.handleFieldsChange(formState);
-  };
-
-  clearSomeData = () => {
-    const formState = cloneDeep(this.state.formState);
-
-    delete formState.equipment_fuel_start;
-    delete formState.fuel_start;
-    delete formState.motohours_equip_start;
-
-    // prettier-ignore
-    console.info( // eslint-disable-line
-      'delete',
-      '----->',
-      'equipment_fuel_start',
-      'fuel_start',
-      'motohours_equip_start',
-    );
-
-    this.handleMultipleChange(formState);
-  };
-
-  handleMultipleChange = (fields) => {
-    let formState = cloneDeep(this.state.formState);
-
-    Object.entries(fields).forEach(([field, value]) => {
-      console.info(field, value); // eslint-disable-line
-
-      formState[field] = value;
-      formState = calculateWaybillMetersDiff(formState, field, value);
-    });
 
     this.handleFieldsChange(formState);
   };
 
-  /**
-   * Выдача (печать) Путевого листа
-   * @param {boolean} printonly - Только скачивание или скачивание+сохранение
-   * @param {object} event
-   * @param {number 1|2} print_form_type - Идентификатор печатной формы
-   * @return {undefined}
-   */
-  handlePrint = async (printonly, type) => {
-    const { formState } = this.state;
+    clearSomeData = () => {
+      const formState = cloneDeep(this.state.formState);
 
-    const currentWaybillId = formState.id;
+      delete formState.equipment_fuel_start;
+      delete formState.fuel_start;
+      delete formState.motohours_equip_start;
 
-    this.setState({ canSave: false });
-    global.NOTIFICATION_SYSTEM.notifyWithObject({
-      title: 'Загрузка печатной формы',
-      level: 'info',
-      position: 'tc',
-      dismissible: false,
-      autoDismiss: 0,
-      uid: 'waybilPrintCurrForm',
-      children: makeReactMessage('Формирование печатной формы'),
-    });
-    const callback = (waybill_id = currentWaybillId) => {
-      return this.props
-        .dispatch(
-          actionPrintWaybill(
-            {
-              type,
-              waybill_id,
-            },
-            this.props,
-          ),
-        )
-        .then((respoce) => saveData(respoce.blob, respoce.fileName))
-        .catch((error) => {
-          console.warn('waybillFormWrap saveData', error); // eslint-disable-line
-        });
+      // prettier-ignore
+      console.info( // eslint-disable-line
+        'delete',
+        '----->',
+        'equipment_fuel_start',
+        'fuel_start',
+        'motohours_equip_start',
+      );
+
+      this.handleMultipleChange(formState);
     };
 
-    try {
-      if (printonly) {
-        await callback();
-      } else {
-        await this.handleFormSubmit(formState, callback);
-      }
-    } catch (e) {
-      //
-    }
+    handleMultipleChange = (fields) => {
+      let formState = cloneDeep(this.state.formState);
 
-    global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
-    this.setState({ canSave: true });
-  };
+      Object.entries(fields).forEach(([field, value]) => {
+        console.info(field, value); // eslint-disable-line
 
-  /**
-   * Отправка формы активного ПЛ
-   * @param {boolean} closeForm - закрывать форму после обновления, false - если есть ошибка
-   * @param {object} state - содержимое формы
-   * @return {undefined}
-   */
-  submitActiveWaybill = async (closeForm = false, state = this.state.formState) => {
-    const formState = { ...state };
-
-    if (closeForm) {
-      // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
-      try {
-        await this.updateWaybill(formState);
-      } catch ({ error_text }) {
-        console.error(error_text); // eslint-disable-line
-        return;
-      }
-
-      if (this.state.edcRequestIds) {
-        // висит окно с заявкой ЕДЦ
-        return;
-      }
-      this.props.onCallback({
-        showWaybillFormWrap: false,
+        formState[field] = value;
+        formState = calculateWaybillMetersDiff(formState, field, value);
       });
-    } else {
-      this.props.onCallback({
-        showWaybillFormWrap: true,
+
+      this.handleFieldsChange(formState);
+    };
+
+    /**
+     * Выдача (печать) Путевого листа
+     * @param {boolean} printonly - Только скачивание или скачивание+сохранение
+     * @param {object} event
+     * @param {number 1|2} print_form_type - Идентификатор печатной формы
+     * @return {undefined}
+     */
+    handlePrint = async (printonly, type) => {
+      const { formState } = this.state;
+
+      const currentWaybillId = formState.id;
+
+      this.setState({ canSave: false });
+      global.NOTIFICATION_SYSTEM.notifyWithObject({
+        title: 'Загрузка печатной формы',
+        level: 'info',
+        position: 'tc',
+        dismissible: false,
+        autoDismiss: 0,
+        uid: 'waybilPrintCurrForm',
+        children: makeReactMessage('Формирование печатной формы'),
       });
-    }
-  };
-
-  /**
-   * Отправка формы ПЛ
-   * @param {object} state - содержимое формы
-   * @param {function} callback - функция, вызываемая после отправки
-   * @return {undefined}
-   */
-  handleFormSubmit = async (state = this.state.formState, callback) => {
-    const formState = cloneDeep(state);
-    const waybillStatus = formState.status;
-
-    if (!waybillStatus) {
-      // если создаем ПЛ
-      if (typeof callback === 'function') {
-        formState.status = 'draft';
-        const r = await this.createWaybill(formState);
-
-        // TODO сейчас возвращается один ПЛ
-        const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
-
-        try {
-          formState.status = 'active';
-          formState.id = id;
-
-          await this.updateWaybill(formState);
-          callback(id);
-        } catch (error) {
-          if (!error.errorIsShow) {
-            global.NOTIFICATION_SYSTEM.removeNotification(
-              'waybilPrintCurrForm',
-            );
-          }
-
-          this.setState({
-            formState: {
-              ...formState,
-              status: 'draft',
-              id,
-            },
+      const callback = (waybill_id = currentWaybillId) => {
+        return this.props
+          .dispatch(
+            actionPrintWaybill(
+              {
+                type,
+                waybill_id,
+              },
+              this.props,
+            ),
+          )
+          .then((respoce) => saveData(respoce.blob, respoce.fileName))
+          .catch((error) => {
+            console.warn('waybillFormWrap saveData', error); // eslint-disable-line
           });
-          throw new Error(error);
+      };
+
+      try {
+        if (printonly) {
+          await callback();
+        } else {
+          await this.handleFormSubmit(formState, callback);
         }
-      } else {
-        formState.status = 'draft';
+      } catch (e) {
+        //
+      }
+
+      global.NOTIFICATION_SYSTEM.removeNotification('waybilPrintCurrForm');
+      this.setState({ canSave: true });
+    };
+
+    /**
+     * Отправка формы активного ПЛ
+     * @param {boolean} closeForm - закрывать форму после обновления, false - если есть ошибка
+     * @param {object} state - содержимое формы
+     * @return {undefined}
+     */
+    submitActiveWaybill = async (closeForm = false, state = this.state.formState) => {
+      const formState = { ...state };
+
+      if (closeForm) {
+        // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
         try {
-          await this.createWaybill(formState);
+          await this.updateWaybill(formState);
+        } catch ({ error_text }) {
+          console.error(error_text); // eslint-disable-line
+          return;
+        }
+
+        if (this.state.edcRequestIds) {
+          // висит окно с заявкой ЕДЦ
+          return;
+        }
+        this.props.onCallback({
+          showWaybillFormWrap: false,
+        });
+      } else {
+        this.props.onCallback({
+          showWaybillFormWrap: true,
+        });
+      }
+    };
+
+    /**
+     * Отправка формы ПЛ
+     * @param {object} state - содержимое формы
+     * @param {function} callback - функция, вызываемая после отправки
+     * @return {undefined}
+     */
+    handleFormSubmit = async (state = this.state.formState, callback) => {
+      const formState = cloneDeep(state);
+      const waybillStatus = formState.status;
+
+      if (!waybillStatus) {
+        // если создаем ПЛ
+        if (typeof callback === 'function') {
+          formState.status = 'draft';
+          const r = await this.createWaybill(formState);
+
+          // TODO сейчас возвращается один ПЛ
+          const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+
+          try {
+            formState.status = 'active';
+            formState.id = id;
+
+            await this.updateWaybill(formState);
+            callback(id);
+          } catch (error) {
+            if (!error.errorIsShow) {
+              global.NOTIFICATION_SYSTEM.removeNotification(
+                'waybilPrintCurrForm',
+              );
+            }
+
+            this.setState({
+              formState: {
+                ...formState,
+                status: 'draft',
+                id,
+              },
+            });
+            throw new Error(error);
+          }
+        } else {
+          formState.status = 'draft';
+          try {
+            await this.createWaybill(formState);
+          } catch ({ error_text }) {
+            console.info(error_text); // eslint-disable-line
+            return;
+          }
+        }
+        this.props.onCallback();
+      } else if (waybillStatus === 'draft') {
+        // если ПЛ обновляем
+        if (typeof callback === 'function') {
+          formState.status = 'active';
+
+          try {
+            await this.updateWaybill(formState);
+          } catch (e) {
+            return;
+          }
+          callback();
+          if (this.props.onCallback) {
+            await this.props.onCallback();
+          }
+        } else {
+          try {
+            await this.updateWaybill(formState);
+          } catch (e) {
+            return;
+          }
+          this.props.onCallback();
+        }
+      } else if (waybillStatus === 'active') {
+        this.submitActiveWaybill();
+      } else if (waybillStatus === 'closed') {
+        try {
+          await this.updateWaybill(formState);
         } catch ({ error_text }) {
           console.info(error_text); // eslint-disable-line
           return;
         }
-      }
-      this.props.onCallback();
-    } else if (waybillStatus === 'draft') {
-      // если ПЛ обновляем
-      if (typeof callback === 'function') {
-        formState.status = 'active';
-
-        try {
-          await this.updateWaybill(formState);
-        } catch (e) {
-          return;
-        }
-        callback();
-        if (this.props.onCallback) {
-          await this.props.onCallback();
-        }
-      } else {
-        try {
-          await this.updateWaybill(formState);
-        } catch (e) {
-          return;
-        }
         this.props.onCallback();
       }
-    } else if (waybillStatus === 'active') {
-      this.submitActiveWaybill();
-    } else if (waybillStatus === 'closed') {
-      try {
-        await this.updateWaybill(formState);
-      } catch ({ error_text }) {
-        console.info(error_text); // eslint-disable-line
+    };
+
+    handleClose = async (taxesControl) => {
+      if (!taxesControl) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(
+            'Необходимо заполнить нормы для расчета топлива!',
+          ),
+        );
         return;
       }
-      this.props.onCallback();
-    }
-  };
 
-  handleClose = async (taxesControl) => {
-    if (!taxesControl) {
-      global.NOTIFICATION_SYSTEM.notify(
-        getWarningNotification(
-          'Необходимо заполнить нормы для расчета топлива!',
-        ),
-      );
-      return;
-    }
+      const formState = cloneDeep(this.state.formState);
 
-    const formState = cloneDeep(this.state.formState);
-
-    global.confirmDialog({
-      title:
-        'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
-      body: 'Вы уверены, что хотите закрыть окно?',
-    })
-      .then(async () => {
-        formState.status = 'closed';
-        await this.updateWaybill(formState)
-          .then(() => {
-            this.props.onCallback();
-          })
-          .catch((err) => {
-            console.error(err);  // eslint-disable-line
-            return;
-          });
+      global.confirmDialog({
+        title:
+          'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
+        body: 'Вы уверены, что хотите закрыть окно?',
       })
-      .catch(() => {
-        //
-      });
-  };
-
-  handlePrintFromMiniButton = async (type: 'plate_special' = 'plate_special') => {
-    const { formState } = this.state;
-
-    try {
-      const { blob } = await this.props.dispatch(
-        actionPrintWaybill(
-          {
-            type,
-            waybill_id: formState.id,
-          },
-          this.props,
-        ),
-      );
-      printData(blob);
-    } catch (e) {
-      throw new Error(e);
-    }
-  };
-  setEdcRequestIds = (edcRequestIds) => {
-    if (this.state.edcRequestIds) {
-      this.setState({
-        edcRequestIds: [...this.state.edcRequestIds, ...edcRequestIds],
-      });
-    } else {
-      this.setState({ edcRequestIds });
-    }
-  };
-  requestFormHide = () => {
-    this.setState({ edcRequestIds: null });
-    this.props.onCallback({
-      showWaybillFormWrap: false,
-    });
-  };
-  onFormHide = async () => {
-    const { formState } = this.state;
-
-    const showConfirm = (
-      !eq(formState.status, 'closed')
-    );
-
-    if (showConfirm) {
-      try {
-        await global.confirmDialog({
-          title:
-            'Внимание!',
-          body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
-          okName: 'Да',
-          cancelName: 'Нет',
+        .then(async () => {
+          formState.status = 'closed';
+          await this.updateWaybill(formState)
+            .then(() => {
+              this.props.onCallback();
+            })
+            .catch((err) => {
+              console.error(err);  // eslint-disable-line
+              return;
+            });
+        })
+        .catch(() => {
+          //
         });
+    };
+
+    handlePrintFromMiniButton = async (type: 'plate_special' = 'plate_special') => {
+      const { formState } = this.state;
+
+      try {
+        const { blob } = await this.props.dispatch(
+          actionPrintWaybill(
+            {
+              type,
+              waybill_id: formState.id,
+            },
+            this.props,
+          ),
+        );
+        printData(blob);
       } catch (e) {
-        return;
+        throw new Error(e);
       }
-    }
+    };
+    setEdcRequestIds = (edcRequestIds) => {
+      if (this.state.edcRequestIds) {
+        this.setState({
+          edcRequestIds: [...this.state.edcRequestIds, ...edcRequestIds],
+        });
+      } else {
+        this.setState({ edcRequestIds });
+      }
+    };
+    requestFormHide = () => {
+      this.setState({ edcRequestIds: null });
+      this.props.onCallback({
+        showWaybillFormWrap: false,
+      });
+    };
+    onFormHide = async () => {
+      const { formState } = this.state;
 
-    this.props.onFormHide();
-  };
+      const showConfirm = (
+        !eq(formState.status, 'closed')
+      );
 
-  render() {
-    return (
-      <React.Fragment>
-        {this.state.formState && (
-          <WaybillForm
-            formState={this.state.formState}
-            handleFormChange={this.handleFormStateChange}
-            handleMultipleChange={this.handleMultipleChange}
-            onSubmitActiveWaybill={this.submitActiveWaybill}
-            onSubmit={this.handleFormSubmit}
-            clearSomeData={this.clearSomeData}
-            handleClose={this.handleClose}
-            handlePrint={this.handlePrint}
-            handlePrintFromMiniButton={this.handlePrintFromMiniButton}
-            setEdcRequestIds={this.setEdcRequestIds}
-            formErrors={this.state.formErrors}
-            entity={'waybill'}
-            isPermittedByKey={this.state.isPermittedByKey}
-            canClose={this.state.canClose}
-            canSave={this.state.canSave}
+      if (showConfirm) {
+        try {
+          await global.confirmDialog({
+            title:
+              'Внимание!',
+            body: 'Вы уверены, что хотите закрыть карточку ПЛ? Все не сохраненные последние действия будут потеряны.',
+            okName: 'Да',
+            cancelName: 'Нет',
+          });
+        } catch (e) {
+          return;
+        }
+      }
 
-            show
-            onHide={this.onFormHide}
-            page={this.props.page}
-            path={this.props.path}
-          />
-        )}
-        {this.state.edcRequestIds
-          && (Boolean(this.state.edcRequestIds) && (
-            <ChangeStatusRequesFormLazy
-              onHide={this.requestFormHide}
-              array={this.state.edcRequestIds}
+      this.props.onFormHide();
+    };
+
+    render() {
+      return (
+        <React.Fragment>
+          {this.state.formState && (
+            <WaybillForm
+              formState={this.state.formState}
+              handleFormChange={this.handleFormStateChange}
+              handleMultipleChange={this.handleMultipleChange}
+              onSubmitActiveWaybill={this.submitActiveWaybill}
+              onSubmit={this.handleFormSubmit}
+              clearSomeData={this.clearSomeData}
+              handleClose={this.handleClose}
+              handlePrint={this.handlePrint}
+              handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+              setEdcRequestIds={this.setEdcRequestIds}
+              formErrors={this.state.formErrors}
+              entity={'waybill'}
+              isPermittedByKey={this.state.isPermittedByKey}
+              canClose={this.state.canClose}
+              canSave={this.state.canSave}
+
+              show
+              onHide={this.onFormHide}
+              page={this.props.page}
+              path={this.props.path}
             />
-          ))}
-      </React.Fragment>
-    );
-  }
+          )}
+          {this.state.edcRequestIds
+            && (Boolean(this.state.edcRequestIds) && (
+              <ChangeStatusRequesFormLazy
+                onHide={this.requestFormHide}
+                array={this.state.edcRequestIds}
+              />
+            ))}
+        </React.Fragment>
+      );
+    }
 }
 
 export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(

@@ -83,7 +83,7 @@ const WaybillInProgressInfo: React.FC<Props> = React.memo(
     );
 
     return (
-      <InfoCard title="Информация о ПЛ (всего)" handleClose={handleClose}>
+      <InfoCard title={infoData.subItemsTitle} handleClose={handleClose}>
         {
           infoDataGroupByDate
             .map(([key, arrData]) => (

@@ -2398,7 +2398,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_start}
                               value={state.motohours_equip_start}
                               disabled={
-                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                 || Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                               }
                               onChange={this.handleChange}

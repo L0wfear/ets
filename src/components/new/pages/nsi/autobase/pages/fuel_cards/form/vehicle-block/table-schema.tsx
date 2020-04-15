@@ -77,7 +77,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
 
 const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, outputListErrors = [], onChange, index, isPermitted }) => {
+> = ({ value, outputListErrors = [], onChange, index, isPermitted, inputList, }) => {
   return (
     <ExtField
       type="date"
@@ -87,7 +87,7 @@ const InstalledAtRenderer: React.FC<
       error={outputListErrors[index]?.installed_at ?? ''}
       onChange={onChange}
       boundKeys={[index, 'installed_at']}
-      disabled={!isPermitted}
+      disabled={!isPermitted || inputList[index]?.alredy_save }
       makeGoodFormat
     />
   );

@@ -10,6 +10,7 @@ export type FuelCardOnCars = {
   isChecked?: boolean;
   isHighlighted?: boolean;
   isSelected?: boolean;
+  alredy_save: boolean; // уже производилось сохранение, данная строка пришла с бека
 };
 
 export type FuelCard = {

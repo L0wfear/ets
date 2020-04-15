@@ -51,6 +51,7 @@ const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   isChecked: false,
   isHighlighted: false,
   isSelected: null,
+  alredy_save: false,
 };
 
 const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(

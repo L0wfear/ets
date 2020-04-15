@@ -32,6 +32,7 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
             return {
               ...rowData,
               customId: index + 1,
+              alredy_save: true,
             };
           });
         } else {

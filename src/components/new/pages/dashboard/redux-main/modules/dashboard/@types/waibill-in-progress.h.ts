@@ -26,6 +26,7 @@ export type WaybillInProgressItemsType = {
   subItems: Array<WaybillInProgressItemsSubItemsType>;
   tooltip?: string;
   value: string;
+  subItemsTitle: string;
 };
 
 export type WaybillInProgressAnsType = {

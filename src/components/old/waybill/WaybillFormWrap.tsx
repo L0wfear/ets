@@ -618,16 +618,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         if(
           (field === 'equipment_tax_data'
           && !lastEquipmentTax.OPERATION
-          && formState.motohours_equip_diff > 0)
+          && formState.motohours_equip_diff >= 0)
           || (field === 'motohours_equip_end'
-          && formState.motohours_equip_diff > 0)
-          ) {
-            lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-            lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+          && formState.motohours_equip_diff >= 0)
+        ) {
+          lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
+          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         } else if (
           field === 'equipment_tax_data'
           && lastEquipmentTax.OPERATION
-          && lastEquipmentTax.FACT_VALUE > 0
+          && lastEquipmentTax.FACT_VALUE >= 0
         ) {
           lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         } else {

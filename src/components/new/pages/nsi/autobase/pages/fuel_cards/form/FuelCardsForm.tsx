@@ -136,7 +136,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
     const companiesDefaultValue
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
     
-    const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.fuel_cards_update_cars, props.permissionsSet);
+    const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
     
     return (
       <EtsBootstrap.ModalContainer

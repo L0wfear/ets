@@ -4,7 +4,7 @@ const fuelCardsPermissions = {
   read: 'fuel_cards.read',
   update: 'fuel_cards.update',
   delete: 'fuel_cards.delete',
-  fuel_cards_update_cars: 'fuel_cards_update_cars', // Реестр топливных карт - изменение привязанных ТС”
+  update_cars: 'fuel_cards.update_cars', // Реестр топливных карт - изменение привязанных ТС”
 };
 
 export default fuelCardsPermissions;

@@ -20,6 +20,7 @@ export const defaultFuelCard: FuelCard = {
   car_id: null,
   gov_number_text: null,
   fuel_card_on_cars: [],
+  origin_fuel_card_on_cars: [],
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {
@@ -32,6 +33,7 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
             return {
               ...rowData,
               customId: index + 1,
+              alredy_save: true,
             };
           });
         } else {

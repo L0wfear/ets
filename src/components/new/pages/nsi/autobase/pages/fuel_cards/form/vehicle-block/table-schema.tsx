@@ -10,6 +10,8 @@ import {
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { oldestInstalledDateIndex } from '../../../battery_registry/form/schema';
+import { get } from 'lodash-es';
 
 export const validationSchema: SchemaType<ValuesOf<FuelCard['fuel_card_on_cars']>, any> = {
   properties: {
@@ -42,6 +44,9 @@ export const meta: IDataTableSchema = {
 type IPropsCarIdRenderer = {
   vehicleList: FuelCard['fuel_card_on_cars'];
 } & IPropsDataTableInputRenderer;
+type PropsUninstalledAtRenderer = {
+  origin_fuel_card_on_cars: FuelCard['origin_fuel_card_on_cars'];
+} & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   value,
@@ -50,6 +55,8 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   onChange,
   index,
   isPermitted,
+  inputList,
+  isPermittedToUpdateCards,
 }) => {
   const handleChange = (valueNew, option) => {
     onChange(
@@ -70,14 +77,25 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       value={value}
       error={outputListErrors[index]?.car_id ?? ''}
       onChange={handleChange}
-      disabled={!isPermitted}
+      disabled={
+        (!isPermitted || inputList[index]?.alredy_save)
+        && !isPermittedToUpdateCards
+      }
     />
   );
 };
 
 const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, outputListErrors = [], onChange, index, isPermitted }) => {
+> = ({
+  value,
+  outputListErrors = [],
+  onChange,
+  index,
+  isPermitted,
+  inputList,
+  isPermittedToUpdateCards,
+}) => {
   return (
     <ExtField
       type="date"
@@ -87,15 +105,33 @@ const InstalledAtRenderer: React.FC<
       error={outputListErrors[index]?.installed_at ?? ''}
       onChange={onChange}
       boundKeys={[index, 'installed_at']}
-      disabled={!isPermitted}
+      disabled={
+        (!isPermitted || inputList[index]?.alredy_save)
+        && !isPermittedToUpdateCards
+      }
       makeGoodFormat
     />
   );
 };
 
 const UninstalledAtRenderer: React.FC<
-  IPropsDataTableInputRenderer
-> = ({ value, outputListErrors = [], onChange, index, isPermitted }) => {
+  PropsUninstalledAtRenderer
+> = ({
+  value,
+  outputListErrors = [],
+  onChange,
+  index,
+  isPermitted,
+  inputList,
+  origin_fuel_card_on_cars = [],
+  isPermittedToUpdateCards,
+}) => {
+
+  const rowValue = inputList[index];
+
+  const oldestDateIndex = oldestInstalledDateIndex(inputList);
+  const isOldestInstaledAtRow = oldestDateIndex === index;
+  const rowValueOrigin = origin_fuel_card_on_cars.find((elem) => elem.id === rowValue.id);
 
   return (
     <ExtField
@@ -106,7 +142,17 @@ const UninstalledAtRenderer: React.FC<
       time={false}
       onChange={onChange}
       boundKeys={[index, 'uninstalled_at']}
-      disabled={!isPermitted}
+      disabled={
+        (
+          !isPermitted
+          || (
+            inputList[index]?.alredy_save
+            && Boolean(get(rowValueOrigin, 'uninstalled_at'))
+            && !isOldestInstaledAtRow
+          )
+        )
+        && !isPermittedToUpdateCards
+      }
       makeGoodFormat
     />
   );
@@ -125,6 +171,10 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
     'value',
   );
 
+  const {
+    isPermittedToUpdateCards
+  } = props;
+
   return {
     car_id: (rowMeta) => (
       <CarIdRenderer
@@ -133,6 +183,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
         vehicleList={vehicleList}
+        isPermittedToUpdateCards={isPermittedToUpdateCards}
       />
     ),
     installed_at: (rowMeta) => (
@@ -141,6 +192,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
+        isPermittedToUpdateCards={isPermittedToUpdateCards}
       />
     ),
     uninstalled_at: (rowMeta) => (
@@ -149,6 +201,8 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
+        origin_fuel_card_on_cars={props.origin_fuel_card_on_cars}
+        isPermittedToUpdateCards={isPermittedToUpdateCards}
       />
     ),
   };

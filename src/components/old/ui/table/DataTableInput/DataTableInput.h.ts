@@ -19,6 +19,10 @@ export type ISharedPropsDataTableInput = {
   path: string;
   tableTitle?: string;
   hideButtons?: boolean;
+  buttonsDisable?: (selectedField) => {
+    addButtonDisable: boolean;
+    removeButtonDisable: boolean;
+  };
 };
 
 export type IStateDataTableInput = {
@@ -37,6 +41,7 @@ export type IPropsDataTableInputRenderer = {
   inputList: Array<any>;
 
   validationSchema?: SchemaType<Record<string, any>, any>;
+  isPermittedToUpdateCards?: boolean;
 };
 
 export type TRendererFunction = (

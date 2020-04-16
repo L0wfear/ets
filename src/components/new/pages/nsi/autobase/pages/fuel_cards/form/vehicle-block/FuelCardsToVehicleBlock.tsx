@@ -12,24 +12,25 @@ import { get } from 'lodash';
 
 type IPropsFuelCardsToVehicleBlock = {
   fuelCardsId: number;
+  isPermittedToUpdateCards: boolean;
 } & ISharedPropsDataTableInput & IExternalPropsDataTableInputWrapper;
-
-const buttonsDisable = (selectedField: FuelCardOnCars) => {
-  const removeButtonDisable = get(selectedField, 'is_used_in_waybill', false );
-
-  return selectedField
-    ? {
-      addButtonDisable: false,
-      removeButtonDisable,
-    }
-    : {
-      addButtonDisable: false,
-      removeButtonDisable: false,
-    };
-};
 
 const FuelCardsToVehicleBlock: React.FC<IPropsFuelCardsToVehicleBlock> = React.memo(
   (props) => {
+
+    const buttonsDisable = React.useCallback((selectedField: FuelCardOnCars) => {
+      const removeButtonDisable = get(selectedField, 'is_used_in_waybill', false ) && !props.isPermittedToUpdateCards;
+
+      return selectedField
+        ? {
+          addButtonDisable: false,
+          removeButtonDisable,
+        }
+        : {
+          addButtonDisable: false,
+          removeButtonDisable: false,
+        };
+    }, [props.isPermittedToUpdateCards]);
 
     const fuelCardsAvailableCarList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   

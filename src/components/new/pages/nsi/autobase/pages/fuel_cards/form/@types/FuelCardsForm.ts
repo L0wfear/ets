@@ -13,6 +13,7 @@ export type StatePropsFuelCards = {
   fuelTypeOptions: Array<any>;
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: number | null;
+  permissionsSet: InitialStateSession['userData']['permissionsSet'];
   STRUCTURE_FIELD_VIEW: ReturnType<
     typeof getSessionStructuresParams
   >['STRUCTURE_FIELD_VIEW'];

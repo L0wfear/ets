@@ -41,6 +41,7 @@ export type IPropsDataTableInputRenderer = {
   inputList: Array<any>;
 
   validationSchema?: SchemaType<Record<string, any>, any>;
+  isPermittedToUpdateCards?: boolean;
 };
 
 export type TRendererFunction = (

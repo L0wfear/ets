@@ -34,6 +34,7 @@ import FuelCardsToVehicleBlockComponent from 'components/new/pages/nsi/autobase/
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/registry-config';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 const FuelCardsVehicleBlock: any = onChangeWithKeys(
   FuelCardsToVehicleBlockComponent,
@@ -134,7 +135,9 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
 
     const companiesDefaultValue
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
-
+    
+    const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.fuel_cards_update_cars, props.permissionsSet);
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
@@ -230,7 +233,8 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                     modalKey={page}
                     page={page}
                     path={path}
-                    isPermitted={isPermitted}
+                    isPermitted={isPermitted || isPermittedToUpdateCards}
+                    isPermittedToUpdateCards={isPermittedToUpdateCards}
                     tableTitle="Привязанные транспортные средства"
                   />
                 </EtsBootstrap.Row>
@@ -240,7 +244,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {
-            isPermitted
+            Boolean(isPermitted || isPermittedToUpdateCards)
               ? (
                 <EtsBootstrap.Button
                   disabled={!props.canSave}
@@ -267,6 +271,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
       .STRUCTURE_FIELD_VIEW,
     userStructureId: getSessionState(state).userData.structure_id,
+    permissionsSet: getSessionState(state).userData.permissionsSet,
   })),
   withForm<PropsFuelCardsWithForm, FuelCard>({
     uniqField: 'id',

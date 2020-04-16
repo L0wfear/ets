@@ -4,11 +4,18 @@ export type FuelCardOnCars = {
   company_id: number;
   installed_at: string;
   uninstalled_at: string;
+  is_used_in_waybill: boolean;
+  id: number;
+  fuel_card_id: number;
+  number: string;
+  garage_number: string;
+
   // для таблички
   customId?: number;
   isChecked?: boolean;
   isHighlighted?: boolean;
   isSelected?: boolean;
+  alredy_save: boolean; // уже производилось сохранение, данная строка пришла с бека
 };
 
 export type FuelCard = {
@@ -30,6 +37,8 @@ export type FuelCard = {
   car_id: number;
   gov_number_text: string;
   fuel_card_on_cars: Array<FuelCardOnCars>;
+  // для таблички с тачками
+  origin_fuel_card_on_cars: Array<FuelCardOnCars>; // состояние таблички до редактирование
 };
 
 export type StateFuelCards = {

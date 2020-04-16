@@ -158,7 +158,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 error={errors.number}
                 onChange={props.handleChange}
                 boundKeys="number"
-                disabled={!isPermitted}
+                disabled={!isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

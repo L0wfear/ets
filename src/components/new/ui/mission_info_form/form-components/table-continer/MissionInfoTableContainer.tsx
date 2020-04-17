@@ -29,7 +29,7 @@ export const VALUE_FOR_FIXED = {
   intFixed: (data, val) => parseInt(data, val),
 };
 
-type PropsMissionInfoTableContainer = {
+export type PropsMissionInfoTableContainer = {
   type: 'mixed' | 'simple_dt' | 'points';
   missionReport: Array<any>;
   handleSelectedElementChange: (id: number) => any;
@@ -101,6 +101,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
               selectedReportDataWithoutWork={selectedReportDataWithoutWork}
               selectField={'object_id'}
               onElementChange={handleSelectedElementChange}
+              type={type}
               normInitialData
             />
           )

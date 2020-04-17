@@ -97,7 +97,7 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = React.me
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <FieldMunicipalFacilityIdDutyMission
                 value={state.municipal_facility_id}
                 name={state.municipal_facility_name}
@@ -110,6 +110,19 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = React.me
                 DUTY_MISSION_IS_ORDER_SOURCE={false}
                 page={page}
                 path={path}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="passes_count"
+                modalKey={page}
+                type="number"
+                label="Количество выполнений"
+                value={state.passes_count}
+                error={errors.passes_count}
+                disabled={!isPermitted}
+                onChange={props.handleChange}
+                boundKeys="passes_count"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

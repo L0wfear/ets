@@ -251,6 +251,11 @@ export const config: TypeConfigData<DutyMission> = {
           width: 150,
         },
         {
+          key: 'passes_count',
+          title: 'Количество выполнений',
+          width: 150,
+        },
+        {
           key: 'foreman_fio',
           title: 'Бригадир',
           width: 200,

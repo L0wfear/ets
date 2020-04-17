@@ -20,6 +20,7 @@ export type DutyMissionTemplate = {
   number: number | null;
   route_id: number | null;
   route_name: string;
+  passes_count: number;
   structure_id: number | null;
   structure_name: string;
   technical_operation_id: number | null;

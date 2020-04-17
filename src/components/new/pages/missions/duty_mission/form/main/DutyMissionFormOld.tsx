@@ -524,7 +524,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             )
           }
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="comment"
                 modalKey={page}
@@ -535,6 +535,19 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 disabled={!isPermitted}
                 onChange={this.props.handleChange}
                 boundKeys="comment"
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="passes_count"
+                modalKey={page}
+                type="number"
+                label="Количество выполнений"
+                value={state.passes_count}
+                error={errors.passes_count}
+                disabled={!isPermitted}
+                onChange={this.props.handleChange}
+                boundKeys="passes_count"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

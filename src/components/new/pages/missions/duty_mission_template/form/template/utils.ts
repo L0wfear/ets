@@ -35,6 +35,7 @@ export const makeDefaultDutyMissionTemplate = (): DutyMissionTemplate => ({
   route_name: '',
   structure_id: null,
   structure_name: '',
+  passes_count: 1,
   technical_operation_id: null,
   technical_operation_name: '',
   work_class_id: null,

@@ -154,7 +154,7 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
         = lastCarUsedWaybill.motohours_equip_end;
     }
 
-    fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank;
+    fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank; // <<< как узнать кто установил??? originState?
 
     if (!fieldsToChange.is_one_fuel_tank) {
       fieldsToChange.equipment_fuel_type
@@ -569,11 +569,11 @@ class WaybillForm extends React.Component<Props, State> {
         });
     }
     
-    if(car_id && IS_CREATING) {
+    if(car_id && (IS_CREATING || IS_DRAFT)) {
       await this.refresh(true);
     }
 
-    if(car_id && (IS_DRAFT || IS_ACTIVE)) {
+    if(car_id && IS_ACTIVE) {
       await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
       ).then((lastWaybill) => {
@@ -993,10 +993,20 @@ class WaybillForm extends React.Component<Props, State> {
       actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
     ).then(
       (lastWaybill) => {
+
+        const is_one_fuel_tank = autocompleteOnly
+          ? state.is_one_fuel_tank
+          : lastWaybill.is_one_fuel_tank;
+
+        const lastWaybillMod = {
+          ...lastWaybill,
+          is_one_fuel_tank,
+        };
+
         this.setState({ lastWaybill, });
 
         const fieldsToChange = {
-          ...this.getFieldsToChangeBasedOnLastWaybill(lastWaybill),
+          ...this.getFieldsToChangeBasedOnLastWaybill(lastWaybillMod),
           plan_departure_date,
         };
 

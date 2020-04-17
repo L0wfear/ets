@@ -26,6 +26,10 @@ import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 import { getSessionCompanyIndex } from 'redux-main/reducers/modules/session/selectors';
 import { actionsGetCarByAsuodsId as actionsGetCarByAsuodsIdOr } from 'redux-main/reducers/modules/autobase/car/actions';
+import {
+  getUserNotificationInfo,
+  markAsRead
+} from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
 import { ReduxState } from 'redux-main/@types/state';
 
 const TYPE_CODE = {
@@ -229,6 +233,19 @@ const notificationComponents = {
   medical_certificate,
 };
 class UserNotificationForm extends UNSAFE_Form<any, any> {
+  componentDidMount() {
+    if (!this.props.formState.is_read) {
+      const isRead = [
+        {
+          id: this.props.formState.id,
+          front_type: this.props.formState.front_type,
+        }
+      ];
+
+      this.props.markAsRead(isRead).then(() => this.props.getUserNotificationInfo());
+    }
+  }
+
   handleClick = (pathComponent, query, isPermitted) => {
     if (isPermitted) {
       this.props.history.push(
@@ -332,6 +349,14 @@ export default connect<any, any, OwnProps, ReduxState>(
   (dispatch) => ({
     actionsGetCarByAsuodsId: bindActionCreators(
       actionsGetCarByAsuodsIdOr,
+      dispatch,
+    ),
+    markAsRead: bindActionCreators(
+      markAsRead,
+      dispatch,
+    ),
+    getUserNotificationInfo: bindActionCreators(
+      getUserNotificationInfo,
       dispatch,
     ),
   }),

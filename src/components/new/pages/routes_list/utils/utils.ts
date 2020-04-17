@@ -16,14 +16,12 @@ export const getTypeRoute = (type) => {
 
 export const makeRoutesListForRender = (routesListFromStore) => {
   return routesListFromStore.reduce((newRouteList, r) => {
-    r.work_types.forEach(({ work_type_id, work_type_name }) => (
-      newRouteList.push({
-        ...r,
-        front_work_type_id: work_type_id,
-        front_work_type_name: work_type_name,
-        type_name: getTypeRoute(r.type),
-      })
-    ));
+    newRouteList.push({
+      ...r,
+      front_work_type_id: r.work_type_code,
+      front_work_type_name: r.work_type_name,
+      type_name: getTypeRoute(r.type),
+    });
 
     return newRouteList;
   }, []);

@@ -43,7 +43,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
       handleSelectedElementChange,
     } = props;
 
-    const selectedReportDataODHS = React.useMemo(
+    const selectedReportData = React.useMemo(
       () => missionReport.filter((elem) => !elem.is_without_work),
       [props.missionReport]
     );
@@ -51,8 +51,6 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
       () => missionReport.filter((elem) => elem.is_without_work),
       [props.missionReport]
     );
-
-    console.log('ppp = ', { props, });
 
     return (
       <>
@@ -62,7 +60,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
               <MissionReportByODH
                 renderOnly
                 enumerated={false}
-                selectedReportDataODHS={selectedReportDataODHS}
+                selectedReportDataODHS={selectedReportData}
                 selectField={'object_id'}
                 onElementChange={handleSelectedElementChange}
                 normInitialData
@@ -76,7 +74,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
             <MissionReportByDT
               renderOnly
               enumerated={false}
-              selectedReportDataDTS={missionReport}
+              selectedReportDataDTS={selectedReportData}
               selectField={'object_id'}
               onElementChange={handleSelectedElementChange}
               normInitialData
@@ -88,7 +86,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
             <MissionReportByPoints
               renderOnly
               enumerated={false}
-              selectedReportDataPoints={missionReport}
+              selectedReportDataPoints={selectedReportData}
               selectField={'frontIndex'}
               onElementChange={handleSelectedElementChange}
               normInitialData

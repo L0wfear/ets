@@ -70,6 +70,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'garage_number',
+          title: 'Гаражный номер',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'fuel_type_text',
           title: 'Тип топлива',
           type: 'multiselect',
@@ -125,6 +130,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           },
           {
             key: 'gov_number_text',
+            title: 'Рег. номер ТС',
+            width: 200,
+          },
+          {
+            key: 'garage_number',
             title: 'Рег. номер ТС',
             width: 200,
           },

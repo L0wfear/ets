@@ -42,7 +42,7 @@ const validateFuelCardId = (
   );
 
   if (needSelectFuelCard) {
-    if (!availableFuelCard.length) {
+    if (!availableFuelCard.length && rowData.type_id === 1) {
       fuel_card_id
         = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
     } else if(rowData.type_id === 1 && !IS_CLOSED && !IS_DELETE) {

@@ -19,6 +19,7 @@ export const defaultFuelCard: FuelCard = {
   date_end: null,
   car_id: null,
   gov_number_text: null,
+  garage_number: null,
   fuel_card_on_cars: [],
   origin_fuel_card_on_cars: [],
 };

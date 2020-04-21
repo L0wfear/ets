@@ -37,7 +37,7 @@ const MissionReportEntriesWithoutWorkTable = (props) => {
 
   return (
     <Table
-      title="Холостой ход (указанный в маршруте)"
+      title="Холостой ход"
       initialSort="traveled_percentage"
       tableMeta={tableMeta}
       results={props.data}

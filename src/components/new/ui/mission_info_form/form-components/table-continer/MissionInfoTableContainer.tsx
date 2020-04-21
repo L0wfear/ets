@@ -94,7 +94,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
           )
         }
         {
-          type === 'mixed' || type === 'simple_dt'  && (
+          Boolean(type === 'mixed' || type === 'simple_dt')  && (
             <MissionReportEntriesWithoutWork
               renderOnly
               enumerated={false}

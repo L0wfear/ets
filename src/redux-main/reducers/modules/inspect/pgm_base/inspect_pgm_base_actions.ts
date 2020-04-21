@@ -18,6 +18,7 @@ import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/
 import { get } from 'lodash';
 import { actionsPgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import { isArray, isNullOrUndefined } from 'util';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): EtsAction<IStateInspectPgmBase> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());
@@ -193,12 +194,20 @@ export const actionCreateInspectPgmBase = (payloadOwn: Parameters<typeof promise
 };
 
 export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateInspectionPgmBase>> => async (dispatch) => {
-  const data = cloneDeep(inspectPgmBase.data);
+  let data = cloneDeep(inspectPgmBase.data);
 
   const agents_from_gbu = get(inspectPgmBase, 'agents_from_gbu', defaultInspectPgmBase.agents_from_gbu);
   const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
   const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
   const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
+
+  if (!isNullOrUndefined(data)) {
+    data = {
+      ...data,
+      type_of_base_coverage: (isArray(data.type_of_base_coverage) || isNullOrUndefined(data.type_of_base_coverage)) ? data.type_of_base_coverage : [data.type_of_base_coverage],
+      type_coverage_in_hangar: (isArray(data.type_coverage_in_hangar) || isNullOrUndefined(data.type_coverage_in_hangar)) ? data.type_coverage_in_hangar : [data.type_coverage_in_hangar],
+    };
+  }
 
   const payload = {
     data,

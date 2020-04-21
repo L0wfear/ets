@@ -577,13 +577,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
     console.info(field, value); // eslint-disable-line
-
+  
     formState = calculateWaybillMetersDiff(formState, field, value);
-
+  
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
       const lastTax = last(formState.tax_data);
-
+  
       if (lastTax) {
         if (field === 'odometr_end' && formState.odometr_diff >= 0) {
           if (lastTax.is_excluding_mileage) {
@@ -610,9 +610,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           }
         }
       }
-    }
+    } 
     
-    if (formState.equipment_tax_data && formState.equipment_tax_data.length) {
+    if (
+      formState.equipment_tax_data 
+      && formState.equipment_tax_data.length 
+      && (field === 'equipment_tax_data' || field === 'motohours_equip_end')
+    ) {
       const lastEquipmentTax = last(formState.equipment_tax_data);
       if (lastEquipmentTax) {
         if(

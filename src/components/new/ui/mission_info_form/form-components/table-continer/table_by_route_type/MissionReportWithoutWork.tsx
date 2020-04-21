@@ -4,13 +4,17 @@ import Table from 'components/old/ui/table/DataTable';
 
 import { get } from 'lodash';
 import styled from 'styled-components';
+import { PropsMissionInfoTableContainer } from '../MissionInfoTableContainer';
 
 const getTableMeta = (props) => {
+  const displayName = props.type === 'simple_dt'
+    ? 'ДТ'
+    : 'ОДХ';
   const tableMeta = {
     cols: [
       {
         name: 'name',
-        displayName: 'ОДХ',
+        displayName,
         type: 'string',
         filter: {
           type: 'multiselect',
@@ -53,6 +57,7 @@ type Props = {
   selectField: string;
   onElementChange: (id: number) => any;
   normInitialData: boolean;
+  type: PropsMissionInfoTableContainer['type'];
 };
 
 export const MissionReportEntriesWithoutWorkTableStyled = styled(MissionReportEntriesWithoutWorkTable)`

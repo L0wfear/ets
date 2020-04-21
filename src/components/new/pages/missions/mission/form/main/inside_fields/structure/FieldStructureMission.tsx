@@ -35,18 +35,6 @@ const FieldStructureMission: React.FC<Props> = React.memo(
           const changeObjDefault = {
             structure_id: valueNew,
             structure_name: get(option, 'label', null),
-            car_gov_numbers: [],
-            car_ids: [],
-            car_type_ids: [],
-            car_model_names: [],
-            car_special_model_names: [],
-            car_type_names: [], 
-
-            route_id: null,
-            route_name: '',
-            route_type: null,
-            object_type_id: null,
-            object_type_name: '',
 
             consumable_materials: [],
           };

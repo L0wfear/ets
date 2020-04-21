@@ -12,6 +12,8 @@ export const defaultTechInspection: TechInspection = {
   date_end: null,
   date_start: null,
   gov_number: null,
+  gov_numbers_text: null,
+  gov_numbers: [],
   is_allowed: false,
   id: null,
   note: '',

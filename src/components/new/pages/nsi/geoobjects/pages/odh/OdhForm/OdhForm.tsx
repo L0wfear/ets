@@ -118,10 +118,11 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
                 readOnly
               />
               <ExtField
-                type="string"
+                type="number"
                 label="Площадь обочин (кв.м)"
                 value={state.margin_area}
-                readOnly
+                format="toFixed2"
+                disabled
               />
               <FieldCompanyStructureId
                 value={state.company_structures}

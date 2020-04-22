@@ -66,6 +66,15 @@ export function getTableMeta(props: any = {}, employeesOptions: Array<any>): IDa
         },
       },
       {
+        name: 'passes_count',
+        displayName: 'Количество выполнений',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+        },
+        cssClassName: 'width120',
+      },
+      {
         name: 'foreman_fio',
         displayName: 'Бригадир',
         type: 'string',

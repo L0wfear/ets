@@ -436,6 +436,7 @@ class ReportContainer extends React.Component<
   handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
     const currentLevelSelectors = this.props.meta.levels.current.filter;
+    const currentLevel = this.props.meta.levels.current.level;
     const {
       location: { search },
     } = this.props;
@@ -445,6 +446,16 @@ class ReportContainer extends React.Component<
       ...searchObject,
       level: higherLevel,
     };
+
+    // <<< выпилить костыль start DITETS19-2118 переход на ур. выше
+    // закостылить для отчета reportKey === tech_maintenance_schedule и level=company, убирать okrug_id
+    // баг из-за того, что в current он не приходит в filter
+    const reportKey = get(this.props, 'serviceName', null);
+
+    if( reportKey === 'TechMaintenanceSchedule' && currentLevel === 'company' ) {
+      delete query.okrug_id;
+    }
+    // <<< выпилить костыль end
 
     const filteredQuery = omit(query, currentLevelSelectors);
 

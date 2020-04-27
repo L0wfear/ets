@@ -154,6 +154,8 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
 
     removeEmptyString(formState);
 
+    formData.IS_CREATING ? global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success') : global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+
     return dispatch(
       defaultAction(
         formMeta.handleSubmitPromise(formState, ...arg),

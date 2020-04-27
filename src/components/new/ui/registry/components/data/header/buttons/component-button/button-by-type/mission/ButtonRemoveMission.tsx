@@ -85,7 +85,9 @@ const ButtonRemoveMission: React.FC<ButtonRemoveMissionProps> = (props) => {
         handleHide={handleClickCloseForm}
         handleSubmit={handleClickRemoveSelectedRows}
 
-        message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
+        message={
+          checkedRowsAsArray.length > 1 ? `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsAsArray.length} шт)?` : 'Вы уверены, что хотите удалить выбранный элемент?'
+        }
       />
     </>
   );

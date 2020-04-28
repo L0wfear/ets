@@ -92,6 +92,7 @@ const MissionFormWrap: React.FC<Props> = React.memo(
           order_number: get(selectedOrderRow, 'order_number'),
           order_status: get(selectedOrderRow, 'status'),
           mission_source_id: order_mission_source_id,
+          passes_count: get(selectedOrderRow, 'num_exec') || get(selectedOrderTORow, 'num_exec') || 1
         };
       },
       [selectedOrderRow, selectedOrderTORow, order_mission_source_id],

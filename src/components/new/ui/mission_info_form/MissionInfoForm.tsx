@@ -6,12 +6,11 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { keyBy, get } from 'lodash';
 
-import { maskStatusPoint } from 'components/new/ui/mission_info_form/utils/constants';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
-import { makeTitle } from 'components/new/ui/mission_info_form/utils/format';
+import { makeTitle, makeEntries } from 'components/new/ui/mission_info_form/utils/format';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 
@@ -46,7 +45,7 @@ class MissionInfoForm extends React.Component<
 
     const {
       element: {
-        report_data: { entries, check_unit },
+        report_data,
         mission_data,
       },
     } = props;
@@ -60,20 +59,7 @@ class MissionInfoForm extends React.Component<
       parkingCount: null,
       tooLongDates:
         diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
-      missionReport: entries
-        ? entries.map((report, index) => {
-          if (check_unit) {
-            report.route_check_unit = check_unit;
-          }
-          report.frontIndex = index + 1;
-
-          if (props.element.route_data.type === 'points') {
-            report.state = maskStatusPoint[report.status];
-          }
-
-          return report;
-        })
-        : null,
+      missionReport: makeEntries(report_data, props.element)
     };
   }
 

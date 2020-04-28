@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { uniqBy, get } from 'lodash';
+import { uniqBy } from 'lodash';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -8,25 +8,23 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'car_id',
+export const validationSchema: SchemaType<ValuesOf<BatteryRegistry['battery_to_car']>, any> = {
+  properties: {
+    car_id: {
       title: 'Рег. номер ТС',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'installed_at',
+    installed_at: {
       title: 'Дата монтажа',
       type: 'date',
       required: true,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {
@@ -57,7 +55,7 @@ export const meta: IDataTableSchema = {
 };
 
 type IPropsCarIdRenderer = {
-  vehicleList: Array<BatteryAvailableCar>;
+  vehicleList: BatteryRegistry['battery_to_car'];
 } & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
@@ -73,8 +71,8 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       index,
       {
         car_id: valueNew,
-        gov_number: get(option, 'rowData.gov_number', null),
-        company_id: get(option, 'rowData.company_id', null),
+        gov_number: option?.rowData?.gov_number ?? null,
+        company_id: option?.rowData?.company_id ?? null,
       },
     );
   };
@@ -85,7 +83,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       label={false}
       options={vehicleList}
       value={value}
-      error={get(outputListErrors[index], 'car_id', '')}
+      error={outputListErrors[index]?.car_id ?? ''}
       onChange={handleChange}
       disabled={!isPermitted}
     />
@@ -100,7 +98,7 @@ const InstalledAtRenderer: React.FC<
     label={false}
     date={value}
     time={false}
-    error={get(outputListErrors[index], 'installed_at', '')}
+    error={outputListErrors[index]?.installed_at ?? ''}
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
     disabled={!isPermitted}
@@ -115,7 +113,7 @@ const UninstalledAtRenderer: React.FC<
     type="date"
     label={false}
     date={value}
-    error={get(outputListErrors[index], 'uninstalled_at', '')}
+    error={outputListErrors[index]?.uninstalled_at ?? ''}
     time={false}
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}

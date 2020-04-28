@@ -91,3 +91,8 @@ export const OBJECT_TYPE_OPTION = [
   {label: 'ДТ', value: 'dt'},
   {label: 'Все', value: 'all'},
 ];
+
+export const SEASON_OPTION = [
+  { value: 1, label: 'Зима' },
+  { value: 2, label: 'Лето' },
+];

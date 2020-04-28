@@ -13,13 +13,6 @@ const serviceName = 'FuelCardsReportService';
 const schemaMakers = {};
 
 const renderers = {
-  fuel_card({ data }) {
-    if (typeof data === 'number' || typeof data === 'string') {
-      return data;
-    }
-
-    return 'Нет карты';
-  },
 };
 
 const reportProps: IReportProps = {

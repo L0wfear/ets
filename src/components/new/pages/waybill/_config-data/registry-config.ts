@@ -5,7 +5,6 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 import { WaybillRegistryRow } from 'redux-main/reducers/modules/waybill/@types';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 import { WaybillCarService } from 'api/Services';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryWaybillKey = 'Waybills';
 
@@ -55,12 +54,6 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           label: WAYBILL_STATUSES[key],
           value: key,
         })),
-      },
-      {
-        valueKey: 'delete',
-        title: 'Удален',
-        type: 'multiselect',
-        options: YES_NO_SELECT_OPTIONS_BOOL,
       },
       {
         valueKey: 'all_missions_status',

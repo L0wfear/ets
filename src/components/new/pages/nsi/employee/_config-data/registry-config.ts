@@ -16,7 +16,13 @@ export const config: TypeConfigData<Employee> = {
     getRegistryData: {
       entity: 'employee',
       format: 'employee',
+      payload: {
+        actual: true,
+      }
     },
+    getBlobData: {
+      entity: 'employee/export',
+    }
   },
   registryKey,
   header: {
@@ -28,7 +34,7 @@ export const config: TypeConfigData<Employee> = {
         type: buttonsTypes.create,
       },
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

@@ -25,7 +25,3 @@ export const makeReactMessage = (messageRaw) => {
     </div>
   );
 };
-
-export default{
-  makeReactMessage,
-};

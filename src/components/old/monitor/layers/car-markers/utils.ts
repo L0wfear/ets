@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
 import { add, flow, isNumber, max, reduce, subtract } from 'lodash';
 import { WsData } from './LayerCarMarker.h';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const getFrontStatus = (statusId) => {
   switch (statusId) {
@@ -64,8 +65,16 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData}, g
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number) => {
+export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number, carActualList: Array<Car>) => {
   let countTsByStatusWithoutFilters: number = 0;
+
+  const carActualNotInMap = carActualList.reduce((carNotInMapList, car ) => {
+    return Boolean(car.gps_code === null || !carPointsDataWs[car.gps_code])
+      ? [...carNotInMapList, car]
+      : carNotInMapList;
+  }, []);
+
+  const not_in_map: number = carActualNotInMap.length; // кол-во всех тачек из car_actual, которых не было в данных из сокета
 
   const countTsByStatus = reduce(
     carPointsDataWs,
@@ -99,8 +108,14 @@ export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: 
     return {
       ...countTsByStatus,
       not_in_touch,
+      not_in_map,
+      carActualNotInMap,
     };
   } else {
-    return countTsByStatus;
+    return {
+      ...countTsByStatus,
+      not_in_map,
+      carActualNotInMap,
+    };
   }
 };

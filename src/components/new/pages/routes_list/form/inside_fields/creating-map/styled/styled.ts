@@ -21,6 +21,7 @@ export const ButtonCheckRoute = styled(EtsBootstrap.Button)`
 
 export const ButtonCheckTypeSelect = styled(EtsBootstrap.Button)`
   width: 120px;
+  margin-right: 5px;
 `;
 
 export const PointInputContainer = styled.div`

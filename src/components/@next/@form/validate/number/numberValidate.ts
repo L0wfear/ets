@@ -1,14 +1,23 @@
-import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
-import { getRequiredFieldMessage, getRequiredFieldNumberMessage, getRequiredFieldNumberMoreThen, getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
-import { get } from 'lodash';
+import { NumberField } from 'components/@next/@form/@types';
+import {
+  getRequiredFieldMessage,
+  getRequiredFieldNumberMessage,
+  getRequiredFieldNumberMoreThen,
+  getRequiredFieldNumberMoreThenZero,
+  getAltMinError,
+  getMoreOrEqualError,
+  getMinLengthError,
+  getMaxLengthError,
+} from 'components/@next/@utils/getErrorString/getErrorString';
 
 export const floatValidate = (value: number, float: number, title: string) => {
   const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${float + 1},}$`);
-  if (value.toString().match(regexp)) {
+  if (value.toString().match(regexp) || value < 0) {
     return `Поле "${title}" должно быть неотрицательным числом с ${float} знаками после запятой`;
   }
 };
+
 export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField<F>, formState: F) => {
   const {
     [key]: value,
@@ -28,27 +37,26 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     }
 
     const numberValue = Number(value);
-    const regExpVal = fieldData.regexp
-      ? new RegExp(fieldData.regexp)
-      : null;
-    const regexpErrorText = get(fieldData, 'regexpErrorText', 'Определи regexpErrorText в схеме');
 
     if (fieldData.minLength && Number.parseInt(numberValue.toString(), 0).toString().length < fieldData.minLength) {
-      return `Длина поля должна быть больше минимального количества символов (${fieldData.minLength})`;
+      return getMinLengthError(fieldData.minLength);
     }
 
     if (fieldData.maxLength && Number.parseInt(numberValue.toString(), 0).toString().length > fieldData.maxLength) {
-      return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
+      return getMaxLengthError(fieldData.maxLength);
     }
 
     if (isNumber(fieldData.min) && numberValue < fieldData.min) {
-      return `Поле "${title}" должно быть больше либо равно ${fieldData.min}`;
+      if (isNumber(fieldData.max) && fieldData.alt_min) {
+        return getAltMinError(title, fieldData.max);
+      }
+      return getMoreOrEqualError(title, fieldData.min);
     }
 
-    if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual && fieldData.minNotEqual === -1) {
-      return getRequiredFieldNumberMoreThenZero(fieldData.title);
-    }
     if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual) {
+      if (fieldData.minNotEqual === -1) {
+        return getRequiredFieldNumberMoreThenZero(fieldData.title);
+      }
       return getRequiredFieldNumberMoreThen(title, fieldData.minNotEqual);
     }
 
@@ -60,22 +68,20 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
       return `Поле "${title}" должно быть целым числом`;
     }
 
-    if (regExpVal && !regExpVal.test(value)) {
-      return `${regexpErrorText}`;
+    if (fieldData.regexp) {
+      const regExpVal = new RegExp(fieldData.regexp);
+
+      if (regExpVal && !regExpVal.test(value)) {
+        return `${fieldData.regexpErrorText}`;
+      }
     }
 
-    if (!fieldData.integer && fieldData.float) {
+    if (fieldData.float) {
       const error = floatValidate(numberValue, fieldData.float, title);
       if (error) {
         return error;
       }
     }
-
-    if (isNumber(Number(value))) {
-      return '';
-    }
-
-    return getRequiredFieldNumberMessage(title);
   }
 
   return '';

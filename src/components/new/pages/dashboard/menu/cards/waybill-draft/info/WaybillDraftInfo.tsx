@@ -40,7 +40,7 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
     if (infoData) {
       return groupBy<WaybillDraftItemsSubItemsType>(
         infoData.subItems,
-        (waybill) => makeDate(waybill.data.waybill_date_create),
+        (waybill) => makeDate(waybill.date_create),
       );
     }
 
@@ -90,24 +90,27 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
     });
   };
 
-  mapArrData = ({ data: { waybill_id }, title }) => (
+  mapArrData = ({ id, gov_number, garage_number, }) => (
     <li
-      key={waybill_id}
+      key={id}
       className="pointer"
-      data-path={waybill_id}
+      data-path={id}
       onClick={this.openWaybillFormWrap}>
-      {title}
+      {`${gov_number}`}
+      {`${garage_number
+        ? `, ${garage_number}`
+        : ''}`}
     </li>
   );
 
-  mapInfoDataGroupByDate = ([key, arrData]) => (
-    <div key={key}>
+  mapInfoDataGroupByDate = ([key, arrData]) => {
+    return (<div key={key}>
       <TitleWaybillInfoContainer>{key}</TitleWaybillInfoContainer>
       <div>
         <ul>{arrData.map(this.mapArrData)}</ul>
       </div>
-    </div>
-  );
+    </div>);
+  };
 
   render() {
     const { infoData } = this.props;

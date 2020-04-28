@@ -37,8 +37,34 @@ export type IRouteData = {
   has_object_list: boolean | null;
 };
 
+export type EntriesObject = {
+  left: number;
+  status: string;
+  distance: number;
+  traveled: number;
+  object_id: number;
+  v_avg_max: number;
+  check_value: number;
+  object_name: string;
+  abs_traveled: number;
+  high_speed_sec: number;
+  left_percentage: number;
+  abs_traveled_time: number;
+  traveled_high_speed: number;
+  traveled_normalized: number;
+  traveled_percentage: number;
+};
+
+export type EntriesWithoutWorkObject = {
+  name: string;
+  object_id: number;
+  state: number;
+  type: string;
+};
+
 export type IReportData = {
-  entries: Array<any>;
+  entries?: Array<EntriesObject>;
+  entries_without_work?: Array<EntriesObject>; // холостой ход
   check_unit: string | void;
   check_value: number;
   estimated_finish_time: string | Date;

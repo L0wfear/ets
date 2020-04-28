@@ -1,15 +1,13 @@
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const formValidationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'reviewed_at',
+export const formValidationSchema: SchemaType<any, any> = {
+  properties: {
+    reviewed_at: {
       title: 'Дата осмотра',
       type: 'date',
       required: true,
     },
-    {
-      key: 'percent',
+    percent: {
       title: 'Процент выполнения',
       type: 'number',
       integer: true,
@@ -17,11 +15,10 @@ export const formValidationSchema: IValidationSchema = {
       min: 0,
       required: true,
     },
-    {
-      key: 'comment',
+    comment: {
       title: 'Комментарий',
       type: 'string',
-      max: 2048,
+      maxLength: 2048,
     },
-  ],
+  },
 };

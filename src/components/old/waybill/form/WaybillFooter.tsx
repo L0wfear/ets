@@ -16,6 +16,8 @@ type IPropsWaybillFooter = {
   isCreating: boolean;
   isDraft: boolean;
   isClosed: boolean;
+  isActive: boolean;
+  isDelete: boolean;
   canSave: boolean;
   canClose: boolean;
   canPrint: boolean;
@@ -34,8 +36,8 @@ type IPropsWaybillFooter = {
     refill: boolean;
     update: boolean;
     departure_and_arrival_values: boolean;
+    update_closed: boolean;
   };
-  canEditIfCloseUpdPermission: boolean;
 };
 
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
@@ -47,18 +49,21 @@ const popoverHoverFocus = (
 );
 
 class WaybillFooter extends React.Component<IPropsWaybillFooter> {
+  private get isHasPermissionToEditWaybill(): boolean {
+    const { isPermittedByKey } = this.props;
+
+    return Boolean(isPermittedByKey.update
+      || isPermittedByKey.update_closed
+      || isPermittedByKey.refill
+      || isPermittedByKey.departure_and_arrival_values);
+  }
   private get isDisabledWaybillSubmitButton(): boolean {
-    const { isDraft, canSave, state, canEditIfCloseUpdPermission, isClosed } = this.props;
+    const { canSave, isDelete } = this.props;
+    return !((canSave || isDelete) && this.isHasPermissionToEditWaybill);
+  }
 
-    if (isDraft) {
-      return !canSave && !state.canEditIfClose;
-    }
-
-    if (isClosed) {
-      return !canSave && !state.canEditIfClose && !canEditIfCloseUpdPermission;
-    }
-
-    return !canSave;
+  private get isHiddenWaybillSubmitButton(): boolean {
+    return !this.isHasPermissionToEditWaybill;
   }
 
   public render(): JSX.Element {
@@ -114,11 +119,11 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
           <Div
             permissions={savePermissions}
             className={'inline-block'}
-            hidden={(props.state.status === 'closed' && !props.canEditIfClose && !props.canEditIfCloseUpdPermission) || (!props.isPermittedByKey.refill && !props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
+            hidden={this.isHiddenWaybillSubmitButton}
           >
             <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={this.isDisabledWaybillSubmitButton}>Сохранить</EtsBootstrap.Button>
           </Div>
-          <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
+          <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || props.state.status==='deleted' || !(props.formState.status && props.formState.status === 'active')}>
             <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>
           </Div>
         </EtsButtonsContainer>

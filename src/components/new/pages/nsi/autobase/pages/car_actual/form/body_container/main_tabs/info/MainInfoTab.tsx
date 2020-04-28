@@ -84,6 +84,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 onChange={props.onChange}
                 boundKeys="exploitation_date_start"
                 disabled={!isPermitted}
+                error={errors.exploitation_date_start}
                 makeGoodFormat
               />
               <ExtField
@@ -93,6 +94,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 onChange={props.onChange}
                 boundKeys="garage_number"
                 disabled={!isPermitted}
+                error={errors.garage_number}
               />
               <ExtField
                 type="select"
@@ -101,6 +103,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 value={state.company_structure_id}
                 onChange={onChangeCompanyStructure}
                 boundKeys="company_structure_id"
+                error={errors.company_structure_id}
                 disabled={!isPermitted}
               />
               <ExtField
@@ -120,6 +123,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 value={state.fuel_correction_rate}
                 onChange={props.onChange}
                 boundKeys="fuel_correction_rate"
+                error={errors.fuel_correction_rate}
                 disabled={!isPermitted}
               />
               <ExtField

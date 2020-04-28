@@ -1,5 +1,6 @@
 import { TInjectedPropsDataTableInputWrapper } from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 import { ISchemaRenderer, IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
 /**
  * Это пропсы оборачиваемого компонента, которые надо расшарить для обёртки.
@@ -18,6 +19,10 @@ export type ISharedPropsDataTableInput = {
   path: string;
   tableTitle?: string;
   hideButtons?: boolean;
+  buttonsDisable?: (selectedField) => {
+    addButtonDisable: boolean;
+    removeButtonDisable: boolean;
+  };
 };
 
 export type IStateDataTableInput = {
@@ -33,6 +38,10 @@ export type IPropsDataTableInputRenderer = {
   outputListErrors: Array<ETSCore.Types.IStringKeyHashTable<string>>;
   onChange(index: number, key: string | object, value?: any): void;
   fieldKey?: string;
+  inputList: Array<any>;
+
+  validationSchema?: SchemaType<Record<string, any>, any>;
+  isPermittedToUpdateCards?: boolean;
 };
 
 export type TRendererFunction = (

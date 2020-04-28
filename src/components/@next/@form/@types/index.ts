@@ -77,13 +77,14 @@ export type NumberField<F extends Record<string, any>, K extends keyof F = keyof
 
   min?: number;
   max?: number;
+  alt_min?: boolean;
 
   minNotEqual?: number;
 
   integer?: boolean;
   float?: number;
 
-  regexp?: string;
+  regexp?: string;          // регулярка которой число должно соответствовать
   regexpErrorText?: string;
 };
 

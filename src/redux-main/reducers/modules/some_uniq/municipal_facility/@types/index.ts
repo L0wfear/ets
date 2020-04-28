@@ -30,6 +30,10 @@ export type MunicipalFacility = {
   route_types: Array<Route['type']>;
   seasons: Array<string>;
   work_type_codes: Array<number>;
+  work_types: Array<{
+    work_type_name: string;
+    work_type_code: number;
+  }>;
 };
 
 export type MunicipalFacilityMeasureUnit = {

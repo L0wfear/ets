@@ -23,6 +23,8 @@ export const defaultRoute: Route = {
   technical_operation_name: '',
   type: null,
   work_types: [],
+  work_type_code: null,
+  work_type_name: '',
 };
 
 export const getDefaultRouteElement = (element?: Partial<Route> | null) => {

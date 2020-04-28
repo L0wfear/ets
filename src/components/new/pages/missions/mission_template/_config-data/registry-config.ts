@@ -60,6 +60,16 @@ export const config: TypeConfigData<MissionTemplate> = {
         },
       },
       {
+        valueKey: 'car_garage_numbers',
+        title: 'Гаражный номер',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'filters/mission_template/cars',
+          valueKey: 'garage_number',
+          labelKey: 'garage_number',
+        },
+      },
+      {
         valueKey: 'car_type_names',
         title: 'Тип техники',
         type: 'multiselect',
@@ -145,6 +155,11 @@ export const config: TypeConfigData<MissionTemplate> = {
         {
           key: 'car_gov_numbers_text',
           title: 'Рег. номер ТС',
+          width: 200,
+        },
+        {
+          key: 'car_garage_numbers_text',
+          title: 'Гаражный номер',
           width: 200,
         },
         {

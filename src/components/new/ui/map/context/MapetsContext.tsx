@@ -2,7 +2,8 @@ import * as React from 'react';
 import Map from 'ol/Map';
 
 import { StateMapEtsProvider } from 'components/new/ui/map/context/MapetsContext.h';
-import { resizeBase64, getCanvasOfElement } from 'utils/functions';
+import { resizeBase64 } from 'utils/functions';
+import { getCanvasOfElement } from 'utils/htmlCanvas';
 
 const defaultState: StateMapEtsProvider = {
   mapByKeys: {},

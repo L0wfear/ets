@@ -15,6 +15,9 @@ export const config: TypeConfigData<Car> = {
       entity: 'car_actual',
       format: 'carActual',
     },
+    getBlobData: {
+      entity:  'car_actual/export',
+    }
   },
   registryKey,
   header: {
@@ -22,7 +25,7 @@ export const config: TypeConfigData<Car> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

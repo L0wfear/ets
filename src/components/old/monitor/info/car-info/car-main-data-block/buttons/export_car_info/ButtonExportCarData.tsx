@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import * as jsPDF from 'jspdf';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { getDateWithMoscowTz, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
-import { getTextCanvas, getCanvasOfElement, get_browser } from 'utils/functions';
+import { get_browser } from 'utils/functions';
+import { getTextCanvas, getCanvasOfElement } from 'utils/htmlCanvas';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { NO_DATA_TEXT } from 'constants/statuses';
 import HiddenMapCarExport from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/map/HiddenMapCarExport';
@@ -13,7 +15,6 @@ import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 import { getDistanceValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 type Props = ({

@@ -74,16 +74,16 @@ class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWay
       <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
         <ul>
           {this.props.infoData.subItems.map(
-            ({ data: { waybill_id, ...data } }) => (
+            ({id, number, gov_number, driver_fio, garage_number, }) => (
               <li
-                key={waybill_id}
+                key={id}
                 className="pointer"
-                data-path={waybill_id}
+                data-path={id}
                 onClick={this.openWaybillFormWrap}>
-                {`№${data.waybill_number}, `}
-                <b>{data.car_gov_number}</b>
+                {`№${number}, `}
+                <b>{gov_number}</b>
                 <br />
-                {`${data.car_garage_number || '-'}, ${data.driver_fio || '-'}`}
+                {`${garage_number || '-'}, ${driver_fio || '-'}`}
               </li>
             ),
           )}

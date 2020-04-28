@@ -31,4 +31,6 @@ export type MissionTemplate = {
   technical_operation_name: string;
   type_oper_id: number;
   work_class_id: number;
+  car_garage_numbers_text: string;
+  car_garage_numbers: Array<string>;
 };

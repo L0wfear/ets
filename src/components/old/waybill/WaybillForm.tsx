@@ -154,12 +154,11 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
         = lastCarUsedWaybill.motohours_equip_end;
     }
 
-    fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank;
+    fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank; // <<< как узнать кто установил??? originState?
 
     if (!fieldsToChange.is_one_fuel_tank) {
       fieldsToChange.equipment_fuel_type
-        = lastCarUsedWaybill.equipment_fuel_type
-        || getDefaultBill({}).equipment_fuel_type;
+        = lastCarUsedWaybill.equipment_fuel_type;
     }
 
     fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
@@ -250,6 +249,7 @@ type OwnProps = {
     update: boolean;
     departure_and_arrival_values: boolean;
     refill: boolean;
+    update_closed: boolean;
   };
   canClose: boolean;
   canSave: boolean;
@@ -274,7 +274,6 @@ type State = {
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
-  canEditIfCloseUpdPermission: boolean;
   loadingFields: Record<string, any>;
   fuelRateAllList: Array<any>;
   tooLongFactDates: boolean;
@@ -290,6 +289,8 @@ type State = {
     hasError: boolean;
     errorText: string;
   };
+
+  lastWaybill: Waybill;
 };
 
 class WaybillForm extends React.Component<Props, State> {
@@ -303,7 +304,6 @@ class WaybillForm extends React.Component<Props, State> {
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
-      canEditIfCloseUpdPermission: null,
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
@@ -316,6 +316,7 @@ class WaybillForm extends React.Component<Props, State> {
         hasError: false,
         errorText: '',
       },
+      lastWaybill: null,
     };
   }
 
@@ -386,13 +387,14 @@ class WaybillForm extends React.Component<Props, State> {
   async componentDidMount() {
     const {
       formState,
-      formState: { status },
+      formState: { status, car_id },
     } = this.props;
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
-    const IS_ACTIVE = status === 'active';
+    const IS_ACTIVE = status === 'active' || status === 'deleted'; // Удален это признак, по факту статус ПЛ, активен
     const IS_CLOSED = status === 'closed';
+    const IS_DELETE = status === 'deleted';
 
     this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
@@ -435,22 +437,18 @@ class WaybillForm extends React.Component<Props, State> {
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
-            canEditIfCloseUpdPermission: waybill.closed_editable
-              ? this.props.userPermissionsSet.has('waybill.update')
-              : false,
           });
         })
         .catch((e) => {
           console.error(e);  // eslint-disable-line
           this.setState({
             canEditIfClose: false,
-            canEditIfCloseUpdPermission: false,
             origFormState: formState,
           });
         });
     }
 
-    if (IS_ACTIVE || IS_CLOSED) {
+    if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
 
       const currentSeason = this.props.formState.season;
@@ -569,6 +567,18 @@ class WaybillForm extends React.Component<Props, State> {
             equipmentOperations: [],
           });
         });
+    }
+    
+    if(car_id && (IS_CREATING || IS_DRAFT)) {
+      await this.refresh(true);
+    }
+
+    if(car_id && IS_ACTIVE) {
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        this.setState({ lastWaybill, });
+      });
     }
   }
 
@@ -748,6 +758,7 @@ class WaybillForm extends React.Component<Props, State> {
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
+      loadingFields.sensor_refill = false;
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
@@ -764,6 +775,7 @@ class WaybillForm extends React.Component<Props, State> {
     ) {
       loadingFields.distance = true;
       loadingFields.consumption = true;
+      loadingFields.sensor_refill = true;
       this.setState({ loadingFields });
 
       this.props
@@ -777,7 +789,7 @@ class WaybillForm extends React.Component<Props, State> {
             this.props,
           ),
         )
-        .then(({ distance, consumption }) => {
+        .then(({ distance, consumption, sensor_refill, }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -786,12 +798,16 @@ class WaybillForm extends React.Component<Props, State> {
             consumption: isNullOrUndefined(consumption)
               ? null
               : parseFloat(consumption),
+            sensor_refill: isNullOrUndefined(sensor_refill)
+              ? null
+              : parseFloat(sensor_refill),
           });
 
           this.setState({
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_refill: false,
             },
           });
         })
@@ -800,6 +816,7 @@ class WaybillForm extends React.Component<Props, State> {
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_refill: false,
             },
           });
         });
@@ -808,6 +825,7 @@ class WaybillForm extends React.Component<Props, State> {
         loadingFields: {
           distance: false,
           consumption: false,
+          sensor_refill: false,
         },
       });
     }
@@ -892,12 +910,14 @@ class WaybillForm extends React.Component<Props, State> {
           this.props.clearSomeData();
           return this.props
             .dispatch(actionGetLastClosedWaybill({ car_id }, this.props))
-            .then((lastCarUsedWaybill) =>
-              res({
+            .then((lastCarUsedWaybill) => {
+              this.setState({ lastWaybill: lastCarUsedWaybill, });
+              return res({
                 ...fieldsToChange,
                 ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
                 gov_number: selectedCar.gov_number,
-              }),
+              });
+            },
             );
         }
 
@@ -961,21 +981,38 @@ class WaybillForm extends React.Component<Props, State> {
   /**
    * Обновляет данные формы на основе закрытого ПЛ
    */
-  refresh = async () => {
+  refresh = async (autocompleteOnly: boolean = false) => {
     const state = this.props.formState;
 
-    const lastCarUsedWaybill = await this.props.dispatch(
-      actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
-    );
     const plan_departure_date
-      = diffDates(new Date(), state.plan_departure_date) > 0
+      = diffDates(new Date(), state.plan_departure_date) > 0 && !autocompleteOnly
         ? new Date()
         : state.plan_departure_date;
-    const fieldsToChange = {
-      ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
-      plan_departure_date,
-    };
-    this.props.handleMultipleChange(fieldsToChange);
+
+    await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
+    ).then(
+      (lastWaybill) => {
+
+        const is_one_fuel_tank = autocompleteOnly
+          ? state.is_one_fuel_tank
+          : lastWaybill.is_one_fuel_tank;
+
+        const lastWaybillMod = {
+          ...lastWaybill,
+          is_one_fuel_tank,
+        };
+
+        this.setState({ lastWaybill, });
+
+        const fieldsToChange = {
+          ...this.getFieldsToChangeBasedOnLastWaybill(lastWaybillMod),
+          plan_departure_date,
+        };
+
+        this.props.handleMultipleChange(fieldsToChange);
+      }
+    );
   };
 
   handleStructureIdChange = (structure_id) => {
@@ -1050,7 +1087,7 @@ class WaybillForm extends React.Component<Props, State> {
           this.props.dispatch(actionLoadOrderById(order_id, this.props)),
       )
         .then(async () => {
-          if (this.props.formState.status === 'active') {
+          if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
             const { rejectMissionList } = this.state;
             await this.rejectMissionHandler(rejectMissionList).then((res) => {
               const { origMissionsList } = this.state;
@@ -1217,6 +1254,9 @@ class WaybillForm extends React.Component<Props, State> {
   };
 
   handleIsOneFuelTank = async (is_one_fuel_tank) => {
+    const {
+      formState: { car_id, equipment_fuel, },
+    } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
     };
@@ -1228,6 +1268,19 @@ class WaybillForm extends React.Component<Props, State> {
         'Очистить введенные данные по топливу спецоборудования?',
         'is_one_fuel_tank',
       );
+    } else {
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        this.setState({ lastWaybill, });
+        const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+
+        this.handleMultipleChange({
+          ...closedEquipmentData,
+          ...changeObj,
+          equipment_fuel,
+        });
+      });
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
       this.handleMultipleChange(changeObj);
@@ -1248,16 +1301,19 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { car_id },
     } = this.props;
 
-    const lastCarUsedWaybill = await this.props.dispatch(
-      actionGetLastClosedWaybill({ car_id }, this.props),
-    );
-
-    const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
-    closedEquipmentData.equipment_fuel = true;
-    closedEquipmentData.motohours_equip_start
-      = this.props.formState.motohours_equip_start || 0;
-    closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
-    this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
+    await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+    ).then((lastWaybill) => {
+      this.setState({ lastWaybill, });
+      const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+      closedEquipmentData.equipment_fuel = true;
+      closedEquipmentData.motohours_equip_start
+        = lastWaybill
+          ? lastWaybill.motohours_equip_end
+          : null;
+      closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
+      this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
+    });
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
@@ -1265,19 +1321,17 @@ class WaybillForm extends React.Component<Props, State> {
     if (isNullOrUndefined(formState.equipment_fuel)) {
       this.handleChange('equipment_fuel', false);
     } else if (formState.equipment_fuel) {
-      if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
-        await this.clearFuelEquipmentData(
-          {
-            is_one_fuel_tank: true,
-            motohours_equip_start: null,
-            equipment_fuel: false,
-            ...setEmptyFieldByKey(fieldToCheckHasData),
-          },
-          true,
-          false,
-          'equipment_fuel',
-        );
-      }
+      await this.clearFuelEquipmentData(
+        {
+          is_one_fuel_tank: true,
+          motohours_equip_start: null,
+          equipment_fuel: false,
+          ...setEmptyFieldByKey(fieldToCheckHasData),
+        },
+        true,
+        false,
+        'equipment_fuel',
+      );
     }
   };
 
@@ -1390,7 +1444,7 @@ class WaybillForm extends React.Component<Props, State> {
   handleSubmit = async () => {
     if (this.checkOnValidHasEquipment()) {
       delete this.props.formState.is_bnso_broken;
-      if (this.props.formState.status === 'active') {
+      if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
         const { rejectMissionList } = this.state;
         this.rejectMissionHandler(rejectMissionList).then((res) => {
           const { origMissionsList } = this.state;
@@ -1476,6 +1530,7 @@ class WaybillForm extends React.Component<Props, State> {
       origFormState = {},
       notAvailableMissions = [],
       missionsList = [],
+      lastWaybill,
     } = this.state;
 
     const {
@@ -1581,15 +1636,18 @@ class WaybillForm extends React.Component<Props, State> {
     }
 
     const IS_CREATING = !state.status;
-    const IS_ACTIVE = state?.status === 'active';
+    const IS_ACTIVE = state?.status === 'active' || state?.status === 'deleted'; // Удален это признак, по факту статус ПЛ, активен
     const IS_DRAFT = state?.status === 'draft';
     const IS_CLOSED = state?.status === 'closed';
-    const IS_DELETE = state?.delete;
+    const IS_DELETE = state?.status === 'deleted';
 
-    const EMPLOYEES = employeeList.map(({ id, full_name, active, }) => {
+    const EMPLOYEES = employeeList.map(({ id, full_name, active, personnel_number, }) => {
+      const personnel_number_txt = personnel_number
+        ? `[${personnel_number}] `
+        : '';
       return ({
         value: id,
-        label: `${full_name} ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
+        label: `${personnel_number_txt}${full_name}  ${!active && (IS_DRAFT || IS_CREATING) ? '(Не работает)' : ''}`,
       });
     });
 
@@ -1664,16 +1722,12 @@ class WaybillForm extends React.Component<Props, State> {
       || !isPermittedByKey.update || IS_DELETE;
 
     const disableComment = (
-      IS_CLOSED
-        && (
-          !this.state.canEditIfCloseUpdPermission
-            && !this.state.canEditIfClose
-        )
+      IS_CLOSED && !isPermittedByKey.update_closed && !isPermittedByKey.update
     ) || (
       !IS_CLOSED && !isPermittedByKey.update
     );
 
-    // <<< Да простят меня боги, переписать в 33м!!!
+    // <<< #ДаПростятМеняБоги, переписать в 33м!!!
     const driverNotActiveError = (IS_DRAFT || IS_CREATING) && state.driver_id && !employeeByIndex?.active
       ? 'Поле "Водитель" должно быть заполнено работающим сотрудником'
       : ''; // Если сотрудник неактивен, только для черновика
@@ -1880,7 +1934,7 @@ class WaybillForm extends React.Component<Props, State> {
                     id="car-id"
                     type="select"
                     modalKey={modalKey}
-                    label="Транспортное средство (поиск по рег. номер  ТС)"
+                    label="Транспортное средство (поиск по рег. и гаражному номеру ТС)"
                     error={errors.car_id}
                     className="white-space-pre-wrap"
                     hidden={!(IS_CREATING || IS_DRAFT)}
@@ -1955,7 +2009,7 @@ class WaybillForm extends React.Component<Props, State> {
                   id="distance-by-glonass"
                   type="number"
                   label="Пройдено по Глонасс, км"
-                  error={!this.state.tooLongFactDates && errors.distance}
+                  error={!this.state.tooLongFactDates}
                   value={
                     this.state.tooLongFactDates
                       ? 'Слишком большой период действия ПЛ'
@@ -2081,6 +2135,7 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.odometr_start}
                             disabled={
                               IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                              || Boolean(lastWaybill && lastWaybill['odometr_end'])
                             }
                             onChange={this.handleChange}
                             boundKeys="odometr_start"
@@ -2122,6 +2177,7 @@ class WaybillForm extends React.Component<Props, State> {
                             value={state.motohours_start}
                             disabled={
                               IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                              || Boolean(lastWaybill && lastWaybill['motohours_end'])
                             }
                             onChange={this.handleChange}
                             boundKeys="motohours_start"
@@ -2166,7 +2222,10 @@ class WaybillForm extends React.Component<Props, State> {
                               keyField="fuel_type"
                               value={state.fuel_type}
                               error={errors.fuel_type}
-                              disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
+                              disabled={
+                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                || (lastWaybill && lastWaybill['fuel_type'])
+                              }
                               options={FUEL_TYPES}
                               handleChange={this.props.handleMultipleChange}
                             />
@@ -2198,9 +2257,8 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.fuel_start}
                               value={state.fuel_start}
                               disabled={
-                                IS_DELETE || IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
+                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
                               }
                               onChange={this.handleChange}
                               boundKeys="fuel_start"
@@ -2275,6 +2333,8 @@ class WaybillForm extends React.Component<Props, State> {
                           date_for_valid={{
                             fact_departure_date: state.fact_departure_date,
                             plan_departure_date: state.plan_departure_date,
+                            plan_arrival_date: state.plan_arrival_date,
+                            fact_arrival_date: state.fact_arrival_date,
                           }}
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
@@ -2294,11 +2354,12 @@ class WaybillForm extends React.Component<Props, State> {
                           modalKey={modalKey}
                           hidden={
                             !(IS_CLOSED || IS_ACTIVE)
-                            || state.status === 'draft'
+                            || IS_DRAFT
                             || (IS_CLOSED
                               && state.tax_data
-                              && state.tax_data.length === 0)
-                            || (IS_CLOSED && !state.tax_data)
+                              && state.tax_data.length === 0
+                              && !this.state.canEditIfClose)
+                            || (IS_CLOSED && !state.tax_data && !this.state.canEditIfClose)
                           }
                           readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
                           IS_CLOSED={IS_CLOSED}
@@ -2347,9 +2408,8 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_start}
                               value={state.motohours_equip_start}
                               disabled={
-                                IS_DELETE || IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                               }
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_start"
@@ -2360,12 +2420,9 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Возвращение в гараж, м/ч"
                               error={errors.motohours_equip_end}
                               value={state.motohours_equip_end}
-                              hidden={
-                                !(IS_ACTIVE || IS_CLOSED)
-                                || (!isPermittedByKey.update
-                                  && !isPermittedByKey.departure_and_arrival_values)
-                              }
-                              disabled={IS_DELETE || IS_CLOSED && !this.state.canEditIfClose}
+                              hidden={ !(IS_ACTIVE || IS_CLOSED) }
+                              disabled={(IS_DELETE || IS_CLOSED && !this.state.canEditIfClose)
+                                || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_end"
                             />
@@ -2394,6 +2451,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     error={errors.equipment_fuel_type}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                      || Boolean(lastWaybill && lastWaybill['equipment_fuel_type'])
                                     }
                                     options={FUEL_TYPES}
                                     handleChange={
@@ -2424,6 +2482,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     value={state.equipment_fuel_start}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                      || Boolean(lastWaybill && lastWaybill['equipment_fact_fuel_end'])
                                     }
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"
@@ -2491,6 +2550,8 @@ class WaybillForm extends React.Component<Props, State> {
                               date_for_valid={{
                                 fact_departure_date: state.fact_departure_date,
                                 plan_departure_date: state.plan_departure_date,
+                                plan_arrival_date: state.plan_arrival_date,
+                                fact_arrival_date: state.fact_arrival_date,
                               }}
                               IS_DRAFT_OR_ACTIVE={
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE
@@ -2511,11 +2572,12 @@ class WaybillForm extends React.Component<Props, State> {
                               modalKey={modalKey}
                               hidden={
                                 !(IS_CLOSED || IS_ACTIVE)
-                                || state.status === 'draft'
+                                || IS_DRAFT
                                 || (IS_CLOSED
                                   && state.equipment_tax_data
-                                  && state.equipment_tax_data.length === 0)
-                                || (IS_CLOSED && !state.equipment_tax_data)
+                                  && state.equipment_tax_data.length === 0
+                                  && !this.state.canEditIfClose)
+                                || (IS_CLOSED && !state.equipment_tax_data && !this.state.canEditIfClose)
                               }
                               readOnly={
                                 IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update
@@ -2598,6 +2660,18 @@ class WaybillForm extends React.Component<Props, State> {
                     error={errors.consumption}
                     value={state.consumption || state.sensor_consumption}
                     isLoading={loadingFields.consumption}
+                    format="toFixed3"
+                    disabled
+                  />
+                </Div>
+                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+                  <ExtField
+                    id="sensor_refill"
+                    type="number"
+                    label="Заправка по ДУТ, л"
+                    error={errors.sensor_refill}
+                    value={state.sensor_refill}
+                    isLoading={loadingFields.sensor_refill}
                     format="toFixed3"
                     disabled
                   />
@@ -2700,6 +2774,8 @@ class WaybillForm extends React.Component<Props, State> {
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
             isClosed={IS_CLOSED}
+            isActive={IS_ACTIVE}
+            isDelete={IS_DELETE}
             canSave={Boolean(this.props.canSave && !this.state.missionHasError?.hasError)}
             canPrint={canWaybillPrint}
             canGiveOutRead={canWaybillGiveOutRead}
@@ -2707,7 +2783,6 @@ class WaybillForm extends React.Component<Props, State> {
             formState={this.props.formState}
             state={state}
             canEditIfClose={!!this.state.canEditIfClose}
-            canEditIfCloseUpdPermission={!!this.state.canEditIfCloseUpdPermission}
             taxesControl={taxesControl}
             refresh={this.refresh}
             handleSubmit={this.handleSubmit}

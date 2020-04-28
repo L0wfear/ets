@@ -7,11 +7,13 @@ import ButtonPrev from 'components/new/ui/registry/components/data/paginator/but
 import ButtonNext from 'components/new/ui/registry/components/data/paginator/buttons/ButtonNext';
 import ButtonLast from 'components/new/ui/registry/components/data/paginator/buttons/ButtonLast';
 
-import { EtsPaginatorContainer } from 'components/new/ui/registry/components/data/paginator/styled/styled';
+import { EtsPaginatorContainer, EtsPaginatorPages, } from 'components/new/ui/registry/components/data/paginator/styled/styled';
 
 import NumberButtons from './buttons/number_buttons/NumberButtons';
 import EtsPaginatorCheckSearch from './EtsPaginatorCheckSearch';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+
+import PerPageSelector from 'components/new/ui/registry/components/data/paginator/perPageSelector/perPageSelector';
 
 type Props = {
   registryKey: string;
@@ -57,20 +59,24 @@ const PaginatorNew: React.FC<Props> = React.memo(
 
     return (
       <React.Fragment>
-        {
-          countPages > 1
-            && (
-              <EtsPaginatorContainer>
-                <ButtonFirst registryKey={registryKey} />
-                <ButtonPrev registryKey={registryKey}/>
-                {
-                  buttons
-                }
-                <ButtonNext registryKey={registryKey} />
-                <ButtonLast registryKey={registryKey} />
-              </EtsPaginatorContainer>
-            )
-        }
+        <EtsPaginatorContainer>
+          <EtsPaginatorPages>
+            {
+              countPages > 1 && (
+                <React.Fragment>
+                  <ButtonFirst registryKey={registryKey} />
+                  <ButtonPrev registryKey={registryKey}/>
+                  {
+                    buttons
+                  }
+                  <ButtonNext registryKey={registryKey} />
+                  <ButtonLast registryKey={registryKey} />
+                </React.Fragment>
+              )
+            }
+          </EtsPaginatorPages>
+          <PerPageSelector registryKey={registryKey} />
+        </EtsPaginatorContainer>
         <EtsPaginatorCheckSearch registryKey={registryKey} countPages={countPages} />
       </React.Fragment>
     );

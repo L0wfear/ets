@@ -5,6 +5,13 @@ import SimpleLinkA from 'components/new/ui/simple_a/link';
 import { isImgPath } from 'utils/functions';
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
+
+export const FileListLiStyled = styled.div`
+  margin-bottom: 5px;
+  text-decoration: none!important;
+  text-decoration-style: none!important;
+`;
 
 type Props = CommontTdTiteProps;
 
@@ -69,9 +76,9 @@ const ShowFileListTdTitle: React.FC<Props> = React.memo(
               <React.Fragment>
                 {
                   files.map((file, index) => (
-                    <li key={file.path}>
-                      <SimpleLinkA onClick={handleClick} href={file.path} index={index} file={file} target="_blanc">{file.filename}</SimpleLinkA>
-                    </li>
+                    <FileListLiStyled key={file.path}>
+                      <SimpleLinkA shortTitle={true} withFileFormatLabel={true} onClick={handleClick} href={file.path} index={index} file={file} title={file.filename} target="_blanc">{file.filename}</SimpleLinkA>
+                    </FileListLiStyled>
                   ))
                 }
               </React.Fragment>

@@ -49,20 +49,20 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
       () => {
         let i_exist = true;
 
-        props.actionMonitorPageLoadCarActual().then(
-          (result) => {
-            if (i_exist) {
-              dispatch(
-                monitorPageSetcarActualGpsNumberIndex(
-                  keyBy(
-                    result.data,
-                    'gps_code',
-                  ),
-                  result.data.length,
-                ),
-              );
-            }
+        props.actionMonitorPageLoadCarActual().then((result) => {
+          if (i_exist) {
+            dispatch(monitorPageSetcarActualGpsNumberIndex(keyBy(result.data, 'gps_code'), result.data.length, result.data));
+          }
+        });
+        const timeIdInterval = setInterval(
+          () => {
+            props.actionMonitorPageLoadCarActual().then((result) => {
+              if (i_exist) {
+                dispatch(monitorPageSetcarActualGpsNumberIndex(keyBy(result.data, 'gps_code'), result.data.length, result.data));
+              }
+            });
           },
+          360 * 1000, // раз в час обновлять
         );
 
         props.loadGeozonesOdhMkad();
@@ -82,6 +82,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
         return () => {
           i_exist = false;
           props.resetMonitorPageState();
+          clearInterval(timeIdInterval);
         };
       },
       [],

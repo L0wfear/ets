@@ -8,5 +8,5 @@ export const DashboardPageContainer = styled(EtsPageWrap)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #eeeeee;
+  /* background: #eeeeee; */
 `;

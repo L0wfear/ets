@@ -36,6 +36,7 @@ export const config: TypeConfigData<Mission> = {
     title: 'Журнал заданий',
     titlePopover: 'Задания в статусах «Выполнено», «Не выполнено»,«Отменено», «Не назначено» через 30 календарных дней автоматически переносятся в архив (Задания -> Архив заданий)',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.mission_create,
       buttonsTypes.mission_create_by_order,
@@ -111,6 +112,11 @@ export const config: TypeConfigData<Mission> = {
           valueKey: 'asuods_id',
           labelKey: 'gov_number',
         },
+      },
+      {
+        valueKey: 'car_garage_number',
+        title: 'Гаражный номер',
+        type: 'multiselect',
       },
       {
         valueKey: 'type_id',
@@ -270,6 +276,11 @@ export const config: TypeConfigData<Mission> = {
         {
           key: 'car_gov_number',
           title: 'Рег. номер ТС',
+          width: 150,
+        },
+        {
+          key: 'car_garage_number',
+          title: 'Гаражный номер',
           width: 150,
         },
         {

@@ -75,6 +75,7 @@ export function makeUnixTime(timeOwn) {
 
 export function makeUnixTimeMskTimezone(time) {
   if (typeof time === 'string') {
+    // eslint-disable-next-line no-param-reassign
     time = MomentTimezone.tz(time, 'Europe/Moscow' );
   }
   return Math.floor(time / 1000);
@@ -136,7 +137,7 @@ export function formatDate(date: string | Date, format: string) {
   return moment(date).format(format);
 }
 
-export function getFormattedDateTime(date: string | number | Date) {
+export function getFormattedDateTime(date: string | number | Date | Moment.Moment) {
   if (!date) {
     return '';
   }
@@ -361,3 +362,24 @@ export const minusTime = (date, count, typeAdd) =>
   moment(date)
     .subtract(count, typeAdd)
     .format();
+
+export const dateInPeriod = (
+  startDatePeriod: Moment.Moment | Date | string,
+  endDatePeriod: Moment.Moment | Date | string,
+  checkedDate: Moment.Moment | Date | string,
+  options: {
+      excludeStart: boolean;
+      excludeEnd: boolean;
+  }
+) => {
+  const range = moment().range(moment(startDatePeriod), moment(endDatePeriod));
+
+  return range.contains(moment(checkedDate), options);
+};
+
+export function setDateTime0am(dateOwn) {
+  const date = moment(dateOwn);
+  date.hours(0);
+  date.minutes(0);
+  return date.toDate();
+}

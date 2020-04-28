@@ -89,6 +89,7 @@ export type WaybillRegistryRow = {
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
+  sensor_refill: number;
   status: 'draft' | any;
   status_text: string;
   structure_id: number;
@@ -116,6 +117,15 @@ export type WaybillRegistryRow = {
 export type Waybill = (
   WaybillRegistryRow
   & waybillDiff
+  & {
+    equipment_tax_data_rows?: Array<any>; // для валидации
+    tax_data_rows?: Array<any>; // для валидации
+    distance?: number; // для валидации
+    hasEquipmentFuelRates?: boolean;
+
+    odometr_diff?: number; // для жизни
+    motohours_diff?: number; // для жизни
+  }
 );
 
 export type IStateWaybill = {

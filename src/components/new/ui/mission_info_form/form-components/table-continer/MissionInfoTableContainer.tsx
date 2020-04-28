@@ -3,8 +3,33 @@ import * as React from 'react';
 import MissionReportByODH from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByODH';
 import MissionReportByDT from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByDT';
 import MissionReportByPoints from 'components/new/ui/mission_info_form/form-components/table-continer/table_by_route_type/MissionReportByPoints';
+import { MissionReportEntriesWithoutWork } from './table_by_route_type/MissionReportWithoutWork';
 
-type PropsMissionInfoTableContainer = {
+export const VALUE_FOR_FIXED = {
+  TWO_F: {
+    val: 2,
+    list: ['кв. м.', 'м.'],
+    type: 'floatFixed',
+  },
+  THREE_F: {
+    val: 3,
+    list: ['км'],
+    type: 'floatFixed',
+  },
+  TEN_I: {
+    val: 10,
+    list: ['раз'],
+    type: 'intFixed',
+    another: {
+      val: 2,
+      type: 'floatFixed',
+    },
+  },
+  floatFixed: (data, val) => parseFloat(data).toFixed(val),
+  intFixed: (data, val) => parseInt(data, val),
+};
+
+export type PropsMissionInfoTableContainer = {
   type: 'mixed' | 'simple_dt' | 'points';
   missionReport: Array<any>;
   handleSelectedElementChange: (id: number) => any;
@@ -18,18 +43,30 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
       handleSelectedElementChange,
     } = props;
 
+    const selectedReportData = React.useMemo(
+      () => missionReport.filter((elem) => !elem.is_without_work),
+      [props.missionReport]
+    );
+    const selectedReportDataWithoutWork = React.useMemo(
+      () => missionReport.filter((elem) => elem.is_without_work),
+      [props.missionReport]
+    );
+
     return (
       <>
         {
           type === 'mixed' && (
-            <MissionReportByODH
-              renderOnly
-              enumerated={false}
-              selectedReportDataODHS={missionReport}
-              selectField={'object_id'}
-              onElementChange={handleSelectedElementChange}
-              normInitialData
-            />
+            <React.Fragment>
+              <MissionReportByODH
+                renderOnly
+                enumerated={false}
+                selectedReportDataODHS={selectedReportData}
+                selectField={'object_id'}
+                onElementChange={handleSelectedElementChange}
+                normInitialData
+              />
+            </React.Fragment>
+            
           )
         }
         {
@@ -37,7 +74,7 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
             <MissionReportByDT
               renderOnly
               enumerated={false}
-              selectedReportDataDTS={missionReport}
+              selectedReportDataDTS={selectedReportData}
               selectField={'object_id'}
               onElementChange={handleSelectedElementChange}
               normInitialData
@@ -49,9 +86,22 @@ const MissionInfoTableContainer: React.FC<PropsMissionInfoTableContainer> = Reac
             <MissionReportByPoints
               renderOnly
               enumerated={false}
-              selectedReportDataPoints={missionReport}
+              selectedReportDataPoints={selectedReportData}
               selectField={'frontIndex'}
               onElementChange={handleSelectedElementChange}
+              normInitialData
+            />
+          )
+        }
+        {
+          Boolean(type === 'mixed' || type === 'simple_dt')  && (
+            <MissionReportEntriesWithoutWork
+              renderOnly
+              enumerated={false}
+              selectedReportDataWithoutWork={selectedReportDataWithoutWork}
+              selectField={'object_id'}
+              onElementChange={handleSelectedElementChange}
+              type={type}
               normInitialData
             />
           )

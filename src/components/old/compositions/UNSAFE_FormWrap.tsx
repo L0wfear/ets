@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { cloneDeep, omit } from 'lodash';
 
-import { validateField } from 'utils/validate/validateField';
 import { FluxContext } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
 import { saveDataSuccessNotification } from 'utils/notifications';
+import { validate } from 'components/old/ui/form/new/validate';
 
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
@@ -50,7 +50,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
           ? cloneDeep(this.defaultElement)
           : {};
       }
-      const formErrors = this.validate(element, {});
+      const formErrors = this.validate(element);
 
       this.setState({
         formState: element,
@@ -63,27 +63,16 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
     }
   }
 
-  validate = (state, errors) => {
+  validate = (formState) => {
     if (typeof this.schema === 'undefined') {
-      return errors;
+      return {};
     }
 
-    const schema = this.schema;
-    const formState = { ...state };
-
-    return schema.properties.reduce(
-      (formErrors, prop) => {
-        const { key } = prop;
-        formErrors[key] = validateField(
-          prop,
-          formState[key],
-          formState,
-          this.schema,
-          this.props,
-        );
-        return formErrors;
-      },
-      { ...errors },
+    return validate(
+      this.schema,
+      formState,
+      this.props,
+      formState,
     );
   };
 
@@ -97,7 +86,7 @@ class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
     console.info('Form changed', field, value);  // eslint-disable-line
     formState[field] = value;
 
-    formErrors = this.validate(formState, formErrors);
+    formErrors = this.validate(formState);
 
     newState.canSave = Object.values(formErrors).reduce(
       (boolean, oneError) => boolean && !oneError,

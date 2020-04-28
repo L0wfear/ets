@@ -270,7 +270,6 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         this.setState(({ formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             formState[key] = getFormatedValue(config.schema.properties[key], value);
-            console.info('FORM CHANGE STATE', key, formState[key]); // eslint-disable-line
           });
 
           const formErrors = this.validate(formState);

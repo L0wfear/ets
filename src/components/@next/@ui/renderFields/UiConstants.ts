@@ -4,4 +4,6 @@ export const UiConstants = {
   colorBlueLight: '#ebf5ff',
   colorBlue: '#007eff',
   colorGrey: '#cccccc',
+  colorDark: '#4c4c4c',
+  colorLightGreen: '#7fc650',
 };

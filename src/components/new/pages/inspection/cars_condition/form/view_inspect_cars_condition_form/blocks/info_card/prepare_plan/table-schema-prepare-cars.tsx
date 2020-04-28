@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { isArray } from 'util';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -8,39 +9,36 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { TypesСar } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'type',
+export const validationSchema: SchemaType<TypesСar, any> = {
+  properties: {
+    type: {
       title: 'Тип техники',
       type: 'string',
       required: true,
     },
-    {
-      key: 'will_checked_cnt',
+    will_checked_cnt: {
       title: 'Всего подлежит подготовке',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'allseason_use_cnt',
+    allseason_use_cnt: {
       title: 'Круглогодичного использования',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'checks_period_use_cnt',
+    checks_period_use_cnt: {
       title: 'В выбранный период',
       type: 'number',
       integer: true,
       required: true,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {
@@ -95,13 +93,31 @@ const TypeRenderer: React.FC<IPropsTypeRenderer> = ({
 
 const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
   const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
-  const properties = get(values , 'validationSchema.properties', []);
-  const propertiesElem = properties.find(
-    (elem) => elem.key === fieldKey,
-  );
+  const properties = values?.validationSchema?.properties;
+
+  let propertiesElem = null;
+  if (properties) {
+    if (isArray(properties)) {
+      propertiesElem = properties.find(
+        (elem) => elem.key === fieldKey,
+      );
+    } else {
+      propertiesElem = properties[fieldKey];
+    }
+  }
+
   const inputType = get(propertiesElem, 'type', 'string');
 
-  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+  return (<ExtField
+    id={`${index}_${fieldKey}`}
+    type={inputType}
+    label={false}
+    value={value}
+    error={get(outputListErrors[index], fieldKey, '')}
+    onChange={onChange}
+    boundKeys={[index, fieldKey]}
+    disabled={!isPermitted}
+  />);
 };
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {

@@ -15,7 +15,7 @@ import {
   DispatchPropsFuelCards,
   StatePropsFuelCards,
 } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
-import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard, FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import {
@@ -28,13 +28,62 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement } from './utils';
-import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
-import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { onChangeWithKeys } from 'components/old/compositions/hoc';
+
+import FuelCardsToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/vehicle-block/FuelCardsToVehicleBlock';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+
+import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/registry-config';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+
+const FuelCardsVehicleBlock: any = onChangeWithKeys(
+  FuelCardsToVehicleBlockComponent,
+);
+
+const defaultFuelCardOnCarsItem: FuelCardOnCars = {
+  gov_number: null,
+  car_id: null,
+  company_id: null,
+  installed_at: null,
+  uninstalled_at: null,
+  is_used_in_waybill: false,
+  id: null,
+  fuel_card_id: null,
+  number: null,
+  garage_number: null,
+  // для таблички
+  customId: null,
+  isChecked: false,
+  isHighlighted: false,
+  isSelected: null,
+  alredy_save: false,
+};
 
 const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
   (props) => {
 
-    const carActualListOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+    const addNewBatteryOnCar = React.useCallback(() => {
+      const newCarId = getNumberValueFromSerch(props.match.params[uniqKeyForParams]); // ???
+      const actualBatteriesOnCarId = props.match.params[uniqKeyForParams];
+      if ( newCarId && actualBatteriesOnCarId === 'create') {
+        const customId = props.formState.fuel_card_on_cars.length + 1;
+        props.handleChange(
+          'fuel_card_on_cars',
+          [
+            {
+              ...defaultFuelCardOnCarsItem,
+              car_id: newCarId,
+              customId,
+            },
+            ...props.formState.fuel_card_on_cars,
+          ],
+        );
+      }
+    }, [props.match.params, props.formState, props.handleChange, ]);
+
+    React.useEffect(() => {
+      addNewBatteryOnCar();
+    }, []);
 
     const handleSubmit = React.useCallback(
       async () => {
@@ -86,19 +135,22 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
 
     const companiesDefaultValue
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
-
+    
+    const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
+        bsSize={'medium'}
       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="string"
                 label="Номер"
@@ -106,10 +158,10 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 error={errors.number}
                 onChange={props.handleChange}
                 boundKeys="number"
-                disabled={!isPermitted}
+                disabled={!isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="date"
                 time={true}
@@ -119,10 +171,12 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 onChange={props.handleChange}
                 error={errors.released_at}
                 boundKeys="released_at"
-                disabled={!props.isPermitted}
+                disabled={!props.isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="date"
                 time={true}
@@ -132,24 +186,10 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 onChange={props.handleChange}
                 error={errors.date_end}
                 boundKeys="date_end"
-                disabled={!props.isPermitted}
+                disabled={!props.isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
-              <ExtField
-                type="select"
-                label="Рег. номер ТС"
-                error={errors.car_id}
-                options={carActualListOptions.options}
-                value={state.car_id}
-                onChange={props.handleChange}
-                boundKeys="car_id"
-                disabled={!isPermitted}
-                etsIsLoading={carActualListOptions.isLoading}
-                placeholder="Резерв"
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
                 label="Тип топлива"
@@ -161,7 +201,9 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 disabled={!isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
                 label="Организация"
@@ -174,10 +216,35 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Row>
+                  <FuelCardsVehicleBlock
+                    id="fuel_card_on_cars_id"
+                    onChange={props.handleChange}
+                    boundKeys="fuel_card_on_cars"
+                    inputList={state.fuel_card_on_cars || []}
+                    origin_fuel_card_on_cars={state.origin_fuel_card_on_cars || []}
+                    outerValidate
+                    errors={errors.fuel_card_on_cars}
+                    fuelCardsId={state.id}
+                    selectField="customId"
+                    modalKey={page}
+                    page={page}
+                    path={path}
+                    isPermitted={isPermitted || isPermittedToUpdateCards}
+                    isPermittedToUpdateCards={isPermittedToUpdateCards}
+                    tableTitle="Привязанные транспортные средства"
+                  />
+                </EtsBootstrap.Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {
-            isPermitted
+            Boolean(isPermitted || isPermittedToUpdateCards)
               ? (
                 <EtsBootstrap.Button
                   disabled={!props.canSave}
@@ -204,6 +271,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
       .STRUCTURE_FIELD_VIEW,
     userStructureId: getSessionState(state).userData.structure_id,
+    permissionsSet: getSessionState(state).userData.permissionsSet,
   })),
   withForm<PropsFuelCardsWithForm, FuelCard>({
     uniqField: 'id',
@@ -227,6 +295,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
         ...props.element,
         company_id: companiesDefaultValue,
         structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : get(props, 'element.structure_id'),
+        origin_fuel_card_on_cars: get(props, 'element.fuel_card_on_cars'),
       };
 
       return getDefaultFuelCardElement(newElement);

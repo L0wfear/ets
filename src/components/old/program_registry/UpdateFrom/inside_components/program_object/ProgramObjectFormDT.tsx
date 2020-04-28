@@ -344,7 +344,7 @@ class ProgramObjectFormDT extends UNSAFE_Form<Props, State> {
     this.handleChange('draw_object_list', draw_object_list);
   };
 
-  handleRemoveLastDrawFeature = () => {
+  handleRemoveTargetDrawFeature = () => {
     const {
       formState: { draw_object_list: draw_object_list_old = [] },
     } = this.props;
@@ -690,8 +690,8 @@ class ProgramObjectFormDT extends UNSAFE_Form<Props, State> {
                       isPermittedMap={IS_CREATING && isPermitted}
                       handleAddDrawLines={this.handleAddDrawLines}
                       handleDrawFeatureClick={this.handleDrawFeatureClick}
-                      handleRemoveLastDrawFeature={
-                        this.handleRemoveLastDrawFeature
+                      handleRemoveTargetDrawFeature={
+                        this.handleRemoveTargetDrawFeature
                       }
                     />
                   </Div>

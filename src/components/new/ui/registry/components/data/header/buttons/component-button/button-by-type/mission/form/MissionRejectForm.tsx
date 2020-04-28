@@ -12,7 +12,10 @@ import {
 } from 'components/@next/@utils/dates/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import { getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getSomeUniqState,
+  getAutobaseState,
+} from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
@@ -35,9 +38,11 @@ type StateProps = {
   missionCancelReasonsList: IStateSomeUniq['missionCancelReasonsList'];
   carList: IStateAutobase['carList'];
 };
+
 type DispatchProps = {
   dispatch: EtsDispatch;
 };
+
 type OwnProps = {
   mission?: Mission;
   missions?: Record<string, Mission>;
@@ -47,15 +52,20 @@ type OwnProps = {
   isWaybillForm?: boolean;
 
   show: boolean;
-  onReject?: (needUpdate: boolean, edcRequestIds?: State['edcRequestIds']) => any;
-  onRejectForWaybill?: (obj: { payload: any; handlerName: 'actionPostMissionReassignationParameters' | 'updateMission' | 'actionPutMissionReassignationParameters';}) => any;
+  onReject?: (
+    needUpdate: boolean,
+    edcRequestIds?: State['edcRequestIds'],
+  ) => any;
+  onRejectForWaybill?: (obj: {
+    payload: any;
+    handlerName:
+      | 'actionPostMissionReassignationParameters'
+      | 'updateMission'
+      | 'actionPutMissionReassignationParameters';
+  }) => any;
 };
 
-type Props = (
-  StateProps
-  & DispatchProps
-  & OwnProps
-);
+type Props = StateProps & DispatchProps & OwnProps;
 
 type State = {
   missionList: Array<Mission>;
@@ -135,17 +145,16 @@ class MissionRejectForm extends React.Component<Props, State> {
 
   private readonly updateMissionData = (mission_id: number): void => {
     try {
-      this.props.dispatch(
-        missionsActions.actionGetMissionById(
-          mission_id,
-          { page: formPage },
-        ),
-      ).then((missionById) => {
-        if (missionById) {
-          this.getCarFuncTypesByNormId(missionById);
-          this.setState({ missionById });
-        }
-      });
+      this.props
+        .dispatch(
+          missionsActions.actionGetMissionById(mission_id, { page: formPage }),
+        )
+        .then((missionById) => {
+          if (missionById) {
+            this.getCarFuncTypesByNormId(missionById);
+            this.setState({ missionById });
+          }
+        });
     } catch (error) {
       console.error(error); // tslint:disable-line
     }
@@ -155,10 +164,15 @@ class MissionRejectForm extends React.Component<Props, State> {
     const { norm_id, date_start: norms_on_date } = missionById || {};
 
     if (norm_id) {
-      this.props.dispatch(carGetAndSetInStore({
-        norm_ids: norm_id,
-        norms_on_date,
-      }, { page: formPage }));
+      this.props.dispatch(
+        carGetAndSetInStore(
+          {
+            norm_ids: norm_id,
+            norms_on_date,
+          },
+          { page: formPage },
+        ),
+      );
     }
   };
 
@@ -189,10 +203,7 @@ class MissionRejectForm extends React.Component<Props, State> {
         mission_id,
       };
       const data = await this.props.dispatch(
-        actionGetMissionReassignationParameters(
-          payload,
-          { page: formPage },
-        ),
+        actionGetMissionReassignationParameters(payload, { page: formPage }),
       );
 
       this.setState({
@@ -209,7 +220,7 @@ class MissionRejectForm extends React.Component<Props, State> {
 
   private readonly reject = (): void => {
     const { mIndex, missionList } = this.state;
-    if (this.props.isWaybillForm){
+    if (this.props.isWaybillForm) {
       this.props.onRejectForWaybill(null);
       return;
     }
@@ -278,10 +289,9 @@ class MissionRejectForm extends React.Component<Props, State> {
         // вроде как не актульно, тк при отмене в цепочке заданий идёт запрос за заданием
         try {
           mission = await this.props.dispatch(
-            missionsActions.actionGetMissionById(
-              this.state.mission_id,
-              { page: formPage },
-            ),
+            missionsActions.actionGetMissionById(this.state.mission_id, {
+              page: formPage,
+            }),
           );
         } catch (error) {
           console.error(error); // tslint:disable-line
@@ -303,7 +313,9 @@ class MissionRejectForm extends React.Component<Props, State> {
         };
         handlerName = 'updateMission'; // рак
         if (!isWaybillForm) {
-          resolve = await this.props.dispatch(missionsActions.actionUpdateMission(payload, { page: formPage })); // Приходит объект, а не массив
+          resolve = await this.props.dispatch(
+            missionsActions.actionUpdateMission(payload, { page: formPage }),
+          ); // Приходит объект, а не массив
           const { request_id, request_number, close_request } = resolve;
           const successEdcRequestIds = close_request
             ? [{ request_id, request_number }]
@@ -328,10 +340,9 @@ class MissionRejectForm extends React.Component<Props, State> {
 
           if (!isWaybillForm) {
             resolve = await this.props.dispatch(
-              actionPostMissionReassignationParameters(
-                payload,
-                { page: formPage },
-              ),
+              actionPostMissionReassignationParameters(payload, {
+                page: formPage,
+              }),
             );
           }
           break;
@@ -366,10 +377,9 @@ class MissionRejectForm extends React.Component<Props, State> {
           handlerName = 'actionPutMissionReassignationParameters'; // рак
           if (!isWaybillForm) {
             resolve = await this.props.dispatch(
-              actionPutMissionReassignationParameters(
-                payload,
-                { page: formPage },
-              ),
+              actionPutMissionReassignationParameters(payload, {
+                page: formPage,
+              }),
             );
           }
           break;
@@ -459,7 +469,8 @@ class MissionRejectForm extends React.Component<Props, State> {
         <EtsBootstrap.ModalContainer
           id="modal-mission-reject"
           show={this.props.show}
-          bsSize="medium">
+          bsSize="medium"
+        >
           <EtsBootstrap.ModalHeader>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
@@ -496,49 +507,45 @@ class MissionRejectForm extends React.Component<Props, State> {
               id="comment"
             />
             <br />
-            {
-              Boolean(missions[0]) && (
-                <EtsBootstrap.Row>
-                  <EtsBootstrap.Col md={12}>
-                    <FieldLabel>
-                      {`Задание будет добавлено в п.л. №${
-                        state.data.waybill_number
-                      } (Выезд: ${getFormattedDateTime(
-                        state.data.waybill_plan_departure_date,
-                      )}, Возвращение: ${getFormattedDateTime(
-                        state.data.waybill_plan_arrival_date,
-                      )})`}
-                    </FieldLabel>
-                    <DatePickerRange
-                      date_start_id="date_start"
-                      date_start_value={this.state.date_start}
-                      date_start_time={true}
-
-                      date_end_id="date_end"
-                      date_end_value={this.state.date_end}
-                      date_end_time={true}
-                      label="Переносимое задание"
-                      onChange={this.handleChange}
-                    />
-                  </EtsBootstrap.Col>
-                </EtsBootstrap.Row>
-              )
-            }
-            {
-              missions.map((missionData) => (
-                <MissionLine
-                  key={missionData.id}
-                  missionData={missionData}
-                  onChange={this.handleMissionsDateChange}
-                />
-              ))
-            }
+            {Boolean(missions[0]) && (
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
+                  <FieldLabel>
+                    {`Задание будет добавлено в п.л. №${
+                      state.data.waybill_number
+                    } (Выезд: ${getFormattedDateTime(
+                      state.data.waybill_plan_departure_date,
+                    )}, Возвращение: ${getFormattedDateTime(
+                      state.data.waybill_plan_arrival_date,
+                    )})`}
+                  </FieldLabel>
+                  <DatePickerRange
+                    date_start_id="date_start"
+                    date_start_value={this.state.date_start}
+                    date_start_time={true}
+                    date_end_id="date_end"
+                    date_end_value={this.state.date_end}
+                    date_end_time={true}
+                    label="Переносимое задание"
+                    onChange={this.handleChange}
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            )}
+            {missions.map((missionData) => (
+              <MissionLine
+                key={missionData.id}
+                missionData={missionData}
+                onChange={this.handleMissionsDateChange}
+              />
+            ))}
           </ModalBodyPreloader>
 
           <EtsBootstrap.ModalFooter>
             <EtsBootstrap.Button
               disabled={!!errors.reason_id}
-              onClick={this.handleSubmit}>
+              onClick={this.handleSubmit}
+            >
               Сохранить
             </EtsBootstrap.Button>
             <EtsBootstrap.Button onClick={this.reject}>

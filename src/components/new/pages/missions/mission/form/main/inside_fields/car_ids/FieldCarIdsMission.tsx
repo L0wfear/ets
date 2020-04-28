@@ -440,7 +440,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         modalKey={props.page}
         type="select"
         multi={for_column}
-        label="Транспортное средство"
+        label="Транспортное средство (поиск по рег. и гаражному номеру ТС)"
         error={props.error}
         className="white-space-pre-wrap"
         disabled={props.disabled}

@@ -295,7 +295,9 @@ class SimpleGriddle extends React.Component<any, any> {
                     !shortResult.length
                       ? (
                         <tr>
-                          <td colSpan={99999}>{this.props.noDataMessage}</td>
+                          <td colSpan={this.props.columns
+                            ? this.props.columns.length
+                            : 0}>{this.props.noDataMessage}</td>
                         </tr>
                       )
                       : tbodyData

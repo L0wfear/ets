@@ -5,12 +5,12 @@ import { TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.
 export const tireModelFormSchema: SchemaType<TireModel, PropsTireModel> = {
   properties: {
     name: {
-      title: 'Марка аккумулятора',
+      title: 'Модель шины',
       type: 'string',
       required: true,
     },
     tire_manufacturer_id: {
-      title: 'Производитель аккумулятора',
+      title: 'Производитель шины',
       type: 'valueOfArray',
       required: true,
     },

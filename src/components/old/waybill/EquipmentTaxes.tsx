@@ -146,7 +146,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
               clearable={false}
               modalKey={this.props.modalKey}
               id={`norm_operation_id_${index}`}
-              disabled={props.readOnly}
+              disabled={this.props.readOnly}
               options={options}
               value={row.uniqKey}
               onChange={this.handleOperationChange.bind(this, index)}
@@ -362,7 +362,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
             <EtsHeaderContainer>
               <EtsHeaderTitle>{title}</EtsHeaderTitle>
               <EtsButtonsContainer>
-                {!(this.props.IS_CLOSED || !fuelRates.length || this.props.readOnly) && (
+                {!this.props.readOnly && (
                   <React.Fragment>
                     <ButtonTableInput
                       width={160}

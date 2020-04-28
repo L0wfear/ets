@@ -8,25 +8,23 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { TireAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { TireAvailableCar, Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { metresToKilometeres } from 'utils/functions';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'car_id',
+export const validationSchema: SchemaType<ValuesOf<Tire['tire_to_car']>, any> = {
+  properties: {
+    car_id: {
       title: 'Рег. номер ТС',
       type: 'number',
       required: true,
     },
-    {
-      key: 'installed_at',
+    installed_at: {
       title: 'Дата монтажа',
       type: 'date',
       required: true,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {

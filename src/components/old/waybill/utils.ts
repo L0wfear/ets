@@ -68,7 +68,7 @@ export const vehicleMapper = (array: Array<Pick<Car, 'asuods_id' | 'model_id' | 
       value: c.asuods_id,
       model_id: c.model_id,
       gov_number: c.gov_number,
-      label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+      label: `${c.gov_number} [${c.garage_number || '-'}/${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
       rowData: {...c},
     });
   });
@@ -368,7 +368,7 @@ export const getWaybillDrivers = (
   return Promise.resolve(null);
 };
 
-export const getTitleByStatus = ({ status }) => {
+export const getTitleByStatus = ({ status, number }) => {
   switch (status) {
     case 'active':
       return 'Активный путевой лист';
@@ -376,6 +376,8 @@ export const getTitleByStatus = ({ status }) => {
       return 'Создание нового путевого листа';
     case 'closed':
       return 'Просмотр путевого листа ';
+    case 'deleted':
+      return `Удаленный ПЛ `;
     default:
       return 'Создать новый путевой лист';
   }

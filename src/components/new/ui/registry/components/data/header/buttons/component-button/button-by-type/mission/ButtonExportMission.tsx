@@ -38,7 +38,7 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
         actionChangeGlobalPaylaodInServiceData(props.registryKey, payload, false),
       );
       await dispatch(
-        registyLoadPrintForm(props.registryKey),
+        registyLoadPrintForm(props.registryKey, true),
       );
       setIsOpenModalRemove(false);
     },
@@ -66,7 +66,7 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
             onExport={handleExport}
             title="Печать журнала заданий"
             time={true}
-            helpText="В выгрузке будут задания, у которых дата начала или дата окончания попадает в указанный период"
+            helpText="В выгрузке будут задания, у которых дата начала или дата окончания попадает в указанный период, с учетом фильтрации"
           />
         )
       }

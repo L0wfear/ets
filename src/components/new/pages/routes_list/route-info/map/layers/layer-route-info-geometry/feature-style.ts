@@ -60,9 +60,8 @@ const makeCacheStyle = ({ type, state = 2 }) => {
   if (type === TYPES_STYLE.input_lines) {
     return new Style({
       stroke: new Stroke({
-        color: 'rgba(255, 0, 0, 1)',
+        color: state === 3 ? 'rgba(0, 0, 255, 1)' : 'rgba(255, 0, 0, 1)',
         width: 4,
-        lineDash: state === 3 ? [12] : undefined,
       }),
       zIndex: 10,
     });

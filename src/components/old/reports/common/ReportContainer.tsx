@@ -44,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNumber, isNull } from 'util';
+import { isArray, isNumber, isNull, isNullOrUndefined } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -148,12 +148,12 @@ class ReportContainer extends React.Component<
     }
 
     // удаляем из фильтров значения, которых нет в основном списке
-    if (this.props.data !== this.props.data) {
+    if (this.props.data !== prevProps.data) {
       const { data: old_data } = this.props;
       let rows = get(old_data, ['result', 'rows'], null);
       const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
       if (deepArr) {
-        rows = rows.reduce((newArr: Array<any>, blockData) => {
+        rows = rows && rows.reduce((newArr: Array<any>, blockData) => {
           newArr.push(...blockData.rows);
 
           return newArr;
@@ -165,9 +165,9 @@ class ReportContainer extends React.Component<
         this.setState({
           filterValues: Object.entries(filterValues).reduce(
             (newObj, [key, data]: any) => {
-              if (rows.some((rowData) => key in rowData)) {
+              if (rows && rows.some((rowData) => key in rowData)) {
                 if (data.type === 'multiselect') {
-                  if (rows.some((rowData) => {
+                  if (rows && rows.some((rowData) => {
                     const keyValue = rowData[key];
                     return data.value.includes(keyValue);
                   })) {
@@ -193,7 +193,7 @@ class ReportContainer extends React.Component<
         let rows = get(old_data, ['result', 'rows'], null);
         const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
         if (deepArr) {
-          rows = rows.reduce((newArr: Array<any>, blockData) => {
+          rows = rows && rows.reduce((newArr: Array<any>, blockData) => {
             newArr.push(...blockData.rows);
 
             return newArr;
@@ -436,6 +436,7 @@ class ReportContainer extends React.Component<
   handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
     const currentLevelSelectors = this.props.meta.levels.current.filter;
+    const currentLevel = this.props.meta.levels.current.level;
     const {
       location: { search },
     } = this.props;
@@ -446,11 +447,36 @@ class ReportContainer extends React.Component<
       level: higherLevel,
     };
 
+    // <<< выпилить костыль start DITETS19-2118 переход на ур. выше
+    // закостылить для отчета reportKey === tech_maintenance_schedule и level=company, убирать okrug_id
+    // баг из-за того, что в current он не приходит в filter
+    const reportKey = get(this.props, 'serviceName', null);
+
+    if( reportKey === 'TechMaintenanceSchedule' && currentLevel === 'company' ) {
+      delete query.okrug_id;
+    }
+    // <<< выпилить костыль end
+
     const filteredQuery = omit(query, currentLevelSelectors);
 
     this.props.history.push(
       `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
     );
+
+    const prevMetaFields = get(this.props, 'prevMeta.fields', []);
+
+    const filterValues = Object.entries(this.state.filterValues).reduce(
+      (newObj, [key, data]: any) => {
+        if (prevMetaFields.some((elem) => !isNullOrUndefined(elem[key]))) {
+          newObj[key] = data;
+        }
+        return newObj;
+      },
+      {},
+    );
+
+    this.setState({filterValues});
+
   };
 
   reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {

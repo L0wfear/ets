@@ -61,6 +61,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     const IS_NOT_ASSIGNED = state.status === 'not_assigned'; // Не назначено
     const IS_EXPIRED = state.status === 'expired'; // Просрочено
     const IS_IN_PROGRESS = state.status === 'in_progress'; // Выполняется
+
+    // не выносить в getDerivedStateFromProps, тк ломает дисейбл дат :)
     const IS_DEFERRED = diffDates(state.date_start, new Date()) > 0; // Дата начала позже текущего времени ( вроде) )
     const IS_POST_CREATING_NOT_ASSIGNED = ( // Если задание "Не назначено" или (Форма создания и привязано к ПЛ)
       (
@@ -466,10 +468,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           <FieldStructureMission
                             disabled={
                               !isPermitted
-                              || (
+                              || ((
                                 !PARENT_WAYBILL_IS_DRAFT
                                 && !IS_CREATING
-                              )
+                              ) && !IS_NOT_ASSIGNED)
                             }
                             formDataKey={this.props.formDataKey}
                             MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

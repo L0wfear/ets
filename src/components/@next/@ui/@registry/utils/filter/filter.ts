@@ -6,6 +6,8 @@ type ArrayRegisrty<F> = OneRegistryData<F>['list']['data']['array'];
 type FilterValues<F> = OneRegistryData<F>['list']['processed']['filterValues'];
 type FilterFields<F> = OneRegistryData<F>['filter']['fields'];
 
+// FAQ функции фмльтрации в фильтрах реестра
+
 // __in
 const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field_data: ValuesOf<FilterFields<F>>) => {
   if (field_data.type === 'multiselect') {

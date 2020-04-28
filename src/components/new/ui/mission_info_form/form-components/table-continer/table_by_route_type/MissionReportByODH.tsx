@@ -8,30 +8,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-
-const VALUE_FOR_FIXED = {
-  TWO_F: {
-    val: 2,
-    list: ['кв. м.', 'м.'],
-    type: 'floatFixed',
-  },
-  THREE_F: {
-    val: 3,
-    list: ['км'],
-    type: 'floatFixed',
-  },
-  TEN_I: {
-    val: 10,
-    list: ['раз'],
-    type: 'intFixed',
-    another: {
-      val: 2,
-      type: 'floatFixed',
-    },
-  },
-  floatFixed: (data, val) => parseFloat(data).toFixed(val),
-  intFixed: (data, val) => parseInt(data, val),
-};
+import { VALUE_FOR_FIXED } from 'components/new/ui/mission_info_form/form-components/table-continer/MissionInfoTableContainer';
 
 const checkFixed = (data, key) => {
   const clone = [...data];

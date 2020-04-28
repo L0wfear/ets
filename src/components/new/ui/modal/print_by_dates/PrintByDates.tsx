@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { getToday9am, diffDates, getTomorrow9am, addTime, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { getToday9am, diffDates, getTomorrow9am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import DatePickerRange from '../../date_picker/DatePickerRange';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
@@ -39,7 +39,7 @@ const PrintByDates: React.FC<Props> = React.memo(
 
         const exportPayload = {
           date_from: createValidDateTime(date_from),
-          date_to: createValidDateTime(addTime(date_to, 1, 'days')),
+          date_to: createValidDateTime(date_to),
         };
 
         props.onExport(exportPayload);

@@ -32,7 +32,6 @@ import configStand from 'config';
 import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
-import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
@@ -82,7 +81,7 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
 );
 
 /**
- * Да простят меня боги
+ * #ДаПростятМеняБоги
  * @todo сделать нормально
  */
 export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
@@ -232,7 +231,7 @@ export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payl
   }
 };
 
-const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']) => {
+const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegistryData'], list: OneRegistryData['list']): any => {
   const userServerFilters = get(getRegistryData, 'userServerFilters');
   const processed = list?.processed;
 
@@ -248,7 +247,7 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
 
     payload = {
       ...payload,
-      limit: MAX_ITEMS_PER_PAGE,
+      limit: perPage,
       offset: offset * perPage,
       sort_by: sort.field
         ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}`
@@ -341,13 +340,15 @@ export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey
     if (userServerFilters) {
       // где-то там количество
       total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);
+      const paginator = list?.paginator;
+      const perPage = get(paginator, 'perPage', 0);
 
       // если в текущем списке больше 1 элемента, а массив пуст, то переходим на редыдущую страницу
       if (total_count > 0 && !arrayRaw.length) {
         dispatch(
           registryChangeDataPaginatorCurrentPage(
             registryKey,
-            Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1,
+            Math.ceil(total_count / perPage) - 1,
           ),
         );
         return;
@@ -383,6 +384,36 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey: string, curr
           paginator: {
             ...registryData.list.paginator,
             currentPage: Number(currentPage),
+          },
+        },
+      ),
+    );
+
+    const getRegistryData = get(getState(), `registry.${registryKey}.Service.getRegistryData`, null);
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+
+    if (getRegistryData && userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
+  }
+};
+
+export const registryChangeDataPaginatorPerPage = (registryKey: string, perPage = 0): EtsAction<void> => (dispatch, getState) => {
+  dispatch(actionUnselectSelectedRowToShow(registryKey, true));
+
+  const registryData = get(getRegistryState(getState()), registryKey);
+
+  if (registryData) {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...registryData.list,
+          paginator: {
+            ...registryData.list.paginator,
+            perPage: Number(perPage),
           },
         },
       ),
@@ -629,6 +660,9 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
   const list = get(registryData, 'list');
   const processed = get(list, 'processed');
   const processedArray = get(processed, 'processedArray') || [];
+  const getRegistryData = get(Service, 'getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters');
+  const isServerFilterPrint = useFiltredData && userServerFilters;
 
   const getBlobData = (
     get(Service, 'getBlobData')
@@ -651,7 +685,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
       format: 'xls',
     };
 
-    if (useFiltredData) {
+    if (useFiltredData && !userServerFilters) {
       const paylaodAsString = Object.entries(payload).reduce(
         (str, [key, payloadData]) => `${str}&${key}=${payloadData}`,
         '',
@@ -670,11 +704,27 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
       fileName = get(result, 'fileName', '');
     } else {
 
+      const PayloadForLoad = makePayloadForLoad(
+        getRegistryData,
+        list,
+      );
+      const payloadForServerFilterPrint = {
+        sort_by: get(PayloadForLoad, 'sort_by'),
+        filter: get(PayloadForLoad, 'filter'),
+      };
+
+      const getPayload = isServerFilterPrint
+        ? {
+          ...payload,
+          ...payloadForServerFilterPrint,
+        }
+        : payload;
+
       const result = await etsLoadingCounter(
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
-          payload,
+          getPayload,
         ),
         { page: registryKey, path },
       );
@@ -799,12 +849,13 @@ export const registryGlobalCheck = (registryKey: string): EtsAction<void> => (di
   const checkedRowsCurrent = get(data, 'checkedRows') || {};
   const processed = get(list, 'processed');
   const processedArray = get(processed, 'processedArray') || [];
+  const perPage = get(paginator, 'perPage', 0);
 
   let checkedRowsNew = {};
   let checkArray = processedArray;
 
   if (!getRegistryData || !userServerFilters) {
-    checkArray = processedArray.slice(offset * MAX_ITEMS_PER_PAGE, (offset + 1) * MAX_ITEMS_PER_PAGE);
+    checkArray = processedArray.slice(offset * perPage, (offset + 1) * perPage);
   }
 
   if (Object.keys(checkedRowsCurrent).length === checkArray.length) {
@@ -1125,7 +1176,7 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
     ),
   );
 };
-// Да простят меня боги v.2
+// #ДаПростятМеняБоги v.2
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
 export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields'], permissionsProps: ReturnType<typeof isPermittedUpdateCarContidion> ): EtsAction<any> => async (dispatch) => {
   const meta = list_new?.meta;

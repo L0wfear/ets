@@ -106,6 +106,11 @@ export const config: TypeConfigData<Mission> = {
         },
       },
       {
+        valueKey: 'car_garage_number',
+        title: 'Гаражный номер',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'type_id',
         title: 'Тип техники',
         type: 'multiselect',
@@ -263,6 +268,11 @@ export const config: TypeConfigData<Mission> = {
         {
           key: 'car_gov_number',
           title: 'Рег. номер ТС',
+          width: 150,
+        },
+        {
+          key: 'car_garage_number',
+          title: 'Гаражный номер',
           width: 150,
         },
         {

@@ -39,12 +39,22 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
       selected: null,
     });
   };
+
+  buttonsDisable = () => this.props.buttonsDisable
+    ? this.props.buttonsDisable(this.state.selected)
+    : {
+      addButtonDisable: false,
+      removeButtonDisable: false,
+    };
+
   render() {
     const {
       addButtonLabel = 'Добавить',
       removeButtonLable = 'Удалить',
     } = this.props;
     const extendedRenderers: ISchemaRenderer = this.props.renderers(this.props, this.props.onItemChange);
+
+    const buttonsDisable = this.buttonsDisable();
 
     return (
       <div className="date-table-input">
@@ -55,8 +65,27 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
               {
                 !this.props.hideButtons
                   && <React.Fragment>
-                    <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
-                    <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
+                    <EtsBootstrap.Button 
+                      disabled={
+                        buttonsDisable.addButtonDisable
+                        || this.props.disabled
+                        || !this.props.isPermitted
+                      }
+                      onClick={this.handleAddVehicle}
+                    >
+                      {addButtonLabel}
+                    </EtsBootstrap.Button>
+                    <EtsBootstrap.Button
+                      disabled={
+                        buttonsDisable.removeButtonDisable
+                        || this.state.selected === null
+                        || this.props.disabled
+                        || !this.props.isPermitted
+                      }
+                      onClick={this.handleRemoveVehicle}
+                    >
+                      {removeButtonLable}
+                    </EtsBootstrap.Button>
                   </React.Fragment>
               }
             </EtsButtonsContainer>

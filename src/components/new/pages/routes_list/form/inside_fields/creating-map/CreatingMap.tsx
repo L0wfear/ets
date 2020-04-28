@@ -59,6 +59,7 @@ class CreatingMap extends React.PureComponent<
     manual:
       this.props.type && routeTypesByKey[this.props.type].slug === 'points',
     hand: false,
+    targetDeleteMode: false,
   };
 
   componentDidMount() {
@@ -134,15 +135,17 @@ class CreatingMap extends React.PureComponent<
       municipal_facility_id: prevMunicipalFacilityId,
       technical_operation_id: prevTechnicalOperationId,
       structure_id: prevStructureId,
+      work_type_code: prevWorkTypeCode,
     } = prevProps;
 
-    const { type, municipal_facility_id, technical_operation_id, structure_id } = this.props;
+    const { type, municipal_facility_id, technical_operation_id, structure_id, work_type_code } = this.props;
 
     const trigger = (
       prevType !== type
       || prevMunicipalFacilityId !== municipal_facility_id
       || technical_operation_id !== prevTechnicalOperationId
       || structure_id !== prevStructureId
+      || work_type_code !== prevWorkTypeCode
     );
 
     if (trigger) {
@@ -208,6 +211,7 @@ class CreatingMap extends React.PureComponent<
             technical_operation_id: props.technical_operation_id,
             object_type_id: typeData.id,
             structure_id: props.structure_id,
+            work_type_code: props.work_type_code,
           },
           { page, path },
         );
@@ -275,24 +279,29 @@ class CreatingMap extends React.PureComponent<
       this.setState({ manual: false });
     }
   };
-  handleDrawFeatureClick = (line) => {
-    const { manual } = this.state;
+  handleDrawFeatureClick = (line) => { // Клик по линии, нарисованной вручную
+    const { manual, targetDeleteMode, } = this.state;
 
-    if (!manual && this.props.isPermitted) {
+    if (!manual && this.props.isPermitted && !targetDeleteMode) {
       this.props.onChange({
         input_lines: mergeLineIntoInputLines(this.props.input_lines, line),
       });
     }
-  };
-  handleRemoveLastDrawFeature = () => {
-    if (this.props.isPermitted) {
-      const { input_lines } = this.props;
-      const newInputLines = [...input_lines];
-      newInputLines.pop();
 
+    if(targetDeleteMode) {
+      const { input_lines } = this.props;
+      const newInputLines = input_lines.filter((elem) => elem.object_id !== line.object_id);
       this.props.onChange({
         input_lines: newInputLines,
-        draw_object_list: [],
+        draw_object_list: [], // ??? 
+      });
+    }
+  };
+  handleRemoveTargetDrawFeature = () => {
+    if (this.props.isPermitted) {
+      this.setState({
+        targetDeleteMode: !this.state.targetDeleteMode,
+        manual: false,
       });
     }
   };
@@ -301,6 +310,7 @@ class CreatingMap extends React.PureComponent<
       this.setState({
         manual: true,
         hand: true,
+        targetDeleteMode: false,
       });
     }
   };
@@ -309,6 +319,7 @@ class CreatingMap extends React.PureComponent<
       this.setState({
         hand: false,
         manual: false,
+        targetDeleteMode: false,
       });
     }
   };
@@ -350,9 +361,12 @@ class CreatingMap extends React.PureComponent<
       });
     }
   };
-  handleClickOnStartDraw = () => {
+  handleClickOnStartDraw = () => { // Режим рисования, кнопка
     if (this.props.isPermitted) {
-      this.setState({ manual: !this.state.manual });
+      this.setState({
+        manual: !this.state.manual,
+        targetDeleteMode: false,
+      });
     }
   };
 
@@ -368,7 +382,7 @@ class CreatingMap extends React.PureComponent<
   render() {
     const { props, state } = this;
     const { type, isPermitted } = props;
-    const { manual, hand } = state;
+    const { manual, hand, targetDeleteMode, } = state;
 
     const countPolys = Object.keys(state.geozone_municipal_facility_by_id)
       .length;
@@ -380,6 +394,7 @@ class CreatingMap extends React.PureComponent<
             <RouteCreatingMap
               objectsType={type}
               manual={manual}
+              targetDeleteMode={targetDeleteMode}
               canDraw={hand}
               polys={state.geozone_municipal_facility_by_id}
               bridges={this.props.bridges}
@@ -389,7 +404,7 @@ class CreatingMap extends React.PureComponent<
               handlePointAdd={this.handlePointAdd}
               handleAddDrawLines={this.handleAddDrawLines}
               handleDrawFeatureClick={this.handleDrawFeatureClick}
-              handleRemoveLastDrawFeature={this.handleRemoveLastDrawFeature}
+              handleRemoveTargetDrawFeature={this.handleRemoveTargetDrawFeature}
               handleClickOnStartDraw={this.handleClickOnStartDraw}
               disabled={!isPermitted}
             />

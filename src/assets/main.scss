@@ -351,7 +351,7 @@ body.application {
       width: 100%;
       font-size: 20px;
       max-width: 1000px;
-    } 
+    }
   }
 
 }
@@ -482,7 +482,7 @@ body.application {
       min-width: 175px;
 
       &.disabled {
-        .legen_option, input { 
+        .legen_option, input {
           cursor: not-allowed;
         }
         cursor: not-allowed;
@@ -599,7 +599,7 @@ body.application {
   &.left {
     margin-left: 5px;
   }
-  
+
   &.fuel_leak {
     max-width: 300px;
 
@@ -637,6 +637,10 @@ body.application {
 
   &.off {
     opacity: 0.5;
+  }
+
+  &:nth-child(3) {
+    margin-bottom: 15px;
   }
 
   &.with_checkbox {
@@ -868,7 +872,7 @@ body.application {
     border-collapse: separate;
     border-spacing: 2px;
     table-layout: auto !important;
-  
+
     box-shadow: rgba(0,2,4,0.15) 0 1px 6px inset; // хз как сделать тень над background ячеек (td)
 
     td, th {
@@ -898,11 +902,11 @@ body.application {
     }
 
     tbody {
-      
+
       .griddle-footer{
           background-color: #ffffff !important;
       }
-      
+
       tr {
         cursor: pointer;
 
@@ -1135,36 +1139,21 @@ body.application {
 }
 .advanced-string-input {
   position: relative;
-  .inputs {
-    .form-group {
-      width: 40%;
-      position: absolute;
-      top: 0;
-      left: 118px;
-    }
-    .form-group:nth-child(2) {
-      left: calc(40% + 60px);
-      width: calc(100% - 40% - 60px);
-    }
-    .form-group:only-child {
-      left: 118px;
-      width: calc(100% - 118px);
-    }
+  display: flex;
+
+  > *:nth-child(2) {
+    margin-left: 5px;
   }
-  .datepickers {
-    .chart-datepicker {
-      width: calc(100% - 75px);
-      position: absolute;
-      top: 0;
-      left: 75px;
+
+  .inputs {
+    display: flex;
+    width: 100%;
+    .form-group, .chart-datepicker {
+      width: 100%;
       height: 38px;
     }
-    .chart-datepicker:nth-child(2) {
-      position: relative;
-      left: 0;
-      width: 100%;
-    }
   }
+
 }
 
 

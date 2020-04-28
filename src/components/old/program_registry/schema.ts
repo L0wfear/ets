@@ -1,86 +1,41 @@
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { ProgramRegistry } from 'redux-main/reducers/modules/repair/program_registry/@types/programRegistry';
 
-export const formValidationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'state_program_id',
+export const formValidationSchema: SchemaType<ProgramRegistry, any> = {
+  properties: {
+    state_program_id: {
       title: 'Гос. программа',
       type: 'number',
       required: true,
     },
-    {
-      key: 'name',
+    name: {
       title: 'Наименование программы',
       type: 'string',
       required: true,
     },
-    {
-      key: 'repair_type_id',
+    repair_type_id: {
       title: 'Тип ремонта',
       type: 'number',
       required: true,
     },
-    {
-      key: 'object_type_id',
+    object_type_id: {
       title: 'Тип объекта ремонта',
       type: 'number',
       required: true,
     },
-    {
-      key: 'plan_date_start',
+    plan_date_start: {
       title: 'План. Начало',
       type: 'date',
       required: true,
     },
-    {
-      key: 'plan_date_end',
+    plan_date_end: {
       title: 'План. Завершение',
       type: 'date',
       required: true,
-    },
-
-    {
-      key: 'is_active',
-      title: 'Версия',
-      type: 'boolean',
-      required: true,
-    },
-    {
-      key: 'fact_date_start',
-      title: 'План. Начало',
-      type: 'date',
-    },
-    {
-      key: 'fact_date_end',
-      title: 'План. Завершение',
-      type: 'date',
-    },
-    {
-      key: 'contractor_id',
-      title: 'Подрядчик',
-      type: 'number',
-      required: true,
-    },
-    {
-      key: 'contract_number',
-      title: '№ контракта',
-      type: 'string',
-      maxLength: 128,
-      required: true,
-    },
-    {
-      key: 'note',
-      title: 'Примечание',
-      type: 'string',
-      maxLength: 2048,
-    },
-  ],
-  dependencies: {
-    plan_date_end: [
-      {
-        validator(value = null, { plan_date_start = null }) {
+      dependencies: [
+        (value = null, { plan_date_start = null }) => {
           if (!value) {
             return getRequiredFieldMessage('Плановая дата окончания');
           }
@@ -91,18 +46,45 @@ export const formValidationSchema: IValidationSchema = {
 
           return '';
         },
-      },
-    ],
-    fact_date_end: [
-      {
-        validator(value = null, { fact_date_start = null }) {
+      ],
+    },
+    is_active: {
+      title: 'Версия',
+      type: 'boolean',
+      required: true,
+    },
+    fact_date_start: {
+      title: 'План. Начало',
+      type: 'date',
+    },
+    fact_date_end: {
+      title: 'План. Завершение',
+      type: 'date',
+      dependencies: [
+        (value = null, { fact_date_start = null }) => {
           if (fact_date_start && value && diffDates(value, fact_date_start, 'minutes') < 0) {
             return '"Фактическая дата окончания" должна быть >= "Фактическая дата начала ремонта"';
           }
 
           return '';
-        },
-      },
-    ],
+        }
+      ],
+    },
+    contractor_id: {
+      title: 'Подрядчик',
+      type: 'number',
+      required: true,
+    },
+    contract_number: {
+      title: '№ контракта',
+      type: 'string',
+      maxLength: 128,
+      required: true,
+    },
+    note: {
+      title: 'Примечание',
+      type: 'string',
+      maxLength: 2048,
+    },
   },
 };

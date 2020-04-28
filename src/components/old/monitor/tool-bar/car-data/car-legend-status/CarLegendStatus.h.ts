@@ -7,6 +7,7 @@ export type PropsCarLegendStatus = {
     stop: number;
     parking: number;
     not_in_touch: number;
+    not_in_map: number;
   };
   in_move: boolean;
   stop: boolean;

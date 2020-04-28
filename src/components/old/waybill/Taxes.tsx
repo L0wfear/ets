@@ -374,7 +374,7 @@ export default class Taxes extends React.Component<any, any> {
             <EtsHeaderContainer>
               <EtsHeaderTitle>{title}</EtsHeaderTitle>
               <EtsButtonsContainer>
-                {!(this.props.IS_CLOSED || !fuelRates.length || this.props.readOnly) && (
+                {!this.props.readOnly && (
                   <React.Fragment>
                     <ButtonTableInput
                       width={160}

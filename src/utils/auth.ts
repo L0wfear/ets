@@ -5,10 +5,13 @@ import { validatePermissions } from 'components/@next/@utils/validate_permission
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 const requireAuth = (permissionsSet: InitialStateSession['userData']['permissionsSet'], url: string) => {
-  // const url = routePath.replace(/\/:\w+\?/g, '');
   const somePageData = Object.entries(routToPer).find(([routePath]) => {
-    const re = pathToRegexp(routePath, []);
-    return re.exec(url);
+    try {
+      const re = pathToRegexp(routePath, []);
+      return re.exec(url);
+    } catch {
+      return false;
+    }
   });
 
   if (somePageData) {

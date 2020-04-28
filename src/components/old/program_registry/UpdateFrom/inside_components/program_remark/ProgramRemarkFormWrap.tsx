@@ -4,6 +4,7 @@ import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import ProgramRemarkForm from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkForm';
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { validate } from 'components/old/ui/form/new/validate';
 
 type Props = {
   [k: string]: any;
@@ -13,7 +14,6 @@ type State = any;
 class ProgramRemarkFormWrap extends UNSAFE_FormWrap<Props, State> {
   constructor(props, context) {
     super(props);
-    this.schema = formValidationSchema;
     this.preventDefaultNotification = true;
 
     this.updateAction = context.flux
@@ -32,6 +32,40 @@ class ProgramRemarkFormWrap extends UNSAFE_FormWrap<Props, State> {
     return this.context.flux
       .getActions('repair')
       .programRemark('post', newFormState);
+  };
+
+  handleFormStateChange = (field, e) => {
+    const value
+      = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+    const newState: any = {};
+
+    console.info('Form changed', field, value);  // eslint-disable-line
+    formState[field] = value;
+
+    formErrors = this.validate(formState);
+
+    newState.canSave = Object.values(formErrors).reduce(
+      (boolean, oneError) => boolean && !oneError,
+      true,
+    );
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+
+    return newState;
+  };
+
+  validate = (formState) => {
+    return validate(
+      formValidationSchema,
+      formState,
+      this.props,
+      formState,
+    );
   };
 
   render() {
@@ -54,8 +88,8 @@ class ProgramRemarkFormWrap extends UNSAFE_FormWrap<Props, State> {
         addPermissionProp
         isPermitted={isPermitted}
         canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         isSupervisor={isSupervisor}

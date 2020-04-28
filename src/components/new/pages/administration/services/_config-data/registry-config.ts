@@ -67,12 +67,6 @@ export const config: TypeConfigData<Service> = {
           width: 400,
           sortable: false,
         },
-        {
-          key: 'button_show_action_log',
-          title: 'История изменений',
-          width: 175,
-          sortable: false,
-        },
       ],
     },
   },

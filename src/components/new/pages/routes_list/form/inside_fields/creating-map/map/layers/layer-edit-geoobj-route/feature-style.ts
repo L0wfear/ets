@@ -93,9 +93,8 @@ const stylesByLinesState = {
   [linesState.SELECTED_IDLING]: (
     new Style({
       stroke: new Stroke({
-        color: 'rgba(255, 0, 0, 1)',
+        color: 'rgba(0, 0, 255, 1)',
         width: 4,
-        lineDash: [12],
       }),
       zIndex: 10,
     })

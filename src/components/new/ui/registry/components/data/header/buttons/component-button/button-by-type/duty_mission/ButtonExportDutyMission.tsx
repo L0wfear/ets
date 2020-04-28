@@ -5,6 +5,7 @@ import PrintByDates from 'components/new/ui/modal/print_by_dates/PrintByDates';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { createValidDateTime, addTime } from 'components/@next/@utils/dates/dates';
 
 type Props = CommonTypesForButton & {};
 
@@ -30,7 +31,7 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
         const payload = {
           getBlobData: {
             date_from,
-            date_to,
+            date_to: createValidDateTime(addTime(date_to, 1, 'days')), // DITETSSUP-2089
           },
         };
 

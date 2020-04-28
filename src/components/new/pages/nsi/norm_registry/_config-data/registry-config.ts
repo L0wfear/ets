@@ -12,6 +12,9 @@ export const config: TypeConfigData<Norm> = {
       entity: CleaningNormRegistryService._path,
       format: 'normRegistry',
     },
+    getBlobData: {
+      entity:  `${CleaningNormRegistryService._path}/export`,
+    }
   },
   registryKey,
   header: {
@@ -19,7 +22,7 @@ export const config: TypeConfigData<Norm> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

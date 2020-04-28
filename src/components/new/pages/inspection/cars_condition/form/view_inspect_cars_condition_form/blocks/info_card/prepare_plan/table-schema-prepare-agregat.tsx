@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { isArray } from 'util';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -8,8 +9,9 @@ import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+import { TypesHarvestingUnit } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 const seasonOptions = [
   { value: 'Лето', label: 'Лето' },
@@ -17,43 +19,38 @@ const seasonOptions = [
   { value: 'Всесезон', label: 'Всесезон' },
 ];
 
-export const validationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'type',
+export const validationSchema: SchemaType<TypesHarvestingUnit, any> = {
+  properties: {
+    type: {
       title: 'Тип прицепа, навесного уборочного агрегата',
       type: 'string',
       required: true,
       maxLength: 128,
     },
-    {
-      key: 'will_checked_cnt',
+    will_checked_cnt: {
       title: 'Всего подлежит подготовке',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'season',
+    season: {
       title: 'Сезон',
       type: 'string',
       required: true,
     },
-    {
-      key: 'ready_cnt',
+    ready_cnt: {
       title: 'Готово к сезону',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'not_ready_cnt',
+    not_ready_cnt: {
       title: 'Не готово к сезону',
       type: 'number',
       integer: true,
       required: false,
     },
-  ],
+  },
 };
 
 export const meta: IDataTableSchema = {
@@ -114,13 +111,30 @@ const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
 
 const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
   const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
-  const properties = get(values , 'validationSchema.properties', []);
-  const propertiesElem = properties.find(
-    (elem) => elem.key === fieldKey,
-  );
+  const properties = values?.validationSchema?.properties;
+
+  let propertiesElem = null;
+  if (properties) {
+    if (isArray(properties)) {                      // если уверен, что это точно объект, то удали
+      propertiesElem = properties.find(
+        (elem) => elem.key === fieldKey,
+      );
+    } else {
+      propertiesElem = properties[fieldKey];
+    }
+  }
   const inputType = get(propertiesElem, 'type', 'string');
 
-  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+  return (<ExtField
+    id={`${index}_${fieldKey}`}
+    type={inputType}
+    label={false}
+    value={value}
+    error={get(outputListErrors[index], fieldKey, '')}
+    onChange={onChange}
+    boundKeys={[index, fieldKey]}
+    disabled={!isPermitted} />
+  );
 };
 // "type": "ПУ", // Тип прицепа, навесного уборочного агрегата'
 // "will_checked_cnt": 10, // Всего подлежит подготовке

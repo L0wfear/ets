@@ -11,11 +11,14 @@ export const makeLabelForMissionCarOption = (carData: Partial<Car> & Pick<Car, '
   const model_name = get(carData, 'model_name', null);
   const special_model_name = get(carData, 'special_model_name', null);
   const type_name = get(carData, 'type_name', null);
+  const garage_number = get(carData, 'garage_number', null);
 
-  if (model_name || special_model_name || type_name) {
+  if (model_name || special_model_name || type_name || garage_number) {
     label = `${
       label
     } [${
+      garage_number || '-'
+    }/${
       model_name || ''
     }${
       model_name ? '/' : ''

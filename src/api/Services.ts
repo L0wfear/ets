@@ -421,7 +421,3 @@ export const CleaningAreaRateService = ETS_API_FACTORY.createApiServiceAdapter(
 export const EngineTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/engine_type',
 );
-
-export const ReportServiceHistoryService = ETS_API_FACTORY.createApiServiceAdapter(
-  'report/service_history',
-);

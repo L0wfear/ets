@@ -3,7 +3,6 @@ export type UserActionLog = {
   action_name: string;
   company_name: string;
   entity_id: number;
-  entity_number: number;
   fio: string;
   first_name: string;
   id: number;
@@ -12,7 +11,9 @@ export type UserActionLog = {
   remote_ip: string;
   structure_id: number;
   structure_name: string;
-  timestamp: string;
+  action_at: string;
   user_id: number;
   user_login: string;
+  content_type_name: string;
+  repr: string;
 };

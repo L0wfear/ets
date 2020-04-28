@@ -70,6 +70,8 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         mfData,
       }));
 
+      this.props.setMunicipalFacilityList(municipal_facility_list);
+
       if (value) {
         const mfOption = MUNICIPAL_FACILITY_OPTIONS.find((mfOptionData) => mfOptionData.value === value);
         if (mfOption) {
@@ -102,6 +104,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
         municipal_facility_name: value ? option.label : null,
         available_route_types: option.mfData.route_types,
         type: null,
+        work_type_code: null,
       });
     }
   };

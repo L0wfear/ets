@@ -25,6 +25,7 @@ export type OneTrakData = {
 
 export type TrackInfo = {
   consumption: number;
+  sensor_refill: number;
   distance: number;
   track: Array<OneTrakData>;
 };

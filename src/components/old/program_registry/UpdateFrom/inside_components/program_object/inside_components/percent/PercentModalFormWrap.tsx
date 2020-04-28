@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { validateField } from 'utils/validate/validateField';
-
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import PercentModalForm from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalForm';
 
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { validate } from 'components/old/ui/form/new/validate';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 type Props = {
@@ -15,7 +14,6 @@ type Props = {
 type State = any;
 
 class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
-  schema = formValidationSchema;
   preventDefaultNotification = true;
   defaultElement: any;
 
@@ -50,37 +48,22 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
   /**
    * @override
    */
-  validate = (state, errors) => {
-    if (typeof this.schema === 'undefined') {
-      return errors; 
-    }
-
-    const schema = this.schema;
-    const formState = { ...state };
-
-    const newErrors = schema.properties.reduce(
-      (formErrors, prop) => {
-        const { key } = prop;
-        formErrors[key] = validateField(
-          prop,
-          formState[key],
-          formState,
-          this.schema,
-          this.props,
-        );
-        return formErrors;
-      },
-      { ...errors },
+  validate = (formState) => {
+    const newErrors = validate(
+      formValidationSchema,
+      formState,
+      this.props,
+      formState,
     );
 
     const { other: { minPercent, minReviewedAt } = {} as any } = this.props;
 
-    if (state.percent < minPercent) {
+    if (formState.percent < minPercent) {
       newErrors.percent
         = 'Процент выполнения не должен быть меньше последнего процента выполнения';
     }
 
-    if (diffDates(state.reviewed_at, minReviewedAt, 'minutes', false) < 0) {
+    if (diffDates(formState.reviewed_at, minReviewedAt, 'minutes', false) < 0) {
       newErrors.reviewed_at
         = 'Дата осмотра должна быть позже последней даты осмотра';
     }
@@ -105,8 +88,8 @@ class PercentModalFormWrap extends UNSAFE_FormWrap<Props, State> {
         addPermissionProp
         isPermitted={isPermitted}
         canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
+        onSubmit={this.handleFormSubmit}
+        handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
         isPermittedPercentByStatus={isPermittedPercentByStatus}

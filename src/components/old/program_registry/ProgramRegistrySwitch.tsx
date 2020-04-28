@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { cloneDeep } from 'lodash';
+import { isObject } from 'util';
 
 import { isEmpty } from 'utils/functions';
-import { validateField } from 'utils/validate/validateField';
 
 import { formValidationSchema } from 'components/old/program_registry/schema';
 import ProgramRegistryFormCreateWrap from 'components/old/program_registry/CreateForm/ProgramRegistryFormCWrap';
 import ProgramRegistryFormUWrap from 'components/old/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { isObject } from 'util';
+import { etsUseDispatch, EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { validate } from 'components/old/ui/form/new/validate';
+import { ProgramRegistry } from 'redux-main/reducers/modules/repair/program_registry/@types/programRegistry';
 
-const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
+const defSendFromState = (page: string, dispatch: EtsDispatch) => ({ callback, outFormState }) => {
   const schema = formValidationSchema;
   const formState = Object.entries(outFormState).reduce((newFormState, [key, val]) => {
     if (typeof val === 'string') {
@@ -24,13 +25,13 @@ const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
     return { ...newFormState, [key]: val };
   }, {});
 
-  schema.properties.forEach((p) => {
+  Object.entries(schema.properties).forEach(([key, p]) => {
     if (p.type === 'number' && p.float) {
-      formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
+      formState[key] = !isNaN(formState[key]) && formState[key] !== null ? parseFloat(formState[key]) : null;
     }
     if (p.type === 'number' && p.integer) {
-      const parsedValue = parseInt(formState[p.key], 10);
-      formState[p.key] = !isNaN(parsedValue) ? parsedValue : null;
+      const parsedValue = parseInt(formState[key], 10);
+      formState[key] = !isNaN(parsedValue) ? parsedValue : null;
     }
   });
 
@@ -45,33 +46,29 @@ const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
   );
 };
 
-const getFrowmStateAndErrorAndCanSave = (elementOld = null) => {
-  let element = {};
+const validateProgramRegistry = (formState: Partial<ProgramRegistry>) => {
+  return validate(
+    formValidationSchema,
+    formState,
+    {},
+    formState,
+  );
+};
+
+const getFrowmStateAndErrorAndCanSave = (elementOld: ProgramRegistry = null) => {
+  let element: Partial<ProgramRegistry> = {};
   if (elementOld !== null) {
     element = cloneDeep(elementOld);
   } else {
     element = {};
   }
-  const formErrors = validate(element, {});
+  const formErrors = validateProgramRegistry(element);
 
   return {
     formState: element,
     formErrors,
     canSave: !Object.values(formErrors).some((value) => !!value),
   };
-};
-
-const validate = (state, errors) => {
-  const schema = formValidationSchema;
-  const formState = { ...state };
-
-  return schema.properties.reduce((formErrors, prop) => {
-    const { key } = prop;
-    formErrors[key] = validateField(prop, formState[key], formState, schema, {});
-    return formErrors;
-  },
-  { ...errors },
-  );
 };
 
 const ProgramRegistrySwitcher: React.FC<any> = React.memo(
@@ -93,7 +90,7 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
           <ProgramRegistryFormCreateWrap
             defSendFromState={defSendFromStateWrap}
             getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-            validate={validate}
+            validate={validateProgramRegistry}
             showForm
             onFormHide={props.handleHide}
             {...props}
@@ -103,7 +100,7 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
           <ProgramRegistryFormUWrap
             defSendFromState={defSendFromStateWrap}
             getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-            validate={validate}
+            validate={validateProgramRegistry}
             onFormHide={props.handleHide}
             {...props}
             showForm

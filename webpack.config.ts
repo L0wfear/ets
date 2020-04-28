@@ -1,6 +1,8 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import * as MomentLocalesPlugin from 'moment-locales-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -14,6 +16,8 @@ const stand = process.env.STAND || 'dev';
 const NODE_ENV = process.env.NODE_ENV as 'development' | 'production';
 
 const __DEVELOPMENT__ = NODE_ENV === 'development';
+
+console.info(`[webpack.config] version: ${process.version}`);
 
 const getNameFavicon = (stand) => {
   switch (stand) {
@@ -35,6 +39,9 @@ const getColor = (stand) => {
 
 const getPlugins = () => {
   const plugins: webpack.Configuration['plugins'] = [
+    new MomentLocalesPlugin({
+      localesToKeep: ['ru'],
+    }),
     new ForkTsCheckerWebpackPlugin(),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
@@ -160,9 +167,17 @@ const getPlugins = () => {
       },
     }),
   ];
-  
+
   if (__DEVELOPMENT__) {
-    plugins.push(new webpack.HotModuleReplacementPlugin())
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+  }
+
+  if (false) {
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static'
+      }),
+    );
   }
 
   return plugins;
@@ -222,51 +237,6 @@ const config: webpack.Configuration = {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              babelrc: false,
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    // remove targets
-                    corejs: { version: 3, proposals: true },
-                    useBuiltIns: 'usage', // 'usage' те функции, которые используются
-                    configPath: path.join(__dirname),
-                  },
-                ],
-                '@babel/preset-typescript',
-                ['@babel/preset-react', { useSpread: true }],
-              ],
-              plugins: [
-                [
-                  '@babel/plugin-proposal-decorators',
-                  {
-                    legacy: true,
-                  },
-                ],
-                [
-                  '@babel/plugin-proposal-nullish-coalescing-operator',
-                ],
-                [
-                  '@babel/plugin-proposal-optional-chaining',
-                  {
-                    loose: true,
-                  }
-                ],
-                [
-                  '@babel/plugin-proposal-class-properties',
-                  {
-                    loose: true,
-                  },
-                ],
-                [
-                  'babel-plugin-styled-components',
-                  {
-                    fileName: false
-                  },
-                ],
-                '@babel/plugin-syntax-dynamic-import',
-                'react-hot-loader/babel',
-              ],
             },
           },
         ],
@@ -295,9 +265,7 @@ const config: webpack.Configuration = {
       {
         test: /\.(sc|c)ss$/,
         use: [
-          {
-            loader: 'style-loader',
-          },
+          'style-loader',
           {
             loader: 'css-loader',
             options: {

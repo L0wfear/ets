@@ -19,11 +19,8 @@ export const getActiveClassName = (props) => (
  * @param props пропсы
  * @param type имя пропса, которое отвечает за активность
  */
-export const getClassNameByType = (props, type) => (
-  cx(
-    'legen_option',
-    {
-      off: !props[type],
-    },
-  )
-);
+export const getClassNameByType = (props, type) => {
+  return (cx('legen_option', {
+    off: !props[type] && type !== 'not_in_map',
+  }));
+};

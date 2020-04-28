@@ -40,7 +40,7 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
     if (infoData) {
       return groupBy<WaybillCompletedItemsSubItemsType>(
         infoData.subItems,
-        (waybill) => makeDate(waybill.data.create_date),
+        (waybill) => makeDate(waybill.date_create),
       );
     }
 
@@ -91,14 +91,14 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
     });
   };
 
-  mapInfoDataGroupByDate = ({ data: { waybill_id, ...data } }) => (
+  mapInfoDataGroupByDate = ({ id, ...data }) => (
     <li
-      key={waybill_id}
+      key={id}
       className="pointer"
-      data-path={waybill_id}
+      data-path={id}
       onClick={this.openWaybillFormWrap}>
-      {`№${data.waybill_number}, `}
-      <b>{data.car_gov_number}</b>, {data.car_garage_number || '-'}
+      {`№${data.number}, `}
+      <b>{data.gov_number}</b>, {data.garage_number || '-'}
       <br />
       {`${data.driver_fio || ''}${
         data.driver_phone ? `, ${data.driver_phone}` : ''

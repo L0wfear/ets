@@ -64,7 +64,7 @@ class MissionInfoLegend extends React.PureComponent<any, any> {
             </div>
             <div className={cx(getClassNameByType(this.props, 'SHOW_GEOOBJECTS'), 'none-event')}>
               <div className={`car_data-color geoobject_mission_select`}></div>
-              <div>ОДХ/ДТ</div>
+              <div>ОДХ/ДТ/ПН</div>
             </div>
           </div>
         </div>

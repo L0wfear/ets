@@ -6,7 +6,9 @@ import { getClassNameByType } from './utils';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const NotInMapItemStyled = styled.div`position: relative;`;
+const NotInMapItemStyled = styled.div`
+  position: relative;
+`;
 
 type Props = {};
 

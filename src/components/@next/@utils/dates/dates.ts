@@ -73,7 +73,8 @@ export function makeUnixTime(timeOwn) {
   return Math.floor(time / 1000);
 }
 
-export function makeUnixTimeMskTimezone(time) {
+export function makeUnixTimeMskTimezone(timeOwn) {
+  let time = timeOwn;
   if (typeof time === 'string') {
     time = MomentTimezone.tz(time, 'Europe/Moscow' );
   }
@@ -265,6 +266,11 @@ export function getTomorrow9am(seconds = 0) {
     59,
     seconds,
   );
+}
+
+export function getTomorrow2359() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 23, 59, 0);
 }
 
 export function getTomorrow0am() {

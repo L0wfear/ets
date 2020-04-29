@@ -30,7 +30,11 @@ const FieldMeasureUnitId: React.FC<Props> = React.memo(
       [handleChange],
     );
 
-    const { options, isLoading } = useMeasureUnitOptions(null, meta);
+    const measureUnitOptionsDataPayload = React.useMemo(() => ({
+      type: 'cleaning_rate'
+    }), []);
+
+    const { options, isLoading } = useMeasureUnitOptions(measureUnitOptionsDataPayload, meta);
 
     return (
       <ExtField

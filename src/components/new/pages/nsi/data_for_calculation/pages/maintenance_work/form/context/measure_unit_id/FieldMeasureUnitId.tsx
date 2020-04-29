@@ -18,8 +18,12 @@ const FieldMeasureUnitId: React.FC<Props> = React.memo(
     const error = useForm.useFormDataFormErrorsPickValue<MaintenanceWork, string>(props.formDataKey, 'measure_unit_id');
     const handleChange = useForm.useFormDataHandleChange<MaintenanceWork>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<MaintenanceWork>(props.formDataKey);
+    
+    const measureUnitOptionsDataPayload = React.useMemo(() => ({
+      type: 'maintenance_work'
+    }), []);
 
-    const measureUnitOptionsData = useMeasureUnitOptions(null, meta);
+    const measureUnitOptionsData = useMeasureUnitOptions(measureUnitOptionsDataPayload, meta);
 
     const options = React.useMemo(
       () => {

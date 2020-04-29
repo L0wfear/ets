@@ -50,7 +50,7 @@ const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>
         clearTimeout(timeId);
       };
     },
-    [partialPath, payload],
+    [],
   );
 
   return list;

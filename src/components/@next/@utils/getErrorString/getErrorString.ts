@@ -58,3 +58,6 @@ export const getFixedLengthCollectionError = (fixedLengthCollection: Array<numbe
   return `Длина поля должна быть равной одному из значений (${fixedLengthCollection.join(', ')})`;
 };
 
+export const getRequiredFieldToFixedAny = (field = 'Название по умолчанию', countMark: number) => {
+  return `Поле "${field}" должно быть числом с ${countMark} знаками после запятой`;
+};

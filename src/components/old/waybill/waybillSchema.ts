@@ -494,10 +494,21 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       ],
     },
     fuel_end: {
-      title: 'Топливо.Возврат по таксировке',
+      title: 'Возврат по таксировке, л',
       type: 'number',
-      float: 3,
-      required: true,
+      dependencies: [
+        (value, { status, }) => {
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          if (
+            fieldNotHidden
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Возврат по таксировке, л" должно быть заполнено';
+          }
+        },
+      ],
     },
     fact_fuel_end: {
       title: 'Топливо.Возврат фактический',

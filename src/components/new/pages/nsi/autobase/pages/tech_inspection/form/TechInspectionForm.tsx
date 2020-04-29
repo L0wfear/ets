@@ -103,7 +103,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       onHide={props.hideWithoutChanges}
     >
       <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        <EtsBootstrap.ModalTitle> {title} </EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <EtsBootstrap.Row>
@@ -112,7 +112,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               <ExtField
                 id="car_id"
                 type="select"
-                label="Номер транспортного средства"
+                label="Рег. номер ТС"
                 value={state.car_id}
                 error={errors.car_id}
                 options={carListOptions}

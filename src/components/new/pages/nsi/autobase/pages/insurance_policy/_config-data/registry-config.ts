@@ -47,8 +47,8 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
       fields: [
         {
           valueKey: 'car_id',
-          labelKey: 'gov_number',
-          title: 'Транспортное средство',
+          labelKey: 'gov_numbers',
+          title: 'Рег. номер ТС',
           type: 'multiselect',
         },
         {
@@ -108,9 +108,10 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
             title: '№',
           },
           {
-            key: 'gov_number',
-            title: 'Транспортное средство',
+            key: 'gov_numbers_text',
+            title: 'Рег. номер ТС',
             width: 200,
+            fieldTitlePopup: 'В скобках указывается номер ТС на дату начала действия страховки',
           },
           {
             key: 'insurer',

@@ -91,6 +91,8 @@ export type InsurancePolicy = {
   date_end: string;
   date_start: string;
   gov_number: string;
+  gov_numbers_text: string;
+  gov_numbers: Array<any>;
   id: number;
   insurance_type_id: number;
   insurance_type_name: string;
@@ -239,6 +241,8 @@ export type TechInspection = {
   date_end: string;
   date_start: string;
   gov_number: string;
+  gov_numbers_text: string;
+  gov_numbers: Array<any>;
   id: number;
   is_allowed: boolean;
   note: string;

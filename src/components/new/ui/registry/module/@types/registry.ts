@@ -31,6 +31,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
   sortBy?: Extract<keyof F, string>;
 
   max_size_to_scroll?: number;
+  fieldTitlePopup?: string;
 };
 
 export type TypeFieldsAvalibaleKey<F> = (

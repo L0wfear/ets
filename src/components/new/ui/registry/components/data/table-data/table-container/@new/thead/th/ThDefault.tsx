@@ -45,6 +45,18 @@ const ThDefault: React.FC<Props> = React.memo(
           />)
         }
         {metaField.title}
+        {metaField.fieldTitlePopup 
+        && <EtsBootstrap.OverlayTrigger
+          trigger={['hover', 'focus']}
+          overlay={(
+            <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
+              {metaField.fieldTitlePopup}
+            </EtsBootstrap.Popover>
+          )}
+          placement="bottom">
+          <EtsBootstrap.Glyphicon glyph="info-sign" />
+        </EtsBootstrap.OverlayTrigger>
+        }
         <EtsBootstrap.Glyphicon glyph={getGlyphName(sortBy ? sortBy : metaField.key, sort)} />
       </ThDefaultWrapper>
     );

@@ -23,7 +23,7 @@ import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/auto
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
-
+//import Title from 'components/new/ui/registry/components/data/header/title/Title';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 
@@ -103,7 +103,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       onHide={props.hideWithoutChanges}
     >
       <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        <EtsBootstrap.ModalTitle> {title} </EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <EtsBootstrap.Row>

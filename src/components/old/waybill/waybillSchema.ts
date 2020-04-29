@@ -88,14 +88,15 @@ const checkCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
-        value:
-          !rowData.value && rowData.value !== 0
+        value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
+          ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
             : rowData.value < 0
               ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
               : !isValidToFixed3(rowData.value)
                 ? getRequiredFieldToFixed('Выдано, л', 3)
-                : '',
+                : '' 
+          : '',
       };
     });
   },
@@ -122,12 +123,13 @@ const checkEquipmentCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
-        value:
-          !rowData.value && rowData.value !== 0
+        value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
+          ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
             : !isValidToFixed3(rowData.value)
               ? getRequiredFieldToFixed('Выдано, л', 3)
-              : '',
+              : ''
+          : '',
       };
     });
   },

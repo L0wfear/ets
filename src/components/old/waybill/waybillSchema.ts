@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WaybillFormWrapProps } from 'components/old/waybill/WaybillFormWrap';
 import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
-import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldToFixed, getMinLengthError, getRequiredFieldToFixedAny } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
 import { isNumber, isArray, isString } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
@@ -496,10 +496,24 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       ],
     },
     fuel_end: {
-      title: 'Топливо.Возврат по таксировке',
+      title: 'Возврат по таксировке, л',
       type: 'number',
-      float: 3,
-      required: true,
+      dependencies: [
+        (value, { status, }) => {
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          if (
+            fieldNotHidden
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Возврат по таксировке, л" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixedAny('Возврат по таксировке, л', 3);
+          }
+        },
+      ],
     },
     fact_fuel_end: {
       title: 'Топливо.Возврат фактический',

@@ -156,7 +156,11 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
 
     return dispatch(
       defaultAction(
-        formMeta.handleSubmitPromise(formState, ...arg),
+        formMeta.handleSubmitPromise(formState, ...arg).then(() => {
+          formData.IS_CREATING ? global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success') : global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+        }).catch((error) => {
+          throw error;
+        }),
         {
           ...formData.meta,
           noTimeout: true,

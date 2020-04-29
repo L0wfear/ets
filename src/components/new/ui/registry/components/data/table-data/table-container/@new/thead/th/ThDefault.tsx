@@ -49,7 +49,7 @@ const ThDefault: React.FC<Props> = React.memo(
         && <EtsBootstrap.OverlayTrigger
           trigger={['hover', 'focus']}
           overlay={(
-            <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
+            <EtsBootstrap.Popover id={`${props.registryKey}_${metaField.key}_title-popover`} >
               {metaField.fieldTitlePopup}
             </EtsBootstrap.Popover>
           )}

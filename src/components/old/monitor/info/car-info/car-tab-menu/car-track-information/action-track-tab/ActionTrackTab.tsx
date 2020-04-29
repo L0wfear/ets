@@ -26,6 +26,9 @@ type PropsActionTrackTab = {
 
 type StateActionTrackTab = {
   intervalId: any;
+  interval: number;
+  defaultInterval: number;
+  coeff: number;
 };
 
 class ActionTrackTab extends React.Component<
@@ -34,6 +37,9 @@ class ActionTrackTab extends React.Component<
 > {
   state = {
     intervalId: null,
+    interval: null,
+    defaultInterval: 1500,
+    coeff: 1,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,11 +55,14 @@ class ActionTrackTab extends React.Component<
   }
 
   togglePlayTrack = () => {
+    this.setState((state) => {
+      return {interval: state.interval ? state.interval : state.defaultInterval};
+    });
     const { status } = this.props;
     this.props.togglePlay();
 
     if (status !== 'play') {
-      const intervalId = setInterval(this.movePlayPoint, 1500);
+      const intervalId = setInterval(this.movePlayPoint, this.state.interval);
       this.setState({ intervalId });
     } else {
       clearInterval(this.state.intervalId);
@@ -63,6 +72,17 @@ class ActionTrackTab extends React.Component<
   stopPlayTrack = () => {
     clearInterval(this.state.intervalId);
     this.props.stopPlay();
+  };
+
+  increasePlaySpeed = () => {
+    const defaultInterval = this.state.defaultInterval;
+    let coeff = this.state.coeff;
+    coeff === 1 ? coeff += 1 : coeff >= 10 ? coeff = 1 : coeff += 2;
+    this.setState({
+      interval: Math.floor(defaultInterval / coeff),
+      coeff,
+    }
+    );
   };
 
   movePlayPoint = () => {
@@ -97,6 +117,11 @@ class ActionTrackTab extends React.Component<
             }
             onClick={this.togglePlayTrack}>
             <EtsBootstrap.Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button
+            disabled={ status !== 'stop'}
+            onClick={this.increasePlaySpeed}>
+            {`X${this.state.coeff}`}
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
             disabled={STATUS_TC_FOLLOW_ON_CAR || status === 'stop'}

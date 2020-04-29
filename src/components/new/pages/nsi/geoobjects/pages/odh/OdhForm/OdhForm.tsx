@@ -117,6 +117,13 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
                 value={state.gutters_length}
                 readOnly
               />
+              <ExtField
+                type="number"
+                label="Площадь обочин (кв.м)"
+                value={state.margin_area}
+                format="toFixed2"
+                disabled
+              />
               <FieldCompanyStructureId
                 value={state.company_structures}
                 error={errors.company_structures}

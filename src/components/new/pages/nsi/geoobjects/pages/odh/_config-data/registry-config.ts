@@ -114,6 +114,12 @@ export const config: TypeConfigData<Odh> = {
         step: 0.01,
       },
       {
+        valueKey: 'margin_area',
+        title: 'Площадь обочин (кв.м.)',
+        type: 'advanced-number',
+        step: 0.01,
+      },
+      {
         valueKey: 'company_structures',
         title: 'Подразделение',
         type: 'multiselect',
@@ -219,6 +225,12 @@ export const config: TypeConfigData<Odh> = {
         {
           key: 'gutters_length',
           title: 'Протяженность лотков (п.м.)',
+          format: 'toFixed2',
+          width: 300,
+        },
+        {
+          key: 'margin_area',
+          title: 'Площадь обочин (кв.м)',
           format: 'toFixed2',
           width: 300,
         },

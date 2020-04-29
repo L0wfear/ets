@@ -240,6 +240,10 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
+          if ((status === 'active' || status === 'draft')
+            && value > 1000) {
+            return 'Поле "Топливо.Выезд" должно быть меньше 1000';
+          }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }
@@ -278,6 +282,10 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
+          if ((status === 'active' || status === 'draft')
+            && value > 1000) {
+            return 'Поле "Топливо.Выезд" должно быть меньше 1000';
+          }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }
@@ -294,6 +302,34 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             && !value
           ) {
             return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      ],
+    },
+    fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+      dependencies: [
+        (value, { status }) => {
+          if ((status === 'active' || status === 'draft' || !status)
+            && value > 1000) {
+            return 'Поле "Выдано, л" должно быть меньше 1000';
+          }
+        },
+      ],
+    },
+    equipment_fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+      dependencies: [
+        (value, { status }) => {
+          if ((status === 'active' || status === 'draft' || !status)
+            && value > 1000) {
+            return 'Поле "Выдано, л" должно быть меньше 1000';
           }
         },
       ],
@@ -527,6 +563,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
+          if (status === 'active' && value > 1000) {
+            return 'Поле "Возврат фактический, л" должно быть меньше 1000';
+          }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Возврат фактический, л', 3);
           }
@@ -547,6 +586,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             && (!value && value !== 0)
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+          if (status === 'active' && value > 1000) {
+            return 'Поле "Возврат фактический, л" должно быть меньше 1000';
           }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Возврат фактический, л', 3);

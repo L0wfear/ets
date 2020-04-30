@@ -457,7 +457,10 @@ class WaybillForm extends React.Component<Props, State> {
         getFuelRatesBySeason(
           this.props.dispatch(
             actionLoadFuelRatesByCarModel(
-              { car_id: formState.car_id, datetime: formState.date_create },
+              {
+                car_id: formState.car_id,
+                datetime: formState.activating_date
+              },
               this.props,
             ),
           ),
@@ -469,7 +472,10 @@ class WaybillForm extends React.Component<Props, State> {
         getFuelRatesBySeason(
           this.props.dispatch(
             actionLoadEquipmentFuelRatesByCarModel(
-              { car_id: formState.car_id, datetime: formState.date_create },
+              {
+                car_id: formState.car_id,
+                datetime: formState.activating_date
+              },
               this.props,
             ),
           ),

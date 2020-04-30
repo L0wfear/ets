@@ -754,14 +754,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           // висит окно с заявкой ЕДЦ
           return;
         }
-        this.props.onCallback({
-          showWaybillFormWrap: false,
-        });
-      } else {
-        this.props.onCallback({
-          showWaybillFormWrap: true,
-        });
-      }
+      } 
     };
 
     /**
@@ -814,7 +807,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             return;
           }
         }
-        this.props.onCallback();
       } else if (waybillStatus === 'draft') {
         // если ПЛ обновляем
         if (typeof callback === 'function') {
@@ -826,16 +818,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             return;
           }
           callback();
-          if (this.props.onCallback) {
-            await this.props.onCallback();
-          }
         } else {
           try {
             await this.updateWaybill(formState);
           } catch (e) {
             return;
           }
-          this.props.onCallback();
         }
       } else if (waybillStatus === 'active') {
         this.submitActiveWaybill();
@@ -846,7 +834,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           console.info(error_text); // eslint-disable-line
           return;
         }
-        this.props.onCallback();
       }
     };
 

@@ -55,7 +55,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
         },
         {
           valueKey: 'car_id',
-          labelKey: 'gov_numbers',
+          labelKey: 'gov_numbers_text',
           title: 'Рег. номер ТС',
           type: 'multiselect',
         },

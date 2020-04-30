@@ -53,6 +53,10 @@ const canSaveNotCheckField = [
   'odometr_end',
   'equipment_fact_fuel_end',
   'fact_fuel_end',
+  'fuel_start',
+  'fuel_given',
+  'equipment_fuel_given',
+  'equipment_fuel_start',
 ];
 
 const canCloseNotCheckField = ['distance'];

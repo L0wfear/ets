@@ -98,7 +98,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       const {
         isPermitted,
         IS_CREATING,
-        // DUTY_MISSION_IS_NOT_ASSIGNED,
+        //DUTY_MISSION_IS_NOT_ASSIGNED,
         DUTY_MISSION_IS_ORDER_SOURCE,
         DUTY_MISSION_IS_DISPLAY,
       } = this.state;
@@ -283,6 +283,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       DUTY_MISSION_IS_DISPLAY,
       DUTY_MISSION_IS_CLOSED,
       DUTY_MISSION_IS_ASSIGNED,
+      DUTY_MISSION_IS_NOT_ASSIGNED,
       DUTY_MISSION_IS_COMPLETED,
       DUTY_MISSION_IS_ORDER_SOURCE,
     } = this.state;
@@ -524,7 +525,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             )
           }
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="comment"
                 modalKey={page}
@@ -535,6 +536,19 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 disabled={!isPermitted}
                 onChange={this.props.handleChange}
                 boundKeys="comment"
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="passes_count"
+                modalKey={page}
+                type="number"
+                label="Количество выполнений"
+                value={state.passes_count}
+                error={errors.passes_count}
+                disabled={!(IS_CREATING || DUTY_MISSION_IS_ASSIGNED || DUTY_MISSION_IS_NOT_ASSIGNED)}
+                onChange={this.props.handleChange}
+                boundKeys="passes_count"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

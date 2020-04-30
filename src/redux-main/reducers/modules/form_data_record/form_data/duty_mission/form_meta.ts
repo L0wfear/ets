@@ -270,6 +270,14 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
             ),
           ],
         },
+        passes_count: {
+          title: 'Количество выполнений',
+          type: 'number',
+          required: true,
+          maxLength: 2,
+          max: 10,
+          minNotEqual: 0,
+        },
       },
     },
   },
@@ -321,7 +329,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     technical_operation_id: null,
     technical_operation_name: '',
     work_class_id: null,
-
+    passes_count: null,
     is_mission_progress_countable: false,
     consumable_materials: [],
   }),

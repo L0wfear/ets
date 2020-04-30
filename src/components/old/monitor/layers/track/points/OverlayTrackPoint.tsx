@@ -134,7 +134,6 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   };
 
   render() {
-    console.info(this.props);
     const { trackPoint } = this.state;
 
     if (!trackPoint) {

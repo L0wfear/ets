@@ -30,7 +30,6 @@ type StateActionTrackTab = {
   interval: number;
   defaultInterval: number;
   coeffIndex: number;
-  coeff: number;
   coeffsArr: Array<number>;
 };
 
@@ -54,7 +53,6 @@ class ActionTrackTab extends React.Component<
     interval: null,
     defaultInterval: 1500,
     coeffIndex: 0,
-    coeff: 1,
     coeffsArr: [1, 2, 4, 6, 8, 10],
   };
 
@@ -88,31 +86,33 @@ class ActionTrackTab extends React.Component<
     this.props.stopPlay();
     this.setState({
       coeffIndex: 0,
-      coeff: 1,
       interval: this.state.defaultInterval,
     });
   };
 
-  changePlaySpeed = (e) => {
+  increasePlaySpeed = () => {
     const defaultInterval = this.state.defaultInterval;
     const coeffsArr = this.state.coeffsArr;
-    const id = e.currentTarget.id;
     
-    if(id === 'plus' && this.state.coeffIndex < coeffsArr.length - 1) {
+    if(this.state.coeffIndex < coeffsArr.length - 1) {
       this.setState((state) => {
         return {
           coeffIndex: state.coeffIndex + 1, 
-          coeff: coeffsArr[state.coeffIndex + 1], 
           interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex + 1])
         };
       });
     }
 
-    if(id === 'minus' && this.state.coeffIndex > 0) {
+  };
+
+  decreasePlaySpeed = () => {
+    const defaultInterval = this.state.defaultInterval;
+    const coeffsArr = this.state.coeffsArr;
+
+    if(this.state.coeffIndex > 0) {
       this.setState((state) => {
         return {
           coeffIndex: state.coeffIndex - 1, 
-          coeff: coeffsArr[state.coeffIndex - 1], 
           interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex - 1])
         };
       });
@@ -154,14 +154,12 @@ class ActionTrackTab extends React.Component<
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
             disabled={ status !== 'stop' || this.state.coeffIndex >= this.state.coeffsArr.length - 1 }
-            onClick={(e) => this.changePlaySpeed(e)}
-            id='plus'>
+            onClick={this.increasePlaySpeed}>
             <EtsBootstrap.Glyphicon glyph="forward" />
           </EtsBootstrap.Button >
           <EtsBootstrap.Button
             disabled={ status !== 'stop' || this.state.coeffIndex <= 0}
-            onClick={(e) => this.changePlaySpeed(e)}
-            id='minus'>
+            onClick={this.decreasePlaySpeed}>
             <EtsBootstrap.Glyphicon glyph="backward" />
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
@@ -170,7 +168,7 @@ class ActionTrackTab extends React.Component<
             <EtsBootstrap.Glyphicon glyph="stop" />
           </EtsBootstrap.Button>
           <PlayIncreaseCoeff>
-            {`x${this.state.coeff.toFixed(1)}`}
+            {`x${this.state.coeffsArr[this.state.coeffIndex].toFixed(1)}`}
           </PlayIncreaseCoeff>
         </div>
         {status !== 'stop' && (

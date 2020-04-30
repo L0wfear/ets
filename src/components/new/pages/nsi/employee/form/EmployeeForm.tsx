@@ -85,7 +85,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   }
 
   public componentDidUpdate(prevProps) {
-    if (this.props.formState !== prevProps.formState) {
+    if (this.props.formState.secondary_car !== prevProps.formState.secondary_car 
+      || this.props.formState.prefer_car !== prevProps.formState.prefer_car) {
       this.updateCarOptions(this.props.formState);
     }
   }
@@ -574,7 +575,6 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                   />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
-                  {console.info(state.secondary_car)}
                   <ExtField
                     id="secondary_car"
                     type="select"

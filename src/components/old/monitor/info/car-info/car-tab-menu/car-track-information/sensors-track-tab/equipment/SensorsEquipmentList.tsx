@@ -6,7 +6,7 @@ import * as cx from 'classnames';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { carInfoToggleSensorShow } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-
+import { monitorPageToggleStatusShowTrackPoints } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { DivNone } from 'global-styled/global-styled';
 import { sensorTrackColor } from 'constants/sensors';
 import { ColorSensorDiv } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/styled';
@@ -16,6 +16,8 @@ type PropsSensorsEquipmentList = {
   track: any;
   front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   toggleSensorOnMap: any;
+  toggleShowTrackPoints: any;
+  SHOW_TRACK_POINTS: boolean;
 };
 
 const getRightRus = (count) => {
@@ -46,6 +48,17 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
 
   return (
     <div className="sensors-list">
+      <div
+        className={cx('sensor-option', { disabled: !hasSomeData })}
+        onClick={props.toggleShowTrackPoints}>
+        <input
+          readOnly
+          disabled={!hasSomeData}
+          type="checkbox"
+          checked={props.SHOW_TRACK_POINTS}
+        />
+        <span>Отображать с учетом скорости</span>
+      </div>
       {!track || (Array.isArray(track) && track.length === 0) ? (
         <div>{NO_DATA_TEXT}</div>
       ) : sensors_equipment.length === 0 ? (
@@ -96,6 +109,7 @@ const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
   front_cars_sensors_equipment:
     state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
+  SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
 });
 const mergedProps = (stateProps, { dispatch }) => ({
   ...stateProps,
@@ -116,6 +130,9 @@ const mergedProps = (stateProps, { dispatch }) => ({
     if (canChange) {
       dispatch(carInfoToggleSensorShow('equipment', key));
     }
+  },
+  toggleShowTrackPoints: () => {
+    dispatch(monitorPageToggleStatusShowTrackPoints());
   },
 });
 

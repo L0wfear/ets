@@ -473,6 +473,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const fuelGiven = formState.fuel_given
       ? parseFloat(formState.fuel_given)
       : 0;
+    const factFuelEnd = formState.fact_fuel_end
+      ? parseFloat(formState.fact_fuel_end)
+      : 0;
     const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
     const equipmentFuelStart = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
@@ -480,8 +483,29 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const equipmentFuelGiven = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : 0;
+    const equipmentFactFuelEnd = formState.equipment_fact_fuel_end
+      ? parseFloat(formState.equipment_fact_fuel_end)
+      : 0;
     const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
       formState.equipment_tax_data,
+    );
+
+    formState.tax_consumption = parseFloatWithFixed(fuelTaxes, 3);
+    formState.equipment_fact_consuption = parseFloatWithFixed((
+      equipmentFuelStart
+      + equipmentFuelGiven
+      - equipmentFactFuelEnd
+    ), 3);
+    formState.fact_consuption = parseFloatWithFixed((
+      fuelStart
+      + fuelGiven
+      - factFuelEnd
+    ), 3);
+    formState.consuption_diff = Math.abs(
+      parseFloatWithFixed((
+        formState.tax_consumption
+        - formState.fact_consuption
+      ), 3)
     );
 
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
@@ -491,6 +515,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         + equipmentFuelGiven
         - equipmentFuelTaxes
       ), 3);
+      formState.equipment_tax_consumption = parseFloatWithFixed(equipmentFuelTaxes, 3);
+      formState.equipment_consuption_diff = Math.abs(
+        parseFloatWithFixed((
+          formState.equipment_tax_consumption
+          - formState.equipment_fact_consuption
+        ), 3)
+      );
     } else {
       formState.fuel_end = parseFloatWithFixed((
         fuelStart

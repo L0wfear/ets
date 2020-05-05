@@ -2236,22 +2236,30 @@ class WaybillForm extends React.Component<Props, State> {
                               handleChange={this.props.handleMultipleChange}
                             />
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={8}>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={6}>
-                                {!(IS_DRAFT || IS_CREATING) && (
-                                  <ExtField
-                                    id="fuel-end"
-                                    type="number"
-                                    label="Возврат по таксировке, л"
-                                    error={errors.fuel_end}
-                                    value={state.fuel_end}
-                                    format="toFixed3"
-                                    disabled
-                                  />
-                                )}
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={4}>
+                            {!(IS_DRAFT || IS_CREATING) && (
+                              <ExtField
+                                id="fuel-end"
+                                type="number"
+                                label="Возврат по таксировке, л"
+                                error={errors.fuel_end}
+                                value={state.fuel_end}
+                                format="toFixed3"
+                                disabled
+                              />
+                            )}
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
+                            <ExtField
+                              id="tax-consumption"
+                              type="number"
+                              label="Расход по таксировке, л"
+                              error={errors.tax_consumption}
+                              value={state.tax_consumption}
+                              format="toFixed3"
+                              hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              disabled
+                            />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                         <EtsBootstrap.Row>
@@ -2271,30 +2279,41 @@ class WaybillForm extends React.Component<Props, State> {
                               format="toFixed3"
                             />
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={8}>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={6}>
-                                <ExtField
-                                  id="fact-fuel-end"
-                                  type="number"
-                                  modalKey={modalKey}
-                                  label="Возврат фактический, л"
-                                  error={errors.fact_fuel_end}
-                                  value={state.fact_fuel_end}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled={
-                                    IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
-                                    || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="fact_fuel_end"
-                                  showRedBorder={
-                                    state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
-                                  }
-                                  format="toFixed3"
-                                />
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={4}>
+                            <ExtField
+                              id="fact-fuel-end"
+                              type="number"
+                              modalKey={modalKey}
+                              label="Возврат фактический, л"
+                              error={errors.fact_fuel_end}
+                              value={state.fact_fuel_end}
+                              hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              disabled={
+                                IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
+                                || !isPermittedByKey.update
+                              }
+                              onChange={this.handleChange}
+                              boundKeys="fact_fuel_end"
+                              showRedBorder={
+                                state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
+                              }
+                              format="toFixed3"
+                            />
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
+                            <ExtField
+                              id="fact-consuption"
+                              type="number"
+                              modalKey={modalKey}
+                              label="Расход фактический, л"
+                              error={errors.fact_consuption}
+                              value={state.fact_consuption}
+                              hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              disabled
+                              onChange={this.handleChange}
+                              boundKeys="fact_consuption"
+                              format="toFixed3"
+                            />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                         <EtsBootstrap.Row>
@@ -2315,6 +2334,21 @@ class WaybillForm extends React.Component<Props, State> {
                                 Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
                               </InfoBlock>
                             }
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
+                            <ExtField
+                              id="consuption-diff"
+                              type="number"
+                              modalKey={modalKey}
+                              label="Расхождение в данных расхода, л"
+                              error={errors.consuption_diff}
+                              value={state.consuption_diff}
+                              hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              disabled
+                              onChange={this.handleChange}
+                              boundKeys="consuption_diff"
+                              format="toFixed3"
+                            />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
@@ -2477,6 +2511,17 @@ class WaybillForm extends React.Component<Props, State> {
                                     />
                                   )}
                                 </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-tax-consumption"
+                                    type="number"
+                                    label="Расход по таксировке, л"
+                                    value={state.equipment_tax_consumption}
+                                    format="toFixed3"
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                  />
+                                </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={4}>
@@ -2515,6 +2560,21 @@ class WaybillForm extends React.Component<Props, State> {
                                     format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-fact-consuption"
+                                    type="number"
+                                    modalKey={modalKey}
+                                    label="Расход фактический, л"
+                                    error={errors.equipment_fact_consuption}
+                                    value={state.equipment_fact_consuption}
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_fact_consuption"
+                                    format="toFixed3"
+                                  />
+                                </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={4}>
@@ -2531,6 +2591,21 @@ class WaybillForm extends React.Component<Props, State> {
                                     && <InfoBlock>
                                       Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
                                     </InfoBlock> }
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-consuption-diff"
+                                    type="number"
+                                    modalKey={modalKey}
+                                    label="Расхождение в данных расхода, л"
+                                    error={errors.equipment_consuption_diff}
+                                    value={state.equipment_consuption_diff}
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_consuption_diff"
+                                    format="toFixed3"
+                                  />
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                             </EtsBootstrap.Col>

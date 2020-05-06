@@ -122,6 +122,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
                 clearable={false}
                 disabled={!isPermitted}
                 modalKey={path}
+                hint="Выводится рег. номер ТС, актуальный на текущий день."
               />
             )}
             <ExtField

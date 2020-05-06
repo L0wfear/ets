@@ -12,6 +12,7 @@ export type CarRegistrationData = {
   id: number;
   note: string;
   disabled?: boolean;
+  files?: Array<any>;
 };
 
 export type CarGibddPasspost = {

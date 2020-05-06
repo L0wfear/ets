@@ -11,6 +11,7 @@ import {
 import { connect } from 'react-redux';
 import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
 import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
+import styled from 'styled-components';
 
 type PropsActionTrackTab = {
   gps_code: number;
@@ -26,7 +27,22 @@ type PropsActionTrackTab = {
 
 type StateActionTrackTab = {
   intervalId: any;
+  interval: number;
+  defaultInterval: number;
+  coeffIndex: number;
+  coeffsArr: Array<number>;
 };
+
+const PlayIncreaseCoeff = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  border: 1px solid #d7d7d7;
+  border-radius: 4px;
+  width: 50px;
+  align-items: baseline;
+  padding: 5px;
+  font-weight: 500;
+`;
 
 class ActionTrackTab extends React.Component<
   PropsActionTrackTab,
@@ -34,6 +50,10 @@ class ActionTrackTab extends React.Component<
 > {
   state = {
     intervalId: null,
+    interval: null,
+    defaultInterval: 1500,
+    coeffIndex: 0,
+    coeffsArr: [1, 2, 4, 6, 8, 10],
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,10 +70,11 @@ class ActionTrackTab extends React.Component<
 
   togglePlayTrack = () => {
     const { status } = this.props;
+
     this.props.togglePlay();
 
     if (status !== 'play') {
-      const intervalId = setInterval(this.movePlayPoint, 1500);
+      const intervalId = setInterval(this.movePlayPoint, this.state.interval || this.state.defaultInterval);
       this.setState({ intervalId });
     } else {
       clearInterval(this.state.intervalId);
@@ -63,6 +84,39 @@ class ActionTrackTab extends React.Component<
   stopPlayTrack = () => {
     clearInterval(this.state.intervalId);
     this.props.stopPlay();
+    this.setState({
+      coeffIndex: 0,
+      interval: this.state.defaultInterval,
+    });
+  };
+
+  increasePlaySpeed = () => {
+    const defaultInterval = this.state.defaultInterval;
+    const coeffsArr = this.state.coeffsArr;
+    
+    if(this.state.coeffIndex < coeffsArr.length - 1) {
+      this.setState((state) => {
+        return {
+          coeffIndex: state.coeffIndex + 1, 
+          interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex + 1])
+        };
+      });
+    }
+
+  };
+
+  decreasePlaySpeed = () => {
+    const defaultInterval = this.state.defaultInterval;
+    const coeffsArr = this.state.coeffsArr;
+
+    if(this.state.coeffIndex > 0) {
+      this.setState((state) => {
+        return {
+          coeffIndex: state.coeffIndex - 1, 
+          interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex - 1])
+        };
+      });
+    }
   };
 
   movePlayPoint = () => {
@@ -99,10 +153,23 @@ class ActionTrackTab extends React.Component<
             <EtsBootstrap.Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
+            disabled={ status !== 'stop' || this.state.coeffIndex <= 0}
+            onClick={this.decreasePlaySpeed}>
+            <EtsBootstrap.Glyphicon glyph="backward" />
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button
+            disabled={ status !== 'stop' || this.state.coeffIndex >= this.state.coeffsArr.length - 1 }
+            onClick={this.increasePlaySpeed}>
+            <EtsBootstrap.Glyphicon glyph="forward" />
+          </EtsBootstrap.Button >
+          <EtsBootstrap.Button
             disabled={STATUS_TC_FOLLOW_ON_CAR || status === 'stop'}
             onClick={this.stopPlayTrack}>
             <EtsBootstrap.Glyphicon glyph="stop" />
           </EtsBootstrap.Button>
+          <PlayIncreaseCoeff>
+            {`x${this.state.coeffsArr[this.state.coeffIndex].toFixed(1)}`}
+          </PlayIncreaseCoeff>
         </div>
         {status !== 'stop' && (
           <div>

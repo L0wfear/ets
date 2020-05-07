@@ -271,6 +271,26 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           { value: '%line%', label: 'внеплановый' },
         ],
       },
+      {
+        valueKey: 'refill_type_ids',
+        title: 'Способ заправки',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'refill_type',
+          valueKey: 'id',
+          labelKey: 'name',
+        },
+      },
+      {
+        valueKey: 'fuel_card_ids',
+        title: 'Топливная карта',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'fuel_cards',
+          valueKey: 'id',
+          labelKey: 'number',
+        },
+      },
     ],
   },
   list: {

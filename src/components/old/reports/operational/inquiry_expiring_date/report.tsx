@@ -24,6 +24,10 @@ const renderers = {
   inquiry_date_end: ({ data }) => makeDateFormated(data),
 };
 
+const tableProps = {
+  initialSort: 'inquiry_date_end',
+};
+
 const reportProps: IReportProps = {
   title: 'Перечень справок, по которым подходит дата окончания действия',
   serviceName,
@@ -34,6 +38,7 @@ const reportProps: IReportProps = {
   summaryRenderes: renderers,
   enumerated: true,
   schemaMakers,
+  tableProps,
 };
 
 const ExportableReportContainer = exportable({

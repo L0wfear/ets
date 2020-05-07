@@ -9,6 +9,7 @@ import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled from 'styled-components';
+import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 export const CarRefillTableHeaderStyled = styled(EtsBootstrap.Row)`
   ${EtsHeaderContainerWrap} {
@@ -35,6 +36,7 @@ type CarRefillTableHeaderProps = {
   buttonWidth: number;
 
   disabled: boolean;
+  fuel_card_on_cars?: Array<FuelCardOnCars>;
 };
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
@@ -90,7 +92,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                     structure_id={props.structure_id}
                     fuel_type={props.fuel_type}
                     buttonWidth={props.buttonWidth}
-
+                    fuel_card_on_cars={props.fuel_card_on_cars}
                     disabled={props.disabled}
                     page={props.page}
                   />

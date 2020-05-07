@@ -22,7 +22,7 @@ export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'
     version = test_version;
   }
   const payload = {
-    gps_code: payloadOwn.gps_code,
+    gps_code: payloadOwn.gps_code,  // <<< gps_code global
     from_dt: makeUnixTimeMskTimezone(payloadOwn.from_dt),
     to_dt: makeUnixTimeMskTimezone(payloadOwn.to_dt),
     version,

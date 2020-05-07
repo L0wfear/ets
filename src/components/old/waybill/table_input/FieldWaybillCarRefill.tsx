@@ -161,7 +161,10 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             ...metaFuelCardId,
             options: fuelCardIdOptions,
           },
-          metaValue,
+          {
+            ...metaValue,
+            disabled: !props.array[0]?.type_id || (props.array[0]?.type_id === 1 && !props.array[0]?.fuel_card_id),
+          }
         ];
 
         return meta;

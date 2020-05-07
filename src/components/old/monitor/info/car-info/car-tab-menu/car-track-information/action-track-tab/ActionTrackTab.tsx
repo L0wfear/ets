@@ -95,14 +95,17 @@ class ActionTrackTab extends React.Component<
     const coeffsArr = this.state.coeffsArr;
     
     if(this.state.coeffIndex < coeffsArr.length - 1) {
+      clearInterval(this.state.intervalId);
       this.setState((state) => {
+        const interval = defaultInterval / coeffsArr[state.coeffIndex + 1];
+        const intervalId = setInterval(this.movePlayPoint, interval);
         return {
           coeffIndex: state.coeffIndex + 1, 
-          interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex + 1])
+          interval,
+          intervalId
         };
       });
     }
-
   };
 
   decreasePlaySpeed = () => {
@@ -110,10 +113,14 @@ class ActionTrackTab extends React.Component<
     const coeffsArr = this.state.coeffsArr;
 
     if(this.state.coeffIndex > 0) {
+      clearInterval(this.state.intervalId);
       this.setState((state) => {
+        const interval = defaultInterval / coeffsArr[state.coeffIndex - 1];
+        const intervalId = setInterval(this.movePlayPoint, interval);
         return {
           coeffIndex: state.coeffIndex - 1, 
-          interval: Math.floor(defaultInterval / coeffsArr[state.coeffIndex - 1])
+          interval,
+          intervalId
         };
       });
     }
@@ -153,12 +160,12 @@ class ActionTrackTab extends React.Component<
             <EtsBootstrap.Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
-            disabled={ status !== 'stop' || this.state.coeffIndex <= 0}
+            disabled={ status === 'stop' || this.state.coeffIndex <= 0}
             onClick={this.decreasePlaySpeed}>
             <EtsBootstrap.Glyphicon glyph="backward" />
           </EtsBootstrap.Button>
           <EtsBootstrap.Button
-            disabled={ status !== 'stop' || this.state.coeffIndex >= this.state.coeffsArr.length - 1 }
+            disabled={status === 'stop' || this.state.coeffIndex >= this.state.coeffsArr.length - 1 }
             onClick={this.increasePlaySpeed}>
             <EtsBootstrap.Glyphicon glyph="forward" />
           </EtsBootstrap.Button >

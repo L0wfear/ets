@@ -277,6 +277,7 @@ class MissionInfoForm extends React.Component<
                   mission_data={mission_data}
                   report_data={report_data}
                   parkingCount={this.state.parkingCount}
+                  object_type_name={route_data.object_type_name}
                 />
               ) : (
                 <DivNone />

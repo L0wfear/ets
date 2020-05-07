@@ -16,11 +16,13 @@ import {
   IMIssionData,
   IReportData,
 } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
+import { createValidDateHM } from 'components/@next/@utils/dates/dates';
 
 type Props = {
   mission_data: IMIssionData;
   report_data: IReportData;
   parkingCount: number | void;
+  object_type_name: string;
 };
 
 const InfoTableData: React.FC<Props> = React.memo(
@@ -29,6 +31,7 @@ const InfoTableData: React.FC<Props> = React.memo(
       mission_data,
       report_data,
       parkingCount,
+      object_type_name,
     } = props;
 
     const withWorkSpeed = getDataTraveledYet([
@@ -67,6 +70,24 @@ const InfoTableData: React.FC<Props> = React.memo(
         </div>
         <div>
           <b>{'Процент выполнения задания, %: '}</b>{mission_data.traveled_percentage || '-'}
+        </div>
+        <div>
+          <b>{'Тех. операция: '}</b>{mission_data.name || '-'}
+        </div>
+        <div>
+          <b>{'Элемент: '}</b>{mission_data.element || '-'}
+        </div>
+        <div>
+          <b>{'Тип объекта: '}</b>{object_type_name || '-'}
+        </div>
+        <div>
+          <b>{'Начало задания: '}</b>{mission_data.date_start ? createValidDateHM(mission_data.date_start) : '-'}
+        </div>
+        <div>
+          <b>{'Окончание задания: '}</b>{mission_data.date_end ? createValidDateHM(mission_data.date_end) : '-'}
+        </div>
+        <div>
+          <b>{'Расчетное время выполнения: '}</b>{report_data.estimated_finish_time ? createValidDateHM(report_data.estimated_finish_time) : '-'}
         </div>
       </>
     );

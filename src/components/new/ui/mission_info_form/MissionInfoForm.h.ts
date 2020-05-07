@@ -7,6 +7,7 @@ export type IMIssionData = {
   current_percentage: number;
   date_start: string | Date;
   date_end: string | Date;
+  element: string;
   id: number;
   name: string;
   number: number;

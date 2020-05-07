@@ -120,6 +120,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
                 disabled={!isPermitted}
                 modalKey={path}
                 value_string={state.gov_number}
+                hint="Выводится рег. номер ТС, актуальный на текущий день."
               />
             )}
             <ExtField

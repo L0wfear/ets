@@ -18,6 +18,7 @@ import ButtonChangeDriverTechnicalOperationRelations from './button-by-type/tech
 import ButtonChangeRouteTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeRouteTechnicalOperationRelations';
 import ButtonRemoveDutyMission from './button-by-type/duty_mission/ButtonRemoveDutyMission';
 import ButtonExportDutyMission from './button-by-type/duty_mission/ButtonExportDutyMission';
+import ButtonExportDutyMissionArchieve from './button-by-type/duty_mission/ButtonExportDutyMissionArchieve';
 import ButtonCompleteDutyMission from './button-by-type/duty_mission/ButtonCompleteDutyMission';
 import ButtonToArchiveDutyMission from './button-by-type/duty_mission/ButtonToArchiveDutyMission';
 import ButtonFailDutyMission from './button-by-type/duty_mission/ButtonFailDutyMission';
@@ -27,6 +28,7 @@ import ButtonCreateMission from './button-by-type/mission/ButtonCreateMission';
 import ButtonCreateMissionByOrder from './button-by-type/mission/ButtonCreateMissionByOrder';
 import ButtonRemoveMission from './button-by-type/mission/ButtonRemoveMission';
 import ButtonExportMission from './button-by-type/mission/ButtonExportMission';
+import ButtonExportMissionArchieve from './button-by-type/mission/ButtonExportMissionArchieve';
 import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMission';
 import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
@@ -64,6 +66,7 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.change_route_technical_operation_relations ]: ButtonChangeRouteTechnicalOperationRelations,
   [buttonsTypes.duty_missions_remove ]: ButtonRemoveDutyMission,
   [buttonsTypes.duty_missions_export ]: ButtonExportDutyMission,
+  [buttonsTypes.duty_missions_export_archieve ]: ButtonExportDutyMissionArchieve,
   [buttonsTypes.duty_missions_fail ]: ButtonFailDutyMission,
   [buttonsTypes.duty_missions_complete ]: ButtonCompleteDutyMission,
   [buttonsTypes.duty_missions_to_archvie ]: ButtonToArchiveDutyMission,
@@ -82,6 +85,7 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.mission_create_by_order]: ButtonCreateMissionByOrder,
   [buttonsTypes.missions_remove]: ButtonRemoveMission,
   [buttonsTypes.missions_export]: ButtonExportMission,
+  [buttonsTypes.missions_export_arhieve]: ButtonExportMissionArchieve,
   [buttonsTypes.missions_complete]: ButtonCompleteMission,
   [buttonsTypes.missions_fail]: ButtonFailMission,
   [buttonsTypes.missions_to_archvie]: ButtonToArchiveMission,

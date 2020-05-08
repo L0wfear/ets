@@ -8,6 +8,7 @@ export type IMIssionData = {
   date_start: string | Date;
   date_end: string | Date;
   element: string;
+  faxogramm_id: number;
   id: number;
   name: string;
   number: number;

@@ -49,9 +49,10 @@ const getTableMeta = (props) => {
       {
         name: 'traveled_percentage',
         displayName: `Пройдено в рабочем режиме (${props.data[0]
-          && props.data[0].route_check_unit})*`,
+          && props.data[0].route_check_unit})`,
         type: 'string',
         filter: false,
+        fieldTitlePopup: 'Расстояние, учитываемое при прохождении задания',
       },
       {
         name: 'left_percentage',
@@ -65,10 +66,11 @@ const getTableMeta = (props) => {
         displayName: `Контроль (${props.data[0]
           && (props.data[0].route_check_unit === 'м.'
             ? 'км.'
-            : props.data[0].route_check_unit)})**`,
+            : props.data[0].route_check_unit)})`,
         type: 'string',
         sortFunc,
         filter: false,
+        fieldTitlePopup: 'Пройдено с рабочей скоростью / пройдено с превышением рабочей скорости',
       },
     ],
   };

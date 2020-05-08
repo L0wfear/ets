@@ -54,8 +54,6 @@ const InfoTableData: React.FC<Props> = React.memo(
 
     return (
       <>
-        <div>* - расстояние, учитываемое при прохождении задания</div>
-        <div>** - пройдено с рабочей скоростью / пройдено с превышением рабочей скорости</div>
         <DivGreen>
           <b>{'Пройдено с рабочей скоростью: '}</b>{withWorkSpeed}
         </DivGreen>
@@ -88,6 +86,12 @@ const InfoTableData: React.FC<Props> = React.memo(
         </div>
         <div>
           <b>{'Расчетное время выполнения: '}</b>{report_data.estimated_finish_time ? createValidDateHM(report_data.estimated_finish_time) : '-'}
+        </div>
+        <div>
+          <b>{'Централизованное задание: '}</b>{mission_data.faxogramm_id || '-'}
+        </div>
+        <div>
+          <b>{'Количество циклов: '}</b>{mission_data.passes_count || '-'}
         </div>
       </>
     );

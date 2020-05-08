@@ -813,6 +813,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
             await this.updateWaybill(formState);
             callback(id);
+            this.props.onCallback();
           } catch (error) {
             if (!error.errorIsShow) {
               global.NOTIFICATION_SYSTEM.removeNotification(

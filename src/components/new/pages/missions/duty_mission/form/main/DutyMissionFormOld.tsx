@@ -69,7 +69,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       isChanged: false,
 
       IS_CREATING,
-      DUTY_MISSION_IS_NOT_ASSIGNED: dutyMissionIsNotAssigned(status),
+      DUTY_MISSION_IS_NOT_ASSIGNED: dutyMissionIsNotAssigned(state.status),
       DUTY_MISSION_IS_DISPLAY: dutyMissionIsDisplay(state.status), // не назначенно
       DUTY_MISSION_IS_CLOSED: dutyMissionIsClosed(state.status),
       DUTY_MISSION_IS_ASSIGNED: dutyMissionIsAssigned(state.status),

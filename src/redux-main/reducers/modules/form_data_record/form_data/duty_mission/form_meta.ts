@@ -329,7 +329,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     technical_operation_id: null,
     technical_operation_name: '',
     work_class_id: null,
-    passes_count: 1,
+    passes_count: null,
     is_mission_progress_countable: false,
     consumable_materials: [],
   }),

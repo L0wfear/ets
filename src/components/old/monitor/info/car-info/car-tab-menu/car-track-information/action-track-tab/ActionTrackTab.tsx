@@ -65,7 +65,9 @@ class ActionTrackTab extends React.Component<
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.intervalId);
+    this.setState((state) => {
+      clearInterval(state.intervalId);
+    });
   }
 
   togglePlayTrack = () => {
@@ -84,11 +86,14 @@ class ActionTrackTab extends React.Component<
   };
 
   stopPlayTrack = () => {
-    clearInterval(this.state.intervalId);
     this.props.stopPlay();
-    this.setState({
-      coeffIndex: 0,
-      interval: this.state.defaultInterval,
+    this.setState((state) => {
+      clearInterval(state.intervalId);
+
+      return {
+        coeffIndex: 0,
+        interval: state.defaultInterval,
+      };
     });
   };
 

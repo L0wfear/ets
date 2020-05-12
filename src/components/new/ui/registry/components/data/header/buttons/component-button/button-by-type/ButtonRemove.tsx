@@ -82,11 +82,18 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
+  const disableBtnWaybill = (
+    (
+      (props.userPermissionsSet.has('waybill.delete_unless_closed')
+      && ((!Boolean(checkedRowsLength) && (props.selectedRow?.status !== 'draft' && props.selectedRow?.status !== 'active')) || (checkedRowsAsArray.map((rowElem) => rowElem.status).includes('closed'))))
+    || (props.userPermissionsSet.has('waybill.delete')
+        && (!Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
+    )
+    )
+  );
+
   const disableBtnByRegistry = React.useMemo(() => {
-    return props.registryKey === registryWaybillKey
-      && (props.userPermissionsSet.has('waybill.delete_unless_closed') && !Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
-      ? true
-      : false;
+    return props.registryKey === registryWaybillKey && disableBtnWaybill;
   }, [ props.selectedRow, props.registryKey, checkedRowsAsArray, props.userPermissionsSet ]);
 
   return (

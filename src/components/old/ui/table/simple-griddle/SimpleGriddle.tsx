@@ -5,6 +5,7 @@ import { isNullOrUndefined, isArray } from 'util';
 import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 
 require('components/old/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -122,6 +123,18 @@ class SimpleGriddle extends React.Component<any, any> {
             ? <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
             :            <span></span>
         }
+        {field.fieldTitlePopup && <ThOverlayTrigger>
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            overlay={(
+              <EtsBootstrap.Popover id={`${columnName}_title-popover`} >
+                {field.fieldTitlePopup}
+              </EtsBootstrap.Popover>
+            )}
+            placement="bottom">
+            <EtsBootstrap.Glyphicon glyph="info-sign" />
+          </EtsBootstrap.OverlayTrigger>
+        </ThOverlayTrigger>}
       </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
   };

@@ -49,10 +49,10 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
                       </div>
                       <div className={'mission_vehicle_info'}>Время стоянок: <TimeParking date_start={mission.date_start} date_end={mission.date_end}/></div>
                       <div className={'mission_vehicle_info'}>{`Процент выполнения задания, %: ${mission.traveled_percentage}`}</div>
-                      { length > 1
+                      { length >= 1
                         ? ([
-                          <div key="date-start" className={'mission_vehicle_info'}>{`Дата начала: ${getFormattedDateTime(mission.date_start)}`}</div>,
-                          <div key="date-end" className={'mission_vehicle_info'}>{`Дата окончания: ${getFormattedDateTime(mission.date_end)}`}</div>,
+                          <div key="date-start" className={'mission_vehicle_info'}>{`Начало задания: ${getFormattedDateTime(mission.date_start)}`}</div>,
+                          <div key="date-end" className={'mission_vehicle_info'}>{`Окончание задания: ${getFormattedDateTime(mission.date_end)}`}</div>,
                         ])
                         :                    (
                           <div />

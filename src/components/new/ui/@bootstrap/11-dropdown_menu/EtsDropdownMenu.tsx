@@ -26,9 +26,6 @@ const dropupRightCss = css`
 
 export const EtsDropdownMenuContainer = styled.ul<EtsDropdownMenuProps>`
   position: absolute;
-  z-index: 1000;
-
-  position: absolute;
   top: 100%;
   left: 0;
   z-index: 1000;

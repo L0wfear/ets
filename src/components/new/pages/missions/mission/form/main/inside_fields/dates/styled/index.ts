@@ -21,6 +21,7 @@ export const ExtFieldDateStartWrap: any = styled(ExtField)`
 export const ColStartDatePickerWithDropdown = styled(ColStartDatePicker)`
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 `;
 export const ColDividerDatePicker = styled(EtsBootstrap.Col)`
   &&& {

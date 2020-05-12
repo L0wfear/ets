@@ -29,6 +29,6 @@ export type IFileWrapper = {
   url?: string;
   base64?: string;
   created_at?: string;
-
+  kind?: string;
   action?: 'add' | 'delete'; // delete для удаления на бэке, такой файл не отображается
 };

@@ -98,8 +98,8 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               onChange={onChange}
               boundKeys="files"
               disabled={!isPermitted}
-              created_at={new Date()}
               withDateTime={true}
+              kind="registration_certificate"
             />
           </EtsBootstrap.Col>
           <CenterCol md={6}>

@@ -109,11 +109,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     };
 
     const withDateTime = get(this.props, 'withDateTime', false); // флаг для отображения даты и времени
-    const created_at = get(this.props, 'created_at', null);
     const fileList = value
       .map((file) => file === null ? serverErrorFile : file)
       .reduce(
-        (newArr, { name = 'Без названия', url, base64, action } = serverErrorFile, i) => {
+        (newArr, { name = 'Без названия', url, base64, created_at, action } = serverErrorFile, i) => {
           if (action !== 'delete') {
             newArr.push(
               <FileListItem

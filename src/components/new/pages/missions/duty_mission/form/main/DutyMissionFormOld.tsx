@@ -129,6 +129,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 
       if (IS_CREATING) {
         this.checkOnMosckowTime();
+        if (!DUTY_MISSION_IS_ORDER_SOURCE && !dependeceOrder) {
+          this.props.handleChange('passes_count', 1);
+        }
       }
 
       this.checkErrorsWithTime(true);

@@ -765,16 +765,16 @@ class WaybillForm extends React.Component<Props, State> {
       loadingFields.distance = false;
       loadingFields.consumption = false;
       loadingFields.sensor_refill = false;
+      loadingFields.sensor_start_value = false;
+      loadingFields.sensor_finish_value = false;
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
-    const gps_code
-      = get(this.props.carIndex[formState.car_id], 'gps_code') || null;
 
     const { fact_departure_date, fact_arrival_date } = formState;
 
     if (
-      gps_code
+      formState.car_id
       && fact_departure_date
       && fact_arrival_date
       && diffDates(fact_arrival_date, fact_departure_date) > 0
@@ -782,20 +782,22 @@ class WaybillForm extends React.Component<Props, State> {
       loadingFields.distance = true;
       loadingFields.consumption = true;
       loadingFields.sensor_refill = true;
+      loadingFields.sensor_start_value = true;
+      loadingFields.sensor_finish_value = true;
       this.setState({ loadingFields });
 
       this.props
         .dispatch(
           actionGetTrackInfo(
             {
-              gps_code,
+              car_id: formState.car_id,
               from_dt: fact_departure_date,
               to_dt: fact_arrival_date,
             },
             this.props,
           ),
         )
-        .then(({ distance, consumption, sensor_refill, }) => {
+        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value,  }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -807,6 +809,12 @@ class WaybillForm extends React.Component<Props, State> {
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
+            sensor_start_value: isNullOrUndefined(sensor_start_value)
+              ? null
+              : parseFloat(sensor_start_value),
+            sensor_finish_value: isNullOrUndefined(sensor_finish_value)
+              ? null
+              : parseFloat(sensor_finish_value),
           });
 
           this.setState({
@@ -814,6 +822,8 @@ class WaybillForm extends React.Component<Props, State> {
               distance: false,
               consumption: false,
               sensor_refill: false,
+              sensor_start_value: false,
+              sensor_finish_value: false,
             },
           });
         })
@@ -823,6 +833,8 @@ class WaybillForm extends React.Component<Props, State> {
               distance: false,
               consumption: false,
               sensor_refill: false,
+              sensor_start_value: false,
+              sensor_finish_value: false,
             },
           });
         });
@@ -2116,6 +2128,84 @@ class WaybillForm extends React.Component<Props, State> {
               )}
             </EtsBootstrap.Row>
           )}
+          {/*  */}
+          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE)}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <h3 style={{ marginBottom: '20px' }} >Данные по ДУТ</h3>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <BorderDash
+                  width={1}
+                  borderStyle="solid"
+                  color={UiConstants.colorGrey}>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={12}>
+                      <h4></h4>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_start_value"
+                          type="number"
+                          label="Выезд по ДУТ, л "
+                          error={errors.sensor_start_value}
+                          value={state.sensor_start_value}
+                          isLoading={loadingFields.sensor_start_value}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_refill"
+                          type="number"
+                          label="Заправка по ДУТ, л"
+                          error={errors.sensor_refill}
+                          value={state.sensor_refill}
+                          isLoading={loadingFields.sensor_refill}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="consumption"
+                          type="number"
+                          label="Расход по ДУТ, л"
+                          error={errors.consumption}
+                          value={state.consumption || state.sensor_consumption}
+                          isLoading={loadingFields.consumption}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_finish_value"
+                          type="number"
+                          label="Возврат по ДУТ, л"
+                          error={errors.sensor_finish_value}
+                          value={state.sensor_finish_value}
+                          isLoading={loadingFields.sensor_finish_value}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                </BorderDash>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </Div>
+          {/*  */}
+
           <Div hidden={!state.car_id}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
@@ -2734,30 +2824,6 @@ class WaybillForm extends React.Component<Props, State> {
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
-                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-                  <ExtField
-                    id="consumption"
-                    type="number"
-                    label="Расход по ДУТ, л"
-                    error={errors.consumption}
-                    value={state.consumption || state.sensor_consumption}
-                    isLoading={loadingFields.consumption}
-                    format="toFixed3"
-                    disabled
-                  />
-                </Div>
-                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-                  <ExtField
-                    id="sensor_refill"
-                    type="number"
-                    label="Заправка по ДУТ, л"
-                    error={errors.sensor_refill}
-                    value={state.sensor_refill}
-                    isLoading={loadingFields.sensor_refill}
-                    format="toFixed3"
-                    disabled
-                  />
-                </Div>
                 <ExtField
                   id="failed-medical-stat-types"
                   type="string"

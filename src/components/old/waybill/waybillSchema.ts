@@ -278,10 +278,6 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
-          if ((status === 'active' || status === 'draft')
-            && value > 1000) {
-            return 'Поле "Топливо.Выезд" должно быть меньше 1000';
-          }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }

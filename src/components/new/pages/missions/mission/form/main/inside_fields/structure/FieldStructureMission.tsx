@@ -47,6 +47,15 @@ const FieldStructureMission: React.FC<Props> = React.memo(
               technical_operation_name: '',
               municipal_facility_id: null,
               municipal_facility_name: '',
+              
+              // DITETS19-2140 -- сбрасываем поле ТС если было изменено подразделение,
+              // только для заданий, которые были созданы не по факсе
+              car_gov_numbers: [],
+              car_ids: [],
+              car_type_ids: [],
+              car_model_names: [],
+              car_special_model_names: [],
+              car_type_names: [], 
             };
 
           handleChange({

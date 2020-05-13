@@ -52,7 +52,7 @@ const WorkTypes: React.FC<WorkTypesProps> = React.memo(
         ))
         : [];
       set_work_types_options(workTypesOptList);
-      if(workTypesOptList?.length === 1 && !props.value && props.IS_CREATING) {
+      if(workTypesOptList?.length && !props.value && props.IS_CREATING) {
         props.onChange({
           work_type_code: Number(workTypesOptList[0]?.value),
         });

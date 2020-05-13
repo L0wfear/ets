@@ -83,7 +83,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                             }
 
                             if (columnName === 'rowNumber') {
-                              return rowNumber + rowIndex;
+                              return rowData._uniq_field;
                             }
 
                             return Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-';

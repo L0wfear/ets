@@ -309,6 +309,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     norm_id: null,
     norm_text: '',
     number: null,
+    number_text: null,
     object_type_id: null,
     object_type_name: '',
     operation_num_execution: null,

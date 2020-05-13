@@ -59,7 +59,7 @@ export const config: TypeConfigData<DutyMission> = {
         options: DUTY_MISSION_STATUS_OPTIONS,
       },
       {
-        valueKey: 'number',
+        valueKey: 'number_text',
         title: 'Номер',
         type: 'advanced-number',
         step: 1,
@@ -214,7 +214,7 @@ export const config: TypeConfigData<DutyMission> = {
           width: 100,
         },
         {
-          key: 'number',
+          key: 'number_text',
           title: 'Номер',
           width: 100,
         },

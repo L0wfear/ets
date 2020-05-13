@@ -373,6 +373,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       <MissionFormTitle
         IS_CREATING={IS_CREATING}
         number={state.number}
+        number_text={state.number_text}
         status={state.status}
         column_id={state.column_id}
         MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

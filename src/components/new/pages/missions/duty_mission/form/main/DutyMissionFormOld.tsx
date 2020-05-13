@@ -295,7 +295,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       'Создание наряд-задания'
     ) : (
       <div>
-        {`Наряд-задание № ${state.number || ''}`}
+        {`Наряд-задание № ${state.number_text || ''}`}
         <EtsBootstrap.BackgroundLabel bsStyle="default">
           {DUTY_MISSION_STATUS_LABELS[state.status]}
         </EtsBootstrap.BackgroundLabel>

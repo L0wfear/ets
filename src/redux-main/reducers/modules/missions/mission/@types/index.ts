@@ -39,6 +39,7 @@ export type Mission = {
   norm_ids: Array<number>;
   norm_text: string;
   number: number | null;
+  number_text: number | null;
   object_type_id: number | null;
   object_type_name: string;
   operation_num_execution: null;

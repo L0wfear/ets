@@ -71,6 +71,7 @@ export type IStateMonitorPage = {
     data: {
       carFilterText: string;
       carFilterMultyType: Array<number>;
+      carFilterMultyTechCondition: Array<number>;
       carFilterMultyStructure: Array<number>;
       carFilterMultyOwner: Array<number>;
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
@@ -139,6 +140,7 @@ export const initialMonitorState: IStateMonitorPage = {
     data: {
       carFilterText: '',
       carFilterMultyType: [],
+      carFilterMultyTechCondition: [],
       carFilterMultyStructure: [],
       carFilterMultyOwner: [],
       featureBufferPolygon: null, // DITETSSUP-2007

@@ -18,6 +18,7 @@ import { makeOptionsForMission, makeLabelForMissionCarOption } from './makeOptio
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import FieldCarIdsMissionSelectComponents from './components';
+import { isArray } from 'lodash-es';
 
 class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, StateFieldCarIdsMission> {
   state = {
@@ -324,6 +325,15 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_model_names,
           car_special_model_names,
         };
+
+        if( isArray(option) && option.length ) {
+          const currentOptionValueIndex = option.length - 1;
+          const structure_id = option[currentOptionValueIndex]?.rowData?.company_structure_id;
+          const is_common = option[currentOptionValueIndex]?.rowData?.is_common;
+          if (!is_common && structure_id) {
+            partialChange.structure_id = structure_id;
+          }
+        }
 
         // if (!this.props.order_operation_id) {
         //   partialChange = {

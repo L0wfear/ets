@@ -3,7 +3,7 @@ import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { monitorPageSetFuelEventsLeakOverlayData } from 'components/old/monitor/redux-main/models/actions-monitor-page';
-import { getFormattedDateTime } from 'components/@next/@utils/dates/dates';
+import { makeDate, makeTime, getDateWithMoscowTzByTimestamp, makeUnixDate } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayLineInfoContainer,
@@ -26,7 +26,11 @@ const OverlayFuelEventLeakPoint: React.FC<any> = (props) => {
     duration,
     shape: { coordinates },
   } = overlayData;
-  const started_at_msk_format = getFormattedDateTime(started_at_msk);
+
+  const sp_timestamp = makeUnixDate(started_at_msk);
+  const moscowSpTimetamp = getDateWithMoscowTzByTimestamp(sp_timestamp * 1000);
+
+  const started_at_msk_format = `${makeDate(moscowSpTimetamp)} ${makeTime(moscowSpTimetamp, true)}`;
 
   return (
     <Overlay title="Слив топлива:" map={props.map} coordsMsk={coordinates} hidePopup={props.hidePopup} >

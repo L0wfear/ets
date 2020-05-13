@@ -163,13 +163,13 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           },
           {
             ...metaValue,
-            disabled: !props.array[0]?.type_id || (props.array[0]?.type_id === 1 && !props.array[0]?.fuel_card_id),
+            disabled: !props.array[selectedRowIndex]?.type_id || (props.array[selectedRowIndex]?.type_id === 1 && !props.array[selectedRowIndex]?.fuel_card_id),
           }
         ];
 
         return meta;
       },
-      [fuelCardIdOptions, typeIdOptions, props.array],
+      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex],
     );
     const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
     const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));

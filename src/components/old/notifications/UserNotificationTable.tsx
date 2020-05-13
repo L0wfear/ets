@@ -127,7 +127,7 @@ const Table: React.FC<any> = (props) => (
     results={props.data}
     tableMeta={tableMeta(props)}
     enumerated={false}
-    initialSort={props.selectField}
+    initialSort={'created_at'}
     renderers={renderers}
     className="user-notification-table"
     {...props}

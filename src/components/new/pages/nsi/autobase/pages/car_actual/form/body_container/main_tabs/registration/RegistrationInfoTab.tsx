@@ -8,6 +8,7 @@ import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { FileField } from 'components/old/ui/input/fields';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -89,6 +90,16 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               rows={7}
               disabled={!isPermitted || registration_data.disabled}
               error={errors.note}
+            />
+            <FileField
+              label="Файл"
+              multiple
+              value={registration_data.files}
+              onChange={onChange}
+              boundKeys="files"
+              disabled={!isPermitted}
+              withDateTime={true}
+              kind="registration_certificate"
             />
           </EtsBootstrap.Col>
           <CenterCol md={6}>

@@ -89,6 +89,7 @@ export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
 export type ExtFieldFile<V = any> = ExtFieldCommon<V> & {
   type: 'file';
   boundKeys: any;
+  kind: string;
 } & IPropsFileInput;
 
 export type ExtFieldTypeByKey = {

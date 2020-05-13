@@ -65,7 +65,9 @@ class ActionTrackTab extends React.Component<
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.intervalId);
+    this.setState((state) => {
+      clearInterval(state.intervalId);
+    });
   }
 
   togglePlayTrack = () => {
@@ -77,28 +79,40 @@ class ActionTrackTab extends React.Component<
       const intervalId = setInterval(this.movePlayPoint, this.state.interval || this.state.defaultInterval);
       this.setState({ intervalId });
     } else {
-      clearInterval(this.state.intervalId);
+      this.setState((state) => {
+        clearInterval(state.intervalId);
+      });
     }
   };
 
   stopPlayTrack = () => {
-    clearInterval(this.state.intervalId);
     this.props.stopPlay();
-    this.setState({
-      coeffIndex: 0,
-      interval: this.state.defaultInterval,
+    this.setState((state) => {
+      clearInterval(state.intervalId);
+
+      return {
+        coeffIndex: 0,
+        interval: state.defaultInterval,
+      };
     });
   };
 
   increasePlaySpeed = () => {
     const defaultInterval = this.state.defaultInterval;
     const coeffsArr = this.state.coeffsArr;
-    
+    const { status } = this.props;
+
     if(this.state.coeffIndex < coeffsArr.length - 1) {
-      clearInterval(this.state.intervalId);
       this.setState((state) => {
+        clearInterval(state.intervalId);
         const interval = defaultInterval / coeffsArr[state.coeffIndex + 1];
-        const intervalId = setInterval(this.movePlayPoint, interval);
+        let intervalId = null;
+
+        if (status === 'play') {
+          clearInterval(state.intervalId);
+          intervalId = setInterval(this.movePlayPoint, interval);
+        }
+
         return {
           coeffIndex: state.coeffIndex + 1, 
           interval,
@@ -111,12 +125,18 @@ class ActionTrackTab extends React.Component<
   decreasePlaySpeed = () => {
     const defaultInterval = this.state.defaultInterval;
     const coeffsArr = this.state.coeffsArr;
-
+    const { status } = this.props;
+    
     if(this.state.coeffIndex > 0) {
-      clearInterval(this.state.intervalId);
       this.setState((state) => {
         const interval = defaultInterval / coeffsArr[state.coeffIndex - 1];
-        const intervalId = setInterval(this.movePlayPoint, interval);
+        let intervalId = null;
+
+        if (status === 'play') {
+          clearInterval(state.intervalId);
+          intervalId = setInterval(this.movePlayPoint, interval);
+        }
+
         return {
           coeffIndex: state.coeffIndex - 1, 
           interval,

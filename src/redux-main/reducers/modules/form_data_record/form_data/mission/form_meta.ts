@@ -374,6 +374,7 @@ export const metaMission: ConfigFormData<Mission> = {
     norm_ids: [],
     norm_text: '',
     number: null,
+    number_text: null,
     object_type_id: null,
     object_type_name: '',
     operation_num_execution: null,

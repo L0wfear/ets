@@ -214,7 +214,7 @@ export const config: TypeConfigData<DutyMission> = {
           width: 100,
         },
         {
-          key: 'number',
+          key: 'number_text',
           title: 'Номер',
           width: 100,
         },

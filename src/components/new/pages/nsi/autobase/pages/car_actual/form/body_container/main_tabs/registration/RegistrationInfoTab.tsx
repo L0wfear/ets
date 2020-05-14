@@ -98,7 +98,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               onChange={onChange}
               boundKeys="files"
               disabled={!isPermitted}
-              withDateTime={true}
+              withDateTime
               kind="registration_certificate"
             />
           </EtsBootstrap.Col>

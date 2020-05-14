@@ -7,7 +7,7 @@ import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/u
 
 import { ButtonRemoveFile, FileInputWrapper, SingleInputFileItem } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
-import { createValidDateHM } from 'components/@next/@utils/dates/dates';
+import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 
 const FileListItem: React.FC<any> = React.memo(
   (props) => {
@@ -54,7 +54,7 @@ const FileListItem: React.FC<any> = React.memo(
           {
             Boolean(createdAt && withDateTime) && (
               <div>
-                {createValidDateHM(createdAt)}
+                {createValidDateTimeDots(createdAt)}
               </div>
             )
           }

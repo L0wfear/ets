@@ -40,7 +40,7 @@ const FuelCardsVehicleBlock: any = onChangeWithKeys(
   FuelCardsToVehicleBlockComponent,
 );
 
-const defaultFuelCardOnCarsItem: FuelCardOnCars = {
+export const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   gov_number: null,
   car_id: null,
   company_id: null,

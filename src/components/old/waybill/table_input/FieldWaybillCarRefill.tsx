@@ -17,6 +17,7 @@ import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/auto
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
 
 type Props = {
   id: string;
@@ -44,7 +45,6 @@ type Props = {
 
   canEditIfClose: boolean;
   gov_number?: Waybill['gov_number'];
-  company_id?: Waybill['company_id'];
 } & (
   {
     array: Waybill['car_refill'];
@@ -385,20 +385,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         ? showForCarRefil
         : false;
 
-    const defaultFuelCardOnCarsItem: FuelCardOnCars = {
-      gov_number: props.gov_number,
-      car_id: props.car_id,
-      company_id: null,
-      installed_at: null,
-      uninstalled_at: null,
-      is_used_in_waybill: false,
-      id: null,
-      fuel_card_id: null,
-      number: null,
-      garage_number: null,
-      customId: 0,
-      alredy_save: false,
-    };    
+    const defaultItem: FuelCardOnCars = {...defaultFuelCardOnCarsItem, gov_number: props.gov_number, car_id: props.car_id,};  
 
     return showBlock && (
       <div>
@@ -422,7 +409,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
-              fuel_card_on_cars = {[defaultFuelCardOnCarsItem]}
+              fuel_card_on_cars = {[defaultItem]}
               handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}
 

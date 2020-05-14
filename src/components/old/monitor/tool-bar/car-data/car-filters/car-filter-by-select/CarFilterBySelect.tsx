@@ -23,6 +23,7 @@ const placeholder = {
   carFilterMultyType: 'Тип техники',
   carFilterMultyStructure: 'Подразделение',
   carFilterMultyOwner: 'Организации',
+  carFilterMultyTechCondition: 'Техническое состояние',
 };
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
@@ -37,6 +38,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       hidden: true,
       carActualGpsNumberIndex,
       carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
+      carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
       carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
       carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
     };
@@ -51,6 +53,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       return {
         carActualGpsNumberIndex,
         carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
+        carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
         carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
         carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
       };
@@ -90,6 +93,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                         {
                           [
                             'carFilterMultyType',
+                            'carFilterMultyTechCondition',
                             'carFilterMultyStructure',
                           ].map((keyField) => (
                             <DefaultInput
@@ -130,7 +134,7 @@ export default connect<any, any, any, ReduxState>(
     isOkrug: state.session.userData.isOkrug,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 
-    active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
+    active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
       state.monitorPage.filters.data[key].length
     )),
   }),

@@ -13,11 +13,14 @@ import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
+  userPermissionsSet: InitialStateSession['userData']['permissionsSet'];
 };
 type ButtonRemoveDispatchProps = {
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
@@ -79,12 +82,60 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
-  const disableBtnByRegistry = React.useMemo(() => {
-    return props.registryKey === registryWaybillKey
-      && ( !Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
-      ? true
-      : false;
-  }, [ props.selectedRow, props.registryKey, checkedRowsAsArray, ]);
+  const isNotPermitedWaybillDeleteUnlessClosed = React.useMemo(
+    () => props.userPermissionsSet.has('waybill.delete_unless_closed')
+      && (
+        (
+          !Boolean(checkedRowsLength)
+          && (
+            props.selectedRow?.status !== 'draft'
+            && props.selectedRow?.status !== 'active'
+          )
+        )
+        || (checkedRowsAsArray.map((rowElem) => rowElem.status).includes('closed'))
+      ),
+    [
+      props.userPermissionsSet,
+      checkedRowsLength,
+      props.selectedRow,
+      checkedRowsAsArray,
+    ]
+  );
+
+  const isNotPermitedWaybillDelete = React.useMemo(
+    () => props.userPermissionsSet.has('waybill.delete')
+      && (
+        !Boolean(checkedRowsLength)
+        && props.selectedRow?.delete
+        || checkedRowsAsArray.some((rowElem) => rowElem.delete)
+      ),
+    [
+      props.userPermissionsSet,
+      checkedRowsLength,
+      props.selectedRow,
+      checkedRowsAsArray,
+    ]);
+
+  const disableBtnWaybill = React.useMemo(
+    () => Boolean(
+      isNotPermitedWaybillDeleteUnlessClosed
+      || isNotPermitedWaybillDelete
+    ),
+    [
+      isNotPermitedWaybillDeleteUnlessClosed,
+      isNotPermitedWaybillDelete,
+    ]);
+
+  const disableBtnByRegistry = React.useMemo(
+    () => props.registryKey === registryWaybillKey && disableBtnWaybill,
+    [
+      props.selectedRow,
+      props.registryKey,
+      checkedRowsAsArray,
+      props.userPermissionsSet,
+      registryWaybillKey,
+      disableBtnWaybill,
+    ]);
 
   return (
     <>
@@ -122,6 +173,7 @@ export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
     }),
     (dispatch: any) => ({
       registryRemoveSelectedRows: (...arg) => (

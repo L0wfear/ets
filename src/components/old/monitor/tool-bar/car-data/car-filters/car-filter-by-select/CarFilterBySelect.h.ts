@@ -13,6 +13,7 @@ export type StateCarFilterByText = {
   hidden: boolean;
   carActualGpsNumberIndex: Record<string, Car>;
   carFilterMultyTypeOptions: Array<IReactSelectOption>;
+  carFilterMultyTechConditionOptions: Array<IReactSelectOption>;
   carFilterMultyStructureOptions: Array<IReactSelectOption>;
   carFilterMultyOwnerOptions: Array<IReactSelectOption>;
 };

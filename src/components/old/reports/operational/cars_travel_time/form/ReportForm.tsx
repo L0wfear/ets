@@ -138,7 +138,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         date_start: date_from,
         date_end: addTime(date_to, 1, 'day'),
         car_id,
-        gps_code,
+        gps_code,  // <<< gps_code
         odh_mkad,
         sensors: 0,
       }, { page, path });

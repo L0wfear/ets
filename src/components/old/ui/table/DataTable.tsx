@@ -369,6 +369,7 @@ export default class DataTable extends React.Component<Props, State> {
           ? col.customHeaderComponent
           : col.displayName,
         sortable: typeof col.sortable === 'boolean' ? col.sortable : true,
+        fieldTitlePopup: col.fieldTitlePopup,
       };
       if (col.make_str_gov_number_format) {
         metaObject.customComponent = (props) => renderCarData(props, this.props);

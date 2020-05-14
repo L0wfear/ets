@@ -108,7 +108,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
   }
   if (carPassportData) {
     fullCarData.passport_data = {
-      ...fullCarData.registration_data,
+      ...fullCarData.passport_data,
       ...carPassportData,
     };
   }

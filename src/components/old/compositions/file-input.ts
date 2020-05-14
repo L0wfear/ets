@@ -10,6 +10,7 @@ export const fileFormatter = withHandlers({
     isLoading = identity,
     value = [],
     multiple = false,
+    kind
   }) => async (boundKeys, e) => {
     if (Array.isArray(e)) {
       onChange(boundKeys, e);
@@ -25,6 +26,7 @@ export const fileFormatter = withHandlers({
         nativeFile: file,
         name: file.name,
         action: 'add',
+        kind,
       });
     });
 

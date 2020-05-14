@@ -16,6 +16,7 @@ export type StateCarFilterByText = {
   carActualGpsNumberIndex: Record<string, Car>;
   carFilterMultyTypeOptions: Array<IReactSelectOption>;
   carFilterMultyTechConditionOptions: Array<IReactSelectOption>;
+  carFilterMultyModelOptions: Array<IReactSelectOption>;
   carFilterMultyStructureOptions: Array<IReactSelectOption>;
   carFilterMultyOwnerOptions: Array<IReactSelectOption>;
 };

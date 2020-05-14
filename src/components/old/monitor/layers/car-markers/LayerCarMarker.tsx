@@ -48,6 +48,7 @@ const defaultFilters = {
   carFilterMultyStructure: [],
   carFilterMultyType: [],
   carFilterMultyTechCondition: [],
+  carFilterMultyModel: [],
   carFilterText: '',
   featureBufferPolygon: null,
 };

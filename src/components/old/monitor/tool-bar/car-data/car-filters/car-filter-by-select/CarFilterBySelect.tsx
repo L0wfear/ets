@@ -24,6 +24,9 @@ const placeholder = {
   carFilterMultyStructure: 'Подразделение',
   carFilterMultyOwner: 'Организации',
   carFilterMultyTechCondition: 'Техническое состояние',
+  carFilterMultyModel: 'Марка шасси',
+// model_id: 2445
+// model_name: "BUCHER CITYCAT 2020XL"
 };
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
@@ -39,6 +42,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       carActualGpsNumberIndex,
       carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
       carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
+      carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
       carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
       carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
     };
@@ -54,6 +58,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
         carActualGpsNumberIndex,
         carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
         carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
+        carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
         carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
         carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
       };
@@ -94,6 +99,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                           [
                             'carFilterMultyType',
                             'carFilterMultyTechCondition',
+                            'carFilterMultyModel',
                             'carFilterMultyStructure',
                           ].map((keyField) => (
                             <DefaultInput
@@ -135,7 +141,7 @@ export default connect<any, any, any, ReduxState>(
     company_id: state.session.userData.company_id,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 
-    active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
+    active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyModel', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
       state.monitorPage.filters.data[key].length
     )),
   }),

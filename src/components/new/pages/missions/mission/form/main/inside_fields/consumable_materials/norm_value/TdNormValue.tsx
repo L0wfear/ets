@@ -171,7 +171,7 @@ const TdNormValue: React.FC<Props> = React.memo(
         {
           showEditBtn && (
             <EtsBootstrap.Button disabled={disableEditBtn} onClick={handleChangeLock} title={!is_norm_value_locked ? 'открыт ручной ввод' : 'закрыт ручной ввод'}>
-              <EtsBootstrap.Glyphicon glyph={!is_norm_value_locked ? 'pencil' : 'lock'} />
+              <EtsBootstrap.Glyphicon glyph={!is_norm_value_locked ? 'lock' : 'pencil'} />
             </EtsBootstrap.Button>
           )
         }

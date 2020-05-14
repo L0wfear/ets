@@ -61,8 +61,7 @@ export const config: TypeConfigData<DutyMission> = {
       {
         valueKey: 'number_text',
         title: 'Номер',
-        type: 'advanced-number',
-        step: 1,
+        type: 'advanced-string-like',
       },
       {
         valueKey: 'order_number',

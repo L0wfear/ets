@@ -105,7 +105,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                           ))
                         }
                         {
-                          this.props.isOkrug
+                          Boolean(this.props.isOkrug || !this.props.company_id)
                             ? (
                               <DefaultInput
                                 keyField={'carFilterMultyOwner'}
@@ -132,6 +132,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 export default connect<any, any, any, ReduxState>(
   (state) => ({
     isOkrug: state.session.userData.isOkrug,
+    company_id: state.session.userData.company_id,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 
     active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (

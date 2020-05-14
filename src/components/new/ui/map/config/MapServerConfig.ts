@@ -269,8 +269,8 @@ export default {
     },
   },
   fullExtent:   {
-    xmin:   -87315.9951,
-    ymin:   -71154.38040000011,
+    xmin:   -120315.9951,
+    ymin:   -120154.38040000011,
     xmax:   101596.8827,
     ymax:   77218.6169000007,
     spatialReference:   {

@@ -1,7 +1,6 @@
 export const duty_mission_types = {
   duty_missions_remove: 'duty_missions_remove',
   duty_missions_export: 'duty_missions_export',
-  duty_missions_export_archieve: 'duty_missions_export_archieve',
   duty_missions_complete: 'duty_missions_complete',
   duty_missions_fail: 'duty_missions_fail',
   duty_missions_to_archvie: 'duty_missions_to_archvie',

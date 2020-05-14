@@ -1,7 +1,6 @@
 export const mission_types = {
   missions_remove: 'missions_remove',
   missions_export: 'missions_export',
-  missions_export_arhieve: 'missions_export_arhieve',
   mission_create: 'mission_create',
   mission_create_by_order: 'mission_create_by_order',
   missions_fail: 'missions_fail',

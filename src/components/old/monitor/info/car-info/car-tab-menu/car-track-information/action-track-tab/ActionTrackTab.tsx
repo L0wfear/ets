@@ -65,9 +65,7 @@ class ActionTrackTab extends React.Component<
   }
 
   componentWillUnmount() {
-    this.setState((state) => {
-      clearInterval(state.intervalId);
-    });
+    clearInterval(this.state.intervalId);
   }
 
   togglePlayTrack = () => {

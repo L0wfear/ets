@@ -5,6 +5,7 @@ import { TrFuelCardReportTitle, TrFuelCardReportFooter } from '../styled';
 type PropsTrTableFuelCardsReport = {
   rowData: any;
   index: number;
+  currentIndex?: any;
   rowNumberOffset: number;
   rowMetadata: any;
   columnMetadata: any;
@@ -49,6 +50,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
         __footer_rows,
       },
       index,
+      currentIndex,
     } = this.props;
 
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
@@ -83,7 +85,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                             }
 
                             if (columnName === 'rowNumber') {
-                              return rowData._uniq_field;
+                              return currentIndex + rowIndex + 1;
                             }
 
                             return Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-';

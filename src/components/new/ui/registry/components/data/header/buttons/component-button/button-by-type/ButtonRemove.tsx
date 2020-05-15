@@ -15,6 +15,7 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -83,7 +84,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
 
   const isNotPermitedWaybillDeleteUnlessClosed = React.useMemo(
-    () => props.userPermissionsSet.has('waybill.delete_unless_closed')
+    () => props.userPermissionsSet.has( waybillPermissions.delete_unless_closed)
       && (
         (
           !Boolean(checkedRowsLength)
@@ -103,7 +104,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
 
   const isNotPermitedWaybillDelete = React.useMemo(
-    () => props.userPermissionsSet.has('waybill.delete')
+    () => props.userPermissionsSet.has(waybillPermissions.delete)
       && (
         !Boolean(checkedRowsLength)
         && props.selectedRow?.delete
@@ -162,9 +163,12 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
+  connect<{  permissions: Array<OneRegistryData['list']['permissions']['delete']>; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
-      permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
+      permissions: [
+        getListData(state.registry, registryKey).permissions.delete,
+        getListData(state.registry, registryKey).permissions.delete_unless_closed,
+      ], //  прокидывается в следующий компонент
     }),
   ),
   withRequirePermission(),

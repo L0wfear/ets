@@ -70,6 +70,7 @@ export const getDefaultCar = (): CarWrap => ({
     note: '',
     disabled: false,
     files: [],
+    passport_data_type: null,
   },
   passport_data: {
     address: '',

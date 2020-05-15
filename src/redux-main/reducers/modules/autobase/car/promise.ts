@@ -66,6 +66,7 @@ export const promiseUpdateCarDriversData = async (driversData: CarDriversData): 
   return driversData;
 };
 export const promiseUpdateCarRegistrationData = async (registrationData: CarRegistrationData): Promise<CarRegistrationData> => {
+  console.info(registrationData);
   if (registrationData.id) {
     await CarRegistrationRegistryService.path(registrationData.id).put(
       {

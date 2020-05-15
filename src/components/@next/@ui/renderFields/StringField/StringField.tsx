@@ -9,6 +9,7 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 
 const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
@@ -77,6 +78,21 @@ const StringField: React.FC<ExtFieldString> = React.memo(
               id={value_id}
               value={value}
             />
+            { 
+              props.fieldPopup
+            && (<ThOverlayTrigger>
+              <EtsBootstrap.OverlayTrigger
+                trigger={['hover', 'focus']}
+                overlay={(
+                  <EtsBootstrap.Popover>
+                    {props.fieldPopup}
+                  </EtsBootstrap.Popover>
+                )}
+                placement="bottom">
+                <EtsBootstrap.Glyphicon glyph="info-sign" />
+              </EtsBootstrap.OverlayTrigger>
+            </ThOverlayTrigger>)
+            }
             {
               addonRight && (
                 <EtsBootstrap.InputGroup.Addon>

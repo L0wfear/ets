@@ -42,11 +42,12 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
         props.onChange({
           registration_data: {
             ...registration_data,
+            passport_data_type: state.passport_data.type,
             [key]: get(value, 'target.value', value),
           },
         });
       },
-      [registration_data],
+      [registration_data, state.passport_data.type],
     );
 
     return (
@@ -58,8 +59,15 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               label="Номер свидетельства о регистрации"
               value={registration_data.certificate_number}
               onChange={onChange}
+              fieldPopup={
+                `${'Поле "Серия и номер свидетельства о регистрации" для ТС должно содержать 10 символов.'}
+                 ${'В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в'}
+                 ${'верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, О, У и Х.'}
+                `
+              }
               boundKeys="certificate_number"
               disabled={!isPermitted || registration_data.disabled}
+              error={errors.certificate_number}
             />
             <ExtField
               type="string"

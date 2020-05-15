@@ -269,10 +269,10 @@ export default {
     },
   },
   fullExtent:   {
-    xmin:   -120315.9951,
-    ymin:   -120154.38040000011,
-    xmax:   101596.8827,
-    ymax:   77218.6169000007,
+    xmin:   -222000.9951,
+    ymin:   -203000.38040000011,
+    xmax:   233000.8827,
+    ymax:   209000.6169000007,
     spatialReference:   {
       wkt: 'PROJCS["Moscow_bessel",GEOGCS["GCS_Bessel_Moscow",DATUM["D_Bessel_Moscow",SPHEROID["Bessel_Moscow",6377397.0,299.15]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",37.5],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Origin",55.66666666666666],UNIT["Meter",1.0]]',
     },

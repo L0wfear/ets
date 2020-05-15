@@ -26,6 +26,7 @@ import {
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/styled/styled';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
+import { isNullOrUndefined } from 'util';
 
 import {
   makeObjectListByObjectListIdArr,
@@ -204,7 +205,7 @@ class CreatingMap extends React.PureComponent<
         ({ slug }) => slug === routeTypesByKey[type].slug,
       );
 
-      if (typeData) {
+      if (typeData && !isNullOrUndefined(props.work_type_code)) {
         const resolve = await this.props.actionGetAndSetInStoreGeozoneMunicipalFacility(
           {
             municipal_facility_id: props.municipal_facility_id,

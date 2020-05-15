@@ -39,7 +39,7 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
           actionChangeGlobalPaylaodInServiceData(props.registryKey, payload, false),
         );
         await dispatch(
-          registyLoadPrintForm(props.registryKey),
+          registyLoadPrintForm(props.registryKey, true),
         );
         setIsOpenModalRemove(false);
       },
@@ -66,7 +66,8 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
               onHide={handleClickCloseForm}
               onExport={handleExport}
               time={true}
-              title="Печать журнала наряд-заданий"
+              title={`Печать ${props.registryKey === 'DutyMissionsArchive' ? 'архива' : 'журнала'} наряд-заданий`}
+              helpText="В выгрузке будут наряд-задания, у которых дата начала или дата окончания попадает в указанный период, с учетом фильтрации"
             />
           )
         }

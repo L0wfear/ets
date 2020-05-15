@@ -37,6 +37,7 @@ export const config: TypeConfigData<Mission> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
+      buttonsTypes.missions_export,
       buttonsTypes.missions_from_archvie,
     ],
   },

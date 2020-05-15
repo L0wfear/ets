@@ -2460,6 +2460,7 @@ class WaybillForm extends React.Component<Props, State> {
                           structure_id={state.structure_id}
                           fuel_type={state.fuel_type}
                           car_id={state.car_id}
+                          gov_number={state.gov_number}
                           date_for_valid={{
                             fact_departure_date: state.fact_departure_date,
                             plan_departure_date: state.plan_departure_date,

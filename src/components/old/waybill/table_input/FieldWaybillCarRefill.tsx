@@ -16,6 +16,8 @@ import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
 
 type Props = {
   id: string;
@@ -42,6 +44,7 @@ type Props = {
   fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'];
 
   canEditIfClose: boolean;
+  gov_number?: Waybill['gov_number'];
 } & (
   {
     array: Waybill['car_refill'];
@@ -386,6 +389,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         ? showForCarRefil
         : false;
 
+    const defaultItem: FuelCardOnCars = {...defaultFuelCardOnCarsItem, gov_number: props.gov_number, car_id: props.car_id,};  
+
     return showBlock && (
       <div>
         <HrLineWaybill />
@@ -408,7 +413,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
-
+              fuel_card_on_cars = {[defaultItem]}
               handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}
 

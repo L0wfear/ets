@@ -240,9 +240,7 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (
         geoobj,
         thisProps,
         selected,
-        isManyCompany && geoobj.front_key.includes('odh')
-          ? thisProps.companiesIndex[geoobj.company_id].rgb_color
-          : '',
+        isManyCompany ? thisProps.companiesIndex[geoobj.company_id].rgb_color : '',
       );
     }
   }

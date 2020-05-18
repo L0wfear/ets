@@ -149,7 +149,7 @@ class CreatingMap extends React.PureComponent<
     );
 
     if (trigger) {
-      if (type && municipal_facility_id && technical_operation_id) {
+      if (type && municipal_facility_id && technical_operation_id && work_type_code) {
         if (prevType && prevMunicipalFacilityId && prevTechnicalOperationId) {
           setCacheDataForRoute(prevType, {
             object_list: prevProps.object_list,

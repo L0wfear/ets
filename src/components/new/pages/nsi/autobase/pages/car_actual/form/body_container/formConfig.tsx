@@ -70,8 +70,8 @@ export const main: OneTabData = {
   title: 'Информация',
   children: [
     mainInfo,
-    registerInfo,
     passportInfo,
+    registerInfo,
   ],
 };
 

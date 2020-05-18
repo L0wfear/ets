@@ -117,6 +117,7 @@ export type Car = {
   body_capacity: number;
   car_group_id: number;
   car_group_name: string;
+  certificate_number: string;
   company_id: number;
   company_name: string;
   company_name_customer: string;
@@ -150,6 +151,7 @@ export type Car = {
   owner_id: number;
   owner_name: string;
   parking_address: string;
+  passport_number: string;
   season: number;
   season_label: number;
   season_name: string;

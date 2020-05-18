@@ -10,6 +10,13 @@ import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/sty
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
+import styled from 'styled-components';
+
+const StringFieldWrapperStyled = styled.div`
+  display: grid;
+  grid-template-columns: 9fr 1fr;
+
+`;
 
 const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
@@ -69,38 +76,40 @@ const StringField: React.FC<ExtFieldString> = React.memo(
               <span>{label}</span>
             </FieldLabel>
           )}
-          <EtsBootstrap.InputGroup.Group has_right_addon={Boolean(addonRight)}>
-            <StringFieldUi
-              type="text"
-              disabled={disabled}
-              className={inputClassName}
-              {...mainProps}
-              id={value_id}
-              value={value}
-            />
-            { 
-              props.fieldPopup
-            && (<ThOverlayTrigger>
-              <EtsBootstrap.OverlayTrigger
-                trigger={['hover', 'focus']}
-                overlay={(
-                  <EtsBootstrap.Popover>
-                    {props.fieldPopup}
-                  </EtsBootstrap.Popover>
-                )}
-                placement="bottom">
-                <EtsBootstrap.Glyphicon glyph="info-sign" />
-              </EtsBootstrap.OverlayTrigger>
-            </ThOverlayTrigger>)
-            }
+          <StringFieldWrapperStyled>
+            <EtsBootstrap.InputGroup.Group has_right_addon={Boolean(addonRight)}>
+              <StringFieldUi
+                type="text"
+                disabled={disabled}
+                className={inputClassName}
+                {...mainProps}
+                id={value_id}
+                value={value}
+              />
+              {
+                addonRight && (
+                  <EtsBootstrap.InputGroup.Addon>
+                    {addonRight}
+                  </EtsBootstrap.InputGroup.Addon>
+                )
+              }
+            </EtsBootstrap.InputGroup.Group>
             {
-              addonRight && (
-                <EtsBootstrap.InputGroup.Addon>
-                  {addonRight}
-                </EtsBootstrap.InputGroup.Addon>
-              )
+              props.fieldPopup
+                && (<ThOverlayTrigger>
+                  <EtsBootstrap.OverlayTrigger
+                    trigger={['hover', 'focus']}
+                    overlay={(
+                      <EtsBootstrap.Popover>
+                        {props.fieldPopup}
+                      </EtsBootstrap.Popover>
+                    )}
+                    placement="bottom">
+                    <EtsBootstrap.Glyphicon glyph="info-sign" />
+                  </EtsBootstrap.OverlayTrigger>
+                </ThOverlayTrigger>)
             }
-          </EtsBootstrap.InputGroup.Group>
+          </StringFieldWrapperStyled>
         </div>
         <ErrorsBlock
           showError={showError}

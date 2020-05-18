@@ -9,6 +9,7 @@ import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/ol
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FileField } from 'components/old/ui/input/fields';
+import { Redirect } from 'react-router-dom';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -36,19 +37,25 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
     const {
       registration_data,
     } = state;
+    registration_data.passport_data_type = state.passport_data.type;
+    const certificateNumberLength = registration_data.passport_data_type === 'GIBDD' ? '10' : '8';
 
     const onChange = React.useCallback(
       (key, value) => {
         props.onChange({
           registration_data: {
             ...registration_data,
-            passport_data_type: state.passport_data.type,
             [key]: get(value, 'target.value', value),
           },
         });
       },
-      [registration_data, state.passport_data.type],
+      [registration_data],
     );
+
+    if(!registration_data.passport_data_type) {
+      global.NOTIFICATION_SYSTEM.notify('Для ввода информациии о регистрации необходимо ввести данные паспорта ТС', 'info', 'tr');
+      return <Redirect to={`/nsi/autobase/car_actual/${state.asuods_id}/passport_info`} />;
+    }
 
     return (
       <>
@@ -60,7 +67,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               value={registration_data.certificate_number}
               onChange={onChange}
               fieldPopup={
-                `${'Поле "Серия и номер свидетельства о регистрации" для ТС должно содержать 10 символов.'}
+                `${`Поле "Серия и номер свидетельства о регистрации" для ТС должно содержать ${certificateNumberLength} символов.`}
                  ${'В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в'}
                  ${'верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, О, У и Х.'}
                 `

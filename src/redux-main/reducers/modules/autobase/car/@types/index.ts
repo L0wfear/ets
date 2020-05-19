@@ -41,6 +41,9 @@ export type CarGibddPasspost = {
   given_at: string;
   given_by: string;
   id: number;
+  is_gibdd: boolean;
+  is_gims: boolean;
+  is_gtn: boolean;
   manufactured_at: number;
   manufacturer: string | number;
   max_speed: number;
@@ -83,6 +86,9 @@ export type CarGtnPasspost = {
   given_at: string;
   given_by: string;
   id: number;
+  is_gibdd: boolean;
+  is_gims: boolean;
+  is_gtn: boolean;
   manufactured_at: number;
   manufacturer: string | number;
   max_speed: number;

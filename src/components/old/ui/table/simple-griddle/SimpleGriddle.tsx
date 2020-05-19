@@ -37,13 +37,27 @@ const mapRows = (rows, selectField, parentId = null) => (
 
 const makeShortResults = (results, currentPage, resultsPerPage, selectField) => (
   mapRows(
-    results.slice(
+    calcCurrentIndex(results).slice(
       currentPage * resultsPerPage,
       (currentPage + 1) * resultsPerPage,
     ),
     selectField,
   )
 );
+
+const calcCurrentIndex = (results) => {
+  let acc = 0;
+  return results.map((el, i) => {
+    if(i) {
+      el.currentIndex = acc + results[i-1].rows.length;
+      acc += results[i-1].rows.length;
+      return el;
+    } else {
+      el.currentIndex = 0;
+      return el;
+    }
+  });
+};
 
 class SimpleGriddle extends React.Component<any, any> {
   constructor(props) {
@@ -166,6 +180,7 @@ class SimpleGriddle extends React.Component<any, any> {
         columns={this.props.columns}
         rowData={rowData}
         index={objData.index}
+        currentIndex={rowData.currentIndex}
         rowMetadata={this.props.rowMetadata}
         handleClickTbodyTr={this.handleClickTbodyTr}
         onRowDoubleClick={this.onRowDoubleClick}

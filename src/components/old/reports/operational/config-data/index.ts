@@ -17,6 +17,7 @@ import cleaningVolume from 'components/old/reports/operational/cleaning_volume/c
 import deviationFromNormOfCars from 'components/old/reports/operational/cars_count_deviation/config-data';
 import carsTravelTime from 'components/old/reports/operational/cars_travel_time/config-data';
 import fuelCardsReport from 'components/old/reports/operational/fuel_cards_report/config-data';
+import сonsumableMaterialUsageReport from 'components/old/reports/operational/consumable_material_usage_report/config-data';
 
 const children: any = {
   routeOdhCoverage,
@@ -36,6 +37,7 @@ const children: any = {
   deviationFromNormOfCars,
   carsTravelTime,
   fuelCardsReport,
+  сonsumableMaterialUsageReport,
 };
 
 export default {

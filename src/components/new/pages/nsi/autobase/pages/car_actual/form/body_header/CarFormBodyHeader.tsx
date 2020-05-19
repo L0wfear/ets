@@ -18,7 +18,7 @@ const CarFormBodyHeader: React.FC<Props> = React.memo(
   (props) => {
     const activeTabKey = props.match.params.tabKey;
     const {isPassport} = props;
-    console.info(isPassport);
+
     return (
       <EtsBootstrap.Nav
         bsStyle="tabs"

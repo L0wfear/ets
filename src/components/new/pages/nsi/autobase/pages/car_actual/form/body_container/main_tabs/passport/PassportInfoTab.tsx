@@ -12,6 +12,11 @@ import GibddSelectFields from './by_type/gibdd/GibddSelectFields';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isArray, isObject, isNullOrUndefined, isString } from 'util';
 import { getDefaultCar } from '../../../utils';
+import styled from 'styled-components';
+
+const DivWithBoldText = styled.div`
+  font-weight: bold;
+`;
 
 const passportByKey = {
   GIBDD: 'ГИБДД',
@@ -42,6 +47,8 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     const {
       passport_data,
     } = state;
+
+    const { is_gibdd, is_gtn } = passport_data;
 
     const onChange = React.useCallback(
       (key: any, value?: any) => {
@@ -93,7 +100,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   body: `Будут очищены поля, которые относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
                 });
 
-                const { car_id, id, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
+                const { car_id, id, is_gibdd, is_gtn, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
                 changeObj = {
                   ...defaultPassportData,
                   ...changeObj,
@@ -122,30 +129,38 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
         <MarginTopRow>
           <EtsBootstrap.Col md={12}>
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={6}>
-                <ExtField
-                  id="GIBDD"
-                  type="boolean"
-                  label={`Паспорт (${passportByKey.GIBDD})`}
-                  value={passport_data.type === 'GIBDD'}
-                  emptyValue={null}
-                  onChange={onChangePassportType}
-                  boundKeys="GIBDD"
-                  disabled={!props.isPermitted}
-                />
-              </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={6}>
-                <ExtField
-                  id="GTN"
-                  type="boolean"
-                  label={`Паспорт (${passportByKey.GTN})`}
-                  value={passport_data.type === 'GTN'}
-                  emptyValue={null}
-                  onChange={onChangePassportType}
-                  boundKeys="GTN"
-                  disabled={!props.isPermitted}
-                />
-              </EtsBootstrap.Col>
+              {is_gibdd
+              && <EtsBootstrap.Col md={6}>
+                {is_gtn
+                  ? <ExtField
+                    id="GIBDD"
+                    type="boolean"
+                    label={`Паспорт (${passportByKey.GIBDD})`}
+                    value={passport_data.type === 'GIBDD'}
+                    emptyValue={null}
+                    onChange={onChangePassportType}
+                    boundKeys="GIBDD"
+                    disabled={!props.isPermitted}
+                  />
+                  :                <DivWithBoldText>{`Паспорт (${passportByKey.GIBDD})`}</DivWithBoldText>
+                }
+              </EtsBootstrap.Col>}
+              {is_gtn
+              && <EtsBootstrap.Col md={6}>
+                {is_gibdd
+                  ? <ExtField
+                    id="GTN"
+                    type="boolean"
+                    label={`Паспорт (${passportByKey.GTN})`}
+                    value={passport_data.type === 'GTN'}
+                    emptyValue={null}
+                    onChange={onChangePassportType}
+                    boundKeys="GTN"
+                    disabled={!props.isPermitted}
+                  />
+                  :                  <DivWithBoldText>{`Паспорт (${passportByKey.GTN})`}</DivWithBoldText>
+                }
+              </EtsBootstrap.Col>}
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>

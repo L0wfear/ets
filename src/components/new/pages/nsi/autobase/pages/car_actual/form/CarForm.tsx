@@ -42,7 +42,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
       },
       [state],
     );
-    console.info(props);
+
     return (
       <CarActualRegistryFormContext.Provider value={contextValue}>
         <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">

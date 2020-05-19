@@ -28,7 +28,7 @@ const CarFormBodyHeader: React.FC<Props> = React.memo(
             const isActive = activeTabKey === tabKeyScheme ? true : false;
             if ('children' in other) {
               const isActiveChildren = other.children.find((elem) => elem.tabKey === activeTabKey);
-
+              //тут менять
               return (
                 <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren) ? true : false}>
                   {

@@ -126,7 +126,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                 <ExtField
                   id="GIBDD"
                   type="boolean"
-                  label={passportByKey.GIBDD}
+                  label={`Паспорт (${passportByKey.GIBDD})`}
                   value={passport_data.type === 'GIBDD'}
                   emptyValue={null}
                   onChange={onChangePassportType}
@@ -138,7 +138,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                 <ExtField
                   id="GTN"
                   type="boolean"
-                  label={`${passportByKey.GTN} (Гостехнадзор)`}
+                  label={`Паспорт (${passportByKey.GTN})`}
                   value={passport_data.type === 'GTN'}
                   emptyValue={null}
                   onChange={onChangePassportType}

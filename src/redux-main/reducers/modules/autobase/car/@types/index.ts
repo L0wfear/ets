@@ -13,6 +13,7 @@ export type CarRegistrationData = {
   note: string;
   disabled?: boolean;
   files?: Array<any>;
+  passport_data_type: 'GTN' | 'GIBDD';
 };
 
 export type CarGibddPasspost = {

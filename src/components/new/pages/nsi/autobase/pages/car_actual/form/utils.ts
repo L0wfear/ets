@@ -13,6 +13,7 @@ export const getDefaultCar = (): CarWrap => ({
   body_capacity: null,
   car_group_id: null,
   car_group_name: '',
+  certificate_number: '',
   company_id: null,
   company_name: '',
   company_name_contractor: '',
@@ -46,6 +47,7 @@ export const getDefaultCar = (): CarWrap => ({
   owner_id: null,
   owner_name: '',
   parking_address: '',
+  passport_number: '',
   season: null,
   season_label: null,
   season_name: '',
@@ -70,6 +72,7 @@ export const getDefaultCar = (): CarWrap => ({
     note: '',
     disabled: false,
     files: [],
+    passport_data_type: null,
   },
   passport_data: {
     address: '',

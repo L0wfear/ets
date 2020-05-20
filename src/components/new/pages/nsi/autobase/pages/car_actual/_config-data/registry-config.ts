@@ -90,6 +90,11 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
+        valueKey: 'certificate_number',
+        title: 'Номер СТС/СРМ',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'car_group_name',
         title: 'Группа техники',
         type: 'multiselect',
@@ -229,6 +234,21 @@ export const config: TypeConfigData<Car> = {
         {
           key: 'full_model_name',
           title: 'Марка шасси ТС',
+          width: 300,
+        },
+        {
+          key: 'certificate_number',
+          title: 'Номер СТС/СРМ',
+          width: 300,
+        },
+        {
+          key: 'passport_number',
+          title: 'Серия и номер ПТС/ПСМ',
+          width: 300,
+        },
+        {
+          key: 'vin',
+          title: 'VIN',
           width: 300,
         },
         {

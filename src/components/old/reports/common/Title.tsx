@@ -1,11 +1,17 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
 
 type IPropsTitle = {
   hint: string;
   text: string;
 };
+
+const TitleStyled = styled.div`
+  display: 'flex';
+  align-items: 'center';
+`;
 
 const Title: React.FC<IPropsTitle> = (props) => {
   const popover = (
@@ -15,10 +21,10 @@ const Title: React.FC<IPropsTitle> = (props) => {
   );
 
   return (
-    <div style={{ display: 'flex' }}>
+    <TitleStyled>
       <span>{props.text}</span>
       {
-        !!props.hint
+        Boolean(props.hint)
         && <EtsBootstrap.OverlayTrigger
           trigger={['hover', 'focus']}
           overlay={popover}
@@ -27,7 +33,7 @@ const Title: React.FC<IPropsTitle> = (props) => {
           <EtsBootstrap.Glyphicon glyph="info-sign" className="car-usage-report-title__info-sign" />
         </EtsBootstrap.OverlayTrigger>
       }
-    </div>
+    </TitleStyled>
   );
 };
 

@@ -98,14 +98,26 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'car_special_model_name',
+        valueKey: 'car_special_model_id',
         title: 'Модель ТС',
-        type: 'advanced-string-like',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'car_actual',
+          groupName: 'car_actual',
+          valueKey: 'special_model_id',
+          labelKey: 'special_model_name',
+        },
       },
       {
-        valueKey: 'car_model_name',
+        valueKey: 'car_model_id',
         title: 'Марка шасси',
-        type: 'advanced-string-like',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'car_actual',
+          groupName: 'car_actual',
+          valueKey: 'model_id',
+          labelKey: 'model_name',
+        },
       },
       {
         valueKey: 'garage_number',

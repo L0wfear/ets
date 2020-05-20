@@ -9,6 +9,7 @@ import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/ol
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FileField } from 'components/old/ui/input/fields';
+import { Redirect } from 'react-router-dom';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -36,6 +37,8 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
     const {
       registration_data,
     } = state;
+    registration_data.passport_data_type = state.passport_data.type;
+    const certificateNumberLength = registration_data.passport_data_type === 'GIBDD' ? '10' : '8';
 
     const onChange = React.useCallback(
       (key, value) => {
@@ -49,6 +52,11 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
       [registration_data],
     );
 
+    if(!registration_data.passport_data_type) {
+      global.NOTIFICATION_SYSTEM.notify('Для ввода информациии о регистрации необходимо ввести данные паспорта ТС', 'info', 'tr');
+      return <Redirect to={`/nsi/autobase/car_actual/${state.asuods_id}/passport_info`} />;
+    }
+
     return (
       <>
         <MarginTopRow>
@@ -58,8 +66,15 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               label="Номер свидетельства о регистрации"
               value={registration_data.certificate_number}
               onChange={onChange}
+              hint={
+                `${`Поле "Серия и номер свидетельства о регистрации" для ТС должно содержать ${certificateNumberLength} символов.`}
+                 ${'В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в'}
+                 ${'верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, О, У и Х.'}
+                `
+              }
               boundKeys="certificate_number"
               disabled={!isPermitted || registration_data.disabled}
+              error={errors.certificate_number}
             />
             <ExtField
               type="string"

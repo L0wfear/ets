@@ -18,6 +18,7 @@ import { TracksCaching } from '../tracks_caching/@types';
 import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
+import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/properties/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -49,6 +50,7 @@ export type IStateSomeUniq = {
   };
   maintenanceWorkList: Array<MaintenanceWork>;
   cleanCategoriesList: Array<CleanCategories>;
+  cleaningRatePropertieList: Array<CleaningRatePropertie>;
   missionCancelReasonsList: Array<CancelReasons>;
   geozoneMunicipalFacility: {
     list: Array<GeozoneMunicipalFacility>;

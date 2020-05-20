@@ -46,6 +46,10 @@ const makeShortResults = (results, currentPage, resultsPerPage, selectField) => 
 );
 
 const calcCurrentIndex = (results) => {
+  if(!results[0]?.rows) {
+    return results;
+  }
+
   let acc = 0;
   return results.map((el, i) => {
     if(i) {
@@ -180,7 +184,7 @@ class SimpleGriddle extends React.Component<any, any> {
         columns={this.props.columns}
         rowData={rowData}
         index={objData.index}
-        currentIndex={rowData.currentIndex}
+        currentIndex={rowData.currentIndex || objData.index}
         rowMetadata={this.props.rowMetadata}
         handleClickTbodyTr={this.handleClickTbodyTr}
         onRowDoubleClick={this.onRowDoubleClick}

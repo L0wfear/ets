@@ -21,6 +21,7 @@ export const initialState: IStateSomeUniq = {
   },
   maintenanceWorkList: [],
   cleanCategoriesList: [],
+  cleaningRatePropertieList: [],
   missionCancelReasonsList: [],
   geozoneMunicipalFacility: {
     list: [],

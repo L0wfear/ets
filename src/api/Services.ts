@@ -176,6 +176,11 @@ export const MaintenanceRateService = ETS_API_FACTORY.createApiServiceAdapter(
 export const CleaningRateService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning_rate',
 );
+
+export const CleaningRatePropertieService = ETS_API_FACTORY.createApiServiceAdapter(
+  'cleaning_rate/properties',
+);
+
 export const UserActionLogService = ETS_API_FACTORY.createApiServiceAdapter(
   'user_action_log',
 );

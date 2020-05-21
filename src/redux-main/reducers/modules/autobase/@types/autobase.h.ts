@@ -139,6 +139,9 @@ export type Car = {
   gov_number: string;
   gps_code: string;
   is_common: boolean;
+  is_gibdd_passport: boolean;
+  is_gtn_passport: boolean;
+  is_gims_passport: boolean;
   is_trailer: boolean;
   level_sensors_num: number;
   load_capacity: number;

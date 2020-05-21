@@ -32,7 +32,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
-    const isPassport = state.passport_data.is_gibdd || state.passport_data.is_gtn;
+    const isPassport = state.is_gibdd_passport|| state.is_gtn_passport;
 
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {

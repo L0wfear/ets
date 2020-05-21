@@ -46,9 +46,11 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
 
     const {
       passport_data,
+      is_gibdd_passport,
+      is_gtn_passport,
     } = state;
 
-    const { is_gibdd, is_gtn } = passport_data;
+    const is_exist = React.useMemo(() => !!passport_data.type, []);
 
     const onChange = React.useCallback(
       (key: any, value?: any) => {
@@ -70,6 +72,37 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
       },
       [passport_data],
     );
+
+    (React.useCallback(
+      async () => {
+        const type = is_gibdd_passport ? 'GIBDD' : 'GTN';
+        let changeObj: Partial<CarWrap['passport_data']> = {
+          type,
+          vin: state.vin || '',
+        };
+
+        if (
+          !is_exist 
+          && (!is_gibdd_passport || !is_gtn_passport)
+          && (!passport_data.type || passport_data.type !== type)
+        ) {
+          const { car_id, id, type, ...defaultPassportData } = getDefaultCar().passport_data;
+
+          changeObj = {
+            ...defaultPassportData,
+            ...changeObj,
+          };
+          
+          if (type === 'GIBDD') {
+            changeObj.seria_number = passport_data.number;
+          }
+          if (type === 'GTN') {
+            changeObj.number = passport_data.seria_number;
+          }
+          onChange(changeObj);
+        }
+      }, [passport_data.type]
+    ))();
 
     const onChangePassportType = React.useCallback(
       async (type) => {
@@ -100,7 +133,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   body: `Будут очищены поля, которые относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
                 });
 
-                const { car_id, id, is_gibdd, is_gtn, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
+                const { car_id, id, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
                 changeObj = {
                   ...defaultPassportData,
                   ...changeObj,
@@ -129,38 +162,38 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
         <MarginTopRow>
           <EtsBootstrap.Col md={12}>
             <EtsBootstrap.Row>
-              {is_gibdd
-              && <EtsBootstrap.Col md={6}>
-                {is_gtn
-                  ? <ExtField
-                    id="GIBDD"
-                    type="boolean"
-                    label={`Паспорт (${passportByKey.GIBDD})`}
-                    value={passport_data.type === 'GIBDD'}
-                    emptyValue={null}
-                    onChange={onChangePassportType}
-                    boundKeys="GIBDD"
-                    disabled={!props.isPermitted}
-                  />
-                  :                <DivWithBoldText>{`Паспорт (${passportByKey.GIBDD})`}</DivWithBoldText>
-                }
-              </EtsBootstrap.Col>}
-              {is_gtn
-              && <EtsBootstrap.Col md={6}>
-                {is_gibdd
-                  ? <ExtField
-                    id="GTN"
-                    type="boolean"
-                    label={`Паспорт (${passportByKey.GTN})`}
-                    value={passport_data.type === 'GTN'}
-                    emptyValue={null}
-                    onChange={onChangePassportType}
-                    boundKeys="GTN"
-                    disabled={!props.isPermitted}
-                  />
-                  :                  <DivWithBoldText>{`Паспорт (${passportByKey.GTN})`}</DivWithBoldText>
-                }
-              </EtsBootstrap.Col>}
+              {is_gibdd_passport
+                && <EtsBootstrap.Col md={6}>
+                  {is_gtn_passport
+                    ? <ExtField
+                      id="GIBDD"
+                      type="boolean"
+                      label={`Паспорт (${passportByKey.GIBDD})`}
+                      value={passport_data.type === 'GIBDD'}
+                      emptyValue={null}
+                      onChange={onChangePassportType}
+                      boundKeys="GIBDD"
+                      disabled={!props.isPermitted}
+                    />
+                    : <DivWithBoldText>{`Паспорт (${passportByKey.GIBDD})`}</DivWithBoldText>
+                  }
+                </EtsBootstrap.Col>}
+              {is_gtn_passport
+                && <EtsBootstrap.Col md={6}>
+                  {is_gibdd_passport
+                    ? <ExtField
+                      id="GTN"
+                      type="boolean"
+                      label={`Паспорт (${passportByKey.GTN})`}
+                      value={passport_data.type === 'GTN'}
+                      emptyValue={null}
+                      onChange={onChangePassportType}
+                      boundKeys="GTN"
+                      disabled={!props.isPermitted}
+                    />
+                    : <DivWithBoldText>{`Паспорт (${passportByKey.GTN})`}</DivWithBoldText>
+                  }
+                </EtsBootstrap.Col>}
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>

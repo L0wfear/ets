@@ -130,6 +130,7 @@ const Table: React.FC<any> = (props) => (
     initialSort={'created_at'}
     renderers={renderers}
     className="user-notification-table"
+    withPerPageSelector={true}
     {...props}
   />
 );

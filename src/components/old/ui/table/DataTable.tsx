@@ -89,6 +89,7 @@ export default class DataTable extends React.Component<Props, State> {
 
       normInitialData: PropTypes.bool,
       currentPage: PropTypes.any,
+      perPageLocal: PropTypes.number,
     };
   }
 
@@ -138,6 +139,7 @@ export default class DataTable extends React.Component<Props, State> {
 
       normInitialData: false,
       currentPage: 0,
+      perPageLocal: 15,
     };
   }
 
@@ -155,6 +157,7 @@ export default class DataTable extends React.Component<Props, State> {
       data: [],
       originalData: this.props.data,
       currentPage: props.page || 0,
+      perPageLocal: 15,
     };
 
     // временно до выпиливания гридла
@@ -751,6 +754,10 @@ export default class DataTable extends React.Component<Props, State> {
     this.setState({ currentPage });
   };
 
+  setPerPage = (value) => {
+    this.setState({perPageLocal: value});
+  };
+
   handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
       return;
@@ -801,6 +808,7 @@ export default class DataTable extends React.Component<Props, State> {
       highlight,
       serverPagination,
       externalChangeSort,
+      withPerPageSelector,
     } = this.props;
     const { initialSort, initialSortAscending, isHierarchical } = this.state;
 
@@ -870,7 +878,7 @@ export default class DataTable extends React.Component<Props, State> {
           initialSortAscending={initialSortAscending}
           columnMetadata={columnMetadata}
           columns={tableCols}
-          resultsPerPage={15}
+          resultsPerPage={this.state.perPageLocal}
           externalChangeSort={externalChangeSort || this.handleChangeSort}
           onRowClick={!isHierarchical ? onRowSelected : null}
           onRowDoubleClick={this.props.onRowDoubleClick}
@@ -891,8 +899,10 @@ export default class DataTable extends React.Component<Props, State> {
         ) : (
           <Paginator
             currentPage={this.state.currentPage}
-            maxPage={Math.ceil(results.length / 15)}
+            maxPage={Math.ceil(results.length / this.state.perPageLocal)}
             setPage={this.setPage}
+            setPerPage={this.setPerPage}
+            withPerPageSelector={withPerPageSelector}
           />
         )}
       </Div>

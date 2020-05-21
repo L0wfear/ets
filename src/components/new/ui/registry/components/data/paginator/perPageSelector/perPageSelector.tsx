@@ -41,13 +41,15 @@ export type PaginatorPageCountOptionType = {
 };
 
 type Props = {
-  registryKey: string;
+  registryKey?: string;
+  setPerPage?: (value: number) => void;
 };
 
 const PerPageSelector: React.FC<Props> = React.memo(
   (props) => {
     const {
       registryKey,
+      setPerPage,
     } = props;
 
     const perPageData = localStorage.getItem(`perPage`);
@@ -57,21 +59,29 @@ const PerPageSelector: React.FC<Props> = React.memo(
 
     const dispatch = etsUseDispatch();
     React.useEffect(() => {
-      handleChangeCountPages(
-        perPageData
-          ? Number(perPageData)
-          : 15
-      );
+      if(registryKey) {
+        handleChangeCountPages(
+          perPageData
+            ? Number(perPageData)
+            : 15
+        );
+      }
     }, []);
+
     const handleChangeCountPages = React.useCallback((value) => {
       setPerPageLocal(value);
       localStorage.setItem('perPage', value);
-      dispatch(
-        registryChangeDataPaginatorPerPage(
-          registryKey,
-          value,
-        ),
-      );
+      if(registryKey) {
+        dispatch(
+          registryChangeDataPaginatorPerPage(
+            registryKey,
+            value,
+          ),
+        );
+      }
+      if(setPerPage) {
+        setPerPage(value);
+      }
     }, [registryKey, dispatch, perPageLocal]);
 
     return (
@@ -85,7 +95,7 @@ const PerPageSelector: React.FC<Props> = React.memo(
               <RoundButtonStyled boundKeys={elem} id={`perPage_${elem}`} key={`perPage_${elem}`} active={perPageLocal === elem} onClick={handleChangeCountPages}>
                 {elem}
               </RoundButtonStyled>
-            )
+            );
           })
         }
       </EtsPaginatorCountPages>

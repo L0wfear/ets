@@ -296,7 +296,7 @@ export default class DataTable extends React.Component<Props, State> {
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
-      console.info('SAVE FILTER', filterValues);  // eslint-disable-line
+      console.info('SAVE FILTER_', filterValues);  // eslint-disable-line
     } else {
       let filterAsString = '';
 
@@ -306,7 +306,7 @@ export default class DataTable extends React.Component<Props, State> {
         filterAsString = filterValues;
       }
 
-      console.info('SAVE FILTER', filterAsString);  // eslint-disable-line
+      console.info('SAVE FILTER__', filterAsString);  // eslint-disable-line
     }
 
     if (this.props.externalFilter) {

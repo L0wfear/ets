@@ -83,7 +83,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
 
   toggleFilter = () => this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   saveFilter = (filterValues) => {
-    console.info('SAVE FILTER', filterValues); // eslint-disable-line
+    console.info('SAVE FILTER___', filterValues); // eslint-disable-line
 
     this.setState({
       filterValues,

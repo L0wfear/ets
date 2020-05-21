@@ -35,12 +35,12 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
 
   renderDate() {
     const {
-      time = this.props.type === 'datetime',
       value,
     } = this.props;
     const { modalKey, id } = this.props;
     const idValueBeg = id ? `${modalKey ? `${modalKey}-` : ''}${id}-beg-value` : undefined;
     const idValueEnd = id ? `${modalKey ? `${modalKey}-` : ''}${id}-end-value` : undefined;
+    const time = this.props.time ?? Boolean(this.props.type === 'datetime' || this.props.type === 'advanced-datetime');
 
     return (
       <div className="inputs">
@@ -129,7 +129,9 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
       case 'date':
       case 'datetime':
         return this.renderDate();
-
+      case 'advanced-date':
+      case 'advanced-datetime':
+        return this.renderDate();
       default: return this.renderString();
     }
   }

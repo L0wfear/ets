@@ -121,11 +121,18 @@ export function createValidDateTimeDots(date: string | Date) {
   return moment(date).format('DD.MM.YYYY HH:mm');
 }
 
-export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false) {
+export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false, inputFormat?: string,) {
   if (!date) {
     return null;
   }
-  const newData = !withSeconds ? moment(date).seconds(0) : moment(date);
+
+  const newDataByFormat = inputFormat
+    ? moment(date, inputFormat)
+    : moment(date);
+
+  const newData = !withSeconds
+    ? moment(newDataByFormat).seconds(0)
+    : moment(newDataByFormat);
   return newData.format('YYYY-MM-DDTHH:mm:ss');
 }
 

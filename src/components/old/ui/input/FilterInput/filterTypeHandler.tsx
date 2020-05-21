@@ -27,7 +27,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
       if (defaultFilterType === FILTER_VALUES.EQUAL) {
         getFilterValue = ({ inputValue, fieldName }) => {
           const val = filterValueMaker(inputValue, this.props.type);
-
+    
           return isEqualOr(['', null, undefined], val[0]) ? null : { [`${fieldName}__eq`]: val[0] };
         };
       }

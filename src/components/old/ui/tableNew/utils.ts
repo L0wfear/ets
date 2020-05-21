@@ -1,4 +1,4 @@
-import { diffDatesByDays } from 'components/@next/@utils/dates/dates';
+import { diffDatesByDays, diffDates, createValidDateTime, } from 'components/@next/@utils/dates/dates';
 
 export const hideChildren = (data: any, { uniqName }) => data.filter(({ [`${uniqName}_father`]: fatherId }: any) => !fatherId);
 export const showChildren = (data) => {
@@ -78,6 +78,30 @@ const checkFilterByAdvancedNumber = (f_data, rowCol) =>
     }
   });
 
+const checkFilterByAdvancedDate = (f_data, rowCol) => { // 'advanced-datetime' щквук
+  if(f_data?.type === 'advanced-datetime' || f_data?.type === 'advanced-date') {
+    return Object.entries(f_data.value).some(([filter_name, filter_value]) => {
+      const filter_type = filter_name.split('__').pop();
+      const diffDatesValue = f_data?.type === 'advanced-datetime'
+        ? diffDates(filter_value, createValidDateTime(rowCol, false, 'DD.MM.YYYY HH:mm'), 'minutes')
+        : diffDates(filter_value, createValidDateTime(rowCol, false, 'DD.MM.YYYY'), 'days');
+      switch (filter_type) {
+        case 'eq': return diffDatesValue !== 0;
+        case 'neq': return diffDatesValue === 0;
+        case 'lt': return diffDatesValue <= 0;
+        case 'gt': return diffDatesValue > 0;
+        case 'lte': return diffDatesValue <= 0;
+        case 'gte': return diffDatesValue >= 0;
+        default: {
+            console.info(`no define filter for ${filter_type}`); // eslint-disable-line
+          return true;
+        }
+      }
+    }); 
+  }
+  console.error(`no define filter for ${f_data?.type}`);
+};
+
 export const filterFunction = (data, { filterValues }) =>
   data.reduce((newData, row) => {
     const isValid = !(Object.entries(filterValues) as any).some(([ f_key, f_data ]) => {
@@ -100,6 +124,8 @@ export const filterFunction = (data, { filterValues }) =>
           case 'string': return !String(rowCol).toLowerCase().includes(f_data.value.toLowerCase());
           case 'advanced-number': return checkFilterByAdvancedNumber(f_data, rowCol);
           case 'date': return diffDatesByDays(rowCol, f_data.value);
+          case 'advanced-datetime':
+          case 'advanced-date': return checkFilterByAdvancedDate(f_data, rowCol);
           default: {
             // tslint:disable-next-line
             console.warn(`no define filter for ${f_data}`);

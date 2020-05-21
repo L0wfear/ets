@@ -6,8 +6,8 @@ export type Meta = {
   type: (             // Тип фильтра
     'multiselect'         // Default
     | 'advanced-number'   // Числовой фильтр
-    | 'advanced-number'   // Числовой фильтр
     | 'advanced-date'     // Фильтр по датам
+    | 'advanced-datetime'     // Фильтр по датам
   );
   display?: false;    // false - поле не отображается в таблице, но есть фильтр!. Default - true
 

@@ -6,6 +6,7 @@ import Input from 'components/old/ui/input/FilterInput/Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/old/ui/input/FilterInput/constants';
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
+import { isArray } from 'lodash-es';
 
 type IPropsFilterInput = {
   fieldName: string;
@@ -29,18 +30,22 @@ const InputFilter = filterTypeHandler(Input);
 
 const datetimeFilterValueMaker = (value, type) => {
   if (value) {
-    if (type === 'datetime') {
-      return createValidDateTime(value);
+    if (type === 'datetime' || type === 'advanced-datetime') {
+      return isArray(value)
+        ? [createValidDateTime(value[0])]
+        : createValidDateTime(value);
     }
-    if (type === 'date') {
-      return createValidDate(value);
+    if (type === 'date' || type === 'advanced-date') {
+      return isArray(value)
+        ? [createValidDate(value[0])]
+        : createValidDate(value);
     }
   }
 
   return value;
 };
 
-const DateTypeSet = new Set(['date', 'datetime']);
+const DateTypeSet = new Set(['date', 'datetime', 'advanced-date', 'advanced-datetime']);
 
 class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> {
   constructor(props) {

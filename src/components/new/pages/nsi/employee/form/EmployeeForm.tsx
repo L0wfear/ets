@@ -569,7 +569,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.preferCarOptions}
                     filterOption={this.licenseEndDateFilterOption}
                     error={errors.prefer_car}
-                    disabled={!isPermitted || !state.is_driver}
+                    disabled={!isPermitted}
                     onChange={this.handleChangeCar}
                     boundKeys="prefer_car"
                   />
@@ -585,7 +585,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     filterOption={this.licenseEndDateFilterOption}
                     options={this.state.secondaryCarOptions}
                     error={errors.secondary_car}
-                    disabled={!isPermitted || !state.is_driver}
+                    disabled={!isPermitted }
                     onChange={this.props.handleChange}
                     boundKeys="secondary_car"
                   />

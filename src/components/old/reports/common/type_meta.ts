@@ -1,4 +1,5 @@
 // Пока инфа такая
+// Фильтры по типам тут -- src/components/old/ui/table/filter/FilterRow.tsx
 export type Meta = {
   name: string;  // Название колонки
   sortable?: false;   // false - нельзя сортировать по полю.                      Default - true

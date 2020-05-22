@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled from 'styled-components';
 
 type IPropsTitle = {
-  hint: string;
+  hint?: string;
   text: string;
 };
 

@@ -6,7 +6,9 @@ import { getRegistryState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type HeaderProps = {
-  registryKey: string;
+  registryKey?: string;
+  title?: string;
+  hint?: string;
 };
 
 const Title: React.FC<HeaderProps> = React.memo(
@@ -14,12 +16,13 @@ const Title: React.FC<HeaderProps> = React.memo(
     // const format = etsUseSelector(
     //   (state) => getHeaderData(getRegistryState(state), props.registryKey).format,
     // );
-    const title = etsUseSelector(
-      (state) => getHeaderData(getRegistryState(state), props.registryKey).title,
-    );
-    const titlePopover = etsUseSelector(
-      (state) => getHeaderData(getRegistryState(state), props.registryKey).titlePopover,
-    );
+    const title = props.registryKey
+      ? etsUseSelector((state) => getHeaderData(getRegistryState(state), props.registryKey).title)
+      : props.title;
+    const titlePopover = props.registryKey
+      ? etsUseSelector((state) => getHeaderData(getRegistryState(state), props.registryKey).titlePopover,)
+      : props.hint;
+
     return (
       <EtsHeaderTitle>
         <FlexContainerWrap direction="column">

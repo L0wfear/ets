@@ -4,20 +4,20 @@ import { PropsCar, CarWrap } from './@types/CarForm';
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {
   properties: {
     certificate_number: {
-      title: 'Номер свидетельства о регистрации',
+      title: 'Серия и номер свидетельства о регистрации',
       type: 'string',
       dependencies: [
         (value, {passport_data_type}) => {
           const errorText = 'Недопустимое значение серии и номера свидетельства о регистрации. Данные не будут сохранены';
-          if (passport_data_type === 'GIBDD' && value.length >= 10) { 
-            const stsRegExp = /^\d{2}[АВЕКМНОРСТУХ]{2}\d{6}$/;
+          if (passport_data_type === 'GIBDD') { 
+            const stsRegExp = /^[АВЕКМНОРСТУХ\d]{10}$/;
             return stsRegExp.exec(value) ? '' : errorText;
           }
           if(/[^\dАВЕКМНОРСТУХ]/.exec(value)) {
             return errorText;
           }
-          if(passport_data_type !== 'GIBDD' && value.length >= 8) {
-            const srmRegExp = /^[АВЕКМНОРСТУХ]{2}\d{6}$/;
+          if(passport_data_type === 'GTN') {
+            const srmRegExp = /^[АВЕКМНОРСТУХ\d]{8}$/;
             return srmRegExp.exec(value) ? '' : errorText;
           }
           return '';

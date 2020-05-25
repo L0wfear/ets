@@ -5,13 +5,11 @@ import PerPageSelector from 'components/new/ui/registry/components/data/paginato
 import styled from 'styled-components';
 
 const PaginatorWrapperStyled = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const PerPageSelectorStyled = styled.div`
-  align-self: end;
-  justify-self: end;
   margin-top: 20px;
 `;
 

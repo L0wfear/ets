@@ -307,48 +307,96 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
 
   handleChange = (value, option) => {
     const { props } = this;
+    const { IS_CREATING, for_column } = props;
 
     if (value !== props.value) {
-      const car_gov_numbers = option.map(({ rowData }) => rowData.gov_number);
-      const car_type_ids = option.map(({ rowData }) => rowData.type_id);
-      const car_type_names = option.map(({ rowData }) => rowData.type_name);
-      const car_model_names = option.map(({ rowData }) => rowData.model_name);
-      const car_special_model_names = option.map(({ rowData }) => rowData.special_model_name);
-      let partialChange: Partial<any> = {
-        car_gov_numbers,
-        car_gov_numbers_text: car_gov_numbers.join(', '),
-        car_ids: value,
-        car_type_ids,
-        car_type_names,
-        car_model_names,
-        car_special_model_names,
-      };
+      if (IS_CREATING || for_column) {
+        const car_gov_numbers = option.map(({ rowData }) => rowData.gov_number);
+        const car_type_ids = option.map(({ rowData }) => rowData.type_id);
+        const car_type_names = option.map(({ rowData }) => rowData.type_name);
+        const car_model_names = option.map(({ rowData }) => rowData.model_name);
+        const car_special_model_names = option.map(({ rowData }) => rowData.special_model_name);
+        let partialChange: Partial<any> = {
+          car_gov_numbers,
+          car_gov_numbers_text: car_gov_numbers.join(', '),
+          car_ids: value,
+          car_type_ids,
+          car_type_names,
+          car_model_names,
+          car_special_model_names,
+        };
 
-      if (isArray(option) && option.length) {
-        const currentOptionValueIndex = option.length - 1;
-        const structure_id = option[currentOptionValueIndex]?.rowData?.company_structure_id;
-        const is_common = option[currentOptionValueIndex]?.rowData?.is_common;
+        if (isArray(option) && option.length) {
+          const currentOptionValueIndex = option.length - 1;
+          const structure_id = option[currentOptionValueIndex]?.rowData?.company_structure_id;
+          const is_common = option[currentOptionValueIndex]?.rowData?.is_common;
+          if (!is_common && structure_id) {
+            partialChange.structure_id = structure_id;
+          }
+        }
+
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
+
+        this.props.onChange(partialChange);
+      } else {
+        let car_gov_numbers = get(option, ['rowData', 'gov_number'], '');
+        car_gov_numbers = car_gov_numbers ? [car_gov_numbers] : [];
+
+        let car_type_ids = get(option, ['rowData', 'type_id'], '');
+        car_type_ids = car_type_ids ? [car_type_ids] : [];
+        let car_type_names = get(option, ['rowData', 'type_name'], '');
+        car_type_names = car_type_names ? [car_type_names] : [];
+        let car_model_names = get(option, ['rowData', 'model_name'], '');
+        car_model_names = car_model_names ? [car_model_names] : [];
+        let car_special_model_names = get(option, ['rowData', 'special_model_name'], '');
+        car_special_model_names = car_special_model_names ? [car_special_model_names] : [];
+        const structure_id  = get(option, ['rowData', 'company_structure_id'], null);
+        const is_common  = get(option, ['rowData', 'is_common'], '');
+
+        let partialChange: Partial<any> = {
+          car_gov_numbers,
+          car_gov_numbers_text: car_gov_numbers.join(', '),
+          car_ids: [value],
+          car_type_ids,
+          car_model_names,
+          car_special_model_names,
+          car_type_names,
+        };
+
+        // if (!this.props.order_operation_id) {
+        //   partialChange = {
+        //     ...partialChange,
+        //     technical_operation_id: null,
+        //     technical_operation_name: '',
+        //     municipal_facility_id: null,
+        //     municipal_facility_name: '',
+        //     route_id: null,
+        //     route_name: '',
+        //     route_type: null,
+        //     object_type_id: null,
+        //     object_type_name: '',
+        //   };
+        // }
+
         if (!is_common && structure_id) {
           partialChange.structure_id = structure_id;
         }
+
+        props.onChange(partialChange);
       }
-
-      // if (!this.props.order_operation_id) {
-      //   partialChange = {
-      //     ...partialChange,
-      //     technical_operation_id: null,
-      //     technical_operation_name: '',
-      //     municipal_facility_id: null,
-      //     municipal_facility_name: '',
-      //     route_id: null,
-      //     route_name: '',
-      //     route_type: null,
-      //     object_type_id: null,
-      //     object_type_name: '',
-      //   };
-      // }
-
-      this.props.onChange(partialChange);
     }
   };
 
@@ -359,6 +407,8 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
 
     const {
       value,
+      for_column,
+      IS_CREATING,
       IS_TEMPLATE,
     } = props;
 
@@ -371,13 +421,13 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         id="car_ids"
         modalKey={props.page}
         type="select"
-        multi={props.IS_CREATING || props.for_column}
+        multi={IS_CREATING || for_column}
         label="Транспортное средство (поиск по рег. и гаражному номеру ТС)"
         error={props.error}
         className="white-space-pre-wrap"
         disabled={props.disabled}
         options={CARS_OPTIONS}
-        value={props.IS_CREATING ? value : !props.IS_CREATING && !props.for_column ? value[0] : value}
+        value={IS_CREATING ? value : !IS_CREATING && !for_column ? value[0] : value}
         onChange={this.handleChange}
         components={!IS_TEMPLATE ? FieldCarIdsMissionSelectComponents : null}
         clearable={false}

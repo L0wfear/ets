@@ -801,6 +801,11 @@ class WaybillForm extends React.Component<Props, State> {
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
+            track_length: isNullOrUndefined(formState.track_length) // formState.track_length
+              ? isNullOrUndefined(distance)
+                ? null
+                : parseFloat(distance)
+              : formState.track_length,
           });
 
           this.setState({

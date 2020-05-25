@@ -63,7 +63,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Номер свидетельства о регистрации"
+              label="Серия и номер свидетельства о регистрации"
               value={registration_data.certificate_number}
               onChange={onChange}
               hint={

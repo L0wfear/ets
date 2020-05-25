@@ -1,4 +1,5 @@
 import { diffDatesByDays, diffDates, createValidDateTime, } from 'components/@next/@utils/dates/dates';
+import { isString } from 'util';
 
 export const hideChildren = (data: any, { uniqName }) => data.filter(({ [`${uniqName}_father`]: fatherId }: any) => !fatherId);
 export const showChildren = (data) => {
@@ -82,15 +83,23 @@ const checkFilterByAdvancedDate = (f_data, rowCol) => { // 'advanced-datetime' �
   if(f_data?.type === 'advanced-datetime' || f_data?.type === 'advanced-date') {
     return Object.entries(f_data.value).some(([filter_name, filter_value]) => {
       const filter_type = filter_name.split('__').pop();
+      const dateFormat = f_data?.type === 'advanced-datetime' // определение формата даты, которая может прийти с бека, во всех отчетах разный формат, дата приходит в виде строки
+        ? isString(rowCol) && rowCol.includes('T') && rowCol.includes('-')
+          ? 'YYYY-MM-DDTHH:mm:ss'
+          : 'DD.MM.YYYY HH:mm'
+        : isString(rowCol) && rowCol.includes('T') && rowCol.includes('-')
+          ? 'YYYY-MM-DD'
+          : 'DD.MM.YYYY';
+
       const diffDatesValue = f_data?.type === 'advanced-datetime'
-        ? diffDates(filter_value, createValidDateTime(rowCol, false, 'DD.MM.YYYY HH:mm'), 'minutes')
-        : diffDates(filter_value, createValidDateTime(rowCol, false, 'DD.MM.YYYY'), 'days');
+        ? diffDates(filter_value, createValidDateTime(rowCol, false, dateFormat), 'minutes')
+        : diffDates(filter_value, createValidDateTime(rowCol, false, dateFormat), 'days');
       switch (filter_type) {
         case 'eq': return diffDatesValue !== 0;
         case 'neq': return diffDatesValue === 0;
         case 'lt': return diffDatesValue <= 0;
-        case 'gt': return diffDatesValue > 0;
         case 'lte': return diffDatesValue <= 0;
+        case 'gt': return diffDatesValue > 0;
         case 'gte': return diffDatesValue >= 0;
         default: {
             console.info(`no define filter for ${filter_type}`); // eslint-disable-line

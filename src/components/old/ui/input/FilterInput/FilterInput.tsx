@@ -32,12 +32,12 @@ const datetimeFilterValueMaker = (value, type) => {
   if (value) {
     if (type === 'datetime' || type === 'advanced-datetime') {
       return isArray(value)
-        ? [createValidDateTime(value[0])]
+        ? value.map((el) => createValidDateTime(el))
         : createValidDateTime(value);
     }
     if (type === 'date' || type === 'advanced-date') {
       return isArray(value)
-        ? [createValidDate(value[0])]
+        ? value.map((el) => createValidDate(el))
         : createValidDate(value);
     }
   }

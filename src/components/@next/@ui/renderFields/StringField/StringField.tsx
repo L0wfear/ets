@@ -13,9 +13,14 @@ import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/tab
 import styled from 'styled-components';
 
 const StringFieldWrapperStyled = styled.div`
-  display: grid;
-  grid-template-columns: 9fr 1fr;
+  position: relative;
+`;
 
+const OverlayTriggerStyled = styled.div`
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  right: 3%;
 `;
 
 const StringField: React.FC<ExtFieldString> = React.memo(
@@ -96,18 +101,21 @@ const StringField: React.FC<ExtFieldString> = React.memo(
             </EtsBootstrap.InputGroup.Group>
             {
               props.hint
-                && (<ThOverlayTrigger>
-                  <EtsBootstrap.OverlayTrigger
-                    trigger={['hover', 'focus']}
-                    overlay={(
-                      <EtsBootstrap.Popover>
-                        {props.hint}
-                      </EtsBootstrap.Popover>
-                    )}
-                    placement="bottom">
-                    <EtsBootstrap.Glyphicon glyph="info-sign" />
-                  </EtsBootstrap.OverlayTrigger>
-                </ThOverlayTrigger>)
+                && (
+                  <OverlayTriggerStyled>
+                    <ThOverlayTrigger>
+                      <EtsBootstrap.OverlayTrigger
+                        trigger={['hover', 'focus']}
+                        overlay={(
+                          <EtsBootstrap.Popover>
+                            {props.hint}
+                          </EtsBootstrap.Popover>
+                        )}
+                        placement="bottom">
+                        <EtsBootstrap.Glyphicon glyph="info-sign" />
+                      </EtsBootstrap.OverlayTrigger>
+                    </ThOverlayTrigger>
+                  </OverlayTriggerStyled>  )
             }
           </StringFieldWrapperStyled>
         </div>

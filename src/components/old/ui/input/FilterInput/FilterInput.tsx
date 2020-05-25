@@ -125,6 +125,8 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
       />
     );
 
+    // Если надо будет править верстку, смотри сюда components/new/ui/registry/components/data/filters/filters-lines/advanced-date/AdvancedDateFilter.tsx
+
     return (
       <div className="advanced-string-input">
         <ReactSelect

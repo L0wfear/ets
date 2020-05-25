@@ -371,13 +371,13 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         id="car_ids"
         modalKey={props.page}
         type="select"
-        multi
+        multi={props.IS_CREATING || props.for_column}
         label="Транспортное средство (поиск по рег. и гаражному номеру ТС)"
         error={props.error}
         className="white-space-pre-wrap"
         disabled={props.disabled}
         options={CARS_OPTIONS}
-        value={value}
+        value={props.IS_CREATING ? value : !props.IS_CREATING && !props.for_column ? value[0] : value}
         onChange={this.handleChange}
         components={!IS_TEMPLATE ? FieldCarIdsMissionSelectComponents : null}
         clearable={false}

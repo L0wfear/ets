@@ -111,55 +111,59 @@ class MissionTemplateForm extends React.PureComponent<
   }
 
   handleSubmit = async () => {
-    const {formState: state} = this.props;
+    const { formState: state } = this.props;
 
-    if (state.for_column === false && state.car_ids.length > 1) {
-      try {
-        await global.confirmDialog({
-          title: 'Внимание',
-          body: 'Создать шаблоны заданий на каждое ТС?',
-        });
-      } catch {
-        return;
-      }
-
-      let result = [];
-      let object = [];
-      Object.keys(state).forEach((k) => {
-        if (isArray(state[k])) {
-          state[k].forEach((v, i) => {
-            if (!result[i]) {
-              result[i] = {};
-            }
-            result[i][k] = [v];
+    if (!state.id) {
+      if (state.for_column === false && state.car_ids.length > 1) {
+        try {
+          await global.confirmDialog({
+            title: 'Внимание',
+            body: 'Создать шаблоны заданий на каждое ТС?',
           });
+        } catch {
+          return;
         }
-        object = result.map((o) => {
-          return {
-            ...state,
-            ...o,
-            car_gov_numbers_text: o.car_gov_numbers.toString(),
-          };
-        });
-      });
 
-      for (let i = 0; i < object.length; i++) {
-        const template = object[i];
-        const response = await this.props.submitAction(template, false);
+        let result = [];
+        let object = [];
+        Object.keys(state).forEach((k) => {
+          if (isArray(state[k])) {
+            state[k].forEach((v, i) => {
+              if (!result[i]) {
+                result[i] = {};
+              }
+              result[i][k] = [v];
+            });
+          }
+          object = result.map((o) => {
+            return {
+              ...state,
+              ...o,
+              car_gov_numbers_text: o.car_gov_numbers.toString(),
+            };
+          });
+        });
+
+        for (let i = 0; i < object.length; i++) {
+          const template = object[i];
+          const response = await this.props.submitAction(template, false);
+
+          if (response) {
+            this.props.handleHide(true, response);
+          }
+
+        }
+      } else {
+        const response = await this.props.submitAction(state, false);
 
         if (response) {
           this.props.handleHide(true, response);
         }
 
+        return response;
       }
     } else {
-      const response = await this.props.submitAction(state, false);
-
-      if (response) {
-        this.props.handleHide(true, response);
-      }
-
-      return response;
+      await this.props.defaultSubmit();
     }
   };
 
@@ -217,6 +221,7 @@ class MissionTemplateForm extends React.PureComponent<
                     car_special_model_names={state.car_special_model_names}
                     car_type_ids={state.car_type_ids}
                     car_type_names={state.car_type_names}
+                    IS_CREATING={IS_CREATING}
 
                     IS_TEMPLATE
 

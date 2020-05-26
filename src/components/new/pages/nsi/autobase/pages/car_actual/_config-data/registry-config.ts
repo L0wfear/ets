@@ -95,6 +95,16 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
+        valueKey: 'passport_number',
+        title: 'Серия и номер ПТС/ПСМ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'vin',
+        title: 'VIN',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'car_group_name',
         title: 'Группа техники',
         type: 'multiselect',

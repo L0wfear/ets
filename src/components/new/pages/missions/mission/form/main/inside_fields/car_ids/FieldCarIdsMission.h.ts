@@ -34,6 +34,7 @@ export type OwnPropsFieldCarIdsMission = {
   structure_id: Mission['structure_id'];
   order_operation_id?: Mission['order_operation_id'];
 
+  IS_CREATING?: boolean;
   IS_TEMPLATE?: boolean;
   MISSION_IS_ORDER_SOURCE?: boolean;
 

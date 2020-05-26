@@ -81,7 +81,7 @@ const ButtonRemoveMission: React.FC<ButtonRemoveMissionProps> = (props) => {
       <EtsBootstrap.Button id="remove-element" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
       </EtsBootstrap.Button>
-      {checkedRowsLength > 1 && (
+      {checkedRowsLength && (
         <ModalYesNo
           show={isOpenModalRemove}
           handleHide={handleClickCloseForm}

@@ -1319,6 +1319,40 @@ class WaybillForm extends React.Component<Props, State> {
     }
   };
 
+  handleChangeMotohoursOdometr = async (key, value) => {
+    if(value){
+      // берем значения из аоследнего закрытого ПЛ*
+      await this.refresh(true);
+      this.handleChange(key, value);
+    } else {
+      try {
+        await global.confirmDialog({
+          title: 'Внимание',
+          body: key === 'car_has_motohours'
+            ? 'Очистить введенные данные счетчика моточасов?'
+            : 'Очистить введенные данные по одометру?',
+          okName: 'Да',
+          cancelName: 'Нет',
+        });
+        this.handleMultipleChange( key === 'car_has_motohours'
+          ? {
+            motohours_start: null,
+            motohours_end: null,
+            motohours_diff: null,
+            [key]: value,
+          }
+          : { // key === 'car_has_odometer'
+            odometr_start: null,
+            odometr_end: null,
+            odometr_diff: null,
+            [key]: value,
+          });
+      } catch (e) {
+        console.error(e);  // eslint-disable-line
+      }
+    }
+  };
+
   handleChangeHasEquipmentOnTrue = async () => {
     const {
       formState: { car_id },
@@ -2101,35 +2135,67 @@ class WaybillForm extends React.Component<Props, State> {
                 />
               </EtsBootstrap.Col>
               {state.equipment_fuel && (
-                <React.Fragment>
-                  <EtsBootstrap.Col md={4}>
-                    <ExtField
-                      id="is_one_fuel_tank"
-                      type="select"
-                      label="Таксировка с одного топливного бака"
-                      value={state.is_one_fuel_tank}
-                      options={YES_NO_SELECT_OPTIONS_BOOL}
-                      onChange={this.handleIsOneFuelTank}
-                      disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
-                      clearable={false}
-                      modalKey={modalKey}
-                    />
-                  </EtsBootstrap.Col>
-                  {!state.is_one_fuel_tank && (
-                    <EtsBootstrap.Col md={4}>
-                      <ExtField
-                        type="number"
-                        label="Общее топливо при выезде, л"
-                        value={
-                          Number(state.equipment_fuel_start)
-                          + Number(state.fuel_start)
-                        }
-                        format="toFixed3"
-                        disabled
-                      />
-                    </EtsBootstrap.Col>
-                  )}
-                </React.Fragment>
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="is_one_fuel_tank"
+                    type="select"
+                    label="Таксировка с одного топливного бака"
+                    value={state.is_one_fuel_tank}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleChange}
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
+                    clearable={false}
+                    modalKey={modalKey}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {CAR_HAS_ODOMETER && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="car_has_motohours"
+                    type="select"
+                    label="На ТС установлен счетчик моточасов"
+                    value={state.car_has_motohours}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleChangeMotohoursOdometr}
+                    disabled={!isPermittedByKey.update} // !!!!<<<<<<<<<
+                    clearable={false}
+                    modalKey={modalKey}
+                    boundKeys="car_has_motohours"
+                    error={errors.car_has_motohours}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {!CAR_HAS_ODOMETER && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="car_has_odometr"
+                    type="select"
+                    label="На ТС установлен одометр"
+                    value={state.car_has_odometr}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleChangeMotohoursOdometr}
+                    disabled={!isPermittedByKey.update} // !!!!<<<<<<<<<
+                    clearable={false}
+                    modalKey={modalKey}
+                    boundKeys="car_has_odometr"
+                    error={errors.car_has_odometr}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {Boolean(state.equipment_fuel && !state.is_one_fuel_tank) && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    type="number"
+                    label="Общее топливо при выезде, л"
+                    value={
+                      Number(state.equipment_fuel_start)
+                      + Number(state.fuel_start)
+                    }
+                    format="toFixed3"
+                    disabled
+                  />
+                </EtsBootstrap.Col>
               )}
             </EtsBootstrap.Row>
           )}
@@ -2209,8 +2275,6 @@ class WaybillForm extends React.Component<Props, State> {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </Div>
-          {/*  */}
-
           <Div hidden={!state.car_id}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
@@ -2225,228 +2289,236 @@ class WaybillForm extends React.Component<Props, State> {
                   color={UiConstants.colorGrey}>
                   <EtsBootstrap.Row>
                     <EtsBootstrap.Col md={12}>
-                      <Div hidden={!CAR_HAS_ODOMETER}>
-                        <EtsBootstrap.Col md={4}>
-                          <h4>Одометр</h4>
-                          <ExtField
-                            id="odometr-start"
-                            type="number"
-                            label="Выезд из гаража, км"
-                            error={errors.odometr_start}
-                            value={state.odometr_start}
-                            disabled={
-                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                              || Boolean(lastWaybill && lastWaybill['odometr_end'])
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="odometr_start"
-                          />
-                          <ExtField
-                            id="odometr-end"
-                            type="number"
-                            label="Возвращение в гараж, км"
-                            error={errors.odometr_end}
-                            value={state.odometr_end}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled={
-                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                              || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values)
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="odometr_end"
-                          />
-
-                          <ExtField
-                            id="odometr-diff"
-                            type="number"
-                            label="Пробег, км"
-                            value={state.odometr_diff}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled
-                          />
-                        </EtsBootstrap.Col>
-                      </Div>
-                      <Div hidden={CAR_HAS_ODOMETER}>
-                        <EtsBootstrap.Col md={4}>
-                          <h4>Счетчик моточасов</h4>
-                          <ExtField
-                            id="motohours-start"
-                            type="number"
-                            label="Выезд из гаража, м/ч"
-                            error={errors.motohours_start}
-                            value={state.motohours_start}
-                            disabled={
-                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                              || Boolean(lastWaybill && lastWaybill['motohours_end'])
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="motohours_start"
-                          />
-
-                          <ExtField
-                            id="motohours-end"
-                            type="number"
-                            label="Возвращение в гараж, м/ч"
-                            error={errors.motohours_end}
-                            value={state.motohours_end}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled={
-                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                              || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values)
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="motohours_end"
-                          />
-
-                          <ExtField
-                            id="motohours_diff"
-                            type="number"
-                            label="Пробег, м/ч"
-                            value={state.motohours_diff}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled
-                          />
-                        </EtsBootstrap.Col>
-                      </Div>
-                      <EtsBootstrap.Col md={8}>
-                        <EtsBootstrap.Row>
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
                           <EtsBootstrap.Col md={12}>
-                            <h4>Топливо</h4>
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <FuelType
-                              modalKey={modalKey}
-                              keyField="fuel_type"
-                              value={state.fuel_type}
-                              error={errors.fuel_type}
-                              disabled={
-                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={12}>
+                                <h4>Топливо</h4>
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={4}>
+                                <FuelType
+                                  modalKey={modalKey}
+                                  keyField="fuel_type"
+                                  value={state.fuel_type}
+                                  error={errors.fuel_type}
+                                  disabled={
+                                    IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
                                 || (lastWaybill && lastWaybill['fuel_type'])
-                              }
-                              options={FUEL_TYPES}
-                              handleChange={this.props.handleMultipleChange}
-                            />
+                                  }
+                                  options={FUEL_TYPES}
+                                  handleChange={this.props.handleMultipleChange}
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                {!(IS_DRAFT || IS_CREATING) && (
+                                  <ExtField
+                                    id="fuel-end"
+                                    type="number"
+                                    label="Возврат по таксировке, л"
+                                    error={errors.fuel_end}
+                                    value={state.fuel_end}
+                                    format="toFixed3"
+                                    disabled
+                                  />
+                                )}
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="tax-consumption"
+                                  type="number"
+                                  label="Расход по таксировке, л"
+                                  error={errors.tax_consumption}
+                                  value={state.tax_consumption}
+                                  format="toFixed3"
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fuel_start"
+                                  type="number"
+                                  label="Выезд, л"
+                                  error={errors.fuel_start}
+                                  value={state.fuel_start}
+                                  disabled={
+                                    IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
+                                  }
+                                  onChange={this.handleChange}
+                                  boundKeys="fuel_start"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fact-fuel-end"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Возврат фактический, л"
+                                  error={errors.fact_fuel_end}
+                                  value={state.fact_fuel_end}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled={
+                                    IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
+                                || !isPermittedByKey.update
+                                  }
+                                  onChange={this.handleChange}
+                                  boundKeys="fact_fuel_end"
+                                  showRedBorder={
+                                    state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
+                                  }
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fact-consuption"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Расход фактический, л"
+                                  error={errors.fact_consuption}
+                                  value={state.fact_consuption}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                  onChange={this.handleChange}
+                                  boundKeys="fact_consuption"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fuel-given"
+                                  type="number"
+                                  label="Выдано, л"
+                                  error={errors.fuel_given}
+                                  value={state.fuel_given}
+                                  disabled
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                {
+                                  Boolean(IS_ACTIVE || IS_CLOSED)
+                                  && <InfoBlock>
+                                    Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+                                  </InfoBlock>
+                                }
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="consuption-diff"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Расхождение в данных расхода, л"
+                                  error={errors.consuption_diff}
+                                  value={state.consuption_diff}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                  onChange={this.handleChange}
+                                  boundKeys="consuption_diff"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            {!(IS_DRAFT || IS_CREATING) && (
+                        </EtsBootstrap.Col>
+                        
+                      </EtsBootstrap.Row>
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
+                          { Boolean(CAR_HAS_ODOMETER || state.car_has_odometr)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Одометр</h4>
                               <ExtField
-                                id="fuel-end"
+                                id="odometr-start"
                                 type="number"
-                                label="Возврат по таксировке, л"
-                                error={errors.fuel_end}
-                                value={state.fuel_end}
-                                format="toFixed3"
+                                label="Выезд из гаража, км"
+                                error={errors.odometr_start}
+                                value={state.odometr_start}
+                                disabled={
+                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                      || Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_start"
+                              />
+                              <ExtField
+                                id="odometr-end"
+                                type="number"
+                                label="Возвращение в гараж, км"
+                                error={errors.odometr_end}
+                                value={state.odometr_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                      || (!isPermittedByKey.update
+                                      && !isPermittedByKey.departure_and_arrival_values)
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_end"
+                              />
+                              <ExtField
+                                id="odometr-diff"
+                                type="number"
+                                label="Пробег, км"
+                                value={state.odometr_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
                                 disabled
                               />
-                            )}
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="tax-consumption"
-                              type="number"
-                              label="Расход по таксировке, л"
-                              error={errors.tax_consumption}
-                              value={state.tax_consumption}
-                              format="toFixed3"
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
-                              disabled
-                            />
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel_start"
-                              type="number"
-                              label="Выезд, л"
-                              error={errors.fuel_start}
-                              value={state.fuel_start}
-                              disabled={
-                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fuel_start"
-                              format="toFixed3"
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fact-fuel-end"
-                              type="number"
-                              modalKey={modalKey}
-                              label="Возврат фактический, л"
-                              error={errors.fact_fuel_end}
-                              value={state.fact_fuel_end}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
-                              disabled={
-                                IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
-                                || !isPermittedByKey.update
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fact_fuel_end"
-                              showRedBorder={
-                                state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
-                              }
-                              format="toFixed3"
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fact-consuption"
-                              type="number"
-                              modalKey={modalKey}
-                              label="Расход фактический, л"
-                              error={errors.fact_consuption}
-                              value={state.fact_consuption}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
-                              disabled
-                              onChange={this.handleChange}
-                              boundKeys="fact_consuption"
-                              format="toFixed3"
-                            />
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel-given"
-                              type="number"
-                              label="Выдано, л"
-                              error={errors.fuel_given}
-                              value={state.fuel_given}
-                              disabled
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            {
-                              Boolean(IS_ACTIVE || IS_CLOSED)
-                              && <InfoBlock>
-                                Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                              </InfoBlock>
-                            }
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="consuption-diff"
-                              type="number"
-                              modalKey={modalKey}
-                              label="Расхождение в данных расхода, л"
-                              error={errors.consuption_diff}
-                              value={state.consuption_diff}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
-                              disabled
-                              onChange={this.handleChange}
-                              boundKeys="consuption_diff"
-                              format="toFixed3"
-                            />
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                      </EtsBootstrap.Col>
+                            </EtsBootstrap.Col>
+                          }
+                          { Boolean(!CAR_HAS_ODOMETER || state.car_has_motohours)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Счетчик моточасов</h4>
+                              <ExtField
+                                id="motohours-start"
+                                type="number"
+                                label="Выезд из гаража, м/ч"
+                                error={errors.motohours_start}
+                                value={state.motohours_start}
+                                disabled={
+                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_start"
+                              />
+
+                              <ExtField
+                                id="motohours-end"
+                                type="number"
+                                label="Возвращение в гараж, м/ч"
+                                error={errors.motohours_end}
+                                value={state.motohours_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                || (!isPermittedByKey.update
+                                && !isPermittedByKey.departure_and_arrival_values)
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_end"
+                              />
+
+                              <ExtField
+                                id="motohours_diff"
+                                type="number"
+                                label="Пробег, м/ч"
+                                value={state.motohours_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled
+                              />
+                            </EtsBootstrap.Col>
+                          }
+                        </EtsBootstrap.Col>
+                      </EtsBootstrap.Row>
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={2}>
                       <EtsBootstrap.Col md={12}>

@@ -114,6 +114,8 @@ export type WaybillRegistryRow = {
   work_mode_name: string;
   work_mode_text: string;
   season: 'winter' | 'summer';
+  car_has_motohours: boolean;
+  car_has_odometr: boolean;
 };
 
 export type Waybill = (

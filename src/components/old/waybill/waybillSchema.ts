@@ -5,7 +5,7 @@ import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/da
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import { isNumber, isArray, isString } from 'util';
+import { isNumber, isArray, isString, isNullOrUndefined } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
@@ -587,10 +587,10 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { odometr_start, gov_number }) => {
+        (value, { odometr_start, gov_number, car_has_odometr }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (CAR_HAS_ODOMETER) {
-            if ((odometr_start || isNumber(odometr_start)) && !value) {
+          if (CAR_HAS_ODOMETER || car_has_odometr) {
+            if ((odometr_start || isNumber(odometr_start)) && !value) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
             if (value && value < odometr_start) {
@@ -606,15 +606,45 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { motohours_start, gov_number }) => {
+        (value, { motohours_start, gov_number, car_has_motohours }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (!CAR_HAS_ODOMETER) {
+          if (!CAR_HAS_ODOMETER || car_has_motohours) {
             if ((motohours_start || isNumber(motohours_start)) && !value) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
             }
             if (value && value < motohours_start) {
               return '"Счетчик моточасов.Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов.Выезд"';
             }
+          }
+          return false;
+        }
+      ],
+    },
+    car_has_motohours: {
+      title: 'На ТС установлен счетчик моточасов',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_motohours }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && CAR_HAS_ODOMETER && isNullOrUndefined(car_has_motohours)) {
+            return 'Поле "На ТС установлен счетчик моточасов" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
+    car_has_odometr: {
+      title: 'На ТС установлен одометр',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_odometr }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
+            return 'Поле "На ТС установлен одометр" должно быть заполнено';
           }
           return false;
         }

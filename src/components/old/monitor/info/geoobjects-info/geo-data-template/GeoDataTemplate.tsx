@@ -38,8 +38,6 @@ const InfoODh: React.FC<any> = ({ data, ...props }) =>
     {data.total_area}
     <h5>Площадь проезжей части для механизированной уборки</h5>
     {data.total_auto_clean_area || '--'}
-    <h5>Площадь проезжей части для ручной уборки</h5>
-    {data.total_manual_clean_area || '---'}
     <h5>Площадь тротуаров для механизированной уборки</h5>
     {data.auto_footway_area || '--'}
     <h5>Площадь тротуаров для ручной уборки</h5>

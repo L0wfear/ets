@@ -23,7 +23,6 @@ export const defaultOdh: Odh = {
   snow_area: null,
   total_area: null,
   total_auto_clean_area: null,
-  total_manual_clean_area: null,
 };
 
 export const getDefaultOdhFormElement = (element: Partial<Odh>): Odh => {

@@ -73,22 +73,6 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   title: 'Топливная карта',
   placeholder: '',
   format: 'select',
-  disabledIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
-  resetIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
   onChange: (onChange) => (value, option) => {
     onChange({
       fuel_card_id: value,
@@ -276,7 +260,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             const firstElement = newArr[0];
             if (!firstElement.fuel_card_id) {
               const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
-              if (refillTypeData && refillTypeData.rowData.is_fuel_card_required) {
+              if (refillTypeData) {
                 newArr = [
                   {
                     ...firstElement,

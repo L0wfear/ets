@@ -184,7 +184,7 @@ export const metaNormValue: TableMeta<ValuesOf<Mission['consumable_materials']>>
   key: 'norm_value',
   title: 'Норма расхода',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdNormValue,
 };

@@ -133,7 +133,7 @@ export const metaConsumableMaterialId: TableMeta<ValuesOf<Mission['consumable_ma
   key: 'consumable_material_id',
   title: 'Расходный материал',
   format: 'select',
-  width: 100,
+  width: 200,
   options: [],
   uniqValueInCol: true,
 

@@ -96,7 +96,7 @@ export const metaPlanValue: TableMeta<ValuesOf<Mission['consumable_materials']>>
   key: 'plan_value',
   title: 'Объем работы (план)',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdPlanValue,
 };

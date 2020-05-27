@@ -100,7 +100,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         width: 75,
       },
       {
-        value: `Значение ('км | м/ч | раз | час')`,
+        value: `Значение (км | м/ч | раз | час)`,
         width: 150,
       },
       {

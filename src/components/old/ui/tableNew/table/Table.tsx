@@ -4,7 +4,7 @@ import Tbody from 'components/old/ui/tableNew/table/tbody/Tbody';
 import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { setStickyThead } from 'utils/stickyTableHeader';
 
-import { makeData, makeDataByPagination } from 'components/old/ui/tableNew/utils';
+import { makeData, makeDataByPagination, hideChildren } from 'components/old/ui/tableNew/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const PaginatorTsx: any = Paginator;
@@ -47,7 +47,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       tableMeta: props.tableMeta,
     });
 
-    state.pagination.totalCount = state.data.length;
+    state.pagination.totalCount = hideChildren(state.data, { uniqName: props.uniqName }).length;
     state.pagination.maxPage = Math.ceil(
       state.pagination.totalCount / state.pagination.perPageCount,
     );
@@ -87,7 +87,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
       changesState.activeFilter = nextProps.activeFilter;
       changesState.pagination = {
         ...prevState.pagination,
-        totalCount: changesState.data.length,
+        totalCount: hideChildren(changesState.data, { uniqName: nextProps.uniqName }).length,
       };
       changesState.pagination.maxPage = Math.ceil(
         changesState.pagination.totalCount

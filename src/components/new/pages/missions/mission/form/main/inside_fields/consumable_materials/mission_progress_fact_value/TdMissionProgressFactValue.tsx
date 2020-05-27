@@ -74,7 +74,7 @@ export const metaMissionProgressFactValue: TableMeta<ValuesOf<Mission['consumabl
   title: 'Объем работы (ГЛОНАСС)',
   titlePopup: 'После закрытия задания данное поле не будет обновляться',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdMissionProgressFactValue,
 };

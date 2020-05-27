@@ -163,7 +163,7 @@ export const metaConsumption: TableMeta<ValuesOf<Mission['consumable_materials']
   key: 'consumption',
   title: 'Расход (итого)',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdConsumption,
 };

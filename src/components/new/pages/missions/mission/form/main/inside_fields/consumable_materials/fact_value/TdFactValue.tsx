@@ -193,7 +193,7 @@ export const metaFactValue: TableMeta<ValuesOf<Mission['consumable_materials']>>
   key: 'fact_value',
   title: 'Объем работы (факт)',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdFactValue,
 };

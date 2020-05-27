@@ -2158,7 +2158,7 @@ class WaybillForm extends React.Component<Props, State> {
                     value={state.car_has_motohours}
                     options={YES_NO_SELECT_OPTIONS_BOOL}
                     onChange={this.handleChangeMotohoursOdometr}
-                    disabled={!isPermittedByKey.update} // !!!!<<<<<<<<<
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                     clearable={false}
                     modalKey={modalKey}
                     boundKeys="car_has_motohours"
@@ -2175,7 +2175,7 @@ class WaybillForm extends React.Component<Props, State> {
                     value={state.car_has_odometr}
                     options={YES_NO_SELECT_OPTIONS_BOOL}
                     onChange={this.handleChangeMotohoursOdometr}
-                    disabled={!isPermittedByKey.update} // !!!!<<<<<<<<<
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                     clearable={false}
                     modalKey={modalKey}
                     boundKeys="car_has_odometr"

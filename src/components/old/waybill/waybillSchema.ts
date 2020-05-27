@@ -345,7 +345,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       required: false,
       dependencies: [
         (value, formData) => {
-          if (!hasMotohours(formData.gov_number) && isEmpty(value)) {
+          if ((!hasMotohours(formData.gov_number) || formData.car_has_odometr) && isEmpty(value)) {
             return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
           return false;
@@ -359,7 +359,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       required: false,
       dependencies: [
         (value, formData) => {
-          if (hasMotohours(formData.gov_number) && isEmpty(value)) {
+          if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
           return false;

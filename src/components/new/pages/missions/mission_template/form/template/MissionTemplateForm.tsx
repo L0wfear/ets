@@ -355,17 +355,19 @@ class MissionTemplateForm extends React.PureComponent<
           {isPermitted ? ( // либо обновление, либо создание
             <DisplayFlexAlignCenterFooterForm>
               <EtsButtonsContainer>
-                <EtsBootstrap.Dropdown
-                  id="mission_template-print-dropdown"
-                  dropup
-                  disabled={!this.props.canSave}
-                  toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
-                >
-                  <EtsBootstrap.DropdownMenu dropup>
-                    <EtsBootstrap.MenuItem eventKey={printMapKeyBig} onSelect={this.handlePrint}>Формате А3</EtsBootstrap.MenuItem>
-                    <EtsBootstrap.MenuItem eventKey={printMapKeySmall} onSelect={this.handlePrint}>Формате А4</EtsBootstrap.MenuItem>
-                  </EtsBootstrap.DropdownMenu>
-                </EtsBootstrap.Dropdown>
+                { !IS_CREATING
+                  && <EtsBootstrap.Dropdown
+                    id="mission_template-print-dropdown"
+                    dropup
+                    disabled={!this.props.canSave}
+                    toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
+                  >
+                    <EtsBootstrap.DropdownMenu dropup>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeyBig} onSelect={this.handlePrint}>Формате А3</EtsBootstrap.MenuItem>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeySmall} onSelect={this.handlePrint}>Формате А4</EtsBootstrap.MenuItem>
+                    </EtsBootstrap.DropdownMenu>
+                  </EtsBootstrap.Dropdown>
+                }
                 <EtsBootstrap.Button
                   disabled={!this.props.canSave}
                   onClick={this.handleSubmit}>

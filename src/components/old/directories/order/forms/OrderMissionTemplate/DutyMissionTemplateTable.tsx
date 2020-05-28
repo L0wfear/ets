@@ -165,6 +165,7 @@ const Table: React.FC<any> = React.memo(
         checked={props.checked}
         selectField="frontId"
         initialSort="frontId"
+        withPerPageSelector
       />
     );
   },

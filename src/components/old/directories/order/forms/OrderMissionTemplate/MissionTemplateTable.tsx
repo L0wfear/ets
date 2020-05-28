@@ -209,6 +209,7 @@ const Table: React.FC<MissionTemplateOrderTableProps> = React.memo(
         selectField="frontId"
         checked={props.checked}
         highlightClassMapper={highlightClassMapper}
+        withPerPageSelector
       />
     );
   },

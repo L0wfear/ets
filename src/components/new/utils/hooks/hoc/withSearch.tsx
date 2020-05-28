@@ -127,6 +127,7 @@ const withSearch = <OwnProps extends object, Params extends Record<string, strin
           history,
           history.push,
           location.search,
+          match.params,
         ],
       );
 

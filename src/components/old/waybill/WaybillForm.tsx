@@ -2142,7 +2142,7 @@ class WaybillForm extends React.Component<Props, State> {
                     label="Таксировка с одного топливного бака"
                     value={state.is_one_fuel_tank}
                     options={YES_NO_SELECT_OPTIONS_BOOL}
-                    onChange={this.handleChange}
+                    onChange={this.handleIsOneFuelTank}
                     disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                     clearable={false}
                     modalKey={modalKey}

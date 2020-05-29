@@ -60,7 +60,7 @@ type TableInputProps = {
   array: Array<any>;
   errors?: Array<any>;
   onChange: any;
-  withScrollX?: boolean;
+
   header: any;
   selectedRowIndex: number;
   setSelectedRowIndex: any;
@@ -102,7 +102,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
             Boolean(props.array.length)
               && (
                 <EtsTableDataContainer>
-                  <EtsTableWrapNoScroll className="ets_table_wrap" withScrollX={props?.withScrollX}>
+                  <EtsTableWrapNoScroll className="ets_table_wrap">
                     <EtsTable fixedWidth id={`${props.id || 'default'}_table`}>
                       <TableInputThead
                         meta={props.meta}

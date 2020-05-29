@@ -131,7 +131,7 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
           setSelectedRowIndex={setSelectedRowIndex}
 
           disabled={disabled}
-          withScrollX
+
           formDataKey={props.formDataKey}
         />
         {

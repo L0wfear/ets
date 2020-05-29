@@ -21,7 +21,11 @@ class AppHeader extends React.Component<{}, any> {
     document.addEventListener('keydown', (event: any) => {
       if ('getAttribute' in event.target && event.target.getAttribute('type') === 'number') {
 
-        if (event.key === 'e') {
+        if (event.key === 'e' || event.key === 'E') {
+          event.preventDefault();
+        }
+
+        if (event.which < 48 || event.which > 57) {
           event.preventDefault();
         }
 

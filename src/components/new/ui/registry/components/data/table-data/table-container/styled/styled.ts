@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-export const EtsTableWrapNoScroll = styled.div`
+export const EtsTableWrapNoScroll = styled.div<{withScrollX?: boolean;}>`
   margin: 2.5px;
   min-height: 100px;
-  overflow: auto;
+  overflow: ${(props) => props.withScrollX ? 'auto' : 'visible'}
 `;
 
 export const EtsTableWrap = styled(EtsTableWrapNoScroll)<{ addToMinusHeight?: number; isGroupColumn?: boolean; }>`

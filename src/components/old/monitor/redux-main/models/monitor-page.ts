@@ -16,6 +16,7 @@ export const MONITOR_PAGE_TOGGLE_STATUS_GEO = MONITOR_PAGE`TOGGLE_STATUS_GEO`;
 export const MONITOR_PAGE_TOGGLE_STATUS_GEOOBECT = MONITOR_PAGE`TOGGLE_STATUS_GEOOBECT`;
 export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_GOV_NUMBER = MONITOR_PAGE`TOGGLE_STATUS_SHOW_GOV_NUMBER`;
 export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK_POINTS = MONITOR_PAGE`TOGGLE_STATUS_SHOW_TRACK_POINTS`;
+export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK = MONITOR_PAGE`TOGGLE_STATUS_SHOW_TRACK`;
 
 export const MONITOR_PAGE_ADD_TO_SELECTED_GEOMETRY = MONITOR_PAGE`ADD_TO_SELECTED_GEOMETRY`;
 export const MONITOR_PAGE_REMOVE_FROM_SELECTED_GEOMETRY = MONITOR_PAGE`REMOVE_FROM_SELECTED_GEOMETRY`;
@@ -56,6 +57,7 @@ export type IStateMonitorPage = {
   };
   statusGeo: {
     SHOW_TRACK: boolean;
+    SHOW_TRACK_LINES_BY_SENSOR: boolean;
     SHOW_GEOOBJECTS: boolean;
   };
   geoobjects: {
@@ -113,6 +115,7 @@ export const initialMonitorState: IStateMonitorPage = {
   statusGeo: {
     SHOW_TRACK: true,
     SHOW_GEOOBJECTS: true,
+    SHOW_TRACK_LINES_BY_SENSOR: true,
   },
   carsByStatus: {
     in_move: 0,
@@ -253,6 +256,15 @@ export default (state = initialMonitorState, { type, payload }) => {
       return {
         ...state,
         SHOW_TRACK_POINTS: !state.SHOW_TRACK_POINTS,
+      };
+    }
+    case MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK: {
+      return {
+        ...state,
+        statusGeo: {
+          ...state.statusGeo,
+          SHOW_TRACK: !state.statusGeo.SHOW_TRACK,
+        }
       };
     }
     case MONITOR_PAGE_RESER_CAR_STATUS: {

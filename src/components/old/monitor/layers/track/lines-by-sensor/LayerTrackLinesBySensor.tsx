@@ -20,7 +20,7 @@ type PropsLayerTrackLines = {
   track: Array<any>;
   lastPoint: any;
   front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
-  SHOW_TRACK: boolean;
+  SHOW_TRACK_LINES_BY_SENSOR: boolean;
 };
 
 type StateLayerTrackLines = {
@@ -42,14 +42,14 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
       const { track, front_cars_sensors_equipment } = this.props;
 
       if (track.length > 1) {
-        this.drawTrackLines(track, front_cars_sensors_equipment, this.props.SHOW_TRACK);
+        this.drawTrackLines(track, front_cars_sensors_equipment, this.props.SHOW_TRACK_LINES_BY_SENSOR);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
   }
 
   componentDidUpdate(prevProps) {
-    const { SHOW_TRACK } = this.props;
+    const { SHOW_TRACK_LINES_BY_SENSOR } = this.props;
 
     if (!(prevProps.track.length > 1)) {  // Если трек не было отрисован
       const {
@@ -58,7 +58,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
       } = this.props;
 
       if (track.length > 1) {
-        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK);
+        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK_LINES_BY_SENSOR);
       }
     } else {
       const {
@@ -69,13 +69,13 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 
       if (prevProps.front_cars_sensors_equipment !== front_cars_sensors_equipment) {  // Если состояние датчиков навесного оборудования изменилось
         this.props.removeFeaturesFromSource(null, true);
-        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK);
+        this.drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK_LINES_BY_SENSOR);
 
       } else if (prevProps.lastPoint !== lastPoint) { // если получили новую точку в трек
-        this.drawTrackLines(track.slice(-2), front_cars_sensors_equipment, SHOW_TRACK);
+        this.drawTrackLines(track.slice(-2), front_cars_sensors_equipment, SHOW_TRACK_LINES_BY_SENSOR);
 
-      } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {  //  Если изменился глобавльный флаг отображние трека на карте
-        this.changeStyleForLines(SHOW_TRACK);
+      } else if (SHOW_TRACK_LINES_BY_SENSOR !== prevProps.SHOW_TRACK_LINES_BY_SENSOR) {  //  Если изменился глобавльный флаг отображние трека на карте
+        this.changeStyleForLines(SHOW_TRACK_LINES_BY_SENSOR);
       }
     }
   }
@@ -84,7 +84,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
     this.props.removeLayer();
   }
 
-  drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK) {
+  drawTrackLines(track, front_cars_sensors_equipment, SHOW_TRACK_LINES_BY_SENSOR) {
     if (Object.values(front_cars_sensors_equipment).some(({ show }) => show)) {
       let linePoints = [];
       let lastStatus = null;
@@ -111,7 +111,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 
             feature.set('notSelected', true);
             feature.set('status', lastStatus);
-            feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK));
+            feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK_LINES_BY_SENSOR));
             this.props.addFeaturesToSource(feature);
 
             linePoints = [currPoint];
@@ -131,18 +131,18 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 
         feature.set('notSelected', true);
         feature.set('status', lastStatus);
-        feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLineBySensor(lastStatus, SHOW_TRACK_LINES_BY_SENSOR));
         this.props.addFeaturesToSource(feature);
       }
     }
   }
 
-  changeStyleForLines(SHOW_TRACK) {
+  changeStyleForLines(SHOW_TRACK_LINES_BY_SENSOR) {
     this.props.getAllFeatures().forEach((feature) => {
-      if (!SHOW_TRACK) {
-        feature.setStyle(getStyleForTrackLineBySensor(true, SHOW_TRACK));
+      if (!SHOW_TRACK_LINES_BY_SENSOR) {
+        feature.setStyle(getStyleForTrackLineBySensor(true, SHOW_TRACK_LINES_BY_SENSOR));
       } else {
-        feature.setStyle(getStyleForTrackLineBySensor(feature.get('status'), SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLineBySensor(feature.get('status'), SHOW_TRACK_LINES_BY_SENSOR));
       }
     });
   }
@@ -153,7 +153,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 }
 
 const mapStateToProps = (state) => ({
-  SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
+  SHOW_TRACK_LINES_BY_SENSOR: state.monitorPage.statusGeo.SHOW_TRACK_LINES_BY_SENSOR,
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
   track: state.monitorPage.carInfo.trackCaching.track,
   lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),

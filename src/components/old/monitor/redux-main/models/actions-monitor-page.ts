@@ -9,6 +9,7 @@ import {
   MONITOR_PAGE_TOGGLE_STATUS_GEOOBECT,
   MONITOR_PAGE_TOGGLE_STATUS_SHOW_GOV_NUMBER,
   MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK_POINTS,
+  MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK,
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_ADD_TO_SELECTED_GEOMETRY,
   MONITOR_PAGE_REMOVE_FROM_SELECTED_GEOMETRY,
@@ -114,6 +115,11 @@ export const monitorPageToggleStatusShowGovNumber = () => ({
 
 export const monitorPageToggleStatusShowTrackPoints = () => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK_POINTS,
+  payload: {},
+});
+
+export const monitorPageToggleStatusShowTrack = () => ({
+  type: MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK,
   payload: {},
 });
 

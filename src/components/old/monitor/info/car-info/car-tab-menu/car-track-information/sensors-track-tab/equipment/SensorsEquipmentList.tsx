@@ -6,7 +6,7 @@ import * as cx from 'classnames';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { carInfoToggleSensorShow } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { monitorPageToggleStatusShowTrackPoints } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageToggleStatusShowTrackPoints, monitorPageToggleStatusShowTrack } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { DivNone } from 'global-styled/global-styled';
 import { sensorTrackColor } from 'constants/sensors';
 import { ColorSensorDiv } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/styled';
@@ -17,7 +17,9 @@ type PropsSensorsEquipmentList = {
   front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   toggleSensorOnMap: any;
   toggleShowTrackPoints: any;
+  toggleShowTrack: any;
   SHOW_TRACK_POINTS: boolean;
+  SHOW_TRACK: boolean;
 };
 
 const getRightRus = (count) => {
@@ -33,7 +35,13 @@ const getRightRus = (count) => {
 };
 
 const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
-  const { track } = props;
+  const { 
+    track,
+    toggleShowTrackPoints,
+    SHOW_TRACK_POINTS,
+    toggleShowTrack,
+    SHOW_TRACK,
+  } = props;
   const sensors_equipment = Object.entries(props.front_cars_sensors_equipment);
 
   const disabledByKey = sensors_equipment.reduce(
@@ -46,16 +54,27 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
 
   const hasSomeData = sensors_equipment.find(([, { show }]) => show);
 
+  const toggleTrack = React.useCallback(() => {
+    toggleShowTrackPoints();
+    toggleShowTrack();
+  }, [toggleShowTrackPoints, SHOW_TRACK_POINTS, toggleShowTrack, SHOW_TRACK,]);
+
+  React.useEffect(() => {
+    if(!hasSomeData && !(SHOW_TRACK_POINTS && SHOW_TRACK)) {
+      toggleTrack();
+    }
+  }, [hasSomeData, SHOW_TRACK_POINTS, SHOW_TRACK]);
+
   return (
     <div className="sensors-list">
       <div
         className={cx('sensor-option', { disabled: !hasSomeData })}
-        onClick={props.toggleShowTrackPoints}>
+        onClick={toggleTrack}>
         <input
           readOnly
           disabled={!hasSomeData}
           type="checkbox"
-          checked={props.SHOW_TRACK_POINTS}
+          checked={SHOW_TRACK_POINTS && SHOW_TRACK}
         />
         <span>Отображать с учетом скорости</span>
       </div>
@@ -110,6 +129,7 @@ const mapStateToProps = (state) => ({
   front_cars_sensors_equipment:
     state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
   SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
+  SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
 });
 const mergedProps = (stateProps, { dispatch }) => ({
   ...stateProps,
@@ -133,6 +153,9 @@ const mergedProps = (stateProps, { dispatch }) => ({
   },
   toggleShowTrackPoints: () => {
     dispatch(monitorPageToggleStatusShowTrackPoints());
+  },
+  toggleShowTrack: () => {
+    dispatch(monitorPageToggleStatusShowTrack());
   },
 });
 

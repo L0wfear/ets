@@ -431,7 +431,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         onChange={this.handleChange}
         components={!IS_TEMPLATE ? FieldCarIdsMissionSelectComponents : null}
         clearable={false}
-        hint={`Если выбрать несколько ТС, то при сохранении шаблона будут созданы шаблоны заданий на каждое ТС`}
+        hint={IS_TEMPLATE ? `Если выбрать несколько ТС, то при сохранении шаблона будут созданы шаблоны заданий на каждое ТС` : ''}
       />
     );
   }

@@ -458,6 +458,36 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    car_has_motohours: {
+      title: 'На ТС установлен счетчик моточасов',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_motohours }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && CAR_HAS_ODOMETER && isNullOrUndefined(car_has_motohours)) {
+            return 'Поле "На ТС установлен счетчик моточасов" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
+    car_has_odometr: {
+      title: 'На ТС установлен одометр',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_odometr }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
+            return 'Поле "На ТС установлен одометр" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
   },
 };
 
@@ -615,36 +645,6 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             if (value && value < motohours_start) {
               return '"Счетчик моточасов.Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов.Выезд"';
             }
-          }
-          return false;
-        }
-      ],
-    },
-    car_has_motohours: {
-      title: 'На ТС установлен счетчик моточасов',
-      type: 'boolean',
-      dependencies: [
-        (_, { gov_number, status, car_has_motohours }) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          const IS_DRAFT = status === 'draft';
-          const IS_ACTIVE = status === 'active';
-          if ((!status || IS_DRAFT || IS_ACTIVE) && CAR_HAS_ODOMETER && isNullOrUndefined(car_has_motohours)) {
-            return 'Поле "На ТС установлен счетчик моточасов" должно быть заполнено';
-          }
-          return false;
-        }
-      ],
-    },
-    car_has_odometr: {
-      title: 'На ТС установлен одометр',
-      type: 'boolean',
-      dependencies: [
-        (_, { gov_number, status, car_has_odometr }) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          const IS_DRAFT = status === 'draft';
-          const IS_ACTIVE = status === 'active';
-          if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
-            return 'Поле "На ТС установлен одометр" должно быть заполнено';
           }
           return false;
         }

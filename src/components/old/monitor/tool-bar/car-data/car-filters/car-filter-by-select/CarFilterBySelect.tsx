@@ -22,7 +22,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 const placeholder = {
   carFilterMultyType: 'Тип техники',
   carFilterMultyStructure: 'Подразделение',
-  carFilterMultyOwner: 'Организации',
+  carFilterMultyOwner: 'Организация',
   carFilterMultyTechCondition: 'Техническое состояние',
   carFilterMultyModel: 'Марка шасси',
 // model_id: 2445

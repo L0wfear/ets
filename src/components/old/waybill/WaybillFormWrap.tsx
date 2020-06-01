@@ -526,7 +526,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-        || formErrors.motohours_equip_end
+        // || formErrors.motohours_equip_end
       );
 
     newState.canClose = canCloseWrap(formErrors);

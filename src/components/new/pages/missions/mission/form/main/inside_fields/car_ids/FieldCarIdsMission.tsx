@@ -109,6 +109,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       structure_id,
       MISSION_IS_ORDER_SOURCE,
       dependeceTechnicalOperation,
+      IS_CREATING,
     } = this.props;
 
     const car_type_names = get(this.props, 'car_type_names', []) || [];
@@ -160,25 +161,22 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       if (structure_id !== prevProps.structure_id && structure_id) {
         let hasSomeChange = false;
 
-        const permittedIndexObj = value.reduce((newObj, car_id, index) => {
-          const car = get<PropsFieldCarIdsMission['carForMissionIndex'], number, null>(this.props.carForMissionIndex, car_id, null);
+        if (!for_column && IS_CREATING) {
+          const oldValues = prevProps.value.reduce((newObj, car_id, index) => {
+            const car = get<PropsFieldCarIdsMission['carForMissionIndex'], number, null>(this.props.carForMissionIndex, car_id, null);
+            newObj.push(car);
 
-          if (car && (car.is_common || car.company_structure_id === structure_id)) {
-            newObj[index] = true;
-          } else {
-            hasSomeChange = true;
-          }
+            return newObj;
+          }, []);
 
-          return newObj;
-        }, {});
+          const newOption = makeOptionsForMission(oldValues, structure_id, IS_CREATING);
 
-        if (hasSomeChange) {
-          const car_ids = value.filter((_, index) => permittedIndexObj[index]);
-          const car_gov_numbers_new = car_gov_numbers.filter((_, index) => permittedIndexObj[index]);
-          const car_type_ids_new = car_type_ids.filter((_, index) => permittedIndexObj[index]);
-          const car_type_names_new = car_type_names.filter((_, index) => permittedIndexObj[index]);
-          const car_model_names_new = car_model_names.filter((_, index) => permittedIndexObj[index]);
-          const car_special_model_names_new = car_special_model_names.filter((_, index) => permittedIndexObj[index]);
+          const car_ids = prevProps.value.filter((_, index) => newOption[index]);
+          const car_gov_numbers_new = prevProps.car_gov_numbers.filter((_, index) => newOption[index]);
+          const car_type_ids_new = prevProps.car_type_ids.filter((_, index) => newOption[index]);
+          const car_type_names_new = prevProps.car_type_names.filter((_, index) => newOption[index]);
+          const car_model_names_new = prevProps.car_model_names.filter((_, index) => newOption[index]);
+          const car_special_model_names_new = prevProps.car_special_model_names.filter((_, index) => newOption[index]);
 
           let partialChange: Partial<any> = {
             car_gov_numbers: car_gov_numbers_new,
@@ -206,6 +204,54 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           // }
 
           this.props.onChange(partialChange);
+        } else {
+          const permittedIndexObj = value.reduce((newObj, car_id, index) => {
+            const car = get<PropsFieldCarIdsMission['carForMissionIndex'], number, null>(this.props.carForMissionIndex, car_id, null);
+
+            if (car && (car.is_common || car.company_structure_id === structure_id)) {
+              newObj[index] = true;
+            } else {
+              hasSomeChange = true;
+            }
+
+            return newObj;
+          }, {});
+
+          if (hasSomeChange) {
+            const car_ids = value.filter((_, index) => permittedIndexObj[index]);
+            const car_gov_numbers_new = car_gov_numbers.filter((_, index) => permittedIndexObj[index]);
+            const car_type_ids_new = car_type_ids.filter((_, index) => permittedIndexObj[index]);
+            const car_type_names_new = car_type_names.filter((_, index) => permittedIndexObj[index]);
+            const car_model_names_new = car_model_names.filter((_, index) => permittedIndexObj[index]);
+            const car_special_model_names_new = car_special_model_names.filter((_, index) => permittedIndexObj[index]);
+
+            let partialChange: Partial<any> = {
+              car_gov_numbers: car_gov_numbers_new,
+              car_gov_numbers_text: car_gov_numbers_new.join(', '),
+              car_ids,
+              car_type_ids: car_type_ids_new,
+              car_model_names: car_model_names_new,
+              car_special_model_names: car_special_model_names_new,
+              car_type_names: car_type_names_new,
+            };
+
+            // if (!this.props.order_operation_id) {
+            //   partialChange = {
+            //     ...partialChange,
+            //     technical_operation_id: null,
+            //     technical_operation_name: '',
+            //     municipal_facility_id: null,
+            //     municipal_facility_name: '',
+            //     route_id: null,
+            //     route_name: '',
+            //     route_type: null,
+            //     object_type_id: null,
+            //     object_type_name: '',
+            //   };
+            // }
+
+            this.props.onChange(partialChange);
+          }
         }
       }
     }
@@ -326,7 +372,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_special_model_names,
         };
 
-        if (isArray(option) && option.length) {
+        if (isArray(option) && option.length && for_column) {
           const currentOptionValueIndex = option.length - 1;
           const structure_id = option[currentOptionValueIndex]?.rowData?.company_structure_id;
           const is_common = option[currentOptionValueIndex]?.rowData?.is_common;

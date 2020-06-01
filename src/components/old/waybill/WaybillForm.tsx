@@ -2291,6 +2291,95 @@ class WaybillForm extends React.Component<Props, State> {
                     <EtsBootstrap.Col md={12}>
                       <EtsBootstrap.Row>
                         <EtsBootstrap.Col md={12}>
+                          { Boolean(CAR_HAS_ODOMETER || state.car_has_odometr)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Одометр</h4>
+                              <ExtField
+                                id="odometr-start"
+                                type="number"
+                                label="Выезд из гаража, км"
+                                error={errors.odometr_start}
+                                value={state.odometr_start}
+                                disabled={
+                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                      || Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_start"
+                              />
+                              <ExtField
+                                id="odometr-end"
+                                type="number"
+                                label="Возвращение в гараж, км"
+                                error={errors.odometr_end}
+                                value={state.odometr_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                      || (!isPermittedByKey.update
+                                      && !isPermittedByKey.departure_and_arrival_values)
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_end"
+                              />
+                              <ExtField
+                                id="odometr-diff"
+                                type="number"
+                                label="Пробег, км"
+                                value={state.odometr_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled
+                              />
+                            </EtsBootstrap.Col>
+                          }
+                          { Boolean(!CAR_HAS_ODOMETER || state.car_has_motohours)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Счетчик моточасов</h4>
+                              <ExtField
+                                id="motohours-start"
+                                type="number"
+                                label="Выезд из гаража, м/ч"
+                                error={errors.motohours_start}
+                                value={state.motohours_start}
+                                disabled={
+                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_start"
+                              />
+
+                              <ExtField
+                                id="motohours-end"
+                                type="number"
+                                label="Возвращение в гараж, м/ч"
+                                error={errors.motohours_end}
+                                value={state.motohours_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                || (!isPermittedByKey.update
+                                && !isPermittedByKey.departure_and_arrival_values)
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_end"
+                              />
+
+                              <ExtField
+                                id="motohours_diff"
+                                type="number"
+                                label="Пробег, м/ч"
+                                value={state.motohours_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled
+                              />
+                            </EtsBootstrap.Col>
+                          }
+                        </EtsBootstrap.Col>
+                      </EtsBootstrap.Row>
+                    
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
                           <EtsBootstrap.Col md={12}>
                             <EtsBootstrap.Row>
                               <EtsBootstrap.Col md={12}>
@@ -2430,94 +2519,6 @@ class WaybillForm extends React.Component<Props, State> {
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>
                         
-                      </EtsBootstrap.Row>
-                      <EtsBootstrap.Row>
-                        <EtsBootstrap.Col md={12}>
-                          { Boolean(CAR_HAS_ODOMETER || state.car_has_odometr)
-                            && <EtsBootstrap.Col md={4}>
-                              <h4>Одометр</h4>
-                              <ExtField
-                                id="odometr-start"
-                                type="number"
-                                label="Выезд из гаража, км"
-                                error={errors.odometr_start}
-                                value={state.odometr_start}
-                                disabled={
-                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                                      || Boolean(lastWaybill && lastWaybill['odometr_end'])
-                                }
-                                onChange={this.handleChange}
-                                boundKeys="odometr_start"
-                              />
-                              <ExtField
-                                id="odometr-end"
-                                type="number"
-                                label="Возвращение в гараж, км"
-                                error={errors.odometr_end}
-                                value={state.odometr_end}
-                                hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                disabled={
-                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                                      || (!isPermittedByKey.update
-                                      && !isPermittedByKey.departure_and_arrival_values)
-                                }
-                                onChange={this.handleChange}
-                                boundKeys="odometr_end"
-                              />
-                              <ExtField
-                                id="odometr-diff"
-                                type="number"
-                                label="Пробег, км"
-                                value={state.odometr_diff}
-                                hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                disabled
-                              />
-                            </EtsBootstrap.Col>
-                          }
-                          { Boolean(!CAR_HAS_ODOMETER || state.car_has_motohours)
-                            && <EtsBootstrap.Col md={4}>
-                              <h4>Счетчик моточасов</h4>
-                              <ExtField
-                                id="motohours-start"
-                                type="number"
-                                label="Выезд из гаража, м/ч"
-                                error={errors.motohours_start}
-                                value={state.motohours_start}
-                                disabled={
-                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                                || Boolean(lastWaybill && lastWaybill['motohours_end'])
-                                }
-                                onChange={this.handleChange}
-                                boundKeys="motohours_start"
-                              />
-
-                              <ExtField
-                                id="motohours-end"
-                                type="number"
-                                label="Возвращение в гараж, м/ч"
-                                error={errors.motohours_end}
-                                value={state.motohours_end}
-                                hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                disabled={
-                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                                || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values)
-                                }
-                                onChange={this.handleChange}
-                                boundKeys="motohours_end"
-                              />
-
-                              <ExtField
-                                id="motohours_diff"
-                                type="number"
-                                label="Пробег, м/ч"
-                                value={state.motohours_diff}
-                                hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                disabled
-                              />
-                            </EtsBootstrap.Col>
-                          }
-                        </EtsBootstrap.Col>
                       </EtsBootstrap.Row>
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={2}>

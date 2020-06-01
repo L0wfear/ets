@@ -92,7 +92,7 @@ export const promiseCreateWaybill = async (waybill: Waybill) => {
     },
   );
 
-  if (hasMotohours(payload.gov_number)) {
+  if (hasMotohours(payload.gov_number) || payload.car_has_motohours) {
     delete payload.odometr_start;
   } else {
     delete payload.motohours_start;
@@ -170,7 +170,7 @@ export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
   delete payload.garage_number;
   delete payload.hasEquipmentFuelRates;
 
-  if (hasMotohours(payload.gov_number)) {
+  if (hasMotohours(payload.gov_number) || payload.car_has_motohours ) {
     delete payload.odometr_start;
   } else {
     delete payload.motohours_start;

@@ -50,7 +50,7 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
     <div className="sensors-list">
       <div
         className={cx('sensor-option', { disabled: !hasSomeData })}
-        onClick={props.toggleShowTrackPoints}>
+        onClick={hasSomeData && props.toggleShowTrackPoints}>
         <input
           readOnly
           disabled={!hasSomeData}

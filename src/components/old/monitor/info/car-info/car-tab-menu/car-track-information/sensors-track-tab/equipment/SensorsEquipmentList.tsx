@@ -46,11 +46,17 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
 
   const hasSomeData = sensors_equipment.find(([, { show }]) => show);
 
+  const toggleShowTrackPoints = React.useCallback(() => {
+    hasSomeData
+      ? props.toggleShowTrackPoints()
+      : console.info('sensor-option disabled');
+  }, [hasSomeData, props.toggleShowTrackPoints]);
+
   return (
     <div className="sensors-list">
       <div
         className={cx('sensor-option', { disabled: !hasSomeData })}
-        onClick={hasSomeData && props.toggleShowTrackPoints}>
+        onClick={toggleShowTrackPoints}>
         <input
           readOnly
           disabled={!hasSomeData}

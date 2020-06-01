@@ -2301,7 +2301,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 error={errors.odometr_start}
                                 value={state.odometr_start}
                                 disabled={
-                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                  IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                       || Boolean(lastWaybill && lastWaybill['odometr_end'])
                                 }
                                 onChange={this.handleChange}
@@ -2342,7 +2342,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 error={errors.motohours_start}
                                 value={state.motohours_start}
                                 disabled={
-                                  IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                  IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || Boolean(lastWaybill && lastWaybill['motohours_end'])
                                 }
                                 onChange={this.handleChange}
@@ -2394,7 +2394,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   value={state.fuel_type}
                                   error={errors.fuel_type}
                                   disabled={
-                                    IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || (lastWaybill && lastWaybill['fuel_type'])
                                   }
                                   options={FUEL_TYPES}
@@ -2436,7 +2436,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   error={errors.fuel_start}
                                   value={state.fuel_start}
                                   disabled={
-                                    IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
+                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
                                   }
                                   onChange={this.handleChange}

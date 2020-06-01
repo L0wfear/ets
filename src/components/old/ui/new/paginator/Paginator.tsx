@@ -64,10 +64,6 @@ class Paginator extends React.Component<Props, any> {
     const currentPage = this.props.currentPage;
     const maxPage = this.props.maxPage;
 
-    if (maxPage === 1 || maxPage === 0) {
-      return null;
-    }
-
     let startIndex = Math.max(currentPage - 5, 0);
     const endIndex = Math.min(startIndex + 11, this.props.maxPage);
 
@@ -144,11 +140,13 @@ class Paginator extends React.Component<Props, any> {
 
     return (
       <PaginatorWrapperStyled>
-        <ol className="pagination">{options}</ol>
+        {maxPage > 1
+          ? <ol className="pagination">{options}</ol>
+          :          <div></div>}
         {this.props.withPerPageSelector
-        && <PerPageSelectorStyled>
-          <PerPageSelector setPerPage={this.props.setPerPage} />
-        </PerPageSelectorStyled>}
+          && <PerPageSelectorStyled>
+            <PerPageSelector setPerPage={this.props.setPerPage} />
+          </PerPageSelectorStyled>}
       </PaginatorWrapperStyled>
     );
   }

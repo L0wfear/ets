@@ -294,7 +294,7 @@ class MissionTemplateForm extends React.PureComponent<
             <EtsBootstrap.Col md={6}>
               <ExtField
                 id="passes-count"
-                type="string"
+                type="number"
                 label="Количество циклов"
                 error={errors.passes_count}
                 disabled={!isPermitted}

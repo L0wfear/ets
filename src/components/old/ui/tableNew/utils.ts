@@ -69,9 +69,9 @@ const checkFilterByAdvancedNumber = (f_data, rowCol) =>
       case 'eq': return Number(filter_value) !== Number(rowCol);
       case 'neq': return Number(filter_value) === Number(rowCol);
       case 'lt': return !(Number(filter_value) > Number(rowCol));
-      case 'lte': return !(Number(filter_value) >= Number(rowCol));
+      case 'lte': return !(Number(filter_value) > Number(rowCol));
       case 'gt': return !(Number(filter_value) < Number(rowCol));
-      case 'gte': return !(Number(filter_value) <= Number(rowCol));
+      case 'gte': return !(Number(filter_value) < Number(rowCol));
       default: {
         console.info(`no define filter for ${filter_type}`); // eslint-disable-line
         return true;
@@ -98,9 +98,9 @@ const checkFilterByAdvancedDate = (f_data, rowCol) => { // 'advanced-datetime' Ñ
         case 'eq': return diffDatesValue !== 0;
         case 'neq': return diffDatesValue === 0;
         case 'lt': return diffDatesValue <= 0;
-        case 'lte': return diffDatesValue <= 0;
+        case 'lte': return diffDatesValue < 0;
         case 'gt': return diffDatesValue > 0;
-        case 'gte': return diffDatesValue >= 0;
+        case 'gte': return diffDatesValue > 0;
         default: {
             console.info(`no define filter for ${filter_type}`); // eslint-disable-line
           return true;

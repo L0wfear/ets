@@ -83,18 +83,15 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
-  const isNotPermitedWaybillDeleteUnlessClosed = React.useMemo(
+  const isPermitedWaybillDeleteUnlessClosed = React.useMemo(
     () => props.userPermissionsSet.has( waybillPermissions.delete_unless_closed)
+      && (Boolean(checkedRowsLength) || props.selectedRow)
       && (
-        (
-          !Boolean(checkedRowsLength)
-          && (
-            props.selectedRow?.status !== 'draft'
-            && props.selectedRow?.status !== 'active'
-          )
-        )
-        || (checkedRowsAsArray.map((rowElem) => rowElem.status).includes('closed'))
-      ),
+        props.selectedRow?.status === 'draft'
+        || props.selectedRow?.status === 'active'
+      )
+      && !props.selectedRow?.delete
+      && !checkedRowsAsArray.some((rowElem) => rowElem.status === 'closed' || rowElem.delete),
     [
       props.userPermissionsSet,
       checkedRowsLength,
@@ -103,11 +100,11 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     ]
   );
 
-  const isNotPermitedWaybillDelete = React.useMemo(
+  const isPermitedWaybillDelete = React.useMemo(
     () => props.userPermissionsSet.has(waybillPermissions.delete)
       && (
-        !Boolean(checkedRowsLength)
-        && props.selectedRow?.delete
+        (Boolean(checkedRowsLength) || props.selectedRow)
+        && !props.selectedRow?.delete
         || checkedRowsAsArray.some((rowElem) => rowElem.delete)
       ),
     [
@@ -119,12 +116,12 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
   const disableBtnWaybill = React.useMemo(
     () => Boolean(
-      isNotPermitedWaybillDeleteUnlessClosed
-      || isNotPermitedWaybillDelete
+      !isPermitedWaybillDeleteUnlessClosed
+      && !isPermitedWaybillDelete
     ),
     [
-      isNotPermitedWaybillDeleteUnlessClosed,
-      isNotPermitedWaybillDelete,
+      isPermitedWaybillDeleteUnlessClosed,
+      isPermitedWaybillDelete,
     ]);
 
   const disableBtnByRegistry = React.useMemo(

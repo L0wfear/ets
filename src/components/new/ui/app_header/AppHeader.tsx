@@ -4,6 +4,8 @@ import { AppHeaderNav } from 'components/new/ui/app_header/styled';
 import AppHeaderDesktop from 'components/new/ui/app_header/desktop/AppHeaderDesktop';
 import AppHeaderMobi from 'components/new/ui/app_header/mobi/AppHeaderMobi';
 import { mobiSize } from 'global-styled/global-constants';
+import { get_browser } from 'utils/functions';
+import { isUndefined } from 'util';
 
 class AppHeader extends React.Component<{}, any> {
   node = React.createRef<any>();
@@ -25,8 +27,13 @@ class AppHeader extends React.Component<{}, any> {
           event.preventDefault();
         }
 
-        if (event.which < 48 || event.which > 57) {
-          event.preventDefault();
+        if (get_browser().name === 'Firefox') {
+          const charCode = isUndefined(event.which) ? event.keyCode : event.which;
+          const metaCode = event.metaKey;
+          const charStr = String.fromCharCode(charCode);
+          if (charStr.match(/[a-zA-Z]+/g) && !metaCode) {
+            event.preventDefault();
+          }
         }
 
         if (event.key === '.') {

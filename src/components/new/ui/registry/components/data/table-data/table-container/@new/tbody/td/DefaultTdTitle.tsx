@@ -90,7 +90,9 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
       );
     }
     if (format === 'floor') {
-      value = value ? Math.floor(value) : '';
+      value = !isNullOrUndefined(value)
+        ? Math.floor(value)
+        : '';
     }
     if (format === 'waybill_all_missions_status') {
       value = get(missionsStatusBySlag, value, '');

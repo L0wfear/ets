@@ -42,7 +42,8 @@ export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
 
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
   switch (key) {
-    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
+    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData); 
+    case 'carFilterMultyGpsCode': return !value.length || value.includes(Number(car_actualData.gps_code));
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
     case 'carFilterMultyTechCondition': return !value.length || value.includes(car_actualData.condition);
     case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);

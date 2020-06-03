@@ -20,6 +20,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const placeholder = {
+  carFilterMultyGpsCode: 'БНСО',
   carFilterMultyType: 'Тип техники',
   carFilterMultyStructure: 'Подразделение',
   carFilterMultyOwner: 'Организация',
@@ -40,6 +41,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     this.state = {
       hidden: true,
       carActualGpsNumberIndex,
+      carFilterMultyGpsCodeOptions: calcData.carFilterMultyGpsCodeOptions.arr,
       carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
       carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
       carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
@@ -56,6 +58,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 
       return {
         carActualGpsNumberIndex,
+        carFilterMultyGpsCodeOptions: calcData.carFilterMultyGpsCodeOptions.arr,
         carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
         carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
         carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
@@ -97,6 +100,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                       <div>
                         {
                           [
+                            'carFilterMultyGpsCode',
                             'carFilterMultyType',
                             'carFilterMultyTechCondition',
                             'carFilterMultyModel',
@@ -141,7 +145,7 @@ export default connect<any, any, any, ReduxState>(
     company_id: state.session.userData.company_id,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 
-    active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyModel', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
+    active: ['carFilterMultyGpsCode', 'carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyModel', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
       state.monitorPage.filters.data[key].length
     )),
   }),

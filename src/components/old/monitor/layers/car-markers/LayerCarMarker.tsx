@@ -435,8 +435,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           };
 
           if (
-            this.props.forToday
-            && gps_code === state_gps_code
+            gps_code === state_gps_code
             && lastPoint !== -1
             && lastPoint
           ) {

@@ -80,7 +80,8 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
         value: 'GIBDD',
       },
       title: 'Тип транспортного средства',
-      type: 'valueOfArray',
+      type: 'string',
+      maxLength: 200,
     },
     engine_model: {
       validateIf: {

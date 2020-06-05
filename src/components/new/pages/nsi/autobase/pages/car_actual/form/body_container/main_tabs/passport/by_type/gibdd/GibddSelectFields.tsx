@@ -3,7 +3,6 @@ import * as React from 'react';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { CarGibddPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/old/ui/input/fields';
-import useCarTypesOptions from 'components/new/utils/hooks/services/useOptions/useCarTypesOptions';
 import useCountryOptions from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
 import useAutobaseCarCategoryOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseCarCategoryOptions';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
@@ -26,7 +25,7 @@ type GibddSelectFieldsMergedProps = (
   & GibddSelectFieldsDispatchProps
   & GibddSelectFieldsOwnProps
 );
-
+ 
 type GibddSelectFieldsProps = GibddSelectFieldsMergedProps;
 
 const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
@@ -43,7 +42,6 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
 
     const carCategoryOptionData = useAutobaseCarCategoryOptions();
     const engineTypeOptionData = useAutobaseEngineTypeOptions();
-    const carFuncTypesOptionData = useCarTypesOptions();
     const countryOptionData = useCountryOptions();
 
     return (
@@ -167,15 +165,13 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={6}>
           <ExtField
-            type="select"
+            type="string"
             label="Тип транспортного средства"
             value={passport_data.func_type_id}
             error={passport_data_errors.func_type_id}
-            options={carFuncTypesOptionData.options}
             onChange={props.onChange}
             boundKeys="func_type_id"
             disabled={!isPermitted || disabled}
-            etsIsLoading={carFuncTypesOptionData.isLoading}
           />
           <ExtField
             type="string"

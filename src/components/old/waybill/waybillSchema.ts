@@ -93,9 +93,11 @@ const checkCarRefill = memoizeOne(
             ? 'Поле "Выдано, л" должно быть заполнено'
             : rowData.value < 0
               ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
-              : !isValidToFixed3(rowData.value)
-                ? getRequiredFieldToFixed('Выдано, л', 3)
-                : '' 
+              : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
+              && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+                : !isValidToFixed3(rowData.value)
+                  ? getRequiredFieldToFixed('Выдано, л', 3)
+                  : ''
           : '',
       };
     });
@@ -126,9 +128,11 @@ const checkEquipmentCarRefill = memoizeOne(
         value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
           ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
-            : !isValidToFixed3(rowData.value)
-              ? getRequiredFieldToFixed('Выдано, л', 3)
-              : ''
+            : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
+            && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+              : !isValidToFixed3(rowData.value)
+                ? getRequiredFieldToFixed('Выдано, л', 3)
+                : ''
           : '',
       };
     });
@@ -303,28 +307,12 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       float: 3,
       required: false,
-      dependencies: [
-        (value, { status }) => {
-          if ((status === 'active' || status === 'draft' || !status)
-            && value > 1000) {
-            return 'Поле "Выдано, л" должно быть меньше 1000';
-          }
-        },
-      ],
     },
     equipment_fuel_given: {
       title: 'Выдано, л',
       type: 'number',
       float: 3,
       required: false,
-      dependencies: [
-        (value, { status }) => {
-          if ((status === 'active' || status === 'draft' || !status)
-            && value > 1000) {
-            return 'Поле "Выдано, л" должно быть меньше 1000';
-          }
-        },
-      ],
     },
     fuel_to_give: {
       title: 'Топливо.Выдать',
@@ -742,7 +730,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           const abs = Math.abs(
             parseFloat((formData.odometr_diff || formData.motohours_diff || 0).toString())
-              - parseFloat((value ?? 0).toString()),
+            - parseFloat((value ?? 0).toString()),
           );
           if (abs / 100 > 0.1) {
             return 'Расхождение в показателях пробега';

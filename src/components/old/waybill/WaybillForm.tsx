@@ -1341,28 +1341,30 @@ class WaybillForm extends React.Component<Props, State> {
           ? [motohours_start, motohours_end, motohours_diff].some((elem) => !isNullOrUndefined(elem))
           : [odometr_start, odometr_end, odometr_diff].some((elem) => !isNullOrUndefined(elem));
 
-        hasDialog
-          ? await global.confirmDialog({
+        if(hasDialog) {
+          await global.confirmDialog({
             title: 'Внимание',
             body: key === 'car_has_motohours'
               ? 'Очистить введенные данные счетчика моточасов?'
               : 'Очистить введенные данные по одометру?',
             okName: 'Да',
             cancelName: 'Нет',
-          })
-          : this.handleMultipleChange( key === 'car_has_motohours'
-            ? {
-              motohours_start: null,
-              motohours_end: null,
-              motohours_diff: null,
-              [key]: value,
-            }
-            : { // key === 'car_has_odometer'
-              odometr_start: null,
-              odometr_end: null,
-              odometr_diff: null,
-              [key]: value,
-            });
+          });
+        }
+
+        this.handleMultipleChange( key === 'car_has_motohours'
+          ? {
+            motohours_start: null,
+            motohours_end: null,
+            motohours_diff: null,
+            [key]: value,
+          }
+          : { // key === 'car_has_odometer'
+            odometr_start: null,
+            odometr_end: null,
+            odometr_diff: null,
+            [key]: value,
+          });
       } catch (e) {
         console.error(e);  // eslint-disable-line
       }

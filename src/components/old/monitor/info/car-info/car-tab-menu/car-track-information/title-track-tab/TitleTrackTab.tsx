@@ -79,6 +79,20 @@ class TitleTrackTab extends React.Component<
     return null;
   }
 
+  componentDidMount () {
+    const partialState = {
+      date_start: createValidDateTime(getTrackDefaultDateStart()),
+      date_end: createValidDateTime(getTrackDefaultDateEnd()),
+      errorDates: '',
+    };
+    this.props.setDataInSearch({
+      date_start: createValidDateTime(partialState.date_start),
+      date_end: createValidDateTime(partialState.date_end),
+    });
+
+    this.setState({ ...partialState });
+  }
+
   carInfoToggleForToday: any = (e) => {
     const disbledByTrackPlayStatys = this.props.status !== 'stop';
 

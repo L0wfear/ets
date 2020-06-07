@@ -75,7 +75,7 @@ export const CheckContainerTd = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  word-break: break-all;
 `;
 
 export const CheckContainerRow = styled.div<{ was_resaved: boolean; }>`

@@ -455,7 +455,6 @@ export default class DataTable extends React.Component<Props, State> {
   }
 
   precisionNumberRender(precision, props) {
-    console.info(precision);
     let { data = '' } = props;
     return <div>{ isNumber(data)
       ? data?.toFixed(precision)

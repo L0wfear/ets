@@ -65,8 +65,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     action_at: null,
   };
 
-  refreshCard = () => (
-    this.props.loadData()
+  refreshCard = (arg?: any) => (
+    this.props.loadData(arg)
   );
   openMissiomInfoForm = () => {
     this.setState({ showMissionInfoForm: true });
@@ -116,7 +116,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     }
 
     this.props.handleClose();
-    this.refreshCard();
+    this.refreshCard(
+      { payload: {
+        force: 1,
+      }
+      });
     this.props.loadDataAfterCloseMission();
   };
 
@@ -226,9 +230,9 @@ export default compose<any, any>(
           dashboardLoadMissionDataForCurrentMission(null),
         )
       ),
-      loadData: () => (
+      loadData: (...arg) => (
         dispatch(
-          dashboardLoadCurrentMissions(),
+          dashboardLoadCurrentMissions(...arg),
         )
       ),
       loadDataAfterCloseMission: () => (

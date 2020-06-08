@@ -80,17 +80,23 @@ class TitleTrackTab extends React.Component<
   }
 
   componentDidMount () {
-    const partialState = {
-      date_start: createValidDateTime(getTrackDefaultDateStart()),
-      date_end: createValidDateTime(getTrackDefaultDateEnd()),
-      errorDates: '',
-    };
-    this.props.setDataInSearch({
-      date_start: createValidDateTime(partialState.date_start),
-      date_end: createValidDateTime(partialState.date_end),
-    });
+    const datesIsMove = (
+      diffDates(getTrackDefaultDateStart(), this.state.date_start)
+      || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
+    );
+    if(datesIsMove) {
+      const partialState = {
+        date_start: createValidDateTime(getTrackDefaultDateStart()),
+        date_end: createValidDateTime(getTrackDefaultDateEnd()),
+        errorDates: '',
+      };
+      this.props.setDataInSearch({
+        date_start: createValidDateTime(partialState.date_start),
+        date_end: createValidDateTime(partialState.date_end),
+      });
 
-    this.setState({ ...partialState });
+      this.setState({ ...partialState });
+    }
   }
 
   carInfoToggleForToday: any = (e) => {
@@ -102,8 +108,12 @@ class TitleTrackTab extends React.Component<
         || disbledByTrackPlayStatys
       )
     ) {
+      const datesIsMove = (
+        diffDates(getTrackDefaultDateStart(), this.state.date_start)
+        || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
+      );
       this.props.carInfoToggleForToday();
-      if (!this.props.forToday) {
+      if (datesIsMove) {
         const partialState = {
           date_start: createValidDateTime(getTrackDefaultDateStart()),
           date_end: createValidDateTime(getTrackDefaultDateEnd()),

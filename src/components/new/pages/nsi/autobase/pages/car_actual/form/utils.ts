@@ -98,6 +98,7 @@ export const getDefaultCar = (): CarWrap => ({
     engine_volumne: null,
     environmental_class: '',
     exporter_country_id: null,
+    func_type_id: null,
     func_type_name: '',
     gearbox: '',
     given_at: '',

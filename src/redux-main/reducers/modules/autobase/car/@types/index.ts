@@ -83,6 +83,7 @@ export type CarGtnPasspost = {
   engine_volumne: number;
   environmental_class: string;
   exporter_country_id: number;
+  func_type_id: number;
   func_type_name: string;
   gearbox: number | string;
   given_at: string;

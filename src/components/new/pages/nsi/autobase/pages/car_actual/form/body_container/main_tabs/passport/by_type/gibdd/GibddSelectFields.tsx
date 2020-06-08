@@ -167,10 +167,10 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
           <ExtField
             type="string"
             label="Тип транспортного средства"
-            value={passport_data.func_type_id}
-            error={passport_data_errors.func_type_id}
+            value={passport_data.func_type_name}
+            error={passport_data_errors.func_type_name}
             onChange={props.onChange}
-            boundKeys="func_type_id"
+            boundKeys="func_type_name"
             disabled={!isPermitted || disabled}
           />
           <ExtField

@@ -73,14 +73,15 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Категория транспортного средства',
       type: 'valueOfArray',
     },
-    func_type_id: {
+    func_type_name: {
       validateIf: {
         type: 'equal_to_value',
         path: 'passport_data.type',
         value: 'GIBDD',
       },
       title: 'Тип транспортного средства',
-      type: 'valueOfArray',
+      type: 'string',
+      maxLength: 200,
     },
     engine_model: {
       validateIf: {

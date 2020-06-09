@@ -35,7 +35,7 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
           type="string"
           value={this.props.carFilterText}
           onChange={this.props.changeCarFilterText}
-          placeholder="рег.номер/гар.номер/БНСО"
+          placeholder="рег.номер/гар.номер"
         />
         <div className="input_text_action-wrap">
           {

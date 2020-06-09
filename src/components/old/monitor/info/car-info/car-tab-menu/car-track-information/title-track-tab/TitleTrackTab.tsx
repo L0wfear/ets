@@ -80,7 +80,6 @@ class TitleTrackTab extends React.Component<
   }
 
   componentDidMount () {
-    console.info('render');
     const datesIsMove = (
       diffDates(getTrackDefaultDateStart(), this.state.date_start)
       || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)

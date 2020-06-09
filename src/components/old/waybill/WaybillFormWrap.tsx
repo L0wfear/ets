@@ -844,6 +844,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
           try {
             await this.updateWaybill(formState);
+            this.props.onCallback();
           } catch (e) {
             return;
           }
@@ -953,7 +954,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           return;
         }
       }
-
+      this.props.onCallback();
       this.props.onFormHide();
     };
 

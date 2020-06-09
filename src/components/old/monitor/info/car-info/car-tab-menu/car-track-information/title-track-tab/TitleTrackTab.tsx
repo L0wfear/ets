@@ -80,6 +80,7 @@ class TitleTrackTab extends React.Component<
   }
 
   componentDidMount () {
+    console.info('render');
     const datesIsMove = (
       diffDates(getTrackDefaultDateStart(), this.state.date_start)
       || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
@@ -113,7 +114,7 @@ class TitleTrackTab extends React.Component<
         || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
       );
       this.props.carInfoToggleForToday();
-      if (datesIsMove) {
+      if (datesIsMove && !this.props.forToday) {
         const partialState = {
           date_start: createValidDateTime(getTrackDefaultDateStart()),
           date_end: createValidDateTime(getTrackDefaultDateEnd()),

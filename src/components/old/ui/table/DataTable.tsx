@@ -24,7 +24,7 @@ import Div from 'components/old/ui/Div';
 import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
-import { isArray } from 'util';
+import { isArray, isNullOrUndefined } from 'util';
 import { renderCarData } from 'components/old/ui/table/legacy';
 import { isNumber } from 'highcharts';
 
@@ -376,7 +376,7 @@ export default class DataTable extends React.Component<Props, State> {
       };
       if (col.make_str_gov_number_format) {
         metaObject.customComponent = (props) => renderCarData(props, this.props);
-      } else if (col.precision) {
+      } else if (!isNullOrUndefined(col.precision)) {
         metaObject.customComponent = (props) =>
           this.precisionNumberRender(col.precision, props);
       } else if (col.type === 'string') {

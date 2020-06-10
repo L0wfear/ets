@@ -25,8 +25,6 @@ const placeholder = {
   carFilterMultyOwner: 'Организация',
   carFilterMultyTechCondition: 'Техническое состояние',
   carFilterMultyModel: 'Марка шасси',
-// model_id: 2445
-// model_name: "BUCHER CITYCAT 2020XL"
 };
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {

@@ -173,7 +173,7 @@ const OrderHistoryList: React.FC<Props> = React.memo(
                       <ErrorsBlock
                         showError={!selectedOrderHistroyTo}
                         hidden={false}
-                        error="Для выбранного централизованного задания предыдущих версий"
+                        error="Для выбранного централизованного задания предыдущих версий нет"
                       />
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>

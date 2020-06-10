@@ -122,6 +122,9 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
   ...stateProps,
   ...ownProps,
   toggleShowStatus: (typeArr) => {
+    const company_key = Object.keys(stateProps.companiesIndex)[0];
+    const company_id = company_key ? stateProps.companiesIndex[company_key].company_id : null;
+
     dispatch(
       monitorPageToggleStatusGeoobject(typeArr),
     );
@@ -133,6 +136,8 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
           loadGeozones(
             MONITOR_PAGE_SET_GEOMETRY,
             type,
+            { loading: true },
+            company_id,
           ),
         );
       } else {

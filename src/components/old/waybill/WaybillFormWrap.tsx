@@ -840,11 +840,15 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       } else if (waybillStatus === 'draft') {
         // если ПЛ обновляем
         if (typeof callback === 'function') {
-          formState.status = 'active';
-
           try {
-            await this.updateWaybill(formState);
+            await this.updateWaybill({...formState, status: 'active'});
+            this.props.onCallback();
           } catch (e) {
+            try {
+              await this.updateWaybill({...formState, status: 'draft'});
+            } catch (e) {
+              return;
+            }
             return;
           }
           callback();
@@ -954,7 +958,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         }
       }
 
-      this.props.onFormHide();
+      this.props.onCallback();
     };
 
     render() {

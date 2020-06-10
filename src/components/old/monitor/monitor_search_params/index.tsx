@@ -104,7 +104,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
         date_start,
         date_end,
         carData,
-        for_today,
       ],
     );
 

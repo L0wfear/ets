@@ -276,7 +276,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         if (typeIdOptions.length && filteredFuelCardIdOptions.length === 1) {
           if (newArr.length === 1) {
             const firstElement = newArr[0];
-            if (!firstElement.fuel_card_id) {
+            if (!firstElement.fuel_card_id && firstElement.type_id === 1) {
               const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
               if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
                 newArr = [

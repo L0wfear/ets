@@ -18,6 +18,7 @@ import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
+import { isNullOrUndefined } from 'util';
 
 type Props = {
   id: string;
@@ -246,6 +247,23 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         });
       }, [props.car_id]);
 
+    const fuelCardValue = React.useMemo(
+      () => {
+        const isFuelCardSelected = props.array.map(
+          ( data ) => data.fuel_card_id,
+        );
+
+        if (isFuelCardSelected) {
+          return isFuelCardSelected;
+        }
+
+        return null;
+      },
+      [props.array],
+    );
+
+    const previousfuelCardValue = usePrevious(fuelCardValue);
+
     const handleChange = React.useCallback(
       async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
         let newArr = array;
@@ -260,7 +278,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             const firstElement = newArr[0];
             if (!firstElement.fuel_card_id) {
               const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
-              if (refillTypeData) {
+              if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
                 newArr = [
                   {
                     ...firstElement,

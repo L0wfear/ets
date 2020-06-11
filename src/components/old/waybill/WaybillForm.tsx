@@ -1321,8 +1321,39 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeMotohoursOdometr = async (key, value) => {
     if(value){
-      // берем значения из аоследнего закрытого ПЛ*
-      await this.refresh(true);
+      // берем значения из последнего закрытого ПЛ*
+      const {
+        formState: { car_id },
+      } = this.props;
+
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        if(lastWaybill) {
+          const lastWaybillState = key === 'car_has_motohours'
+            ? {
+              ...this.state.lastWaybill,
+              motohours_start: lastWaybill?.motohours_start,
+              motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
+              motohours_diff: lastWaybill?.motohours_diff,
+            }
+            : {
+              ...this.state.lastWaybill,
+              odometr_start: lastWaybill.odometr_start,
+              odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
+              odometr_diff: lastWaybill.odometr_diff,
+            };
+        
+          const fieldsToChange = {
+            motohours_start: lastWaybillState.motohours_end,
+            odometr_start: lastWaybillState.odometr_end,
+          };
+          this.setState({ lastWaybill: lastWaybillState, });
+
+          this.handleMultipleChange(fieldsToChange);
+        }
+      });
+
       this.handleChange(key, value);
     } else {
       try {

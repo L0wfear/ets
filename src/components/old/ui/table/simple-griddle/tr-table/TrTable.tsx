@@ -90,7 +90,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
                 }
                 {
                   customComponent
-                    ? typeof rowData[columnName] === 'number'
+                    ? typeof customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props) === 'number'
                       ? customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props).toString().replace('.', ',')
                       : customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
                     : columnName === 'rowNumber'

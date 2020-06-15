@@ -8,7 +8,8 @@ import NumberField from 'components/@next/@ui/renderFields/NumberField/NumberFie
 import DateField from 'components/@next/@ui/renderFields/DateField/DateField';
 import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
-import { ExtFieldType, ExtFieldTypeByKey } from 'components/@next/@ui/renderFields/@types';
+import { ExtFieldButton, ExtFieldType, ExtFieldTypeByKey } from 'components/@next/@ui/renderFields/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<ExtFieldTypeByKey[K]> } = {
   string: StringField,
@@ -24,6 +25,16 @@ const numberToFixed = {
   toFixed2: 2,
   toFixed3: 3,
 };
+
+const ExtButton: React.FC<ExtFieldButton> = React.memo(
+  (props) => {
+    return (
+      <EtsBootstrap.Button disabled={props.disabledBtn} onClick={props.onClick} title={props.title}>
+        <EtsBootstrap.Glyphicon glyph={props.glyph} />
+      </EtsBootstrap.Button>
+    );
+  },
+);
 
 const ExtField: React.FC<ExtFieldType> = React.memo(
   ({ boundKeys, ...props }) => {
@@ -105,18 +116,23 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
     }
 
     return (
-      <Component {...props as any}
-        value={
-          isFocus
-            ? props.value
-            : (isString(localStateValue) && props.type === 'number')
-              ? localStateValue.replace(',', '.')
-              : localStateValue
-        }
-        onChange={onChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-      />
+      <>
+        <Component {...props as any}
+          value={
+            isFocus
+              ? props.value
+              : (isString(localStateValue) && props.type === 'number')
+                ? localStateValue.replace(',', '.')
+                : localStateValue
+          }
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+        />
+        {props.showBtn && (
+          <ExtButton {...props as any} />
+        )}
+      </>
     );
   },
 );

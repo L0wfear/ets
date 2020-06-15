@@ -91,16 +91,19 @@ const checkFilterByAdvancedDate = (f_data, rowCol) => { // 'advanced-datetime' Ñ
           ? 'YYYY-MM-DD'
           : 'DD.MM.YYYY';
 
+      const rowColDate = createValidDateTime(rowCol, false, dateFormat);
       const diffDatesValue = f_data?.type === 'advanced-datetime'
-        ? diffDates(filter_value, createValidDateTime(rowCol, false, dateFormat), 'minutes')
-        : diffDates(filter_value, createValidDateTime(rowCol, false, dateFormat), 'days');
+        ? diffDates(filter_value, rowColDate, 'minutes')
+        : diffDates(filter_value, rowColDate, 'days');
+      const invalidRowColDate = isNaN(diffDatesValue);
+
       switch (filter_type) {
-        case 'eq': return diffDatesValue !== 0;
-        case 'neq': return diffDatesValue === 0;
-        case 'lt': return diffDatesValue <= 0;
-        case 'lte': return diffDatesValue < 0;
-        case 'gt': return diffDatesValue > 0;
-        case 'gte': return diffDatesValue > 0;
+        case 'eq': return diffDatesValue !== 0 || invalidRowColDate;
+        case 'neq': return diffDatesValue === 0 || invalidRowColDate;
+        case 'lt': return diffDatesValue <= 0 || invalidRowColDate;
+        case 'lte': return diffDatesValue <= 0 || invalidRowColDate;
+        case 'gt': return diffDatesValue >= 0 || invalidRowColDate;
+        case 'gte': return diffDatesValue >= 0 || invalidRowColDate;
         default: {
             console.info(`no define filter for ${filter_type}`); // eslint-disable-line
           return true;

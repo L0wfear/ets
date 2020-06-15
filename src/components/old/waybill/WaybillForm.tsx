@@ -986,6 +986,20 @@ class WaybillForm extends React.Component<Props, State> {
           fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
         }
       }
+
+      fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
+      fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
+
+      if(lastCarUsedWaybill.car_has_motohours){
+        fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_start;
+        fieldsToChange.motohours_end = lastCarUsedWaybill?.motohours_end;
+        fieldsToChange.motohours_diff = lastCarUsedWaybill?.motohours_diff;
+      }
+      if(lastCarUsedWaybill.car_has_odometr){
+        fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_start;
+        fieldsToChange.odometr_end = lastCarUsedWaybill?.odometr_end;
+        fieldsToChange.odometr_diff = lastCarUsedWaybill?.odometr_diff;
+      }
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
@@ -1321,8 +1335,39 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeMotohoursOdometr = async (key, value) => {
     if(value){
-      // берем значения из аоследнего закрытого ПЛ*
-      await this.refresh(true);
+      // берем значения из последнего закрытого ПЛ*
+      const {
+        formState: { car_id },
+      } = this.props;
+
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        if(lastWaybill) {
+          const lastWaybillState = key === 'car_has_motohours'
+            ? {
+              ...this.state.lastWaybill,
+              motohours_start: lastWaybill?.motohours_start,
+              motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
+              motohours_diff: lastWaybill?.motohours_diff,
+            }
+            : {
+              ...this.state.lastWaybill,
+              odometr_start: lastWaybill.odometr_start,
+              odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
+              odometr_diff: lastWaybill.odometr_diff,
+            };
+        
+          const fieldsToChange = {
+            motohours_start: lastWaybillState.motohours_end,
+            odometr_start: lastWaybillState.odometr_end,
+          };
+          this.setState({ lastWaybill: lastWaybillState, });
+
+          this.handleMultipleChange(fieldsToChange);
+        }
+      });
+
       this.handleChange(key, value);
     } else {
       try {

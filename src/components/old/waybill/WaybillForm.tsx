@@ -990,18 +990,14 @@ class WaybillForm extends React.Component<Props, State> {
       if(!isNotNull(this.props?.formState?.car_has_motohours)) {
         fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
         if(lastCarUsedWaybill.car_has_motohours){
-          fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_start;
-          fieldsToChange.motohours_end = lastCarUsedWaybill?.motohours_end;
-          fieldsToChange.motohours_diff = lastCarUsedWaybill?.motohours_diff;
+          fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_end;
         }
       }
 
       if(!isNotNull(this.props?.formState?.car_has_odometr)) {
         fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
         if(lastCarUsedWaybill.car_has_odometr){
-          fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_start;
-          fieldsToChange.odometr_end = lastCarUsedWaybill?.odometr_end;
-          fieldsToChange.odometr_diff = lastCarUsedWaybill?.odometr_diff;
+          fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_end;
         }
       }
       

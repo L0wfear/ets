@@ -987,19 +987,24 @@ class WaybillForm extends React.Component<Props, State> {
         }
       }
 
-      fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
-      fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
+      if(!isNotNull(this.props?.formState?.car_has_motohours)) {
+        fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
+        if(lastCarUsedWaybill.car_has_motohours){
+          fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_start;
+          fieldsToChange.motohours_end = lastCarUsedWaybill?.motohours_end;
+          fieldsToChange.motohours_diff = lastCarUsedWaybill?.motohours_diff;
+        }
+      }
 
-      if(lastCarUsedWaybill.car_has_motohours){
-        fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_start;
-        fieldsToChange.motohours_end = lastCarUsedWaybill?.motohours_end;
-        fieldsToChange.motohours_diff = lastCarUsedWaybill?.motohours_diff;
+      if(!isNotNull(this.props?.formState?.car_has_odometr)) {
+        fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
+        if(lastCarUsedWaybill.car_has_odometr){
+          fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_start;
+          fieldsToChange.odometr_end = lastCarUsedWaybill?.odometr_end;
+          fieldsToChange.odometr_diff = lastCarUsedWaybill?.odometr_diff;
+        }
       }
-      if(lastCarUsedWaybill.car_has_odometr){
-        fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_start;
-        fieldsToChange.odometr_end = lastCarUsedWaybill?.odometr_end;
-        fieldsToChange.odometr_diff = lastCarUsedWaybill?.odometr_diff;
-      }
+      
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;

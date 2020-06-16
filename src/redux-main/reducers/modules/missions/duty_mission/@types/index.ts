@@ -32,6 +32,7 @@ export type DutyMission = {
   norm_id: number | null;
   norm_text: string | null;
   number: number | null;
+  number_text: string | null;
   object_type_id: number | null;
   object_type_name: string | null;
   operation_num_execution: null;
@@ -52,7 +53,7 @@ export type DutyMission = {
   technical_operation_id: number | null;
   technical_operation_name: string;
   work_class_id: number | null;
-
+  passes_count: number;
   is_mission_progress_countable: boolean | null;
   consumable_materials: Array<ConsumableMaterialCountMission>;
 };

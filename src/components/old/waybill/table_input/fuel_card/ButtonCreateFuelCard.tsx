@@ -8,6 +8,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 type ButtonCreateFuelCardOwnProps = {
   id: string;
@@ -18,6 +19,7 @@ type ButtonCreateFuelCardOwnProps = {
 
   disabled: boolean;
   page: string;
+  fuel_card_on_cars?: Array<FuelCardOnCars>;
 };
 
 type ButtonCreateFuelCardProps = (
@@ -57,11 +59,12 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
         if (showStatus) {
           partialFuelCard.structure_id = props.structure_id;
           partialFuelCard.fuel_type = props.fuel_type;
+          partialFuelCard.fuel_card_on_cars = props.fuel_card_on_cars;
         }
 
         return partialFuelCard;
       },
-      [props.structure_id, props.fuel_type, showStatus],
+      [props.structure_id, props.fuel_type, showStatus, props.fuel_card_on_cars],
     );
 
     return (

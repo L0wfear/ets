@@ -44,6 +44,8 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
   switch (key) {
     case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
+    case 'carFilterMultyTechCondition': return !value.length || value.includes(car_actualData.condition);
+    case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер

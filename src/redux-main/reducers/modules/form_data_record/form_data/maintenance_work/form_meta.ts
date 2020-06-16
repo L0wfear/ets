@@ -11,8 +11,8 @@ export const metaMaintenanceWork: ConfigFormData<MaintenanceWork> = {
   schema: {
     header: {
       title: {
-        create: 'Добавление расходного материала',
-        update: 'Изменение расходного материала',
+        create: 'Добавление показателя регламентных работ',
+        update: 'Изменение показателя регламентных работ',
       },
     },
     body: {

@@ -154,8 +154,11 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
     return (
       <>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={12}>
-            <label>Время выполнения, планируемое:</label>
+          <EtsBootstrap.Col md={6}>
+            <label>Время выполнения, планируемое, c:</label>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <label>Время выполнения, планируемое, по:</label>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>

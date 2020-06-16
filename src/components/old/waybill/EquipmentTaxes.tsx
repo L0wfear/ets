@@ -86,8 +86,6 @@ export default class EquipmentTaxes extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    const { type } = props;
-
     this.tableCaptions = [
       {
         value: 'Операция',
@@ -102,9 +100,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         width: 75,
       },
       {
-        value: `Значение (${
-          type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'
-        })`,
+        value: `Значение (км | м/ч | раз | час)`,
         width: 150,
       },
       {

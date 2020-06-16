@@ -230,7 +230,7 @@ export const config: TypeConfigData<Mission> = {
           width: 150,
         },
         {
-          key: 'number',
+          key: 'number_text',
           title: 'Номер задания',
           width: 200,
         },

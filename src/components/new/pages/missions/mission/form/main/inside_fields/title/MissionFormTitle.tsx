@@ -19,7 +19,7 @@ const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
     );
   }
 
-  let title = `Задание № ${props.number}`;
+  let title = `Задание № ${props.number_text}`;
 
   if (props.column_id) {
     title = `${title} . Колонна № ${props.column_id}`;

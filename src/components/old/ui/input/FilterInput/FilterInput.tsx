@@ -6,6 +6,7 @@ import Input from 'components/old/ui/input/FilterInput/Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/old/ui/input/FilterInput/constants';
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
+import { isArray } from 'lodash-es';
 
 type IPropsFilterInput = {
   fieldName: string;
@@ -29,18 +30,22 @@ const InputFilter = filterTypeHandler(Input);
 
 const datetimeFilterValueMaker = (value, type) => {
   if (value) {
-    if (type === 'datetime') {
-      return createValidDateTime(value);
+    if (type === 'datetime' || type === 'advanced-datetime') {
+      return isArray(value)
+        ? value.map((el) => createValidDateTime(el))
+        : createValidDateTime(value);
     }
-    if (type === 'date') {
-      return createValidDate(value);
+    if (type === 'date' || type === 'advanced-date') {
+      return isArray(value)
+        ? value.map((el) => createValidDate(el))
+        : createValidDate(value);
     }
   }
 
   return value;
 };
 
-const DateTypeSet = new Set(['date', 'datetime']);
+const DateTypeSet = new Set(['date', 'datetime', 'advanced-date', 'advanced-datetime']);
 
 class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> {
   constructor(props) {
@@ -119,6 +124,8 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
         lang={this.props.lang}
       />
     );
+
+    // Если надо будет править верстку, смотри сюда components/new/ui/registry/components/data/filters/filters-lines/advanced-date/AdvancedDateFilter.tsx
 
     return (
       <div className="advanced-string-input">

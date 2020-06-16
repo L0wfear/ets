@@ -23,5 +23,4 @@ export type Odh = {
   snow_area: number | null;
   total_area: number | null;
   total_auto_clean_area: number | null;
-  total_manual_clean_area: number | null;
 };

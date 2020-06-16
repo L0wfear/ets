@@ -22,7 +22,9 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 const placeholder = {
   carFilterMultyType: 'Тип техники',
   carFilterMultyStructure: 'Подразделение',
-  carFilterMultyOwner: 'Организации',
+  carFilterMultyOwner: 'Организация',
+  carFilterMultyTechCondition: 'Техническое состояние',
+  carFilterMultyModel: 'Марка шасси',
 };
 
 class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilterByText> {
@@ -37,6 +39,8 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       hidden: true,
       carActualGpsNumberIndex,
       carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
+      carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
+      carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
       carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
       carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
     };
@@ -51,6 +55,8 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       return {
         carActualGpsNumberIndex,
         carFilterMultyTypeOptions: calcData.carFilterMultyTypeOptions.arr,
+        carFilterMultyTechConditionOptions: calcData.carFilterMultyTechConditionOptions.arr,
+        carFilterMultyModelOptions: calcData.carFilterMultyModelOptions.arr,
         carFilterMultyStructureOptions: calcData.carFilterMultyStructureOptions.arr,
         carFilterMultyOwnerOptions: calcData.carFilterMultyOwnerOptions.arr,
       };
@@ -90,6 +96,8 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                         {
                           [
                             'carFilterMultyType',
+                            'carFilterMultyTechCondition',
+                            'carFilterMultyModel',
                             'carFilterMultyStructure',
                           ].map((keyField) => (
                             <DefaultInput
@@ -101,7 +109,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                           ))
                         }
                         {
-                          this.props.isOkrug
+                          Boolean(this.props.isOkrug || !this.props.company_id)
                             ? (
                               <DefaultInput
                                 keyField={'carFilterMultyOwner'}
@@ -128,9 +136,10 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 export default connect<any, any, any, ReduxState>(
   (state) => ({
     isOkrug: state.session.userData.isOkrug,
+    company_id: state.session.userData.company_id,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
 
-    active: ['carFilterMultyType', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
+    active: ['carFilterMultyType', 'carFilterMultyTechCondition', 'carFilterMultyModel', 'carFilterMultyStructure', 'carFilterMultyOwner'].some((key) => (
       state.monitorPage.filters.data[key].length
     )),
   }),

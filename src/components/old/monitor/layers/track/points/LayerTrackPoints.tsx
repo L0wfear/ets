@@ -27,7 +27,7 @@ type PropsLayerTrackPoints = {
   mkad_speed_lim: number;
   speed_lim: number;
   map: Map;
-  SHOW_TRACK: boolean;
+  SHOW_TRACK_POINTS: boolean;
 
   dispatch: EtsDispatch;
 };
@@ -36,7 +36,7 @@ type StateLayerTrackPoints = {
   zoomMore8: boolean;
   lastPoint: any;
   trackLineIsDraw: boolean;
-  SHOW_TRACK: boolean;
+  SHOW_TRACK_POINTS: boolean;
 };
 
 const isMoreThenPermitted = (trackPoint, { mkad_speed_lim, speed_lim }) => {
@@ -51,7 +51,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
     zoomMore8: this.props.zoom >= 8,
     lastPoint: null,
     trackLineIsDraw: false,
-    SHOW_TRACK: this.props.SHOW_TRACK,
+    SHOW_TRACK_POINTS: this.props.SHOW_TRACK_POINTS,
   };
 
   componentDidMount() {
@@ -61,29 +61,29 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
       const { track } = this.props;
 
       if (track.length > 1) {
-        this.drawTrackPoints(track, this.state.SHOW_TRACK);
+        this.drawTrackPoints(track, this.state.SHOW_TRACK_POINTS);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
   }
 
   componentDidUpdate(prevProps) {
-    const { SHOW_TRACK, speed_lim, mkad_speed_lim } = this.props;
+    const { SHOW_TRACK_POINTS, speed_lim, mkad_speed_lim } = this.props;
     if (!(prevProps.track.length > 1)) {
       const { track } = this.props;
       if (track.length > 1) {
-        this.drawTrackPoints(track, SHOW_TRACK);
+        this.drawTrackPoints(track, SHOW_TRACK_POINTS);
       }
     } else {
       const { lastPoint } = this.props;
       if (lastPoint !== prevProps.lastPoint && lastPoint) {
-        this.drawTrackPoints([lastPoint], SHOW_TRACK);
-      } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {
+        this.drawTrackPoints([lastPoint], SHOW_TRACK_POINTS);
+      } else if (SHOW_TRACK_POINTS !== prevProps.SHOW_TRACK_POINTS) {
         const { track } = this.props;
-        this.changeStyleForPoint(track, SHOW_TRACK);
+        this.changeStyleForPoint(track, SHOW_TRACK_POINTS);
       } else if (speed_lim !== prevProps.speed_lim || mkad_speed_lim !== prevProps.mkad_speed_lim) {
         this.props.removeFeaturesFromSource(null, true);
-        this.drawTrackPoints(this.props.track, SHOW_TRACK);
+        this.drawTrackPoints(this.props.track, SHOW_TRACK_POINTS);
       }
     }
   }
@@ -105,7 +105,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
     }
   };
 
-  drawTrackPoints(track, SHOW_TRACK) {
+  drawTrackPoints(track, SHOW_TRACK_POINTS) {
     for (let index = 0, length = track.length; index < length; index++) {
       const currPoint = track[index];
       const currStatus = isMoreThenPermitted(currPoint, this.props);
@@ -116,17 +116,17 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
       feature.setId(currPoint.timestamp);
       feature.set('status', currStatus);
-      feature.setStyle(getStyleForTrackLine(currStatus, SHOW_TRACK));
+      feature.setStyle(getStyleForTrackLine(currStatus, SHOW_TRACK_POINTS));
       this.props.addFeaturesToSource(feature);
     }
   }
 
-  changeStyleForPoint(track, SHOW_TRACK) {
+  changeStyleForPoint(track, SHOW_TRACK_POINTS) {
     this.props.getAllFeatures().forEach((feature) => {
-      if (!SHOW_TRACK) {
-        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK));
+      if (!SHOW_TRACK_POINTS) {
+        feature.setStyle(getStyleForTrackLine(true, SHOW_TRACK_POINTS));
       } else {
-        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK));
+        feature.setStyle(getStyleForTrackLine(feature.get('status'), SHOW_TRACK_POINTS));
       }
     });
   }
@@ -147,7 +147,7 @@ export default compose<any, any>(
   }),
   connect<any, any, any, ReduxState>(
     (state) => ({
-      SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
+      SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
       track: state.monitorPage.carInfo.trackCaching.track,
       lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
       mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,

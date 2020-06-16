@@ -68,6 +68,7 @@ export type WaybillRegistryRow = {
   fact_departure_date: string;
   fact_fuel_end: number;
   failed_medical_stat_types: boolean;
+  fuel_card_ids: number;
   fuel_end: number;
   fuel_given: number;
   fuel_start: number;
@@ -108,10 +109,13 @@ export type WaybillRegistryRow = {
   }>;
   track_length: number;
   trailer_id: number;
+  refill_type_ids: number;
   work_mode_id: number;
   work_mode_name: string;
   work_mode_text: string;
   season: 'winter' | 'summer';
+  car_has_motohours: boolean;
+  car_has_odometr: boolean;
 };
 
 export type Waybill = (

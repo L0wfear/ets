@@ -15,6 +15,8 @@ export const MONITOR_PAGE_TOGGLE_STATUS_SHOW = MONITOR_PAGE`TOGGLE_STATUS_SHOW`;
 export const MONITOR_PAGE_TOGGLE_STATUS_GEO = MONITOR_PAGE`TOGGLE_STATUS_GEO`;
 export const MONITOR_PAGE_TOGGLE_STATUS_GEOOBECT = MONITOR_PAGE`TOGGLE_STATUS_GEOOBECT`;
 export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_GOV_NUMBER = MONITOR_PAGE`TOGGLE_STATUS_SHOW_GOV_NUMBER`;
+export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK_POINTS = MONITOR_PAGE`TOGGLE_STATUS_SHOW_TRACK_POINTS`;
+export const MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK = MONITOR_PAGE`TOGGLE_STATUS_SHOW_TRACK`;
 
 export const MONITOR_PAGE_ADD_TO_SELECTED_GEOMETRY = MONITOR_PAGE`ADD_TO_SELECTED_GEOMETRY`;
 export const MONITOR_PAGE_REMOVE_FROM_SELECTED_GEOMETRY = MONITOR_PAGE`REMOVE_FROM_SELECTED_GEOMETRY`;
@@ -46,6 +48,7 @@ export type IStateMonitorPage = {
     not_in_map: number; // считается на фронте
   };
   SHOW_GOV_NUMBER: boolean;
+  SHOW_TRACK_POINTS: boolean;
   status: {
     in_move: boolean;
     stop: boolean;
@@ -54,6 +57,7 @@ export type IStateMonitorPage = {
   };
   statusGeo: {
     SHOW_TRACK: boolean;
+    SHOW_TRACK_LINES_BY_SENSOR: boolean;
     SHOW_GEOOBJECTS: boolean;
   };
   geoobjects: {
@@ -69,6 +73,8 @@ export type IStateMonitorPage = {
     data: {
       carFilterText: string;
       carFilterMultyType: Array<number>;
+      carFilterMultyTechCondition: Array<number>;
+      carFilterMultyModel: Array<number>;
       carFilterMultyStructure: Array<number>;
       carFilterMultyOwner: Array<number>;
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
@@ -99,6 +105,7 @@ export const initialMonitorState: IStateMonitorPage = {
   carActualNotInMap: [],
   carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
+  SHOW_TRACK_POINTS: true,
   status: {
     in_move: true,
     stop: true,
@@ -108,6 +115,7 @@ export const initialMonitorState: IStateMonitorPage = {
   statusGeo: {
     SHOW_TRACK: true,
     SHOW_GEOOBJECTS: true,
+    SHOW_TRACK_LINES_BY_SENSOR: true,
   },
   carsByStatus: {
     in_move: 0,
@@ -136,6 +144,8 @@ export const initialMonitorState: IStateMonitorPage = {
     data: {
       carFilterText: '',
       carFilterMultyType: [],
+      carFilterMultyTechCondition: [],
+      carFilterMultyModel: [],
       carFilterMultyStructure: [],
       carFilterMultyOwner: [],
       featureBufferPolygon: null, // DITETSSUP-2007
@@ -240,6 +250,21 @@ export default (state = initialMonitorState, { type, payload }) => {
       return {
         ...state,
         SHOW_GOV_NUMBER: !state.SHOW_GOV_NUMBER,
+      };
+    }
+    case MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK_POINTS: {
+      return {
+        ...state,
+        SHOW_TRACK_POINTS: !state.SHOW_TRACK_POINTS,
+      };
+    }
+    case MONITOR_PAGE_TOGGLE_STATUS_SHOW_TRACK: {
+      return {
+        ...state,
+        statusGeo: {
+          ...state.statusGeo,
+          SHOW_TRACK: !state.statusGeo.SHOW_TRACK,
+        }
       };
     }
     case MONITOR_PAGE_RESER_CAR_STATUS: {

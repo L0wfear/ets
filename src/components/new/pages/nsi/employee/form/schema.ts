@@ -159,5 +159,18 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
         },
       ],
     },
+    secondary_car: {
+      title: 'Вторичное ТС',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (value, formData) => {
+          if (value?.length && formData.secondary_car?.includes?.(formData.prefer_car)
+          ) {
+            return 'Одно и то же ТС не может быть указано как основное и как вторичное одновременно';
+          }
+          return undefined;
+        },
+      ],
+    },
   },
 };

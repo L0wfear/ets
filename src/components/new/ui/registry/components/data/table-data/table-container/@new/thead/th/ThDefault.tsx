@@ -9,6 +9,8 @@ import ThGroupSpoiler from 'components/new/ui/registry/components/data/table-dat
 import styled from 'styled-components';
 
 export const ThDefaultWrapper = styled.div`
+  display: inline-flex;
+  align-content: center;
 `;
 
 export const getGlyphName = <F extends any>(key: ValuesOf<ValuesOf<OneRegistryData<F>['list']['meta']['fieldsInDeepArr']>>['key'], sort: OneRegistryData<F>['list']['processed']['sort']) => {
@@ -18,6 +20,14 @@ export const getGlyphName = <F extends any>(key: ValuesOf<ValuesOf<OneRegistryDa
 
   return null;
 };
+
+export const ThOverlayTrigger = styled.div`
+  &&& {
+    margin-left: 5px;
+    display: inline-flex;
+    align-items: center;
+  }
+`;
 
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
@@ -45,6 +55,21 @@ const ThDefault: React.FC<Props> = React.memo(
           />)
         }
         {metaField.title}
+        {metaField.fieldTitlePopup 
+        && <ThOverlayTrigger>
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            overlay={(
+              <EtsBootstrap.Popover id={`${props.registryKey}_${metaField.key}_title-popover`} >
+                {metaField.fieldTitlePopup}
+              </EtsBootstrap.Popover>
+            )}
+            placement="bottom">
+            <EtsBootstrap.Glyphicon glyph="info-sign" />
+          </EtsBootstrap.OverlayTrigger>
+        </ThOverlayTrigger> 
+        
+        }
         <EtsBootstrap.Glyphicon glyph={getGlyphName(sortBy ? sortBy : metaField.key, sort)} />
       </ThDefaultWrapper>
     );

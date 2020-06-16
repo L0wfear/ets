@@ -53,6 +53,8 @@ const canSaveNotCheckField = [
   'odometr_end',
   'equipment_fact_fuel_end',
   'fact_fuel_end',
+  'fuel_given',
+  'equipment_fuel_given',
 ];
 
 const canCloseNotCheckField = ['distance'];
@@ -469,6 +471,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const fuelGiven = formState.fuel_given
       ? parseFloat(formState.fuel_given)
       : 0;
+    const factFuelEnd = formState.fact_fuel_end
+      ? parseFloat(formState.fact_fuel_end)
+      : 0;
     const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
     const equipmentFuelStart = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
@@ -476,8 +481,29 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const equipmentFuelGiven = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : 0;
+    const equipmentFactFuelEnd = formState.equipment_fact_fuel_end
+      ? parseFloat(formState.equipment_fact_fuel_end)
+      : 0;
     const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
       formState.equipment_tax_data,
+    );
+
+    formState.tax_consumption = parseFloatWithFixed(fuelTaxes, 3);
+    formState.equipment_fact_consuption = parseFloatWithFixed((
+      equipmentFuelStart
+      + equipmentFuelGiven
+      - equipmentFactFuelEnd
+    ), 3);
+    formState.fact_consuption = parseFloatWithFixed((
+      fuelStart
+      + fuelGiven
+      - factFuelEnd
+    ), 3);
+    formState.consuption_diff = Math.abs(
+      parseFloatWithFixed((
+        formState.tax_consumption
+        - formState.fact_consuption
+      ), 3)
     );
 
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
@@ -487,6 +513,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         + equipmentFuelGiven
         - equipmentFuelTaxes
       ), 3);
+      formState.equipment_tax_consumption = parseFloatWithFixed(equipmentFuelTaxes, 3);
+      formState.equipment_consuption_diff = Math.abs(
+        parseFloatWithFixed((
+          formState.equipment_tax_consumption
+          - formState.equipment_fact_consuption
+        ), 3)
+      );
     } else {
       formState.fuel_end = parseFloatWithFixed((
         fuelStart
@@ -650,13 +683,20 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       delete formState.fuel_start;
       delete formState.motohours_equip_start;
 
+      formState.car_has_motohours = null;
+      formState.car_has_odometr = null;
+
       // prettier-ignore
       console.info( // eslint-disable-line
-        'delete',
+        'delete fields',
         '----->',
         'equipment_fuel_start',
         'fuel_start',
         'motohours_equip_start',
+        'clear fields',
+        '----->',
+        'car_has_motohours',
+        'car_has_odometr',
       );
 
       this.handleMultipleChange(formState);
@@ -750,14 +790,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           // висит окно с заявкой ЕДЦ
           return;
         }
-        this.props.onCallback({
-          showWaybillFormWrap: false,
-        });
-      } else {
-        this.props.onCallback({
-          showWaybillFormWrap: true,
-        });
-      }
+      } 
     };
 
     /**
@@ -785,6 +818,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
             await this.updateWaybill(formState);
             callback(id);
+            this.props.onCallback();
           } catch (error) {
             if (!error.errorIsShow) {
               global.NOTIFICATION_SYSTEM.removeNotification(
@@ -810,28 +844,27 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             return;
           }
         }
-        this.props.onCallback();
       } else if (waybillStatus === 'draft') {
         // если ПЛ обновляем
         if (typeof callback === 'function') {
-          formState.status = 'active';
-
           try {
-            await this.updateWaybill(formState);
+            await this.updateWaybill({...formState, status: 'active'});
+            this.props.onCallback();
           } catch (e) {
+            try {
+              await this.updateWaybill({...formState, status: 'draft'});
+            } catch (e) {
+              return;
+            }
             return;
           }
           callback();
-          if (this.props.onCallback) {
-            await this.props.onCallback();
-          }
         } else {
           try {
             await this.updateWaybill(formState);
           } catch (e) {
             return;
           }
-          this.props.onCallback();
         }
       } else if (waybillStatus === 'active') {
         this.submitActiveWaybill();
@@ -842,7 +875,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           console.info(error_text); // eslint-disable-line
           return;
         }
-        this.props.onCallback();
       }
     };
 
@@ -933,7 +965,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         }
       }
 
-      this.props.onFormHide();
+      this.props.onCallback();
     };
 
     render() {

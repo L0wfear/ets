@@ -18,22 +18,6 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill']>> = {
   title: 'Топливная карта',
   placeholder: '',
   format: 'select',
-  disabledIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
-  resetIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
   width: 200,
   options: [],
 };

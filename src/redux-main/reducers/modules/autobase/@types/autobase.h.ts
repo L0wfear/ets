@@ -91,6 +91,8 @@ export type InsurancePolicy = {
   date_end: string;
   date_start: string;
   gov_number: string;
+  gov_numbers_text: string;
+  gov_numbers: Array<any>;
   id: number;
   insurance_type_id: number;
   insurance_type_name: string;
@@ -115,6 +117,7 @@ export type Car = {
   body_capacity: number;
   car_group_id: number;
   car_group_name: string;
+  certificate_number: string;
   company_id: number;
   company_name: string;
   company_name_customer: string;
@@ -136,6 +139,9 @@ export type Car = {
   gov_number: string;
   gps_code: string;
   is_common: boolean;
+  is_gibdd_passport: boolean;
+  is_gtn_passport: boolean;
+  is_gims_passport: boolean;
   is_trailer: boolean;
   level_sensors_num: number;
   load_capacity: number;
@@ -148,6 +154,7 @@ export type Car = {
   owner_id: number;
   owner_name: string;
   parking_address: string;
+  passport_number: string;
   season: number;
   season_label: number;
   season_name: string;
@@ -239,6 +246,8 @@ export type TechInspection = {
   date_end: string;
   date_start: string;
   gov_number: string;
+  gov_numbers_text: string;
+  gov_numbers: Array<any>;
   id: number;
   is_allowed: boolean;
   note: string;

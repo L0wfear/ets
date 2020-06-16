@@ -36,6 +36,7 @@ export const config: TypeConfigData<DutyMission> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
+      buttonsTypes.duty_missions_export,
       buttonsTypes.duty_missions_from_archvie,
     ],
   },
@@ -96,12 +97,22 @@ export const config: TypeConfigData<DutyMission> = {
       },
       {
         valueKey: 'plan_date_start',
-        title: 'Начало план.',
+        title: 'Начало план',
         type: 'advanced-datetime',
       },
       {
         valueKey: 'plan_date_end',
-        title: 'Завершение план.',
+        title: 'Завершение план',
+        type: 'advanced-datetime',
+      },
+      {
+        valueKey: 'fact_date_start',
+        title: 'Начало факт',
+        type: 'advanced-datetime',
+      },
+      {
+        valueKey: 'fact_date_end',
+        title: 'Завершение факт',
         type: 'advanced-datetime',
       },
       {
@@ -225,13 +236,25 @@ export const config: TypeConfigData<DutyMission> = {
         },
         {
           key: 'plan_date_start',
-          title: 'Начало план.',
+          title: 'Начало план',
           format: 'datetime',
           width: 175,
         },
         {
           key: 'plan_date_end',
-          title: 'Завершение план.',
+          title: 'Завершение план',
+          format: 'datetime',
+          width: 175,
+        },
+        {
+          key: 'fact_date_start',
+          title: 'Начало факт',
+          format: 'datetime',
+          width: 175,
+        },
+        {
+          key: 'fact_date_end',
+          title: 'Завершение факт',
           format: 'datetime',
           width: 175,
         },

@@ -91,5 +91,11 @@ export function filterCars(car, formState, fieldType: 'prefer_car' | 'secondary_
     }
   }
 
+  if (
+    fieldType === 'prefer_car' && isArray(secondary_car) && secondary_car.includes(car.asuods_id) 
+    || fieldType === 'secondary_car' && prefer_car && prefer_car === car.asuods_id) {
+    isValid = false;
+  }
+
   return isValid;
 }

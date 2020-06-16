@@ -457,7 +457,10 @@ class WaybillForm extends React.Component<Props, State> {
         getFuelRatesBySeason(
           this.props.dispatch(
             actionLoadFuelRatesByCarModel(
-              { car_id: formState.car_id, datetime: formState.date_create },
+              {
+                car_id: formState.car_id,
+                datetime: formState.activating_date
+              },
               this.props,
             ),
           ),
@@ -469,7 +472,10 @@ class WaybillForm extends React.Component<Props, State> {
         getFuelRatesBySeason(
           this.props.dispatch(
             actionLoadEquipmentFuelRatesByCarModel(
-              { car_id: formState.car_id, datetime: formState.date_create },
+              {
+                car_id: formState.car_id,
+                datetime: formState.activating_date
+              },
               this.props,
             ),
           ),
@@ -759,16 +765,16 @@ class WaybillForm extends React.Component<Props, State> {
       loadingFields.distance = false;
       loadingFields.consumption = false;
       loadingFields.sensor_refill = false;
+      loadingFields.sensor_start_value = false;
+      loadingFields.sensor_finish_value = false;
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
-    const gps_code
-      = get(this.props.carIndex[formState.car_id], 'gps_code') || null;
 
     const { fact_departure_date, fact_arrival_date } = formState;
 
     if (
-      gps_code
+      formState.car_id
       && fact_departure_date
       && fact_arrival_date
       && diffDates(fact_arrival_date, fact_departure_date) > 0
@@ -776,20 +782,22 @@ class WaybillForm extends React.Component<Props, State> {
       loadingFields.distance = true;
       loadingFields.consumption = true;
       loadingFields.sensor_refill = true;
+      loadingFields.sensor_start_value = true;
+      loadingFields.sensor_finish_value = true;
       this.setState({ loadingFields });
 
       this.props
         .dispatch(
           actionGetTrackInfo(
             {
-              gps_code,
+              car_id: formState.car_id,
               from_dt: fact_departure_date,
               to_dt: fact_arrival_date,
             },
             this.props,
           ),
         )
-        .then(({ distance, consumption, sensor_refill, }) => {
+        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value,  }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -801,6 +809,17 @@ class WaybillForm extends React.Component<Props, State> {
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
+            sensor_start_value: isNullOrUndefined(sensor_start_value)
+              ? null
+              : parseFloat(sensor_start_value),
+            sensor_finish_value: isNullOrUndefined(sensor_finish_value)
+              ? null
+              : parseFloat(sensor_finish_value),
+            track_length: isNullOrUndefined(formState.track_length)
+              ? isNullOrUndefined(distance)
+                ? null
+                : parseFloat(distance)
+              : formState.track_length,
           });
 
           this.setState({
@@ -808,6 +827,8 @@ class WaybillForm extends React.Component<Props, State> {
               distance: false,
               consumption: false,
               sensor_refill: false,
+              sensor_start_value: false,
+              sensor_finish_value: false,
             },
           });
         })
@@ -817,6 +838,8 @@ class WaybillForm extends React.Component<Props, State> {
               distance: false,
               consumption: false,
               sensor_refill: false,
+              sensor_start_value: false,
+              sensor_finish_value: false,
             },
           });
         });
@@ -963,6 +986,21 @@ class WaybillForm extends React.Component<Props, State> {
           fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
         }
       }
+
+      if(!isNotNull(this.props?.formState?.car_has_motohours)) {
+        fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
+        if(lastCarUsedWaybill.car_has_motohours){
+          fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_end;
+        }
+      }
+
+      if(!isNotNull(this.props?.formState?.car_has_odometr)) {
+        fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
+        if(lastCarUsedWaybill.car_has_odometr){
+          fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_end;
+        }
+      }
+      
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
@@ -1293,6 +1331,89 @@ class WaybillForm extends React.Component<Props, State> {
       this.handleChangeHasEquipmentOnTrue();
     } else {
       this.handleChangeHasEquipmentOnFalse();
+    }
+  };
+
+  handleChangeMotohoursOdometr = async (key, value) => {
+    if(value){
+      // берем значения из последнего закрытого ПЛ*
+      const {
+        formState: { car_id },
+      } = this.props;
+
+      await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+      ).then((lastWaybill) => {
+        if(lastWaybill) {
+          const lastWaybillState = key === 'car_has_motohours'
+            ? {
+              ...this.state.lastWaybill,
+              motohours_start: lastWaybill?.motohours_start,
+              motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
+              motohours_diff: lastWaybill?.motohours_diff,
+            }
+            : {
+              ...this.state.lastWaybill,
+              odometr_start: lastWaybill.odometr_start,
+              odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
+              odometr_diff: lastWaybill.odometr_diff,
+            };
+        
+          const fieldsToChange = {
+            motohours_start: lastWaybillState.motohours_end,
+            odometr_start: lastWaybillState.odometr_end,
+          };
+          this.setState({ lastWaybill: lastWaybillState, });
+
+          this.handleMultipleChange(fieldsToChange);
+        }
+      });
+
+      this.handleChange(key, value);
+    } else {
+      try {
+        // odometer --  odometr_start, odometr_end, odometr_diff
+        // счетчика моточасов -- motohours_start, motohours_end, motohours_diff
+        const {
+          odometr_start,
+          odometr_end,
+          odometr_diff,
+          motohours_start,
+          motohours_end,
+          motohours_diff,
+        } = this.props.formState;
+
+        const hasDialog = key === 'car_has_motohours'
+          ? [motohours_start, motohours_end, motohours_diff].some((elem) => !isNullOrUndefined(elem))
+          : [odometr_start, odometr_end, odometr_diff].some((elem) => !isNullOrUndefined(elem));
+
+        if(hasDialog) {
+          await global.confirmDialog({
+            title: 'Внимание',
+            body: key === 'car_has_motohours'
+              ? 'Очистить введенные данные счетчика моточасов?'
+              : 'Очистить введенные данные по одометру?',
+            okName: 'Да',
+            cancelName: 'Нет',
+          });
+        }
+
+        this.handleMultipleChange( key === 'car_has_motohours'
+          ? {
+            motohours_start: null,
+            motohours_end: null,
+            motohours_diff: null,
+            [key]: value,
+          }
+          : { // key === 'car_has_odometer'
+            odometr_start: null,
+            odometr_end: null,
+            odometr_diff: null,
+            [key]: value,
+          });
+      } catch (e) {
+        console.error(e);  // eslint-disable-line
+      }
     }
   };
 
@@ -2078,38 +2199,146 @@ class WaybillForm extends React.Component<Props, State> {
                 />
               </EtsBootstrap.Col>
               {state.equipment_fuel && (
-                <React.Fragment>
-                  <EtsBootstrap.Col md={4}>
-                    <ExtField
-                      id="is_one_fuel_tank"
-                      type="select"
-                      label="Таксировка с одного топливного бака"
-                      value={state.is_one_fuel_tank}
-                      options={YES_NO_SELECT_OPTIONS_BOOL}
-                      onChange={this.handleIsOneFuelTank}
-                      disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
-                      clearable={false}
-                      modalKey={modalKey}
-                    />
-                  </EtsBootstrap.Col>
-                  {!state.is_one_fuel_tank && (
-                    <EtsBootstrap.Col md={4}>
-                      <ExtField
-                        type="number"
-                        label="Общее топливо при выезде, л"
-                        value={
-                          Number(state.equipment_fuel_start)
-                          + Number(state.fuel_start)
-                        }
-                        format="toFixed3"
-                        disabled
-                      />
-                    </EtsBootstrap.Col>
-                  )}
-                </React.Fragment>
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="is_one_fuel_tank"
+                    type="select"
+                    label="Таксировка с одного топливного бака"
+                    value={state.is_one_fuel_tank}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleIsOneFuelTank}
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
+                    clearable={false}
+                    modalKey={modalKey}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {CAR_HAS_ODOMETER && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="car_has_motohours"
+                    type="select"
+                    label="На ТС установлен счетчик моточасов"
+                    value={state.car_has_motohours}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleChangeMotohoursOdometr}
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
+                    clearable={false}
+                    modalKey={modalKey}
+                    boundKeys="car_has_motohours"
+                    error={errors.car_has_motohours}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {!CAR_HAS_ODOMETER && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="car_has_odometr"
+                    type="select"
+                    label="На ТС установлен одометр"
+                    value={state.car_has_odometr}
+                    options={YES_NO_SELECT_OPTIONS_BOOL}
+                    onChange={this.handleChangeMotohoursOdometr}
+                    disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
+                    clearable={false}
+                    modalKey={modalKey}
+                    boundKeys="car_has_odometr"
+                    error={errors.car_has_odometr}
+                  />
+                </EtsBootstrap.Col>
+              )}
+              {Boolean(state.equipment_fuel && !state.is_one_fuel_tank) && (
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    type="number"
+                    label="Общее топливо при выезде, л"
+                    value={
+                      Number(state.equipment_fuel_start)
+                      + Number(state.fuel_start)
+                    }
+                    format="toFixed3"
+                    disabled
+                  />
+                </EtsBootstrap.Col>
               )}
             </EtsBootstrap.Row>
           )}
+          {/*  */}
+          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE)}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <h3 style={{ marginBottom: '20px' }} >Данные по ДУТ</h3>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <BorderDash
+                  width={1}
+                  borderStyle="solid"
+                  color={UiConstants.colorGrey}>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={12}>
+                      <h4></h4>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_start_value"
+                          type="number"
+                          label="Выезд по ДУТ, л "
+                          error={errors.sensor_start_value}
+                          value={state.sensor_start_value}
+                          isLoading={loadingFields.sensor_start_value}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_refill"
+                          type="number"
+                          label="Заправка по ДУТ, л"
+                          error={errors.sensor_refill}
+                          value={state.sensor_refill}
+                          isLoading={loadingFields.sensor_refill}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="consumption"
+                          type="number"
+                          label="Расход по ДУТ, л"
+                          error={errors.consumption}
+                          value={state.consumption || state.sensor_consumption}
+                          isLoading={loadingFields.consumption}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_finish_value"
+                          type="number"
+                          label="Возврат по ДУТ, л"
+                          error={errors.sensor_finish_value}
+                          value={state.sensor_finish_value}
+                          isLoading={loadingFields.sensor_finish_value}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
+                </BorderDash>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </Div>
           <Div hidden={!state.car_id}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
@@ -2124,115 +2353,119 @@ class WaybillForm extends React.Component<Props, State> {
                   color={UiConstants.colorGrey}>
                   <EtsBootstrap.Row>
                     <EtsBootstrap.Col md={12}>
-                      <Div hidden={!CAR_HAS_ODOMETER}>
-                        <EtsBootstrap.Col md={4}>
-                          <h4>Одометр</h4>
-                          <ExtField
-                            id="odometr-start"
-                            type="number"
-                            label="Выезд из гаража, км"
-                            error={errors.odometr_start}
-                            value={state.odometr_start}
-                            disabled={
-                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                              || Boolean(lastWaybill && lastWaybill['odometr_end'])
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="odometr_start"
-                          />
-                          <ExtField
-                            id="odometr-end"
-                            type="number"
-                            label="Возвращение в гараж, км"
-                            error={errors.odometr_end}
-                            value={state.odometr_end}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled={
-                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                              || (!isPermittedByKey.update
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
+                          { Boolean(CAR_HAS_ODOMETER || state.car_has_odometr)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Одометр</h4>
+                              <ExtField
+                                id="odometr-start"
+                                type="number"
+                                label="Выезд из гаража, км"
+                                error={errors.odometr_start}
+                                value={state.odometr_start}
+                                disabled={
+                                  IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                      || Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_start"
+                              />
+                              <ExtField
+                                id="odometr-end"
+                                type="number"
+                                label="Возвращение в гараж, км"
+                                error={errors.odometr_end}
+                                value={state.odometr_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                      || (!isPermittedByKey.update
+                                      && !isPermittedByKey.departure_and_arrival_values)
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="odometr_end"
+                              />
+                              <ExtField
+                                id="odometr-diff"
+                                type="number"
+                                label="Пробег, км"
+                                value={state.odometr_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled
+                              />
+                            </EtsBootstrap.Col>
+                          }
+                          { Boolean(!CAR_HAS_ODOMETER || state.car_has_motohours)
+                            && <EtsBootstrap.Col md={4}>
+                              <h4>Счетчик моточасов</h4>
+                              <ExtField
+                                id="motohours-start"
+                                type="number"
+                                label="Выезд из гаража, м/ч"
+                                error={errors.motohours_start}
+                                value={state.motohours_start}
+                                disabled={
+                                  IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_start"
+                              />
+
+                              <ExtField
+                                id="motohours-end"
+                                type="number"
+                                label="Возвращение в гараж, м/ч"
+                                error={errors.motohours_end}
+                                value={state.motohours_end}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled={
+                                  IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
+                                || (!isPermittedByKey.update
                                 && !isPermittedByKey.departure_and_arrival_values)
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="odometr_end"
-                          />
+                                }
+                                onChange={this.handleChange}
+                                boundKeys="motohours_end"
+                              />
 
-                          <ExtField
-                            id="odometr-diff"
-                            type="number"
-                            label="Пробег, км"
-                            value={state.odometr_diff}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled
-                          />
+                              <ExtField
+                                id="motohours_diff"
+                                type="number"
+                                label="Пробег, м/ч"
+                                value={state.motohours_diff}
+                                hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                disabled
+                              />
+                            </EtsBootstrap.Col>
+                          }
                         </EtsBootstrap.Col>
-                      </Div>
-                      <Div hidden={CAR_HAS_ODOMETER}>
-                        <EtsBootstrap.Col md={4}>
-                          <h4>Счетчик моточасов</h4>
-                          <ExtField
-                            id="motohours-start"
-                            type="number"
-                            label="Выезд из гаража, м/ч"
-                            error={errors.motohours_start}
-                            value={state.motohours_start}
-                            disabled={
-                              IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                              || Boolean(lastWaybill && lastWaybill['motohours_end'])
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="motohours_start"
-                          />
-
-                          <ExtField
-                            id="motohours-end"
-                            type="number"
-                            label="Возвращение в гараж, м/ч"
-                            error={errors.motohours_end}
-                            value={state.motohours_end}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled={
-                              IS_DELETE || (IS_CLOSED && !this.state.canEditIfClose)
-                              || (!isPermittedByKey.update
-                                && !isPermittedByKey.departure_and_arrival_values)
-                            }
-                            onChange={this.handleChange}
-                            boundKeys="motohours_end"
-                          />
-
-                          <ExtField
-                            id="motohours_diff"
-                            type="number"
-                            label="Пробег, м/ч"
-                            value={state.motohours_diff}
-                            hidden={!(IS_ACTIVE || IS_CLOSED)}
-                            disabled
-                          />
-                        </EtsBootstrap.Col>
-                      </Div>
-                      <EtsBootstrap.Col md={8}>
-                        <EtsBootstrap.Row>
+                      </EtsBootstrap.Row>
+                    
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
                           <EtsBootstrap.Col md={12}>
-                            <h4>Топливо</h4>
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <FuelType
-                              modalKey={modalKey}
-                              keyField="fuel_type"
-                              value={state.fuel_type}
-                              error={errors.fuel_type}
-                              disabled={
-                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                                || (lastWaybill && lastWaybill['fuel_type'])
-                              }
-                              options={FUEL_TYPES}
-                              handleChange={this.props.handleMultipleChange}
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={8}>
                             <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={6}>
+                              <EtsBootstrap.Col md={12}>
+                                <h4>Топливо</h4>
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={4}>
+                                <FuelType
+                                  modalKey={modalKey}
+                                  keyField="fuel_type"
+                                  value={state.fuel_type}
+                                  error={errors.fuel_type}
+                                  disabled={
+                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || (lastWaybill && lastWaybill['fuel_type'])
+                                  }
+                                  options={FUEL_TYPES}
+                                  handleChange={this.props.handleMultipleChange}
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
                                 {!(IS_DRAFT || IS_CREATING) && (
                                   <ExtField
                                     id="fuel-end"
@@ -2245,29 +2478,37 @@ class WaybillForm extends React.Component<Props, State> {
                                   />
                                 )}
                               </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="tax-consumption"
+                                  type="number"
+                                  label="Расход по таксировке, л"
+                                  error={errors.tax_consumption}
+                                  value={state.tax_consumption}
+                                  format="toFixed3"
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                />
+                              </EtsBootstrap.Col>
                             </EtsBootstrap.Row>
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel_start"
-                              type="number"
-                              label="Выезд, л"
-                              error={errors.fuel_start}
-                              value={state.fuel_start}
-                              disabled={
-                                IS_DELETE || IS_ACTIVE || IS_CLOSED || !isPermittedByKey.update
-                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fuel_start"
-                              format="toFixed3"
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={8}>
                             <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={6}>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fuel_start"
+                                  type="number"
+                                  label="Выезд, л"
+                                  error={errors.fuel_start}
+                                  value={state.fuel_start}
+                                  disabled={
+                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
+                                  }
+                                  onChange={this.handleChange}
+                                  boundKeys="fuel_start"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
                                 <ExtField
                                   id="fact-fuel-end"
                                   type="number"
@@ -2278,7 +2519,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                                   disabled={
                                     IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
-                                    || !isPermittedByKey.update
+                                || !isPermittedByKey.update
                                   }
                                   onChange={this.handleChange}
                                   boundKeys="fact_fuel_end"
@@ -2288,30 +2529,61 @@ class WaybillForm extends React.Component<Props, State> {
                                   format="toFixed3"
                                 />
                               </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fact-consuption"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Расход фактический, л"
+                                  error={errors.fact_consuption}
+                                  value={state.fact_consuption}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                  onChange={this.handleChange}
+                                  boundKeys="fact_consuption"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="fuel-given"
+                                  type="number"
+                                  label="Выдано, л"
+                                  error={errors.fuel_given}
+                                  value={state.fuel_given}
+                                  disabled
+                                />
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                {
+                                  Boolean(IS_ACTIVE || IS_CLOSED)
+                                  && <InfoBlock>
+                                    Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+                                  </InfoBlock>
+                                }
+                              </EtsBootstrap.Col>
+                              <EtsBootstrap.Col md={4}>
+                                <ExtField
+                                  id="consuption-diff"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Расхождение в данных расхода, л"
+                                  error={errors.consuption_diff}
+                                  value={state.consuption_diff}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled
+                                  onChange={this.handleChange}
+                                  boundKeys="consuption_diff"
+                                  format="toFixed3"
+                                />
+                              </EtsBootstrap.Col>
                             </EtsBootstrap.Row>
                           </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                        <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel-given"
-                              type="number"
-                              label="Выдано, л"
-                              error={errors.fuel_given}
-                              value={state.fuel_given}
-                              disabled
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            {
-                              Boolean(IS_ACTIVE || IS_CLOSED)
-                              && <InfoBlock>
-                                Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                              </InfoBlock>
-                            }
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Row>
-                      </EtsBootstrap.Col>
+                        </EtsBootstrap.Col>
+                        
+                      </EtsBootstrap.Row>
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={2}>
                       <EtsBootstrap.Col md={12}>
@@ -2330,6 +2602,7 @@ class WaybillForm extends React.Component<Props, State> {
                           structure_id={state.structure_id}
                           fuel_type={state.fuel_type}
                           car_id={state.car_id}
+                          gov_number={state.gov_number}
                           date_for_valid={{
                             fact_departure_date: state.fact_departure_date,
                             plan_departure_date: state.plan_departure_date,
@@ -2471,6 +2744,17 @@ class WaybillForm extends React.Component<Props, State> {
                                     />
                                   )}
                                 </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-tax-consumption"
+                                    type="number"
+                                    label="Расход по таксировке, л"
+                                    value={state.equipment_tax_consumption}
+                                    format="toFixed3"
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                  />
+                                </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={4}>
@@ -2509,6 +2793,21 @@ class WaybillForm extends React.Component<Props, State> {
                                     format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-fact-consuption"
+                                    type="number"
+                                    modalKey={modalKey}
+                                    label="Расход фактический, л"
+                                    error={errors.equipment_fact_consuption}
+                                    value={state.equipment_fact_consuption}
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_fact_consuption"
+                                    format="toFixed3"
+                                  />
+                                </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={4}>
@@ -2517,6 +2816,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     type="number"
                                     label="Выдано, л"
                                     value={state.equipment_fuel_given}
+                                    error={errors.equipment_fuel_given}
                                     disabled
                                   />
                                 </EtsBootstrap.Col>
@@ -2525,6 +2825,21 @@ class WaybillForm extends React.Component<Props, State> {
                                     && <InfoBlock>
                                       Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
                                     </InfoBlock> }
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-consuption-diff"
+                                    type="number"
+                                    modalKey={modalKey}
+                                    label="Расхождение в данных расхода, л"
+                                    error={errors.equipment_consuption_diff}
+                                    value={state.equipment_consuption_diff}
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_consuption_diff"
+                                    format="toFixed3"
+                                  />
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                             </EtsBootstrap.Col>
@@ -2652,30 +2967,6 @@ class WaybillForm extends React.Component<Props, State> {
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
-                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-                  <ExtField
-                    id="consumption"
-                    type="number"
-                    label="Расход по ДУТ, л"
-                    error={errors.consumption}
-                    value={state.consumption || state.sensor_consumption}
-                    isLoading={loadingFields.consumption}
-                    format="toFixed3"
-                    disabled
-                  />
-                </Div>
-                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-                  <ExtField
-                    id="sensor_refill"
-                    type="number"
-                    label="Заправка по ДУТ, л"
-                    error={errors.sensor_refill}
-                    value={state.sensor_refill}
-                    isLoading={loadingFields.sensor_refill}
-                    format="toFixed3"
-                    disabled
-                  />
-                </Div>
                 <ExtField
                   id="failed-medical-stat-types"
                   type="string"

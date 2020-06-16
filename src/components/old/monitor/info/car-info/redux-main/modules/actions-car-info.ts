@@ -30,7 +30,7 @@ import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { actionGetCarMissionsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
 
-export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {
+export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {  // <<< gps_code
   return dispatch({
     type: CAR_INFO_SET_GPS_CODE,
     payload: {

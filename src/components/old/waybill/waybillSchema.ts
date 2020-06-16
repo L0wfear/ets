@@ -5,7 +5,7 @@ import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/da
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import { isNumber, isArray, isString } from 'util';
+import { isNumber, isArray, isString, isNullOrUndefined } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
@@ -88,14 +88,17 @@ const checkCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
-        value:
-          !rowData.value && rowData.value !== 0
+        value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
+          ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
             : rowData.value < 0
               ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
-              : !isValidToFixed3(rowData.value)
-                ? getRequiredFieldToFixed('Выдано, л', 3)
-                : '',
+              : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
+              && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+                : !isValidToFixed3(rowData.value)
+                  ? getRequiredFieldToFixed('Выдано, л', 3)
+                  : ''
+          : '',
       };
     });
   },
@@ -122,12 +125,15 @@ const checkEquipmentCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
-        value:
-          !rowData.value && rowData.value !== 0
+        value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
+          ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
-            : !isValidToFixed3(rowData.value)
-              ? getRequiredFieldToFixed('Выдано, л', 3)
-              : '',
+            : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
+            && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+              : !isValidToFixed3(rowData.value)
+                ? getRequiredFieldToFixed('Выдано, л', 3)
+                : ''
+          : '',
       };
     });
   },
@@ -296,6 +302,18 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+    },
+    equipment_fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+    },
     fuel_to_give: {
       title: 'Топливо.Выдать',
       type: 'number',
@@ -315,7 +333,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       required: false,
       dependencies: [
         (value, formData) => {
-          if (!hasMotohours(formData.gov_number) && isEmpty(value)) {
+          if ((!hasMotohours(formData.gov_number) || formData.car_has_odometr) && isEmpty(value)) {
             return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
           return false;
@@ -329,7 +347,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       required: false,
       dependencies: [
         (value, formData) => {
-          if (hasMotohours(formData.gov_number) && isEmpty(value)) {
+          if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
           return false;
@@ -426,6 +444,36 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState,
           );
         },
+      ],
+    },
+    car_has_motohours: {
+      title: 'На ТС установлен счетчик моточасов',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_motohours }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && CAR_HAS_ODOMETER && isNullOrUndefined(car_has_motohours)) {
+            return 'Поле "На ТС установлен счетчик моточасов" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
+    car_has_odometr: {
+      title: 'На ТС установлен одометр',
+      type: 'boolean',
+      dependencies: [
+        (_, { gov_number, status, car_has_odometr }) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
+            return 'Поле "На ТС установлен одометр" должно быть заполнено';
+          }
+          return false;
+        }
       ],
     },
   },
@@ -557,10 +605,10 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { odometr_start, gov_number }) => {
+        (value, { odometr_start, gov_number, car_has_odometr }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (CAR_HAS_ODOMETER) {
-            if ((odometr_start || isNumber(odometr_start)) && !value) {
+          if (CAR_HAS_ODOMETER || car_has_odometr) {
+            if ((odometr_start || isNumber(odometr_start)) && !value) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
             if (value && value < odometr_start) {
@@ -576,9 +624,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { motohours_start, gov_number }) => {
+        (value, { motohours_start, gov_number, car_has_motohours }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (!CAR_HAS_ODOMETER) {
+          if (!CAR_HAS_ODOMETER || car_has_motohours) {
             if ((motohours_start || isNumber(motohours_start)) && !value) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
             }
@@ -682,7 +730,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           const abs = Math.abs(
             parseFloat((formData.odometr_diff || formData.motohours_diff || 0).toString())
-              - parseFloat((value ?? 0).toString()),
+            - parseFloat((value ?? 0).toString()),
           );
           if (abs / 100 > 0.1) {
             return 'Расхождение в показателях пробега';

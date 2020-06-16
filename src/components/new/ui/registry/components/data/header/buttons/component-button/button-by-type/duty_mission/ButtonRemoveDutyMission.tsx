@@ -68,7 +68,8 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
   let disabled = false;
 
   const checkedRowsAsArray = Object.values(props.checkedRows);
-  if (checkedRowsAsArray.length) {
+  const checkedRowsLength = checkedRowsAsArray.length;
+  if (checkedRowsLength) {
     disabled = checkedRowsAsArray.some((dutyMission: DutyMission) => dutyMission.status !== DUTY_MISSION_STATUS.not_assigned);
   } else {
     const status = get(props.selectedRow, 'status', null);
@@ -80,13 +81,19 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
       <EtsBootstrap.Button id="remove-element" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
       </EtsBootstrap.Button>
-      <ModalYesNo
-        show={isOpenModalRemove}
-        handleHide={handleClickCloseForm}
-        handleSubmit={handleClickRemoveSelectedRows}
+      {Boolean(checkedRowsLength) && (
+        <ModalYesNo
+          show={isOpenModalRemove}
+          handleHide={handleClickCloseForm}
+          handleSubmit={handleClickRemoveSelectedRows}
 
-        message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
-      />
+          message={
+            checkedRowsLength === 1
+              ? 'Вы уверены, что хотите удалить выбранный элемент?'
+              : `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
+          }
+        />
+      )}
     </>
   );
 };

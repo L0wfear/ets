@@ -170,8 +170,8 @@ const TdNormValue: React.FC<Props> = React.memo(
         />
         {
           showEditBtn && (
-            <EtsBootstrap.Button disabled={disableEditBtn} onClick={handleChangeLock} title={!is_norm_value_locked ? 'открыт ручной ввод' : 'закрыт ручной ввод'}>
-              <EtsBootstrap.Glyphicon glyph={!is_norm_value_locked ? 'user' : 'lock'} />
+            <EtsBootstrap.Button disabled={disableEditBtn} onClick={handleChangeLock} title={!is_norm_value_locked ? 'Закрыть ручной ввод' : 'Открыть ручной ввод'}>
+              <EtsBootstrap.Glyphicon glyph={!is_norm_value_locked ? 'lock' : 'pencil'} />
             </EtsBootstrap.Button>
           )
         }
@@ -184,7 +184,7 @@ export const metaNormValue: TableMeta<ValuesOf<Mission['consumable_materials']>>
   key: 'norm_value',
   title: 'Норма расхода',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdNormValue,
 };

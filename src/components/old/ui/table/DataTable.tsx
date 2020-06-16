@@ -24,7 +24,7 @@ import Div from 'components/old/ui/Div';
 import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
-import { isArray } from 'util';
+import { isArray, isNullOrUndefined } from 'util';
 import { renderCarData } from 'components/old/ui/table/legacy';
 import { isNumber } from 'highcharts';
 
@@ -89,6 +89,7 @@ export default class DataTable extends React.Component<Props, State> {
 
       normInitialData: PropTypes.bool,
       currentPage: PropTypes.any,
+      perPageLocal: PropTypes.number,
     };
   }
 
@@ -138,6 +139,7 @@ export default class DataTable extends React.Component<Props, State> {
 
       normInitialData: false,
       currentPage: 0,
+      perPageLocal: 15,
     };
   }
 
@@ -155,6 +157,7 @@ export default class DataTable extends React.Component<Props, State> {
       data: [],
       originalData: this.props.data,
       currentPage: props.page || 0,
+      perPageLocal: 15,
     };
 
     // временно до выпиливания гридла
@@ -296,7 +299,7 @@ export default class DataTable extends React.Component<Props, State> {
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
-      console.info('SAVE FILTER', filterValues);  // eslint-disable-line
+      console.info('SAVE FILTER_', filterValues);  // eslint-disable-line
     } else {
       let filterAsString = '';
 
@@ -306,7 +309,7 @@ export default class DataTable extends React.Component<Props, State> {
         filterAsString = filterValues;
       }
 
-      console.info('SAVE FILTER', filterAsString);  // eslint-disable-line
+      console.info('SAVE FILTER__', filterAsString);  // eslint-disable-line
     }
 
     if (this.props.externalFilter) {
@@ -369,10 +372,11 @@ export default class DataTable extends React.Component<Props, State> {
           ? col.customHeaderComponent
           : col.displayName,
         sortable: typeof col.sortable === 'boolean' ? col.sortable : true,
+        fieldTitlePopup: col.fieldTitlePopup,
       };
       if (col.make_str_gov_number_format) {
         metaObject.customComponent = (props) => renderCarData(props, this.props);
-      } else if (col.precision) {
+      } else if (!isNullOrUndefined(col.precision)) {
         metaObject.customComponent = (props) =>
           this.precisionNumberRender(col.precision, props);
       } else if (col.type === 'string') {
@@ -750,6 +754,10 @@ export default class DataTable extends React.Component<Props, State> {
     this.setState({ currentPage });
   };
 
+  setPerPage = (value) => {
+    this.setState({perPageLocal: value});
+  };
+
   handleKeyPress = (data, keyCode, e) => {
     if (isEmpty(this.props.selected)) {
       return;
@@ -800,6 +808,7 @@ export default class DataTable extends React.Component<Props, State> {
       highlight,
       serverPagination,
       externalChangeSort,
+      withPerPageSelector,
     } = this.props;
     const { initialSort, initialSortAscending, isHierarchical } = this.state;
 
@@ -869,7 +878,7 @@ export default class DataTable extends React.Component<Props, State> {
           initialSortAscending={initialSortAscending}
           columnMetadata={columnMetadata}
           columns={tableCols}
-          resultsPerPage={15}
+          resultsPerPage={this.state.perPageLocal}
           externalChangeSort={externalChangeSort || this.handleChangeSort}
           onRowClick={!isHierarchical ? onRowSelected : null}
           onRowDoubleClick={this.props.onRowDoubleClick}
@@ -890,8 +899,10 @@ export default class DataTable extends React.Component<Props, State> {
         ) : (
           <Paginator
             currentPage={this.state.currentPage}
-            maxPage={Math.ceil(results.length / 15)}
+            maxPage={Math.ceil(results.length / this.state.perPageLocal)}
             setPage={this.setPage}
+            setPerPage={this.setPerPage}
+            withPerPageSelector={withPerPageSelector}
           />
         )}
       </Div>

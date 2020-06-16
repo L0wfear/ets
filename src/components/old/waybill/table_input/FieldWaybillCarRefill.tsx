@@ -16,6 +16,9 @@ import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
+import { isNullOrUndefined } from 'util';
 
 type Props = {
   id: string;
@@ -42,6 +45,7 @@ type Props = {
   fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'];
 
   canEditIfClose: boolean;
+  gov_number?: Waybill['gov_number'];
 } & (
   {
     array: Waybill['car_refill'];
@@ -70,22 +74,6 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   title: 'Топливная карта',
   placeholder: '',
   format: 'select',
-  disabledIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
-  resetIf: [
-    {
-      type: 'compare_with_value_in_option',
-      path_to_option: 'type_id',
-      compareItemPath: 'is_fuel_card_required',
-      match: false,
-    },
-  ],
   onChange: (onChange) => (value, option) => {
     onChange({
       fuel_card_id: value,
@@ -161,12 +149,19 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             ...metaFuelCardId,
             options: fuelCardIdOptions,
           },
-          metaValue,
+          {
+            ...metaValue,
+            disabled: !props.array[selectedRowIndex]?.type_id
+              || (
+                props.array[selectedRowIndex]?.type_id === 1
+                && !props.array[selectedRowIndex]?.fuel_card_id
+              ),
+          }
         ];
 
         return meta;
       },
-      [fuelCardIdOptions, typeIdOptions, props.array],
+      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex],
     );
     const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
     const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
@@ -252,6 +247,23 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         });
       }, [props.car_id]);
 
+    const fuelCardValue = React.useMemo(
+      () => {
+        const isFuelCardSelected = props.array.map(
+          ( data ) => data.fuel_card_id,
+        );
+
+        if (isFuelCardSelected) {
+          return isFuelCardSelected;
+        }
+
+        return null;
+      },
+      [props.array],
+    );
+
+    const previousfuelCardValue = usePrevious(fuelCardValue);
+
     const handleChange = React.useCallback(
       async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
         let newArr = array;
@@ -264,9 +276,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         if (typeIdOptions.length && filteredFuelCardIdOptions.length === 1) {
           if (newArr.length === 1) {
             const firstElement = newArr[0];
-            if (!firstElement.fuel_card_id) {
+            if (!firstElement.fuel_card_id && firstElement.type_id === 1) {
               const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
-              if (refillTypeData && refillTypeData.rowData.is_fuel_card_required) {
+              if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
                 newArr = [
                   {
                     ...firstElement,
@@ -379,6 +391,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         ? showForCarRefil
         : false;
 
+    const defaultItem: FuelCardOnCars = {...defaultFuelCardOnCarsItem, gov_number: props.gov_number, car_id: props.car_id,};  
+
     return showBlock && (
       <div>
         <HrLineWaybill />
@@ -401,7 +415,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
-
+              fuel_card_on_cars = {[defaultItem]}
               handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}
 

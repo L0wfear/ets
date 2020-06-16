@@ -1,11 +1,24 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import PerPageSelector from 'components/new/ui/registry/components/data/paginator/perPageSelector/perPageSelector';
+import styled from 'styled-components';
+
+const PaginatorWrapperStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const PerPageSelectorStyled = styled.div`
+  margin-top: 20px;
+`;
 
 type Props = {
   currentPage: number;
   maxPage: number;
   setPage: (pageNumber: number) => any;
+  setPerPage: (value: number) => void;
+  withPerPageSelector?: boolean;
 };
 
 class Paginator extends React.Component<Props, any> {
@@ -50,10 +63,6 @@ class Paginator extends React.Component<Props, any> {
   render() {
     const currentPage = this.props.currentPage;
     const maxPage = this.props.maxPage;
-
-    if (maxPage === 1 || maxPage === 0) {
-      return null;
-    }
 
     let startIndex = Math.max(currentPage - 5, 0);
     const endIndex = Math.min(startIndex + 11, this.props.maxPage);
@@ -129,7 +138,17 @@ class Paginator extends React.Component<Props, any> {
       );
     }
 
-    return <ol className="pagination">{options}</ol>;
+    return (
+      <PaginatorWrapperStyled>
+        {maxPage > 1
+          ? <ol className="pagination">{options}</ol>
+          :          <div></div>}
+        {this.props.withPerPageSelector
+          && <PerPageSelectorStyled>
+            <PerPageSelector setPerPage={this.props.setPerPage} />
+          </PerPageSelectorStyled>}
+      </PaginatorWrapperStyled>
+    );
   }
 }
 

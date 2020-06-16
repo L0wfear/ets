@@ -93,3 +93,7 @@ export const CarsTravelTimeReportNew = ETS_API_FACTORY.createApiServiceAdapter(
 export const FuelCardsReportService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_cards_report',
 );
+export const ConsumableMaterialUsageReport = ETS_API_FACTORY.createApiServiceAdapter(
+  'consumable_material_usage_report',
+  {},
+);

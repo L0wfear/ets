@@ -144,13 +144,13 @@ class FilterRow extends React.Component<Props, {}> {
           />
         );
       }
-      if (type === 'advanced-date') {
+      if (type === 'advanced-date' || type === 'advanced-datetime' ) {
         input = (
           <FilterInput
             entity={entity}
             filterValue={value}
             fieldName={name}
-            inputType="date"
+            inputType={type} // 'advanced-date' || 'advanced-datetime'
             onChange={onChange}
           />
         );

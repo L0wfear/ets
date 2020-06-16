@@ -66,6 +66,15 @@ export function getTableMeta(props: any = {}, employeesOptions: Array<any>): IDa
         },
       },
       {
+        name: 'passes_count',
+        displayName: 'Количество выполнений',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+        },
+        cssClassName: 'width120',
+      },
+      {
         name: 'foreman_fio',
         displayName: 'Бригадир',
         type: 'string',
@@ -156,6 +165,7 @@ const Table: React.FC<any> = React.memo(
         checked={props.checked}
         selectField="frontId"
         initialSort="frontId"
+        withPerPageSelector
       />
     );
   },

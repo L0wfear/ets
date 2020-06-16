@@ -12,6 +12,8 @@ export const defaultInsurancePolicy: InsurancePolicy = {
   date_end: null,
   date_start: null,
   gov_number: null,
+  gov_numbers_text: null,
+  gov_numbers: [],
   id: null,
   insurance_type_id: null,
   insurance_type_name: null,

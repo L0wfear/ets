@@ -36,4 +36,5 @@ export type IPropsDataTable<TResultObject> = {
   normInitialData?: boolean;
   highlightClassMapper?: any;
   customId?: number;
+  withPerPageSelector?: boolean;
 };

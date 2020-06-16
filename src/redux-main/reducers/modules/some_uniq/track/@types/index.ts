@@ -28,4 +28,6 @@ export type TrackInfo = {
   sensor_refill: number;
   distance: number;
   track: Array<OneTrakData>;
+  sensor_start_value: number;
+  sensor_finish_value: number;
 };

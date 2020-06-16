@@ -13,11 +13,15 @@ import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
+  userPermissionsSet: InitialStateSession['userData']['permissionsSet'];
 };
 type ButtonRemoveDispatchProps = {
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
@@ -79,12 +83,57 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     [props.data],
   );
 
-  const disableBtnByRegistry = React.useMemo(() => {
-    return props.registryKey === registryWaybillKey
-      && ( !Boolean(checkedRowsLength) && props.selectedRow?.delete || checkedRowsAsArray.some((rowElem) => rowElem.delete))
-      ? true
-      : false;
-  }, [ props.selectedRow, props.registryKey, checkedRowsAsArray, ]);
+  const isPermitedWaybillDeleteUnlessClosed = React.useMemo(
+    () => props.userPermissionsSet.has( waybillPermissions.delete_unless_closed)
+      && (Boolean(checkedRowsLength) || props.selectedRow)
+      && (
+        props.selectedRow?.status === 'draft'
+        || props.selectedRow?.status === 'active'
+      )
+      && !props.selectedRow?.delete
+      && !checkedRowsAsArray.some((rowElem) => rowElem.status === 'closed' || rowElem.delete),
+    [
+      props.userPermissionsSet,
+      checkedRowsLength,
+      props.selectedRow,
+      checkedRowsAsArray,
+    ]
+  );
+
+  const isPermitedWaybillDelete = React.useMemo(
+    () => props.userPermissionsSet.has(waybillPermissions.delete)
+      && (
+        (Boolean(checkedRowsLength) || props.selectedRow)
+        && !props.selectedRow?.delete
+        || checkedRowsAsArray.some((rowElem) => rowElem.delete)
+      ),
+    [
+      props.userPermissionsSet,
+      checkedRowsLength,
+      props.selectedRow,
+      checkedRowsAsArray,
+    ]);
+
+  const disableBtnWaybill = React.useMemo(
+    () => Boolean(
+      !isPermitedWaybillDeleteUnlessClosed
+      && !isPermitedWaybillDelete
+    ),
+    [
+      isPermitedWaybillDeleteUnlessClosed,
+      isPermitedWaybillDelete,
+    ]);
+
+  const disableBtnByRegistry = React.useMemo(
+    () => props.registryKey === registryWaybillKey && disableBtnWaybill,
+    [
+      props.selectedRow,
+      props.registryKey,
+      checkedRowsAsArray,
+      props.userPermissionsSet,
+      registryWaybillKey,
+      disableBtnWaybill,
+    ]);
 
   return (
     <>
@@ -111,9 +160,12 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{  permissions: OneRegistryData['list']['permissions']['delete']; }, DispatchProp, { registryKey: string; }, ReduxState>(
+  connect<{  permissions: Array<OneRegistryData['list']['permissions']['delete']>; }, DispatchProp, { registryKey: string; }, ReduxState>(
     (state, { registryKey }) => ({
-      permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
+      permissions: [
+        getListData(state.registry, registryKey).permissions.delete,
+        getListData(state.registry, registryKey).permissions.delete_unless_closed,
+      ], //  прокидывается в следующий компонент
     }),
   ),
   withRequirePermission(),
@@ -122,6 +174,7 @@ export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
+      userPermissionsSet: getSessionState(state).userData.permissionsSet,
     }),
     (dispatch: any) => ({
       registryRemoveSelectedRows: (...arg) => (

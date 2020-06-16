@@ -55,8 +55,8 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
         },
         {
           valueKey: 'car_id',
-          labelKey: 'gov_number',
-          title: 'Транспортное средство',
+          labelKey: 'gov_numbers_text',
+          title: 'Рег. номер ТС',
           type: 'multiselect',
         },
         {
@@ -111,9 +111,10 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             width: 150,
           },
           {
-            key: 'gov_number',
-            title: 'Транспортное средство',
+            key: 'gov_numbers_text',
+            title: 'Рег. номер ТС',
             width: 200,
+            fieldTitlePopup: 'В скобках указывается номер ТС на дату прохождения техосмотра',
           },
           {
             key: 'reg_number',

@@ -18,7 +18,7 @@ const CleaningRateFormLazy: React.FC<WithFormRegistrySearchAddProps<CleaningRate
           type,
         };
       },
-      [props.element, type],
+      [props.element, type, props.match.params],
     );
 
     return (

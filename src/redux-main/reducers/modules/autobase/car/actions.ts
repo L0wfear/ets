@@ -93,6 +93,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     registration_data: {
       ...defaultCarWrapData.registration_data,
       car_id: asuods_id,
+      passport_data_type: defaultCarWrapData.passport_data.type,
     },
     passport_data: {
       ...defaultCarWrapData.passport_data,
@@ -104,11 +105,12 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     fullCarData.registration_data = {
       ...fullCarData.registration_data,
       ...carRegistrationData,
+      passport_data_type: carPassportData?.type,
     };
   }
   if (carPassportData) {
     fullCarData.passport_data = {
-      ...fullCarData.registration_data,
+      ...fullCarData.passport_data,
       ...carPassportData,
     };
   }

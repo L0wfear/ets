@@ -14,6 +14,14 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
       type: 'string',
       required: true,
       maxLength: 1024,
+      dependencies: [
+        (value, { is_used_in_waybill, }) => {
+          if( !is_used_in_waybill && value && !/^\d{16}$/.test(value) ) {
+            return 'Номер должен состоять из 16 цифр';
+          }
+          return '';
+        },
+      ],
     },
     fuel_type: {
       title: 'Тип топлива',

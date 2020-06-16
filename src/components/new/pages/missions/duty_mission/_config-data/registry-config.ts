@@ -101,12 +101,22 @@ export const config: TypeConfigData<DutyMission> = {
       },
       {
         valueKey: 'plan_date_start',
-        title: 'Начало план.',
+        title: 'Начало план',
         type: 'advanced-datetime',
       },
       {
         valueKey: 'plan_date_end',
-        title: 'Завершение план.',
+        title: 'Завершение план',
+        type: 'advanced-datetime',
+      },
+      {
+        valueKey: 'fact_date_start',
+        title: 'Начало факт',
+        type: 'advanced-datetime',
+      },
+      {
+        valueKey: 'fact_date_end',
+        title: 'Завершение факт',
         type: 'advanced-datetime',
       },
       {
@@ -204,7 +214,7 @@ export const config: TypeConfigData<DutyMission> = {
           width: 100,
         },
         {
-          key: 'number',
+          key: 'number_text',
           title: 'Номер',
           width: 100,
         },
@@ -230,13 +240,25 @@ export const config: TypeConfigData<DutyMission> = {
         },
         {
           key: 'plan_date_start',
-          title: 'Начало план.',
+          title: 'Начало план',
           format: 'datetime',
           width: 175,
         },
         {
           key: 'plan_date_end',
-          title: 'Завершение план.',
+          title: 'Завершение план',
+          format: 'datetime',
+          width: 175,
+        },
+        {
+          key: 'fact_date_start',
+          title: 'Начало факт',
+          format: 'datetime',
+          width: 175,
+        },
+        {
+          key: 'fact_date_end',
+          title: 'Завершение факт',
           format: 'datetime',
           width: 175,
         },
@@ -248,6 +270,11 @@ export const config: TypeConfigData<DutyMission> = {
         {
           key: 'object_type_name',
           title: 'Тип объекта',
+          width: 150,
+        },
+        {
+          key: 'passes_count',
+          title: 'Количество выполнений',
           width: 150,
         },
         {

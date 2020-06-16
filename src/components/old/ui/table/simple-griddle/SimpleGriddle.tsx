@@ -5,6 +5,7 @@ import { isNullOrUndefined, isArray } from 'util';
 import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 
 require('components/old/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -36,13 +37,31 @@ const mapRows = (rows, selectField, parentId = null) => (
 
 const makeShortResults = (results, currentPage, resultsPerPage, selectField) => (
   mapRows(
-    results.slice(
+    calcCurrentIndex(results).slice(
       currentPage * resultsPerPage,
       (currentPage + 1) * resultsPerPage,
     ),
     selectField,
   )
 );
+
+const calcCurrentIndex = (results) => {
+  if(!results[0]?.rows) {
+    return results;
+  }
+
+  let acc = 0;
+  return results.map((el, i) => {
+    if(i) {
+      el.currentIndex = acc + results[i-1].rows.length;
+      acc += results[i-1].rows.length;
+      return el;
+    } else {
+      el.currentIndex = 0;
+      return el;
+    }
+  });
+};
 
 class SimpleGriddle extends React.Component<any, any> {
   constructor(props) {
@@ -122,6 +141,18 @@ class SimpleGriddle extends React.Component<any, any> {
             ? <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
             :            <span></span>
         }
+        {field.fieldTitlePopup && <ThOverlayTrigger>
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            overlay={(
+              <EtsBootstrap.Popover id={`${columnName}_title-popover`} >
+                {field.fieldTitlePopup}
+              </EtsBootstrap.Popover>
+            )}
+            placement="bottom">
+            <EtsBootstrap.Glyphicon glyph="info-sign" />
+          </EtsBootstrap.OverlayTrigger>
+        </ThOverlayTrigger>}
       </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
   };
@@ -153,6 +184,7 @@ class SimpleGriddle extends React.Component<any, any> {
         columns={this.props.columns}
         rowData={rowData}
         index={objData.index}
+        currentIndex={rowData.currentIndex || objData.index}
         rowMetadata={this.props.rowMetadata}
         handleClickTbodyTr={this.handleClickTbodyTr}
         onRowDoubleClick={this.onRowDoubleClick}

@@ -15,6 +15,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
   (props) => {
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
+    const passes_count = useForm.useFormDataFormStatePickValue<Mission, Mission['passes_count']>(props.formDataKey, 'passes_count');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
     const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
@@ -37,13 +38,6 @@ const TdPlanValue: React.FC<Props> = React.memo(
         });
       },
       [handleChange, consumable_materials, props.indexRow],
-    );
-
-    const value = React.useMemo(
-      () => {
-        return get(consumable_materials[props.indexRow], 'plan_value');
-      },
-      [consumable_materials, props.indexRow],
     );
 
     const consumable_material_id = React.useMemo(
@@ -69,6 +63,19 @@ const TdPlanValue: React.FC<Props> = React.memo(
 
     const disabled = !isPermitted || is_plan_value_locked || !consumable_material_id || IS_COMPLETED;
 
+    const value = React.useMemo(
+      () => {
+        const plan_value = get(consumable_materials[props.indexRow], 'plan_value');
+        if(disabled) {
+          return passes_count || passes_count === 0
+            ? plan_value * passes_count
+            : null;
+        }
+        return plan_value;
+      },
+      [consumable_materials, props.indexRow, passes_count],
+    );
+
     return (
       <ExtField
         type="number"
@@ -89,7 +96,7 @@ export const metaPlanValue: TableMeta<ValuesOf<Mission['consumable_materials']>>
   key: 'plan_value',
   title: 'Объем работы (план)',
   format: 'string',
-  width: 100,
+  width: 200,
 
   ReactComponentType: TdPlanValue,
 };

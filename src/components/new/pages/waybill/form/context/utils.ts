@@ -92,6 +92,10 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   work_mode_name: '',
   work_mode_text: '',
   hasEquipmentFuelRates: null,
+  fuel_card_ids: null,
+  refill_type_ids: null,
+  car_has_motohours: null,
+  car_has_odometr: null,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

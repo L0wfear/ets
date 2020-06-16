@@ -36,6 +36,7 @@ export type FuelCard = {
   date_end: string;
   car_id: number;
   gov_number_text: string;
+  garage_number: string;
   fuel_card_on_cars: Array<FuelCardOnCars>;
   // для таблички с тачками
   origin_fuel_card_on_cars: Array<FuelCardOnCars>; // состояние таблички до редактирование

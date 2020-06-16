@@ -9,6 +9,7 @@ const waybillPermissions = {
   plate: 'waybill.plate', // Путевой лист - Выдать
   departure_and_arrival_values: 'waybill.departure_and_arrival_values', // Путевой лист - Показатели выезда и возврата
   refill: 'waybill.refill', // Путевой лист - Заправки
+  delete_unless_closed: 'waybill.delete_unless_closed', // Путевой лист - Удалить (черновик и активный)
 };
 
 export default waybillPermissions;

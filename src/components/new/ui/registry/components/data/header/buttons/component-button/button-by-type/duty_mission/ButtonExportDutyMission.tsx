@@ -5,7 +5,7 @@ import PrintByDates from 'components/new/ui/modal/print_by_dates/PrintByDates';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { createValidDateTime, addTime } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, getToday0am, getTomorrow2359 } from 'components/@next/@utils/dates/dates';
 
 type Props = CommonTypesForButton & {};
 
@@ -31,7 +31,7 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
         const payload = {
           getBlobData: {
             date_from,
-            date_to: createValidDateTime(addTime(date_to, 1, 'days')), // DITETSSUP-2089
+            date_to,
           },
         };
 
@@ -39,12 +39,15 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
           actionChangeGlobalPaylaodInServiceData(props.registryKey, payload, false),
         );
         await dispatch(
-          registyLoadPrintForm(props.registryKey),
+          registyLoadPrintForm(props.registryKey, true),
         );
         setIsOpenModalRemove(false);
       },
       [],
     );
+
+    const initial_date_from = React.useMemo(() => createValidDateTime(getToday0am()), []);
+    const initial_date_to = React.useMemo(() => createValidDateTime(getTomorrow2359()), []);
 
     return (
       <React.Fragment>
@@ -58,9 +61,13 @@ const ButtonExportDutyMission: React.FC<Props> = React.memo(
         {
           isOpenModalRemove && (
             <PrintByDates
+              initial_date_from={initial_date_from}
+              initial_date_to={initial_date_to}
               onHide={handleClickCloseForm}
               onExport={handleExport}
-              title="Печать журнала наряд-заданий"
+              time={true}
+              title={`Печать ${props.registryKey === 'DutyMissionsArchive' ? 'архива' : 'журнала'} наряд-заданий`}
+              helpText="В выгрузке будут наряд-задания, у которых дата начала или дата окончания попадает в указанный период, с учетом фильтрации"
             />
           )
         }

@@ -12,6 +12,8 @@ export type CarRegistrationData = {
   id: number;
   note: string;
   disabled?: boolean;
+  files?: Array<any>;
+  passport_data_type: 'GTN' | 'GIBDD';
 };
 
 export type CarGibddPasspost = {
@@ -36,10 +38,14 @@ export type CarGibddPasspost = {
   environmental_class: string;
   exporter_country_id: number;
   func_type_id: number;
+  func_type_name: string;
   gearbox: number | string;
   given_at: string;
   given_by: string;
   id: number;
+  is_gibdd: boolean;
+  is_gims: boolean;
+  is_gtn: boolean;
   manufactured_at: number;
   manufacturer: string | number;
   max_speed: number;
@@ -78,10 +84,14 @@ export type CarGtnPasspost = {
   environmental_class: string;
   exporter_country_id: number;
   func_type_id: number;
+  func_type_name: string;
   gearbox: number | string;
   given_at: string;
   given_by: string;
   id: number;
+  is_gibdd: boolean;
+  is_gims: boolean;
+  is_gtn: boolean;
   manufactured_at: number;
   manufacturer: string | number;
   max_speed: number;

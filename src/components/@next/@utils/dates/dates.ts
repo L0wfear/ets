@@ -73,7 +73,8 @@ export function makeUnixTime(timeOwn) {
   return Math.floor(time / 1000);
 }
 
-export function makeUnixTimeMskTimezone(time) {
+export function makeUnixTimeMskTimezone(timeOwn) {
+  let time = timeOwn;
   if (typeof time === 'string') {
     // eslint-disable-next-line no-param-reassign
     time = MomentTimezone.tz(time, 'Europe/Moscow' );
@@ -121,11 +122,18 @@ export function createValidDateTimeDots(date: string | Date) {
   return moment(date).format('DD.MM.YYYY HH:mm');
 }
 
-export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false) {
+export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false, inputFormat?: string,) {
   if (!date) {
     return null;
   }
-  const newData = !withSeconds ? moment(date).seconds(0) : moment(date);
+
+  const newDataByFormat = inputFormat
+    ? moment(date, inputFormat)
+    : moment(date);
+
+  const newData = !withSeconds
+    ? moment(newDataByFormat).seconds(0)
+    : moment(newDataByFormat);
   return newData.format('YYYY-MM-DDTHH:mm:ss');
 }
 
@@ -266,6 +274,11 @@ export function getTomorrow9am(seconds = 0) {
     59,
     seconds,
   );
+}
+
+export function getTomorrow2359() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 23, 59, 0);
 }
 
 export function getTomorrow0am() {

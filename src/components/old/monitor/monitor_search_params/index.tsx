@@ -65,6 +65,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     const date_start = props.searchState.date_start;
     const date_end = props.searchState.date_end;
     const refresh = props.searchState.refresh;
+    const for_today = etsUseSelector((state) => getMonitorPageState(state).carInfo.forToday);
 
     React.useEffect(
       () => {
@@ -133,7 +134,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
 
     /****************************** end ******************************/
     /****************************** for_today ******************************/
-    const for_today = etsUseSelector((state) => getMonitorPageState(state).carInfo.forToday);
 
     React.useEffect(
       () => {

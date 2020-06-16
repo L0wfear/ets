@@ -109,7 +109,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
               <ExtField
                 id="car_id"
                 type="select"
-                label="Номер транспортного средства"
+                label="Рег. номер ТС"
                 value={state.car_id}
                 error={errors.car_id}
                 options={carListOptions}
@@ -120,6 +120,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
                 disabled={!isPermitted}
                 modalKey={path}
                 value_string={state.gov_number}
+                hint="Выводится рег. номер ТС, актуальный на текущий день."
               />
             )}
             <ExtField

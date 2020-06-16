@@ -183,13 +183,13 @@ export const getToConfig = (): TypeConfigData<Tire> => {
             format: 'date',
           },
           {
-            key: 'buttonCloneTire',
-            title: ' ',
-          },
-          {
             key: 'status_text',
             title: 'Статус',
             width: 200,
+          },
+          {
+            key: 'buttonCloneTire',
+            title: ' ',
           },
         ],
       },

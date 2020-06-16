@@ -1023,8 +1023,8 @@ class WaybillForm extends React.Component<Props, State> {
     const state = this.props.formState;
 
     const plan_departure_date
-      = diffDates(new Date(), state.plan_departure_date) > 0 && !autocompleteOnly
-        ? new Date()
+      = diffDates(this.props.moscowTimeServer.date, state.plan_departure_date) > 0 && !autocompleteOnly
+        ? this.props.moscowTimeServer.date
         : state.plan_departure_date;
 
     await this.props.dispatch(

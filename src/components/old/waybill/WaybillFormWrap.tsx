@@ -40,6 +40,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillSchema';
 import { validate } from 'components/old/ui/form/new/validate';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -153,6 +154,7 @@ type StateProps = {
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
+  moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -1019,5 +1021,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     employeeIndex: getEmployeeState(state).employeeIndex,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
+    moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
   }),
 )(WaybillFormWrap);

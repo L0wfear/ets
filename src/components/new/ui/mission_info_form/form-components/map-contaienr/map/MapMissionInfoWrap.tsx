@@ -37,7 +37,7 @@ class MapWrap extends React.PureComponent<PropsMapMissionInfoWrap, {}> {
                     <LayerTrackLines map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} />
                     <LayerTrackPoints map={map} track={this.props.track} mkad_speed_lim={this.props.mkad_speed_lim} speed_lim={this.props.speed_lim} gov_number={gov_number} cars_sensors={this.props.cars_sensors} missionNumber={this.props.missionNumber}/>
                     <LayerParkingPoints map={map} front_parkings={this.props.parkings} />
-                    <LayerCarMarker gps_code={gps_code} map={map}/>
+                    <LayerCarMarker gps_code={gps_code} map={map} track={this.props.track} />
                   </React.Fragment>
                 )
               }

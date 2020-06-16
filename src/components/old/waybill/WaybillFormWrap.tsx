@@ -683,13 +683,20 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       delete formState.fuel_start;
       delete formState.motohours_equip_start;
 
+      formState.car_has_motohours = null;
+      formState.car_has_odometr = null;
+
       // prettier-ignore
       console.info( // eslint-disable-line
-        'delete',
+        'delete fields',
         '----->',
         'equipment_fuel_start',
         'fuel_start',
         'motohours_equip_start',
+        'clear fields',
+        '----->',
+        'car_has_motohours',
+        'car_has_odometr',
       );
 
       this.handleMultipleChange(formState);

@@ -50,6 +50,7 @@ class Analytics extends React.Component<Props, any> {
     'Работники',
     'Расход топлива',
     'Наряд - задания',
+    'Топливные карты',
   ];
 
   constructor(props) {

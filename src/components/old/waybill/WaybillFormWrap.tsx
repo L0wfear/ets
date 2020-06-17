@@ -93,7 +93,7 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
   if (waybill.status) {
     // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
-    if (field === 'odometr_end') {
+    if (field === 'odometr_end' || field === 'odometr_start') {
       waybill.odometr_diff = value
         ? waybill.odometr_end - waybill.odometr_start
         : null;

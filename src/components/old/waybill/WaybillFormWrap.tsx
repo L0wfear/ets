@@ -93,19 +93,19 @@ function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
   if (waybill.status) {
     // Если изменилось поле "Одометр.Возврат" то считаем "Одометр.Пробег"
-    if (field === 'odometr_end') {
+    if (field === 'odometr_end' || field === 'odometr_start') {
       waybill.odometr_diff = value
         ? waybill.odometr_end - waybill.odometr_start
         : null;
     }
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
-    if (field === 'motohours_end') {
+    if (field === 'motohours_end' || field === 'motohours_start') {
       waybill.motohours_diff = value
         ? waybill.motohours_end - waybill.motohours_start
         : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
-    if (field === 'motohours_equip_end') {
+    if (field === 'motohours_equip_end' || field === 'motohours_equip_start') {
       waybill.motohours_equip_diff = value
         ? waybill.motohours_equip_end - waybill.motohours_equip_start
         : null;

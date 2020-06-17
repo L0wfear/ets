@@ -5,6 +5,7 @@ type WaybillCarRefill = {
   type_id: number;
   value: number;
   number: string;
+  date: string;
 };
 
 type WaybillEquipmentRefill = WaybillCarRefill;

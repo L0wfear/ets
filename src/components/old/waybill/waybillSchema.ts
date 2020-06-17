@@ -88,6 +88,9 @@ const checkCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
+          : '',
         value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
           ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
@@ -116,6 +119,9 @@ const checkEquipmentCarRefill = memoizeOne(
       return {
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
+          : '',
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
           : '',
         fuel_card_id: validateFuelCardId(
           rowData,

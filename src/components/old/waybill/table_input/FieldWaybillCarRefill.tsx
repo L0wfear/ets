@@ -84,6 +84,14 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   options: [],
 };
 
+const metaCarRefillDate: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
+  key: 'date',
+  title: 'Дата заправки',
+  format: 'date',
+  width: 70,
+  time: false,
+};
+
 const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
   key: 'value',
   title: 'Выдано, л',
@@ -148,6 +156,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           {
             ...metaFuelCardId,
             options: fuelCardIdOptions,
+          },
+          {
+            ...metaCarRefillDate,
           },
           {
             ...metaValue,
@@ -265,7 +276,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const previousfuelCardValue = usePrevious(fuelCardValue);
 
     const handleChange = React.useCallback(
-      async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
+      async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string) => {
         let newArr = array;
         const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
 
@@ -286,6 +297,20 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
                   },
                 ];
               }
+            }
+          }
+        }
+
+        if(fact_departure_date) {
+          if(newArr.length === 1) {
+            const firstElement = newArr[0];
+            if(!firstElement.date) {
+              newArr = [
+                {
+                  ...firstElement,
+                  date: fact_departure_date,
+                }
+              ];
             }
           }
         }

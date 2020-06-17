@@ -471,9 +471,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const fuelGiven = formState.fuel_given
       ? parseFloat(formState.fuel_given)
       : 0;
-    const factFuelEnd = formState.fact_fuel_end
-      ? parseFloat(formState.fact_fuel_end)
-      : 0;
     const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
     const equipmentFuelStart = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
@@ -494,18 +491,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       + equipmentFuelGiven
       - equipmentFactFuelEnd
     ), 3);
-    formState.fact_consuption = parseFloatWithFixed((
-      fuelStart
-      + fuelGiven
-      - factFuelEnd
-    ), 3);
-    formState.consuption_diff = Math.abs(
-      parseFloatWithFixed((
-        formState.tax_consumption
-        - formState.fact_consuption
-      ), 3)
-    );
-
     if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
       formState.fuel_end = parseFloatWithFixed((fuelStart + fuelGiven - fuelTaxes), 3);
       formState.equipment_fuel_end = parseFloatWithFixed(( // Возврат по таксировке, л
@@ -535,6 +520,17 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     ) {
       formState.fact_fuel_end = formState.fuel_end;
     }
+    formState.fact_consuption = parseFloatWithFixed((
+      fuelStart
+      + fuelGiven
+      - formState.fact_fuel_end
+    ), 3);
+    formState.consuption_diff = Math.abs(
+      parseFloatWithFixed((
+        formState.tax_consumption
+        - formState.fact_consuption
+      ), 3)
+    );
 
     if (
       formState.equipment_fuel_end

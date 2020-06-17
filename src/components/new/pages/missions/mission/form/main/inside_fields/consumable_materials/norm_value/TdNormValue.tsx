@@ -10,7 +10,6 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { mergeConsumableMaterials, useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { FlexContainer } from 'global-styled/global-styled';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { calculateCunsumption } from '../consumption/utils';
 
 type Props = PropsToTdReactComponent;
@@ -154,6 +153,12 @@ const TdNormValue: React.FC<Props> = React.memo(
 
     const showEditBtn = !is_order_operation_norm;
     const disableEditBtn =  !Boolean(get(consumableMateriaForMissionIndex[consumable_material_id], 'is_norm_value_locked') || true) || !IS_NOT_COMPLETED;
+    const btnProps = {
+      disabled: disableEditBtn,
+      onClick: handleChangeLock,
+      title: !is_norm_value_locked ? 'Закрыть ручной ввод' : 'Открыть ручной ввод',
+      glyph: !is_norm_value_locked ? 'lock' : 'pencil',
+    };
 
     return (
       <FlexContainer alignItems="end">
@@ -167,14 +172,9 @@ const TdNormValue: React.FC<Props> = React.memo(
           disabled={disabled || is_norm_value_locked}
           addonRight={!is_without_norm ? getAddon(municipal_facility_measure_unit_name, consumable_material_measure_unit_name) : null}
           value_string={value}
+          showBtn={showEditBtn}
+          btnProps={btnProps}
         />
-        {
-          showEditBtn && (
-            <EtsBootstrap.Button disabled={disableEditBtn} onClick={handleChangeLock} title={!is_norm_value_locked ? 'Закрыть ручной ввод' : 'Открыть ручной ввод'}>
-              <EtsBootstrap.Glyphicon glyph={!is_norm_value_locked ? 'lock' : 'pencil'} />
-            </EtsBootstrap.Button>
-          )
-        }
       </FlexContainer>
     );
   },

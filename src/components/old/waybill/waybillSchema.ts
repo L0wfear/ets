@@ -94,7 +94,7 @@ const checkCarRefill = memoizeOne(
             : rowData.value < 0
               ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
               : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
-              && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+              && rowData.value > 1000 ? 'Значение в поле "Выдано, л" должно быть не больше 1000'
                 : !isValidToFixed3(rowData.value)
                   ? getRequiredFieldToFixed('Выдано, л', 3)
                   : ''
@@ -129,7 +129,7 @@ const checkEquipmentCarRefill = memoizeOne(
           ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
             : (formState.status === 'active' || formState.status === 'draft' || !formState.status)
-            && rowData.value > 1000 ? 'Поле "Выдано, л" должно быть меньше 1000'
+            && rowData.value > 1000 ? 'Значение в поле "Выдано, л" должно быть не больше 1000'
               : !isValidToFixed3(rowData.value)
                 ? getRequiredFieldToFixed('Выдано, л', 3)
                 : ''

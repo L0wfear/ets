@@ -153,6 +153,12 @@ const TdNormValue: React.FC<Props> = React.memo(
 
     const showEditBtn = !is_order_operation_norm;
     const disableEditBtn =  !Boolean(get(consumableMateriaForMissionIndex[consumable_material_id], 'is_norm_value_locked') || true) || !IS_NOT_COMPLETED;
+    const btnProps = {
+      disabled: disableEditBtn,
+      onClick: handleChangeLock,
+      title: !is_norm_value_locked ? 'Закрыть ручной ввод' : 'Открыть ручной ввод',
+      glyph: !is_norm_value_locked ? 'lock' : 'pencil',
+    };
 
     return (
       <FlexContainer alignItems="end">
@@ -167,10 +173,7 @@ const TdNormValue: React.FC<Props> = React.memo(
           addonRight={!is_without_norm ? getAddon(municipal_facility_measure_unit_name, consumable_material_measure_unit_name) : null}
           value_string={value}
           showBtn={showEditBtn}
-          disabledBtn={disableEditBtn}
-          onClick={handleChangeLock}
-          title={!is_norm_value_locked ? 'Закрыть ручной ввод' : 'Открыть ручной ввод'}
-          glyph={!is_norm_value_locked ? 'lock' : 'pencil'}
+          btnProps={btnProps}
         />
       </FlexContainer>
     );

@@ -4,6 +4,7 @@ import { glyphMap } from '../../../../../global-styled';
 
 export type ExtFieldCommon<V = any> = {
   showBtn?: boolean;
+  btnProps: any;
   ref?: any;
   id?: any;
   label?: string | boolean;
@@ -106,7 +107,7 @@ export type ExtFieldTypeByKey = {
 
 export type ExtFieldButton = {
   title?: string;
-  disabledBtn?: boolean;
+  disabled?: boolean;
   onClick?: (obj: { [key: string]: any; }) => any;
   glyph?: keyof typeof glyphMap;
 };

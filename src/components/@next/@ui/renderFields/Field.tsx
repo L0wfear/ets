@@ -29,7 +29,7 @@ const numberToFixed = {
 const ExtButton: React.FC<ExtFieldButton> = React.memo(
   (props) => {
     return (
-      <EtsBootstrap.Button disabled={props.disabledBtn} onClick={props.onClick} title={props.title}>
+      <EtsBootstrap.Button disabled={props.disabled} onClick={props.onClick} title={props.title}>
         <EtsBootstrap.Glyphicon glyph={props.glyph} />
       </EtsBootstrap.Button>
     );
@@ -130,7 +130,7 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
           onFocus={onFocus}
         />
         {props.showBtn && (
-          <ExtButton {...props as any} />
+          <ExtButton {...props.btnProps as any} />
         )}
       </>
     );

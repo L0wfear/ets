@@ -611,7 +611,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             if ((odometr_start || isNumber(odometr_start)) && !value) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
-            if (value && value < odometr_start) {
+            if (value && Number(value) < Number(odometr_start)) {
               return '"Одометр. Возвращение в гараж, км" должно быть не меньше значения "Одометр.Выезд"';
             }
           }

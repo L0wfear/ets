@@ -193,24 +193,26 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         payload.date_end = validPeriod.date_end;
         payload.is_archive = false;
 
-        dispatch(fuelCardsGetAndSetInStore(
-          {
-            ...payload,
-          },
-          {
-            page: props.page,
-            path: props.path,
-          },
-        ));
-        dispatch(equipmentFuelCardsGetAndSetInStore(
-          {
-            ...payload,
-          },
-          {
-            page: props.page,
-            path: props.path,
-          },
-        ));
+        if(isCarRefilBlock || isEquipmentRefilBlock) {
+          dispatch(fuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
+          dispatch(equipmentFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
+        }
       },
       [
         props.car_id,

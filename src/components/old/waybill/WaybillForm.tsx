@@ -576,7 +576,7 @@ class WaybillForm extends React.Component<Props, State> {
     }
     
     if(car_id && (IS_CREATING || IS_DRAFT)) {
-      await this.refresh(true);
+      await this.refresh(true, false);
     }
 
     if(car_id && IS_ACTIVE) {
@@ -1019,7 +1019,7 @@ class WaybillForm extends React.Component<Props, State> {
   /**
    * Обновляет данные формы на основе закрытого ПЛ
    */
-  refresh = async (autocompleteOnly: boolean = false) => {
+  refresh = async (autocompleteOnly: boolean = false, showInfo: boolean = true) => {
     const state = this.props.formState;
 
     const plan_departure_date
@@ -1027,11 +1027,11 @@ class WaybillForm extends React.Component<Props, State> {
         ? new Date()
         : state.plan_departure_date;
 
-    await this.props.dispatch(
-      actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
-    ).then(
-      (lastWaybill) => {
-
+    try {
+      const lastWaybill = await this.props.dispatch(
+        actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
+      );
+      if(lastWaybill) {
         const is_one_fuel_tank = autocompleteOnly
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
@@ -1049,8 +1049,12 @@ class WaybillForm extends React.Component<Props, State> {
         };
 
         this.props.handleMultipleChange(fieldsToChange);
+      } else if (showInfo) {
+        global.NOTIFICATION_SYSTEM.notify('Отсутствует информация о предыдущих закрытых путевых листах на указанное ТС', 'info', 'tr');
       }
-    );
+    } catch (error) {
+      return;
+    }    
   };
 
   handleStructureIdChange = (structure_id) => {
@@ -1181,8 +1185,9 @@ class WaybillForm extends React.Component<Props, State> {
 
     return Promise.resolve(true);
   };
-  handlePrint = (...arg: Parameters<Props['handlePrint']>) => {
+  handlePrint = async (...arg: Parameters<Props['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
+      await this.refresh(false, false);
       this.props.handlePrint(...arg);
     }
   };

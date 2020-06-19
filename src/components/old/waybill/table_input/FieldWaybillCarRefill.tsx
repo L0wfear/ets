@@ -224,6 +224,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         props.path,
         fact_arrival_date,
         plan_arrival_date,
+        isCarRefilBlock,
+        isEquipmentRefilBlock,
       ],
     );
 

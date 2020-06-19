@@ -5,6 +5,7 @@ import { isEmpty } from 'utils/functions';
 import Div from 'components/old/ui/Div';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { OverlayTriggerConfig } from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
 
 const savePermissions = [
   waybillPermissions.update_closed,
@@ -40,13 +41,26 @@ type IPropsWaybillFooter = {
   };
 };
 
-const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
+const message = 'Автоматическое обновление полей из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: Выезд из гаража (Одометр/Счетчик моточасов), Выезд (Топливо); в блоке “Спецоборудование”: Выезд из гаража (Счетчик моточасов оборудования), Выезд (Топливо).';
+const messageForSavePrint = 'При выдаче ПЛ будут автоматически обновлены поля из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: Выезд из гаража (Одометр/Счетчик моточасов), Выезд (Топливо); в блоке “Спецоборудование”: Выезд из гаража (Счетчик моточасов оборудования), Выезд (Топливо)';
 
 const popoverHoverFocus = (
   <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
     {message}
   </EtsBootstrap.Popover>
 );
+
+const popoverForSavePrint = (
+  <EtsBootstrap.Popover id="popover-for-save-print" title="Внимание!">
+    {messageForSavePrint}
+  </EtsBootstrap.Popover>
+);
+
+const savePrintOverlayTriggerConfig: OverlayTriggerConfig = {
+  triger: ['hover', 'focus', 'click'],
+  placement: 'top',
+  overlay: popoverForSavePrint,
+};
 
 class WaybillFooter extends React.Component<IPropsWaybillFooter> {
   private get isHasPermissionToEditWaybill(): boolean {
@@ -103,7 +117,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
               className="pdf"
               dropup
               disabled={!props.canGiveOutRead}
-
+              overlayTrigger={savePrintOverlayTriggerConfig}
               toggleElement={waybillSaveDropdownPrintToggleElement}
             >
               <EtsBootstrap.DropdownMenu dropup pullRight>

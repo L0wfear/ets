@@ -16,7 +16,8 @@ import {
 } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/car-markers/LayerCarMarker.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
-
+import { actionSetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+import { checkOnMkad } from 'components/old/monitor/info/car-info/redux-main/modules/utils';
 /**
  * Не использовать данные из сокета для фильтрации!!!
  */
@@ -42,8 +43,25 @@ class LayerCarMarker extends React.Component<
   }
 
   componentDidUpdate(prevProps: PropsLayerCarMarker) {
-    const { gps_code } = this.props;
-
+    const { 
+      gps_code, 
+      actionSetTracksCaching, 
+      tracksCaching,
+      odh_mkad, 
+    } = this.props;
+    const track = this.props.tracksCaching?.track;
+    const lastPoint = this.state.carPointsDataWs[gps_code];
+  
+    if(
+      track 
+      && lastPoint 
+      && lastPoint?.timestamp > track[track.length - 1]?.timestamp
+    ) {
+      const trackArrCopy = [...track];
+      trackArrCopy.push({...lastPoint, speed_avg: lastPoint.speed_max, checkCoordsMsk: { onMkad: checkOnMkad(lastPoint, odh_mkad)},});
+      actionSetTracksCaching({...tracksCaching, track: trackArrCopy});
+      this.updateStyleForAllPoints();
+    }
     if (gps_code !== prevProps.gps_code) {
       this.updateStyleForAllPoints();
     }
@@ -193,9 +211,17 @@ class LayerCarMarker extends React.Component<
 const mapStateToProps = (state: ReduxState) => ({
   points_ws: getSessionState(state).appConfig.points_ws,
   token: state.session.token,
+  tracksCaching: state.some_uniq.tracksCaching,
+  odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,
 });
 
 export default compose<any, any>(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    (dispatch: any) => ({
+      actionSetTracksCaching: (tracksCaching) => (
+        dispatch(actionSetTracksCaching(tracksCaching))
+      ),
+    })),
   withLayerProps(),
 )(LayerCarMarker);

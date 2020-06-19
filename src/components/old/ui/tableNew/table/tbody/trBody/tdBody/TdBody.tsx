@@ -13,7 +13,7 @@ class TdBody extends React.Component<any, any> {
           : data && tableMeta.precision && isNumber(data)
             ? data.toFixed(tableMeta.precision)
             : ''
-        ).toString()
+        ).toString().replace('.', ',')
     };
   }
 

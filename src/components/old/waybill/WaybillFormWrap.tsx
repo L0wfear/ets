@@ -1021,6 +1021,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     employeeIndex: getEmployeeState(state).employeeIndex,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
-    moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
+    moscowTimeServer: state.some_uniq.moscowTimeServer,
   }),
 )(WaybillFormWrap);

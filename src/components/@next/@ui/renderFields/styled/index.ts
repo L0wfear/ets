@@ -5,9 +5,11 @@ import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled
 import { fadeInAnimation } from 'global-styled/global-animation';
 
 export const SingleUiElementWrapperStyled = styled.div`
+  margin-bottom: 10px;
   position: relative;
   input[type=number], input[type=string] {
     width: 100%;
+    min-width: 1px;
   }
   &&& ${ErrorField} {
     margin-top: 5px;

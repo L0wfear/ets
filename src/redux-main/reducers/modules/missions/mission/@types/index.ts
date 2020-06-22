@@ -17,6 +17,7 @@ export type Mission = {
   car_type_ids: Array<number>;
   car_type_name: string;
   car_type_names: Array<string>;
+  closed_by: string | null;
   column_id: number | null;
   comment: string;
   current_percentage: null;

@@ -1,4 +1,5 @@
 export type DutyMissionTemplate = {
+  author: string;
   brigade_employee_id_list: Array<{
     employee_fio: string;
     employee_id: number;
@@ -6,6 +7,7 @@ export type DutyMissionTemplate = {
   brigade_employee_id_list_id: Array<number>;
   brigade_employee_id_list_fio: Array<string>;
   brigade_id: number | null;
+  closed_by: string | null;
   comment: string;
   date_create: string | null;
   foreman_fio: string;

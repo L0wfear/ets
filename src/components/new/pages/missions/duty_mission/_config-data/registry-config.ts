@@ -302,6 +302,16 @@ export const config: TypeConfigData<DutyMission> = {
           ],
           width: 200,
         },
+        {
+          key: 'author',
+          title: 'Открыто, ФИО',
+          width: 200,
+        },
+        {
+          key: 'closed_by',
+          title: 'Закрыто, ФИО',
+          width: 200,
+        },
       ],
     },
     processed: {

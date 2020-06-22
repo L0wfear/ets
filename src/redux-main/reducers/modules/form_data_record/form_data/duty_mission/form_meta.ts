@@ -290,6 +290,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     brigade_id: null,
     car_mission_id: null,
     car_mission_name: '',
+    closed_by: '',
     comment: '',
     fact_date_end: null,
     fact_date_start: null,

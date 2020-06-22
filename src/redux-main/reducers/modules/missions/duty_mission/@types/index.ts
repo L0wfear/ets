@@ -12,6 +12,7 @@ export type DutyMission = {
   brigade_id: number | null;
   car_mission_id: null | number;
   car_mission_name: null | string;
+  closed_by: null | string;
   comment: string;
   fact_date_end: string | null;
   fact_date_start: string | null;

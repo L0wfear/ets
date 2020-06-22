@@ -12,6 +12,7 @@ export type FuelRate = {
   company_structure_id: number | null;
   company_structure_name: string | null;
   full_model_name: string | null;
+  gov_number: string | null;
   id: number | null;
   is_excluding_mileage: boolean | null;
   load_capacity: number | null;
@@ -23,6 +24,7 @@ export type FuelRate = {
   operation_id: number | null;
   operation_name: string | null;
   order_date: string | null;
+  order_number: string | null;
   rate_on_date?: number;
   season?: string;
   summer_rate: number | null;

@@ -14,6 +14,7 @@ export const makeDefaultFuelRate = (): FuelRate => ({
   company_structure_id: null,
   company_structure_name: null,
   full_model_name: null,
+  gov_number: null,
   id: null,
   is_excluding_mileage: null,
   load_capacity: null,
@@ -27,6 +28,7 @@ export const makeDefaultFuelRate = (): FuelRate => ({
   order_date: createValidDateTime(
     getDateWithMoscowTz(),
   ),
+  order_number: null,
   summer_rate: null,
   winter_rate: null,
 });

@@ -48,7 +48,7 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
         },
       ],
     },
-    gov_number: {
+    car_id: {
       title: 'Рег. номер ТС',
       type: 'valueOfArray',
       required: false,

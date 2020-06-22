@@ -4,6 +4,7 @@ import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@util
 
 export const makeDefaultFuelRate = (): FuelRate => ({
   body_capacity: null,
+  car_id: null,
   car_model_id: null,
   car_model_name: null,
   car_special_model_id: null,

@@ -2,6 +2,7 @@ import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@type
 
 export type FuelRate = {
   body_capacity: number | null;
+  car_id: number | null;
   car_model_id: number | null;
   car_model_name: string | null;
   car_special_model_id: number | null;

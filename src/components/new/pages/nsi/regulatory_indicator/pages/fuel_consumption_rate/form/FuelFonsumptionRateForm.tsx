@@ -84,9 +84,9 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
                 objChange: {
                   car_special_model_id: rowData.special_model_id,
                   car_model_id: rowData.model_id,
-                  gov_number: rowData.gov_number,
+                  car_id: rowData.asuods_id,
                 },
-                value: rowData.gov_number,
+                value: rowData.asuods_id,
                 label: rowData.gov_number,
               }),
             ),
@@ -117,7 +117,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
         props.handleChange({[key]: value});
       });
     },
-    [state.gov_number, carListOptions,],
+    [state.car_id, carListOptions,],
   );
 
   const IS_CREATING = !state.id;
@@ -232,16 +232,16 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
             />
 
             <ExtField
-              id="gov_number"
+              id="car_id"
               modalKey={page}
               label="Рег. номер ТС"
-              error={errors.gov_number}
+              error={errors.car_id}
               type="select"
               options={carListOptions}
               clearable={false}
-              value={state.gov_number}
+              value={state.car_id}
               onChange={handleGovNumberChange}
-              boundKeys="gov_number"
+              boundKeys="car_id"
               disabled={!isPermitted}
             />
 
@@ -255,7 +255,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               clearable={false}
               value={state.car_special_model_id}
               onChange={handleSpecialModelChange}
-              disabled={!isPermitted || !!state.gov_number}
+              disabled={!isPermitted || !!state.car_id}
             />
 
             <ExtField
@@ -269,7 +269,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               value={state.car_model_id}
               onChange={props.handleChange}
               boundKeys="car_model_id"
-              disabled={!isPermitted || !state.car_special_model_id || !!state.gov_number}
+              disabled={!isPermitted || !state.car_special_model_id || !!state.car_id}
             />
             <ExtField
               id="company_structure_id"

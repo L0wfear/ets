@@ -117,7 +117,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
         props.handleChange({[key]: value});
       });
     },
-    [state.car_id, carListOptions,],
+    [props.handleChange,],
   );
 
   const IS_CREATING = !state.id;
@@ -255,7 +255,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               clearable={false}
               value={state.car_special_model_id}
               onChange={handleSpecialModelChange}
-              disabled={!isPermitted || !!state.car_id}
+              disabled={!isPermitted || Boolean(state.car_id)}
             />
 
             <ExtField
@@ -269,7 +269,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               value={state.car_model_id}
               onChange={props.handleChange}
               boundKeys="car_model_id"
-              disabled={!isPermitted || !state.car_special_model_id || !!state.car_id}
+              disabled={!isPermitted || !state.car_special_model_id || Boolean(state.car_id)}
             />
             <ExtField
               id="company_structure_id"

@@ -354,6 +354,7 @@ export const metaMission: ConfigFormData<Mission> = {
     column_id: null,
     comment: '',
     consumable_materials: [],
+    closed_by: null,
     current_percentage: null,
     date_end: createValidDateTime(getTomorrow9am()),
     date_start: createValidDateTime(getDateWithMoscowTz()),

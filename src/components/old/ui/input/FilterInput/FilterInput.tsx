@@ -71,6 +71,13 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
       };
     }
 
+    if (hasFilterValue) {
+      return {
+        value: Object.values(nextProps.filterValue),
+        hasFilterValue,
+      };
+    }
+
     return {
       hasFilterValue,
     };

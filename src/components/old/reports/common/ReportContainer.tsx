@@ -44,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNumber, isNull, isNullOrUndefined } from 'util';
+import { isArray, isNumber, isNull, } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -451,21 +451,6 @@ class ReportContainer extends React.Component<
     this.props.history.push(
       `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
     );
-
-    const prevMetaFields = get(this.props, 'prevMeta.fields', []);
-
-    const filterValues = Object.entries(this.state.filterValues).reduce(
-      (newObj, [key, data]: any) => {
-        if (prevMetaFields.some((elem) => !isNullOrUndefined(elem[key]))) {
-          newObj[key] = data;
-        }
-        return newObj;
-      },
-      {},
-    );
-
-    this.setState({filterValues});
-
   };
 
   reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {

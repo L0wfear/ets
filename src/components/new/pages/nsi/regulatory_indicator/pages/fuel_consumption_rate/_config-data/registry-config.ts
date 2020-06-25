@@ -53,6 +53,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'order_number',
+          title: 'Номер приказа',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'measure_unit_id',
           labelKey: 'measure_unit_name',
           title: 'Единица измерения',
@@ -69,6 +74,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           title: 'Норма для зимнего периода',
           type: 'advanced-number',
           step: 1,
+        },
+        {
+          valueKey: 'gov_number',
+          title: 'Рег. номер ТС',
+          type: 'multiselect',
         },
         {
           valueKey: 'car_special_model_id',
@@ -131,6 +141,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
             width: 150,
           },
           {
+            key: 'order_number',
+            title: 'Номер приказа',
+            width: 150,
+          },
+          {
             key: 'operation_name',
             title: 'Операция',
             width: 200,
@@ -153,6 +168,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           {
             key: 'winter_rate',
             title: 'Норма для зимнего периода',
+            width: 250,
+          },
+          {
+            key: 'gov_number',
+            title: 'Рег. номер ТС',
             width: 250,
           },
           {

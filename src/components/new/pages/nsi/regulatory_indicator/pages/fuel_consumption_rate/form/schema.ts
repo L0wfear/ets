@@ -10,6 +10,11 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
       type: 'date',
       required: true,
     },
+    order_number: {
+      title: 'Номер приказа',
+      type: 'string',
+      required: true,
+    },
     operation_id: {
       title: 'Операция',
       type: 'valueOfArray',
@@ -43,6 +48,11 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
         },
       ],
     },
+    car_id: {
+      title: 'Рег. номер ТС',
+      type: 'valueOfArray',
+      required: false,
+    },
     car_special_model_id: {
       title: 'Модель ТС',
       type: 'valueOfArray',
@@ -51,7 +61,7 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
     car_model_id: {
       title: 'Марка шасси',
       type: 'valueOfArray',
-      required: false,
+      required: true,
     },
   },
 };

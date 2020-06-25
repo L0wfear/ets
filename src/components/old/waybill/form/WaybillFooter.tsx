@@ -41,27 +41,6 @@ type IPropsWaybillFooter = {
   };
 };
 
-const message = 'Автоматическое обновление полей из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: Выезд из гаража (Одометр/Счетчик моточасов), Выезд (Топливо); в блоке “Спецоборудование”: Выезд из гаража (Счетчик моточасов оборудования), Выезд (Топливо).';
-const messageForSavePrint = 'При выдаче ПЛ будут автоматически обновлены поля из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: Выезд из гаража (Одометр/Счетчик моточасов), Выезд (Топливо); в блоке “Спецоборудование”: Выезд из гаража (Счетчик моточасов оборудования), Выезд (Топливо)';
-
-const popoverHoverFocus = (
-  <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
-    {message}
-  </EtsBootstrap.Popover>
-);
-
-const popoverForSavePrint = (
-  <EtsBootstrap.Popover id="popover-for-save-print" title="Внимание!">
-    {messageForSavePrint}
-  </EtsBootstrap.Popover>
-);
-
-const savePrintOverlayTriggerConfig: OverlayTriggerConfig = {
-  triger: ['hover', 'focus', 'click'],
-  placement: 'top',
-  overlay: popoverForSavePrint,
-};
-
 class WaybillFooter extends React.Component<IPropsWaybillFooter> {
   private get isHasPermissionToEditWaybill(): boolean {
     const { isPermittedByKey } = this.props;
@@ -87,6 +66,27 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter> {
         <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
       </React.Fragment>
     );
+
+    const message = `Автоматическое обновление полей из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: ${props.state.is_edited_odometr && props.state.is_edited_motohours ? ' Выезд из гаража (Одометр/Счетчик моточасов), ' : props.state.is_edited_odometr ? ' Выезд из гаража (Одометр), ' : props.state.is_edited_motohours ? ' Выезд из гаража (Счетчик моточасов), ' : ''}Выезд (Топливо); в блоке “Спецоборудование”: ${props.state.is_edited_motohours_equip ? ' Выезд из гаража (Счетчик моточасов оборудования), ' : ''}Выезд (Топливо).`;
+    const messageForSavePrint = `При выдаче ПЛ будут автоматически обновлены поля из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: ${props.state.is_edited_odometr && props.state.is_edited_motohours ? ' Выезд из гаража (Одометр/Счетчик моточасов), ' : props.state.is_edited_odometr ? ' Выезд из гаража (Одометр), ' : props.state.is_edited_motohours ? ' Выезд из гаража (Счетчик моточасов), ' : ''}Выезд (Топливо); в блоке “Спецоборудование”: ${props.state.is_edited_motohours_equip ? ' Выезд из гаража (Счетчик моточасов оборудования), ' : ''}Выезд (Топливо)`;
+
+    const popoverHoverFocus = (
+      <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
+        {message}
+      </EtsBootstrap.Popover>
+    );
+
+    const popoverForSavePrint = (
+      <EtsBootstrap.Popover id="popover-for-save-print" title="Внимание!">
+        {messageForSavePrint}
+      </EtsBootstrap.Popover>
+    );
+
+    const savePrintOverlayTriggerConfig: OverlayTriggerConfig = {
+      triger: ['hover', 'focus', 'click'],
+      placement: 'top',
+      overlay: popoverForSavePrint,
+    };
 
     return (
       <EtsButtonsContainer>

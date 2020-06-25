@@ -8,6 +8,7 @@ export const defaultDangerZone: DangerZone = {
   company_name: '',
   id: null,
   name: '',
+  okrug_name: null,
   roadway_area: null,
   shape: {},
   sidelines_area: null,

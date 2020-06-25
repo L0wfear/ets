@@ -8,6 +8,7 @@ export const defaultFuelingWater: FuelingWater = {
   company_name: '',
   id: null,
   name: '',
+  okrug_name: null,
   shape: {},
 };
 

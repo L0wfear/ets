@@ -25,6 +25,16 @@ export const config: TypeConfigData<Odh> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isOkrug,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
@@ -32,7 +42,7 @@ export const config: TypeConfigData<Odh> = {
             title: 'Наименование ГБУ',
           },
           {
-            title: 'Учреждение',
+            title: 'Организация',
             displayIf: displayIfContant.isOkrug,
           },
         ],
@@ -140,6 +150,16 @@ export const config: TypeConfigData<Odh> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isOkrug,
+            }
+          ],
+          width: 150,
+        },
+        {
           key: 'company_name',
           title: [
             {
@@ -147,7 +167,7 @@ export const config: TypeConfigData<Odh> = {
               title: 'Наименование ГБУ',
             },
             {
-              title: 'Учреждение',
+              title: 'Организация',
               displayIf: displayIfContant.isOkrug,
             },
           ],

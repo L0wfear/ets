@@ -26,11 +26,21 @@ export const config: TypeConfigData<Ssp> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
             displayIf: displayIfContant.isKgh,
-            title: 'Наименование ГБУ',
+            title: 'Организация',
           },
           {
             displayIf: displayIfContant.isOkrug,
@@ -82,11 +92,21 @@ export const config: TypeConfigData<Ssp> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
+        },
+        {
           key: 'company_name',
           title: [
             {
               displayIf: displayIfContant.isKgh,
-              title: 'Наименование ГБУ',
+              title: 'Организация',
             },
             {
               displayIf: displayIfContant.isOkrug,

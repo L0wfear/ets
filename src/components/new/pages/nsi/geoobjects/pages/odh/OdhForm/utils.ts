@@ -18,6 +18,7 @@ export const defaultOdh: Odh = {
   manual_footway_area: null,
   margin_area: null,
   name: '',
+  okrug_name: null,
   roadway_area: null,
   shape: {},
   snow_area: null,

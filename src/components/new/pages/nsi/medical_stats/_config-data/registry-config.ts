@@ -36,6 +36,16 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_name',
+          title: 'Организация',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'employee_name',
           title: 'ФИО сотрудника',
           type: 'multiselect',
@@ -82,6 +92,16 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: 'Организация',
+            width: 200,
           },
           {
             key: 'employee_name',

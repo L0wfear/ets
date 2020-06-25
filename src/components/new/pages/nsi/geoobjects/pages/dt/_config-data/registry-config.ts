@@ -25,6 +25,16 @@ export const config: TypeConfigData<Dt> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isOkrug,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
@@ -33,7 +43,7 @@ export const config: TypeConfigData<Dt> = {
           },
           {
             displayIf: displayIfContant.isOkrug,
-            title: 'Учреждение',
+            title: 'Организация',
           },
         ],
         type: 'multiselect',
@@ -108,6 +118,16 @@ export const config: TypeConfigData<Dt> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isOkrug,
+            }
+          ],
+          width: 150,
+        },
+        {
           key: 'company_name',
           title: [
             {
@@ -116,7 +136,7 @@ export const config: TypeConfigData<Dt> = {
             },
             {
               displayIf: displayIfContant.isOkrug,
-              title: 'Учреждение',
+              title: 'Организация',
             },
           ],
           width: 300,

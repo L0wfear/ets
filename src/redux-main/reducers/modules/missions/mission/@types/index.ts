@@ -19,6 +19,7 @@ export type Mission = {
   car_type_names: Array<string>;
   column_id: number | null;
   comment: string;
+  company_name: string;
   current_percentage: null;
   date_end: string | null;
   date_start: string | null;
@@ -42,6 +43,7 @@ export type Mission = {
   number_text: string | null;
   object_type_id: number | null;
   object_type_name: string;
+  okrug_name: string;
   operation_num_execution: null;
   faxogramm_id?: number; // legacy
   order_id: number | null;

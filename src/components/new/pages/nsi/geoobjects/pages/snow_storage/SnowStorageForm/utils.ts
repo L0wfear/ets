@@ -8,6 +8,7 @@ export const defaultSnowStorage: SnowStorage = {
   company_name: '',
   id: null,
   name: '',
+  okrug_name: null,
   shape: {},
 };
 

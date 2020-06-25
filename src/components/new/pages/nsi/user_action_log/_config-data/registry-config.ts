@@ -36,6 +36,11 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_name',
           title: 'Организация',
           type: 'multiselect',
@@ -98,6 +103,11 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
           },
           {
             key: 'company_name',

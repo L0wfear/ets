@@ -81,7 +81,7 @@ const initialState: InitialStateSession = {
     login: null,
     middle_name: null,
     okrug_id: null,
-    okrug_name: null,
+    okrug_name: '',
     role: null,
     stableRedirect: null,
     user_id: null,

@@ -30,6 +30,11 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_name',
           title: 'Организация',
@@ -81,6 +86,11 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
           },
           {
             key: 'company_name',

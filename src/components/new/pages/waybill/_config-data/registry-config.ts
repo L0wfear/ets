@@ -41,6 +41,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'number',
         title: 'Номер',
         type: 'advanced-number',
@@ -346,6 +356,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
       fields: [
         {
           key: 'checkbox',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 150,
         },
         {
           key: 'enumerated',

@@ -1,7 +1,14 @@
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+
 export type CarDriversData = {
   car_id: number;
   primary_drivers: Array<number>;
   secondary_drivers: Array<number>;
+};
+
+export type CarEmployeeData = {
+  data: Array<Employee>;
+  dataIndex: any;
 };
 
 export type CarRegistrationData = {

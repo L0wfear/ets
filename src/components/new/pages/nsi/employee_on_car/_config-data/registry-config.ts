@@ -17,6 +17,9 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
         entity: 'employee_on_car',
         format: 'employee_on_car',
       },
+      getBlobData: {
+        entity: 'employee_on_car',
+      }
     },
     registryKey,
     header: {
@@ -36,6 +39,7 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
           },
         },
         buttonsTypes.filter,
+        buttonsTypes.export,
       ],
     },
     filter: {
@@ -50,6 +54,42 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
           valueKey: 'garage_number',
           title: 'Гаражный номер ТС',
           type: 'multiselect',
+        },
+        {
+          valueKey: 'special_model_name',
+          title: 'Марка шасси ТС',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'full_model_name',
+          title: 'Модель ТС',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'type_name',
+          title: 'Тип техники',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'condition_text',
+          title: 'Состояние',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'operating_mode',
+          title: 'Режим работы',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'driver_phone',
+          title: 'Телефон',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'assigned_car_count',
+          title: 'Количество закрепленных ТС за водителем',
+          type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'employee_id',
@@ -89,13 +129,53 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
             width: 200,
           },
           {
+            key: 'special_model_name',
+            title: 'Марка шасси ТС',
+            width: 200,
+          },
+          {
+            key: 'full_model_name',
+            title: 'Модель ТС',
+            width: 200,
+          },
+          {
+            key: 'type_name',
+            title: 'Тип техники',
+            width: 200,
+          },
+          {
+            key: 'condition_text',
+            title: 'Состояние',
+            width: 200,
+          },
+          {
+            key: 'operating_mode',
+            title: 'Режим работы',
+            width: 200,
+          },
+          {
             key: 'driver_fio',
             title: 'ФИО водителя/машиниста',
             width: 400,
           },
           {
+            key: 'driver_phone',
+            title: 'Телефон',
+            width: 200,
+          },
+          {
             key: 'binding_type_text',
             title: 'Тип закрепления ',
+            width: 200,
+          },
+          {
+            key: 'assigned_car_count',
+            title: 'Количество закрепленных ТС за водителем',
+            width: 200,
+          },
+          {
+            key: 'comment',
+            title: 'Комментарий',
             width: 200,
           },
         ],

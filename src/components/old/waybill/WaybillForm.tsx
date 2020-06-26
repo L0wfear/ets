@@ -581,7 +581,7 @@ class WaybillForm extends React.Component<Props, State> {
 
     if(car_id && IS_ACTIVE) {
       await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+        actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
       });
@@ -1298,7 +1298,7 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleIsOneFuelTank = async (is_one_fuel_tank) => {
     const {
-      formState: { car_id, equipment_fuel, },
+      formState: { equipment_fuel, },
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
@@ -1312,17 +1312,12 @@ class WaybillForm extends React.Component<Props, State> {
         'is_one_fuel_tank',
       );
     } else {
-      await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-      ).then((lastWaybill) => {
-        this.setState({ lastWaybill, });
-        const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+      const closedEquipmentData = getClosedEquipmentData(this.state?.lastWaybill);
 
-        this.handleMultipleChange({
-          ...closedEquipmentData,
-          ...changeObj,
-          equipment_fuel,
-        });
+      this.handleMultipleChange({
+        ...closedEquipmentData,
+        ...changeObj,
+        equipment_fuel,
       });
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
@@ -1342,37 +1337,31 @@ class WaybillForm extends React.Component<Props, State> {
   handleChangeMotohoursOdometr = async (key, value) => {
     if(value){
       // берем значения из последнего закрытого ПЛ*
-      const {
-        formState: { car_id },
-      } = this.props;
+      const { lastWaybill } = this.state;
 
-      await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-      ).then((lastWaybill) => {
-        if(lastWaybill) {
-          const lastWaybillState = key === 'car_has_motohours'
-            ? {
-              ...this.state.lastWaybill,
-              motohours_start: lastWaybill?.motohours_start,
-              motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
-              motohours_diff: lastWaybill?.motohours_diff,
-            }
-            : {
-              ...this.state.lastWaybill,
-              odometr_start: lastWaybill.odometr_start,
-              odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
-              odometr_diff: lastWaybill.odometr_diff,
-            };
-        
-          const fieldsToChange = {
-            motohours_start: lastWaybillState.motohours_end,
-            odometr_start: lastWaybillState.odometr_end,
+      if(lastWaybill) {
+        const lastWaybillState = key === 'car_has_motohours'
+          ? {
+            ...this.state.lastWaybill,
+            motohours_start: lastWaybill?.motohours_start,
+            motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
+            motohours_diff: lastWaybill?.motohours_diff,
+          }
+          : {
+            ...this.state.lastWaybill,
+            odometr_start: lastWaybill.odometr_start,
+            odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
+            odometr_diff: lastWaybill.odometr_diff,
           };
-          this.setState({ lastWaybill: lastWaybillState, });
+      
+        const fieldsToChange = {
+          motohours_start: lastWaybillState.motohours_end,
+          odometr_start: lastWaybillState.odometr_end,
+        };
+        this.setState({ lastWaybill: lastWaybillState, });
 
-          this.handleMultipleChange(fieldsToChange);
-        }
-      });
+        this.handleMultipleChange(fieldsToChange);
+      }
 
       this.handleChange(key, value);
     } else {
@@ -1422,24 +1411,18 @@ class WaybillForm extends React.Component<Props, State> {
     }
   };
 
-  handleChangeHasEquipmentOnTrue = async () => {
-    const {
-      formState: { car_id },
-    } = this.props;
+  handleChangeHasEquipmentOnTrue = () => {
+    const { lastWaybill } = this.state;
 
-    await this.props.dispatch(
-      actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-    ).then((lastWaybill) => {
-      this.setState({ lastWaybill, });
-      const closedEquipmentData = getClosedEquipmentData(lastWaybill);
-      closedEquipmentData.equipment_fuel = true;
-      closedEquipmentData.motohours_equip_start
-        = lastWaybill
-          ? lastWaybill.motohours_equip_end
-          : null;
-      closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
-      this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
-    });
+    this.setState({ lastWaybill, });
+    const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+    closedEquipmentData.equipment_fuel = true;
+    closedEquipmentData.motohours_equip_start
+      = lastWaybill
+        ? lastWaybill.motohours_equip_end
+        : null;
+    closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
+    this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
   };
 
   handleChangeHasEquipmentOnFalse = async () => {

@@ -1,6 +1,9 @@
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { MunicipalFacility, MunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import {
+  MunicipalFacility,
+  MunicipalFacilityMeasureUnit,
+} from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
@@ -34,12 +37,19 @@ export type CancelReasons = {
   status: string;
 };
 
+export type ReasonOptions = {
+  id: number;
+  name: string;
+};
+
 export type IStateSomeUniq = {
   specialModelList: Array<SpecialModel>;
   modelsList: Array<ModelElement>;
   technicalOperationRegistryList: Array<TechnicalOperationRegistry>;
   technicalOperationRegistryForMissionList: Array<TechnicalOperationRegistry>;
-  technicalOperationRegistryForDutyMissionList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForDutyMissionList: Array<
+    TechnicalOperationRegistry
+  >;
   municipalFacilityList: Array<MunicipalFacility>;
   municipalFacilityMeasureUnitList: Array<MunicipalFacilityMeasureUnit>;
   municipalFacilityForMissionList: Array<MunicipalFacility>;
@@ -80,4 +90,5 @@ export type IStateSomeUniq = {
     timestamp: number;
     date: string;
   };
+  reasonOption: Array<ReasonOptions>;
 };

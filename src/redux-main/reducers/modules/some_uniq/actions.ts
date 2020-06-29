@@ -11,6 +11,7 @@ import * as technicalOperationObjectsActions from 'redux-main/reducers/modules/s
 import * as technicalOperationTypesActions from 'redux-main/reducers/modules/some_uniq/technical_operation_types/technical_operation_types_actions';
 import * as sensorTypeActions from 'redux-main/reducers/modules/some_uniq/sensor_type/sensor_type_actions';
 import * as MoscowTimeServer from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import * as ReasonOption from 'redux-main/reducers/modules/some_uniq/waybill/actions';
 
 const someUniqActions = {
   ...special_model,
@@ -26,6 +27,7 @@ const someUniqActions = {
   ...carsTravelTimeListActions,
   ...TracksCachingActions,
   ...MoscowTimeServer,
+  ...ReasonOption,
 };
 
 export default someUniqActions;

@@ -106,11 +106,8 @@ import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@type
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
 import styled from 'styled-components';
-
-export const REASON_OPTION = [
-  { value: 1, label: 'Не исправен' },
-  { value: 2, label: 'Замена/ремонт' },
-];
+import { actionGetAndSetInStoreReasonOption } from 'redux-main/reducers/modules/some_uniq/waybill/actions';
+import { getReasonOption } from 'redux-main/reducers/modules/some_uniq/waybill/selectors';
 
 export const FlexContainerStyled = styled(FlexContainer)`
   ${SingleUiElementWrapperStyled} {
@@ -238,6 +235,8 @@ type StateProps = {
   employeeIndex: Record<Employee['id'], Employee>;
   waybillDriverList: Array<WaybillDriver>;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
+  reasonOption: IStateSomeUniq['reasonOption'];
+  reasonListOptions: ReturnType<typeof getReasonOption>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -403,7 +402,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { car_id, is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
-    if (odometr_reason_id && files.map((file) => file.kind === 'odometr')) {
+    if (odometr_reason_id && files.some((file) => file.kind === 'odometr')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -430,25 +429,21 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeMotohours = async () => {
     const {
-      formState: { car_id, is_edited_motohours, motohours_reason_id, files },
+      formState: { is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
-    if (motohours_reason_id && files.map((file) => file.kind === 'motohours')) {
+    if (motohours_reason_id && files.some((file) => file.kind === 'motohours')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(async () => {
-        await this.props.dispatch(
-          actionGetLastClosedWaybill({ car_id }, this.props),
-        ).then((lastWaybill) => {
-          this.handleMultipleChange({
-            motohours_start: lastWaybill.motohours_start,
-            motohours_reason_id: null,
-            files: [],
-            is_edited_motohours: false,
-          });
+      }).then(() => {
+        this.handleMultipleChange({
+          motohours_start: this.state?.lastWaybill.motohours_start,
+          motohours_reason_id: null,
+          files: [],
+          is_edited_motohours: false,
         });
       }).catch(() => {
         return;
@@ -463,7 +458,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { car_id, is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if (motohours_equip_reason_id && files.map((file) => file.kind === 'motohours_equip')) {
+    if (motohours_equip_reason_id && files.some((file) => file.kind === 'motohours_equip')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -508,6 +503,7 @@ class WaybillForm extends React.Component<Props, State> {
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
       ),
+      this.props.dispatch(actionGetAndSetInStoreReasonOption({}, this.props)),
       getWaybillDrivers(
         this.props.dispatch,
         this.props.formState,
@@ -685,7 +681,7 @@ class WaybillForm extends React.Component<Props, State> {
 
     if(car_id && IS_ACTIVE) {
       await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
+        actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
       });
@@ -1410,7 +1406,7 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleIsOneFuelTank = async (is_one_fuel_tank) => {
     const {
-      formState: { car_id, equipment_fuel, },
+      formState: { equipment_fuel, },
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
@@ -1424,17 +1420,12 @@ class WaybillForm extends React.Component<Props, State> {
         'is_one_fuel_tank',
       );
     } else {
-      await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-      ).then((lastWaybill) => {
-        this.setState({ lastWaybill, });
-        const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+      const closedEquipmentData = getClosedEquipmentData(this.state?.lastWaybill);
 
-        this.handleMultipleChange({
-          ...closedEquipmentData,
-          ...changeObj,
-          equipment_fuel,
-        });
+      this.handleMultipleChange({
+        ...closedEquipmentData,
+        ...changeObj,
+        equipment_fuel,
       });
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
@@ -1454,37 +1445,31 @@ class WaybillForm extends React.Component<Props, State> {
   handleChangeMotohoursOdometr = async (key, value) => {
     if(value){
       // берем значения из последнего закрытого ПЛ*
-      const {
-        formState: { car_id },
-      } = this.props;
+      const { lastWaybill } = this.state;
 
-      await this.props.dispatch(
-        actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-      ).then((lastWaybill) => {
-        if(lastWaybill) {
-          const lastWaybillState = key === 'car_has_motohours'
-            ? {
-              ...this.state.lastWaybill,
-              motohours_start: lastWaybill?.motohours_start,
-              motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
-              motohours_diff: lastWaybill?.motohours_diff,
-            }
-            : {
-              ...this.state.lastWaybill,
-              odometr_start: lastWaybill.odometr_start,
-              odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
-              odometr_diff: lastWaybill.odometr_diff,
-            };
-        
-          const fieldsToChange = {
-            motohours_start: lastWaybillState.motohours_end,
-            odometr_start: lastWaybillState.odometr_end,
+      if(lastWaybill) {
+        const lastWaybillState = key === 'car_has_motohours'
+          ? {
+            ...this.state.lastWaybill,
+            motohours_start: lastWaybill?.motohours_start,
+            motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
+            motohours_diff: lastWaybill?.motohours_diff,
+          }
+          : {
+            ...this.state.lastWaybill,
+            odometr_start: lastWaybill.odometr_start,
+            odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
+            odometr_diff: lastWaybill.odometr_diff,
           };
-          this.setState({ lastWaybill: lastWaybillState, });
 
-          this.handleMultipleChange(fieldsToChange);
-        }
-      });
+        const fieldsToChange = {
+          motohours_start: lastWaybillState.motohours_end,
+          odometr_start: lastWaybillState.odometr_end,
+        };
+        this.setState({ lastWaybill: lastWaybillState, });
+
+        this.handleMultipleChange(fieldsToChange);
+      }
 
       this.handleChange(key, value);
     } else {
@@ -1534,24 +1519,18 @@ class WaybillForm extends React.Component<Props, State> {
     }
   };
 
-  handleChangeHasEquipmentOnTrue = async () => {
-    const {
-      formState: { car_id },
-    } = this.props;
+  handleChangeHasEquipmentOnTrue = () => {
+    const { lastWaybill } = this.state;
 
-    await this.props.dispatch(
-      actionGetLastClosedWaybill({ car_id }, this.props), // <<< добавить вызов фуекции на изменение lastWaybill в state
-    ).then((lastWaybill) => {
-      this.setState({ lastWaybill, });
-      const closedEquipmentData = getClosedEquipmentData(lastWaybill);
-      closedEquipmentData.equipment_fuel = true;
-      closedEquipmentData.motohours_equip_start
-        = lastWaybill
-          ? lastWaybill.motohours_equip_end
-          : null;
-      closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
-      this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
-    });
+    this.setState({ lastWaybill, });
+    const closedEquipmentData = getClosedEquipmentData(lastWaybill);
+    closedEquipmentData.equipment_fuel = true;
+    closedEquipmentData.motohours_equip_start
+      = lastWaybill
+        ? lastWaybill.motohours_equip_end
+        : null;
+    closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
+    this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
@@ -1786,6 +1765,7 @@ class WaybillForm extends React.Component<Props, State> {
       isPermittedByKey,
       userStructures,
       userStructureId,
+      reasonListOptions
     } = this.props;
 
     const workModeOptions = workModeList.map(
@@ -2529,8 +2509,9 @@ class WaybillForm extends React.Component<Props, State> {
                               id="odometr_reason_id"
                               type="select"
                               label="Причина"
-                              options={REASON_OPTION}
+                              options={reasonListOptions}
                               value={state.odometr_reason_id}
+                              error={errors.odometr_reason_id}
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="odometr_reason_id"
@@ -2604,8 +2585,9 @@ class WaybillForm extends React.Component<Props, State> {
                               id="motohours_reason_id"
                               type="select"
                               label="Причина"
-                              options={REASON_OPTION}
+                              options={reasonListOptions}
                               value={state.motohours_reason_id}
+                              error={errors.motohours_reason_id}
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_reason_id"
@@ -2906,8 +2888,9 @@ class WaybillForm extends React.Component<Props, State> {
                               id="motohours_equip_reason_id"
                               type="select"
                               label="Причина"
-                              options={REASON_OPTION}
+                              options={reasonListOptions}
                               value={state.motohours_equip_reason_id}
+                              error={errors.motohours_equip_reason_id}
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_reason_id"
@@ -3322,7 +3305,8 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
       .uniqEmployeesBindedOnCarList,
     employeeList: getEmployeeState(state).employeeList,
     employeeIndex: getEmployeeState(state).employeeIndex,
-
+    reasonOption: getSomeUniqState(state).reasonOption,
+    reasonListOptions: getReasonOption(state),
     waybillDriverList: getEmployeeState(state).waybillDriverList,
     moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
   }),

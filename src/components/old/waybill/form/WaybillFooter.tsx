@@ -41,109 +41,188 @@ type IPropsWaybillFooter = {
   };
 };
 
-class WaybillFooter extends React.Component<IPropsWaybillFooter> {
-  private get isHasPermissionToEditWaybill(): boolean {
-    const { isPermittedByKey } = this.props;
+const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
+  const isHasPermissionToEditWaybill = Boolean(
+    props.isPermittedByKey.update
+      || props.isPermittedByKey.update_closed
+      || props.isPermittedByKey.refill
+      || props.isPermittedByKey.departure_and_arrival_values
+  );
 
-    return Boolean(isPermittedByKey.update
-      || isPermittedByKey.update_closed
-      || isPermittedByKey.refill
-      || isPermittedByKey.departure_and_arrival_values);
-  }
-  private get isDisabledWaybillSubmitButton(): boolean {
-    const { canSave, isDelete } = this.props;
-    return !((canSave || isDelete) && this.isHasPermissionToEditWaybill);
-  }
+  const isDisabledWaybillSubmitButton = !((props.canSave || props.isDelete) && isHasPermissionToEditWaybill);
 
-  private get isHiddenWaybillSubmitButton(): boolean {
-    return !this.isHasPermissionToEditWaybill;
-  }
+  const isHiddenWaybillSubmitButton = Boolean(!isHasPermissionToEditWaybill);
 
-  public render(): JSX.Element {
-    const { props } = this;
-    const waybillSaveDropdownPrintToggleElement = (
-      <React.Fragment>
-        <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
-      </React.Fragment>
-    );
+  const waybillSaveDropdownPrintToggleElement = (
+    <React.Fragment>
+      <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
+    </React.Fragment>
+  );
 
-    const message = `Автоматическое обновление полей из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: ${props.state.is_edited_odometr && props.state.is_edited_motohours ? ' Выезд из гаража (Одометр/Счетчик моточасов), ' : props.state.is_edited_odometr ? ' Выезд из гаража (Одометр), ' : props.state.is_edited_motohours ? ' Выезд из гаража (Счетчик моточасов), ' : ''}Выезд (Топливо); в блоке “Спецоборудование”: ${props.state.is_edited_motohours_equip ? ' Выезд из гаража (Счетчик моточасов оборудования), ' : ''}Выезд (Топливо).`;
-    const messageForSavePrint = `При выдаче ПЛ будут автоматически обновлены поля из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: ${props.state.is_edited_odometr && props.state.is_edited_motohours ? ' Выезд из гаража (Одометр/Счетчик моточасов), ' : props.state.is_edited_odometr ? ' Выезд из гаража (Одометр), ' : props.state.is_edited_motohours ? ' Выезд из гаража (Счетчик моточасов), ' : ''}Выезд (Топливо); в блоке “Спецоборудование”: ${props.state.is_edited_motohours_equip ? ' Выезд из гаража (Счетчик моточасов оборудования), ' : ''}Выезд (Топливо)`;
+  const isOdometrAndMotohours = props.state.is_edited_odometr && props.state.is_edited_motohours;
+  const isOdometr = props.state.is_edited_odometr;
+  const isMotohours = props.state.is_edited_motohours;
+  const isMotohoursEquip = props.state.is_edited_motohours_equip;
 
-    const popoverHoverFocus = (
-      <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
-        {message}
-      </EtsBootstrap.Popover>
-    );
+  const message = React.useMemo(() => {
+    return `Автоматическое обновление полей из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: 
+      ${
+  isOdometrAndMotohours
+    ? ''
+    : isOdometr
+      ? ' Выезд из гаража (Счетчик моточасов), '
+      : isMotohours
+        ? ' Выезд из гаража (Одометр), '
+        : ' Выезд из гаража (Одометр/Счетчик моточасов), '
+}Выезд (Топливо); в блоке “Спецоборудование”: ${
+  isMotohoursEquip
+    ? ''
+    : ' Выезд из гаража (Счетчик моточасов оборудования), '
+}Выезд (Топливо).`;
+  }, [isOdometrAndMotohours, isOdometr, isMotohours, isMotohoursEquip]);
 
-    const popoverForSavePrint = (
-      <EtsBootstrap.Popover id="popover-for-save-print" title="Внимание!">
-        {messageForSavePrint}
-      </EtsBootstrap.Popover>
-    );
+  const messageForSavePrint = React.useMemo(() => {
+    return `При выдаче ПЛ будут автоматически обновлены поля из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС: в блоке “Транспортное средство”: 
+      ${
+  isOdometrAndMotohours
+    ? ''
+    : isOdometr
+      ? ' Выезд из гаража (Счетчик моточасов), '
+      : isMotohours
+        ? ' Выезд из гаража (Одометр), '
+        : ' Выезд из гаража (Одометр/Счетчик моточасов), '
+}Выезд (Топливо); в блоке “Спецоборудование”: ${
+  isMotohoursEquip
+    ? ''
+    : ' Выезд из гаража (Счетчик моточасов оборудования), '
+}Выезд (Топливо).`;
+  }, [isOdometrAndMotohours, isOdometr, isMotohours, isMotohoursEquip]);
 
-    const savePrintOverlayTriggerConfig: OverlayTriggerConfig = {
-      triger: ['hover', 'focus', 'click'],
-      placement: 'top',
-      overlay: popoverForSavePrint,
-    };
+  const popoverHoverFocus = (
+    <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
+      {message}
+    </EtsBootstrap.Popover>
+  );
 
-    return (
-      <EtsButtonsContainer>
-        <Div hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
-          <EtsBootstrap.OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-            <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><EtsBootstrap.Glyphicon glyph="refresh" /></EtsBootstrap.Button>
-          </EtsBootstrap.OverlayTrigger>
-        </Div>
-        <Div hidden={!props.isPermittedByKey.update} permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? waybillPermissions.plate : undefined}>
-          <EtsButtonsContainer marginContainerX={0}>
-            <EtsBootstrap.Dropdown
-              id="waybill-print-dropdown_ptint"
-              className="print"
-              dropup
-              disabled={!props.canPrint || !props.state.id}
+  const popoverForSavePrint = (
+    <EtsBootstrap.Popover id="popover-for-save-print" title="Внимание!">
+      {messageForSavePrint}
+    </EtsBootstrap.Popover>
+  );
 
-              toggleElement={<EtsBootstrap.Glyphicon glyph="print" />}
-            >
-              <EtsBootstrap.DropdownMenu dropup>
-                <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="print-plate_truck" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="print-plate_car" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_car'}>Форма №3 (легковое ТС)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_special'}>Форма №4 (самоходная машина)</EtsBootstrap.MenuItem>
-              </EtsBootstrap.DropdownMenu>
-            </EtsBootstrap.Dropdown>
-            <EtsBootstrap.Dropdown
-              id="waybill-print-dropdown_save"
-              className="pdf"
-              dropup
-              disabled={!props.canGiveOutRead}
-              overlayTrigger={savePrintOverlayTriggerConfig}
-              toggleElement={waybillSaveDropdownPrintToggleElement}
-            >
-              <EtsBootstrap.DropdownMenu dropup pullRight>
-                <EtsBootstrap.MenuItem id="save-print-plate_special" onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)} eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="save_print-plate_truck" onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)} eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="save-print-plate_car" onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)} eventKey={'plate_car'}>Форма №3 (легковое ТС)</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem id="save-print-plate_special" onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)} eventKey={'plate_special'}>Форма №4 (самоходная машина)</EtsBootstrap.MenuItem>
-              </EtsBootstrap.DropdownMenu>
-            </EtsBootstrap.Dropdown>
-          </EtsButtonsContainer>
-        </Div>
-        <EtsButtonsContainer marginContainerY={4.5} marginContainerX={0}>
-          <Div
-            permissions={savePermissions}
-            className={'inline-block'}
-            hidden={this.isHiddenWaybillSubmitButton}
+  const savePrintOverlayTriggerConfig: OverlayTriggerConfig = {
+    triger: ['hover', 'focus', 'click'],
+    placement: 'top',
+    overlay: popoverForSavePrint,
+  };
+
+  return (
+    <EtsButtonsContainer>
+      <Div hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
+        <EtsBootstrap.OverlayTrigger
+          trigger={['hover', 'focus']}
+          placement="top"
+          overlay={popoverHoverFocus}
+        >
+          <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}>
+            <EtsBootstrap.Glyphicon glyph="refresh" />
+          </EtsBootstrap.Button>
+        </EtsBootstrap.OverlayTrigger>
+      </Div>
+      <Div hidden={!props.isPermittedByKey.update} permissions={
+        props.state.status !== 'closed' && props.state.status !== 'active'
+          ? waybillPermissions.plate
+          : undefined
+      }
+      >
+        <EtsButtonsContainer marginContainerX={0}>
+          <EtsBootstrap.Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canPrint || !props.state.id}
+            toggleElement={<EtsBootstrap.Glyphicon glyph="print" />}
           >
-            <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={this.isDisabledWaybillSubmitButton}>Сохранить</EtsBootstrap.Button>
-          </Div>
-          <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || props.state.status==='deleted' || !(props.formState.status && props.formState.status === 'active')}>
-            <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>
-          </Div>
+            <EtsBootstrap.DropdownMenu dropup>
+              <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_bus'}>
+                Форма №1 (автобус)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="print-plate_truck" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_truck'}>
+                Форма №2 (грузовое ТС)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="print-plate_car" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_car'}>
+                Форма №3 (легковое ТС)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_special'}>
+                Форма №4 (самоходная машина)
+              </EtsBootstrap.MenuItem>
+            </EtsBootstrap.DropdownMenu>
+          </EtsBootstrap.Dropdown>
+          <EtsBootstrap.Dropdown id="waybill-print-dropdown_save" className="pdf" dropup disabled={!props.canGiveOutRead}
+            overlayTrigger={savePrintOverlayTriggerConfig} toggleElement={waybillSaveDropdownPrintToggleElement}>
+            <EtsBootstrap.DropdownMenu dropup pullRight>
+              <EtsBootstrap.MenuItem id="save-print-plate_special"
+                onSelect={props.handlePrint.bind(
+                  null,
+                  props.state.status !== 'draft' && !props.isCreating
+                )}
+                eventKey={'plate_bus'}
+              >
+                Форма №1 (автобус)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="save_print-plate_truck"
+                onSelect={props.handlePrint.bind(
+                  null,
+                  props.state.status !== 'draft' && !props.isCreating
+                )}
+                eventKey={'plate_truck'}
+              >
+                Форма №2 (грузовое ТС)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="save-print-plate_car"
+                onSelect={props.handlePrint.bind(
+                  null,
+                  props.state.status !== 'draft' && !props.isCreating
+                )}
+                eventKey={'plate_car'}
+              >
+                Форма №3 (легковое ТС)
+              </EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem id="save-print-plate_special"
+                onSelect={props.handlePrint.bind(
+                  null,
+                  props.state.status !== 'draft' && !props.isCreating
+                )}
+                eventKey={'plate_special'}
+              >
+                Форма №4 (самоходная машина)
+              </EtsBootstrap.MenuItem>
+            </EtsBootstrap.DropdownMenu>
+          </EtsBootstrap.Dropdown>
         </EtsButtonsContainer>
+      </Div>
+      <EtsButtonsContainer marginContainerY={4.5} marginContainerX={0}>
+        <Div permissions={savePermissions} className={'inline-block'} hidden={isHiddenWaybillSubmitButton}>
+          <EtsBootstrap.Button id="waybill-submit"
+            onClick={props.handleSubmit}
+            disabled={isDisabledWaybillSubmitButton}
+          >
+            Сохранить
+          </EtsBootstrap.Button>
+        </Div>
+        <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }}
+          hidden={
+            props.state.status === 'closed'
+            || props.state.status === 'deleted'
+            || !(props.formState.status && props.formState.status === 'active')
+          }
+        >
+          <EtsBootstrap.Button id="close-waybill"
+            onClick={() => props.handleClose(props.taxesControl)}
+            disabled={!props.canClose}
+          >
+            Закрыть ПЛ
+          </EtsBootstrap.Button>
+        </Div>
       </EtsButtonsContainer>
-    );
-  }
-}
+    </EtsButtonsContainer>
+  );
+};
 
 export default WaybillFooter;

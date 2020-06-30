@@ -47,6 +47,7 @@ export const getDefaultCar = (): CarWrap => ({
   note: '',
   okrug_id: null,
   okrug_name: '',
+  operating_mode: '',
   owner_id: null,
   owner_name: '',
   parking_address: '',
@@ -122,6 +123,10 @@ export const getDefaultCar = (): CarWrap => ({
     disabled: false,
     files: [],
   },
+  employee_data: {
+    data: [],
+    dataIndex: {},
+  }
 });
 
 export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {

@@ -64,6 +64,8 @@ class ReportContainer extends React.Component<
       filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
       localState: {},
+      aggrFields: [],
+      savedFilterValues: {},
     };
   }
 
@@ -281,6 +283,12 @@ class ReportContainer extends React.Component<
           }
         }
 
+        if (hasSummaryLevel) {
+          this.setState({
+            aggrFields: data.result.meta.summary.aggr_fields,
+          });
+        }
+
         if (data.result.rows.length === 0) {
           noItemsInfoNotification();
         }
@@ -394,6 +402,10 @@ class ReportContainer extends React.Component<
     this.setState({ filterValues });
   };
 
+  saveFilterValues = (savedFilterValues: any) => {
+    this.setState({savedFilterValues});
+  }; 
+
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
@@ -429,6 +441,7 @@ class ReportContainer extends React.Component<
       return {
         fetchedByMoveDownButton: true,
         selectedRow: selectedRow.props.data,
+        filterValues: this.state.savedFilterValues,
       };
     });
   };
@@ -451,13 +464,14 @@ class ReportContainer extends React.Component<
     this.props.history.push(
       `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
     );
+    this.setState({filterValues: this.state.savedFilterValues});
   };
 
   reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {
     const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
       const precision = metaFieldsByKey[key]?.precision;
       let newVal = precision && isNumber(elemVal)
-        ? elemVal?.toFixed(precision).replace(',', '.')
+        ? elemVal?.toFixed(precision).replace('.', ',')
         : elemVal;
 
       // const { //<<< перенести в 33й,
@@ -773,6 +787,8 @@ class ReportContainer extends React.Component<
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
           localState={this.state.localState}
+          aggrFields={this.state.aggrFields}
+          saveFilterValues={this.saveFilterValues}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"

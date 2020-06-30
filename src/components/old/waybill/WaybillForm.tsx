@@ -1122,15 +1122,14 @@ class WaybillForm extends React.Component<Props, State> {
     const state = this.props.formState;
 
     const plan_departure_date
-      = diffDates(new Date(), state.plan_departure_date) > 0 && !autocompleteOnly
-        ? new Date()
+      = diffDates(this.props.moscowTimeServer.date, state.plan_departure_date) > 0 && !autocompleteOnly
+        ? this.props.moscowTimeServer.date
         : state.plan_departure_date;
 
     try {
       const lastWaybill = await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
       );
-
       if(lastWaybill) {
         const is_one_fuel_tank = autocompleteOnly
           ? state.is_one_fuel_tank

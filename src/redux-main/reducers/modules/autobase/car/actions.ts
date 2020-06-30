@@ -18,6 +18,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
+import { employeeEmployeeGetSetEmployee } from '../../employee/employee/actions';
 
 /* ---------- Car ---------- */
 export const autobaseSetCar = (carList: Array<Car>, carIndex: Record<Car['asuods_id'], Car>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
@@ -71,6 +72,9 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     dispatch(
       actionLoadCarPassport(asuods_id, meta),
     ),
+    dispatch(
+      employeeEmployeeGetSetEmployee({}, meta)
+    )
   ]);
 
   const [
@@ -78,6 +82,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     carDriversData,
     carRegistrationData,
     carPassportData,
+    employeeData
   ] = response;
 
   if (!carData) {
@@ -99,6 +104,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
       ...defaultCarWrapData.passport_data,
       car_id: asuods_id,
     },
+    employee_data: employeeData,
   };
 
   if (carRegistrationData) {

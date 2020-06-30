@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WaybillFormWrapProps } from 'components/old/waybill/WaybillFormWrap';
-import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
@@ -159,12 +159,14 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'datetime',
       required: true,
       dependencies: [
-        (value, { status }) => {
+        (value, { status }, reduxState) => {
+          const moscowTimeServer = reduxState.moscowTimeServer;
+
           if (status === 'active' || status === 'closed') {
             return false;
           }
 
-          if (diffDates(getDateWithMoscowTz(), value, 'minutes', false) > 5) {
+          if (diffDates(moscowTimeServer.date, value, 'minutes', false) > 5) {
             return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
           }
 

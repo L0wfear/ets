@@ -151,6 +151,7 @@ export type Car = {
   note: string;
   okrug_id: number;
   okrug_name: string;
+  operating_mode: string;
   owner_id: number;
   owner_name: string;
   parking_address: string;

@@ -3,7 +3,6 @@ import * as React from 'react';
 import { createFio } from 'utils/labelFunctions';
 import { Employee, Driver } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
-import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import { filterDriver } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
@@ -19,20 +18,17 @@ type UseCarDriversList = (
   drivers_data: CarWrap['drivers_data'],
   gov_number: CarWrap['gov_number'],
   meta: LoadingMeta,
+  employee_data: CarWrap['employee_data']
 ) => UseCarDriversListAns;
 
-const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta) => {
+const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta, employee_data) => {
   const [employeeIndex, setEmployeeIndex] = React.useState<Record<Employee['id'], Employee>>({});
   const [driverList, setDriverList] = React.useState<Array<Driver>>([]);
 
   const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      dispatch(employeeEmployeeGetSetEmployee({}, meta)).then(
-        ({ dataIndex }) => {
-          setEmployeeIndex(dataIndex);
-        },
-      );
+      setEmployeeIndex(employee_data.dataIndex);
       dispatch(employeeDriverGetSetDriver({}, meta)).then(
         ({ data }) => {
           setDriverList(data);

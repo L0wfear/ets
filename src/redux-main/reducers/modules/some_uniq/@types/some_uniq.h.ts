@@ -22,6 +22,7 @@ import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/properties/@types';
+import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -35,11 +36,6 @@ export type CancelReasons = {
   id: number;
   name: string;
   status: string;
-};
-
-export type ReasonOptions = {
-  id: number;
-  name: string;
 };
 
 export type IStateSomeUniq = {
@@ -90,5 +86,5 @@ export type IStateSomeUniq = {
     timestamp: number;
     date: string;
   };
-  reasonOption: Array<ReasonOptions>;
+  reasonList: Array<ReasonList>;
 };

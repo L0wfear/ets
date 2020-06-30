@@ -48,7 +48,7 @@ export const MissionArchiveCarService = ETS_API_FACTORY.createApiServiceAdapter(
 export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter(
   'latest_waybill_driver',
 );
-export const ReasonOptionService = ETS_API_FACTORY.createApiServiceAdapter(
+export const ReasonListService = ETS_API_FACTORY.createApiServiceAdapter(
   'rate_change_reason',
 );
 

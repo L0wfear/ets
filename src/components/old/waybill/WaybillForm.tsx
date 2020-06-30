@@ -106,8 +106,8 @@ import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@type
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
 import styled from 'styled-components';
-import { actionGetAndSetInStoreReasonOption } from 'redux-main/reducers/modules/some_uniq/waybill/actions';
-import { getReasonOption } from 'redux-main/reducers/modules/some_uniq/waybill/selectors';
+import { actionGetAndSetInStoreReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/actions';
+import { getReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/selectors';
 
 export const FlexContainerStyled = styled(FlexContainer)`
   ${SingleUiElementWrapperStyled} {
@@ -235,8 +235,7 @@ type StateProps = {
   employeeIndex: Record<Employee['id'], Employee>;
   waybillDriverList: Array<WaybillDriver>;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
-  reasonOption: IStateSomeUniq['reasonOption'];
-  reasonListOptions: ReturnType<typeof getReasonOption>;
+  reasonListOptions: ReturnType<typeof getReasonList>;
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -503,7 +502,7 @@ class WaybillForm extends React.Component<Props, State> {
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
       ),
-      this.props.dispatch(actionGetAndSetInStoreReasonOption({}, this.props)),
+      this.props.dispatch(actionGetAndSetInStoreReasonList({}, this.props)),
       getWaybillDrivers(
         this.props.dispatch,
         this.props.formState,
@@ -1137,9 +1136,15 @@ class WaybillForm extends React.Component<Props, State> {
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
 
-        const odometr_start = Boolean(state.is_edited_odometr) ? state.odometr_start : lastWaybill.odometr_start;
-        const motohours_start = Boolean(state.is_edited_motohours) ? state.motohours_start : lastWaybill.motohours_start;
-        const motohours_equip_start = Boolean(state.is_edited_motohours_equip) ? state.motohours_equip_start : lastWaybill.motohours_equip_start;
+        const odometr_start = Boolean(state.is_edited_odometr)
+          ? state.odometr_start
+          : lastWaybill.odometr_start;
+        const motohours_start = Boolean(state.is_edited_motohours)
+          ? state.motohours_start
+          : lastWaybill.motohours_start;
+        const motohours_equip_start = Boolean(state.is_edited_motohours_equip)
+          ? state.motohours_equip_start
+          : lastWaybill.motohours_equip_start;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -3305,8 +3310,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
       .uniqEmployeesBindedOnCarList,
     employeeList: getEmployeeState(state).employeeList,
     employeeIndex: getEmployeeState(state).employeeIndex,
-    reasonOption: getSomeUniqState(state).reasonOption,
-    reasonListOptions: getReasonOption(state),
+    reasonListOptions: getReasonList(state),
     waybillDriverList: getEmployeeState(state).waybillDriverList,
     moscowTimeServer: getSomeUniqState(state).moscowTimeServer,
   }),

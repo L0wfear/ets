@@ -457,7 +457,7 @@ class ReportContainer extends React.Component<
     const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
       const precision = metaFieldsByKey[key]?.precision;
       let newVal = precision && isNumber(elemVal)
-        ? elemVal?.toFixed(precision).replace(',', '.')
+        ? elemVal?.toFixed(precision).replace('.', ',')
         : elemVal;
 
       // const { //<<< перенести в 33й,

@@ -133,7 +133,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 150,
           },
           {
-            key: 'company_short_name',
+            key: 'company_name',
             title: [
               {
                 title: 'Организация',

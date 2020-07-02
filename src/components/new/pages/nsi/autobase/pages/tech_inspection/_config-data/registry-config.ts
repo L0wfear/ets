@@ -54,7 +54,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
         },
         {
           valueKey: 'company_id',
-          labelKey: 'company_short_name',
+          labelKey: 'company_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -116,7 +116,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             width: 150,
           },
           {
-            key: 'company_short_name',
+            key: 'company_name',
             title: 'Организация',
             width: 150,
           },

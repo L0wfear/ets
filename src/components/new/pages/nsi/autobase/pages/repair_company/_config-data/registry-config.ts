@@ -42,7 +42,7 @@ export const getToConfig = (): TypeConfigData<RepairCompany> => {
         },
         {
           valueKey: 'company_id',
-          labelKey: 'company_short_name',
+          labelKey: 'company_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -82,7 +82,7 @@ export const getToConfig = (): TypeConfigData<RepairCompany> => {
             width: 150,
           },
           {
-            key: 'company_short_name',
+            key: 'company_name',
             title: 'Организация',
             width: 200,
           },

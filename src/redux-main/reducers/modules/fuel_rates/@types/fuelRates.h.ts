@@ -19,6 +19,7 @@ export type FuelRate = {
   measure_unit_id: number | null;
   measure_unit_name: string | null;
   model_name: string | null;
+  okrug_name: string | null;
   operation_equipment: boolean | null;
   operation_id: number | null;
   operation_name: string | null;

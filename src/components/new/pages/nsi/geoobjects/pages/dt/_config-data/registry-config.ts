@@ -29,7 +29,7 @@ export const config: TypeConfigData<Dt> = {
         title: [
           {
             title: 'Округ',
-            displayIf: displayIfContant.isOkrug,
+            displayIf: displayIfContant.isKgh,
           }
         ],
         type: 'multiselect',
@@ -38,11 +38,11 @@ export const config: TypeConfigData<Dt> = {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
+            displayIf: displayIfContant.isOkrug,
             title: 'Наименование ГБУ',
           },
           {
-            displayIf: displayIfContant.isOkrug,
+            displayIf: displayIfContant.isKgh,
             title: 'Организация',
           },
         ],
@@ -122,7 +122,7 @@ export const config: TypeConfigData<Dt> = {
           title: [
             {
               title: 'Округ',
-              displayIf: displayIfContant.isOkrug,
+              displayIf: displayIfContant.isKgh,
             }
           ],
           width: 150,
@@ -131,11 +131,11 @@ export const config: TypeConfigData<Dt> = {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
+              displayIf: displayIfContant.isOkrug,
               title: 'Наименование ГБУ',
             },
             {
-              displayIf: displayIfContant.isOkrug,
+              displayIf: displayIfContant.isKgh,
               title: 'Организация',
             },
           ],

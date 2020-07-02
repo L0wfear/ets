@@ -231,6 +231,10 @@ export const config: TypeConfigData<Mission> = {
           key: 'checkbox',
         },
         {
+          key: 'enumerated',
+          title: '№',
+        },
+        {
           key: 'okrug_name',
           title: 'Округ',
           width: 150,
@@ -239,10 +243,6 @@ export const config: TypeConfigData<Mission> = {
           key: 'company_name',
           title: 'Организация',
           width: 150,
-        },
-        {
-          key: 'enumerated',
-          title: '№',
         },
         {
           key: 'status_name',

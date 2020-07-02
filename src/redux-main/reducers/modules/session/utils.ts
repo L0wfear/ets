@@ -62,7 +62,7 @@ export const makeUserData = (userDataRaw) => {
 
   userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissionsSet.has(
-    'common.nsi_company_column_show',
+    'common.nsi_okrug_company_columns_show',
   );
   userData.isGlavControl = userData.permissionsSet.has('role.change');
 

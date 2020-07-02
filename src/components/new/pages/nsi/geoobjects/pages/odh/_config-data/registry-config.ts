@@ -29,7 +29,7 @@ export const config: TypeConfigData<Odh> = {
         title: [
           {
             title: 'Округ',
-            displayIf: displayIfContant.isOkrug,
+            displayIf: displayIfContant.isKgh,
           }
         ],
         type: 'multiselect',
@@ -38,12 +38,12 @@ export const config: TypeConfigData<Odh> = {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
+            displayIf: displayIfContant.isOkrug,
             title: 'Наименование ГБУ',
           },
           {
             title: 'Организация',
-            displayIf: displayIfContant.isOkrug,
+            displayIf: displayIfContant.isKgh,
           },
         ],
         type: 'multiselect',
@@ -154,7 +154,7 @@ export const config: TypeConfigData<Odh> = {
           title: [
             {
               title: 'Округ',
-              displayIf: displayIfContant.isOkrug,
+              displayIf: displayIfContant.isKgh,
             }
           ],
           width: 150,
@@ -163,12 +163,12 @@ export const config: TypeConfigData<Odh> = {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
+              displayIf: displayIfContant.isOkrug,
               title: 'Наименование ГБУ',
             },
             {
               title: 'Организация',
-              displayIf: displayIfContant.isOkrug,
+              displayIf: displayIfContant.isKgh,
             },
           ],
           width: 300,

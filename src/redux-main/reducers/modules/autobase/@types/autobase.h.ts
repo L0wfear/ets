@@ -264,6 +264,8 @@ export type TechInspection = {
 export type TechMaintOrder = {
   car_model_id: number;
   car_model_name: string;
+  company_id: number;
+  company_name: string;
   description: string;
   entity_name: string;
   id: number;
@@ -273,6 +275,7 @@ export type TechMaintOrder = {
   is_periodic: boolean;
   measure_unit_run_id: number;
   measure_unit_run_name: string;
+  okrug_name: string;
   sequence: number;
   tech_maintenance_type_id: number;
   tech_maintenance_type_name: string;

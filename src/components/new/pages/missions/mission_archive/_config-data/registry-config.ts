@@ -44,6 +44,16 @@ export const config: TypeConfigData<Mission> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'status',
         title: 'Статус',
         type: 'multiselect',
@@ -216,6 +226,16 @@ export const config: TypeConfigData<Mission> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 150,
         },
         {
           key: 'status_name',

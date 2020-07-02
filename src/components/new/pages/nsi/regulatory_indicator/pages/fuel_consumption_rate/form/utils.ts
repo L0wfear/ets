@@ -21,6 +21,7 @@ export const makeDefaultFuelRate = (): FuelRate => ({
   measure_unit_id: null,
   measure_unit_name: null,
   model_name: null,
+  okrug_name: null,
   operation_equipment: null,
   operation_id: null,
   operation_name: null,

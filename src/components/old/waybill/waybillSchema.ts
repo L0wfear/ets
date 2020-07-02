@@ -342,6 +342,22 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    odometr_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_odometr) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
+          }
+          return false;
+        },
+      ],
+    },
     motohours_start: {
       title: 'Счетчик моточасов.Выезд',
       type: 'number',
@@ -351,6 +367,22 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      ],
+    },
+    motohours_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_motohours) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
           }
           return false;
         },
@@ -370,6 +402,35 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
           }
           return false;
+        },
+      ],
+    },
+    motohours_equip_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_motohours_equip) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
+          }
+          return false;
+        },
+      ],
+    },
+    files: {
+      title: 'Файл',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (files, formData) => {
+          if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
+            if (!files) {
+              return 'Поле "Файл" должно быть заполнено';
+            }
+          }
         },
       ],
     },

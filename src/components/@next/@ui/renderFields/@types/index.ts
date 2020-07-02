@@ -110,6 +110,7 @@ export type ExtFieldButton = {
   disabled?: boolean;
   onClick?: (obj: { [key: string]: any; }) => any;
   glyph?: keyof typeof glyphMap;
+  style?: object;
 };
 
 export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];

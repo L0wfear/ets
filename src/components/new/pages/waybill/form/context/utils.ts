@@ -66,6 +66,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   is_edited_motohours_equip: false,
   mission_id_list: [],
   motohours_end: null,
+  motohours_equip_diff: null,
   motohours_equip_end: null,
   motohours_equip_start: null,
   motohours_equip_reason_id: null,

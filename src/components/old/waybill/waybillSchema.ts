@@ -738,11 +738,12 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме для оборудования',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, { equipment_fuel, hasEquipmentFuelRates }) => {
+        (value, { equipment_fuel, hasEquipmentFuelRates, motohours_equip_diff}) => {
           if (
             equipment_fuel
             && hasEquipmentFuelRates
             && (!isArray(value) || (isArray(value) && !value.length))
+            && motohours_equip_diff > 0
           ) {
             return 'В поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
           }
@@ -753,8 +754,11 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (value) => {
-          if (!isArray(value) || (isArray(value) && !value.length)) {
+        (value, {odometr_diff, motohours_diff}) => {
+          if (
+            (!isArray(value) || (isArray(value) && !value.length))
+              && (odometr_diff > 0 || motohours_diff > 0)
+          ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
           }
         }

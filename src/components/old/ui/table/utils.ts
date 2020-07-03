@@ -48,7 +48,7 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
     const lteValue = valueFormatter(filterObject[`${key}__lte`]);
     const gteValue = valueFormatter(filterObject[`${key}__gte`]);
 
-    if (formattedValue >= gteValue && formattedValue <= lteValue) {
+    if (formattedValue > gteValue && formattedValue < lteValue) {
       return true;
     }
   }

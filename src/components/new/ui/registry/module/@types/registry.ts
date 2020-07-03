@@ -179,6 +179,7 @@ export type OneRegistryData<F = any> = {
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
       | 'order_to'
+      | 'daterange_picker_userlog'
     );
     buttons: Array<{
       type: typeof buttonsTypes[keyof typeof buttonsTypes];

@@ -27,7 +27,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     registryKey,
     header: {
       title: 'Журнал действий пользователей',
-      format: 'datetime_range_picker',
+      format: 'daterange_picker_userlog',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.export,

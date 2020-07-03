@@ -40,6 +40,16 @@ export const config: TypeConfigData<Employee> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
@@ -151,6 +161,16 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
         },
         {
           key: 'company_name',

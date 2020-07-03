@@ -10,6 +10,7 @@ export const defaultPgmStore: PgmStore = {
   id: null,
   liquid_pgm_volume: null,
   name: '',
+  okrug_name: null,
   pgm_stores_type_id: null,
   pgm_stores_type_name: '',
   shape: {},

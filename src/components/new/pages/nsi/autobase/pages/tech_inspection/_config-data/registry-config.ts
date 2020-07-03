@@ -48,8 +48,13 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
-          labelKey: 'company_short_name',
+          labelKey: 'company_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -106,7 +111,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             title: '№',
           },
           {
-            key: 'company_short_name',
+            key: 'okrug_name',
+            title:'Округ',
+            width: 150,
+          },
+          {
+            key: 'company_name',
             title: 'Организация',
             width: 150,
           },

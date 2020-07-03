@@ -33,6 +33,11 @@ export const getToConfig = (): TypeConfigData<Tire> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_name',
           title: 'Организация',
@@ -119,6 +124,11 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
           },
           {
             key: 'company_name',

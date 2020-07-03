@@ -16,6 +16,7 @@ export const defaultBatteryRegistry: BatteryRegistry = {
   manufacturer_id: null,
   manufacturer_name: null,
   odometr_start: null,
+  okrug_name: null,
   released_at: null,
   serial_number: null,
   uninstalled_at: null,

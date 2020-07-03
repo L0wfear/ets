@@ -50,6 +50,26 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_name',
+          title: [
+            {
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'number',
           title: 'Номер',
           type: 'multiselect',
@@ -103,6 +123,26 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
       meta: {
         fields: [
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                title: 'Организация',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 200,
+          },
+          {
             key: 'enumerated',
             title: '№',
           },
@@ -142,11 +182,6 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             key: 'structure_name',
             title: 'Подразделение',
             width: 200,
-          },
-          {
-            key: 'company_short_name',
-            title: 'Организация',
-            width: 300,
           },
         ],
       },

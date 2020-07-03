@@ -49,6 +49,16 @@ export const config: TypeConfigData<DutyMission> = {
         step: 1,
       },
       {
+        valueKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'status',
         title: 'Статус',
         type: 'multiselect',
@@ -198,6 +208,16 @@ export const config: TypeConfigData<DutyMission> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 150,
         },
         {
           key: 'id',

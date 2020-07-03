@@ -14,6 +14,7 @@ export type DutyMission = {
   car_mission_name: null | string;
   closed_by: null | string;
   comment: string;
+  company_name: string | null;
   fact_date_end: string | null;
   fact_date_start: string | null;
   faxogramm_id: null | number;
@@ -36,6 +37,7 @@ export type DutyMission = {
   number_text: string | null;
   object_type_id: number | null;
   object_type_name: string | null;
+  okrug_name: string | null;
   operation_num_execution: null;
   order_number: string | null;
   order_operation_id: number | null;

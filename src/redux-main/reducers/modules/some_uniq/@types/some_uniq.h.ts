@@ -1,6 +1,9 @@
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { MunicipalFacility, MunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import {
+  MunicipalFacility,
+  MunicipalFacilityMeasureUnit,
+} from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
@@ -19,6 +22,7 @@ import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/properties/@types';
+import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -39,7 +43,9 @@ export type IStateSomeUniq = {
   modelsList: Array<ModelElement>;
   technicalOperationRegistryList: Array<TechnicalOperationRegistry>;
   technicalOperationRegistryForMissionList: Array<TechnicalOperationRegistry>;
-  technicalOperationRegistryForDutyMissionList: Array<TechnicalOperationRegistry>;
+  technicalOperationRegistryForDutyMissionList: Array<
+    TechnicalOperationRegistry
+  >;
   municipalFacilityList: Array<MunicipalFacility>;
   municipalFacilityMeasureUnitList: Array<MunicipalFacilityMeasureUnit>;
   municipalFacilityForMissionList: Array<MunicipalFacility>;
@@ -80,4 +86,5 @@ export type IStateSomeUniq = {
     timestamp: number;
     date: string;
   };
+  reasonList: Array<ReasonList>;
 };

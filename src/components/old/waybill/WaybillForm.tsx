@@ -1621,8 +1621,8 @@ class WaybillForm extends React.Component<Props, State> {
     });
   };
 
-  handleChangeTaxes = (taxes) => {
-    this.handleChange('taxes', isArray(taxes) ? [...taxes] : taxes);
+  handleChangeTaxes = (taxes, field = 'taxes') => {
+    this.handleChange(field, isArray(taxes) ? [...taxes] : taxes);
   };
   handleChangeEquipmentTaxes = (equipment_tax_data) => {
     this.handleChange(
@@ -2614,13 +2614,9 @@ class WaybillForm extends React.Component<Props, State> {
                         <Taxes
                           modalKey={modalKey}
                           hidden={
-                            !(IS_CLOSED || IS_ACTIVE)
+                            !IS_ACTIVE
                             || IS_DRAFT
-                            || (IS_CLOSED
-                              && state.tax_data
-                              && state.tax_data.length === 0
-                              && !this.state.canEditIfClose)
-                            || (IS_CLOSED && !state.tax_data && !this.state.canEditIfClose)
+                            || IS_CLOSED
                           }
                           readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
                           IS_CLOSED={IS_CLOSED}
@@ -2874,13 +2870,9 @@ class WaybillForm extends React.Component<Props, State> {
                             <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
-                                !(IS_CLOSED || IS_ACTIVE)
+                                !IS_ACTIVE
                                 || IS_DRAFT
-                                || (IS_CLOSED
-                                  && state.equipment_tax_data
-                                  && state.equipment_tax_data.length === 0
-                                  && !this.state.canEditIfClose)
-                                || (IS_CLOSED && !state.equipment_tax_data && !this.state.canEditIfClose)
+                                || IS_CLOSED
                               }
                               readOnly={
                                 IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { clone, cloneDeep, get, last, eq } from 'lodash';
+import { clone, cloneDeep, get, eq } from 'lodash';
 import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
@@ -610,39 +610,70 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
     console.info(field, value); // eslint-disable-line
-  
+    const govNumberRegExp = /^[\d]{4}/;
+    const isWithOdometr = Boolean(govNumberRegExp.exec(formState.gov_number));
     formState = calculateWaybillMetersDiff(formState, field, value);
-  
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
-      const lastTax = last(formState.tax_data);
-  
-      if (lastTax) {
-        if (field === 'odometr_end' && formState.odometr_diff >= 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+      formState.tax_data.forEach((val) => {
+        if (val.FACT_VALUE === 0) {
+          val.FACT_VALUE = 1;
+          val.RESULT = Taxes.getResult(val);
+        }
+        if (
+          (field === 'odometr_end' || field === 'taxes_operation'|| field === 'taxes')
+          && val.measure_unit_name !== 'л/моточас'
+          && formState.odometr_diff > 0
+          && (val.measure_unit_name === 'л/км' || !isWithOdometr)
+        ) {
+          if (val.is_excluding_mileage) {
+            val.iem_FACT_VALUE = formState.odometr_diff;
           } else {
-            lastTax.FACT_VALUE = formState.odometr_diff;
-            lastTax.RESULT = Taxes.getResult(lastTax);
+            val.FACT_VALUE = formState.odometr_diff;
+            val.RESULT = Taxes.getResult(val);
           }
         }
-        if (field === 'motohours_end' && formState.motohours_diff >= 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+        if (
+          (field === 'motohours_end' || field === 'taxes_operation' || field === 'taxes')
+           && val.measure_unit_name !== 'л/км'
+           && formState.motohours_diff > 0
+           && (val.measure_unit_name === 'л/моточас' || isWithOdometr)
+        ) {
+          if (val.is_excluding_mileage) {
+            val.iem_FACT_VALUE = formState.motohours_diff;
           } else {
-            lastTax.FACT_VALUE = formState.motohours_diff;
-            lastTax.RESULT = Taxes.getResult(lastTax);
+            val.FACT_VALUE = formState.motohours_diff;
+            val.RESULT = Taxes.getResult(val);
           }
         }
-        if (formState.odometr_diff < 0 || formState.motohours_diff < 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
+        if (
+          val.measure_unit_name !== 'л/моточас'
+          && (val.measure_unit_name === 'л/км' || !isWithOdometr)
+          && formState.odometr_diff <= 0
+          && field !== 'taxes_fact_value'
+        ) {
+          if (val.is_excluding_mileage) {
+            val.iem_FACT_VALUE = formState.odometr_diff;
           } else {
-            lastTax.FACT_VALUE = null;
-            lastTax.RESULT = Taxes.getResult(lastTax);
+            val.FACT_VALUE = null;
+            val.RESULT = Taxes.getResult(val);
           }
         }
-      }
+
+        if (
+          val.measure_unit_name !== 'л/км'
+          && (val.measure_unit_name === 'л/моточас' || isWithOdometr)
+          && formState.motohours_diff <= 0
+          && field !== 'taxes_fact_value'
+        ) {
+          if (val.is_excluding_mileage) {
+            val.iem_FACT_VALUE = formState.motohours_diff;
+          } else {
+            val.FACT_VALUE = null;
+            val.RESULT = Taxes.getResult(val);
+          }
+        }
+      });
     } 
     
     if (
@@ -650,28 +681,31 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && formState.equipment_tax_data.length 
       && (field === 'equipment_tax_data' || field === 'motohours_equip_end')
     ) {
-      const lastEquipmentTax = last(formState.equipment_tax_data);
-      if (lastEquipmentTax) {
+      formState.equipment_tax_data.forEach((val) => {
+        if (val.FACT_VALUE === 0) {
+          val.FACT_VALUE = 1;
+          val.RESULT = Taxes.getResult(val);
+        }
         if(
           (field === 'equipment_tax_data'
-          && !lastEquipmentTax.OPERATION
-          && formState.motohours_equip_diff >= 0)
-          || (field === 'motohours_equip_end'
-          && formState.motohours_equip_diff >= 0)
+            && !val.OPERATION
+            && formState.motohours_equip_diff > 0)
+            || (field === 'motohours_equip_end'
+            && formState.motohours_equip_diff > 0)
         ) {
-          lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+          val.FACT_VALUE = formState.motohours_equip_diff;
+          val.RESULT = EquipmentTaxes.getResult(val);
         } else if (
           field === 'equipment_tax_data'
-          && lastEquipmentTax.OPERATION
-          && lastEquipmentTax.FACT_VALUE >= 0
+            && val.OPERATION
+            && val.FACT_VALUE > 0
         ) {
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+          val.RESULT = EquipmentTaxes.getResult(val);
         } else {
-          lastEquipmentTax.FACT_VALUE = null;
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
+          val.FACT_VALUE = null;
+          val.RESULT = EquipmentTaxes.getResult(val);
         }
-      }
+      });
     }
     this.handleFieldsChange(formState);
   };

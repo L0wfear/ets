@@ -19,6 +19,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TaxiCalcBlock } from './Taxes';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
+import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 
 /**
  * Компонент таксировки ТС
@@ -63,20 +64,34 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     return parseFloat(result);
   }
 
-  static calculateFinalFactValue(data) {
+  static calculateFinalFactValue(data, type) {
     if (!data || (data && !data.length)) {
-      return 0;
+      return {
+        withMileage: 0,
+        withoutMileage: 0,
+      };
     }
     const result = data.reduce(
       (res, cur) => {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
-          res += parseFloat(cur.FACT_VALUE); // eslint-disable-line
+          if (
+            !cur.measure_unit_name
+            || (type === 'motohours' && cur.measure_unit_name === 'л/моточас')
+            || (type === 'odometr' && cur.measure_unit_name === 'л/км')
+          ) {
+            res.withMileage += parseFloat(cur.FACT_VALUE); // eslint-disable-line
+          } else {
+            res.withoutMileage += parseFloat(cur.FACT_VALUE);
+          }
         }
         return res;
       },
-      0,
+      {
+        withMileage: 0,
+        withoutMileage: 0,
+      },
     );
-    return parseFloat(result);
+    return result;
   }
 
   tableCaptions: Array<any>;
@@ -306,10 +321,11 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { baseFactValue, errorsAll } = this.props;
+    const { baseFactValue, errorsAll, type } = this.props;
     const overallValue = +EquipmentTaxes.calculateFinalFactValue(
       this.state.tableData,
-    );
+      type,
+    ).withMileage;
 
     const value
       = baseFactValue || baseFactValue === 0
@@ -342,13 +358,14 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
       baseFactValue,
+      type
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = EquipmentTaxes.calculateFinalResult(taxes);
-    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes);
-    const finalFactValueEqualsBaseValue
-      = parseFloat(baseFactValue).toFixed(3)?.replace('.', ',')
-      === parseFloat(finalFactValue.toString()).toFixed(3)?.replace('.', ',');
+    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
+    const finalFactValueWithoutMileage = EquipmentTaxes.calculateFinalFactValue(taxes, type).withoutMileage;
+    const finalFactValueMoreOrEqualBaseValue
+      = Number(baseFactValue) <= Number(finalFactValue);
 
     return (
       <TaxiCalcBlock hidden={hidden}>
@@ -402,21 +419,38 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         </Div>
         {Boolean(hasTaxes) && (
           <FooterEnd margin={30}>
+            <ErrorField>
+              {!finalFactValueMoreOrEqualBaseValue ? 'Пробег оборудования не должен превышать итоговый нормативный пробег оборудования' : ''}
+            </ErrorField>
             <div>
-              <b>{'Итого '}</b>
+              <div>
+                <b>{'Итого '}</b>
+              </div>
+              <div> {finalFactValueWithoutMileage ? <b>{'Без учета пробега '}</b> : ''} </div>
             </div>
             <div>
-              <b>
-                {!finalFactValueEqualsBaseValue ? (
-                  <SpanRed>{finalFactValue.toFixed(3)?.replace('.', ',')}</SpanRed>
-                ) : (
-                  <SpanGreen>{finalFactValue.toFixed(3)?.replace('.', ',')}</SpanGreen>
-                )}
-                <span> (км | м/ч)</span>
-              </b>
+              <div>
+                <b>
+                  {!finalFactValueMoreOrEqualBaseValue ? (
+                    <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
+                  ) : (
+                    <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>
+                  )}
+                  <span> {type === 'motohours' ? 'м/ч' : 'км'} </span>
+                </b>
+                <div>
+                  {finalFactValueWithoutMileage
+                    ? <b>
+                      <SpanGreen>{finalFactValueWithoutMileage.toFixed(3).replace('.', ',')}</SpanGreen>
+                      <span> {type !== 'motohours' ? 'м/ч' : 'км'} </span>
+                    </b>
+                    : ''
+                  }
+                </div>
+              </div>
             </div>
             <div>
-              <b>{finalResult.toFixed(3)?.replace('.', ',')} л</b>
+              <b>{finalResult.toFixed(3).replace('.', ',')} л</b>
             </div>
           </FooterEnd>
         )}

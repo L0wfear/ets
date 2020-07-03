@@ -82,6 +82,7 @@ export type WaybillRegistryRow = {
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
+  motohours_equip_diff: number;
   motohours_equip_start: number;
   motohours_start: number;
   number: number | string;

@@ -34,7 +34,7 @@ const defaultFormatter = (value) => value;
 
 const formattedTimeValue = (value) => {
   if (isString(value) && value.includes(':')) {
-    return Math.trunc(Number(value.replace(':', '.')));
+    return Number(value.replace(':', '.'));
   } else {
     return value;
   }

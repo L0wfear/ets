@@ -621,7 +621,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           val.RESULT = Taxes.getResult(val);
         }
         if (
-          (field === 'odometr_end' || field === 'taxes_operation'|| field === 'taxes')
+          (field === 'odometr_end' || field === 'taxes_operation'|| field === 'taxes' || field === 'odometr_start')
           && val.measure_unit_name !== 'л/моточас'
           && formState.odometr_diff > 0
           && (val.measure_unit_name === 'л/км' || !isWithOdometr)
@@ -634,7 +634,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           }
         }
         if (
-          (field === 'motohours_end' || field === 'taxes_operation' || field === 'taxes')
+          (field === 'motohours_end' || field === 'taxes_operation' || field === 'taxes' || field === 'motohours_start')
            && val.measure_unit_name !== 'л/км'
            && formState.motohours_diff > 0
            && (val.measure_unit_name === 'л/моточас' || isWithOdometr)
@@ -650,7 +650,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           val.measure_unit_name !== 'л/моточас'
           && (val.measure_unit_name === 'л/км' || !isWithOdometr)
           && formState.odometr_diff <= 0
-          && field !== 'taxes_fact_value'
+          && (field === 'taxes_operation' || field === 'taxes')
         ) {
           if (val.is_excluding_mileage) {
             val.iem_FACT_VALUE = formState.odometr_diff;
@@ -664,7 +664,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           val.measure_unit_name !== 'л/км'
           && (val.measure_unit_name === 'л/моточас' || isWithOdometr)
           && formState.motohours_diff <= 0
-          && field !== 'taxes_fact_value'
+          && (field === 'taxes_operation' || field === 'taxes')
         ) {
           if (val.is_excluding_mileage) {
             val.iem_FACT_VALUE = formState.motohours_diff;

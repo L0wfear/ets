@@ -217,11 +217,17 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
       timeId: null, // id таймера
+      taxesTotalValueError: false,
+      equipmentTaxesTotalValueError: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props !== prevProps 
+      || this.state.taxesTotalValueError !== prevState.taxesTotalValueError
+      || this.state.equipmentTaxesTotalValueError !== prevState.equipmentTaxesTotalValueError
+    ) {
       this.handleMultipleChange({});
     }
   }
@@ -335,7 +341,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
                   && !formErrors.fact_departure_date)
                 || (!formErrors.fact_arrival_date
                   && formErrors.fact_departure_date)
-              ),
+              )
+              && !this.state.taxesTotalValueError
+              && !this.state.equipmentTaxesTotalValueError,
             canClose:
               this.state.isPermittedByKey.update && canCloseWrap(formErrors),
           });
@@ -359,7 +367,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             (this.state.isPermittedByKey.update
               || this.state.isPermittedByKey.departure_and_arrival_values
               || this.state.isPermittedByKey.refill)
-            && canSaveTestWrap(this.state.formErrors),
+            && canSaveTestWrap(this.state.formErrors)
+            && !this.state.taxesTotalValueError
+            && !this.state.equipmentTaxesTotalValueError,
           canClose: this.state.isPermittedByKey.update && Object.values(formErrors).filter((d) => !!d).length,
           formErrors,
         });
@@ -452,6 +462,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
   handleFieldsChange = (formState) => {
     let { formErrors } = this.state;
+    const { taxesTotalValueError, equipmentTaxesTotalValueError } = this.state;
     const newState: Partial<State> = {};
 
     formState.fuel_start = formState.fuel_start
@@ -560,8 +571,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
         // || formErrors.motohours_equip_end
-      );
-
+      )
+      && !taxesTotalValueError
+      && !equipmentTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formState = formState;
@@ -589,8 +601,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-      );
-
+      )
+      && !this.state.taxesTotalValueError
+      && !this.state.equipmentTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formErrors = formErrors;
@@ -1002,6 +1015,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       this.props.onCallback();
     };
 
+    setTotalValueError = (key: string, totalValueError: boolean) => {
+      this.setState({[key]: totalValueError});
+    };
+
     render() {
       return (
         <React.Fragment>
@@ -1022,7 +1039,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}
-
+              setTotalValueError={this.setTotalValueError}
               show
               onHide={this.onFormHide}
               page={this.props.page}

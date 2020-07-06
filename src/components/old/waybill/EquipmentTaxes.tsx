@@ -212,6 +212,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       operations: [],
       fuelRates: [],
       errorsAll: {},
+      totalValueError: '',
     };
   }
 
@@ -249,6 +250,25 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     taxes.map((tax) => ({ ...tax, RESULT: EquipmentTaxes.getResult(tax) }));
 
     return { operations, fuelRates, tableData: taxes, errorsAll };
+  }
+
+  componentDidUpdate() {
+    const {
+      taxes = this.state.tableData,
+      baseFactValue,
+      type,
+      setTotalValueError,
+    } = this.props;
+
+    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
+    const finalFactValueMoreOrEqualBaseValue
+      = Number(baseFactValue) <= Number(finalFactValue);
+    const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег оборудования не должен превышать итоговый нормативный пробег оборудования' : ''; 
+
+    if (this.state.totalValueError !== error) {
+      this.setState({totalValueError: error});
+      setTotalValueError('equipmentTaxesTotalValueError', Boolean(error));
+    }
   }
 
   handleFactValueChange = (index, e) => {
@@ -357,15 +377,12 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       title = 'Расчет топлива по норме',
       hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
-      baseFactValue,
       type
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = EquipmentTaxes.calculateFinalResult(taxes);
     const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueWithoutMileage = EquipmentTaxes.calculateFinalFactValue(taxes, type).withoutMileage;
-    const finalFactValueMoreOrEqualBaseValue
-      = Number(baseFactValue) <= Number(finalFactValue);
 
     return (
       <TaxiCalcBlock hidden={hidden}>
@@ -420,7 +437,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         {Boolean(hasTaxes) && (
           <FooterEnd margin={30}>
             <ErrorField>
-              {!finalFactValueMoreOrEqualBaseValue ? 'Пробег оборудования не должен превышать итоговый нормативный пробег оборудования' : ''}
+              {this.state.totalValueError}
             </ErrorField>
             <div>
               <div>
@@ -431,7 +448,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
             <div>
               <div>
                 <b>
-                  {!finalFactValueMoreOrEqualBaseValue ? (
+                  {this.state.totalValueError ? (
                     <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
                   ) : (
                     <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>

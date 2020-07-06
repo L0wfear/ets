@@ -231,6 +231,7 @@ export default class Taxes extends React.Component<any, any> {
       selectedOperation: null,
       operations: [],
       fuelRates: [],
+      totalValueError: '',
     };
   }
 
@@ -268,6 +269,25 @@ export default class Taxes extends React.Component<any, any> {
     taxes.map((tax) => ({ ...tax, RESULT: Taxes.getResult(tax) }));
 
     return { operations, fuelRates, tableData: taxes, errorsAll };
+  }
+  
+  componentDidUpdate() {
+    const {
+      taxes = this.state.tableData,
+      baseFactValue,
+      type,
+      setTotalValueError,
+    } = this.props;
+
+    const finalFactValue = Taxes.calculateFinalFactValue(taxes, type).withMileage;
+    const finalFactValueMoreOrEqualBaseValue
+      = Number(baseFactValue) <= Number(finalFactValue);
+    const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег ТС не должен превышать итоговый нормативный пробег' : ''; 
+
+    if (this.state.totalValueError !== error) {
+      this.setState({totalValueError: error});
+      setTotalValueError('taxesTotalValueError', Boolean(error));
+    }
   }
 
   handleFactValueChange = (index, e) => {
@@ -372,15 +392,12 @@ export default class Taxes extends React.Component<any, any> {
       title = 'Расчет топлива по норме',
       hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
-      baseFactValue,
       type,
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueWithoutMileage = Taxes.calculateFinalFactValue(taxes, type).withoutMileage;
-    const finalFactValueMoreOrEqualBaseValue
-      = Number(baseFactValue) <= Number(finalFactValue);
 
     return (
       <TaxiCalcBlock hidden={hidden}>
@@ -436,7 +453,7 @@ export default class Taxes extends React.Component<any, any> {
           <>
             <FooterEnd margin={30}>
               <ErrorField>
-                {!finalFactValueMoreOrEqualBaseValue ? 'Пробег ТС не должен превышать итоговый нормативный пробег' : ''}
+                {this.state.totalValueError}
               </ErrorField>
               <div>
                 <div>
@@ -447,7 +464,7 @@ export default class Taxes extends React.Component<any, any> {
               <div>
                 <div>
                   <b>
-                    {!finalFactValueMoreOrEqualBaseValue ? (
+                    {this.state.totalValueError ? (
                       <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
                     ) : (
                       <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>

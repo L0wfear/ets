@@ -254,7 +254,7 @@ type OwnProps = {
   handlePrintFromMiniButton: (...arg: Array<any>) => any;
 
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
-
+  setTotalValueError?: (key: string, totalValueError: boolean) => void;
   formErrors: Record<string, any>;
   entity: string;
   isPermittedByKey: {
@@ -2811,6 +2811,7 @@ class WaybillForm extends React.Component<Props, State> {
                               ? state.odometr_diff
                               : state.motohours_diff
                           }
+                          setTotalValueError={this.props.setTotalValueError}
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                           errorsAll={errors}
                         />
@@ -3101,6 +3102,7 @@ class WaybillForm extends React.Component<Props, State> {
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                               errorsAll={errors}
+                              setTotalValueError={this.props.setTotalValueError}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

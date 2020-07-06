@@ -32,6 +32,14 @@ export const numberArrayDataMatching = (filterValue, fieldValueArray) =>
 const floatFormatter = (value) => parseFloat(value);
 const defaultFormatter = (value) => value;
 
+const formattedTimeValue = (value) => {
+  if (isString(value) && value.includes(':')) {
+    return Math.trunc(Number(value.replace(':', '.')));
+  } else {
+    return value;
+  }
+};
+
 export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
   const isIntervalFilter = Object.keys(filterObject).length === 2;
   let valueFormatter = defaultFormatter;
@@ -43,7 +51,7 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
     default:
   }
 
-  const formattedValue = valueFormatter(value);
+  const formattedValue = valueFormatter(formattedTimeValue(value));
   if (isIntervalFilter) {
     const lteValue = valueFormatter(filterObject[`${key}__lte`]);
     const gteValue = valueFormatter(filterObject[`${key}__gte`]);

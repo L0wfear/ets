@@ -242,6 +242,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         company_id: this.props.currentUser.company_id,
       });
       defaultBill.structure_id = this.props.currentUser.structure_id;
+      defaultBill.plan_departure_date = this.props.moscowTimeServer.date;
 
       this.schema = waybillSchema;
       this.setState({

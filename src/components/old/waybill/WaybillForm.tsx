@@ -2059,7 +2059,7 @@ class WaybillForm extends React.Component<Props, State> {
                   type="date"
                   label="Выезд план."
                   error={errors.plan_departure_date}
-                  date={IS_CREATING ? this.props.moscowTimeServer.date : state.plan_departure_date}
+                  date={state.plan_departure_date}
                   onChange={this.handlePlanDepartureDates}
                   boundKeys="plan_departure_date"
                   disabled={IS_DELETE || !isPermittedByKey.update}

@@ -157,7 +157,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         filterCars(car, formState, fieldType)
       ).map((rowData) => ({
         value: rowData.asuods_id,
-        label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+        label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
         rowData,
         is_invalid: rowData.asuods_id === formState.prefer_car,
       }));

@@ -75,7 +75,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
     () => {
       const options = carList.map((rowData) => ({
         value: rowData.asuods_id,
-        label: rowData.gov_number,
+        label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
       }));
 
       if (state.car_id) {

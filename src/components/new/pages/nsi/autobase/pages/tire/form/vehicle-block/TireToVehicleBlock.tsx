@@ -2,12 +2,10 @@ import * as React from 'react';
 
 import { ISharedPropsDataTableInput } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IExternalPropsDataTableInputWrapper } from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
-
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import DataTableInput from 'components/old/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from 'components/new/pages/nsi/autobase/pages/tire/form/vehicle-block/table-schema';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
-import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { tireAvailableCarGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_available_car/actions';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type IPropsTireToVehicleBlock = {
   tireId: number;
@@ -17,23 +15,25 @@ type IPropsTireToVehicleBlock = {
 const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
   (props) => {
     const dispatch = etsUseDispatch();
-    const tireAvailableCarList = etsUseSelector((state) => getAutobaseState(state).tireAvailableCarList);
-
+    const [tireAvailableCarList, settireAvailableCarList] = React.useState([]);
+    const {page, path} = props;
     React.useEffect(
       () => {
-        const payload: { tire_id?: number; } = {};
-        if (props.tireId) {
-          payload.tire_id = props.tireId;
-        }
-
-        dispatch(
-          tireAvailableCarGetAndSetInStore(
-            payload,
-            props,
+        dispatch(autobaseGetSetCar({}, {page, path})).then(
+          ({ data }) => (
+            settireAvailableCarList(
+              data.map(
+                (rowData) => ({
+                  value: rowData.asuods_id,
+                  label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
+                  rowData,
+                }),
+              ),
+            )
           ),
         );
       },
-      [props.tireId],
+      [],
     );
 
     return (

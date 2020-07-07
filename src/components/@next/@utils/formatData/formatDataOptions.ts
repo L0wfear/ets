@@ -10,5 +10,5 @@ export const carActualOptionLabelGarage = (
   const special_model_name = rowData?.special_model_name;   // Модель
   const type_name = rowData?.type_name;                     // Тип ТС
 
-  return `${gov_number} [${garage_number || ''}${ garage_number ? '/' : ''}${model_name || ''}${ model_name ? '/' : ''}${special_model_name || ''}${type_name ? '/' : ''}${type_name || ''}]`;
+  return `${gov_number} [${garage_number || '-'}/${model_name || '-'}/${special_model_name || '-'}/${type_name || '-'}]`;
 };

@@ -67,7 +67,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               data.map(
                 (rowData) => ({
                   value: rowData.asuods_id,
-                  label: rowData.gov_number,
+                  label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
                   rowData,
                 }),
               ),

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get, uniqBy } from 'lodash';
+import { get } from 'lodash';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -154,16 +154,9 @@ const UninstalledAtRenderer: React.FC<
 };
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const inputList = props.inputList.filter((filterItem) =>
-    Boolean(filterItem.gov_number),
-  );
-  const vehicleList = uniqBy(
-    [...props.tireAvailableCarList, ...inputList].map(
-      (rowData) => ({ label: rowData.gov_number, value: rowData.car_id, rowData }),
-    ),
-    'value',
-  );
 
+  const vehicleList = props.tireAvailableCarList;
+  
   return {
     car_id: (rowMeta) => (
       <CarIdRenderer

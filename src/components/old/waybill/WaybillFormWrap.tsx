@@ -20,6 +20,7 @@ import {
   actionLoadRefillTypeAndSetInStore,
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
+import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
@@ -41,6 +42,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillSchema';
 import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { createValidDateTime, getTomorrow9amServer } from 'components/@next/@utils/dates/dates';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -226,9 +228,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
     this.props.dispatch(fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(this.props));
+    await this.props.dispatch(actionGetAndSetInStoreMoscowTimeServer({}, this.props));
 
     const currentDate = new Date();
 
@@ -242,7 +245,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         company_id: this.props.currentUser.company_id,
       });
       defaultBill.structure_id = this.props.currentUser.structure_id;
-      defaultBill.plan_departure_date = this.props.moscowTimeServer.date;
+      defaultBill.plan_departure_date = createValidDateTime(this.props.moscowTimeServer.date);
+      defaultBill.plan_arrival_date = createValidDateTime(getTomorrow9amServer(this.props.moscowTimeServer.date));
 
       this.schema = waybillSchema;
       this.setState({
@@ -451,7 +455,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     );
   };
 
-  handleFieldsChange = (formState) => {
+  handleFieldsChange = async (formState) => {
     let { formErrors } = this.state;
     const newState: Partial<State> = {};
 

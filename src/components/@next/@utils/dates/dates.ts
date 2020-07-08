@@ -275,6 +275,19 @@ export function getTomorrow9am(seconds = 0) {
   );
 }
 
+export function getTomorrow9amServer(date: string, seconds = 0) {
+  const now = new Date(date);
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    8,
+    59,
+    seconds,
+  );
+}
+
 export function getTomorrow2359() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 23, 59, 0);

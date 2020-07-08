@@ -2521,6 +2521,7 @@ class WaybillForm extends React.Component<Props, State> {
                               boundKeys="odometr_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="odometr"
@@ -2597,6 +2598,7 @@ class WaybillForm extends React.Component<Props, State> {
                               boundKeys="motohours_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="motohours"
@@ -2896,6 +2898,7 @@ class WaybillForm extends React.Component<Props, State> {
                               boundKeys="motohours_equip_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="motohours_equip"

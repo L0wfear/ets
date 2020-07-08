@@ -2468,7 +2468,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.odometr_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                      || !state.is_edited_odometr
+                                      || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="odometr_start"
@@ -2543,7 +2543,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_start"
@@ -2847,7 +2847,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_equip_start}
                                 disabled={
                                   IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                  || !state.is_edited_motohours_equip
+                                  || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_equip_start"

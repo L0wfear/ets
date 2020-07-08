@@ -60,10 +60,10 @@ export const makeUserData = (userDataRaw) => {
   // userData.permissions = userData.permissions.filter((p) => p !== 'inspect.autobase_closed.update')
   userData.permissionsSet = new Set(userData.permissions);
 
-  userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissionsSet.has(
     'common.nsi_okrug_company_columns_show',
   );
+  userData.isOkrug = userData.okrug_id !== null && !userData.isKgh;
   userData.isGlavControl = userData.permissionsSet.has('role.change');
 
   const default_path = userData.default_path;

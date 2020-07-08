@@ -401,7 +401,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { car_id, is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
-    if (odometr_reason_id && files.some((file) => file.kind === 'odometr')) {
+    if (odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -431,7 +431,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
-    if (motohours_reason_id && files.some((file) => file.kind === 'motohours')) {
+    if (motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -457,7 +457,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { car_id, is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if (motohours_equip_reason_id && files.some((file) => file.kind === 'motohours_equip')) {
+    if (motohours_equip_reason_id || files & files.some((file) => file.kind === 'motohours_equip')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',

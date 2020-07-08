@@ -44,6 +44,7 @@ export type WaybillRegistryRow = {
   closing_date: string;
   comment: string;
   company_id: number;
+  company_name: string;
   created_by_employee_id: number;
   created_by_employee_name: string;
   date_create: string;
@@ -92,6 +93,8 @@ export type WaybillRegistryRow = {
   motohours_start: number;
   motohours_reason_id: number;
   number: number | string;
+  okrug_id: string;
+  okrug_name: string;
   odometr_end: number;
   odometr_start: number;
   odometr_reason_id: number;

@@ -144,7 +144,7 @@ class MissionInfoForm extends React.Component<
    * @param route_data данные по контрекному маршруту от route?id=
    */
   async makePolysFromPoints(route_data: Route | null) {
-    if (route_data) {
+    if (route_data && this.state.missionReport) {
       const { missionReport } = this.state;
       this.setState({
         polys: {
@@ -178,31 +178,33 @@ class MissionInfoForm extends React.Component<
       .then(({ payload: { [serverName]: polysObj } }: any) => {
         const { missionReport } = this.state;
         const missionReportObjectIdIndex = new Set();
-        missionReport.forEach(({ object_id }) => {
-          missionReportObjectIdIndex.add(object_id);
-        });
+        if(missionReport) {
+          missionReport.forEach(({ object_id }) => {
+            missionReportObjectIdIndex.add(object_id);
+          });
+          
+          this.setState({
+            inputLines,
+            polys: {
+              [serverName]: Object.entries(polysObj).reduce(
+                (newObj, [geoId, geoData]: any) => {
+                  const { front_id } = geoData;
 
-        this.setState({
-          inputLines,
-          polys: {
-            [serverName]: Object.entries(polysObj).reduce(
-              (newObj, [geoId, geoData]: any) => {
-                const { front_id } = geoData;
+                  if (missionReportObjectIdIndex.has(front_id)) {
+                    newObj[geoId] = {
+                      ...geoData,
+                      ...objectListIndex[front_id],
+                      frontIsSelected: false,
+                    };
+                  }
 
-                if (missionReportObjectIdIndex.has(front_id)) {
-                  newObj[geoId] = {
-                    ...geoData,
-                    ...objectListIndex[front_id],
-                    frontIsSelected: false,
-                  };
-                }
-
-                return newObj;
-              },
-              {},
-            ),
-          },
-        });
+                  return newObj;
+                },
+                {},
+              ),
+            },
+          });
+        }
       });
   }
 

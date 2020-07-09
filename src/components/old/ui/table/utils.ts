@@ -108,45 +108,91 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
   first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${item}`, '') : first;
   second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${item}`, '') : second;
 
-  const firstIsNumber = !isNaN(Number(first));
-  const secondIsNumber = !isNaN(Number(second));
-  // оба числа
+  const firstIsNumber = !isNaN(Number(first)) && typeof first === 'number';
+  const secondIsNumber = !isNaN(Number(second)) && typeof second === 'number';
+
+  const firstIsNullOrUndefined = first === null || first === undefined;
+  const secondIsNullOrUndefined = second === null || second === undefined;
+
+  const firstIsString = typeof first === 'string';
+  const secondIsString = typeof second === 'string';
 
   if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
     return diffDates(first, second);
+  }
+  if (firstIsNullOrUndefined && secondIsNullOrUndefined) {
+    return 0;
   }
 
   if (firstIsNumber && secondIsNumber) {
     return first - second;
   }
-  if (!firstIsNumber || !secondIsNumber) {
-    if (!first && first !== 0) {
-      return -1;
+  //одно из значений null или undefined
+  if (
+    (firstIsNumber || secondIsNumber)
+    || (firstIsString || secondIsString) 
+    && (firstIsNullOrUndefined || secondIsNullOrUndefined) 
+  ) {
+    return firstIsNullOrUndefined ? -1 : 1;
+  }
+  //столбцы с символьными значениями
+  if (firstIsString && secondIsString) {
+    if (first === second) {
+      return 0;
     }
-    if (!second && second !== 0) {
-      return 1;
+    if (first === '' || second === '') {
+      return first === '' ? -1 : 1;
     }
-  }
-  // первое - не число
-  if (!firstIsNumber && secondIsNumber) {
-    return -1;
-  }
-  // второе - не число
-  if (firstIsNumber && !secondIsNumber) {
-    return 1;
-  }
-  // оба элемента пусты ('', null, undefined)
-  if (!first && !second) {
-    return 0;
-  }
-  if (!first && second) {
-    return -1;
-  }
-  if (first && !second) {
-    return 1;
-  }
+    const typesRegExps = {
+      space: /\s/,
+      punctuation: /[,.-]/,
+      character: /[А-Я]/i,
+      num: /\d/,
+    };
 
-  return first.toLocaleLowerCase().trim().localeCompare(second.toLocaleLowerCase().trim());
+    const firstString = first.split('');
+    const secondString = second.split('');
+    const count = firstString.length < secondString.length ? firstString.length - 1 : secondString.length - 1;
+
+    for (let i = 0; i <= count; i++) {
+      const typeOfFirst = Object.keys(typesRegExps).find((key) => typesRegExps[key].test(firstString[i]));
+      const typeOfSecond = Object.keys(typesRegExps).find((key) => typesRegExps[key].test(secondString[i]));
+
+      if (typeOfFirst === 'space' || typeOfSecond === 'space') {
+        if(first !== second) {
+          return typeOfFirst === 'space' ? -1 : 1;
+        }
+      }
+
+      if (typeOfFirst === 'punctuation' || typeOfSecond === 'punctuation') {
+        if (typeOfFirst !== typeOfSecond) {
+          return typeOfFirst === 'punctuation' ? -1 : 1;
+        }
+        if(firstString[i] !== secondString[i]) {
+          return firstString[i] > secondString[i] ? -1 : 1;
+        }
+      }
+
+      if (typeOfFirst === 'num' || typeOfSecond === 'num') {
+        if (typeOfFirst !== typeOfSecond) {
+          return typeOfFirst === 'num' ? -1 : 1;
+        }
+        if (firstString[i] !== secondString[i]) {
+          return firstString[i] < secondString[i] ? -1 : 1; 
+        }
+      }
+
+      if (i === count) {
+        if (firstString[i] === secondString[i]) {
+          return firstString.length < secondString.length ? -1 : 1;
+        }
+      }
+
+      if(firstString[i] !== secondString[i]) {
+        return firstString[i] < secondString[i] ? -1 : 1;
+      }
+    }
+  }
 };
 
 export const sortData = (data, { initialSort, initialSortAscending, ...other }) => (

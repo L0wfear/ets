@@ -45,7 +45,6 @@ const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
       return [];
     }, [carList, tireAvailableCarList]);
 
-    console.info(props);
     return (
       <DataTableInput
         tableSchema={meta}

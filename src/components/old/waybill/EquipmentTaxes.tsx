@@ -275,7 +275,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const { tableData } = this.state;
     const current = tableData[index];
     const oldCurrVal = current.FACT_VALUE;
-    current.FACT_VALUE = e.target.value === '' ? '' : Math.abs(e.target.value);
+    current.FACT_VALUE = e.target.value === '' || e.target.value <= 0 ? '' : Math.abs(e.target.value);
 
     const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
       current.FACT_VALUE,
@@ -298,7 +298,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
     current.RESULT = EquipmentTaxes.getResult(current);
     this.setState({ tableData });
-    this.props.onChange(tableData);
+    this.props.onChange(tableData, 'equipment_taxes_fact_value', index);
   };
 
   handleOperationChange = (index, rawValue, allOption) => {
@@ -326,7 +326,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       tableData[index].is_excluding_mileage = is_excluding_mileage;
       if (tableData[index].is_excluding_mileage) {
         tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
-        tableData[index].FACT_VALUE = 0;
+        tableData[index].FACT_VALUE = null;
       } else if (last_is_excluding_mileage) {
         tableData[index].FACT_VALUE
           = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
@@ -335,24 +335,16 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       tableData[index].measure_unit_name = measure_unit_name;
 
       this.setState({ tableData });
-      this.props.onChange(tableData);
+      this.props.onChange(tableData, 'equipment_taxes_operation', index);
     }
   };
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { baseFactValue, errorsAll, type } = this.props;
-    const overallValue = +EquipmentTaxes.calculateFinalFactValue(
-      this.state.tableData,
-      type,
-    ).withMileage;
+    const { errorsAll } = this.props;
 
-    const value
-      = baseFactValue || baseFactValue === 0
-        ? (baseFactValue - overallValue)
-        : null;
     tableData.push({
-      FACT_VALUE: value,
+      FACT_VALUE: null,
       OPERATION: null,
     });
     this.setState({ tableData, errorsAll });

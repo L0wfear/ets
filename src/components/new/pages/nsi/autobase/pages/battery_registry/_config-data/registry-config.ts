@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import batteryRegistryPermissions from './permissions';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'batteryRegistryRegistry';
 
@@ -30,6 +31,16 @@ export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
         {
           valueKey: 'company_id',
           labelKey: 'company_name',
@@ -104,6 +115,16 @@ export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
           },
           {
             key: 'company_name',

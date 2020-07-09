@@ -72,8 +72,9 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     }
 
     if (hasFilterValue) {
+      const valuesWithoutUndefined = Object.values(nextProps.filterValue).map((value) => value === undefined ? null : value);
       return {
-        value: Object.values(nextProps.filterValue),
+        value: valuesWithoutUndefined,
         hasFilterValue,
       };
     }

@@ -9,6 +9,7 @@ export const defaultCarpool: Carpool = {
   contractor_id: null,
   id: null,
   name: '',
+  okrug_name: null,
   shape: {},
 };
 

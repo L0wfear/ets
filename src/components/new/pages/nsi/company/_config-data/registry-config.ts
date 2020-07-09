@@ -24,6 +24,11 @@ export const config: TypeConfigData<Company> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         type: 'multiselect',
         title: 'Полное наименование',
@@ -53,6 +58,11 @@ export const config: TypeConfigData<Company> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
         },
         {
           key: 'company_name',

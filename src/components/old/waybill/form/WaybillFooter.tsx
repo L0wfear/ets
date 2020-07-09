@@ -119,15 +119,17 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
   return (
     <EtsButtonsContainer>
       <Div hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
-        <EtsBootstrap.OverlayTrigger
-          trigger={['hover', 'focus']}
-          placement="top"
-          overlay={popoverHoverFocus}
-        >
-          <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}>
-            <EtsBootstrap.Glyphicon glyph="refresh" />
-          </EtsBootstrap.Button>
-        </EtsBootstrap.OverlayTrigger>
+        <EtsButtonsContainer>
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            placement="top"
+            overlay={popoverHoverFocus}
+          >
+            <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}>
+              <EtsBootstrap.Glyphicon glyph="refresh" />
+            </EtsBootstrap.Button>
+          </EtsBootstrap.OverlayTrigger>
+        </EtsButtonsContainer>
       </Div>
       <Div hidden={!props.isPermittedByKey.update} permissions={
         props.state.status !== 'closed' && props.state.status !== 'active'

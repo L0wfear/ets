@@ -9,6 +9,7 @@ export const defaultSsp: Ssp = {
   id: null,
   is_mobile: 1,
   name: '',
+  okrug_name: null,
   productivity: null,
   shape: {},
   shortname: '',

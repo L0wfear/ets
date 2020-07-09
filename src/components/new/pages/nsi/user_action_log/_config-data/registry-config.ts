@@ -27,7 +27,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     registryKey,
     header: {
       title: 'Журнал действий пользователей',
-      format: 'datetime_range_picker',
+      format: 'daterange_picker_userlog',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.export,
@@ -35,6 +35,11 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
         {
           valueKey: 'company_name',
           title: 'Организация',
@@ -98,6 +103,11 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
           },
           {
             key: 'company_name',

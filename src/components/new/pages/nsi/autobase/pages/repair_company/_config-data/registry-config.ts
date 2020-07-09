@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import repairCompanyPermissions from './permissions';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'repairCompanyRegistry';
 
@@ -30,8 +31,18 @@ export const getToConfig = (): TypeConfigData<RepairCompany> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
-          labelKey: 'company_short_name',
+          labelKey: 'company_name',
           title: 'Организация',
           type: 'multiselect',
         },
@@ -61,7 +72,17 @@ export const getToConfig = (): TypeConfigData<RepairCompany> => {
             title: '№',
           },
           {
-            key: 'company_short_name',
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
             title: 'Организация',
             width: 200,
           },

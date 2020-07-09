@@ -47,6 +47,18 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         step: 1,
       },
       {
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_id',
+        labelKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'status',
         title: 'Статус ПЛ',
         type: 'multiselect',
@@ -350,6 +362,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 200,
         },
         {
           key: 'number',

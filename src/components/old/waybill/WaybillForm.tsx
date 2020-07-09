@@ -398,25 +398,21 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeOdometr = async () => {
     const {
-      formState: { car_id, is_edited_odometr, odometr_reason_id, files },
+      formState: { is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
-    if (odometr_reason_id && files.some((file) => file.kind === 'odometr')) {
+    if (odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(async () => {
-        await this.props.dispatch(
-          actionGetLastClosedWaybill({ car_id }, this.props),
-        ).then((lastWaybill) => {
-          this.handleMultipleChange({
-            odometr_start: lastWaybill.odometr_start,
-            odometr_reason_id: null,
-            files: [],
-            is_edited_odometr: false,
-          });
+      }).then( () => {
+        this.handleMultipleChange({
+          odometr_start: this.state?.lastWaybill?.odometr_end,
+          odometr_reason_id: null,
+          files: [],
+          is_edited_odometr: false,
         });
       }).catch(() => {
         return;
@@ -431,7 +427,7 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
-    if (motohours_reason_id && files.some((file) => file.kind === 'motohours')) {
+    if (motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -439,7 +435,7 @@ class WaybillForm extends React.Component<Props, State> {
         cancelName: 'Нет',
       }).then(() => {
         this.handleMultipleChange({
-          motohours_start: this.state?.lastWaybill.motohours_start,
+          motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
           files: [],
           is_edited_motohours: false,
@@ -454,25 +450,21 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeEquip = async () => {
     const {
-      formState: { car_id, is_edited_motohours_equip, motohours_equip_reason_id, files },
+      formState: { is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if (motohours_equip_reason_id && files.some((file) => file.kind === 'motohours_equip')) {
+    if (motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(async () => {
-        await this.props.dispatch(
-          actionGetLastClosedWaybill({ car_id }, this.props),
-        ).then((lastWaybill) => {
-          this.handleMultipleChange({
-            motohours_equip_start: lastWaybill.motohours_equip_start,
-            motohours_equip_reason_id: null,
-            files: [],
-            is_edited_motohours_equip: false,
-          });
+      }).then(() => {
+        this.handleMultipleChange({
+          motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
+          motohours_equip_reason_id: null,
+          files: [],
+          is_edited_motohours_equip: false,
         });
       }).catch(() => {
         return;
@@ -2468,7 +2460,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.odometr_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                      || !state.is_edited_odometr
+                                      || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="odometr_start"
@@ -2478,7 +2470,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'}, }}
+                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< выпилить этот костыль в 36м релизе!!!
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2513,6 +2505,10 @@ class WaybillForm extends React.Component<Props, State> {
                               id="odometr_reason_id"
                               type="select"
                               label="Причина"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                              }
                               options={reasonListOptions}
                               value={state.odometr_reason_id}
                               error={errors.odometr_reason_id}
@@ -2521,9 +2517,14 @@ class WaybillForm extends React.Component<Props, State> {
                               boundKeys="odometr_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="odometr"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}
@@ -2543,7 +2544,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_start"
@@ -2553,7 +2554,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'},}}
+                                  style: { marginBottom: '10px', minHeight: '38px'},}}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2592,14 +2593,23 @@ class WaybillForm extends React.Component<Props, State> {
                               options={reasonListOptions}
                               value={state.motohours_reason_id}
                               error={errors.motohours_reason_id}
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                              }
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="motohours"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}
@@ -2848,7 +2858,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_equip_start}
                                 disabled={
                                   IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                  || !state.is_edited_motohours_equip
+                                  || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_equip_start"
@@ -2858,7 +2868,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'}, }}
+                                  style: { marginBottom: '10px', minHeight: '38px'}, }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2892,14 +2902,23 @@ class WaybillForm extends React.Component<Props, State> {
                               options={reasonListOptions}
                               value={state.motohours_equip_reason_id}
                               error={errors.motohours_equip_reason_id}
+                              disabled={
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                              }
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_reason_id"
                             />
                             <FileField
+                              multiple
                               label="Файл"
                               type="file"
                               kind="motohours_equip"
+                              disabled={
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}

@@ -32,6 +32,16 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_name',
           title: [
@@ -39,6 +49,10 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
               displayIf: displayIfContant.isOkrug,
               title: 'Учреждение',
             },
+            {
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
+            }
           ],
           type: 'multiselect',
         },
@@ -125,12 +139,26 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
             key: 'company_name',
             title: [
               {
                 displayIf: displayIfContant.isOkrug,
                 title: 'Учреждение',
               },
+              {
+                title: 'Организация',
+                displayIf: displayIfContant.isKgh,
+              }
             ],
             width: 200,
           },

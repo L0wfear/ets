@@ -34,6 +34,17 @@ export const getToConfig = (): TypeConfigData<TechMaintOrder> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: 'Округ',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: 'Организация',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'tech_maintenance_type_name',
           title: 'Тип ТО',
           type: 'multiselect',
@@ -97,6 +108,16 @@ export const getToConfig = (): TypeConfigData<TechMaintOrder> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: 'Организация',
+            width: 200,
           },
           {
             key: 'tech_maintenance_type_name',

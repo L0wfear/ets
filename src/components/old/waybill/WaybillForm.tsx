@@ -412,7 +412,7 @@ class WaybillForm extends React.Component<Props, State> {
           actionGetLastClosedWaybill({ car_id }, this.props),
         ).then((lastWaybill) => {
           this.handleMultipleChange({
-            odometr_start: lastWaybill.odometr_start,
+            odometr_start: lastWaybill.odometr_end,
             odometr_reason_id: null,
             files: [],
             is_edited_odometr: false,
@@ -428,7 +428,7 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeMotohours = async () => {
     const {
-      formState: { is_edited_motohours, motohours_reason_id, files },
+      formState: { car_id, is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
     if (motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
@@ -437,12 +437,16 @@ class WaybillForm extends React.Component<Props, State> {
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(() => {
-        this.handleMultipleChange({
-          motohours_start: this.state?.lastWaybill.motohours_start,
-          motohours_reason_id: null,
-          files: [],
-          is_edited_motohours: false,
+      }).then(async () => {
+        await this.props.dispatch(
+          actionGetLastClosedWaybill({ car_id }, this.props),
+        ).then((lastWaybill) => {
+          this.handleMultipleChange({
+            motohours_start: lastWaybill.motohours_end,
+            motohours_reason_id: null,
+            files: [],
+            is_edited_motohours: false,
+          });
         });
       }).catch(() => {
         return;
@@ -468,7 +472,7 @@ class WaybillForm extends React.Component<Props, State> {
           actionGetLastClosedWaybill({ car_id }, this.props),
         ).then((lastWaybill) => {
           this.handleMultipleChange({
-            motohours_equip_start: lastWaybill.motohours_equip_start,
+            motohours_equip_start: lastWaybill.motohours_equip_end,
             motohours_equip_reason_id: null,
             files: [],
             is_edited_motohours_equip: false,

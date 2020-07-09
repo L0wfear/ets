@@ -44,12 +44,8 @@ export const config: TypeConfigData<Car> = {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
+            displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
             title: 'Организация',
-          },
-          {
-            displayIf: displayIfContant.isOkrug,
-            title: 'Учреждение',
           },
         ],
         type: 'multiselect',
@@ -211,12 +207,8 @@ export const config: TypeConfigData<Car> = {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
+              displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
               title: 'Организация',
-            },
-            {
-              displayIf: displayIfContant.isOkrug,
-              title: 'Учреждение',
             },
           ],
           width: 200,

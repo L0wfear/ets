@@ -38,12 +38,8 @@ export const config: TypeConfigData<PgmStore> = {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
+            displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
             title: 'Организация',
-          },
-          {
-            displayIf: displayIfContant.isOkrug,
-            title: 'Учреждение',
           },
         ],
         type: 'multiselect',
@@ -104,12 +100,8 @@ export const config: TypeConfigData<PgmStore> = {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
+              displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
               title: 'Организация',
-            },
-            {
-              displayIf: displayIfContant.isOkrug,
-              title: 'Учреждение',
             },
           ],
           width: 200,

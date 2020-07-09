@@ -275,6 +275,19 @@ export function getTomorrow9am(seconds = 0) {
   );
 }
 
+export function getTomorrow9amMoscowServerTime(serverDate: string, seconds = 0) {
+  const now = new Date(serverDate);
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    8,
+    59,
+    seconds,
+  );
+}
+
 export function getTomorrow2359() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 23, 59, 0);

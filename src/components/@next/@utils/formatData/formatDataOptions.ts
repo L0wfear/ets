@@ -1,8 +1,13 @@
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-
 // <рег номер ТС [гаражный номер/Марка шасси/Модель/Тип ТС]>
+type RowData = {
+  gov_number: string;
+  garage_number?: string;
+  model_name?: string;
+  special_model_name?: string;
+  type_name?: string;
+};
 export const carActualOptionLabelGarage = (
-  rowData: Car,
+  rowData: RowData
 ) => {
   const gov_number = rowData?.gov_number;                   // рег номер ТС
   const garage_number = rowData?.garage_number;             // гаражный номер

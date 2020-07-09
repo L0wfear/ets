@@ -21,11 +21,12 @@ import { FileField } from 'components/old/ui/input/fields';
 import insurancePolicyPermissions from '../_config-data/permissions';
 import { autobaseCreateInsurancePolicy, autobaseUpdateInsurancePolicy } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/actions';
 import { autobaseGetInsuranceType } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/actions';
-import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const [insuranceTypeOptions, setInsuranceTypeOptions] = React.useState([]);
-  const [carList, setCarList] = React.useState([]);
+  const [carListOptions, setCarListOptions] = React.useState([]);
   const {
     formState: state,
     formErrors: errors,
@@ -43,6 +44,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
   );
+  const carList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, }).options;
 
   React.useEffect(
     () => {
@@ -55,40 +57,22 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
           );
         },
       );
-
-      if (!car_id) {
-        props.dispatch(
-          autobaseGetSetCar({}, props),
-        ).then(
-          ({ data }) => {
-            setCarList(
-              data,
-            );
-          },
-        );
-      }
     },
     [],
   );
 
-  const carListOptions = React.useMemo(
+  React.useEffect(
     () => {
-      const options = carList.map((rowData) => ({
-        value: rowData.asuods_id,
-        label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
-      }));
-
-      if (state.car_id) {
-        const hasCar = options.find(({ value }) => value === state.car_id);
-        if (!hasCar) {
-          options.push({
-            value: state.car_id,
-            label: state.gov_number,
-          });
+      if (carList.length) {
+        if (state.car_id) {
+          const hasCar = carList.find(({ value }) => value === state.car_id);
+          if (!hasCar) {
+            setCarListOptions(carList.concat([{value: state.car_id, label: carActualOptionLabelGarage({gov_number: state.gov_number}), rowData: null}]));
+          } else {
+            setCarListOptions(carList);
+          }
         }
       }
-
-      return options;
     },
     [carList, state.car_id, state.gov_number],
   );

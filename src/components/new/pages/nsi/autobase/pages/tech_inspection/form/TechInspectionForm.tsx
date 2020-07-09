@@ -24,8 +24,9 @@ import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
+import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const [carListOptions, setCarListOptions] = React.useState([]);
@@ -57,26 +58,14 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       || state.company_id === props.userCompanyId
     )
   );
-
+  const carList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, }).options;
   React.useEffect(
     () => {
-      if (!car_id) {
-        props.dispatch(autobaseGetSetCar({}, { page, path })).then(
-          ({ data }) => (
-            setCarListOptions(
-              data.map(
-                (rowData) => ({
-                  value: rowData.asuods_id,
-                  label: `${rowData.gov_number} [${rowData.garage_number || '-'}/${rowData.model_name || '-'}/${rowData.special_model_name || '-'}/${rowData.type_name || '-'}]`,
-                  rowData,
-                }),
-              ),
-            )
-          ),
-        );
+      if (!car_id && carList.length) {
+        setCarListOptions(carList);
       }
     },
-    [IS_CREATING, car_id],
+    [IS_CREATING, car_id, carList],
   );
 
   const handleChangeIsActiveToTrue = React.useCallback(

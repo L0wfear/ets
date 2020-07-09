@@ -2513,6 +2513,10 @@ class WaybillForm extends React.Component<Props, State> {
                               id="odometr_reason_id"
                               type="select"
                               label="Причина"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                              }
                               options={reasonListOptions}
                               value={state.odometr_reason_id}
                               error={errors.odometr_reason_id}
@@ -2525,6 +2529,10 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Файл"
                               type="file"
                               kind="odometr"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}
@@ -2593,6 +2601,10 @@ class WaybillForm extends React.Component<Props, State> {
                               options={reasonListOptions}
                               value={state.motohours_reason_id}
                               error={errors.motohours_reason_id}
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                              }
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_reason_id"
@@ -2602,6 +2614,10 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Файл"
                               type="file"
                               kind="motohours"
+                              disabled={
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}
@@ -2893,6 +2909,10 @@ class WaybillForm extends React.Component<Props, State> {
                               options={reasonListOptions}
                               value={state.motohours_equip_reason_id}
                               error={errors.motohours_equip_reason_id}
+                              disabled={
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                              }
                               clearable={false}
                               onChange={this.handleChange}
                               boundKeys="motohours_equip_reason_id"
@@ -2902,6 +2922,10 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Файл"
                               type="file"
                               kind="motohours_equip"
+                              disabled={
+                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                              }
                               value={state.files}
                               error={errors.files}
                               onChange={this.handleChange}

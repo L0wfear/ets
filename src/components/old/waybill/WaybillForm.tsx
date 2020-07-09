@@ -2478,7 +2478,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'}, }}
+                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< выпилить этот костыль в 36м релизе!!!
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2554,7 +2554,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'},}}
+                                  style: { marginBottom: '10px', minHeight: '38px'},}}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2859,7 +2859,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px'}, }}
+                                  style: { marginBottom: '10px', minHeight: '38px'}, }}
                               />
                             </FlexContainerStyled>
                             <ExtField

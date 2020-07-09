@@ -123,6 +123,10 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
       meta: {
         fields: [
           {
+            key: 'enumerated',
+            title: '№',
+          },
+          {
             key: 'okrug_name',
             title: [
               {
@@ -141,10 +145,6 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
               }
             ],
             width: 200,
-          },
-          {
-            key: 'enumerated',
-            title: '№',
           },
           {
             key: 'number',

@@ -275,8 +275,8 @@ export function getTomorrow9am(seconds = 0) {
   );
 }
 
-export function getTomorrow9amServer(date: string, seconds = 0) {
-  const now = new Date(date);
+export function getTomorrow9amMoscowServerTime(serverDate: string, seconds = 0) {
+  const now = new Date(serverDate);
 
   return new Date(
     now.getFullYear(),

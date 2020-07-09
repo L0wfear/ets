@@ -42,7 +42,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillSchema';
 import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import { createValidDateTime, getTomorrow9amServer } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -246,7 +246,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       });
       defaultBill.structure_id = this.props.currentUser.structure_id;
       defaultBill.plan_departure_date = createValidDateTime(this.props.moscowTimeServer.date);
-      defaultBill.plan_arrival_date = createValidDateTime(getTomorrow9amServer(this.props.moscowTimeServer.date));
+      defaultBill.plan_arrival_date = createValidDateTime(getTomorrow9amMoscowServerTime(this.props.moscowTimeServer.date));
 
       this.schema = waybillSchema;
       this.setState({

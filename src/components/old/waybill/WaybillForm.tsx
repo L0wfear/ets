@@ -242,7 +242,7 @@ type DispatchProps = {
 };
 type OwnProps = {
   formState: any;
-  handleFormChange: (field: string, e: any) => any;
+  handleFormChange: (field: string, e: any, idex?: number) => any;
   handleMultipleChange: (object: Record<string, any>) => any;
   onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
   onSubmit: (...arg: Array<any>) => any;
@@ -254,7 +254,7 @@ type OwnProps = {
   handlePrintFromMiniButton: (...arg: Array<any>) => any;
 
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
-
+  setTotalValueError?: (key: string, totalValueError: boolean) => void;
   formErrors: Record<string, any>;
   entity: string;
   isPermittedByKey: {
@@ -392,13 +392,13 @@ class WaybillForm extends React.Component<Props, State> {
     });
   };
 
-  handleChange = (field, e) => this.props.handleFormChange(field, e);
+  handleChange = (field, e, index = null) => this.props.handleFormChange(field, e, index);
 
   handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
 
   handleChangeOdometr = async () => {
     const {
-      formState: { car_id, is_edited_odometr, odometr_reason_id, files },
+      formState: { is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
     if (odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
@@ -407,16 +407,12 @@ class WaybillForm extends React.Component<Props, State> {
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(async () => {
-        await this.props.dispatch(
-          actionGetLastClosedWaybill({ car_id }, this.props),
-        ).then((lastWaybill) => {
-          this.handleMultipleChange({
-            odometr_start: lastWaybill.odometr_start,
-            odometr_reason_id: null,
-            files: [],
-            is_edited_odometr: false,
-          });
+      }).then( () => {
+        this.handleMultipleChange({
+          odometr_start: this.state?.lastWaybill?.odometr_end,
+          odometr_reason_id: null,
+          files: [],
+          is_edited_odometr: false,
         });
       }).catch(() => {
         return;
@@ -439,7 +435,7 @@ class WaybillForm extends React.Component<Props, State> {
         cancelName: 'Нет',
       }).then(() => {
         this.handleMultipleChange({
-          motohours_start: this.state?.lastWaybill.motohours_start,
+          motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
           files: [],
           is_edited_motohours: false,
@@ -454,25 +450,21 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeEquip = async () => {
     const {
-      formState: { car_id, is_edited_motohours_equip, motohours_equip_reason_id, files },
+      formState: { is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if (motohours_equip_reason_id || files & files.some((file) => file.kind === 'motohours_equip')) {
+    if (motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
         okName: 'Да',
         cancelName: 'Нет',
-      }).then(async () => {
-        await this.props.dispatch(
-          actionGetLastClosedWaybill({ car_id }, this.props),
-        ).then((lastWaybill) => {
-          this.handleMultipleChange({
-            motohours_equip_start: lastWaybill.motohours_equip_start,
-            motohours_equip_reason_id: null,
-            files: [],
-            is_edited_motohours_equip: false,
-          });
+      }).then(() => {
+        this.handleMultipleChange({
+          motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
+          motohours_equip_reason_id: null,
+          files: [],
+          is_edited_motohours_equip: false,
         });
       }).catch(() => {
         return;
@@ -1733,15 +1725,16 @@ class WaybillForm extends React.Component<Props, State> {
     });
   };
 
-  handleChangeTaxes = (taxes, field = 'taxes') => {
-    this.handleChange(field, isArray(taxes) ? [...taxes] : taxes);
+  handleChangeTaxes = (taxes, field = 'taxes', index = null) => {
+    this.handleChange(field, isArray(taxes) ? [...taxes] : taxes, index);
   };
-  handleChangeEquipmentTaxes = (equipment_tax_data) => {
+  handleChangeEquipmentTaxes = (equipment_tax_data, field = 'equipment_tax_data', index = null) => {
     this.handleChange(
-      'equipment_tax_data',
+      field,
       isArray(equipment_tax_data)
         ? [...equipment_tax_data]
         : equipment_tax_data,
+      index
     );
   };
 
@@ -2829,6 +2822,7 @@ class WaybillForm extends React.Component<Props, State> {
                               ? state.odometr_diff
                               : state.motohours_diff
                           }
+                          setTotalValueError={this.props.setTotalValueError} // <<< поправить, сделать валидацию через схему!!!
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                           errorsAll={errors}
                         />
@@ -3128,6 +3122,7 @@ class WaybillForm extends React.Component<Props, State> {
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                               errorsAll={errors}
+                              setTotalValueError={this.props.setTotalValueError}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

@@ -242,7 +242,7 @@ type DispatchProps = {
 };
 type OwnProps = {
   formState: any;
-  handleFormChange: (field: string, e: any) => any;
+  handleFormChange: (field: string, e: any, idex?: number) => any;
   handleMultipleChange: (object: Record<string, any>) => any;
   onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
   onSubmit: (...arg: Array<any>) => any;
@@ -254,7 +254,7 @@ type OwnProps = {
   handlePrintFromMiniButton: (...arg: Array<any>) => any;
 
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
-
+  setTotalValueError?: (key: string, totalValueError: boolean) => void;
   formErrors: Record<string, any>;
   entity: string;
   isPermittedByKey: {
@@ -392,7 +392,7 @@ class WaybillForm extends React.Component<Props, State> {
     });
   };
 
-  handleChange = (field, e) => this.props.handleFormChange(field, e);
+  handleChange = (field, e, index = null) => this.props.handleFormChange(field, e, index);
 
   handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
 
@@ -1725,15 +1725,16 @@ class WaybillForm extends React.Component<Props, State> {
     });
   };
 
-  handleChangeTaxes = (taxes, field = 'taxes') => {
-    this.handleChange(field, isArray(taxes) ? [...taxes] : taxes);
+  handleChangeTaxes = (taxes, field = 'taxes', index = null) => {
+    this.handleChange(field, isArray(taxes) ? [...taxes] : taxes, index);
   };
-  handleChangeEquipmentTaxes = (equipment_tax_data) => {
+  handleChangeEquipmentTaxes = (equipment_tax_data, field = 'equipment_tax_data', index = null) => {
     this.handleChange(
-      'equipment_tax_data',
+      field,
       isArray(equipment_tax_data)
         ? [...equipment_tax_data]
         : equipment_tax_data,
+      index
     );
   };
 
@@ -2821,6 +2822,7 @@ class WaybillForm extends React.Component<Props, State> {
                               ? state.odometr_diff
                               : state.motohours_diff
                           }
+                          setTotalValueError={this.props.setTotalValueError} // <<< поправить, сделать валидацию через схему!!!
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                           errorsAll={errors}
                         />
@@ -3120,6 +3122,7 @@ class WaybillForm extends React.Component<Props, State> {
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                               errorsAll={errors}
+                              setTotalValueError={this.props.setTotalValueError}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

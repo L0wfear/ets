@@ -912,7 +912,14 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     };
 
     handleClose = async (taxesControl) => {
-      if (!taxesControl) {
+      const { 
+        gov_number,
+        motohours_diff,
+        odometr_diff, 
+      } = this.state.formState;
+      const govNumberRegExp = /^[\d]{4}/;
+      const checkTaxesControl = Boolean(govNumberRegExp.exec(gov_number)) ? motohours_diff > 0 : odometr_diff > 0;
+      if (!taxesControl && checkTaxesControl) {
         global.NOTIFICATION_SYSTEM.notify(
           getWarningNotification(
             'Необходимо заполнить нормы для расчета топлива!',

@@ -855,6 +855,7 @@ class WaybillForm extends React.Component<Props, State> {
     if (formState.status === 'closed') {
       loadingFields.distance = false;
       loadingFields.consumption = false;
+      loadingFields.sensor_consumption = false;
       loadingFields.sensor_refill = false;
       loadingFields.sensor_start_value = false;
       loadingFields.sensor_finish_value = false;
@@ -872,6 +873,7 @@ class WaybillForm extends React.Component<Props, State> {
     ) {
       loadingFields.distance = true;
       loadingFields.consumption = true;
+      loadingFields.sensor_consumption = true;
       loadingFields.sensor_refill = true;
       loadingFields.sensor_start_value = true;
       loadingFields.sensor_finish_value = true;
@@ -897,6 +899,9 @@ class WaybillForm extends React.Component<Props, State> {
             consumption: isNullOrUndefined(consumption)
               ? null
               : parseFloat(consumption),
+            sensor_consumption: isNullOrUndefined(consumption)
+              ? null
+              : parseFloat(consumption),
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
@@ -917,6 +922,7 @@ class WaybillForm extends React.Component<Props, State> {
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_consumption: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -928,6 +934,7 @@ class WaybillForm extends React.Component<Props, State> {
             loadingFields: {
               distance: false,
               consumption: false,
+              sensor_consumption: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -939,6 +946,7 @@ class WaybillForm extends React.Component<Props, State> {
         loadingFields: {
           distance: false,
           consumption: false,
+          sensor_consumption: false,
           sensor_refill: false,
         },
       });

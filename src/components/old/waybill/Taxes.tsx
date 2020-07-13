@@ -278,13 +278,13 @@ export default class Taxes extends React.Component<any, any> {
       type,
       setTotalValueError,
     } = this.props;
-
+    const hasTaxes = taxes.length > 0;
     const finalFactValue = Taxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueMoreOrEqualBaseValue
       = Number(baseFactValue) <= Number(finalFactValue);
     const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег ТС не должен превышать итоговый нормативный пробег' : ''; 
 
-    if (this.state.totalValueError !== error) {
+    if (this.state.totalValueError !== error && hasTaxes) {
       this.setState({totalValueError: error});
       setTotalValueError('taxesTotalValueError', Boolean(error));
     }

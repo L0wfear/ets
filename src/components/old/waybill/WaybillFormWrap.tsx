@@ -744,8 +744,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);
       });
-
-      this.handleFieldsChange(formState);
+      if (formState) {
+        this.handleFieldsChange(formState);
+      }
     };
 
     /**

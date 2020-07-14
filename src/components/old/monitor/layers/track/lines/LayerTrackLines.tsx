@@ -21,7 +21,6 @@ type PropsLayerTrackLines = {
   track: Array<any>;
   zoom: number;
   lastPoint: any;
-  forToday: boolean;
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
@@ -193,7 +192,6 @@ export default compose<any, any>(
       SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
       track: state.monitorPage.carInfo.trackCaching.track,
       lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-      forToday: state.monitorPage.carInfo.forToday,
       mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
       speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
       front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,

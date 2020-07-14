@@ -26,6 +26,7 @@ import waybillPermissions from 'components/new/pages/waybill/_config-data/permis
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
 import {
+  actionGetWaybillById,
   actionPrintWaybill,
   actionUpdateWaybill,
   actionCreateWaybill,
@@ -427,6 +428,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     clearInterval(timeId);
   }
 
+  getWaybill = async (id) => {
+    try {
+      const result = await this.props.dispatch(
+        actionGetWaybillById(id, this.props),
+      );
+      return result;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
   createWaybill = async (waybill) => {
     try {
       const result = await this.props.dispatch(
@@ -744,8 +755,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);
       });
-
-      this.handleFieldsChange(formState);
+      if (formState) {
+        this.handleFieldsChange(formState);
+      }
     };
 
     /**
@@ -844,12 +856,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
           // TODO сейчас возвращается один ПЛ
           const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+          const newState = await this.getWaybill(id);
 
           try {
-            formState.status = 'active';
-            formState.id = id;
+            newState.status = 'active';
 
-            await this.updateWaybill(formState);
+            await this.updateWaybill(newState);
             callback(id);
             this.props.onCallback();
           } catch (error) {

@@ -32,7 +32,7 @@ class FilterRow extends React.Component<Props, {}> {
 
   static get defaultProps() {
     return {
-      labelFunction: (v) => v,
+      labelFunction: (v) => typeof v === 'number' ? v.toString().replace('.', ',') : v,
       tableData: [],
     };
   }
@@ -94,8 +94,8 @@ class FilterRow extends React.Component<Props, {}> {
               value: typeof d[name] === 'boolean' ? +d[name] : d[name],
               label: labelFunction(d[byLabel || name]),
             }))
-            .filter((d) => d.label && d.label !== 0)
-            .value();
+            .filter((d) => d.label && d.label !== '0')
+            .value(); 
         }
 
         if (options.length && Array.isArray(options[0].value)) {

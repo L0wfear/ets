@@ -12,6 +12,7 @@ export const CAR_INFO_SET_MISSIONS_DATA = CAR_INFO`SET_MISSIONS_DATA`;
 export const CAR_INFO_RESET_MISSIONS_DATA = CAR_INFO`RESET_MISSIONS_DATA`;
 export const CAR_INFO_PUSH_POINT_INTO_TRACK = CAR_INFO`PUSH_POINT_INTO_TRACK`;
 export const CAR_INFO_TOGGLE_FOR_TODAY = CAR_INFO`TOGGLE_FOR_TODAY`;
+export const CAR_INFO_REFRESH_DATE_FOR_TODAY = CAR_INFO`REFRESH_DATE_FOR_TODAY`;
 export const CAR_INFO_RESET_TRACK_CACHING = CAR_INFO`RESET_TRACK_CACHING`;
 export const CAR_INFO_CHANGE_DATE = CAR_INFO`CHANGE_DATE`;
 export const CAR_INFO_TOGGLE_PLAY = CAR_INFO`TOGGLE_PLAY`;
@@ -177,8 +178,9 @@ export default (state = initialState, { type, payload }: any) => {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
-        date_start: getTrackDefaultDateStart(),
-        date_end: getTrackDefaultDateEnd(),
+        date_start: state.gps_code === payload.gps_code ? state.date_start : getTrackDefaultDateStart(),
+        date_end: state.gps_code === payload.gps_code ? state.date_end : getTrackDefaultDateEnd(),
+        forToday: state.gps_code === payload.gps_code ? state.forToday : initialState.forToday,
         status: state.status
           ? state.status
           : initialState.status,
@@ -259,6 +261,14 @@ export default (state = initialState, { type, payload }: any) => {
         forToday: !state.forToday,
         date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
         date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
+      };
+    }
+    case CAR_INFO_REFRESH_DATE_FOR_TODAY: {
+      return {
+        ...state,
+        forToday: true,
+        date_start: getTrackDefaultDateStart(),
+        date_end: getTrackDefaultDateEnd(),
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

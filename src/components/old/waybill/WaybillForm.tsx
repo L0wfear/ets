@@ -1146,13 +1146,13 @@ class WaybillForm extends React.Component<Props, State> {
 
         const odometr_start = Boolean(state.is_edited_odometr)
           ? state.odometr_start
-          : lastWaybill.odometr_start;
+          : lastWaybill.odometr_end;
         const motohours_start = Boolean(state.is_edited_motohours)
           ? state.motohours_start
-          : lastWaybill.motohours_start;
+          : lastWaybill.motohours_end;
         const motohours_equip_start = Boolean(state.is_edited_motohours_equip)
           ? state.motohours_equip_start
-          : lastWaybill.motohours_equip_start;
+          : lastWaybill.motohours_equip_end;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1464,13 +1464,13 @@ class WaybillForm extends React.Component<Props, State> {
         const lastWaybillState = key === 'car_has_motohours'
           ? {
             ...this.state.lastWaybill,
-            motohours_start: lastWaybill?.motohours_start,
+            motohours_start: lastWaybill?.motohours_end,
             motohours_end: lastWaybill?.motohours_end, // возможно можно только это оставить?
             motohours_diff: lastWaybill?.motohours_diff,
           }
           : {
             ...this.state.lastWaybill,
-            odometr_start: lastWaybill.odometr_start,
+            odometr_start: lastWaybill.odometr_end,
             odometr_end: lastWaybill.odometr_end, // возможно можно только это оставить?
             odometr_diff: lastWaybill.odometr_diff,
           };

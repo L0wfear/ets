@@ -112,7 +112,13 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   );
 
   const handleGovNumberChange = React.useCallback(
-    (_, __, {objChange}) => { 
+    (_, __, changeFields) => { 
+      const clearFieldsObject = {
+        car_special_model_id: null,
+        car_model_id: null,
+        car_id: null,
+      };
+      const objChange = changeFields ? changeFields.objChange : clearFieldsObject;
       Object.entries(objChange).forEach(([key, value]) => {
         props.handleChange({[key]: value});
       });
@@ -238,7 +244,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               error={errors.car_id}
               type="select"
               options={carListOptions}
-              clearable={false}
+              clearable={true}
               value={state.car_id}
               onChange={handleGovNumberChange}
               boundKeys="car_id"

@@ -39,6 +39,10 @@ export const defaultSortingFunction = (a, b) => {
     return a.label - b.label;
   }
 
+  if (isString(a.label) && !isNaN(a.label.replace(',', '.'))) {
+    return Number(a.label.replace(',', '.')) - Number(b.label.replace(',', '.'));
+  }
+
   if (isString(a.label) && isString(b.label)) {
     return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
   }

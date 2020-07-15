@@ -242,6 +242,7 @@ type DispatchProps = {
 };
 type OwnProps = {
   formState: any;
+  handleFormFileChange: (key: string, filesByKey: Array<any>) => any;
   handleFormChange: (field: string, e: any, idex?: number) => any;
   handleMultipleChange: (object: Record<string, any>) => any;
   onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
@@ -394,6 +395,8 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChange = (field, e, index = null) => this.props.handleFormChange(field, e, index);
 
+  handleFileChange = (key, filesByKey) => this.props.handleFormFileChange(key, filesByKey);
+
   handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
 
   handleChangeOdometr = async () => {
@@ -411,7 +414,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           odometr_start: this.state?.lastWaybill?.odometr_end,
           odometr_reason_id: null,
-          files: [],
+          files: [
+            ...files.filter(({ kind }) => kind !== 'odometr')
+          ],
           is_edited_odometr: false,
         });
       }).catch(() => {
@@ -437,7 +442,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
-          files: [],
+          files: [
+            ...files.filter(({ kind }) => kind !== 'motohours')
+          ],
           is_edited_motohours: false,
         });
       }).catch(() => {
@@ -463,7 +470,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
           motohours_equip_reason_id: null,
-          files: [],
+          files: [
+            ...files.filter(({ kind }) => kind !== 'motohours_equip')
+          ],
           is_edited_motohours_equip: false,
         });
       }).catch(() => {
@@ -1975,6 +1984,10 @@ class WaybillForm extends React.Component<Props, State> {
         && this.props.canSave
         && !this.state.missionHasError?.hasError
       : this.props.canSave && !this.state.missionHasError?.hasError;
+
+    const odometrFiles = state.files?.filter(({ kind }) => kind === 'odometr');
+    const motohoursFiles = state.files?.filter(({ kind }) => kind === 'motohours');
+    const motohoursEquipFiles = state.files?.filter(({ kind }) => kind === 'motohours_equip');
     
     return (
       <EtsBootstrap.ModalContainer
@@ -2534,10 +2547,10 @@ class WaybillForm extends React.Component<Props, State> {
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
                               }
-                              value={state.files}
+                              value={odometrFiles}
                               error={errors.files}
-                              onChange={this.handleChange}
-                              boundKeys="files"
+                              onChange={this.handleFileChange}
+                              boundKeys="odometr"
                             />
                           </EtsBootstrap.Col>
                           }
@@ -2619,10 +2632,10 @@ class WaybillForm extends React.Component<Props, State> {
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
                               }
-                              value={state.files}
+                              value={motohoursFiles}
                               error={errors.files}
-                              onChange={this.handleChange}
-                              boundKeys="files"
+                              onChange={this.handleFileChange}
+                              boundKeys="motohours"
                             />
                           </EtsBootstrap.Col>
                           }
@@ -2928,10 +2941,10 @@ class WaybillForm extends React.Component<Props, State> {
                                 IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                               }
-                              value={state.files}
+                              value={motohoursEquipFiles}
                               error={errors.files}
-                              onChange={this.handleChange}
-                              boundKeys="files"
+                              onChange={this.handleFileChange}
+                              boundKeys="motohours_equip"
                             />
                           </EtsBootstrap.Col>
                           }

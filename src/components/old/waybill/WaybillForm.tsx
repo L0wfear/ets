@@ -414,9 +414,7 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           odometr_start: this.state?.lastWaybill?.odometr_end,
           odometr_reason_id: null,
-          files: [
-            ...files.filter(({ kind }) => kind !== 'odometr')
-          ],
+          files: files ? [...files.filter(({ kind }) => kind !== 'odometr')] : [],
           is_edited_odometr: false,
         });
       }).catch(() => {
@@ -442,9 +440,7 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
-          files: [
-            ...files.filter(({ kind }) => kind !== 'motohours')
-          ],
+          files: files ? [...files.filter(({ kind }) => kind !== 'motohours')] : [],
           is_edited_motohours: false,
         });
       }).catch(() => {
@@ -470,9 +466,7 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
           motohours_equip_reason_id: null,
-          files: [
-            ...files.filter(({ kind }) => kind !== 'motohours_equip')
-          ],
+          files: files ? [...files.filter(({ kind }) => kind !== 'motohours_equip')] : [],
           is_edited_motohours_equip: false,
         });
       }).catch(() => {
@@ -1985,9 +1979,12 @@ class WaybillForm extends React.Component<Props, State> {
         && !this.state.missionHasError?.hasError
       : this.props.canSave && !this.state.missionHasError?.hasError;
 
-    const odometrFiles = state.files?.filter(({ kind }) => kind === 'odometr');
-    const motohoursFiles = state.files?.filter(({ kind }) => kind === 'motohours');
-    const motohoursEquipFiles = state.files?.filter(({ kind }) => kind === 'motohours_equip');
+    const odometrFiles = state.files? state.files.filter(({ kind }) => kind === 'odometr') : [];
+    const odometrFilesError = errors.files?.odometr;
+    const motohoursFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours') : [];
+    const motohoursFilesError = errors.files?.motohours;
+    const motohoursEquipFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours_equip') : [];
+    const motohoursEquipFilesError = errors.files?.motohours_equip;
     
     return (
       <EtsBootstrap.ModalContainer
@@ -2548,7 +2545,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
                               }
                               value={odometrFiles}
-                              error={errors.files}
+                              error={odometrFilesError}
                               onChange={this.handleFileChange}
                               boundKeys="odometr"
                             />
@@ -2633,7 +2630,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
                               }
                               value={motohoursFiles}
-                              error={errors.files}
+                              error={motohoursFilesError}
                               onChange={this.handleFileChange}
                               boundKeys="motohours"
                             />
@@ -2942,7 +2939,7 @@ class WaybillForm extends React.Component<Props, State> {
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
                               }
                               value={motohoursEquipFiles}
-                              error={errors.files}
+                              error={motohoursEquipFilesError}
                               onChange={this.handleFileChange}
                               boundKeys="motohours_equip"
                             />

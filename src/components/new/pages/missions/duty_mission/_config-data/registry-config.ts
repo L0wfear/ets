@@ -54,12 +54,22 @@ export const config: TypeConfigData<DutyMission> = {
       },
       {
         valueKey: 'okrug_name',
-        title: 'Округ',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
         type: 'multiselect',
       },
       {
         valueKey: 'company_name',
-        title: 'Организация',
+        title: [
+          {
+            displayIf: displayIfContant.isKgh,
+            title: 'Организация',
+          },
+        ],
         type: 'multiselect',
       },
       {
@@ -215,12 +225,22 @@ export const config: TypeConfigData<DutyMission> = {
         },
         {
           key: 'okrug_name',
-          title: 'Округ',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
           width: 150,
         },
         {
           key: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           width: 150,
         },
         {

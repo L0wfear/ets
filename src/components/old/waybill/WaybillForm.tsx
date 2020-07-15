@@ -1143,16 +1143,12 @@ class WaybillForm extends React.Component<Props, State> {
         const is_one_fuel_tank = autocompleteOnly
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
+        const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
+        const odometr_start = state.odometr_start ?? lastWaybill.odometr_end; 
 
-        const odometr_start = Boolean(state.is_edited_odometr)
-          ? state.odometr_start
-          : lastWaybill.odometr_end;
-        const motohours_start = Boolean(state.is_edited_motohours)
-          ? state.motohours_start
-          : lastWaybill.motohours_end;
-        const motohours_equip_start = Boolean(state.is_edited_motohours_equip)
-          ? state.motohours_equip_start
-          : lastWaybill.motohours_equip_end;
+        const motohours_start = state.motohours_start ?? lastWaybill.motohours_end;
+
+        const motohours_equip_start = state.motohours_equip_start ?? lastWaybill.motohours_equip_end;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1166,7 +1162,8 @@ class WaybillForm extends React.Component<Props, State> {
           plan_departure_date,
           odometr_start,
           motohours_start,
-          motohours_equip_start
+          motohours_equip_start,
+          equipment_fuel,
         };
 
         this.props.handleMultipleChange(fieldsToChange);

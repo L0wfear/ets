@@ -426,11 +426,45 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'multiValueOfArray',
       dependencies: [
         (files, formData) => {
-          if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
+          if (formData.is_edited_odometr) {
             if (!files) {
-              return 'Поле "Файл" должно быть заполнено';
+              return {
+                odometr: 'Поле "Файл" должно быть заполнено',
+                motohours: 'Поле "Файл" должно быть заполнено',
+                motohours_equip: 'Поле "Файл" должно быть заполнено',
+              };
+            }
+            if (!(files && files.some(({ kind }) => kind === 'odometr'))) {
+              return {
+                odometr: 'Поле "Файл" должно быть заполнено'
+              };
             }
           }
+          if (formData.is_edited_motohours) {
+            if (!files) {
+              return {
+                motohours: 'Поле "Файл" должно быть заполнено',
+              };
+            }
+            if (!(files && files.some(({ kind }) => kind === 'motohours'))) {
+              return {
+                motohours: 'Поле "Файл" должно быть заполнено',
+              };
+            }
+          }
+          if (formData.is_edited_motohours_equip) {
+            if (!files) {
+              return {
+                motohours_equip: 'Поле "Файл" должно быть заполнено',
+              };
+            }
+            if (!(files && files.some(({ kind }) => kind === 'motohours_equip'))) {
+              return {
+                motohours_equip: 'Поле "Файл" должно быть заполнено',
+              };
+            }
+          }
+          return false;
         },
       ],
     },

@@ -1109,10 +1109,13 @@ class WaybillForm extends React.Component<Props, State> {
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = null;
     }
+    const lastWaybillEquipmentData = this.props.formState?.equipment_fuel_type 
+      ? {...getClosedEquipmentData(lastCarUsedWaybill), equipment_fuel_type: this.props.formState?.equipment_fuel_type}
+      : getClosedEquipmentData(lastCarUsedWaybill);
 
     fieldsToChange = {
       ...fieldsToChange,
-      ...getClosedEquipmentData(lastCarUsedWaybill),
+      ...lastWaybillEquipmentData,
     };
 
     return fieldsToChange;

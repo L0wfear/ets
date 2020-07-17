@@ -41,17 +41,6 @@ export const getToConfig = (): TypeConfigData<MaintenanceRate> => {
     filter: {
       fields: [
         {
-          valueKey: 'okrug_name',
-          title: 'Округ',
-          type: 'multiselect',
-        },
-        {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
-          title: 'Организация',
-          type: 'multiselect',
-        },
-        {
           valueKey: 'technical_operation_id',
           labelKey: 'technical_operation_name',
           title: 'Технологическая операция',
@@ -107,16 +96,6 @@ export const getToConfig = (): TypeConfigData<MaintenanceRate> => {
           {
             key: 'enumerated',
             title: '№',
-          },
-          {
-            key: 'okrug_name',
-            title: 'Округ',
-            width: 150,
-          },
-          {
-            key: 'company_name',
-            title: 'Организация',
-            width: 200,
           },
           {
             key: 'technical_operation_name',

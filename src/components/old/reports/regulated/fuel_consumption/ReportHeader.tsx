@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { getToday9am, getTomorrow9am, createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
@@ -59,6 +59,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       { value: 'with_level_sensor', label: 'ТС с ДУТ' },
     ];
 
+    let errorText = '';
+    const diffDate = diffDates(date_end, date_start, 'days');
+
+    if (diffDate <= 0) {
+      errorText = 'Дата окончания периода должна быть позже даты начала';
+    }
+
     return (
       <EtsBootstrap.Row className="report-page__header">
         <EtsBootstrap.Col md={3}>
@@ -88,7 +95,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             date_start_value={date_start}
             date_end_id="date_end"
             date_end_value={date_end}
-
+            date_start_error={errorText}
             disabled={readOnly}
             onChange={this.props.handleChange}
           />
@@ -96,7 +103,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <EtsBootstrap.Col md={3}>
           <EtsBootstrap.Button
             block
-            disabled={this.props.readOnly}
+            disabled={this.props.readOnly || !!errorText}
             onClick={this.handleSubmit}
           >
             Сформировать отчёт

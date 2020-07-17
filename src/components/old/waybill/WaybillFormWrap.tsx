@@ -635,20 +635,38 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   handleFormFileChange = (key, filesByKey) => {
+    const { files } = this.state.formState;
+
     let formState = cloneDeep(this.state.formState);
 
-    let addFiles = [
-      ...filesByKey.map(
-        (rowData) => ({
-          ...rowData,
-          kind: key,
-        }),
-      ),
-    ];
-    this.handleFieldsChange({
-      ...formState,
-      files: addFiles,
-    });
+    if (!files) {
+      let addFiles = [
+        ...filesByKey.map(
+          (rowData) => ({
+            ...rowData,
+            kind: key,
+          }),
+        ),
+      ];
+      this.handleFieldsChange({
+        ...formState,
+        files: addFiles,
+      });
+    } else {
+      let addFiles = [
+        ...files.filter((file) => file.kind !== key),
+        ...filesByKey.map(
+          (rowData) => ({
+            ...rowData,
+            kind: key,
+          }),
+        ),
+      ];
+      this.handleFieldsChange({
+        ...formState,
+        files: addFiles,
+      });
+    }
   };
 
   handleFormStateChange = (field, e, index) => {

@@ -918,7 +918,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         } else {
           formState.status = 'draft';
           try {
-            await this.createWaybill(formState);
+            const r = await this.createWaybill(formState);
+            const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+            return id;
           } catch ({ error_text }) {
             console.info(error_text); // eslint-disable-line
             return;

@@ -1710,7 +1710,7 @@ class WaybillForm extends React.Component<Props, State> {
           this.props.onSubmitActiveWaybill(!res.rejectMissionSubmitError);
         }); // миссии, которые были успешно отменены, их удаляем из missionField
       } else {
-        this.props.onSubmit();
+        return this.props.onSubmit();
       }
     }
   };

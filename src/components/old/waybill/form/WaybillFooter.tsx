@@ -6,6 +6,7 @@ import Div from 'components/old/ui/Div';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { OverlayTriggerConfig } from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
+import { useRouteMatch, useLocation, Redirect } from 'react-router-dom';
 
 const savePermissions = [
   waybillPermissions.update_closed,
@@ -44,11 +45,30 @@ type IPropsWaybillFooter = {
 const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
   const isHasPermissionToEditWaybill = Boolean(
     props.isPermittedByKey.update
-      || props.isPermittedByKey.update_closed
-      || props.isPermittedByKey.refill
-      || props.isPermittedByKey.departure_and_arrival_values
+    || props.isPermittedByKey.update_closed
+    || props.isPermittedByKey.refill
+    || props.isPermittedByKey.departure_and_arrival_values
   );
+  const [createdWaybillId, setCreatedWaybillId] = React.useState(null);
+  const match = useRouteMatch();
+  const location = useLocation();
+  const pathName = React.useMemo(() => {
+    const params = { ...match.params, waybill_id: createdWaybillId };
+    const pathParts
+      = match.path.split('/')
+        .map((el) => {
+          const validEl = el.replace(/[:?]/g, '');
+          return params.hasOwnProperty(validEl) ? params[validEl] : validEl;
+        })
+        .filter((el) => el !== undefined);
+    return pathParts.join('/');
+  }, [match, location, createdWaybillId]);
 
+  const onSave = React.useCallback(
+    async () => {
+      const createdWaybillId = await props.handleSubmit();
+      setCreatedWaybillId(createdWaybillId);
+    }, []);
   const isDisabledWaybillSubmitButton = !((props.canSave || props.isDelete) && isHasPermissionToEditWaybill);
 
   const isHiddenWaybillSubmitButton = Boolean(!isHasPermissionToEditWaybill);
@@ -115,6 +135,13 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
     placement: 'top',
     overlay: popoverForSavePrint,
   };
+
+  if (createdWaybillId) {
+    return <Redirect to={{
+      pathname: pathName,
+      search: location.search
+    }} />;
+  }
 
   return (
     <EtsButtonsContainer>
@@ -202,7 +229,7 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
       <EtsButtonsContainer marginContainerY={4.5} marginContainerX={0}>
         <Div permissions={savePermissions} className={'inline-block'} hidden={isHiddenWaybillSubmitButton}>
           <EtsBootstrap.Button id="waybill-submit"
-            onClick={props.handleSubmit}
+            onClick={onSave}
             disabled={isDisabledWaybillSubmitButton}
           >
             Сохранить

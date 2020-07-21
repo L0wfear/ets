@@ -153,7 +153,7 @@ const fieldToCheckHasData = {
 const getClosedEquipmentData = (lastCarUsedWaybill) => {
   const fieldsToChange: Partial<Waybill> = {};
   if (lastCarUsedWaybill) {
-    if (lastCarUsedWaybill.equipment_fact_fuel_end) {
+    if (isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
       fieldsToChange.equipment_fuel_start
         = lastCarUsedWaybill.equipment_fact_fuel_end;
       fieldsToChange.equipment_fact_fuel_end
@@ -2479,11 +2479,11 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.odometr_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                      || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                      || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="odometr_start"
-                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && lastWaybill['odometr_end'])}
+                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))}
                                 btnProps={{
                                   disabled: IS_CLOSED || !isPermittedByKey.update,
                                   onClick: this.handleChangeOdometr,
@@ -2526,7 +2526,7 @@ class WaybillForm extends React.Component<Props, State> {
                               label="Причина"
                               disabled={
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               options={reasonListOptions}
                               value={state.odometr_reason_id}
@@ -2542,7 +2542,7 @@ class WaybillForm extends React.Component<Props, State> {
                               kind="odometr"
                               disabled={
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_odometr && Boolean(lastWaybill && lastWaybill['odometr_end'])
+                                || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               value={odometrFiles}
                               error={odometrFilesError}
@@ -2563,11 +2563,11 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_start}
                                 disabled={
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_start"
-                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && lastWaybill['motohours_end'])}
+                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))}
                                 btnProps={{
                                   disabled: IS_CLOSED || !isPermittedByKey.update,
                                   onClick: this.handleChangeMotohours,
@@ -2614,7 +2614,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_reason_id}
                               disabled={
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               clearable={false}
                               onChange={this.handleChange}
@@ -2627,7 +2627,7 @@ class WaybillForm extends React.Component<Props, State> {
                               kind="motohours"
                               disabled={
                                 IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours && Boolean(lastWaybill && lastWaybill['motohours_end'])
+                                || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               value={motohoursFiles}
                               error={motohoursFilesError}
@@ -2698,7 +2698,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   value={state.fuel_start}
                                   disabled={
                                     IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || Boolean(lastWaybill && lastWaybill['fact_fuel_end'])
+                                || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['fact_fuel_end']))
                                   }
                                   onChange={this.handleChange}
                                   boundKeys="fuel_start"
@@ -2877,11 +2877,11 @@ class WaybillForm extends React.Component<Props, State> {
                                 value={state.motohours_equip_start}
                                 disabled={
                                   IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                  || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                                  || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                                 }
                                 onChange={this.handleChange}
                                 boundKeys="motohours_equip_start"
-                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])}
+                                showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))}
                                 btnProps={{
                                   disabled: IS_CLOSED || !isPermittedByKey.update,
                                   onClick: this.handleChangeEquip,
@@ -2923,7 +2923,7 @@ class WaybillForm extends React.Component<Props, State> {
                               error={errors.motohours_equip_reason_id}
                               disabled={
                                 IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               clearable={false}
                               onChange={this.handleChange}
@@ -2936,7 +2936,7 @@ class WaybillForm extends React.Component<Props, State> {
                               kind="motohours_equip"
                               disabled={
                                 IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && lastWaybill['motohours_equip_end'])
+                                || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               value={motohoursEquipFiles}
                               error={motohoursEquipFilesError}
@@ -2961,7 +2961,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     error={errors.equipment_fuel_type}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                      || Boolean(lastWaybill && lastWaybill['equipment_fuel_type'])
+                                      || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
                                     }
                                     options={FUEL_TYPES}
                                     handleChange={
@@ -3003,7 +3003,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     value={state.equipment_fuel_start}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                      || Boolean(lastWaybill && lastWaybill['equipment_fact_fuel_end'])
+                                      || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['equipment_fact_fuel_end']))
                                     }
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"

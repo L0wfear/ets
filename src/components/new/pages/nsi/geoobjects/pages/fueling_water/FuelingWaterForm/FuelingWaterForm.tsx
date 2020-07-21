@@ -52,7 +52,7 @@ const FuelingWaterForm: React.FC<PropsFuelingWaterForm> = React.memo(
                   value={state.company_name || '-'}
                   label={
                     props.userData.isKgh
-                      ? 'Наименование ГБУ:'
+                      ? 'Организация:'
                       : 'Учреждение:'
                   }
                   readOnly

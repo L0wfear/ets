@@ -49,7 +49,7 @@ const CarpoolForm: React.FC<PropsCarpoolForm> = React.memo(
                     <ExtField
                       type="string"
                       value={state.company_name || '-'}
-                      label={props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
+                      label={props.userData.isKgh ? 'Организация:' : 'Учреждение:'}
                       readOnly
                     />
                   )

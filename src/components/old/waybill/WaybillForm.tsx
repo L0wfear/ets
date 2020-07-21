@@ -1126,6 +1126,12 @@ class WaybillForm extends React.Component<Props, State> {
    */
   refresh = async (autocompleteOnly: boolean = false, showInfo: boolean = true) => {
     const state = this.props.formState;
+    const {
+      is_edited_odometr, 
+      is_edited_motohours, 
+      is_edited_motohours_equip,
+      is_edited_one_fuel_tank,
+    } = this.props.formState;
 
     const plan_departure_date
       = diffDates(this.props.moscowTimeServer.date, state.plan_departure_date) > 0 && !autocompleteOnly
@@ -1137,15 +1143,19 @@ class WaybillForm extends React.Component<Props, State> {
         actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
       );
       if(lastWaybill) {
-        const is_one_fuel_tank = autocompleteOnly
+        const is_one_fuel_tank = is_edited_one_fuel_tank
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
-        const odometr_start = state.odometr_start ?? lastWaybill.odometr_end; 
-
-        const motohours_start = state.motohours_start ?? lastWaybill.motohours_end;
-
-        const motohours_equip_start = state.motohours_equip_start ?? lastWaybill.motohours_equip_end;
+        const odometr_start = is_edited_odometr
+          ? state.odometr_start
+          : lastWaybill.odometr_end;
+        const motohours_start = is_edited_motohours
+          ? state.motohours_start
+          : lastWaybill.motohours_end;
+        const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)
+          ? state.motohours_equip_start
+          : lastWaybill.motohours_equip_end;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1417,6 +1427,7 @@ class WaybillForm extends React.Component<Props, State> {
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
+      is_edited_one_fuel_tank: true
     };
     let dialogIsConfirmed = false;
     if (changeObj.is_one_fuel_tank) {

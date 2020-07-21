@@ -65,11 +65,6 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta, em
 
   const primaryDriverOptions = React.useMemo(
     () => {
-      const arr = driverOptions.filter(({ value }) => (
-        !drivers_data.secondary_drivers.includes(value)
-        || drivers_data.primary_drivers.includes(value)
-      ));
-
       drivers_data.primary_drivers.forEach((id) => {
         if (!driverOptions.find(({ value }) => value === id)) {
           driverOptions.push({
@@ -80,6 +75,11 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, meta, em
           });
         }
       });
+
+      const arr = driverOptions.filter(({ value }) => (
+        !drivers_data.secondary_drivers.includes(value)
+        || drivers_data.primary_drivers.includes(value)
+      ));
 
       return arr;
     },

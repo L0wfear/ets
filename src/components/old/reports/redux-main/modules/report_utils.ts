@@ -155,6 +155,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
       || reportKey === 'car_usage_report'
       || reportKey === 'car_travel_report'
       || reportKey === 'consumable_material_usage_report'
+      || reportKey === 'fuel_consumption_new_report'
     ) {
       if (rows.length) {
         const cols_wsd = openFields(fields);

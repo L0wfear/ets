@@ -23,6 +23,7 @@ export const renderers = ({
 const tableProps = {
   rowNumberLabel: '№ п/п',
   rowNumberClassName: 'width60',
+  reportKey: serviceUrl,
 };
 
 const reportProps: IReportProps = {

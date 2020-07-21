@@ -653,9 +653,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         files: addFiles,
       });
     } else {
-      let addFiles = [
+      let deletedFiles = filesByKey.filter((file) => file.action !== 'delete');
+      let savedFiles = deletedFiles ? deletedFiles : filesByKey;
+      let newFiles = [
         ...files.filter((file) => file.kind !== key),
-        ...filesByKey.map(
+        ...savedFiles.map(
           (rowData) => ({
             ...rowData,
             kind: key,
@@ -664,7 +666,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       ];
       this.handleFieldsChange({
         ...formState,
-        files: addFiles,
+        files: newFiles,
       });
     }
   };

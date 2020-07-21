@@ -42,61 +42,9 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
     fields: [
       {
         valueKey: 'number',
-        title: 'Номер',
+        title: 'Номер ПЛ',
         type: 'advanced-number',
         step: 1,
-      },
-      {
-        valueKey: 'okrug_id',
-        labelKey: 'okrug_name',
-        title: 'Округ',
-        type: 'multiselect',
-      },
-      {
-        valueKey: 'company_id',
-        labelKey: 'company_name',
-        title: 'Организация',
-        type: 'multiselect',
-      },
-      {
-        valueKey: 'status',
-        title: 'Статус ПЛ',
-        type: 'multiselect',
-        options: Object.keys(WAYBILL_STATUSES).map((key) => ({
-          label: WAYBILL_STATUSES[key],
-          value: key,
-        })),
-      },
-      {
-        valueKey: 'all_missions_status',
-        title: 'Статус заданий',
-        type: 'multiselect',
-        options: [
-          { value: 'all_completed', label: 'Все задания завершены' },
-          { value: 'not_all_completed', label: 'Есть незавершенные задания' },
-          { value: 'not_mission', label: 'Нет прикреплённых заданий' },
-        ],
-      },
-      {
-        valueKey: 'date_create',
-        title: 'Дата создания',
-        type: 'advanced-date',
-      },
-      {
-        valueKey: 'closing_date',
-        title: 'Дата закрытия',
-        type: 'advanced-date',
-      },
-      {
-        valueKey: 'driver_id',
-        title: 'Водитель',
-        type: 'multiselect',
-        getRegistryData: {
-          entity: 'driver',
-          typeAns: 'result',
-          valueKey: 'id',
-          format: 'short_employee_name',
-        },
       },
       {
         valueKey: 'car_id',
@@ -110,15 +58,55 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'car_special_model_id',
-        title: 'Модель ТС',
+        valueKey: 'date_create',
+        title: 'Дата создания',
+        type: 'advanced-date',
+      },
+      {
+        valueKey: 'closing_date',
+        title: 'Дата закрытия',
+        type: 'advanced-date',
+      },
+      {
+        valueKey: 'status',
+        title: 'Статус ПЛ',
+        type: 'multiselect',
+        options: Object.keys(WAYBILL_STATUSES).map((key) => ({
+          label: WAYBILL_STATUSES[key],
+          value: key,
+        })),
+      },
+      {
+        valueKey: 'garage_number',
+        title: 'Гаражный номер',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'car_actual',
-          groupName: 'car_actual',
-          valueKey: 'special_model_id',
-          labelKey: 'special_model_name',
+          entity: WaybillCarService._path,
+          groupName: WaybillCarService._path,
+          valueKey: 'garage_number',
+          labelKey: 'garage_number',
         },
+      },
+      {
+        valueKey: 'driver_id',
+        title: 'Водитель',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'driver',
+          typeAns: 'result',
+          valueKey: 'id',
+          format: 'short_employee_name',
+        },
+      },
+      {
+        valueKey: 'all_missions_status',
+        title: 'Статус заданий',
+        type: 'multiselect',
+        options: [
+          { value: 'all_completed', label: 'Все задания завершены' },
+          { value: 'not_all_completed', label: 'Есть незавершенные задания' },
+          { value: 'not_mission', label: 'Нет прикреплённых заданий' },
+        ],
       },
       {
         valueKey: 'car_model_id',
@@ -132,14 +120,20 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'garage_number',
-        title: 'Гаражный номер',
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'car_special_model_id',
+        title: 'Модель ТС',
         type: 'multiselect',
         getRegistryData: {
-          entity: WaybillCarService._path,
-          groupName: WaybillCarService._path,
-          valueKey: 'garage_number',
-          labelKey: 'garage_number',
+          entity: 'car_actual',
+          groupName: 'car_actual',
+          valueKey: 'special_model_id',
+          labelKey: 'special_model_name',
         },
       },
       {

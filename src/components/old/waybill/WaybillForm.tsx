@@ -153,7 +153,7 @@ const fieldToCheckHasData = {
 const getClosedEquipmentData = (lastCarUsedWaybill) => {
   const fieldsToChange: Partial<Waybill> = {};
   if (lastCarUsedWaybill) {
-    if (!isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
+    if (isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
       fieldsToChange.equipment_fuel_start
         = lastCarUsedWaybill.equipment_fact_fuel_end;
       fieldsToChange.equipment_fact_fuel_end

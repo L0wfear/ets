@@ -502,24 +502,28 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           title: 'Топливо. Выезд по ДУТ, л',
           width: 250,
           sortable: false,
+          format: 'toFixed3',
         },
         {
           key: 'sensor_finish_value',
           title: 'Топливо. Возврат по ДУТ, л',
           width: 250,
           sortable: false,
+          format: 'toFixed3',
         },
         {
           key: 'sensor_consumption',
           title: 'Топливо. Расход по ДУТ, л',
           width: 250,
           sortable: false,
+          format: 'toFixed3',
         },
         {
           key: 'sensor_refill',
           title: 'Топливо. Заправка по ДУТ, л',
           width: 250,
           sortable: false,
+          format: 'toFixed3',
         },
         {
           key: 'structure_name',

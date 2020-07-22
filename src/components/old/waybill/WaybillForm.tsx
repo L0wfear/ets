@@ -2834,7 +2834,6 @@ class WaybillForm extends React.Component<Props, State> {
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
-                        {console.info(this.state.canEditIfClose)}
                         <Taxes
                           modalKey={modalKey}
                           hidden={

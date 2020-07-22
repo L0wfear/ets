@@ -18,6 +18,7 @@ export type IExternalPropsDataTableInputWrapper<F = any> = {
   tireAvailableCarList?: any;
   spareAvailableCarList?: any;
   fuelCardsAvailableCarList?: any;
+  isLoading?: boolean;
 };
 
 /**

@@ -58,7 +58,9 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       || state.company_id === props.userCompanyId
     )
   );
-  const carList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, }).options;
+  const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+  const carList = carActualOptions.options;
+  const isLoading = carActualOptions.isLoading;
   React.useEffect(
     () => {
       if (!car_id && carList.length) {
@@ -112,6 +114,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
                 disabled={!isPermitted}
                 modalKey={path}
                 hint="Выводится рег. номер ТС, актуальный на текущий день."
+                etsIsLoading={isLoading}
               />
             )}
             <ExtField

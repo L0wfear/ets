@@ -44,7 +44,9 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
   );
-  const carList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, }).options;
+  const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+  const carList = carActualOptions.options;
+  const isLoading = carActualOptions.isLoading;
 
   React.useEffect(
     () => {
@@ -105,6 +107,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
                 modalKey={path}
                 value_string={state.gov_number}
                 hint="Выводится рег. номер ТС, актуальный на текущий день."
+                etsIsLoading={isLoading}
               />
             )}
             <ExtField

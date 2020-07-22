@@ -19,7 +19,9 @@ const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
   (props) => {
     const dispatch = etsUseDispatch();
     const tireAvailableCarList = etsUseSelector((state) => getAutobaseState(state).tireAvailableCarList);
-    const carList = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, }).options;
+    const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+    const carList = carActualOptions.options;
+    const isLoading = carActualOptions.isLoading;
 
     React.useEffect(
       () => {
@@ -54,6 +56,7 @@ const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
         removeButtonLable="Удалить ТС"
         stackOrder
         tireAvailableCarList={carListOptions}
+        isLoading={isLoading}
         {...props}
       />
     );

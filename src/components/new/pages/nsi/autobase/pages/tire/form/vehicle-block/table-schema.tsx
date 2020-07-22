@@ -70,6 +70,7 @@ export const meta: IDataTableSchema = {
 
 type IPropsCarIdRenderer = {
   vehicleList: Array<TireAvailableCar>;
+  isLoading: boolean;
 } & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
@@ -79,6 +80,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   onChange,
   index,
   isPermitted,
+  isLoading
 }) => {
   const handleChange = (valueNew, option) => {
     onChange(
@@ -100,6 +102,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       error={get(outputListErrors[index], 'car_id', '')}
       onChange={handleChange}
       disabled={!isPermitted}
+      etsIsLoading={isLoading}
     />
   );
 };
@@ -156,7 +159,7 @@ const UninstalledAtRenderer: React.FC<
 export const renderers: TRendererFunction = (props, onListItemChange) => {
 
   const vehicleList = props.tireAvailableCarList;
-  
+  const isLoading = props.isLoading;
   return {
     car_id: (rowMeta) => (
       <CarIdRenderer
@@ -165,6 +168,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
         vehicleList={vehicleList}
+        isLoading={isLoading}
       />
     ),
     installed_at: (rowMeta) => (

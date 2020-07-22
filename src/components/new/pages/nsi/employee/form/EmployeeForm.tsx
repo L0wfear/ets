@@ -31,6 +31,7 @@ import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
 import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/employee/position/actions';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import memoizeOne from 'memoize-one';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   constructor(props) {
@@ -157,7 +158,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         filterCars(car, formState, fieldType)
       ).map((rowData) => ({
         value: rowData.asuods_id,
-        label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+        label: carActualOptionLabelGarage(rowData),
         rowData,
         is_invalid: rowData.asuods_id === formState.prefer_car,
       }));

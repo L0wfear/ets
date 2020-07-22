@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get, uniqBy } from 'lodash';
+import { get } from 'lodash';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -70,6 +70,7 @@ export const meta: IDataTableSchema = {
 
 type IPropsCarIdRenderer = {
   vehicleList: Array<TireAvailableCar>;
+  isLoading: boolean;
 } & IPropsDataTableInputRenderer;
 
 const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
@@ -79,6 +80,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   onChange,
   index,
   isPermitted,
+  isLoading
 }) => {
   const handleChange = (valueNew, option) => {
     onChange(
@@ -100,6 +102,7 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
       error={get(outputListErrors[index], 'car_id', '')}
       onChange={handleChange}
       disabled={!isPermitted}
+      etsIsLoading={isLoading}
     />
   );
 };
@@ -154,16 +157,9 @@ const UninstalledAtRenderer: React.FC<
 };
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const inputList = props.inputList.filter((filterItem) =>
-    Boolean(filterItem.gov_number),
-  );
-  const vehicleList = uniqBy(
-    [...props.tireAvailableCarList, ...inputList].map(
-      (rowData) => ({ label: rowData.gov_number, value: rowData.car_id, rowData }),
-    ),
-    'value',
-  );
 
+  const vehicleList = props.tireAvailableCarList;
+  const isLoading = props.isLoading;
   return {
     car_id: (rowMeta) => (
       <CarIdRenderer
@@ -172,6 +168,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
         vehicleList={vehicleList}
+        isLoading={isLoading}
       />
     ),
     installed_at: (rowMeta) => (

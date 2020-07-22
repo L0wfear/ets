@@ -203,7 +203,25 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             _fix_bottom: true,
           }));
         }
+        if (reportKey === 'fuel_consumption_new_report') {
+          const makeFuelConsumptionReportSum = (cols) => cols.reduce( ( result, current ) => {
+            for(const key in current){
+              const value = current[key];
+                
+              if(result[key] === undefined) {
+                result[key] = value;
+              } else if( typeof result[key] === 'string') {
+                cols.every((el) => el[key] === result[key]) ? result[key] = value : result[key] = '';
+              } else {
+                result[key] += value;
+              }
+            }
+            return result;
+          }, {className: 'bold', noIndexRow: true,} );
 
+          const sumCols = Object.values(groupBy(children, 'fuel_type_name')).map((el) => makeFuelConsumptionReportSum(el));                   
+          return children.concat(sumCols);
+        }
         return children;
       }
       return [

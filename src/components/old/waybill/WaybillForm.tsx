@@ -401,10 +401,11 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeOdometr = async () => {
     const {
-      formState: { is_edited_odometr, odometr_reason_id, files },
+      formState: { odometr_start, is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
-    if (odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
+    if ((odometr_start !== this.state?.lastWaybill?.odometr_end)
+      || odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -427,10 +428,11 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeMotohours = async () => {
     const {
-      formState: { is_edited_motohours, motohours_reason_id, files },
+      formState: { motohours_start, is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
-    if (motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
+    if ((motohours_start !== this.state?.lastWaybill?.motohours_end)
+      || motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -453,10 +455,11 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleChangeEquip = async () => {
     const {
-      formState: { is_edited_motohours_equip, motohours_equip_reason_id, files },
+      formState: { motohours_equip_start, is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if (motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')) {
+    if ((motohours_equip_start !== this.state?.lastWaybill?.motohours_equip_end)
+      || motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -1126,6 +1129,12 @@ class WaybillForm extends React.Component<Props, State> {
    */
   refresh = async (autocompleteOnly: boolean = false, showInfo: boolean = true) => {
     const state = this.props.formState;
+    const {
+      is_edited_odometr, 
+      is_edited_motohours, 
+      is_edited_motohours_equip,
+      is_edited_one_fuel_tank,
+    } = this.props.formState;
 
     const plan_departure_date
       = diffDates(this.props.moscowTimeServer.date, state.plan_departure_date) > 0 && !autocompleteOnly
@@ -1137,15 +1146,19 @@ class WaybillForm extends React.Component<Props, State> {
         actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
       );
       if(lastWaybill) {
-        const is_one_fuel_tank = autocompleteOnly
+        const is_one_fuel_tank = is_edited_one_fuel_tank
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
-        const odometr_start = state.odometr_start ?? lastWaybill.odometr_end; 
-
-        const motohours_start = state.motohours_start ?? lastWaybill.motohours_end;
-
-        const motohours_equip_start = state.motohours_equip_start ?? lastWaybill.motohours_equip_end;
+        const odometr_start = is_edited_odometr
+          ? state.odometr_start
+          : lastWaybill.odometr_end;
+        const motohours_start = is_edited_motohours
+          ? state.motohours_start
+          : lastWaybill.motohours_end;
+        const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)
+          ? state.motohours_equip_start
+          : lastWaybill.motohours_equip_end;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1417,6 +1430,7 @@ class WaybillForm extends React.Component<Props, State> {
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
+      is_edited_one_fuel_tank: true
     };
     let dialogIsConfirmed = false;
     if (changeObj.is_one_fuel_tank) {

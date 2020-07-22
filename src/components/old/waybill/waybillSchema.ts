@@ -688,7 +688,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { odometr_start, gov_number, car_has_odometr }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (CAR_HAS_ODOMETER || car_has_odometr) {
-            if ((odometr_start || isNumber(odometr_start)) && !value) { // Поправить это в ЧТЗ, поля невсегда обязательны
+            if ((odometr_start || isNumber(odometr_start)) && (!value && value !== 0)) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
             if (value && Number(value) < Number(odometr_start)) {
@@ -707,7 +707,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { motohours_start, gov_number, car_has_motohours }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (!CAR_HAS_ODOMETER || car_has_motohours) {
-            if ((motohours_start || isNumber(motohours_start)) && !value) {
+            if ((motohours_start || isNumber(motohours_start)) && (!value && value !== 0)) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
             }
             if (value && value < motohours_start) {
@@ -727,7 +727,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if (equipment_fuel) {
             if (
               (motohours_equip_start || isNumber(motohours_equip_start))
-              && !value
+              && (!value && value !== 0)
             ) {
               return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
             }

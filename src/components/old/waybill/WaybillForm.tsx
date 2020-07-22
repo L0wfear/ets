@@ -2834,12 +2834,12 @@ class WaybillForm extends React.Component<Props, State> {
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
+                        {console.info(this.state.canEditIfClose)}
                         <Taxes
                           modalKey={modalKey}
                           hidden={
-                            !IS_ACTIVE
-                            || IS_DRAFT
-                            || IS_CLOSED
+                            !(IS_CLOSED || IS_ACTIVE)
+                            || (IS_CLOSED && !this.state.canEditIfClose)
                           }
                           readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
                           IS_CLOSED={IS_CLOSED}
@@ -3137,9 +3137,8 @@ class WaybillForm extends React.Component<Props, State> {
                             <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
-                                !IS_ACTIVE
-                                || IS_DRAFT
-                                || IS_CLOSED
+                                !(IS_CLOSED || IS_ACTIVE)
+                                || (IS_CLOSED && !this.state.canEditIfClose)
                               }
                               readOnly={
                                 IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update

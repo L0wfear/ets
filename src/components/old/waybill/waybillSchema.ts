@@ -5,7 +5,7 @@ import { diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import { isNumber, isArray, isString, isNullOrUndefined } from 'util';
+import { isNumber, isArray, isString } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
@@ -14,6 +14,8 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
 };
+
+const isNullOrUndefined = (value) => value === null || value === undefined; 
 
 const validateFuelCardId = (
   rowData: ValuesOf<Waybill['car_refill']>,
@@ -547,6 +549,20 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_ACTIVE = status === 'active';
           if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
             return 'Поле "На ТС установлен одометр" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
+    equipment_fuel: {
+      title: 'На ТС установлено спецоборудование',
+      type: 'boolean',
+      dependencies: [
+        (_, {status, equipment_fuel }) => {
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && isNullOrUndefined(equipment_fuel)) {
+            return 'Поле "На ТС установлено спецоборудование" должно быть заполнено';
           }
           return false;
         }

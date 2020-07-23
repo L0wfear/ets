@@ -6,16 +6,18 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo, carInfoRefreshDateForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
-import { getTrackDefaultDateStart, getTrackDefaultDateEnd } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
+import { createValidDateTime, diffDates, getStartOfServerToday } from 'components/@next/@utils/dates/dates';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 type Props = WithSearchProps;
 
 export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
   (props) => {
     const dispatch = etsUseDispatch();
+    const [date_start_Moscow, setStartMoscow] = React.useState(null);
+    const [date_end_Moscow, setEndMoscow] = React.useState(null);
 
     /****************************** gps_code ******************************/
     const gov_number: Car['gov_number'] = props.match.params.gov_number;
@@ -70,11 +72,21 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
 
     React.useEffect(
       () => {
+        dispatch(actionLoadTimeMoscow({}, { page: 'mainpage' })).then((time) => {
+          setStartMoscow(getStartOfServerToday(time.date));
+          setEndMoscow(time.date);
+        });
+      },
+      [gov_number_old, gov_number],
+    );
+
+    React.useEffect(
+      () => {
         if (gov_number !== gov_number_old) {
           if (gov_number) {
             props.setDataInSearch({
-              date_start: createValidDateTime(!gov_number_old && date_start || getTrackDefaultDateStart()),
-              date_end: createValidDateTime(!gov_number_old && date_end || getTrackDefaultDateEnd()),
+              date_start: createValidDateTime(!gov_number_old && date_start || date_start_Moscow),
+              date_end: createValidDateTime(!gov_number_old && date_end || date_end_Moscow),
             });
           } else {
             props.setDataInSearch({
@@ -141,7 +153,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
         const intervalId = setInterval(
           () => {
             const datesIsMove = (
-              diffDates(createValidDateTime(getTrackDefaultDateEnd()), createValidDateTime(state_date_end))
+              diffDates(createValidDateTime(date_end_Moscow), createValidDateTime(state_date_end))
             );
 
             if (carData.data && datesIsMove && for_today) {

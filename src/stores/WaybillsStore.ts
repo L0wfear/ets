@@ -22,7 +22,7 @@ export function getDefaultBill({ company_id = null }) {
     car_refill: [],
     equipment_refill: [],
     company_id,
-    is_one_fuel_tank: true,
+    is_one_fuel_tank: null,
     fuel_given: 0,
   };
 }

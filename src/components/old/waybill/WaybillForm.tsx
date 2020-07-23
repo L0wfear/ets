@@ -1133,7 +1133,6 @@ class WaybillForm extends React.Component<Props, State> {
       is_edited_odometr, 
       is_edited_motohours, 
       is_edited_motohours_equip,
-      is_edited_one_fuel_tank,
     } = this.props.formState;
 
     const plan_departure_date
@@ -1146,7 +1145,7 @@ class WaybillForm extends React.Component<Props, State> {
         actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
       );
       if(lastWaybill) {
-        const is_one_fuel_tank = is_edited_one_fuel_tank
+        const is_one_fuel_tank = state.is_one_fuel_tank !== null && state.is_one_fuel_tank !== lastWaybill.is_one_fuel_tank
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
@@ -1430,7 +1429,6 @@ class WaybillForm extends React.Component<Props, State> {
     } = this.props;
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
-      is_edited_one_fuel_tank: true
     };
     let dialogIsConfirmed = false;
     if (changeObj.is_one_fuel_tank) {
@@ -1550,7 +1548,6 @@ class WaybillForm extends React.Component<Props, State> {
       = lastWaybill
         ? lastWaybill.motohours_equip_end
         : null;
-    closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
     this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
   };
 
@@ -2322,6 +2319,7 @@ class WaybillForm extends React.Component<Props, State> {
                   disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                   clearable={false}
                   modalKey={modalKey}
+                  error={errors.equipment_fuel}
                 />
               </EtsBootstrap.Col>
               {state.equipment_fuel && (

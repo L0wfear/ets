@@ -2322,6 +2322,7 @@ class WaybillForm extends React.Component<Props, State> {
                   disabled={IS_DELETE || IS_CLOSED || !isPermittedByKey.update}
                   clearable={false}
                   modalKey={modalKey}
+                  error={errors.equipment_fuel}
                 />
               </EtsBootstrap.Col>
               {state.equipment_fuel && (

@@ -11,7 +11,7 @@ import {
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
 import { getTrackDefaultDateEnd, getTrackDefaultDateStart } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
-import { diffDates, createValidDateTime, minusTime, addTime } from 'components/@next/@utils/dates/dates';
+import { diffDates, createValidDateTime, minusTime, addTime, getStartOfServerToday } from 'components/@next/@utils/dates/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
@@ -25,6 +25,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { ButtonsRowMargin } from 'components/old/monitor/info/car-info/car-tab-menu/styled';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -32,6 +33,7 @@ type PropsTitleTrackTab = {
   disabledForToday: boolean;
   changeDate: any;
 
+  actionLoadTimeMoscow: any;
   fetchMissionsData: any;
   fetchTrack: any;
   asuods_id: number;
@@ -39,7 +41,6 @@ type PropsTitleTrackTab = {
 
   track: any;
   status: string;
-  state_date_end: string;
   loadingTrack: boolean;
 
   map_track_days: InitialStateSession['appConfig']['map_track_days'];
@@ -61,14 +62,14 @@ class TitleTrackTab extends React.Component<
   state = {
     gps_code: this.props.gps_code,
     errorDates: '',
-    date_start: this.props.searchState.date_start || createValidDateTime(getTrackDefaultDateStart()),
-    date_end: this.props.searchState.date_end || createValidDateTime(getTrackDefaultDateEnd()),
+    date_start: this.props.searchState.date_start,
+    date_end: this.props.searchState.date_end,
   };
 
-  static getDerivedStateFromProps(nextProps: PropsTitleTrackTab, prevState: StateTitleTrackTab) {
+  componentDidUpdate(nextProps: PropsTitleTrackTab, prevState: StateTitleTrackTab) {
     const { gps_code } = nextProps;
 
-    if (prevState.gps_code !== gps_code) {
+    if (this.props.gps_code !== prevState.gps_code) {
       return {
         errorDates: '',
         gps_code,
@@ -76,22 +77,38 @@ class TitleTrackTab extends React.Component<
         date_end: createValidDateTime(getTrackDefaultDateEnd()),
       };
     }
-
-    return null;
   }
 
-  componentDidUpdate () {
-    const {
-      state_date_end,
-      forToday,
-    } = this.props;
+  componentDidMount () {
+    const datesIsMove = (
+      diffDates(this.props.searchState.date_start, this.state.date_start)
+      || diffDates(this.props.searchState.date_end, this.state.date_end)
+    );
+    if(datesIsMove) {
+      const partialState = {
+        date_start: createValidDateTime(this.props.searchState.date_start),
+        date_end: createValidDateTime(this.props.searchState.date_end),
+        errorDates: '',
+      };
+      this.props.setDataInSearch({
+        date_start: createValidDateTime(partialState.date_start),
+        date_end: createValidDateTime(partialState.date_end),
+      });
 
-    const isDiffDates = diffDates(createValidDateTime(state_date_end), this.state.date_end);
-
-    if (isDiffDates && forToday) {
-      this.setState({date_end: createValidDateTime(state_date_end)});
+      this.setState({ ...partialState });
     }
   }
+
+  updateMoscowTime = () => {
+    this.props.actionLoadTimeMoscow().then((time) => {
+      const partialState = {
+        date_start: createValidDateTime(getStartOfServerToday(time.date)),
+        date_end: createValidDateTime(time.date),
+      };
+
+      this.setState({ ...partialState });
+    });
+  };
 
   carInfoToggleForToday: any = (e) => {
     const disbledByTrackPlayStatys = this.props.status !== 'stop';
@@ -103,14 +120,15 @@ class TitleTrackTab extends React.Component<
       )
     ) {
       const datesIsMove = (
-        diffDates(getTrackDefaultDateStart(), this.state.date_start)
-        || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
+        diffDates(this.props.searchState.date_start, this.state.date_start)
+        || diffDates(this.props.searchState.date_end, this.state.date_end)
       );
       this.props.carInfoToggleForToday();
+      this.updateMoscowTime();
       if (datesIsMove && !this.props.forToday) {
         const partialState = {
-          date_start: createValidDateTime(getTrackDefaultDateStart()),
-          date_end: createValidDateTime(getTrackDefaultDateEnd()),
+          date_start: createValidDateTime(this.state.date_start),
+          date_end: createValidDateTime(this.state.date_end),
           errorDates: '',
         };
         this.props.setDataInSearch({
@@ -156,7 +174,7 @@ class TitleTrackTab extends React.Component<
 
       partialState.errorDates = this.validateDates(partialState.date_start, partialState.date_end);
 
-      this.props.changeDate(field, value);
+      // this.props.changeDate(field, value);
       this.setState({ ...partialState });
     }
   };
@@ -329,10 +347,10 @@ const mapStateToProps = (state) => ({
   loadingTrack: isArray(state.loading.loadingType)
     ? state.loading.loadingType.includes(CAR_INFO_SET_TRACK_CACHING)
     : false,
-  state_date_end: state.monitorPage.carInfo.date_end,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  actionLoadTimeMoscow: () => dispatch(actionLoadTimeMoscow({}, { page: 'mainpage' })),
   carInfoToggleForToday: () => dispatch(carInfoToggleForToday()),
   changeDate: (field, value) => dispatch(carInfoChangeDate(field, value)),
   fetchMissionsData: (props) => dispatch(fetchCarInfo(props, { page: 'mainpage' })),

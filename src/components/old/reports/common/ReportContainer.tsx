@@ -525,8 +525,12 @@ class ReportContainer extends React.Component<
 
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
+      const isSummaryEnable
+      =  reportKey === 'fuel_cards_report' 
+        ? this.props.summaryList.length > 0
+        : 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
       let report = [...this.props.list];
-      let summary = [...this.props.summaryList];
+      let summary = isSummaryEnable && [...this.props.summaryList];
 
       if (reportKey === 'car_usage_report') {
         const schema = Object.fromEntries(
@@ -554,29 +558,33 @@ class ReportContainer extends React.Component<
           return d;
         });
 
-        summary = summary.map((d: any) => {
-          Object.entries(schema).forEach(([key, metaRender]: any) => {
-            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
-              const count = d[key];
+        summary = summary 
+          ? summary.map((d: any) => {
+            Object.entries(schema).forEach(([key, metaRender]: any) => {
+              if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
+                const count = d[key];
 
-              d[`${key}_str`] = `${count}`;
-            }
-          });
-          return d;
-        });
+                d[`${key}_str`] = `${count}`;
+              }
+            });
+            return d;
+          })
+          : null;
       }
 
       payload = {
         rows: {
           report: report.map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
-          summary: summary.map(
-            (elem) => ({
-              ...elem,
-              children: elem?.children?.map(
+          summary: summary 
+            ? summary.map(
+              (elem) => ({
+                ...elem,
+                children: elem?.children?.map(
                 (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
               )
-            })
-          ),
+              })
+            )
+            : null,
         },
       };
     }

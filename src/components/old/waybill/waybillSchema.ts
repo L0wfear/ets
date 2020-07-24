@@ -432,13 +432,13 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (files, formData) => {
           if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
             return {
-              odometr: (formData.is_edited_odometr && !(files && files.some(({ kind }) => kind === 'odometr')))
+              odometr: (formData.is_edited_odometr && !(files && files.some((file) => file.kind === 'odometr' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
-              motohours: (formData.is_edited_motohours && !(files && files.some(({ kind }) => kind === 'motohours')))
+              motohours: (formData.is_edited_motohours && !(files && files.some((file) => file.kind === 'motohours' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
-              motohours_equip: (formData.is_edited_motohours_equip && !(files && files.some(({ kind }) => kind === 'motohours_equip')))
+              motohours_equip: (formData.is_edited_motohours_equip && !(files && files.some((file) => file.kind === 'motohours_equip' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
             };
@@ -547,6 +547,20 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_ACTIVE = status === 'active';
           if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
             return 'Поле "На ТС установлен одометр" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
+    equipment_fuel: {
+      title: 'На ТС установлено спецоборудование',
+      type: 'boolean',
+      dependencies: [
+        (_, {status, equipment_fuel }) => {
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && isNullOrUndefined(equipment_fuel)) {
+            return 'Поле "На ТС установлено спецоборудование" должно быть заполнено';
           }
           return false;
         }
@@ -770,10 +784,11 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, {odometr_diff, motohours_diff}) => {
+        (value, {odometr_diff, motohours_diff, gov_number}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (
             (!isArray(value) || (isArray(value) && !value.length))
-              && (odometr_diff > 0 || motohours_diff > 0)
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
           ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
           }

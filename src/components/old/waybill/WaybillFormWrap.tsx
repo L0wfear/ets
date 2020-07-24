@@ -653,8 +653,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         files: addFiles,
       });
     } else {
-      let deletedFiles = filesByKey.filter((file) => file.action !== 'delete');
-      let savedFiles = deletedFiles ? deletedFiles : filesByKey;
+      let deletedBase64Files = filesByKey.filter((file) => file.action !== 'delete' && !isNullOrUndefined(file.nativeFile));
+      let deletedFiles = filesByKey.filter((file) => file.action === 'delete' && !isNullOrUndefined(file.id));
+      let savedFiles = deletedFiles ? filesByKey : deletedBase64Files;
       let newFiles = [
         ...files.filter((file) => file.kind !== key),
         ...savedFiles.map(

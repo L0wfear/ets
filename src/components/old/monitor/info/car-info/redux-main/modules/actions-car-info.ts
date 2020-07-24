@@ -16,7 +16,6 @@ import {
   CAR_INFO_SET_POPUP_TRACK_POINT,
   CAR_INFO_SET_POPUP_PARKING_POINT,
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
-  CAR_INFO_REFRESH_DATE_FOR_TODAY,
   initialState,
 } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
@@ -50,11 +49,6 @@ export const carInfoSetStatus = (status) => ({
 
 export const carInfoToggleForToday = () => ({
   type: CAR_INFO_TOGGLE_FOR_TODAY,
-  payload: {},
-});
-
-export const carInfoRefreshDateForToday = () => ({
-  type: CAR_INFO_REFRESH_DATE_FOR_TODAY,
   payload: {},
 });
 

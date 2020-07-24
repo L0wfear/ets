@@ -786,10 +786,11 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, {odometr_diff, motohours_diff}) => {
+        (value, {odometr_diff, motohours_diff, gov_number}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (
             (!isArray(value) || (isArray(value) && !value.length))
-              && (odometr_diff > 0 || motohours_diff > 0)
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
           ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
           }

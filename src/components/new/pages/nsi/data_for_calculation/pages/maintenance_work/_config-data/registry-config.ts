@@ -31,17 +31,6 @@ export const getToConfig = (): TypeConfigData<MaintenanceWork> => {
     filter: {
       fields: [
         {
-          valueKey: 'okrug_name',
-          title: 'Округ',
-          type: 'multiselect',
-        },
-        {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
-          title: 'Организация',
-          type: 'multiselect',
-        },
-        {
           valueKey: 'name',
           title: 'Наименование',
           type: 'multiselect',
@@ -66,16 +55,6 @@ export const getToConfig = (): TypeConfigData<MaintenanceWork> => {
           {
             key: 'enumerated',
             title: '№',
-          },
-          {
-            key: 'okrug_name',
-            title: 'Округ',
-            width: 150,
-          },
-          {
-            key: 'company_name',
-            title: 'Организация',
-            width: 200,
           },
           {
             key: 'name',

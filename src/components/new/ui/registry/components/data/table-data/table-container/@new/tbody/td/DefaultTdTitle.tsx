@@ -38,13 +38,13 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
       value = <input type="checkbox" disabled checked={!!value} />;
     }
     if (format === 'toFixed1') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(1).replace('.', ',') : '';
     }
     if (format === 'toFixed2') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2).replace('.', ',') : '';
     }
     if (format === 'toFixed3') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(3).replace('.', ',') : '';
     }
     if (format === 'array') {
       value = isArray(value) ? value.join(', ') : '';

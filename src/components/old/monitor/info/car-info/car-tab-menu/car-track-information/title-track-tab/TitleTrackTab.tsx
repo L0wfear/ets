@@ -39,7 +39,6 @@ type PropsTitleTrackTab = {
 
   track: any;
   status: string;
-  state_date_end: string;
   loadingTrack: boolean;
 
   map_track_days: InitialStateSession['appConfig']['map_track_days'];
@@ -80,16 +79,23 @@ class TitleTrackTab extends React.Component<
     return null;
   }
 
-  componentDidUpdate () {
-    const {
-      state_date_end,
-      forToday,
-    } = this.props;
+  componentDidMount () {
+    const datesIsMove = (
+      diffDates(getTrackDefaultDateStart(), this.state.date_start)
+      || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
+    );
+    if(datesIsMove) {
+      const partialState = {
+        date_start: createValidDateTime(getTrackDefaultDateStart()),
+        date_end: createValidDateTime(getTrackDefaultDateEnd()),
+        errorDates: '',
+      };
+      this.props.setDataInSearch({
+        date_start: createValidDateTime(partialState.date_start),
+        date_end: createValidDateTime(partialState.date_end),
+      });
 
-    const isDiffDates = diffDates(createValidDateTime(state_date_end), this.state.date_end);
-
-    if (isDiffDates && forToday) {
-      this.setState({date_end: createValidDateTime(state_date_end)});
+      this.setState({ ...partialState });
     }
   }
 
@@ -156,7 +162,7 @@ class TitleTrackTab extends React.Component<
 
       partialState.errorDates = this.validateDates(partialState.date_start, partialState.date_end);
 
-      this.props.changeDate(field, value);
+      // this.props.changeDate(field, value);
       this.setState({ ...partialState });
     }
   };
@@ -329,7 +335,6 @@ const mapStateToProps = (state) => ({
   loadingTrack: isArray(state.loading.loadingType)
     ? state.loading.loadingType.includes(CAR_INFO_SET_TRACK_CACHING)
     : false,
-  state_date_end: state.monitorPage.carInfo.date_end,
 });
 
 const mapDispatchToProps = (dispatch) => ({

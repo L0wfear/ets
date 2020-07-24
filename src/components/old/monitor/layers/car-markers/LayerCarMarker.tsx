@@ -90,7 +90,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         carActualGpsNumberIndex,
         STATUS_TC_FOLLOW_ON_CAR,
         odh_mkad,
-        forToday,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
@@ -190,7 +189,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
       if (
         gps_code
         && lastPoint !== prevProps.lastPoint
-        && forToday
+        && this.props.forToday
         && !isEmpty(odh_mkad)
         && this.state.carPointsDataWs[gps_code]
       ) {
@@ -418,7 +417,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         filters,
         carActualGpsCount,
         carActualList,
-        forToday,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
@@ -441,7 +439,6 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
             gps_code === state_gps_code
             && lastPoint !== -1
             && lastPoint
-            && forToday
           ) {
             if (lastPoint.timestamp > point.timestamp) {
               point = {

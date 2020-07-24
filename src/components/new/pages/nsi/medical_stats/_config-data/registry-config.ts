@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import medicalStatsPermissions from './permissions';
 import { MedicalStats } from 'redux-main/reducers/modules/medical_stats/@types/medicalStats';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'medicalStatsRegistry';
 
@@ -37,12 +38,22 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
       fields: [
         {
           valueKey: 'okrug_name',
-          title: 'Округ',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
           type: 'multiselect',
         },
         {
           valueKey: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
         },
         {
@@ -95,12 +106,22 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
           },
           {
             key: 'okrug_name',
-            title: 'Округ',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
             width: 150,
           },
           {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

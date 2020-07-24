@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import cleaningRatePermissions from './permissions';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
+import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 
 export const registryKey = 'cleaningRateRegistry';
 
@@ -43,13 +44,23 @@ export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<Cleanin
       fields: [
         {
           valueKey: 'okrug_name',
-          title: 'Округ',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
           type: 'multiselect',
         },
         {
           valueKey: 'company_id',
           labelKey: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
         },
         {
@@ -91,12 +102,22 @@ export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<Cleanin
           },
           {
             key: 'okrug_name',
-            title: 'Округ',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
             width: 150,
           },
           {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

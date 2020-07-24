@@ -121,6 +121,7 @@ export type WaybillRegistryRow = {
     iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
   }>;
   track_length: number;
+  track_length_km: number;
   trailer_id: number;
   refill_type_ids: number;
   work_mode_id: number;

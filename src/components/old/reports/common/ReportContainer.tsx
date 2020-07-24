@@ -525,8 +525,12 @@ class ReportContainer extends React.Component<
 
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
+      const isSummaryEnable
+      =  reportKey === 'fuel_cards_report' 
+        ? this.props.summaryList.length > 0
+        : 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
       let report = [...this.props.list];
-      let summary = [...this.props.summaryList];
+      let summary = isSummaryEnable ? [...this.props.summaryList] : [];
 
       if (reportKey === 'car_usage_report') {
         const schema = Object.fromEntries(

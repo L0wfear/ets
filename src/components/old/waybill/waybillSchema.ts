@@ -435,9 +435,15 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           }
           if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
             return {
-              odometr: !(files && files.some(({ kind }) => kind === 'odometr')) ? 'Поле "Файл" должно быть заполнено' : false,
-              motohours: !(files && files.some(({ kind }) => kind === 'motohours')) ? 'Поле "Файл" должно быть заполнено': false,
-              motohours_equip: !(files && files.some(({ kind }) => kind === 'motohours_equip')) ? 'Поле "Файл" должно быть заполнено' : false,
+              odometr: !(files && files.some((file) => file.kind === 'odometr' && file.action !== 'delete'))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
+              motohours: !(files && files.some((file) => file.kind === 'motohours' && file.action !== 'delete'))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
+              motohours_equip: !(files && files.some((file) => file.kind === 'motohours_equip' && file.action !== 'delete'))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
             };
           }
           return false;

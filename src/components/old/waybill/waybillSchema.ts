@@ -5,7 +5,7 @@ import { diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import { isNumber, isArray, isString } from 'util';
+import { isNumber, isArray, isString, isNullOrUndefined } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
@@ -14,8 +14,6 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
 };
-
-const isNullOrUndefined = (value) => value === null || value === undefined;
 
 const validateFuelCardId = (
   rowData: ValuesOf<Waybill['car_refill']>,

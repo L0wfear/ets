@@ -129,6 +129,7 @@ const makeRowsWithNoneStructure = (rows, colMeta) =>
 export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
   if (get(data, 'result.meta.summary.fields')) {
     let rows = get(data, 'result.rows', []);
+    const level = get(data, 'result.meta.level');
     const {
       result: {
         meta: {
@@ -203,7 +204,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             _fix_bottom: true,
           }));
         }
-        if (reportKey === 'fuel_consumption_new_report') { // <<< переписать в 36м, вынести в отдельную функцию, используется в 2х местах
+        if (reportKey === 'fuel_consumption_new_report' && level === 'company') { // <<< переписать в 36м, вынести в отдельную функцию, используется в 2х местах
           const makeFuelConsumptionReportSum = (cols) => cols.reduce( ( result, current ) => {
             for(const key in current){
               const value = current[key];

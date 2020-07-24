@@ -15,7 +15,7 @@ const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
 };
 
-const isNullOrUndefined = (value) => value === null || value === undefined; 
+const isNullOrUndefined = (value) => value === null || value === undefined;
 
 const validateFuelCardId = (
   rowData: ValuesOf<Waybill['car_refill']>,
@@ -434,13 +434,13 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (files, formData) => {
           if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
             return {
-              odometr: (formData.is_edited_odometr && !(files && files.some(({ kind }) => kind === 'odometr')))
+              odometr: (formData.is_edited_odometr && !(files && files.some((file) => file.kind === 'odometr' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
-              motohours: (formData.is_edited_motohours && !(files && files.some(({ kind }) => kind === 'motohours')))
+              motohours: (formData.is_edited_motohours && !(files && files.some((file) => file.kind === 'motohours' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
-              motohours_equip: (formData.is_edited_motohours_equip && !(files && files.some(({ kind }) => kind === 'motohours_equip')))
+              motohours_equip: (formData.is_edited_motohours_equip && !(files && files.some((file) => file.kind === 'motohours_equip' && file.action !== 'delete')))
                 ? 'Поле "Файл" должно быть заполнено'
                 : false,
             };

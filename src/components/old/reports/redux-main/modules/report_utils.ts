@@ -206,24 +206,16 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
         }
         if (reportKey === 'fuel_consumption_new_report' && level === 'company') { // <<< переписать в 36м, вынести в отдельную функцию, используется в 2х местах
           const makeSumTableWithSumStrings = (data) => {
-            const uniqValuesArr = data.filter((elem, index, arr) => (
-              index === arr.findIndex((el) => el.fuel_type_name === elem.fuel_type_name && el.structure_name === elem.structure_name)
-            ));
-
-            const summaryStringsArr = uniqValuesArr.map((element) => data.reduce( ( result, current ) => {
-              if(
-                element.fuel_type_name === current.fuel_type_name 
-                && element.structure_name === current.structure_name
-              ) {
-                for(const key in current){
-                  const value = key === '_uniq_field' ? Math.round(Math.random() * 10000) : current[key];
-                  if(result[key] === undefined) {
-                    result[key] = value;
-                  } else if( typeof result[key] === 'string') {
-                    data.every((el) => el[key] === result[key]) ? result[key] = value : result[key] = '';
-                  } else {
-                    result[key] += value;
-                  }
+            const uniqValuesArr = Object.values(groupBy(data, 'fuel_type_name'));
+            const summaryStringsArr = uniqValuesArr.map((element) => element.reduce( ( result, current ) => {
+              for(const key in current){
+                const value = key === '_uniq_field' ? Math.round(Math.random() * 10000) : current[key];
+                if(result[key] === undefined) {
+                  result[key] = value;
+                } else if( typeof result[key] === 'string') {
+                  element.every((el) => el[key] === result[key]) ? result[key] = value : result[key] = '';
+                } else {
+                  result[key] += value;
                 }
               }
               return result;

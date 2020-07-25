@@ -1445,8 +1445,12 @@ class WaybillForm extends React.Component<Props, State> {
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
     };
+    const lastWaybill = this.state?.lastWaybill;
+    const clearEquipmentFuelData = !(lastWaybill && !isNullOrUndefined(lastWaybill['equipment_fuel_type']));
+    const closedEquipmentData = getClosedEquipmentData(lastWaybill);
     let dialogIsConfirmed = false;
-    if (changeObj.is_one_fuel_tank) {
+
+    if (changeObj.is_one_fuel_tank && clearEquipmentFuelData) {
       dialogIsConfirmed = await this.clearFuelEquipmentData(
         changeObj,
         true,
@@ -1454,8 +1458,6 @@ class WaybillForm extends React.Component<Props, State> {
         'is_one_fuel_tank',
       );
     } else {
-      const closedEquipmentData = getClosedEquipmentData(this.state?.lastWaybill);
-
       this.handleMultipleChange({
         ...closedEquipmentData,
         ...changeObj,
@@ -1463,7 +1465,7 @@ class WaybillForm extends React.Component<Props, State> {
       });
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
-      this.handleMultipleChange(changeObj);
+      this.handleMultipleChange({...closedEquipmentData, ...changeObj, equipment_fuel});
     }
     return dialogIsConfirmed;
   };

@@ -298,7 +298,7 @@ export default class DataTable extends React.Component<Props, State> {
   };
 
   saveFilter = (filterValues) => {
-    const savedFilterValues: any = Object.fromEntries(Object.entries(filterValues).filter((el) => this.props.aggrFields.includes(el[0]))); 
+    const savedFilterValues: any = Object.fromEntries(Object.entries(filterValues).filter((el) => this.props.aggrFields?.includes(el[0]))); 
 
     if (__DEVELOPMENT__) {
       console.info('SAVE FILTER_', savedFilterValues);  // eslint-disable-line

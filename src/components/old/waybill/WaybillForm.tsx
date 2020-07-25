@@ -420,7 +420,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           odometr_start: this.state?.lastWaybill?.odometr_end,
           odometr_reason_id: null,
-          files: files ? [...files.filter(({ kind }) => kind !== 'odometr')] : [],
+          files: files.map(
+            (elem) => elem.kind === 'odometr' ? { ...elem, action: 'delete'} : {...elem}
+          ),
           is_edited_odometr: false,
         });
       }).catch(() => {
@@ -452,7 +454,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
-          files: files ? [...files.filter(({ kind }) => kind !== 'motohours')] : [],
+          files: files.map(
+            (elem) => elem.kind === 'motohours' ? { ...elem, action: 'delete'} : {...elem}
+          ),
           is_edited_motohours: false,
         });
       }).catch(() => {
@@ -484,7 +488,9 @@ class WaybillForm extends React.Component<Props, State> {
         this.handleMultipleChange({
           motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
           motohours_equip_reason_id: null,
-          files: files ? [...files.filter(({ kind }) => kind !== 'motohours_equip')] : [],
+          files: files.map(
+            (elem) => elem.kind === 'motohours_equip' ? { ...elem, action: 'delete'} : {...elem}
+          ),
           is_edited_motohours_equip: false,
         });
       }).catch(() => {
@@ -1164,10 +1170,10 @@ class WaybillForm extends React.Component<Props, State> {
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
-        const odometr_start = is_edited_odometr
+        const odometr_start = is_edited_odometr || !isNotNull(lastWaybill.odometr_end)
           ? state.odometr_start
           : lastWaybill.odometr_end;
-        const motohours_start = is_edited_motohours
+        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end)
           ? state.motohours_start
           : lastWaybill.motohours_end;
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)

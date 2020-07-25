@@ -1170,10 +1170,10 @@ class WaybillForm extends React.Component<Props, State> {
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
-        const odometr_start = is_edited_odometr
+        const odometr_start = is_edited_odometr || !isNotNull(lastWaybill.odometr_end)
           ? state.odometr_start
           : lastWaybill.odometr_end;
-        const motohours_start = is_edited_motohours
+        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end)
           ? state.motohours_start
           : lastWaybill.motohours_end;
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)

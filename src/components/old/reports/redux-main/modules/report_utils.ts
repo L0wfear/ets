@@ -206,8 +206,8 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
         }
         if (reportKey === 'fuel_consumption_new_report' && level === 'company') { // <<< переписать в 36м, вынести в отдельную функцию, используется в 2х местах
           const makeSumTableWithSumStrings = (data) => {
-            const uniqValuesArr = Object.values(groupBy(data, 'fuel_type_name'));
-            const summaryStringsArr = uniqValuesArr.map((element) => element.reduce( ( result, current ) => {
+            const groupByFuelType = Object.values(groupBy(data, 'fuel_type_name'));
+            const summaryStringsArr = groupByFuelType.map((element) => element.reduce( ( result, current ) => {
               for(const key in current){
                 const value = key === '_uniq_field' ? Math.round(Math.random() * 10000) : current[key];
                 if(result[key] === undefined) {

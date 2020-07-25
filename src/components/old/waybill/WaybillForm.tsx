@@ -404,8 +404,13 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { odometr_start, is_edited_odometr, odometr_reason_id, files },
     } = this.props;
 
-    if ((odometr_start !== this.state?.lastWaybill?.odometr_end)
-      || odometr_reason_id || files && files.some((file) => file.kind === 'odometr')) {
+    const eventClick = !is_edited_odometr ? 'pencil' : 'lock';
+    const changeOdometrTrigger = Boolean(
+      (odometr_start !== this.state?.lastWaybill?.odometr_end)
+      || odometr_reason_id || files && files.some((file) => file.kind === 'odometr')
+    );
+
+    if (changeOdometrTrigger && eventClick !== 'pencil') {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -431,8 +436,13 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { motohours_start, is_edited_motohours, motohours_reason_id, files },
     } = this.props;
 
-    if ((motohours_start !== this.state?.lastWaybill?.motohours_end)
-      || motohours_reason_id || files && files.some((file) => file.kind === 'motohours')) {
+    const eventClick = !is_edited_motohours ? 'pencil' : 'lock';
+    const changeMotohoursTrigger = Boolean(
+      (motohours_start !== this.state?.lastWaybill?.motohours_end)
+      || motohours_reason_id || files && files.some((file) => file.kind === 'motohours')
+    );
+
+    if (changeMotohoursTrigger && eventClick !== 'pencil') {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',
@@ -458,8 +468,13 @@ class WaybillForm extends React.Component<Props, State> {
       formState: { motohours_equip_start, is_edited_motohours_equip, motohours_equip_reason_id, files },
     } = this.props;
 
-    if ((motohours_equip_start !== this.state?.lastWaybill?.motohours_equip_end)
-      || motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')) {
+    const eventClick = !is_edited_motohours_equip ? 'pencil' : 'lock';
+    const changeMotohoursTrigger = Boolean(
+      (motohours_equip_start !== this.state?.lastWaybill?.motohours_equip_end)
+      || motohours_equip_reason_id || files && files.some((file) => file.kind === 'motohours_equip')
+    );
+
+    if (changeMotohoursTrigger && eventClick !== 'pencil' ) {
       return global.confirmDialog({
         title: 'Внимание!',
         body: 'Заполненные поля в блоке «Изменение показателя выезда» будут удалены. Продолжить?',

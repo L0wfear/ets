@@ -32,6 +32,16 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_name',
           title: [
@@ -39,6 +49,10 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
               displayIf: displayIfContant.isOkrug,
               title: 'Учреждение',
             },
+            {
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
+            }
           ],
           type: 'multiselect',
         },
@@ -50,6 +64,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
         {
           valueKey: 'operation_name',
           title: 'Операция',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'order_number',
+          title: 'Номер приказа',
           type: 'multiselect',
         },
         {
@@ -69,6 +88,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           title: 'Норма для зимнего периода',
           type: 'advanced-number',
           step: 1,
+        },
+        {
+          valueKey: 'gov_number',
+          title: 'Рег. номер ТС',
+          type: 'multiselect',
         },
         {
           valueKey: 'car_special_model_id',
@@ -115,12 +139,26 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
             key: 'company_name',
             title: [
               {
                 displayIf: displayIfContant.isOkrug,
                 title: 'Учреждение',
               },
+              {
+                title: 'Организация',
+                displayIf: displayIfContant.isKgh,
+              }
             ],
             width: 200,
           },
@@ -128,6 +166,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
             key: 'order_date',
             title: 'Дата приказа',
             format: 'date',
+            width: 150,
+          },
+          {
+            key: 'order_number',
+            title: 'Номер приказа',
             width: 150,
           },
           {
@@ -153,6 +196,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           {
             key: 'winter_rate',
             title: 'Норма для зимнего периода',
+            width: 250,
+          },
+          {
+            key: 'gov_number',
+            title: 'Рег. номер ТС',
             width: 250,
           },
           {

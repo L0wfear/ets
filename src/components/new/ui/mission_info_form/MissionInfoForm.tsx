@@ -31,7 +31,7 @@ import {
 } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
-import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+import { actionGetAndSetInStoreTracksCaching, actionResetTracksCaching, } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
 /**
  * Карточка информации о задании
@@ -51,7 +51,6 @@ class MissionInfoForm extends React.Component<
     } = props;
 
     this.state = {
-      track: [],
       front_parkings: [],
       cars_sensors: {},
       polys: {},
@@ -94,6 +93,9 @@ class MissionInfoForm extends React.Component<
     }
   }
 
+  componentWillUnmount() {
+    this.props.actionResetTracksCaching();
+  }
   /**
    * загрузка трека
    * если в маршруте был геообъект мкада, то загружаются геоометрии мкада (для правильного раскрашивания точек), а после сам трек
@@ -122,20 +124,18 @@ class MissionInfoForm extends React.Component<
       payload.odh_mkad = odh_mkad;
     }
 
-    const calcTrackData = await this.props
-      .actionGetTracksCaching(
-        payload,
-        {
-          page: 'any',
-          path: 'missionInfoForm',
-        },
-      );
+    await this.props.actionGetAndSetInStoreTracksCaching(
+      payload,
+      {
+        page: 'any',
+        path: 'missionInfoForm',
+      },
+    );
 
     this.setState({
-      track: calcTrackData.track,
-      front_parkings: calcTrackData.front_parkings,
-      parkingCount: Number(calcTrackData.time_of_parking),
-      cars_sensors: calcTrackData.cars_sensors,
+      front_parkings: this.props.tracksCaching.front_parkings,
+      parkingCount: Number(this.props.tracksCaching.time_of_parking),
+      cars_sensors: this.props.tracksCaching.cars_sensors,
     });
   }
 
@@ -144,7 +144,7 @@ class MissionInfoForm extends React.Component<
    * @param route_data данные по контрекному маршруту от route?id=
    */
   async makePolysFromPoints(route_data: Route | null) {
-    if (route_data) {
+    if (route_data && this.state.missionReport) {
       const { missionReport } = this.state;
       this.setState({
         polys: {
@@ -178,31 +178,33 @@ class MissionInfoForm extends React.Component<
       .then(({ payload: { [serverName]: polysObj } }: any) => {
         const { missionReport } = this.state;
         const missionReportObjectIdIndex = new Set();
-        missionReport.forEach(({ object_id }) => {
-          missionReportObjectIdIndex.add(object_id);
-        });
+        if(missionReport) {
+          missionReport.forEach(({ object_id }) => {
+            missionReportObjectIdIndex.add(object_id);
+          });
+          
+          this.setState({
+            inputLines,
+            polys: {
+              [serverName]: Object.entries(polysObj).reduce(
+                (newObj, [geoId, geoData]: any) => {
+                  const { front_id } = geoData;
 
-        this.setState({
-          inputLines,
-          polys: {
-            [serverName]: Object.entries(polysObj).reduce(
-              (newObj, [geoId, geoData]: any) => {
-                const { front_id } = geoData;
+                  if (missionReportObjectIdIndex.has(front_id)) {
+                    newObj[geoId] = {
+                      ...geoData,
+                      ...objectListIndex[front_id],
+                      frontIsSelected: false,
+                    };
+                  }
 
-                if (missionReportObjectIdIndex.has(front_id)) {
-                  newObj[geoId] = {
-                    ...geoData,
-                    ...objectListIndex[front_id],
-                    frontIsSelected: false,
-                  };
-                }
-
-                return newObj;
-              },
-              {},
-            ),
-          },
-        });
+                  return newObj;
+                },
+                {},
+              ),
+            },
+          });
+        }
       });
   }
 
@@ -262,7 +264,7 @@ class MissionInfoForm extends React.Component<
               <MapContainer
                 gov_number={car_data.gov_number}
                 gps_code={car_data.gps_code}
-                track={this.state.track}
+                track={this.props.tracksCaching?.track || []}
                 geoobjects={this.state.polys}
                 inputLines={this.state.inputLines}
                 front_parkings={this.state.front_parkings}
@@ -316,6 +318,7 @@ class MissionInfoForm extends React.Component<
 export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
   (state) => ({
     company_id: state.session.userData.company_id,
+    tracksCaching: state.some_uniq.tracksCaching,
   }),
   (dispatch: any) => ({
     loadGeozones: (serverName, company_id) =>
@@ -334,8 +337,11 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
     actionLoadRouteById: (...arg) => (
       dispatch(routesActions.actionLoadRouteById(...arg))
     ),
-    actionGetTracksCaching: (...arg) => (
-      dispatch(actionGetTracksCaching(...arg))
+    actionGetAndSetInStoreTracksCaching: (...arg) => (
+      dispatch(actionGetAndSetInStoreTracksCaching(...arg))
+    ),
+    actionResetTracksCaching: () => (
+      dispatch(actionResetTracksCaching())
     ),
   }),
 )(MissionInfoForm);

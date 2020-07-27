@@ -1,3 +1,5 @@
+import { TracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/@types';
+
 export type PropsLayerCarMarker = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
   removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
@@ -5,7 +7,9 @@ export type PropsLayerCarMarker = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
-
+  tracksCaching: TracksCaching;
+  actionSetTracksCaching: any;
+  odh_mkad: object;
   token: string;
   points_ws: string;
   gps_code: string | null;

@@ -19,6 +19,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TaxiCalcBlock } from './Taxes';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
+import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 
 /**
  * Компонент таксировки ТС
@@ -63,20 +64,34 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     return parseFloat(result);
   }
 
-  static calculateFinalFactValue(data) {
+  static calculateFinalFactValue(data, type) {
     if (!data || (data && !data.length)) {
-      return 0;
+      return {
+        withMileage: 0,
+        withoutMileage: 0,
+      };
     }
     const result = data.reduce(
       (res, cur) => {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
-          res += parseFloat(cur.FACT_VALUE); // eslint-disable-line
+          if (
+            !cur.measure_unit_name
+            || (type === 'motohours' && cur.measure_unit_name === 'л/моточас')
+            || (type === 'odometr' && cur.measure_unit_name === 'л/км')
+          ) {
+            res.withMileage += parseFloat(cur.FACT_VALUE); // eslint-disable-line
+          } else {
+            res.withoutMileage += parseFloat(cur.FACT_VALUE);
+          }
         }
         return res;
       },
-      0,
+      {
+        withMileage: 0,
+        withoutMileage: 0,
+      },
     );
-    return parseFloat(result);
+    return result;
   }
 
   tableCaptions: Array<any>;
@@ -197,6 +212,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       operations: [],
       fuelRates: [],
       errorsAll: {},
+      totalValueError: '',
     };
   }
 
@@ -236,11 +252,30 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     return { operations, fuelRates, tableData: taxes, errorsAll };
   }
 
+  componentDidUpdate() {
+    const {
+      taxes = this.state.tableData,
+      baseFactValue,
+      type,
+      setTotalValueError,
+    } = this.props;
+    const hasTaxes = taxes.length > 0;
+    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
+    const finalFactValueMoreOrEqualBaseValue
+      = Number(baseFactValue) <= Number(finalFactValue);
+    const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег оборудования не должен превышать итоговый нормативный пробег оборудования' : ''; 
+
+    if (this.state.totalValueError !== error && hasTaxes) {
+      this.setState({totalValueError: error});
+      setTotalValueError('equipmentTaxesTotalValueError', Boolean(error));
+    }
+  }
+
   handleFactValueChange = (index, e) => {
     const { tableData } = this.state;
     const current = tableData[index];
     const oldCurrVal = current.FACT_VALUE;
-    current.FACT_VALUE = e.target.value === '' ? '' : Math.abs(e.target.value);
+    current.FACT_VALUE = e.target.value === '' || e.target.value <= 0 ? '' : Math.abs(e.target.value);
 
     const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
       current.FACT_VALUE,
@@ -263,7 +298,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
     current.RESULT = EquipmentTaxes.getResult(current);
     this.setState({ tableData });
-    this.props.onChange(tableData);
+    this.props.onChange(tableData, 'equipment_taxes_fact_value', index);
   };
 
   handleOperationChange = (index, rawValue, allOption) => {
@@ -291,7 +326,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       tableData[index].is_excluding_mileage = is_excluding_mileage;
       if (tableData[index].is_excluding_mileage) {
         tableData[index].iem_FACT_VALUE = tableData[index].FACT_VALUE;
-        tableData[index].FACT_VALUE = 0;
+        tableData[index].FACT_VALUE = null;
       } else if (last_is_excluding_mileage) {
         tableData[index].FACT_VALUE
           = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
@@ -300,23 +335,16 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       tableData[index].measure_unit_name = measure_unit_name;
 
       this.setState({ tableData });
-      this.props.onChange(tableData);
+      this.props.onChange(tableData, 'equipment_taxes_operation', index);
     }
   };
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { baseFactValue, errorsAll } = this.props;
-    const overallValue = +EquipmentTaxes.calculateFinalFactValue(
-      this.state.tableData,
-    );
+    const { errorsAll } = this.props;
 
-    const value
-      = baseFactValue || baseFactValue === 0
-        ? (baseFactValue - overallValue)
-        : null;
     tableData.push({
-      FACT_VALUE: value,
+      FACT_VALUE: null,
       OPERATION: null,
     });
     this.setState({ tableData, errorsAll });
@@ -341,14 +369,12 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       title = 'Расчет топлива по норме',
       hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
-      baseFactValue,
+      type
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = EquipmentTaxes.calculateFinalResult(taxes);
-    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes);
-    const finalFactValueEqualsBaseValue
-      = parseFloat(baseFactValue).toFixed(3)?.replace('.', ',')
-      === parseFloat(finalFactValue.toString()).toFixed(3)?.replace('.', ',');
+    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
+    const finalFactValueWithoutMileage = EquipmentTaxes.calculateFinalFactValue(taxes, type).withoutMileage;
 
     return (
       <TaxiCalcBlock hidden={hidden}>
@@ -402,21 +428,38 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         </Div>
         {Boolean(hasTaxes) && (
           <FooterEnd margin={30}>
+            <ErrorField>
+              {this.state.totalValueError}
+            </ErrorField>
             <div>
-              <b>{'Итого '}</b>
+              <div>
+                <b>{'Итого '}</b>
+              </div>
+              <div> {finalFactValueWithoutMileage ? <b>{'Без учета пробега '}</b> : ''} </div>
             </div>
             <div>
-              <b>
-                {!finalFactValueEqualsBaseValue ? (
-                  <SpanRed>{finalFactValue.toFixed(3)?.replace('.', ',')}</SpanRed>
-                ) : (
-                  <SpanGreen>{finalFactValue.toFixed(3)?.replace('.', ',')}</SpanGreen>
-                )}
-                <span> (км | м/ч)</span>
-              </b>
+              <div>
+                <b>
+                  {this.state.totalValueError ? (
+                    <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
+                  ) : (
+                    <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>
+                  )}
+                  <span> {type === 'motohours' ? 'м/ч' : 'км'} </span>
+                </b>
+                <div>
+                  {finalFactValueWithoutMileage
+                    ? <b>
+                      <SpanGreen>{finalFactValueWithoutMileage.toFixed(3).replace('.', ',')}</SpanGreen>
+                      <span> {type !== 'motohours' ? 'м/ч' : 'км'} </span>
+                    </b>
+                    : ''
+                  }
+                </div>
+              </div>
             </div>
             <div>
-              <b>{finalResult.toFixed(3)?.replace('.', ',')} л</b>
+              <b>{finalResult.toFixed(3).replace('.', ',')} л</b>
             </div>
           </FooterEnd>
         )}

@@ -14,6 +14,7 @@ export type PropsCarFilterByText = {
 export type StateCarFilterByText = {
   hidden: boolean;
   carActualGpsNumberIndex: Record<string, Car>;
+  carFilterMultyGpsCodeOptions: Array<IReactSelectOption>;
   carFilterMultyTypeOptions: Array<IReactSelectOption>;
   carFilterMultyTechConditionOptions: Array<IReactSelectOption>;
   carFilterMultyModelOptions: Array<IReactSelectOption>;

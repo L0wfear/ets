@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { clone, cloneDeep, get, last, eq } from 'lodash';
+import { clone, cloneDeep, get, eq } from 'lodash';
 import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
@@ -20,11 +20,13 @@ import {
   actionLoadRefillTypeAndSetInStore,
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
+import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
 import {
+  actionGetWaybillById,
   actionPrintWaybill,
   actionUpdateWaybill,
   actionCreateWaybill,
@@ -40,6 +42,8 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/waybillSchema';
 import { validate } from 'components/old/ui/form/new/validate';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -153,6 +157,7 @@ type StateProps = {
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
+  moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -215,18 +220,25 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
       edcRequestIds: null,
       timeId: null, // id таймера
+      taxesTotalValueError: false,
+      equipmentTaxesTotalValueError: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props !== prevProps 
+      || this.state.taxesTotalValueError !== prevState.taxesTotalValueError
+      || this.state.equipmentTaxesTotalValueError !== prevState.equipmentTaxesTotalValueError
+    ) {
       this.handleMultipleChange({});
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
     this.props.dispatch(fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(this.props));
+    await this.props.dispatch(actionGetAndSetInStoreMoscowTimeServer({}, this.props));
 
     const currentDate = new Date();
 
@@ -240,6 +252,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         company_id: this.props.currentUser.company_id,
       });
       defaultBill.structure_id = this.props.currentUser.structure_id;
+      defaultBill.plan_departure_date = createValidDateTime(this.props.moscowTimeServer.date);
+      defaultBill.plan_arrival_date = createValidDateTime(getTomorrow9amMoscowServerTime(this.props.moscowTimeServer.date));
 
       this.schema = waybillSchema;
       this.setState({
@@ -333,7 +347,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
                   && !formErrors.fact_departure_date)
                 || (!formErrors.fact_arrival_date
                   && formErrors.fact_departure_date)
-              ),
+              )
+              && !this.state.taxesTotalValueError
+              && !this.state.equipmentTaxesTotalValueError,
             canClose:
               this.state.isPermittedByKey.update && canCloseWrap(formErrors),
           });
@@ -357,7 +373,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             (this.state.isPermittedByKey.update
               || this.state.isPermittedByKey.departure_and_arrival_values
               || this.state.isPermittedByKey.refill)
-            && canSaveTestWrap(this.state.formErrors),
+            && canSaveTestWrap(this.state.formErrors)
+            && !this.state.taxesTotalValueError
+            && !this.state.equipmentTaxesTotalValueError,
           canClose: this.state.isPermittedByKey.update && Object.values(formErrors).filter((d) => !!d).length,
           formErrors,
         });
@@ -410,6 +428,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     clearInterval(timeId);
   }
 
+  getWaybill = async (id) => {
+    try {
+      const result = await this.props.dispatch(
+        actionGetWaybillById(id, this.props),
+      );
+      return result;
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
   createWaybill = async (waybill) => {
     try {
       const result = await this.props.dispatch(
@@ -448,8 +476,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     );
   };
 
-  handleFieldsChange = (formState) => {
+  handleFieldsChange = async (formState) => {
     let { formErrors } = this.state;
+    const { taxesTotalValueError, equipmentTaxesTotalValueError } = this.state;
     const newState: Partial<State> = {};
 
     formState.fuel_start = formState.fuel_start
@@ -558,8 +587,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
         // || formErrors.motohours_equip_end
-      );
-
+      )
+      && !taxesTotalValueError
+      && !equipmentTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formState = formState;
@@ -587,8 +617,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
-      );
-
+      )
+      && !this.state.taxesTotalValueError
+      && !this.state.equipmentTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formErrors = formErrors;
@@ -603,72 +634,125 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     }
   };
 
-  handleFormStateChange = (field, e) => {
+  handleFormFileChange = (key, filesByKey) => {
+    const { files } = this.state.formState;
+
+    let formState = cloneDeep(this.state.formState);
+
+    if (!files) {
+      let addFiles = [
+        ...filesByKey.map(
+          (rowData) => ({
+            ...rowData,
+            kind: key,
+          }),
+        ),
+      ];
+      this.handleFieldsChange({
+        ...formState,
+        files: addFiles,
+      });
+    } else {
+      let deletedBase64Files = filesByKey.filter((file) => file.action !== 'delete' && !isNullOrUndefined(file.nativeFile));
+      let deletedFiles = filesByKey.filter((file) => file.action === 'delete' && !isNullOrUndefined(file.id));
+      let savedFiles = deletedFiles ? filesByKey : deletedBase64Files;
+      let newFiles = [
+        ...files.filter((file) => file.kind !== key),
+        ...savedFiles.map(
+          (rowData) => ({
+            ...rowData,
+            kind: key,
+          }),
+        ),
+      ];
+      this.handleFieldsChange({
+        ...formState,
+        files: newFiles,
+      });
+    }
+  };
+
+  handleFormStateChange = (field, e, index) => {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
     console.info(field, value); // eslint-disable-line
-  
     formState = calculateWaybillMetersDiff(formState, field, value);
-  
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
-      const lastTax = last(formState.tax_data);
-  
-      if (lastTax) {
-        if (field === 'odometr_end' && formState.odometr_diff >= 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
-          } else {
-            lastTax.FACT_VALUE = formState.odometr_diff;
-            lastTax.RESULT = Taxes.getResult(lastTax);
-          }
+      const formStateTaxDataFirstElem = formState.tax_data[0];
+      const isFirstElemTaxOperationField = field === 'taxes_operation' && index === 0;
+      if (
+        (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
+          && formStateTaxDataFirstElem.measure_unit_name !== 'л/моточас'
+          && formState.odometr_diff >= 0
+          && (formStateTaxDataFirstElem.measure_unit_name === 'л/км')
+      ) {
+        if (formStateTaxDataFirstElem.is_excluding_mileage) {
+          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.odometr_diff;
+        } else {
+          formStateTaxDataFirstElem.FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff : null;
+          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
         }
-        if (field === 'motohours_end' && formState.motohours_diff >= 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
-          } else {
-            lastTax.FACT_VALUE = formState.motohours_diff;
-            lastTax.RESULT = Taxes.getResult(lastTax);
-          }
+      }
+      if (
+        (field === 'motohours_end' || isFirstElemTaxOperationField || field === 'motohours_start')
+           && formStateTaxDataFirstElem.measure_unit_name !== 'л/км'
+           && formState.motohours_diff >= 0
+           && (formStateTaxDataFirstElem.measure_unit_name === 'л/моточас')
+      ) {
+        if (formStateTaxDataFirstElem.is_excluding_mileage) {
+          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.motohours_diff;
+        } else {
+          formStateTaxDataFirstElem.FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
+          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
         }
-        if (formState.odometr_diff < 0 || formState.motohours_diff < 0) {
-          if (lastTax.is_excluding_mileage) {
-            lastTax.iem_FACT_VALUE = formState.odometr_diff;
-          } else {
-            lastTax.FACT_VALUE = null;
-            lastTax.RESULT = Taxes.getResult(lastTax);
-          }
+      }
+      if (
+        formStateTaxDataFirstElem.measure_unit_name !== 'л/моточас'
+          && (formStateTaxDataFirstElem.measure_unit_name === 'л/км')
+          && formState.odometr_diff <= 0
+          && isFirstElemTaxOperationField
+      ) {
+        if (formStateTaxDataFirstElem.is_excluding_mileage) {
+          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.odometr_diff;
+        } else {
+          formStateTaxDataFirstElem.FACT_VALUE = null;
+          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
+        }
+      }
+
+      if (
+        formStateTaxDataFirstElem.measure_unit_name !== 'л/км'
+          && (formStateTaxDataFirstElem.measure_unit_name === 'л/моточас')
+          && formState.motohours_diff <= 0
+          && isFirstElemTaxOperationField
+      ) {
+        if (formStateTaxDataFirstElem.is_excluding_mileage) {
+          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.motohours_diff;
+        } else {
+          formStateTaxDataFirstElem.FACT_VALUE = null;
+          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
         }
       }
     } 
     
-    if (
-      formState.equipment_tax_data 
-      && formState.equipment_tax_data.length 
-      && (field === 'equipment_tax_data' || field === 'motohours_equip_end')
-    ) {
-      const lastEquipmentTax = last(formState.equipment_tax_data);
-      if (lastEquipmentTax) {
-        if(
-          (field === 'equipment_tax_data'
-          && !lastEquipmentTax.OPERATION
-          && formState.motohours_equip_diff >= 0)
-          || (field === 'motohours_equip_end'
-          && formState.motohours_equip_diff >= 0)
-        ) {
-          lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
-        } else if (
-          field === 'equipment_tax_data'
-          && lastEquipmentTax.OPERATION
-          && lastEquipmentTax.FACT_VALUE >= 0
-        ) {
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
-        } else {
-          lastEquipmentTax.FACT_VALUE = null;
-          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
-        }
+    if (formState.equipment_tax_data && formState.equipment_tax_data.length ) {
+      
+      const formStateEquipmentTaxDataFirstElem = formState.equipment_tax_data[0];
+      const isFirstElemEquipmentTaxOperationField = field === 'equipment_taxes_operation' && index === 0;
+      if(
+        isFirstElemEquipmentTaxOperationField
+          && formState.motohours_equip_diff > 0
+      ) {
+        formStateEquipmentTaxDataFirstElem.FACT_VALUE = formState.motohours_equip_diff;
+        formStateEquipmentTaxDataFirstElem.RESULT = EquipmentTaxes.getResult(formStateEquipmentTaxDataFirstElem);
+      } else if (
+        (field === 'motohours_equip_end' || field === 'motohours_equip_start')
+          && formStateEquipmentTaxDataFirstElem.OPERATION
+      ) {
+        formStateEquipmentTaxDataFirstElem.FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff : null;
+        formStateEquipmentTaxDataFirstElem.RESULT = EquipmentTaxes.getResult(formStateEquipmentTaxDataFirstElem);
       }
     }
     this.handleFieldsChange(formState);
@@ -709,8 +793,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);
       });
-
-      this.handleFieldsChange(formState);
+      if (formState) {
+        this.handleFieldsChange(formState);
+      }
     };
 
     /**
@@ -809,12 +894,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
           // TODO сейчас возвращается один ПЛ
           const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+          const newState = await this.getWaybill(id);
 
           try {
-            formState.status = 'active';
-            formState.id = id;
+            newState.status = 'active';
 
-            await this.updateWaybill(formState);
+            await this.updateWaybill(newState);
             callback(id);
             this.props.onCallback();
           } catch (error) {
@@ -836,7 +921,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         } else {
           formState.status = 'draft';
           try {
-            await this.createWaybill(formState);
+            const r = await this.createWaybill(formState);
+            const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
+            return id;
           } catch ({ error_text }) {
             console.info(error_text); // eslint-disable-line
             return;
@@ -877,7 +964,14 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     };
 
     handleClose = async (taxesControl) => {
-      if (!taxesControl) {
+      const { 
+        gov_number,
+        motohours_diff,
+        odometr_diff, 
+      } = this.state.formState;
+      const govNumberRegExp = /^[\d]{4}/;
+      const checkTaxesControl = Boolean(govNumberRegExp.exec(gov_number)) ? motohours_diff > 0 : odometr_diff > 0;
+      if (!taxesControl && checkTaxesControl) {
         global.NOTIFICATION_SYSTEM.notify(
           getWarningNotification(
             'Необходимо заполнить нормы для расчета топлива!',
@@ -966,6 +1060,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       this.props.onCallback();
     };
 
+    setTotalValueError = (key: string, totalValueError: boolean) => {
+      this.setState({[key]: totalValueError});
+    };
+
     render() {
       return (
         <React.Fragment>
@@ -973,6 +1071,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             <WaybillForm
               formState={this.state.formState}
               handleFormChange={this.handleFormStateChange}
+              handleFormFileChange={this.handleFormFileChange}
               handleMultipleChange={this.handleMultipleChange}
               onSubmitActiveWaybill={this.submitActiveWaybill}
               onSubmit={this.handleFormSubmit}
@@ -986,7 +1085,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}
-
+              setTotalValueError={this.setTotalValueError}
               show
               onHide={this.onFormHide}
               page={this.props.page}
@@ -1017,5 +1116,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     employeeIndex: getEmployeeState(state).employeeIndex,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
+    moscowTimeServer: state.some_uniq.moscowTimeServer,
   }),
 )(WaybillFormWrap);

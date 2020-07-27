@@ -1,7 +1,10 @@
 import { DatePickerProps } from 'components/old/ui/input/date-picker/DatePicker';
 import { IPropsFileInput } from 'components/old/ui/input/FileInput/FileInput.h';
+import { glyphMap } from '../../../../../global-styled';
 
 export type ExtFieldCommon<V = any> = {
+  showBtn?: boolean;
+  btnProps?: any;
   ref?: any;
   id?: any;
   label?: string | boolean;
@@ -100,6 +103,14 @@ export type ExtFieldTypeByKey = {
   number: ExtFieldNumber;
   text: ExtFieldText;
   file: ExtFieldFile;
+};
+
+export type ExtFieldButton = {
+  title?: string;
+  disabled?: boolean;
+  onClick?: (obj: { [key: string]: any; }) => any;
+  glyph?: keyof typeof glyphMap;
+  style?: object;
 };
 
 export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];

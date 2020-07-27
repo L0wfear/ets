@@ -36,6 +36,12 @@ const MissionInfoFormById: React.FC<WithFormRegistrySearchAddProps<Partial<Missi
         };
 
         loadData();
+        
+        const intervlaId = setInterval(() => {
+          loadData();
+        }, 60000);
+
+        return () => clearInterval(intervlaId);
       },
       [props.element],
     );

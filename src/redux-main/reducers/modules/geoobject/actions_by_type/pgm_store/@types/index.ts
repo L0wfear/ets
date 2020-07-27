@@ -5,6 +5,7 @@ export type PgmStore = {
   id: number | null;
   liquid_pgm_volume: number | null;
   name: string;
+  okrug_name: string;
   pgm_stores_type_id: number;
   pgm_stores_type_name: string;
   shape: object;

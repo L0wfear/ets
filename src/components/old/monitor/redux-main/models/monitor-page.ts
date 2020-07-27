@@ -72,6 +72,7 @@ export type IStateMonitorPage = {
   filters: {
     data: {
       carFilterText: string;
+      carFilterMultyGpsCode: Array<number>;
       carFilterMultyType: Array<number>;
       carFilterMultyTechCondition: Array<number>;
       carFilterMultyModel: Array<number>;
@@ -143,6 +144,7 @@ export const initialMonitorState: IStateMonitorPage = {
   filters: {
     data: {
       carFilterText: '',
+      carFilterMultyGpsCode: [],
       carFilterMultyType: [],
       carFilterMultyTechCondition: [],
       carFilterMultyModel: [],

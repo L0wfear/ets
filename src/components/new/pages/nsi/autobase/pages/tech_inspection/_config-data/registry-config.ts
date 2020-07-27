@@ -3,6 +3,7 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import techInspectionPermissions from './permissions';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'techInspectionRegistry';
 
@@ -48,9 +49,24 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
-          labelKey: 'company_short_name',
-          title: 'Организация',
+          labelKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
         },
         {
@@ -106,8 +122,23 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             title: '№',
           },
           {
-            key: 'company_short_name',
-            title: 'Организация',
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 150,
           },
           {

@@ -40,6 +40,7 @@ import { getDefaultFuelRateElement } from './utils';
 import { fuelRateSchema } from './schema';
 import fuelRatesPermissions from '../_config-data/permissions';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 
 const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   const {
@@ -52,6 +53,8 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
     page,
     path,
   } = props;
+
+  const [carListOptions, setCarListOptions] = React.useState([]);
 
   React.useEffect(() => {
     props.actionGetAndSetInStoreSpecialModel({}, { page, path });
@@ -71,6 +74,29 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
     );
   }, [state.car_special_model_id]);
 
+  React.useEffect(
+    () => {
+      props.dispatch(autobaseGetSetCar({}, { page, path })).then(
+        ({ data }) => (
+          setCarListOptions(
+            data.map(
+              (rowData) => ({
+                objChange: {
+                  car_special_model_id: rowData.special_model_id,
+                  car_model_id: rowData.model_id,
+                  car_id: rowData.asuods_id,
+                },
+                value: rowData.asuods_id,
+                label: rowData.gov_number,
+              }),
+            ),
+          )
+        ),
+      );
+    },
+    [],
+  );
+
   const handleSpecialModelChange = React.useCallback(
     (value) => {
       const objChange: Partial<FuelRate> = {
@@ -82,7 +108,22 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
       }
       props.handleChange(objChange);
     },
-    [props.modelsList, state.car_model_id],
+    [props.modelsList, state.car_model_id,],
+  );
+
+  const handleGovNumberChange = React.useCallback(
+    (_, __, changeFields) => { 
+      const clearFieldsObject = {
+        car_special_model_id: null,
+        car_model_id: null,
+        car_id: null,
+      };
+      const objChange = changeFields ? changeFields.objChange : clearFieldsObject;
+      Object.entries(objChange).forEach(([key, value]) => {
+        props.handleChange({[key]: value});
+      });
+    },
+    [props.handleChange,],
   );
 
   const IS_CREATING = !state.id;
@@ -124,6 +165,18 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               boundKeys="order_date"
               time={false}
               error={errors.order_date}
+              disabled={!isPermitted}
+            />
+
+            <ExtField
+              id="order_number"
+              modalKey={page}
+              label="Номер приказа"
+              type="string"
+              value={state.order_number}
+              onChange={props.handleChange}
+              boundKeys="order_number"
+              error={errors.order_number}
               disabled={!isPermitted}
             />
 
@@ -185,6 +238,20 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
             />
 
             <ExtField
+              id="car_id"
+              modalKey={page}
+              label="Рег. номер ТС"
+              error={errors.car_id}
+              type="select"
+              options={carListOptions}
+              clearable={true}
+              value={state.car_id}
+              onChange={handleGovNumberChange}
+              boundKeys="car_id"
+              disabled={!isPermitted}
+            />
+
+            <ExtField
               id="car_special_model_id"
               modalKey={page}
               label="Модель ТС"
@@ -194,7 +261,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               clearable={false}
               value={state.car_special_model_id}
               onChange={handleSpecialModelChange}
-              disabled={!isPermitted}
+              disabled={!isPermitted || Boolean(state.car_id)}
             />
 
             <ExtField
@@ -208,7 +275,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               value={state.car_model_id}
               onChange={props.handleChange}
               boundKeys="car_model_id"
-              disabled={!isPermitted || !state.car_special_model_id}
+              disabled={!isPermitted || !state.car_special_model_id || Boolean(state.car_id)}
             />
             <ExtField
               id="company_structure_id"

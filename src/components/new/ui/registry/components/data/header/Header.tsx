@@ -9,6 +9,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import SelectedOdhDtDisabled from './middle/SelectedOdhDtDisabled';
 import SelectedOdhDt from './middle/SelectedOdhDt';
 import SelecteDateTimeRange from './middle/SelecteDateTimeRange';
+import SelectedDateRangeUserLog from './middle/SelectedDateRangeUserLog';
 import SelectForTechnicalOperationRelations from './format/select_for_technical_operation_relations/SelectForTechnicalOperationRelations';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -22,6 +23,7 @@ const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) =>
     case 'select_odh/dt(disabled)': return SelectedOdhDtDisabled;
     case 'select_odh/dt': return SelectedOdhDt;
     case 'datetime_range_picker': return SelecteDateTimeRange;
+    case 'daterange_picker_userlog': return SelectedDateRangeUserLog;
     default: return null;
   }
 };

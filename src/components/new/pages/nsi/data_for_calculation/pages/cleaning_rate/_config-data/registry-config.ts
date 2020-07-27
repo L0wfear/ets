@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import cleaningRatePermissions from './permissions';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
+import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 
 export const registryKey = 'cleaningRateRegistry';
 
@@ -42,6 +43,27 @@ export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<Cleanin
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'technical_operation_id',
           labelKey: 'technical_operation_name',
           title: 'Технологическая операция',
@@ -77,6 +99,26 @@ export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<Cleanin
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
+            width: 200,
           },
           {
             key: 'technical_operation_name',

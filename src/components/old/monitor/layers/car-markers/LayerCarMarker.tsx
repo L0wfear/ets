@@ -44,6 +44,7 @@ const MIN_ZOOM_VAL = 3;
 global.toggleUpdateCarPoints = () => (updatePoints = !updatePoints);
 
 const defaultFilters = {
+  carFilterMultyGpsCode: [],
   carFilterMultyOwner: [],
   carFilterMultyStructure: [],
   carFilterMultyType: [],

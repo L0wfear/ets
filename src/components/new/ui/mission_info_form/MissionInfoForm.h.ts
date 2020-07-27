@@ -1,6 +1,7 @@
 import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
-import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+import { actionGetAndSetInStoreTracksCaching, actionResetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+import { TracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/@types';
 
 export type IMIssionData = {
   column_id: number | void;
@@ -110,7 +111,8 @@ export type IMissionInfoFormState = {
 };
 
 export type DispatchPropsMissionInfoForm = {
-  actionGetTracksCaching: HandleThunkActionCreator<typeof actionGetTracksCaching>;
+  actionGetAndSetInStoreTracksCaching: HandleThunkActionCreator<typeof actionGetAndSetInStoreTracksCaching>;
+  actionResetTracksCaching: HandleThunkActionCreator<typeof actionResetTracksCaching>;
   loadGeozones: any;
   actionLoadRouteById: HandleThunkActionCreator<
     typeof routesActions.actionLoadRouteById
@@ -121,6 +123,7 @@ export type PropsMissionInfoForm = DispatchPropsMissionInfoForm & {
   element: IMissionInfoFormState;
   onFormHide: any;
   company_id: number | null;
+  tracksCaching: TracksCaching;
 };
 
 export type StateMissionInfoForm = {
@@ -129,7 +132,6 @@ export type StateMissionInfoForm = {
   inputLines: Array<any>;
   missionReport: Array<any>;
   parkingCount: number | void;
-  track: Array<any>;
   front_parkings: Array<any>;
   cars_sensors: object;
 };

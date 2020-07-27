@@ -3,6 +3,7 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import permissions from 'components/new/pages/nsi/company/_config-data/permissions';
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'Company';
 
@@ -23,6 +24,16 @@ export const config: TypeConfigData<Company> = {
   },
   filter: {
     fields: [
+      {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
       {
         valueKey: 'company_name',
         type: 'multiselect',
@@ -53,6 +64,16 @@ export const config: TypeConfigData<Company> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Округ',
+            },
+          ],
+          width: 150,
         },
         {
           key: 'company_name',

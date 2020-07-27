@@ -9,6 +9,7 @@ export const SingleUiElementWrapperStyled = styled.div`
   position: relative;
   input[type=number], input[type=string] {
     width: 100%;
+    min-width: 1px;
   }
   &&& ${ErrorField} {
     margin-top: 5px;

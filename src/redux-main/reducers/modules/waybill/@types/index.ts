@@ -44,6 +44,7 @@ export type WaybillRegistryRow = {
   closing_date: string;
   comment: string;
   company_id: number;
+  company_name: string;
   created_by_employee_id: number;
   created_by_employee_name: string;
   date_create: string;
@@ -68,6 +69,7 @@ export type WaybillRegistryRow = {
   fact_departure_date: string;
   fact_fuel_end: number;
   failed_medical_stat_types: boolean;
+  files: Array<any>;
   fuel_card_ids: number;
   fuel_end: number;
   fuel_given: number;
@@ -79,18 +81,29 @@ export type WaybillRegistryRow = {
   id: number;
   is_bnso_broken: boolean;
   is_one_fuel_tank: boolean;
+  is_edited_odometr: boolean;
+  is_edited_motohours: boolean;
+  is_edited_motohours_equip: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
+  motohours_equip_diff: number;
   motohours_equip_start: number;
+  motohours_equip_reason_id: number;
   motohours_start: number;
+  motohours_reason_id: number;
   number: number | string;
+  okrug_id: string;
+  okrug_name: string;
   odometr_end: number;
   odometr_start: number;
+  odometr_reason_id: number;
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
   sensor_refill: number;
+  sensor_start_value: number;
+  sensor_finish_value: number;
   status: 'draft' | any;
   status_text: string;
   structure_id: number;
@@ -108,6 +121,7 @@ export type WaybillRegistryRow = {
     iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
   }>;
   track_length: number;
+  track_length_km: number;
   trailer_id: number;
   refill_type_ids: number;
   work_mode_id: number;

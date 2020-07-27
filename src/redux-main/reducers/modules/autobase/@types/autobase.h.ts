@@ -11,6 +11,7 @@ export type SparePart = {
   measure_unit_name?: string;
   name: string;
   number: string;
+  okrug_name: string;
   quantity: number;
   spare_part_group_id: number;
   supplied_at: string;
@@ -68,6 +69,7 @@ export type BatteryRegistry = {
   manufacturer_id: number;
   manufacturer_name: string;
   odometr_start: string;
+  okrug_name: string;
   released_at: string;
   serial_number: string;
   uninstalled_at: string;
@@ -99,6 +101,7 @@ export type InsurancePolicy = {
   insurer: string;
   note: string;
   number: string;
+  okrug_name: string;
   price: number;
   seria: string;
   updated_at: string;
@@ -151,6 +154,7 @@ export type Car = {
   note: string;
   okrug_id: number;
   okrug_name: string;
+  operating_mode: string;
   owner_id: number;
   owner_name: string;
   parking_address: string;
@@ -203,6 +207,7 @@ export type RepairCompany = {
   company_id: number;
   company_name: string;
   company_short_name: string;
+  okrug_name: string;
   id: number;
   name: string;
 };
@@ -251,6 +256,7 @@ export type TechInspection = {
   id: number;
   is_allowed: boolean;
   note: string;
+  okrug_name: string;
   reg_number: string;
   tech_operator: string;
   updated_at: string;
@@ -259,6 +265,8 @@ export type TechInspection = {
 export type TechMaintOrder = {
   car_model_id: number;
   car_model_name: string;
+  company_id: number;
+  company_name: string;
   description: string;
   entity_name: string;
   id: number;
@@ -268,6 +276,7 @@ export type TechMaintOrder = {
   is_periodic: boolean;
   measure_unit_run_id: number;
   measure_unit_run_name: string;
+  okrug_name: string;
   sequence: number;
   tech_maintenance_type_id: number;
   tech_maintenance_type_name: string;
@@ -322,6 +331,7 @@ export type Tire = {
   installed_at: string;
   motohours_diff: number;
   odometr_diff: number;
+  okrug_name: string;
   tire_manufacturer_id: number;
   tire_manufacturer_name: string;
   tire_model_id: number;

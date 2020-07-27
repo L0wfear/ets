@@ -47,6 +47,18 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         step: 1,
       },
       {
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'company_id',
+        labelKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'status',
         title: 'Статус ПЛ',
         type: 'multiselect',
@@ -322,6 +334,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 200,
+        },
+        {
           key: 'number',
           title: 'Номер',
           width: 100,
@@ -430,6 +452,12 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 175,
         },
         {
+          key: 'track_length_km',
+          title: 'Пройдено по Глонасс, км',
+          width: 200,
+          sortable: false,
+        },
+        {
           key: 'motohours_start',
           title: 'Моточасы. Выезд',
           width: 175,
@@ -468,6 +496,34 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           key: 'equipment_fuel_given',
           title: 'Топливо обор. Выдано',
           width: 250,
+        },
+        {
+          key: 'sensor_start_value',
+          title: 'Топливо. Выезд по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_finish_value',
+          title: 'Топливо. Возврат по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_consumption',
+          title: 'Топливо. Расход по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_refill',
+          title: 'Топливо. Заправка по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
         },
         {
           key: 'structure_name',

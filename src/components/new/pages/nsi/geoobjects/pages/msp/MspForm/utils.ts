@@ -9,6 +9,7 @@ export const defaultMsp: Msp = {
   id: null,
   is_mobile: 1,
   name: '',
+  okrug_name: '',
   productivity: null,
   shape: {},
   shortname: '',

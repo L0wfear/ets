@@ -136,9 +136,10 @@ class OverlayTrackPoint extends React.Component<Props, any> {
                 <div>Работающие датчики навесного оборудования</div>
                 <SensorsListContainer>
                   {
-                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
-                      <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
-                    ))
+                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => {
+                      const carSensorTypeName = this.props.cars_sensors[sensor.id]?.type_name;
+                      return <div key={sensor.id}>{`Датчик №${index + 1} ${carSensorTypeName ? `- ${carSensorTypeName}` : ''}`}</div>;
+                    })
                   }
                 </SensorsListContainer>
               </OverlayLineInfoContainer>

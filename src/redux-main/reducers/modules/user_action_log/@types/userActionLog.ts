@@ -8,6 +8,7 @@ export type UserActionLog = {
   id: number;
   last_name: string;
   middle_name: string;
+  okrug_name: string;
   remote_ip: string;
   structure_id: number;
   structure_name: string;

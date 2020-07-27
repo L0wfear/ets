@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import medicalStatsPermissions from './permissions';
 import { MedicalStats } from 'redux-main/reducers/modules/medical_stats/@types/medicalStats';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'medicalStatsRegistry';
 
@@ -35,6 +36,26 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
         {
           valueKey: 'employee_name',
           title: 'ФИО сотрудника',
@@ -82,6 +103,26 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
+            width: 200,
           },
           {
             key: 'employee_name',

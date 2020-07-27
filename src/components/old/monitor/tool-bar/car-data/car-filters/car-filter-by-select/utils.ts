@@ -16,7 +16,7 @@ const checkByIdAndName: CheckByIdAndNameFunc  = ({ ...store }, id, name) => {
 };
 
 export const makeOptions = (carActualGpsNumberIndex: Record<string, Car>) => (
-  Object.values(carActualGpsNumberIndex).reduce((newObj, { type_id, type_name, company_structure_id, company_structure_name, owner_id, owner_name, condition, condition_text, model_id, model_name }) => {
+  Object.values(carActualGpsNumberIndex).reduce((newObj, { type_id, type_name, company_structure_id, company_structure_name, owner_id, owner_name, condition, condition_text, model_id, model_name, gps_code }) => {
     return {
       ...newObj,
       carFilterMultyTypeOptions: checkByIdAndName(newObj.carFilterMultyTypeOptions, type_id, type_name),
@@ -24,6 +24,7 @@ export const makeOptions = (carActualGpsNumberIndex: Record<string, Car>) => (
       carFilterMultyModelOptions: checkByIdAndName(newObj.carFilterMultyModelOptions, model_id, model_name),
       carFilterMultyStructureOptions: checkByIdAndName(newObj.carFilterMultyStructureOptions, company_structure_id, company_structure_name),
       carFilterMultyOwnerOptions: checkByIdAndName(newObj.carFilterMultyOwnerOptions, owner_id, owner_name),
+      carFilterMultyGpsCodeOptions: checkByIdAndName(newObj.carFilterMultyGpsCodeOptions, Number(gps_code), gps_code),
     };
   }, {
     carFilterMultyTypeOptions: { obj: {}, arr: [] },
@@ -31,5 +32,6 @@ export const makeOptions = (carActualGpsNumberIndex: Record<string, Car>) => (
     carFilterMultyModelOptions: { obj: {}, arr: [] },
     carFilterMultyStructureOptions: { obj: {}, arr: [] },
     carFilterMultyOwnerOptions: { obj: {}, arr: [] },
+    carFilterMultyGpsCodeOptions: {obj: {}, arr: [] },
   })
 );

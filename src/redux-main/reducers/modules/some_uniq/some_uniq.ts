@@ -47,6 +47,7 @@ export const initialState: IStateSomeUniq = {
     timestamp: null,
     date: '',
   },
+  reasonList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

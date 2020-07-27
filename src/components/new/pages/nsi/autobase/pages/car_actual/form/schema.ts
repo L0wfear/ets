@@ -43,6 +43,32 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
   },
 };
 
+export const carDriversDataSchema: SchemaType<CarWrap['drivers_data'], PropsCar, CarWrap> = {
+  properties: {
+    primary_drivers: {
+      title: 'Основной водитель/машинист',
+      type: 'valueOfArray',
+      dependencies: [
+        (value, _, __, { employee_data, asuods_id }) => {
+          const filteredCarsList = employee_data.data.filter((el) => el.prefer_car && el.prefer_car !== asuods_id);
+          let employeeOnCar = null;
+          for (let i = 0; i <= value.length - 1; i++) {
+            employeeOnCar = filteredCarsList.find((el) => el.id === value[i]);
+            if (employeeOnCar) {
+              break;
+            }
+          }
+          const errorText = !employeeOnCar
+            ? ''
+            : `Сотрудник ${employeeOnCar.full_name} указан как основной водитель/машинист у ТС ${employeeOnCar.prefer_car_text}. Рекомендуем убрать привязку к ТС ${employeeOnCar.prefer_car_text} или указать водителя/машиниста в качестве вторичного водителя.`;
+
+          return errorText;
+        },
+      ],
+    }
+  },
+};
+
 const carPassportDataSchema: SchemaType<any, PropsCar> = {
   properties: {
     // ___GIBDD___
@@ -346,7 +372,7 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       float: 2,
     },
     note: {
-      title: 'Примечание',
+      title: 'Комментарий',
       type: 'string',
       maxLength: 4000,
     },
@@ -363,6 +389,10 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       type: 'schema',
       schema: carRegistrationDataSchema,
     },
+    drivers_data: {
+      type: 'schema',
+      schema: carDriversDataSchema,
+    },
     exploitation_date_start: {
       type: 'date',
       title: 'Дата ввода ТС в эксплуатацию',
@@ -371,5 +401,10 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       type: 'schema',
       schema: carPassportDataSchema,
     },
+    operating_mode: {
+      title: 'Режим работы',
+      type: 'string',
+      maxLength: 100,
+    }
   },
 };

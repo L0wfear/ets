@@ -12,4 +12,5 @@ export type TracksCaching = {
   sensors: any | null;
   time_of_parking: number;
   track: Array<any> | null;
+  front_parkings: Array<any> | null;
 };

@@ -29,6 +29,7 @@ type ButtonRemoveDispatchProps = {
 };
 type ButtonRemoveOwnProps = CommonTypesForButton & {
   onClick?: (selectedRow: any, checkedRows?: Record<string, any>) => Promise<any>;
+  disabled: boolean;
 };
 type ButtonRemoveMergeProps = {};
 
@@ -137,7 +138,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled}>
         <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>

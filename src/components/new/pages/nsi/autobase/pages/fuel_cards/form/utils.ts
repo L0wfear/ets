@@ -22,6 +22,7 @@ export const defaultFuelCard: FuelCard = {
   garage_number: null,
   fuel_card_on_cars: [],
   origin_fuel_card_on_cars: [],
+  okrug_name: null,
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {

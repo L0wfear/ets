@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WaybillFormWrapProps } from 'components/old/waybill/WaybillFormWrap';
-import { diffDates, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours, isEmpty } from 'utils/functions';
@@ -159,12 +159,14 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'datetime',
       required: true,
       dependencies: [
-        (value, { status }) => {
+        (value, { status }, reduxState) => {
+          const moscowTimeServer = reduxState.moscowTimeServer;
+
           if (status === 'active' || status === 'closed') {
             return false;
           }
 
-          if (diffDates(getDateWithMoscowTz(), value, 'minutes', false) > 5) {
+          if (diffDates(moscowTimeServer.date, value, 'minutes', false) > 5) {
             return 'Значение "Выезд. план" не может быть меньше текущего времени минус 5 минут';
           }
 
@@ -177,23 +179,27 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'datetime',
       required: true,
       dependencies: [
-        (plan_arrival_date, { plan_departure_date }) => {
+        (plan_arrival_date, { plan_departure_date, status }) => {
+          const IS_CLOSED = status && status === 'closed';
           if (
             plan_arrival_date
             && plan_departure_date
             && diffDates(plan_arrival_date, plan_departure_date, 'days', true) > 31
+            && !IS_CLOSED
           ) {
             return 'Дата "Возвращение план." не должна превышать дату "Выезд план." больше чем на 31 день';
           }
 
           return false;
         },
-        (plan_arrival_date, { plan_departure_date }) => {
-          if (plan_arrival_date && plan_departure_date) {
+        (plan_arrival_date, { plan_departure_date, status }) => {
+          const IS_CLOSED = status && status === 'closed';
+          if (plan_arrival_date && plan_departure_date && !IS_CLOSED) {
             if (diffDates(plan_arrival_date, plan_departure_date) <= 0) {
               return '"Возвращение план." должно быть больше "Выезд план."';
             }
           }
+          return false;
         },
       ],
     },
@@ -340,6 +346,22 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    odometr_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_odometr) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
+          }
+          return false;
+        },
+      ],
+    },
     motohours_start: {
       title: 'Счетчик моточасов.Выезд',
       type: 'number',
@@ -349,6 +371,22 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      ],
+    },
+    motohours_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_motohours) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
           }
           return false;
         },
@@ -366,6 +404,44 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             && isEmpty(value)
           ) {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      ],
+    },
+    motohours_equip_reason_id: {
+      title: 'Причина изменения показателя выезда.',
+      type: 'number',
+      integer: true,
+      required: false,
+      dependencies: [
+        (value, formData) => {
+          if (formData.is_edited_motohours_equip) {
+            if (isEmpty(value)) {
+              return 'Поле "Причина изменения показателя выезда." должно быть заполнено';
+            }
+          }
+          return false;
+        },
+      ],
+    },
+    files: {
+      title: 'Файл',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (files, formData) => {
+          if (formData.is_edited_odometr || formData.is_edited_motohours || formData.is_edited_motohours_equip) {
+            return {
+              odometr: (formData.is_edited_odometr && !(files && files.some((file) => file.kind === 'odometr' && file.action !== 'delete')))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
+              motohours: (formData.is_edited_motohours && !(files && files.some((file) => file.kind === 'motohours' && file.action !== 'delete')))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
+              motohours_equip: (formData.is_edited_motohours_equip && !(files && files.some((file) => file.kind === 'motohours_equip' && file.action !== 'delete')))
+                ? 'Поле "Файл" должно быть заполнено'
+                : false,
+            };
           }
           return false;
         },
@@ -476,6 +552,20 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         }
       ],
     },
+    equipment_fuel: {
+      title: 'На ТС установлено спецоборудование',
+      type: 'boolean',
+      dependencies: [
+        (_, {status, equipment_fuel }) => {
+          const IS_DRAFT = status === 'draft';
+          const IS_ACTIVE = status === 'active';
+          if ((!status || IS_DRAFT || IS_ACTIVE) && isNullOrUndefined(equipment_fuel)) {
+            return 'Поле "На ТС установлено спецоборудование" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
   },
 };
 
@@ -488,17 +578,18 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (value, { status }) => {
           const IS_ACTIVE = status && status === 'active';
-          const IS_CLOSED = status && status === 'closed';
 
-          if ((IS_ACTIVE || IS_CLOSED) && !value) {
+          if (IS_ACTIVE && !value) {
             return 'Поле "Выезд факт." должно быть заполнено';
           }
           return false;
         },
-        (value, { plan_departure_date }) => {
+        (value, { plan_departure_date, status }) => {
+          const IS_CLOSED = status && status === 'closed';
           if (
             value
             && diffDates(value, plan_departure_date, 'minutes', false) < 0
+            && !IS_CLOSED
           ) {
             return '"Выезд факт." должно быть не раньше "Выезда план."';
           }
@@ -512,25 +603,27 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (value, { status }) => {
           const IS_ACTIVE = status && status === 'active';
-          const IS_CLOSED = status && status === 'closed';
 
-          if ((IS_ACTIVE || IS_CLOSED) && !value) {
+          if (IS_ACTIVE && !value) {
             return 'Поле "Возвращение факт." должно быть заполнено';
           }
           return false;
         },
-        (value, { fact_departure_date }) => {
+        (value, { fact_departure_date, status }) => {
+          const IS_CLOSED = status && status === 'closed';
           if (
             value
             && fact_departure_date
             && diffDates(value, fact_departure_date, 'minutes', false) <= 0
+            && !IS_CLOSED
           ) {
             return '"Возвращение факт." должно быть позже "Выезд факт."';
           }
           return false;
         },
-        (value, { plan_arrival_date }) => {
-          if (value && plan_arrival_date) {
+        (value, { plan_arrival_date, status }) => {
+          const IS_CLOSED = status && status === 'closed';
+          if (value && plan_arrival_date && !IS_CLOSED) {
             const isMoreThen180 = diffDates(value, plan_arrival_date, 'minutes', false) > 180;
 
             if (isMoreThen180) {
@@ -608,7 +701,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { odometr_start, gov_number, car_has_odometr }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (CAR_HAS_ODOMETER || car_has_odometr) {
-            if ((odometr_start || isNumber(odometr_start)) && !value) { // Поправить это в ЧТЗ, поля невсегда обязательны
+            if ((odometr_start || isNumber(odometr_start)) && (!value && value !== 0)) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
             if (value && Number(value) < Number(odometr_start)) {
@@ -627,7 +720,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { motohours_start, gov_number, car_has_motohours }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           if (!CAR_HAS_ODOMETER || car_has_motohours) {
-            if ((motohours_start || isNumber(motohours_start)) && !value) {
+            if ((motohours_start || isNumber(motohours_start)) && (!value && value !== 0)) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
             }
             if (value && value < motohours_start) {
@@ -647,7 +740,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if (equipment_fuel) {
             if (
               (motohours_equip_start || isNumber(motohours_equip_start))
-              && !value
+              && (!value && value !== 0)
             ) {
               return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
             }
@@ -675,11 +768,12 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме для оборудования',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, { equipment_fuel, hasEquipmentFuelRates }) => {
+        (value, { equipment_fuel, hasEquipmentFuelRates, motohours_equip_diff}) => {
           if (
             equipment_fuel
             && hasEquipmentFuelRates
             && (!isArray(value) || (isArray(value) && !value.length))
+            && motohours_equip_diff > 0
           ) {
             return 'В поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
           }
@@ -690,8 +784,12 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (value) => {
-          if (!isArray(value) || (isArray(value) && !value.length)) {
+        (value, {odometr_diff, motohours_diff, gov_number}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          if (
+            (!isArray(value) || (isArray(value) && !value.length))
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
+          ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
           }
         }
@@ -727,12 +825,13 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       required: false,
       type: 'number',
       dependencies: [
-        (value, formData) => {
+        (value, {odometr_diff, motohours_diff, status}) => {
+          const IS_CLOSED = status && status === 'closed';
           const abs = Math.abs(
-            parseFloat((formData.odometr_diff || formData.motohours_diff || 0).toString())
+            parseFloat((odometr_diff || motohours_diff || 0).toString())
             - parseFloat((value ?? 0).toString()),
           );
-          if (abs / 100 > 0.1) {
+          if (abs / 100 > 0.1 && !IS_CLOSED) {
             return 'Расхождение в показателях пробега';
           }
           return false;

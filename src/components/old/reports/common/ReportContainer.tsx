@@ -44,7 +44,7 @@ import DataTable from 'components/old/ui/table/DataTable';
 import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { isArray, isNumber, isNull, isNullOrUndefined } from 'util';
+import { isArray, isNumber, isNull, } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
@@ -64,6 +64,8 @@ class ReportContainer extends React.Component<
       filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
       localState: {},
+      aggrFields: [],
+      savedFilterValues: {},
     };
   }
 
@@ -281,6 +283,12 @@ class ReportContainer extends React.Component<
           }
         }
 
+        if (hasSummaryLevel) {
+          this.setState({
+            aggrFields: data.result.meta.summary.aggr_fields,
+          });
+        }
+
         if (data.result.rows.length === 0) {
           noItemsInfoNotification();
         }
@@ -394,6 +402,10 @@ class ReportContainer extends React.Component<
     this.setState({ filterValues });
   };
 
+  saveFilterValues = (savedFilterValues: any) => {
+    this.setState({savedFilterValues});
+  }; 
+
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
     if (!moveDownIsPermitted) {
@@ -429,6 +441,7 @@ class ReportContainer extends React.Component<
       return {
         fetchedByMoveDownButton: true,
         selectedRow: selectedRow.props.data,
+        filterValues: this.state.savedFilterValues,
       };
     });
   };
@@ -451,28 +464,14 @@ class ReportContainer extends React.Component<
     this.props.history.push(
       `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
     );
-
-    const prevMetaFields = get(this.props, 'prevMeta.fields', []);
-
-    const filterValues = Object.entries(this.state.filterValues).reduce(
-      (newObj, [key, data]: any) => {
-        if (prevMetaFields.some((elem) => !isNullOrUndefined(elem[key]))) {
-          newObj[key] = data;
-        }
-        return newObj;
-      },
-      {},
-    );
-
-    this.setState({filterValues});
-
+    this.setState({filterValues: this.state.savedFilterValues});
   };
 
   reportRowFormatFromMeta = (reportRowValue, metaFieldsByKey) => {
     const newRow = Object.entries(reportRowValue).reduce((newObj, [key, elemVal] ) => {
       const precision = metaFieldsByKey[key]?.precision;
       let newVal = precision && isNumber(elemVal)
-        ? elemVal?.toFixed(precision).replace(',', '.')
+        ? elemVal?.toFixed(precision).replace('.', ',')
         : elemVal;
 
       // const { //<<< перенести в 33й,
@@ -526,8 +525,12 @@ class ReportContainer extends React.Component<
 
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
+      const isSummaryEnable
+      =  reportKey === 'fuel_cards_report' 
+        ? this.props.summaryList.length > 0
+        : 'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
       let report = [...this.props.list];
-      let summary = [...this.props.summaryList];
+      let summary = isSummaryEnable && [...this.props.summaryList];
 
       if (reportKey === 'car_usage_report') {
         const schema = Object.fromEntries(
@@ -555,29 +558,33 @@ class ReportContainer extends React.Component<
           return d;
         });
 
-        summary = summary.map((d: any) => {
-          Object.entries(schema).forEach(([key, metaRender]: any) => {
-            if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
-              const count = d[key];
+        summary = summary 
+          ? summary.map((d: any) => {
+            Object.entries(schema).forEach(([key, metaRender]: any) => {
+              if (key in d && (metaRender.needStr || metaRender.make_str_gov_number_format)) {
+                const count = d[key];
 
-              d[`${key}_str`] = `${count}`;
-            }
-          });
-          return d;
-        });
+                d[`${key}_str`] = `${count}`;
+              }
+            });
+            return d;
+          })
+          : null;
       }
 
       payload = {
         rows: {
           report: report.map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
-          summary: summary.map(
-            (elem) => ({
-              ...elem,
-              children: elem?.children?.map(
+          summary: summary 
+            ? summary.map(
+              (elem) => ({
+                ...elem,
+                children: elem?.children?.map(
                 (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
               )
-            })
-          ),
+              })
+            )
+            : null,
         },
       };
     }
@@ -788,6 +795,8 @@ class ReportContainer extends React.Component<
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
           localState={this.state.localState}
+          aggrFields={this.state.aggrFields}
+          saveFilterValues={this.saveFilterValues}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"

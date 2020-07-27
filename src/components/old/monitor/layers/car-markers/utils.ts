@@ -22,9 +22,8 @@ export const getFrontStatus = (statusId) => {
   }
 };
 
-export const checkOnIncludesCar = (filterData, gps_code, { garage_number = '', gov_number = '' } = {}) => (
-  gps_code && gps_code.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
-  || gov_number && gov_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
+export const checkOnIncludesCar = (filterData, { garage_number = '', gov_number = '' } = {}) => (
+  gov_number && gov_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
   || garage_number && garage_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
 );
 
@@ -42,7 +41,8 @@ export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
 
 export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) => {
   switch (key) {
-    case 'carFilterText': return !value || checkOnIncludesCar(value, gps_code, car_actualData);
+    case 'carFilterText': return !value || checkOnIncludesCar(value, car_actualData); 
+    case 'carFilterMultyGpsCode': return !value.length || value.includes(Number(car_actualData.gps_code));
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
     case 'carFilterMultyTechCondition': return !value.length || value.includes(car_actualData.condition);
     case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);

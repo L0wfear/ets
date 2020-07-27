@@ -70,7 +70,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
             const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
 
             const { columnName, customComponent, cssClassName } = field;
-
+            
             return (
               <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                 {
@@ -88,9 +88,12 @@ class TrTable extends React.Component<PropsTrTable, any> {
                       <span></span>
                     )
                 }
+
                 {
                   customComponent
-                    ? customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
+                    ? Number(customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props))
+                      ? customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props).toString().replace('.', ',')
+                      : customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
                     : columnName === 'rowNumber'
                       ? rowNumber
                       : columnName === 'isChecked'
@@ -105,7 +108,9 @@ class TrTable extends React.Component<PropsTrTable, any> {
                             />
                           </div>
                         )
-                        : (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
+                        : !isNullOrUndefined(rowData[columnName]) && Number(rowData[columnName])
+                          ? rowData[columnName].toString().replace('.', ',')
+                          : (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
                 }
               </td>
             );

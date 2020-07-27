@@ -397,9 +397,9 @@ export const setNotifyFromWs = (notify): EtsAction<Promise<void>> => async (disp
       front_type: get(TYPE_GROUP, [notify.group, 'front_type'], ''),
     }),
   );
-  dispatch(
-    getNotifications(),
-  );
+  // dispatch(
+  //   getNotifications(), // лишний щапрос реестра уведомлений
+  // );
 
   return;
 };

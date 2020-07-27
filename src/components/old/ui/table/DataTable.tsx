@@ -298,15 +298,17 @@ export default class DataTable extends React.Component<Props, State> {
   };
 
   saveFilter = (filterValues) => {
+    const savedFilterValues: any = Object.fromEntries(Object.entries(filterValues).filter((el) => this.props.aggrFields?.includes(el[0]))); 
+
     if (__DEVELOPMENT__) {
-      console.info('SAVE FILTER_', filterValues);  // eslint-disable-line
+      console.info('SAVE FILTER_', savedFilterValues);  // eslint-disable-line
     } else {
       let filterAsString = '';
 
       try {
-        filterAsString = JSON.stringify(filterValues);
+        filterAsString = JSON.stringify(savedFilterValues);
       } catch (e) {
-        filterAsString = filterValues;
+        filterAsString = savedFilterValues;
       }
 
       console.info('SAVE FILTER__', filterAsString);  // eslint-disable-line
@@ -314,6 +316,7 @@ export default class DataTable extends React.Component<Props, State> {
 
     if (this.props.externalFilter) {
       this.props.externalFilter(filterValues);
+      this.props.saveFilterValues(savedFilterValues);
       return;
     }
     if (typeof this.props.onAllRowsChecked === 'function') {
@@ -457,7 +460,7 @@ export default class DataTable extends React.Component<Props, State> {
   precisionNumberRender(precision, props) {
     let { data = '' } = props;
     return <div>{ isNumber(data)
-      ? data?.toFixed(precision)
+      ? data?.toFixed(precision).toString().replace('.', ',')
       : data}</div>;
   }
 

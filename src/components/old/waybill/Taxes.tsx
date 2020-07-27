@@ -282,7 +282,7 @@ export default class Taxes extends React.Component<any, any> {
     const finalFactValue = Taxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueMoreOrEqualBaseValue
       = Number(baseFactValue) <= Number(finalFactValue);
-    const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег ТС не должен превышать итоговый нормативный пробег' : ''; 
+    const error = !finalFactValueMoreOrEqualBaseValue ? 'Значение в поле "Итого" должно быть не меньше пробега по основному счетчику, установленному на ТС' : ''; 
 
     if (this.state.totalValueError !== error && hasTaxes) {
       this.setState({totalValueError: error});

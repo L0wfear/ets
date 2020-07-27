@@ -263,7 +263,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueMoreOrEqualBaseValue
       = Number(baseFactValue) <= Number(finalFactValue);
-    const error = !finalFactValueMoreOrEqualBaseValue ? 'Пробег оборудования не должен превышать итоговый нормативный пробег оборудования' : ''; 
+    const error = !finalFactValueMoreOrEqualBaseValue ? 'Значение в поле "Итого" должно быть не меньше пробега оборудования' : ''; 
 
     if (this.state.totalValueError !== error && hasTaxes) {
       this.setState({totalValueError: error});

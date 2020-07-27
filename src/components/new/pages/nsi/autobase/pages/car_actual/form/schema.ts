@@ -120,6 +120,14 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Модель двигателя',
       type: 'string',
       maxLength: 128,
+      dependencies: [
+        (value) => {
+          if (value.match(/[Йй]/g)) {
+            return 'Введено недоступное значение';
+          }
+          return false;
+        }
+      ],
     },
     engine_volumne: {
       validateIf: {

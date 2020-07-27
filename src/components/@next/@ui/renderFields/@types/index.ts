@@ -70,6 +70,7 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   isLoading?: boolean;
   wrapStyle?: any;
   hint?: string;
+  toUpperCase?: boolean;
   maxLength?: number;
   placeholder?: string;
   addonRight?: string;

@@ -209,6 +209,11 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         valueKey: 'driver_personnel_number',
         title: 'Табельный номер',
         type: 'multiselect',
+        getRegistryData: {
+          entity: 'driver',
+          typeAns: 'result',
+          valueKey: 'personnel_number',
+        },
       },
       {
         valueKey: 'odometr_start',

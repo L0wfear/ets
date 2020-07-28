@@ -206,6 +206,11 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
+        valueKey: 'driver_personnel_number',
+        title: 'Табельный номер',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'odometr_start',
         title: 'Одометр. Выезд',
         type: 'advanced-number',
@@ -375,6 +380,11 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         {
           key: 'driver_fio',
           title: 'Водитель',
+          width: 150,
+        },
+        {
+          key: 'driver_personnel_number',
+          title: 'Табельный номер',
           width: 150,
         },
         {

@@ -94,6 +94,11 @@ export const config: TypeConfigData<Employee> = {
         type: 'multiselect',
       },
       {
+        valueKey: 'category_drivers_license',
+        title: 'Категория водительского удостоверения',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'drivers_license_date_end',
         title: 'Срок действия водительского удостоверения',
         type: 'advanced-date',

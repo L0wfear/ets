@@ -5,7 +5,7 @@ import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@ty
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import { promiseSubmitMission, promiseGetMissionById } from 'redux-main/reducers/modules/missions/mission/promise';
-import { createValidDateTime, getTomorrow9am, getDateWithMoscowTz, diffDates, createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
+import { diffDates, createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { getMissionsState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
@@ -357,8 +357,8 @@ export const metaMission: ConfigFormData<Mission> = {
     consumable_materials: [],
     closed_by: null,
     current_percentage: null,
-    date_end: createValidDateTime(getTomorrow9am()),
-    date_start: createValidDateTime(getDateWithMoscowTz()),
+    date_end: null,
+    date_start: null,
     description: '',
     id: null,
     is_archive: false,

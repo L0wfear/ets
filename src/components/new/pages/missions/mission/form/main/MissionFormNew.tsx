@@ -6,6 +6,11 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionUpdateFormErrors } from 'redux-main/reducers/modules/form_data_record/actions';
 import { useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import {
+  createMoscowServerDateTime,
+  createValidDateTime,
+  getTomorrow9amMoscowServerTime
+} from 'components/@next/@utils/dates/dates';
 
 type Props = {
   formDataKey: 'mission';
@@ -27,6 +32,10 @@ const MissionFormNew: React.FC<Props> = React.memo(
     const canSave = useForm.useFormDataCanSave<Mission>(props.formDataKey);
     const IS_CREATING = useForm.useFormDataIsCreating<Mission>(props.formDataKey);
     const handleSubmitPromise = useForm.useFormDataHandleSubmitPromise<Mission>(props.formDataKey);
+    const moscowTime = createMoscowServerDateTime(meta.page);
+
+    formState.date_start = formState.id ? formState.date_end : createValidDateTime(moscowTime);
+    formState.date_end = formState.id ? formState.date_end : createValidDateTime(getTomorrow9amMoscowServerTime(moscowTime));
 
     const dispatch = etsUseDispatch();
     const updateFormErrors = React.useCallback(

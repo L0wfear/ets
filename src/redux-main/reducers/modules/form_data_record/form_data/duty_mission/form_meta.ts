@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 
 import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { createValidDateTime, getTomorrow9am, diffDates, getToday9am } from 'components/@next/@utils/dates/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
@@ -319,8 +319,8 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     order_number: null,
     order_operation_id: null,
     order_status: '',
-    plan_date_end: createValidDateTime(getTomorrow9am()),
-    plan_date_start: createValidDateTime(getToday9am()), //
+    plan_date_end: null,
+    plan_date_start: null, //
     request_id: null,
     request_number: '',
     route_id: null,

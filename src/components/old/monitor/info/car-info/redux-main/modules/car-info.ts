@@ -257,8 +257,8 @@ export default (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         forToday: !state.forToday,
-        date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
-        date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
+        date_start: state.date_start,
+        date_end: state.date_end,
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

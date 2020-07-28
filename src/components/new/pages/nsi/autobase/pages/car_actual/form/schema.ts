@@ -239,6 +239,14 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Адрес',
       type: 'string',
       maxLength: 256,
+      dependencies: [
+        (value) => {
+          if (!value) {
+            return 'Поле "Адрес" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
     },
     manufactured_at: {
       title: 'Год выпуска',

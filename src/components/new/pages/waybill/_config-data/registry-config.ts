@@ -120,12 +120,6 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'okrug_id',
-        labelKey: 'okrug_name',
-        title: 'Округ',
-        type: 'multiselect',
-      },
-      {
         valueKey: 'car_special_model_id',
         title: 'Модель ТС',
         type: 'multiselect',
@@ -176,6 +170,18 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           valueKey: 'id',
           format: 'short_employee_name',
         },
+      },
+      {
+        valueKey: 'company_id',
+        labelKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
       },
       {
         valueKey: 'activated_by_employee_id',

@@ -162,7 +162,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, { status }, reduxState) => {
           const moscowTimeServer = reduxState.moscowTimeServer;
 
-          if (status === 'active' || status === 'closed') {
+          if (status === 'active' || status === 'closed' || status === 'deleted') {
             return false;
           }
 
@@ -698,9 +698,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { odometr_start, gov_number, car_has_odometr }) => {
+        (value, { odometr_start, gov_number, car_has_odometr, status }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (CAR_HAS_ODOMETER || car_has_odometr) {
+          if (status !== 'deleted' && (CAR_HAS_ODOMETER || car_has_odometr)) {
             if ((odometr_start || isNumber(odometr_start)) && (!value && value !== 0)) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
             }
@@ -717,9 +717,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { motohours_start, gov_number, car_has_motohours }) => {
+        (value, { motohours_start, gov_number, car_has_motohours, status }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          if (!CAR_HAS_ODOMETER || car_has_motohours) {
+          if (status !== 'deleted' && (!CAR_HAS_ODOMETER || car_has_motohours)) {
             if ((motohours_start || isNumber(motohours_start)) && (!value && value !== 0)) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
             }
@@ -736,8 +736,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { motohours_equip_start, equipment_fuel }) => {
-          if (equipment_fuel) {
+        (value, { motohours_equip_start, equipment_fuel, status }) => {
+          if (equipment_fuel && status !== 'deleted') {
             if (
               (motohours_equip_start || isNumber(motohours_equip_start))
               && (!value && value !== 0)

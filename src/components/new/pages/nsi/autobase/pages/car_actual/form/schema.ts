@@ -240,8 +240,8 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       type: 'string',
       maxLength: 256,
       dependencies: [
-        (value) => {
-          if (!value) {
+        (value, formData) => {
+          if (!value && formData.type === 'GIBDD') {
             return 'Поле "Адрес" должно быть заполнено';
           }
           return false;

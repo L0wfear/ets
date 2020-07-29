@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo, carInfoToggleForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo, carInfoRefreshDateForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { createValidDateTime, diffDates, getStartOfServerToday } from 'components/@next/@utils/dates/dates';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
@@ -68,6 +68,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     const date_end = props.searchState.date_end;
     const refresh = props.searchState.refresh;
     const for_today = etsUseSelector((state) => getMonitorPageState(state).carInfo.forToday);
+    const state_date_end = etsUseSelector((state) => getMonitorPageState(state).carInfo.date_end);
 
     React.useEffect(
       () => {
@@ -95,7 +96,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
           }
         }
       },
-      [gov_number_old, gov_number, date_start, props.setDataInSearch],
+      [gov_number_old, gov_number, date_start, date_end, props.setDataInSearch],
     );
 
     React.useEffect(
@@ -158,7 +159,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
 
             if (carData.data && datesIsMove && for_today) {
               dispatch(
-                carInfoToggleForToday(),
+                carInfoRefreshDateForToday(),
               );
             }
           },
@@ -169,7 +170,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
           clearInterval(intervalId);
         };
       },
-      [carData, date_start, date_end, for_today],
+      [carData, date_start, date_end, for_today, state_date_end],
     );
     /****************************** end ******************************/
 

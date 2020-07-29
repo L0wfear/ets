@@ -577,7 +577,8 @@ class WaybillForm extends React.Component<Props, State> {
             actionLoadFuelRatesByCarModel(
               {
                 car_id: formState.car_id,
-                datetime: formState.activating_date
+                datetime: formState.activating_date,
+                company_structure_id: formState.structure_id,
               },
               this.props,
             ),
@@ -592,7 +593,8 @@ class WaybillForm extends React.Component<Props, State> {
             actionLoadEquipmentFuelRatesByCarModel(
               {
                 car_id: formState.car_id,
-                datetime: formState.activating_date
+                datetime: formState.activating_date,
+                company_structure_id: formState.structure_id,
               },
               this.props,
             ),

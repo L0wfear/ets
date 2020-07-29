@@ -4,7 +4,7 @@ import component from 'components/old/reports/operational/not_covered_objects_re
 export default {
   path: '/not_covered_objects_report',
   title: 'ОДХ/ДТ и элементы, не назначенные на централизованные задания',
-  entyity: 'not_covered_objects_report',
+  entyity: 'not-covered-objects-report',
 
   component,
   permissions,

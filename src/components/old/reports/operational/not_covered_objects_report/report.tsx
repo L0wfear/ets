@@ -8,7 +8,7 @@ import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/not_covered_objects_report/ReportHeader';
 
 const serviceUrl = 'not_covered_objects_report';
-const reportUrl = 'not_covered_objects_report';
+const reportUrl = 'not-covered-objects-report';
 const serviceName = 'NotCoveredObjectsReportService';
 
 const schemaMakers: ISchemaMaker = {};

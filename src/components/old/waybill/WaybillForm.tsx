@@ -2767,12 +2767,12 @@ class WaybillForm extends React.Component<Props, State> {
                                   type="number"
                                   modalKey={modalKey}
                                   label="Расход фактический, л"
-                                  error={errors.fact_consuption}
-                                  value={state.fact_consuption}
+                                  error={errors.fact_consumption}
+                                  value={state.fact_consumption}
                                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                                   disabled
                                   onChange={this.handleChange}
-                                  boundKeys="fact_consuption"
+                                  boundKeys="fact_consumption"
                                   format="toFixed3"
                                 />
                               </EtsBootstrap.Col>
@@ -2802,12 +2802,12 @@ class WaybillForm extends React.Component<Props, State> {
                                   type="number"
                                   modalKey={modalKey}
                                   label="Расхождение в данных расхода, л"
-                                  error={errors.consuption_diff}
-                                  value={state.consuption_diff}
+                                  error={errors.diff_consumption}
+                                  value={state.diff_consumption}
                                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                                   disabled
                                   onChange={this.handleChange}
-                                  boundKeys="consuption_diff"
+                                  boundKeys="diff_consumption"
                                   format="toFixed3"
                                 />
                               </EtsBootstrap.Col>
@@ -3075,12 +3075,12 @@ class WaybillForm extends React.Component<Props, State> {
                                     type="number"
                                     modalKey={modalKey}
                                     label="Расход фактический, л"
-                                    error={errors.equipment_fact_consuption}
-                                    value={state.equipment_fact_consuption}
+                                    error={errors.equipment_fact_consumption}
+                                    value={state.equipment_fact_consumption}
                                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                                     disabled
                                     onChange={this.handleChange}
-                                    boundKeys="equipment_fact_consuption"
+                                    boundKeys="equipment_fact_consumption"
                                     format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>
@@ -3108,12 +3108,12 @@ class WaybillForm extends React.Component<Props, State> {
                                     type="number"
                                     modalKey={modalKey}
                                     label="Расхождение в данных расхода, л"
-                                    error={errors.equipment_consuption_diff}
-                                    value={state.equipment_consuption_diff}
+                                    error={errors.equipment_diff_consumption}
+                                    value={state.equipment_diff_consumption}
                                     hidden={!(IS_ACTIVE || IS_CLOSED)}
                                     disabled
                                     onChange={this.handleChange}
-                                    boundKeys="equipment_consuption_diff"
+                                    boundKeys="equipment_diff_consumption"
                                     format="toFixed3"
                                   />
                                 </EtsBootstrap.Col>

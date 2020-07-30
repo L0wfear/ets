@@ -73,7 +73,7 @@ export const TechMaintenanceSchedule = ETS_API_FACTORY.createApiServiceAdapter(
 );
 
 export const NotCoveredObjectsReportService = ETS_API_FACTORY.createApiServiceAdapter(
-  'not_covered_objects_report',
+  'report/not_covered_objects_report',
   {},
 );
 

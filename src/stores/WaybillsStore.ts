@@ -15,7 +15,7 @@ export function getDefaultBill({ company_id = null }) {
     fuel_type: 'DT',
     fuel_start: null,
     equipment_fuel: null,
-    equipment_fuel_type: 'DT',
+    equipment_fuel_type: null,
     odometr_start: null,
     motohours_start: null,
     mission_id_list: [],

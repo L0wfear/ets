@@ -37,6 +37,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
     const {
       readOnly = false,
       disabled = false,
+      toUpperCase = false,
       className = '',
       wrapStyle,
       hidden,
@@ -89,7 +90,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
                 className={inputClassName}
                 {...mainProps}
                 id={value_id}
-                value={value}
+                value={toUpperCase ? value.toUpperCase() : value}
               />
               {
                 addonRight && (

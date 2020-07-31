@@ -55,6 +55,7 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             onChange={props.onChange}
             boundKeys="seria_number"
             disabled={!isPermitted || disabled}
+            toUpperCase
           />
           <ExtField
             type="string"
@@ -64,6 +65,7 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             onChange={props.onChange}
             boundKeys="vin"
             disabled={!isPermitted || disabled}
+            toUpperCase
           />
           <ExtField
             type="select"

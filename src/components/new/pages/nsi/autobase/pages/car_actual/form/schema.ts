@@ -120,6 +120,14 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Модель двигателя',
       type: 'string',
       maxLength: 128,
+      dependencies: [
+        (value) => {
+          if (value.match(/[Йй]/g)) {
+            return 'Введено недоступное значение';
+          }
+          return false;
+        }
+      ],
     },
     engine_volumne: {
       validateIf: {
@@ -231,6 +239,14 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Адрес',
       type: 'string',
       maxLength: 256,
+      dependencies: [
+        (value, formData) => {
+          if (!value && formData.type === 'GIBDD') {
+            return 'Поле "Адрес" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
     },
     manufactured_at: {
       title: 'Год выпуска',

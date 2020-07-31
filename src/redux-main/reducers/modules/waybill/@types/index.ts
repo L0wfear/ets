@@ -55,6 +55,7 @@ export type WaybillRegistryRow = {
   driver_id: number;
   driver_fio: string;
   driver_name: string;
+  driver_personnel_number: string;
   delete: boolean;
   equipment_fact_fuel_end: number;
   equipment_fuel: boolean;

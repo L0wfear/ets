@@ -37,6 +37,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   driver_id: null,
   driver_fio: '',
   driver_name: '',
+  driver_personnel_number: '',
   delete: false,
   equipment_fact_fuel_end: null,
   equipment_fuel: null,

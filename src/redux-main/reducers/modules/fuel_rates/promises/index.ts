@@ -26,6 +26,7 @@ type IFuelRatesByCarModel = {
   car_id?: number | null;
   datetime?: string | null;
   for_equipment?: number | null;
+  company_structure_id?: number | null;
 };
 export const getFuelRatesByCarModel = (payload: IFuelRatesByCarModel = {} ) => {
   return getFuelRates(payload);

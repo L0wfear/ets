@@ -53,7 +53,8 @@ export const config: TypeConfigData<DutyMission> = {
         step: 1,
       },
       {
-        valueKey: 'okrug_name',
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
         title: [
           {
             title: 'Округ',
@@ -63,7 +64,8 @@ export const config: TypeConfigData<DutyMission> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_id',
+        labelKey: 'company_name',
         title: [
           {
             displayIf: displayIfContant.isKgh,

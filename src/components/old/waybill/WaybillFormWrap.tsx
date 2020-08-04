@@ -44,6 +44,7 @@ import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/wayb
 import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
+import { hasMotohours } from 'utils/functions';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -680,61 +681,65 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     formState = calculateWaybillMetersDiff(formState, field, value);
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
-      const formStateTaxDataFirstElem = formState.tax_data[0];
-      const isFirstElemTaxOperationField = field === 'taxes_operation' && index === 0;
-      if (
-        (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
-          && formStateTaxDataFirstElem.measure_unit_name !== 'л/моточас'
-          && formState.odometr_diff >= 0
-          && (formStateTaxDataFirstElem.measure_unit_name === 'л/км')
-      ) {
-        if (formStateTaxDataFirstElem.is_excluding_mileage) {
-          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.odometr_diff;
-        } else {
-          formStateTaxDataFirstElem.FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff : null;
-          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
+      const motohoursMain = hasMotohours(formState.gov_number);
+      const elemMeasureUnitName = motohoursMain ? 'л/моточас' : 'л/км';
+      const firstElemIndex = formState.tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
+      formState.tax_data.forEach((currElem, index) => {
+        const isFirstElemTaxOperationField = field === 'taxes_operation' && index === firstElemIndex;
+        if (
+          (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
+              && currElem.measure_unit_name !== 'л/моточас'
+              && formState.odometr_diff >= 0
+              && (currElem.measure_unit_name === 'л/км')
+        ) {
+          if (currElem.is_excluding_mileage) {
+            currElem.iem_FACT_VALUE = formState.odometr_diff;
+          } else {
+            currElem.FACT_VALUE = formState.odometr_diff > 0 ? formState.odometr_diff : null;
+            currElem.RESULT = Taxes.getResult(currElem);
+          }
         }
-      }
-      if (
-        (field === 'motohours_end' || isFirstElemTaxOperationField || field === 'motohours_start')
-           && formStateTaxDataFirstElem.measure_unit_name !== 'л/км'
-           && formState.motohours_diff >= 0
-           && (formStateTaxDataFirstElem.measure_unit_name === 'л/моточас')
-      ) {
-        if (formStateTaxDataFirstElem.is_excluding_mileage) {
-          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.motohours_diff;
-        } else {
-          formStateTaxDataFirstElem.FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
-          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
+        if (
+          (field === 'motohours_end' || isFirstElemTaxOperationField || field === 'motohours_start')
+              && currElem.measure_unit_name !== 'л/км'
+              && formState.motohours_diff >= 0
+              && (currElem.measure_unit_name === 'л/моточас')
+        ) {
+          if (currElem.is_excluding_mileage) {
+            currElem.iem_FACT_VALUE = formState.motohours_diff;
+          } else {
+            currElem.FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
+            currElem.RESULT = Taxes.getResult(currElem);
+          }
         }
-      }
-      if (
-        formStateTaxDataFirstElem.measure_unit_name !== 'л/моточас'
-          && (formStateTaxDataFirstElem.measure_unit_name === 'л/км')
-          && formState.odometr_diff <= 0
-          && isFirstElemTaxOperationField
-      ) {
-        if (formStateTaxDataFirstElem.is_excluding_mileage) {
-          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.odometr_diff;
-        } else {
-          formStateTaxDataFirstElem.FACT_VALUE = null;
-          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
+        if (
+          currElem.measure_unit_name !== 'л/моточас'
+              && (currElem.measure_unit_name === 'л/км')
+              && formState.odometr_diff <= 0
+              && isFirstElemTaxOperationField
+        ) {
+          if (currElem.is_excluding_mileage) {
+            currElem.iem_FACT_VALUE = formState.odometr_diff;
+          } else {
+            currElem.FACT_VALUE = null;
+            currElem.RESULT = Taxes.getResult(currElem);
+          }
         }
-      }
 
-      if (
-        formStateTaxDataFirstElem.measure_unit_name !== 'л/км'
-          && (formStateTaxDataFirstElem.measure_unit_name === 'л/моточас')
-          && formState.motohours_diff <= 0
-          && isFirstElemTaxOperationField
-      ) {
-        if (formStateTaxDataFirstElem.is_excluding_mileage) {
-          formStateTaxDataFirstElem.iem_FACT_VALUE = formState.motohours_diff;
-        } else {
-          formStateTaxDataFirstElem.FACT_VALUE = null;
-          formStateTaxDataFirstElem.RESULT = Taxes.getResult(formStateTaxDataFirstElem);
+        if (
+          currElem.measure_unit_name !== 'л/км'
+              && (currElem.measure_unit_name === 'л/моточас')
+              && formState.motohours_diff <= 0
+              && isFirstElemTaxOperationField
+        ) {
+          if (currElem.is_excluding_mileage) {
+            currElem.iem_FACT_VALUE = formState.motohours_diff;
+          } else {
+            currElem.FACT_VALUE = null;
+            currElem.RESULT = Taxes.getResult(currElem);
+          }
         }
-      }
+      });
     } 
     
     if (formState.equipment_tax_data && formState.equipment_tax_data.length ) {

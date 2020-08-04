@@ -136,7 +136,7 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
     overlay: popoverForSavePrint,
   };
 
-  if (createdWaybillId) {
+  if (createdWaybillId && !pathName.includes('dashboard')) {
     return <Redirect to={{
       pathname: pathName,
       search: location.search

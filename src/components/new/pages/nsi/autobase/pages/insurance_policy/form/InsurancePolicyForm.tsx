@@ -73,6 +73,12 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
           } else {
             setCarListOptions(carList);
           }
+        } else {
+          const options = carList.map(({ rowData }) => ({
+            value: rowData.asuods_id,
+            label: carActualOptionLabelGarage(rowData),
+          }));
+          setCarListOptions(options);
         }
       }
     },

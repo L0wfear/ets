@@ -1198,7 +1198,6 @@ class WaybillForm extends React.Component<Props, State> {
           equipment_fuel,
           trailer_id,
         };
-
         this.props.handleMultipleChange(fieldsToChange);
       } else if (showInfo) {
         global.NOTIFICATION_SYSTEM.notify('Отсутствует информация о предыдущих закрытых путевых листах на указанное ТС', 'info', 'tr');
@@ -1338,7 +1337,7 @@ class WaybillForm extends React.Component<Props, State> {
   };
   handlePrint = async (...arg: Parameters<Props['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
-      await this.refresh(false, false);
+      await this.refresh(true, false);
       this.props.handlePrint(...arg);
     }
   };

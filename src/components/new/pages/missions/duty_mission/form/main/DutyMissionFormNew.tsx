@@ -6,11 +6,9 @@ import { actionUpdateFormErrors } from 'redux-main/reducers/modules/form_data_re
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import DutyMissionFormOld from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormOld';
 import {  useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
-import {
-  createMoscowServerDateTime,
-  createValidDateTime,
-  getTomorrow9amMoscowServerTime
-} from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
+import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
+import { get } from 'lodash';
 
 type Props = {
   formDataKey: 'duty_mission';
@@ -30,10 +28,11 @@ const DutyMissionFormNew: React.FC<Props> = React.memo(
     const formErrors = useForm.useFormDataFormErrors<DutyMission>(props.formDataKey);
     const canSave = useForm.useFormDataCanSave<DutyMission>(props.formDataKey);
     const handleSubmitPromise = useForm.useFormDataHandleSubmitPromise<DutyMission>(props.formDataKey);
-    const moscowTime = createMoscowServerDateTime(meta.page);
+    const moscowTime = useMoscowTime(meta.page);
+    const date = get(moscowTime.data, 'date', null);
 
-    formState.plan_date_start = formState.id ? formState.plan_date_start : createValidDateTime(moscowTime);
-    formState.plan_date_end = formState.id ? formState.plan_date_end : createValidDateTime(getTomorrow9amMoscowServerTime(moscowTime));
+    formState.plan_date_start = formState.id ? formState.plan_date_start : createValidDateTime(date);
+    formState.plan_date_end = formState.id ? formState.plan_date_end : createValidDateTime(getTomorrow9amMoscowServerTime(date));
 
     const dispatch = etsUseDispatch();
     const updateFormErrors = React.useCallback(

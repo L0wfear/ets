@@ -6,6 +6,7 @@ import AppHeaderMobi from 'components/new/ui/app_header/mobi/AppHeaderMobi';
 import { mobiSize } from 'global-styled/global-constants';
 import { get_browser } from 'utils/functions';
 import { isUndefined } from 'util';
+import { range } from 'lodash';
 
 class AppHeader extends React.Component<{}, any> {
   node = React.createRef<any>();
@@ -30,8 +31,9 @@ class AppHeader extends React.Component<{}, any> {
         if (get_browser().name === 'Firefox') {
           const charCode = isUndefined(event.which) ? event.keyCode : event.which;
           const metaCode = event.metaKey;
+          const isKeypad = range(96, 106).includes(event.keyCode);
           const charStr = String.fromCharCode(charCode);
-          if (charStr.match(/[a-zA-Z]+/g) && !metaCode) {
+          if (charStr.match(/[a-zA-Z]+/g) && !metaCode && !isKeypad) {
             event.preventDefault();
           }
         }

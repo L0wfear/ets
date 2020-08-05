@@ -3002,7 +3002,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     error={errors.equipment_fuel_type}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                      || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
+                                      || Boolean(lastWaybill && !lastWaybill['is_one_fuel_tank'] && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
                                     }
                                     options={FUEL_TYPES}
                                     handleChange={

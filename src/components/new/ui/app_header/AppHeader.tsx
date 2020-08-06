@@ -32,8 +32,9 @@ class AppHeader extends React.Component<{}, any> {
           const charCode = isUndefined(event.which) ? event.keyCode : event.which;
           const metaCode = event.metaKey;
           const isKeypad = range(96, 106).includes(event.keyCode);
+          const ctrl = event.ctrlKey ? event.ctrlKey : charCode === 17;
           const charStr = String.fromCharCode(charCode);
-          if (charStr.match(/[a-zA-Z]+/g) && !metaCode && !isKeypad) {
+          if (charStr.match(/[a-zA-Z]+/g) && !metaCode && !isKeypad && (ctrl && charCode === 86) && (ctrl && charCode === 67)) { // :(
             event.preventDefault();
           }
         }

@@ -7,6 +7,7 @@ export type Company = {
   okrug_id: number;
   rgb_color: string;
   short_name: string;
+  use_pouring: boolean;
 };
 
 export type IStateCompany = {

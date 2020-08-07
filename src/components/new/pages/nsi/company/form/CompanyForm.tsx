@@ -25,6 +25,7 @@ const CompanyForm: React.FC<PropsCompany> = React.memo(
       path,
       IS_CREATING,
       isPermitted,
+      isPermittedToUpdate,
     } = props;
 
     const title = !IS_CREATING ? 'Карточка организации' : 'Карточка организации';
@@ -73,6 +74,19 @@ const CompanyForm: React.FC<PropsCompany> = React.memo(
                 onChange={props.handleChangeBoolean}
                 boundKeys="has_remote_checkup"
                 disabled={!isPermitted}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                id="use_pouring"
+                modalKey={page}
+                type="boolean"
+                label={`Использование типа заправки "Налив"`}
+                value={state.use_pouring}
+                error={errors.use_pouring}
+                onChange={props.handleChangeBoolean}
+                boundKeys="use_pouring"
+                disabled={!isPermittedToUpdate}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

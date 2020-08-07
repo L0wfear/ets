@@ -10,6 +10,7 @@ import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils'
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -74,12 +75,15 @@ const checkCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
+    companyList: IStateCompany['companyList'] = [],
   ) => {
     return car_refill.map((rowData) => {
       return {
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
-          : '',
+          : !companyList[0].use_pouring && rowData.type_id === 2 && (formState.status !== 'closed' && formState.status !== 'deleted')
+            ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
+            : '',
         fuel_card_id: validateFuelCardId(
           rowData,
           refillTypeList,
@@ -111,12 +115,15 @@ const checkEquipmentCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
+    companyList: IStateCompany['companyList'] = [],
   ) => {
     return car_refill.map((rowData) => {
       return {
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
-          : '',
+          : !companyList[0].use_pouring && rowData.type_id === 2 && (formState.status !== 'closed' && formState.status !== 'deleted')
+            ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
+            : '',
         fuel_card_id: validateFuelCardId(
           rowData,
           refillTypeList,
@@ -489,7 +496,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex },
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList },
         ) => {
           return checkCarRefill(
             car_refill,
@@ -498,6 +505,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState.fuel_type,
             notFiltredFuelCardsIndex,
             formState,
+            companyList
           );
         },
       ],
@@ -509,7 +517,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           equipment_refill,
           formState,
-          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex, companyList },
         ) => {
           return checkEquipmentCarRefill(
             equipment_refill,
@@ -518,6 +526,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState.equipment_fuel_type,
             notFiltredFuelCardsIndex,
             formState,
+            companyList
           );
         },
       ],

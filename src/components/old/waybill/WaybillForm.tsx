@@ -266,6 +266,7 @@ type OwnProps = {
   };
   canClose: boolean;
   canSave: boolean;
+  usePouring?: boolean;
 
   page: string;
   path?: string;
@@ -1809,7 +1810,8 @@ class WaybillForm extends React.Component<Props, State> {
       isPermittedByKey,
       userStructures,
       userStructureId,
-      reasonListOptions
+      reasonListOptions,
+      usePouring,
     } = this.props;
 
     const workModeOptions = workModeList.map(
@@ -2832,6 +2834,7 @@ class WaybillForm extends React.Component<Props, State> {
                           )} // временно
                           title="Заправка топлива"
                           handleChange={this.handleChangeCarReFill}
+                          use_pouring={usePouring}
                           fuel_given={state.fuel_given}
                           structure_id={state.structure_id}
                           fuel_type={state.fuel_type}
@@ -3136,6 +3139,7 @@ class WaybillForm extends React.Component<Props, State> {
                               )} // временно
                               title="Заправка топлива"
                               handleChange={this.handleChangeEquipmentRefill}
+                              use_pouring={usePouring}
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
                               fuel_type={state.equipment_fuel_type}

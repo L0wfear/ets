@@ -81,12 +81,15 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
   const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
+  const objects_info = get(props.carsTravelTimeList, 'objects_info', {});
+  const travel_time_out_waybill = `Время движения вне ПЛ: ${get(props.carsTravelTimeList, 'travel_time_out_waybill', null)} (ч:мин)`;
+  const distance_out_waybill = `Пройденное расстояние вне ПЛ: ${get(props.carsTravelTimeList, 'distance_out_waybill', null)} км.`;
 
   const setGeoobjectsValidValue = React.useCallback(() => {
-    if (Object.values(props.carsTravelTimeList).length) {
+    if (Object.values(objects_info).length) {
       const typeLayer = 'any';
       const selectedFrontKey = `${typeLayer}/${get(selectedElement, 'id', null)}`;
-      const newGeoobjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
+      const newGeoobjects = objects_info.reduce((newElem, currentElem) => {
         const front_key = `${typeLayer}/${currentElem.id}`;
         const { shape, type: someType, frontIsSelected, ...someElem } = currentElem;
         return {
@@ -97,7 +100,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
             object_id: currentElem.id,
             type: typeLayer,
             state: 2, // влияет на окраску одх/дт
-            frontIsSelected: selectedFrontKey === front_key ? true : false, // выделение объекта на карте (заливка)
+            frontIsSelected: selectedFrontKey === front_key, // выделение объекта на карте (заливка)
             ...someElem,
           },
           ...newElem,
@@ -218,7 +221,9 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
               }
             </ReportFormRightWrapper>
             <b>{distance_out_mission_text} <br/>
-              {travel_time_out_mission_text}</b>
+              {travel_time_out_mission_text} <br/>
+              {travel_time_out_waybill} <br/>
+              {distance_out_waybill}</b>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </ModalBodyPreloader>

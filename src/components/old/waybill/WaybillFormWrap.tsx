@@ -685,7 +685,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const motohoursMain = hasMotohours(formState.gov_number);
       const elemMeasureUnitName = motohoursMain ? 'л/моточас' : 'л/км';
       const firstElemIndex = formState.tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
-      formState.tax_data.forEach((currElem, index) => {
+      formState.tax_data.forEach((currElem) => {
         const isFirstElemTaxOperationField = field === 'taxes_operation' && index === firstElemIndex;
         if (
           (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')

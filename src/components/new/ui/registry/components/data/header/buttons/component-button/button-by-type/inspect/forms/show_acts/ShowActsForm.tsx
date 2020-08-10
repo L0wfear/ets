@@ -7,9 +7,6 @@ import Paginator from 'components/new/ui/registry/components/data/paginator/Pagi
 import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/permissions';
-import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
-import inspectPgmBasePermissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
-import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 
 import {
   getConfig,
@@ -74,18 +71,6 @@ const ShowActsForm: React.FC<Props> = React.memo(
     const isPermittedUpdate = etsUseSelector(
       (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.update),
     );
-
-    const isPermittedToUpdateClosedAutobase = etsUseSelector(
-      (state) => getSessionState(state).userData.permissionsSet.has(inspectAutobasePermissions.update_closed),
-    );
-    const isPermittedToUpdateClosedPgm = etsUseSelector(
-      (state) => getSessionState(state).userData.permissionsSet.has(inspectPgmBasePermissions.update_closed),
-    );
-    const isPermittedToUpdateClosedCarsCondition = etsUseSelector(
-      (state) => getSessionState(state).userData.permissionsSet.has(inspectCarsConditionPermissions.update_closed),
-    );
-
-    const isPermittedToDelete = isPermittedToUpdateClosedAutobase && isPermittedToUpdateClosedPgm && isPermittedToUpdateClosedCarsCondition;
 
     const handleOpenForm = React.useCallback(
       () => {
@@ -195,7 +180,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                   </EtsBootstrap.Button>
                   <EtsButtonsContainer>
                     <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
-                    <ButtonRemove registryKey={registryKey} disabled={!isPermittedToDelete} data={dataRemove} onClick={handleClickRemoveFile} />
+                    <ButtonRemove registryKey={registryKey} disabled={!isPermittedUpdate} data={dataRemove} onClick={handleClickRemoveFile} />
                   </EtsButtonsContainer>
                 </EtsHeaderContainer>
               </EtsHeaderContainerWrap>

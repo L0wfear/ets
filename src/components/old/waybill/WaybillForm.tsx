@@ -1173,7 +1173,7 @@ class WaybillForm extends React.Component<Props, State> {
       = diffDates(this.props.moscowTimeServer.date, state.plan_departure_date) > 0 && !autocompleteOnly
         ? this.props.moscowTimeServer.date
         : state.plan_departure_date;
-
+    const trailer_id = state.trailer_id;
     try {
       const lastWaybill = await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
@@ -1207,6 +1207,7 @@ class WaybillForm extends React.Component<Props, State> {
           motohours_start,
           motohours_equip_start,
           equipment_fuel,
+          trailer_id,
         };
         this.props.handleMultipleChange(fieldsToChange);
       } else if (showInfo) {
@@ -3012,7 +3013,7 @@ class WaybillForm extends React.Component<Props, State> {
                                     error={errors.equipment_fuel_type}
                                     disabled={
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
-                                      || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
+                                      || Boolean(lastWaybill && !lastWaybill['is_one_fuel_tank'] && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
                                     }
                                     options={FUEL_TYPES}
                                     handleChange={

@@ -5,8 +5,6 @@ import * as MomentTimezone from 'moment-timezone';
 import momentLocalizer from 'components/@next/@utils/dates/localizer';
 
 import { extendMoment } from 'moment-range';
-import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
-import { get } from 'lodash';
 
 const moment = extendMoment(Moment);
 momentLocalizer();
@@ -119,13 +117,6 @@ export function createValidDateHM(date: string | Date) {
     return null;
   }
   return moment(date).format('YYYY.MM.DD HH:mm');
-}
-
-export function createMoscowServerDateTime(page: string) {
-  const moscowTime = useMoscowTime(page);
-  const date = get(moscowTime.data, 'date', null);
-
-  return date;
 }
 
 export function createValidDateTimeDots(date: string | Date) {

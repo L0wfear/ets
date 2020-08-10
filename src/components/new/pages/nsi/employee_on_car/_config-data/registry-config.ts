@@ -9,6 +9,7 @@ import {
 
 export const registryKey = 'employeeOnCarRegistry';
 import { id } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
   return {
@@ -44,6 +45,28 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_id',
+          labelKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
         {
           valueKey: 'asuods_id',
           labelKey: 'gov_number',
@@ -117,6 +140,26 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
+            width: 150,
           },
           {
             key: 'gov_number',

@@ -11,6 +11,15 @@ import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
 import CarCreateMission from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
 import { CarInfoBlockTabData } from 'components/old/monitor/styled';
+import CarWaybills from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-waybills/CarWaybills';
+import { useParams } from 'react-router-dom';
+import WaybillFormWrap from 'components/old/waybill/WaybillFormWrap';
+import { compose } from 'redux';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { fetchCarWaybills } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -26,6 +35,7 @@ export type TypeLastPoint = {
 };
 
 export type PropsCarAttributeInformation = {
+  asuods_id: {asuods_id: number;};
   company_name: string;
   gov_number: string;
   garage_number: string;
@@ -37,9 +47,10 @@ export type PropsCarAttributeInformation = {
   errorInLoadTrack: boolean;
   map: Map;
   carActualGpsNumberIndex: any;
-
+  fetchWaybillsData: any;
   missionsData: any;
-};
+  dispatch: EtsDispatch;
+} & WithSearchProps;
 
 type OneAtt<P> = {
   key?: string;
@@ -114,7 +125,77 @@ export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
 
 const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.memo(
   (props) => {
-    const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
+    const { 
+      lastPoint, 
+      errorInLoadTrack,
+      gps_code, 
+      missionsData, 
+      asuods_id,
+      fetchWaybillsData, 
+      carActualGpsNumberIndex,
+      dispatch,
+      setParamsAndSearch,
+      searchState,
+    } = props;
+
+    const [showWaybillForm, setShowWaybillForm] = React.useState(false);
+    const [waybillData, setWaybillData] = React.useState(null);
+    const [defaultCarData, setDefaultCarData] = React.useState(null);
+    const [stateWaybillId, setStateWaybillId] = React.useState(null);
+    const { waybill_id } = useParams();
+
+    React.useEffect(() => {
+      if(waybill_id === 'create' && !showWaybillForm) {
+        const carInfo: Car = carActualGpsNumberIndex[gps_code];
+        const defaultCarData = {
+          car_id: carInfo.asuods_id,
+          model_id: carInfo.model_id,
+          gov_number: carInfo.gov_number,
+        };
+        setDefaultCarData(defaultCarData);
+        setShowWaybillForm(true);
+      }
+      if(!Number.isNaN(Number(waybill_id)) && waybill_id !== stateWaybillId) {
+        setShowWaybillForm(false);
+        setWaybillData(null);
+        setDefaultCarData(null);
+        dispatch(
+          actionGetWaybillById(
+            Number(waybill_id),
+            { page: 'monitor' },
+          ),
+        ).then((waybill_data) => {
+          if (waybill_data) {
+            setWaybillData(waybill_data);
+            setShowWaybillForm(true);
+            setStateWaybillId(Number(waybill_id));
+          } else {
+            // tslint:disable-next-line
+            console.warn('not find waybill');
+          }
+        });
+      }
+
+      if(!waybill_id && showWaybillForm) {
+        setShowWaybillForm(false);
+        setWaybillData(null);
+        setDefaultCarData(null);
+      }
+    }, [waybill_id]);
+
+    const handleHideWaybillForm = React.useCallback(() => {
+      setParamsAndSearch({
+        params: {waybill_id: null}, 
+        search: {
+          date_start: searchState.date_start,
+          date_end: searchState.date_end,
+        }
+      });
+      fetchWaybillsData({
+        asuods_id,
+      });
+    }, [asuods_id, searchState.date_start, searchState.date_end]);
+
     return (
       <div>
         <CarInfoBlockTabData>
@@ -156,9 +237,21 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
           </div>
         </CarInfoBlockTabData>
         <CarMissions />
+        <CarWaybills />
         <CarCreateMission
           gps_code={gps_code}
         />
+        {
+          showWaybillForm
+            && (
+              <WaybillFormWrap
+                onFormHide={handleHideWaybillForm}
+                onCallback={handleHideWaybillForm}
+                defaultCarData={defaultCarData}
+                element={waybillData}
+              />
+            )
+        }
       </div>
     );
   },
@@ -179,8 +272,35 @@ const mapStateToProps = (state) => ({
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   missionsData: state.monitorPage.carInfo.missionsData,
+  asuods_id: (
+    state.monitorPage.carActualGpsNumberIndex[
+      state.monitorPage.carInfo.gps_code
+    ] || { asuods_id: null }
+  ).asuods_id,
 });
 
-export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    fetchWaybillsData: (props) => {
+      return dispatch(
+        fetchCarWaybills(
+          {
+            asuods_id: props.asuods_id,
+          },
+          {
+            page: 'monitor',
+          }
+        )
+      );
+    },
+  };
+};
+
+export default compose<any>(
+  withSearch, 
+  connect<any, any, any, ReduxState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(CarAttributeInformation);

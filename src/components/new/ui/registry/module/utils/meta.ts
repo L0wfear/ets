@@ -34,6 +34,9 @@ const widthByKey: Record<string, { width: number; sortable?: boolean; }> = {
   },
   show_edc_comments: {
     width: 75,
+  },  
+  showCarOnMap: {
+    width: 150,
   },
 };
 

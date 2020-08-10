@@ -557,6 +557,10 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 150,
         },
         {
+          key: 'showCarOnMap',
+          title: 'Показать на карте',
+        },
+        {
           key: 'failed_medical_stat_types',
           title: 'Непройденные мед. осмотры',
           width: 300,

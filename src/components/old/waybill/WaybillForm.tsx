@@ -269,7 +269,7 @@ type OwnProps = {
 
   page: string;
   path?: string;
-
+  defaultCarData?: {car_id: number; model_id: number; gov_number: string;};
   show: boolean;
   onHide: any;
 };
@@ -532,7 +532,7 @@ class WaybillForm extends React.Component<Props, State> {
     if (IS_CREATING || IS_DRAFT) {
       this.props
         .dispatch(fuelRatesGet({}, this.props))
-        .then(({ fuelRatesList }) =>
+        .then(({ fuelRatesList }) => 
           this.setState({
             fuelRateAllList: fuelRatesList.map((d) => d.car_model_id),
           }),
@@ -542,6 +542,17 @@ class WaybillForm extends React.Component<Props, State> {
           this.setState({
             fuelRateAllList: [],
           });
+        })
+        .finally(() => {
+          if(this.props.defaultCarData) {
+            this.onCarChange(
+              this.props.defaultCarData.car_id, 
+              {
+                model_id: this.props.defaultCarData.model_id, 
+                gov_number: this.props.defaultCarData.gov_number
+              }
+            );
+          }
         });
     }
 

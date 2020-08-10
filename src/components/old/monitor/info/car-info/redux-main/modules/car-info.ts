@@ -9,10 +9,12 @@ export const CAR_INFO_SET_GPS_CODE = CAR_INFO`SET_SELECTED_GPS_CODE`;
 export const CAR_INFO_SET_STATUS = CAR_INFO`SET_STATUS`;
 export const CAR_INFO_SET_TRACK_CACHING = CAR_INFO`SET_TRACK_CACHING`;
 export const CAR_INFO_SET_MISSIONS_DATA = CAR_INFO`SET_MISSIONS_DATA`;
+export const CAR_INFO_SET_WAYBILLS_DATA = CAR_INFO`SET_WAYBILLS_DATA`;
 export const CAR_INFO_RESET_MISSIONS_DATA = CAR_INFO`RESET_MISSIONS_DATA`;
+export const CAR_INFO_RESET_WAYBILLS_DATA = CAR_INFO`RESET_WAYBILLS_DATA`;
 export const CAR_INFO_PUSH_POINT_INTO_TRACK = CAR_INFO`PUSH_POINT_INTO_TRACK`;
 export const CAR_INFO_TOGGLE_FOR_TODAY = CAR_INFO`TOGGLE_FOR_TODAY`;
-export const CAR_INFO_REFRESH_DATE_FOR_TODAY = CAR_INFO`REFRESH_DATE_FOR_TODAY`;
+export const CAR_INFO_CHANGE_DATE_AND_FOR_TODAY = CAR_INFO`CHANGE_DATE_AND_FOR_TODAY`;
 export const CAR_INFO_RESET_TRACK_CACHING = CAR_INFO`RESET_TRACK_CACHING`;
 export const CAR_INFO_CHANGE_DATE = CAR_INFO`CHANGE_DATE`;
 export const CAR_INFO_TOGGLE_PLAY = CAR_INFO`TOGGLE_PLAY`;
@@ -40,6 +42,11 @@ export type IStateCarInfo = {
       customer_name: string;
       owner_name: string;
     };
+    isLoading: boolean;
+  };
+  waybillsData: {
+    error: boolean;
+    waybills?: -1 | Array<any>;
     isLoading: boolean;
   };
   trackCaching: {
@@ -126,6 +133,11 @@ export const initialState: IStateCarInfo = {
       customer_name: null,
       owner_name: null,
     },
+    isLoading: true,
+  },
+  waybillsData: {
+    error: false,
+    waybills: -1,
     isLoading: true,
   },
   trackCaching: {
@@ -225,10 +237,26 @@ export default (state = initialState, { type, payload }: any) => {
       }
       return newState;
     }
+    case CAR_INFO_SET_WAYBILLS_DATA: {
+      return {
+        ...state,
+        waybillsData: {
+          error: Boolean(payload.error),
+          waybills: payload.waybills,
+          isLoading: false
+        }
+      };
+    }
     case CAR_INFO_RESET_MISSIONS_DATA: {
       return {
         ...state,
         missionsData: { ...initialState.missionsData },
+      };
+    }
+    case CAR_INFO_RESET_WAYBILLS_DATA: {
+      return {
+        ...state,
+        waybillsData: { ...initialState.waybillsData },
       };
     }
     case CAR_INFO_PUSH_POINT_INTO_TRACK: {
@@ -259,16 +287,16 @@ export default (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         forToday: !state.forToday,
-        date_start: state.date_start,
-        date_end: state.date_end,
+        date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
+        date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
       };
     }
-    case CAR_INFO_REFRESH_DATE_FOR_TODAY: {
+    case CAR_INFO_CHANGE_DATE_AND_FOR_TODAY: {
       return {
         ...state,
-        forToday: true,
-        date_start: getTrackDefaultDateStart(),
-        date_end: getTrackDefaultDateEnd(),
+        forToday: payload.forToday,
+        date_start: payload.date_start,
+        date_end: payload.date_end,
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

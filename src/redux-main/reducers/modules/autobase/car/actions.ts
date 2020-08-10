@@ -13,6 +13,7 @@ import {
   promiseUpdateCarPassportData,
   promiseLoadCarByAsuodsId,
   promiseGetCarMissionsByTimestamp,
+  promiseGetCarWaybillsByTimestamp,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
@@ -239,6 +240,14 @@ export const actionGetCarMissionsByTimestamp = (payload: Parameters<typeof promi
   return etsLoadingCounter(
     dispatch,
     promiseGetCarMissionsByTimestamp(payload),
+    meta,
+  );
+};
+
+export const actionGetCarWaybillsByTimestamp = (payload: Parameters<typeof promiseGetCarWaybillsByTimestamp>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetCarWaybillsByTimestamp>> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetCarWaybillsByTimestamp(payload),
     meta,
   );
 };

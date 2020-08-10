@@ -171,6 +171,7 @@ type OwnProps = {
   onFormHide?: (...arg: Array<any>) => any;
 
   element: Partial<Waybill>;
+  defaultCarData?: {car_id: number; model_id: number; gov_number: string;};
 };
 
 export type WaybillFormWrapProps = (
@@ -1095,6 +1096,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               onHide={this.onFormHide}
               page={this.props.page}
               path={this.props.path}
+              defaultCarData={this.props.defaultCarData}
             />
           )}
           {this.state.edcRequestIds

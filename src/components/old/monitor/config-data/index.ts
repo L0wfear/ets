@@ -4,7 +4,7 @@ import { ConfigPageData } from 'components/@next/@types/config_data';
 
 const monitor_page_data: ConfigPageData = {
   path: '/monitor',
-  routePath: '/monitor/:gov_number?',
+  routePath: '/monitor/:gov_number?/:waybill_id?',
   title: 'Карта',
   entyity: 'monitor',
 

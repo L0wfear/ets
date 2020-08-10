@@ -81,7 +81,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
   const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
-  const objects_info = get(props.carsTravelTimeList, 'objects_info', {});
+  const objects_info = get(props.carsTravelTimeList, 'objects_info', []);
   const travel_time_out_waybill = `Время движения вне ПЛ: ${get(props.carsTravelTimeList, 'travel_time_out_waybill', null)} (ч:мин)`;
   const distance_out_waybill = `Пройденное расстояние вне ПЛ: ${get(props.carsTravelTimeList, 'distance_out_waybill', null)} км.`;
 
@@ -112,7 +112,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         },
       });
     }
-  }, [selectedElement, props.carsTravelTimeList]);
+  }, [selectedElement, objects_info]);
 
   React.useEffect( () => {
     const loadFunc = async () => {
@@ -163,7 +163,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
   React.useEffect(() => {
     setGeoobjectsValidValue();
-  }, [props.carsTravelTimeList]);
+  }, [objects_info]);
 
   React.useEffect(() => {
     setTrack(get(props.tracksCaching, 'track', null));
@@ -203,12 +203,12 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
           <EtsBootstrap.Col md={6}>
             <ReportFormRightWrapper>
               {
-                props.carsTravelTimeList.length
+                objects_info.length
                   ? (
                     <Table
                       noTitle={true}
                       noFilter
-                      results={props.carsTravelTimeList}
+                      results={objects_info}
                       enumerated={false}
                       tableMeta={tableMeta}
                       className="report-time-table"

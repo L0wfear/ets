@@ -9,15 +9,13 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ReduxState } from 'redux-main/@types/state';
 import { carInfoChangeDateAndForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-type PropsCarMissions = {
-  showMissionInfoForm: any;
-  showMissionForm: any;
+type PropsCarWaybills = {
   waybills: Array<any>;
   forToday: Boolean;
   carInfoChangeDateAndForToday: (for_today: boolean, validDateStartMoscow: string, validDateEndMoscow: string) => void;
 } & WithSearchProps;
 
-const WaybillsList: React.FC<PropsCarMissions> = React.memo(
+const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
   (props) => {
     const { 
       waybills: { length }, 

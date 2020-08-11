@@ -190,9 +190,9 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                 <EtsBootstrap.Col md={4}>
                   {
                     Boolean(IS_ACTIVE || IS_CLOSED)
-																&& <InfoBlock>
-																	Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-																</InfoBlock>
+                      && <InfoBlock>
+                        Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+                      </InfoBlock>
                   }
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={4}>

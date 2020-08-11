@@ -30,7 +30,7 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
         carInfoChangeDateAndForToday(false, date_start, date_end);
       }
       setParamsAndSearch({params: {waybill_id: id}, search: {date_start, date_end,}});
-    }, []);
+    }, [forToday, carInfoChangeDateAndForToday, setParamsAndSearch]);
     return (
       <div className="car_info-missions_list_container">
         {
@@ -73,14 +73,14 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
   }
 ); 
 
-export default compose<any, any>(
+export default compose<PropsCarWaybills, {}>(
   withSearch,
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'waybillsData', 'waybills'],
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'waybillsData', 'error'],
   }),
-  connect<any, any, any, ReduxState>(
+  connect<Pick<PropsCarWaybills, 'forToday'>, Pick<PropsCarWaybills, 'carInfoChangeDateAndForToday'>, {}, ReduxState>(
     (state) => ({
       waybills: state.monitorPage.carInfo.waybillsData.waybills,
       forToday: state.monitorPage.carInfo.forToday,

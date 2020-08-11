@@ -108,7 +108,6 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         if (date_start && date_end && carData.data && !waybill_id) {
-          console.info(2);
           const payload = {
             asuods_id: carData.data.asuods_id,
             gps_code: carData.data.gps_code,

@@ -22,6 +22,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 type StateProps = {
   token: InitialStateSession['token'];
@@ -125,6 +126,10 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
 );
 
 export default compose<PropsMonitorPage, OwnProps>(
+  withPreloader({
+    page: 'monitor',
+    typePreloader: 'mainpage',
+  }),
   triggerOnChangeCompany,
   connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({

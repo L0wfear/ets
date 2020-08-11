@@ -2693,6 +2693,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           isPermitted={true}
                           activeTabKey={this.state.fuelActiveTabKey}
                           handleTabChange={this.handleChangeActiveNavTab}
+                          errors={errors}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>

@@ -6,6 +6,8 @@ import {
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
 import { InspectCarsService, } from 'api/Services';
+import { defaultInspectCarsCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { isNullOrUndefined } from 'util';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -78,15 +80,19 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
 export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
 
-  inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
-    delete rowData.customId;
-    delete rowData.disabled;
-    return rowData;
-  });
-  inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
-    delete rowData.customId;
-    return rowData;
-  });
+  inspectCarsCondition.data.types_cars = !isNullOrUndefined(inspectCarsConditionFront.data.types_cars)
+    ? inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
+      delete rowData.customId;
+      delete rowData.disabled;
+      return rowData;
+    })
+    : defaultInspectCarsCondition?.data?.types_cars;
+  inspectCarsCondition.data.types_harvesting_unit = !isNullOrUndefined(inspectCarsConditionFront.data.types_harvesting_unit)
+    ? inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
+      delete rowData.customId;
+      return rowData;
+    })
+    : defaultInspectCarsCondition?.data?.types_harvesting_unit;
 
   return inspectCarsCondition;
 };

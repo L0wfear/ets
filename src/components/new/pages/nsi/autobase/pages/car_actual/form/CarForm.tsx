@@ -47,8 +47,6 @@ const CarForm: React.FC<PropsCar> = React.memo(
       return [];
     }, [state.passport_data]);
 
-    const stateWithValidPassportData: CarWrap = {...state, passport_data: validPassportData};
-
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {
         return {
@@ -68,7 +66,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
             <CarFormBodyHeader isPassport={isPassport} isPermitted={isPermitted} />
             <CarFormBodyContainer
               isPermitted={isPermitted}
-              formState={stateWithValidPassportData}
+              formState={{...state, passport_data: validPassportData}}
               formErrors={errors}
               onChange={props.handleChange}
               onChangeBoolean={props.handleChangeBoolean}

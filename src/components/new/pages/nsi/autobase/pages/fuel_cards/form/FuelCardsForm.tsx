@@ -85,34 +85,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       addNewBatteryOnCar();
     }, []);
 
-    const handleSubmit = React.useCallback(
-      async () => {
-        const {
-          formState,
-          userStructureId,
-        } = props;
-
-        if (
-          formState.structure_id !== userStructureId
-          && userStructureId
-        ) {
-          try {
-            await global.confirmDialog({
-              title: 'Внимание',
-              body: 'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
-              okName: 'Да',
-              cancelName: 'Нет',
-            });
-          } catch (e) {
-            return;
-          }
-        }
-
-        props.defaultSubmit();
-      },
-      [],
-    );
-
     const {
       formState: state,
       formErrors: errors,
@@ -131,7 +103,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         : 'Создание записи'
     );
 
-    const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
+    const companiesFieldIsDisable = companyOptions.length <= 1;
 
     const companiesDefaultValue
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
@@ -248,7 +220,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
               ? (
                 <EtsBootstrap.Button
                   disabled={!props.canSave}
-                  onClick={handleSubmit}
+                  onClick={props.defaultSubmit}
                 >
                     Сохранить
                 </EtsBootstrap.Button>
@@ -281,11 +253,10 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     mergeElement: (props) => {
       const { companyOptions, userData } = props;
       const userCompanyId = userData.company_id;
-      const userStructureId = userData.structure_id;
 
       const IS_CREATING = !get(props, 'element.id', null);
-      const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
-
+      const companiesFieldIsDisable = companyOptions.length <= 1;
+      
       const companiesDefaultValue
         = IS_CREATING && companiesFieldIsDisable
           ? userCompanyId
@@ -294,7 +265,6 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       const newElement: Partial<FuelCard> = {
         ...props.element,
         company_id: companiesDefaultValue,
-        structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : get(props, 'element.structure_id'),
         origin_fuel_card_on_cars: get(props, 'element.fuel_card_on_cars'),
       };
 

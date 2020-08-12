@@ -15,7 +15,6 @@ import {
   getSomeUniqState,
   getSessionState,
   getEmployeeState,
-  getCompanyState,
 } from 'redux-main/reducers/selectors';
 import {
   actionLoadRefillTypeAndSetInStore,
@@ -35,7 +34,7 @@ import {
 } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { InitialStateSession, OneSessionCompany } from 'redux-main/reducers/modules/session/@types/session';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
@@ -47,7 +46,7 @@ import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours } from 'utils/functions';
-import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
+import { getSessionUsePouring } from 'redux-main/reducers/modules/session/selectors';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -158,7 +157,7 @@ type StateProps = {
   refillTypeList: Array<RefillType>;
   carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
-  companyList: IStateCompany['companyList'];
+  usePouring: OneSessionCompany['use_pouring'];
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
@@ -1092,7 +1091,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               setEdcRequestIds={this.setEdcRequestIds}
               formErrors={this.state.formErrors}
               entity={'waybill'}
-              usePouring={this.props.companyList[0].use_pouring}
+              usePouring={this.props.usePouring}
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}
@@ -1128,6 +1127,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
-    companyList: getCompanyState(state).companyList,
+    usePouring: getSessionUsePouring(state),
   }),
 )(WaybillFormWrap);

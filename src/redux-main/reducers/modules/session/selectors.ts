@@ -1,5 +1,5 @@
 import { createSelector, Selector } from 'reselect';
-import { find, keyBy } from 'lodash';
+import { get, find, keyBy } from 'lodash';
 
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
@@ -38,6 +38,9 @@ export const getSessionCompanyOptions = createSelector<ReduxState, Array<OneSess
 
 export type GetSessionFuelTypeOptionsAns = (
   Array<DefaultSelectOption<fuelTypeStructure['id'], fuelTypeStructure['name'], fuelTypeStructure>>
+);
+export const getSessionCompanyId: Selector<ReduxState, InitialStateSession['userData']['company_id']> = (state) => (
+  getSessionState(state).userData.company_id
 );
 
 export const getSessionUserStructureId: Selector<ReduxState, InitialStateSession['userData']['structure_id']> = (state) => (
@@ -104,6 +107,24 @@ const makeSessionStuctureParams = (
     STRUCTURE_FIELD_DELETABLE,
   };
 };
+
+const makeSessionUsePouringState = (
+  company_id: InitialStateSession['userData']['company_id'],
+  COMPANIES: InitialStateSession['userData']['companies'],
+) => {
+  if (COMPANIES.length === 1 && company_id === COMPANIES[0].asuods_id) {
+    return COMPANIES[0].use_pouring;
+  } else if (COMPANIES.length > 1) {
+    const company = find(COMPANIES, (el) => el.asuods_id === company_id);
+    return get(company, 'use_pouring', null);
+  }
+};
+
+export const getSessionUsePouring = createSelector<ReduxState, InitialStateSession['userData']['company_id'], InitialStateSession['userData']['companies'], ReturnType<typeof makeSessionUsePouringState>>(
+  getSessionCompanyId,
+  getSessionCompany,
+  makeSessionUsePouringState,
+);
 
 export const getSessionStructuresParams = createSelector<ReduxState, InitialStateSession['userData']['structure_id'], GetSessionStructuresOptionsAns, ReturnType<typeof makeSessionStuctureParams>>(
   getSessionUserStructureId,

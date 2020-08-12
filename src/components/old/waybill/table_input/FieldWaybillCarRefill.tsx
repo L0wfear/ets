@@ -129,33 +129,13 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
     const typeIdOptions = React.useMemo(
       () => {
-        if (!props.use_pouring) {
-          return refillTypeList.map((rowData) => {
-            if (rowData.id === 2) {
-              return ({
-                value: rowData.id,
-                label: rowData.name,
-                isNotVisible: !rowData.is_selectable,
-                isDisabled: true,
-                rowData,
-              });
-            } else {
-              return ({
-                value: rowData.id,
-                label: rowData.name,
-                isNotVisible: !rowData.is_selectable,
-                rowData,
-              });
-            }
-          });
-        } else {
-          return refillTypeList.map((rowData) => ({
-            value: rowData.id,
-            label: rowData.name,
-            isNotVisible: !rowData.is_selectable,
-            rowData,
-          }));
-        }
+        return refillTypeList.map((rowData) => ({
+          value: rowData.id,
+          label: rowData.name,
+          isNotVisible: !rowData.is_selectable || (rowData.id === 2 && !props.use_pouring),
+          isDisabled: rowData.id === 2 && !props.use_pouring,
+          rowData,
+        }));
       },
       [refillTypeList, props.use_pouring],
     );

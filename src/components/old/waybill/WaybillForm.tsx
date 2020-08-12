@@ -40,7 +40,6 @@ import {
   defaultSelectListMapper,
 } from 'components/old/ui/input/ReactSelect/utils';
 
-import Taxes from 'components/old/waybill/Taxes';
 import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
 import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
@@ -108,6 +107,9 @@ import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/
 import styled from 'styled-components';
 import { actionGetAndSetInStoreReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/actions';
 import { getReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/selectors';
+import FuelNavHeader from 'components/old/waybill/form/fuelTabs/FuelNavHeader';
+import FuelBodyContainer from 'components/old/waybill/form/fuelTabs/FuelBodyContainer';
+import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -245,7 +247,7 @@ type OwnProps = {
   handleFormFileChange: (key: string, filesByKey: Array<any>) => any;
   handleFormChange: (field: string, e: any, idex?: number) => any;
   handleMultipleChange: (object: Record<string, any>) => any;
-  onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
+  onSubmitActiveWaybill: (closeForm?: boolean, state?: WaybillProps['formState']) => any;
   onSubmit: (...arg: Array<any>) => any;
   clearSomeData: () => any;
 
@@ -275,13 +277,13 @@ type OwnProps = {
   onHide: any;
 };
 
-type Props = (
+export type WaybillProps = (
   StateProps
   & DispatchProps
   & OwnProps
 );
 
-type State = {
+export type WaybillState = {
   operations: Array<any>;
   equipmentOperations: Array<any>;
   fuelRates: Array<any>;
@@ -297,7 +299,7 @@ type State = {
   notAvailableMissions: Array<any>;
   rejectMissionList: Array<any>;
 
-  origFormState: Props['formState'];
+  origFormState: WaybillProps['formState'];
 
   missionHasError: {
     hasError: boolean;
@@ -305,9 +307,10 @@ type State = {
   };
 
   lastWaybill: Waybill;
+  fuelActiveTabKey: string;
 };
 
-class WaybillForm extends React.Component<Props, State> {
+class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   constructor(props) {
     super(props);
 
@@ -331,6 +334,7 @@ class WaybillForm extends React.Component<Props, State> {
         errorText: '',
       },
       lastWaybill: null,
+      fuelActiveTabKey: fuelKindFormTabKey[0]?.tabKey,
     };
   }
 
@@ -388,7 +392,7 @@ class WaybillForm extends React.Component<Props, State> {
     }
   }
 
-  setMissionHasError = (missionHasError: State['missionHasError']) => {
+  setMissionHasError = (missionHasError: WaybillState['missionHasError']) => {
     this.setState({
       missionHasError: missionHasError,
     });
@@ -1336,13 +1340,13 @@ class WaybillForm extends React.Component<Props, State> {
 
     return Promise.resolve(true);
   };
-  handlePrint = async (...arg: Parameters<Props['handlePrint']>) => {
+  handlePrint = async (...arg: Parameters<WaybillProps['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
       await this.refresh(true, false);
       this.props.handlePrint(...arg);
     }
   };
-  handlePrintFromMiniButton = (...arg: Parameters<Props['handlePrintFromMiniButton']>) => {
+  handlePrintFromMiniButton = (...arg: Parameters<WaybillProps['handlePrintFromMiniButton']>) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrintFromMiniButton(...arg);
     }
@@ -1784,6 +1788,12 @@ class WaybillForm extends React.Component<Props, State> {
         : equipment_tax_data,
       index
     );
+  };
+
+  handleChangeActiveNavTab = (tabKey) => {
+    this.setState({
+      fuelActiveTabKey: tabKey,
+    });
   };
 
   render() {
@@ -2677,221 +2687,77 @@ class WaybillForm extends React.Component<Props, State> {
                           }
                         </EtsBootstrap.Col>
                       </EtsBootstrap.Row>
-                    
-                      <EtsBootstrap.Row>
-                        <EtsBootstrap.Col md={12}>
-                          <EtsBootstrap.Col md={12}>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={12}>
-                                <h4>Топливо</h4>
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={4}>
-                                <FuelType
-                                  modalKey={modalKey}
-                                  keyField="fuel_type"
-                                  value={state.fuel_type}
-                                  error={errors.fuel_type}
-                                  disabled={
-                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || (lastWaybill && lastWaybill['fuel_type'])
-                                  }
-                                  options={FUEL_TYPES}
-                                  handleChange={this.props.handleMultipleChange}
-                                />
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                {!(IS_DRAFT || IS_CREATING) && (
-                                  <ExtField
-                                    id="fuel-end"
-                                    type="number"
-                                    label="Возврат по таксировке, л"
-                                    error={errors.fuel_end}
-                                    value={state.fuel_end}
-                                    format="toFixed3"
-                                    disabled
-                                  />
-                                )}
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="tax-consumption"
-                                  type="number"
-                                  label="Расход по таксировке, л"
-                                  error={errors.tax_consumption}
-                                  value={state.tax_consumption}
-                                  format="toFixed3"
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled
-                                />
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="fuel_start"
-                                  type="number"
-                                  label="Выезд, л"
-                                  error={errors.fuel_start}
-                                  value={state.fuel_start}
-                                  disabled={
-                                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-                                || Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['fact_fuel_end']))
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="fuel_start"
-                                  format="toFixed3"
-                                />
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="fact-fuel-end"
-                                  type="number"
-                                  modalKey={modalKey}
-                                  label="Возврат фактический, л"
-                                  error={errors.fact_fuel_end}
-                                  value={state.fact_fuel_end}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled={
-                                    IS_DELETE || !(IS_ACTIVE || this.state.canEditIfClose)
-                                || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="fact_fuel_end"
-                                  showRedBorder={
-                                    state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
-                                  }
-                                  format="toFixed3"
-                                />
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="fact-consuption"
-                                  type="number"
-                                  modalKey={modalKey}
-                                  label="Расход фактический, л"
-                                  error={errors.fact_consumption}
-                                  value={state.fact_consumption}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled
-                                  onChange={this.handleChange}
-                                  boundKeys="fact_consumption"
-                                  format="toFixed3"
-                                />
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
-                            <EtsBootstrap.Row>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="fuel-given"
-                                  type="number"
-                                  label="Выдано, л"
-                                  error={errors.fuel_given}
-                                  value={state.fuel_given}
-                                  disabled
-                                />
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                {
-                                  Boolean(IS_ACTIVE || IS_CLOSED)
-                                  && <InfoBlock>
-                                    Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                                  </InfoBlock>
-                                }
-                              </EtsBootstrap.Col>
-                              <EtsBootstrap.Col md={4}>
-                                <ExtField
-                                  id="consuption-diff"
-                                  type="number"
-                                  modalKey={modalKey}
-                                  label="Расхождение в данных расхода, л"
-                                  error={errors.diff_consumption}
-                                  value={state.diff_consumption}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled
-                                  onChange={this.handleChange}
-                                  boundKeys="diff_consumption"
-                                  format="toFixed3"
-                                />
-                              </EtsBootstrap.Col>
-                            </EtsBootstrap.Row>
-                          </EtsBootstrap.Col>
-                        </EtsBootstrap.Col>
-                        
-                      </EtsBootstrap.Row>
                     </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12} zIndex={2}>
+
+                    <EtsBootstrap.Col md={12}>
                       <EtsBootstrap.Col md={12}>
-                        <FieldWaybillCarRefill
-                          id="car_refill"
-                          array={state.car_refill}
-                          arrayOrigin={origFormState.car_refill}
-                          errors={get(
-                            errors,
-                            'car_refill',
-                            state.car_refill.map(() => ({})),
-                          )} // временно
-                          title="Заправка топлива"
-                          handleChange={this.handleChangeCarReFill}
-                          use_pouring={usePouring}
-                          fuel_given={state.fuel_given}
-                          structure_id={state.structure_id}
-                          fuel_type={state.fuel_type}
-                          car_id={state.car_id}
-                          gov_number={state.gov_number}
-                          date_for_valid={{
-                            fact_departure_date: state.fact_departure_date,
-                            plan_departure_date: state.plan_departure_date,
-                            plan_arrival_date: state.plan_arrival_date,
-                            fact_arrival_date: state.fact_arrival_date,
-                          }}
-                          IS_DRAFT_OR_ACTIVE={
-                            IS_CREATING || IS_DRAFT || IS_ACTIVE
-                          }
-                          disabled={disableFieldWaybillCarRefill}
-                          canEditIfClose={this.state.canEditIfClose}
-                          page={this.props.page}
-                          path={this.props.path}
-                          boundKey={'car_refill'}
-                          fuelCardsList={this.props.fuelCardsList}
+                        <FuelNavHeader
+                          isPermitted={true}
+                          activeTabKey={this.state.fuelActiveTabKey}
+                          handleTabChange={this.handleChangeActiveNavTab}
+                          errors={errors}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12} zIndex={1}>
-                      <EtsBootstrap.Col md={12}>
-                        <Taxes
-                          modalKey={modalKey}
-                          hidden={
-                            !(IS_CLOSED || IS_ACTIVE)
-                            || IS_DRAFT
-                            || (IS_CLOSED
-                              && state.tax_data
-                              && state.tax_data.length === 0
-                              && !this.state.canEditIfClose)
-                            || (IS_CLOSED && !state.tax_data && !this.state.canEditIfClose)
-                          }
-                          readOnly={IS_DELETE || (!IS_ACTIVE && !this.state.canEditIfClose) || !isPermittedByKey.update}
-                          IS_CLOSED={IS_CLOSED}
-                          title="Расчет топлива по норме"
-                          taxes={tax_data}
-                          operations={this.state.operations}
-                          fuelRates={this.state.fuelRates}
-                          onChange={this.handleChangeTaxes}
-                          correctionRate={this.state.fuel_correction_rate}
-                          baseFactValue={
-                            CAR_HAS_ODOMETER
-                              ? state.odometr_diff
-                              : state.motohours_diff
-                          }
-                          setTotalValueError={this.props.setTotalValueError} // <<< поправить, сделать валидацию через схему!!!
-                          type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
-                          errorsAll={errors}
-                        />
-                        <ErrorsBlock error={errors.tax_data} />
-                      </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={12}>
+                      {/* <-- start  Tab Топливо */}
+                      {
+                        this.state.fuelActiveTabKey === 'fuel'
+                          && <FuelBodyContainer
+                            modalKey={modalKey}
+                            waybillState={this.state}
+                            waybillFormState={state}
+                            use_pouring={usePouring}
+                            errors={errors}
+                            waybillStatus={{
+                              IS_CREATING,
+                              IS_ACTIVE,
+                              IS_DRAFT,
+                              IS_CLOSED,
+                              IS_DELETE,
+                            }}
+                            handleMultipleChange={this.props.handleMultipleChange}
+                            isPermittedByKey={isPermittedByKey}
+                            lastWaybill={lastWaybill}
+                            origFormState={origFormState}
+                            handleChange={this.handleChange}
+                            handleChangeCarReFill={this.handleChangeCarReFill}
+                            page={this.props.page}
+                            path={this.props.path}
+                            CAR_HAS_ODOMETER={CAR_HAS_ODOMETER}
+                            setTotalValueError={this.props.setTotalValueError}
+                            fuelCardsList={this.props.fuelCardsList}
+                            tax_data={tax_data}
+                            FUEL_TYPES={FUEL_TYPES}
+                            IS_KAMAZ={IS_KAMAZ}
+                            disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
+                            handleChangeTaxes={this.handleChangeTaxes}
+                          />
+                      }
+                      {/* <-- end  Tab Топливо */}
+                      {/* <-- start  Tab gas */}
+                      {
+                        this.state.fuelActiveTabKey === 'gas'
+                          && <TabBodyContainerStyled>
+                            <EtsBootstrap.Col md={12}>
+                              <h3>Блок 'ГАЗ' в разработке</h3>
+                            </EtsBootstrap.Col>
+                          </TabBodyContainerStyled>
+                      }
+                      {/* <-- end  Tab gas */}
+                      {/* <-- start  Tab electricity */}
+                      {
+                        this.state.fuelActiveTabKey === 'electricity'
+                          && <TabBodyContainerStyled>
+                            <EtsBootstrap.Col md={12}>
+                              <h3>Блок 'Электроэнергия' в разработке</h3>
+                            </EtsBootstrap.Col>
+                          </TabBodyContainerStyled>
+                      }
+                      {/* <-- end  Tab electricity */}
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>
+
                 </BorderDash>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>

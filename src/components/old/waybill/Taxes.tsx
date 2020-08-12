@@ -388,11 +388,14 @@ export default class Taxes extends React.Component<any, any> {
       hidden,
       noDataMessage = 'Для данного ТС нормы расхода топлива не указаны',
       type,
+      baseFactValue,
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalResult = Taxes.calculateFinalResult(taxes);
     const finalFactValue = Taxes.calculateFinalFactValue(taxes, type).withMileage;
     const finalFactValueWithoutMileage = Taxes.calculateFinalFactValue(taxes, type).withoutMileage;
+    const finalFactValueEqualBaseValue
+    = Number(baseFactValue) === Number(finalFactValue);
 
     return (
       <TaxiCalcBlock hidden={hidden}>
@@ -459,7 +462,7 @@ export default class Taxes extends React.Component<any, any> {
               <div>
                 <div>
                   <b>
-                    {this.state.totalValueError ? (
+                    {!finalFactValueEqualBaseValue ? (
                       <SpanRed>{finalFactValue.toFixed(3).replace('.', ',')}</SpanRed>
                     ) : (
                       <SpanGreen>{finalFactValue.toFixed(3).replace('.', ',')}</SpanGreen>

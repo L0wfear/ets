@@ -266,11 +266,25 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'number',
       title: 'Пробег на дату проведения последнего ТО',
       required: false,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Пробег на дату проведения последнего ТО" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     motohours_fact: {
       type: 'number',
       title: 'Наработка м/ч на дату проведения последнего ТО',
       required: false,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Наработка м/ч на дату проведения последнего ТО" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     osago: {
       type: 'string',

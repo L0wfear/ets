@@ -45,6 +45,22 @@ const StringField: React.FC<ExtFieldString> = React.memo(
     } = props;
     let { value } = props;
 
+    const onChange = React.useCallback(
+      (event) => {
+        const { value } = event.target;
+        const changeVal = toUpperCase ? value.toUpperCase() : value;
+
+        props.onChange(changeVal, {
+          target: {
+            value: changeVal,
+            ...event.target,
+          },
+          ...event
+        });
+      },
+      [props.onChange, toUpperCase, value],
+    );
+
     const inputClassName = cx({ 'has-error': error });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
@@ -90,7 +106,8 @@ const StringField: React.FC<ExtFieldString> = React.memo(
                 className={inputClassName}
                 {...mainProps}
                 id={value_id}
-                value={toUpperCase ? value.toUpperCase() : value}
+                value={value}
+                onChange={onChange}
               />
               {
                 addonRight && (

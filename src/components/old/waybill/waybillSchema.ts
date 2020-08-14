@@ -10,7 +10,6 @@ import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils'
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { OneSessionCompany } from 'redux-main/reducers/modules/session/@types/session';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -75,7 +74,7 @@ const checkCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
-    usePouring: OneSessionCompany['use_pouring'] = null,
+    usePouring,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -116,7 +115,7 @@ const checkEquipmentCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
-    usePouring: OneSessionCompany['use_pouring'] = null,
+    usePouring,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -498,7 +497,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList },
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex },
+          usePouring,
         ) => {
           return checkCarRefill(
             car_refill,
@@ -507,7 +507,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState.fuel_type,
             notFiltredFuelCardsIndex,
             formState,
-            companyList
+            usePouring,
           );
         },
       ],
@@ -519,7 +519,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           equipment_refill,
           formState,
-          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex, usePouring },
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
+          usePouring,
         ) => {
           return checkEquipmentCarRefill(
             equipment_refill,

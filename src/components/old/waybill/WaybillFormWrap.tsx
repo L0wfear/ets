@@ -20,7 +20,6 @@ import {
   actionLoadRefillTypeAndSetInStore,
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
-import { actionGetAndSetInStoreCompany } from 'redux-main/reducers/modules/company/actions';
 import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -34,7 +33,7 @@ import {
 } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { InitialStateSession, OneSessionCompany } from 'redux-main/reducers/modules/session/@types/session';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
@@ -46,7 +45,6 @@ import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours } from 'utils/functions';
-import { getSessionUsePouring } from 'redux-main/reducers/modules/session/selectors';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -152,12 +150,11 @@ let timeIdGlobal: any = null;
 type StateProps = {
   currentUser: InitialStateSession['userData'];
   userCompanyId: InitialStateSession['userData']['company_id'];
-  userStructureId: InitialStateSession['userData']['structure_id'];
+  userCompanies: InitialStateSession['userData']['companies'];
   fuelCardsList: Array<FuelCard>;
   refillTypeList: Array<RefillType>;
   carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
-  usePouring: OneSessionCompany['use_pouring'];
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
@@ -212,6 +209,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       canSave: false,
       canClose: false,
       canPrint: false,
+      usePouring: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
         update: props.currentUser.permissionsSet.has(waybillPermissions.update),
@@ -243,7 +241,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
     this.props.dispatch(fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(this.props));
     await this.props.dispatch(actionGetAndSetInStoreMoscowTimeServer({}, this.props));
-    await this.props.dispatch(actionGetAndSetInStoreCompany({}, this.props));
 
     const currentDate = new Date();
 
@@ -251,6 +248,18 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       () => this.checkError(),
       (60 - currentDate.getSeconds()) * 1000,
     );
+
+    if (this.props.userCompanies.length > 1) {
+      const company = this.props.userCompanies.find((company) => company.asuods_id === this.props.userCompanyId);
+      this.setState({
+        usePouring: company.use_pouring,
+      });
+    } else {
+      const company = this.props.userCompanies.find((company) => company);
+      this.setState({
+        usePouring: company.use_pouring,
+      });
+    }
 
     if (this.props.element === null) {
       const defaultBill: any = getDefaultBill({
@@ -1091,7 +1100,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               setEdcRequestIds={this.setEdcRequestIds}
               formErrors={this.state.formErrors}
               entity={'waybill'}
-              usePouring={this.props.usePouring}
+              usePouring={this.state.usePouring}
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}
@@ -1118,6 +1127,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   (state) => ({
     currentUser: state.session.userData,
     userCompanyId: getSessionState(state).userData.company_id,
+    userCompanies: getSessionState(state).userData.companies,
     userStructureId: getSessionState(state).userData.structure_id,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
@@ -1127,6 +1137,5 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
-    usePouring: getSessionUsePouring(state),
   }),
 )(WaybillFormWrap);

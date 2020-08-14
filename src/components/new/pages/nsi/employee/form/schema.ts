@@ -4,6 +4,10 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { isEmpty } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
+const isValidLicense = (data) => {
+  return /[^АВЕКМНОРСТУХ0-9_ ]/g.test(data);
+};
+
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {
     last_name: {
@@ -59,6 +63,9 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
+          if (value && isValidLicense(value)) {
+            return 'Недопустимое значение. Данные не будут сохранены';
+          }
           if (formData.is_driver) {
             if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
@@ -78,6 +85,9 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
+          if (value && isValidLicense(value)) {
+            return 'Недопустимое значение. Данные не будут сохранены';
+          }
           if (formData.is_driver) {
             if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';

@@ -41,6 +41,7 @@ type Props = {
     fact_arrival_date: Waybill['fact_arrival_date'];
   };
   is_one_fuel_tank?: boolean;
+  use_pouring?: boolean;
   boundKey: string;
   fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'];
 
@@ -131,11 +132,12 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         return refillTypeList.map((rowData) => ({
           value: rowData.id,
           label: rowData.name,
-          isNotVisible: !rowData.is_selectable,
+          isNotVisible: !rowData.is_selectable || (rowData.id === 2 && !props.use_pouring),
+          isDisabled: rowData.id === 2 && !props.use_pouring,
           rowData,
         }));
       },
-      [refillTypeList],
+      [refillTypeList, props.use_pouring],
     );
 
     const metaCarRefillRaw = React.useMemo(
@@ -287,6 +289,32 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
                     fuel_card_id: filteredFuelCardIdOptions[0].value,
                   },
                 ];
+              }
+            }
+          }
+        }
+
+        if (!props.use_pouring) {
+          const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === 1);
+          const element = newArr[0];
+          if (newArr.length > 0) {
+            if (newArr.length === 1) {
+              if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
+                newArr = [
+                  {
+                    ...element,
+                    type_id: refillTypeData.value,
+                    fuel_card_id: filteredFuelCardIdOptions[0].value,
+                  },
+                ];
+                props.handleChange(newArr);
+              }
+            } else {
+              for (const i in newArr) {
+                if (refillTypeData && (isNullOrUndefined(fuelCardValue[i]) === isNullOrUndefined(previousfuelCardValue[i]))) {
+                  newArr[i].type_id = refillTypeData.value;
+                  newArr[i].fuel_card_id = filteredFuelCardIdOptions[0].value;
+                }
               }
             }
           }

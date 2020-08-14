@@ -84,10 +84,17 @@ function singleFilterTypeHandler(SourcerFilterInput) {
         fieldName: this.props.fieldName,
       });
 
-      this.props.onChange({
-        value,
-        filterValue,
-      });
+      if (this.props.type === 'date') {
+        this.props.onChange({
+          value,
+          filterValue: [filterValue],
+        });
+      } else {
+        this.props.onChange({
+          value,
+          filterValue,
+        });
+      }
     };
     render() {
       return (

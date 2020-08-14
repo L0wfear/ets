@@ -398,6 +398,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted}
                     onChange={this.handleChangeWithValidate}
                     boundKeys="special_license"
+                    hint="Поле «Специальное удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х."
+                    toUpperCase
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -490,6 +492,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted }
                     onChange={this.handleChangeWithValidate}
                     boundKeys="drivers_license"
+                    hint="Поле «Водительское удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х."
+                    toUpperCase
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>

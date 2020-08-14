@@ -39,7 +39,6 @@ export const getSessionCompanyOptions = createSelector<ReduxState, Array<OneSess
 export type GetSessionFuelTypeOptionsAns = (
   Array<DefaultSelectOption<fuelTypeStructure['id'], fuelTypeStructure['name'], fuelTypeStructure>>
 );
-
 export const getSessionUserStructureId: Selector<ReduxState, InitialStateSession['userData']['structure_id']> = (state) => (
   getSessionState(state).userData.structure_id
 );

@@ -34,6 +34,19 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPassport = state.is_gibdd_passport|| state.is_gtn_passport || state.is_gims_passport;
 
+    const validPassportData: CarWrap['passport_data'] | any = React.useMemo(() => {
+      if (state.is_gibdd_passport && state.is_gtn_passport) {
+        return state.passport_data;
+      }
+      if (state.is_gibdd_passport && state.passport_data.type === 'GIBDD') {
+        return state.passport_data;
+      }
+      if (state.is_gtn_passport && state.passport_data.type === 'GTN') {
+        return state.passport_data;
+      }
+      return [];
+    }, [state.passport_data, state.is_gibdd_passport, state.is_gtn_passport]);
+
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {
         return {
@@ -53,7 +66,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
             <CarFormBodyHeader isPassport={isPassport} isPermitted={isPermitted} />
             <CarFormBodyContainer
               isPermitted={isPermitted}
-              formState={state}
+              formState={{...state, passport_data: validPassportData}}
               formErrors={errors}
               onChange={props.handleChange}
               onChangeBoolean={props.handleChangeBoolean}

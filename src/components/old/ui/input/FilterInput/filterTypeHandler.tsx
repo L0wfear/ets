@@ -69,10 +69,10 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           const intervalValue = filterValueMaker(value, this.props.type);
 
           const isEmpty = !intervalValue.length || intervalValue
-            .map((val) => isEqualOr([undefined], val))
-            .includes(true);
+            .map((val) => isEqualOr([undefined, null, ''], val))
+            .includes(false);
 
-          return isEmpty ? null : {
+          return !isEmpty ? null : {
             [`${this.props.fieldName}__gte`]: intervalValue[0],
             [`${fieldName}__lte`]: intervalValue[1],
           };

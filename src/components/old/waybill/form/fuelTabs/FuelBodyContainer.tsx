@@ -45,6 +45,7 @@ type Props = {
 	FUEL_TYPES: any; 
 	IS_KAMAZ: boolean;
 	disableFieldWaybillCarRefill: boolean;
+  use_pouring: boolean;
 	handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
 };
 
@@ -72,6 +73,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
       FUEL_TYPES,
       waybillFormState,
       waybillState,
+      use_pouring,
     } = props;
 
     return (
@@ -227,6 +229,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                 waybillFormState.car_refill.map(() => ({})),
               )} // временно
               title="Заправка топлива"
+              use_pouring={use_pouring}
               handleChange={handleChangeCarReFill}
               fuel_given={waybillFormState.fuel_given}
               structure_id={waybillFormState.structure_id}

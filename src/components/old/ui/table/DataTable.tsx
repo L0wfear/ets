@@ -551,7 +551,7 @@ export default class DataTable extends React.Component<Props, State> {
           && IS_ARRAY
         ) {
           if (
-            value.indexOf(moment(obj[key]).format(global.APP_DATE_FORMAT))
+            value.findIndex((el) => moment(obj[key]).format(global.APP_DATE_FORMAT) === moment(el).format(global.APP_DATE_FORMAT))
             === -1
           ) {
             isValid = false;

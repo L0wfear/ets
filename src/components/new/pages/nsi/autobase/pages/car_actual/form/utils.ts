@@ -126,7 +126,8 @@ export const getDefaultCar = (): CarWrap => ({
   employee_data: {
     data: [],
     dataIndex: {},
-  }
+  },
+  engine_kind_ids: [],
 });
 
 export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {

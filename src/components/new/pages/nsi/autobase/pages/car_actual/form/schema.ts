@@ -1,5 +1,6 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsCar, CarWrap } from './@types/CarForm';
+import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {
   properties: {
@@ -421,6 +422,21 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       title: 'Режим работы',
       type: 'string',
       maxLength: 100,
-    }
+    },
+    engine_kind_ids: {
+      title: 'Тип двигателя',
+      type: 'valueOfArray',
+      dependencies: [
+        (value) => {
+          if (!value
+            || Array.isArray(value) && !value.length
+            || value.length === 1 && value.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Тип двигателя" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
   },
 };

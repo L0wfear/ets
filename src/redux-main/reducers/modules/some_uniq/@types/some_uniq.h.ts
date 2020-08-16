@@ -23,6 +23,7 @@ import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/properties/@types';
 import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@types';
+import { EngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -87,4 +88,5 @@ export type IStateSomeUniq = {
     date: string;
   };
   reasonList: Array<ReasonList>;
+  engineKindList: Array<EngineKind>;
 };

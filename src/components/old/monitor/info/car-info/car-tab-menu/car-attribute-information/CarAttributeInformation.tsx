@@ -44,7 +44,7 @@ export type PropsCarAttributeInformation = {
   errorInLoadTrack: boolean;
   map: Map;
   fetchMissionsData: any;
-  missionsData: any;
+  missionsAndWaybillsData: any;
   dispatch: EtsDispatch;
 } & WithSearchProps;
 
@@ -54,7 +54,7 @@ type OneAtt<P> = {
   value: (props: P) => string | number | JSX.Element | Array<JSX.Element>;
   loader?: boolean;
   carActualGpsNumberIndex?: boolean;
-  missionsData?: boolean;
+  missionsAndWaybillsData?: boolean;
 };
 
 export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
@@ -67,20 +67,20 @@ export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
   {
     key: 'customer_name',
     title: 'Заказчик',
-    value: ({ missionsData: { carTabInfo: { customer_name } } }) => customer_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { customer_name } } }) => customer_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'contractor_name',
     title: 'Подрядчик',
-    value: ({ missionsData: { carTabInfo: { contractor_name } } }) => contractor_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { contractor_name } } }) => contractor_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'owner_name',
     title: 'Владелец техники',
-    value: ({ missionsData: { carTabInfo: { owner_name } } }) => owner_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { owner_name } } }) => owner_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'gov_number',
@@ -125,7 +125,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
       lastPoint, 
       errorInLoadTrack,
       gps_code, 
-      missionsData, 
+      missionsAndWaybillsData, 
       asuods_id,
       fetchMissionsData, 
       setParamsAndSearch,
@@ -162,7 +162,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
                   <div key={attr.title}>
                     <span className="car_info-attr_title">{`${attr.title}: `}</span>
                     {
-                      (attr.missionsData ? missionsData.isLoading : (!value && value !== null))
+                      (attr.missionsAndWaybillsData ? missionsAndWaybillsData.isLoading : (!value && value !== null))
                         ? <PreloadNew typePreloader="field" />
                         : <span className="car_info-attr_value">{value || '-'}</span>
                     }
@@ -230,7 +230,7 @@ const mapStateToProps = (state) => ({
   status: state.monitorPage.carInfo.status,
   lastPoint: makeLastPointTrack(state.monitorPage.carInfo.trackCaching),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
-  missionsData: state.monitorPage.carInfo.missionsData,
+  missionsAndWaybillsData: state.monitorPage.carInfo.missionsAndWaybillsData,
   asuods_id: (
     state.monitorPage.carActualGpsNumberIndex[
       state.monitorPage.carInfo.gps_code

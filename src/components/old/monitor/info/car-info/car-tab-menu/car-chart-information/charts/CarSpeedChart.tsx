@@ -210,8 +210,8 @@ export default compose<PropsCarSpeedChart, OwnPropsCarSpeedChart>(
     track: state.monitorPage.carInfo.trackCaching.track,
     front_cars_sensors_equipment:
       state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
-    mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-    speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+    mkad_speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.mkad_speed_lim,
+    speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.speed_lim,
     lastPoint:
       state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
       || state.monitorPage.carInfo.trackCaching.track === -1

@@ -29,7 +29,7 @@ export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT
 export type IStateCarInfo = {
   gps_code: string;
   gov_number: string;
-  missionsData: {
+  missionsAndWaybillsData: {
     error: boolean;
     missions: -1 | Array<any>;
     mkad_speed_lim: number;
@@ -115,7 +115,7 @@ export const getTrackDefaultDateEnd = () => new Date();
 export const initialState: IStateCarInfo = {
   gps_code: null,
   gov_number: null,
-  missionsData: {
+  missionsAndWaybillsData: {
     error: false,
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
@@ -212,7 +212,7 @@ export default (state = initialState, { type, payload }: any) => {
       if (state.gps_code === payload.gps_code) {
         newState = {
           ...state,
-          missionsData: {
+          missionsAndWaybillsData: {
             error: Boolean(payload.error),
             missions: payload.missions,
             mkad_speed_lim: payload.mkad_speed_lim,
@@ -228,7 +228,7 @@ export default (state = initialState, { type, payload }: any) => {
     case CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA: {
       return {
         ...state,
-        missionsData: { ...initialState.missionsData },
+        missionsAndWaybillsData: { ...initialState.missionsAndWaybillsData },
       };
     }
     case CAR_INFO_PUSH_POINT_INTO_TRACK: {

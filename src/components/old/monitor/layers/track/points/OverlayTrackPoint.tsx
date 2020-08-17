@@ -31,7 +31,7 @@ import LoadingContext from 'components/new/utils/context/loading/LoadingContext'
 import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vector_object/actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { actionGetCarMissionsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionGetCarMissionsAndWaybillsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
 
 type Props = {
   dispatch: EtsDispatch;
@@ -114,7 +114,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   getMissionsData = (props) => {
     const { asuods_id } = props;
     this.props.dispatch(
-      actionGetCarMissionsByTimestamp(
+      actionGetCarMissionsAndWaybillsByTimestamp(
         {
           car_id: asuods_id,
           point_timestamp: props.trackPoint.timestamp * 1000,

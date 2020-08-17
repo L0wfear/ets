@@ -15,7 +15,7 @@ import CarWaybills from 'components/old/monitor/info/car-info/car-tab-menu/car-a
 import WaybillFormWrap from 'components/old/waybill/WaybillFormWrap';
 import { compose } from 'redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { fetchCarWaybills } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
@@ -43,7 +43,7 @@ export type PropsCarAttributeInformation = {
   lastPoint: TypeLastPoint;
   errorInLoadTrack: boolean;
   map: Map;
-  fetchWaybillsData: any;
+  fetchMissionsData: any;
   missionsData: any;
   dispatch: EtsDispatch;
 } & WithSearchProps;
@@ -127,7 +127,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
       gps_code, 
       missionsData, 
       asuods_id,
-      fetchWaybillsData, 
+      fetchMissionsData, 
       setParamsAndSearch,
       searchState,
     } = props;
@@ -144,8 +144,9 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
           date_end: searchState.date_end,
         }
       });
-      fetchWaybillsData({
+      fetchMissionsData({
         asuods_id,
+        gps_code,
       });
     }, [asuods_id, searchState.date_start, searchState.date_end]);
 
@@ -240,16 +241,17 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
-    fetchWaybillsData: (props) => {
+    fetchMissionsData: (props) => {
       return dispatch(
-        fetchCarWaybills(
+        fetchCarInfo(
           {
             asuods_id: props.asuods_id,
+            gps_code: props.gps_code,
           },
           {
-            page: 'monitor',
-          }
-        )
+            page: 'mainpage',
+          },
+        ),
       );
     },
   };

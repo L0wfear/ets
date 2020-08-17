@@ -76,13 +76,13 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
 export default compose<PropsCarWaybills, {}>(
   withSearch,
   withShowByProps({
-    path: ['monitorPage', 'carInfo', 'waybillsData', 'waybills'],
+    path: ['monitorPage', 'carInfo', 'missionsData', 'waybills'],
     type: 'loader-field',
-    checkErrorPath: ['monitorPage', 'carInfo', 'waybillsData', 'error'],
+    checkErrorPath: ['monitorPage', 'carInfo', 'missionsData', 'error'],
   }),
   connect<Pick<PropsCarWaybills, 'forToday'>, Pick<PropsCarWaybills, 'carInfoChangeDateAndForToday'>, {}, ReduxState>(
     (state) => ({
-      waybills: state.monitorPage.carInfo.waybillsData.waybills,
+      waybills: state.monitorPage.carInfo.missionsData.waybills,
       forToday: state.monitorPage.carInfo.forToday,
     }),
     (dispatch) => ({

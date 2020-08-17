@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchCarWaybills } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { ReduxState } from 'redux-main/@types/state';
 import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
 import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
@@ -21,23 +20,15 @@ type OwnProps = {
 
 type DispatchProps = {
   dispatch: EtsDispatch;
-  fetchWaybillsData: any;
 };
 
 type StateProps = {
-  asuods_id: number;
-  date_end: string | Date;
-  date_start: string | Date;
   carActualGpsNumberIndex: any;
 };
 
 type PropsCarMissions = OwnProps & DispatchProps & StateProps;
 
 const CarWaybills: React.FC<PropsCarMissions> = React.memo(({
-  asuods_id, 
-  date_end, 
-  date_start, 
-  fetchWaybillsData,
   setShowWaybillForm,
   setWaybillData,
   setDefaultCarData,
@@ -49,12 +40,6 @@ const CarWaybills: React.FC<PropsCarMissions> = React.memo(({
 
   const [stateWaybillId, setStateWaybillId] = React.useState(null);
   const { waybill_id } = useParams();
-
-  React.useEffect(() => {
-    fetchWaybillsData({
-      asuods_id,
-    });
-  }, [asuods_id, date_end, date_start]);
 
   React.useEffect(() => {
     if(waybill_id === 'create' && !showWaybillForm) {
@@ -107,28 +92,9 @@ const CarWaybills: React.FC<PropsCarMissions> = React.memo(({
 
 export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   (state) => ({
-    asuods_id: (
-      state.monitorPage.carActualGpsNumberIndex[
-        state.monitorPage.carInfo.gps_code
-      ] || { asuods_id: null }
-    ).asuods_id,
-    date_end: state.monitorPage.carInfo.date_end,
-    date_start: state.monitorPage.carInfo.date_start,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   }),
   (dispatch: any) => ({
     dispatch,
-    fetchWaybillsData: (props) => {
-      return dispatch(
-        fetchCarWaybills(
-          {
-            asuods_id: props.asuods_id,
-          },
-          {
-            page: 'mainpage',
-          }
-        )
-      );
-    },
   })
 )(CarWaybills);

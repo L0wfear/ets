@@ -7,7 +7,6 @@ import {
   carInfoToggleForToday,
   fetchTrack,
   fetchCarInfo,
-  fetchCarWaybills,
   carInfoChangeDate,
   carInfoChangeDateAndForToday,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -374,7 +373,6 @@ const mapDispatchToProps = (dispatch) => ({
   carInfoChangeDateAndForToday: (for_today, date_start, date_end) => dispatch(carInfoChangeDateAndForToday(for_today, date_start, date_end)),
   changeDate: (field, value) => dispatch(carInfoChangeDate(field, value)),
   fetchMissionsData: (props) => dispatch(fetchCarInfo(props, { page: 'mainpage' })),
-  fetchWaybillsData: (props) => dispatch(fetchCarWaybills(props, { page: 'mainpage' })),
   dispatch,
 });
 

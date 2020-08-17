@@ -8,10 +8,8 @@ const CAR_INFO = createPath('CAR_INFO');
 export const CAR_INFO_SET_GPS_CODE = CAR_INFO`SET_SELECTED_GPS_CODE`;
 export const CAR_INFO_SET_STATUS = CAR_INFO`SET_STATUS`;
 export const CAR_INFO_SET_TRACK_CACHING = CAR_INFO`SET_TRACK_CACHING`;
-export const CAR_INFO_SET_MISSIONS_DATA = CAR_INFO`SET_MISSIONS_DATA`;
-export const CAR_INFO_SET_WAYBILLS_DATA = CAR_INFO`SET_WAYBILLS_DATA`;
-export const CAR_INFO_RESET_MISSIONS_DATA = CAR_INFO`RESET_MISSIONS_DATA`;
-export const CAR_INFO_RESET_WAYBILLS_DATA = CAR_INFO`RESET_WAYBILLS_DATA`;
+export const CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA = CAR_INFO`SET_MISSIONS_AND_WAYBILLS_DATA`;
+export const CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA = CAR_INFO`RESET_MISSIONS_AND_WAYBILLS_DATA`;
 export const CAR_INFO_PUSH_POINT_INTO_TRACK = CAR_INFO`PUSH_POINT_INTO_TRACK`;
 export const CAR_INFO_TOGGLE_FOR_TODAY = CAR_INFO`TOGGLE_FOR_TODAY`;
 export const CAR_INFO_CHANGE_DATE_AND_FOR_TODAY = CAR_INFO`CHANGE_DATE_AND_FOR_TODAY`;
@@ -36,17 +34,12 @@ export type IStateCarInfo = {
     missions: -1 | Array<any>;
     mkad_speed_lim: number;
     speed_lim: number;
-
+    waybills: -1 | Array<any>;
     carTabInfo: {
       contractor_name: string;
       customer_name: string;
       owner_name: string;
     };
-    isLoading: boolean;
-  };
-  waybillsData: {
-    error: boolean;
-    waybills?: -1 | Array<any>;
     isLoading: boolean;
   };
   trackCaching: {
@@ -127,17 +120,12 @@ export const initialState: IStateCarInfo = {
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
     speed_lim: initialMaxSpeed,
-
+    waybills: -1,
     carTabInfo: {
       contractor_name: null,
       customer_name: null,
       owner_name: null,
     },
-    isLoading: true,
-  },
-  waybillsData: {
-    error: false,
-    waybills: -1,
     isLoading: true,
   },
   trackCaching: {
@@ -219,7 +207,7 @@ export default (state = initialState, { type, payload }: any) => {
       }
       return newState;
     }
-    case CAR_INFO_SET_MISSIONS_DATA: {
+    case CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA: {
       let newState = state;
       if (state.gps_code === payload.gps_code) {
         newState = {
@@ -229,7 +217,7 @@ export default (state = initialState, { type, payload }: any) => {
             missions: payload.missions,
             mkad_speed_lim: payload.mkad_speed_lim,
             speed_lim: payload.speed_lim,
-
+            waybills: payload.waybills,
             carTabInfo: payload.carTabInfo,
             isLoading: false,
           },
@@ -237,26 +225,10 @@ export default (state = initialState, { type, payload }: any) => {
       }
       return newState;
     }
-    case CAR_INFO_SET_WAYBILLS_DATA: {
-      return {
-        ...state,
-        waybillsData: {
-          error: Boolean(payload.error),
-          waybills: payload.waybills,
-          isLoading: false
-        }
-      };
-    }
-    case CAR_INFO_RESET_MISSIONS_DATA: {
+    case CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA: {
       return {
         ...state,
         missionsData: { ...initialState.missionsData },
-      };
-    }
-    case CAR_INFO_RESET_WAYBILLS_DATA: {
-      return {
-        ...state,
-        waybillsData: { ...initialState.waybillsData },
       };
     }
     case CAR_INFO_PUSH_POINT_INTO_TRACK: {

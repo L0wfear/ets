@@ -145,7 +145,7 @@ type Paylaod = (
   | { car_id: Car['asuods_id']; date_start: string; date_end: string; }
 );
 
-export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
+export const promiseGetCarMissionsAndWaybillsByTimestamp = async (payload: Paylaod) => {
   let response = null;
 
   try {
@@ -160,35 +160,9 @@ export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
     contractor_name: string;
     customer_name: string;
     owner_name: string;
+    waybills: Array<any>;
   } = get(response, 'result');
 
   return result;
 };
 
-export const promiseGetCarWaybillsByTimestamp = async (payload: Paylaod) => {
-  const data = [
-    {
-      number: 65525,
-      status: 'closed',
-      date_start: '2020-07-31T11:00:00',
-      date_end: '2020-07-31T11:20:00',
-      id: 8490872,
-    },
-    {
-      number: 65524,
-      status: 'active',
-      date_start: '2020-07-30T17:24:00',
-      date_end: '2020-07-31T08:59:00',
-      id: 8491004,
-    }
-  ];
-  const promise = new Promise((resolve, reject) => setTimeout(() => resolve(data), 1000));
-  let response = {};
-  try {
-    response = await promise;
-  } catch (error) {
-    // tslint:disable-next-line
-    console.warn(error);  
-  }
-  return response;
-};

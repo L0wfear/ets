@@ -48,6 +48,7 @@ export const initialState: IStateSomeUniq = {
     date: '',
   },
   reasonList: [],
+  engineKindList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

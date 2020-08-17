@@ -6,6 +6,7 @@ export type OneSessionStructure = {
 export type OneSessionCompany = {
   asuods_id: number;
   name: string;
+  use_pouring: boolean;
 };
 
 export type InitialStateSession = {

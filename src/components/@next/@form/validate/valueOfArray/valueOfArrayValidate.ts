@@ -12,6 +12,9 @@ export const validateValueOfArray = <F extends Record<string, any>>(key: keyof F
   if (fieldData.required && !value) {
     return `Поле "${title}" должно быть заполнено`;
   }
+  if (fieldData.required && Array.isArray(value) && !value.length) {
+    return `Поле "${title}" должно быть заполнено`;
+  }
 
   return '';
 };

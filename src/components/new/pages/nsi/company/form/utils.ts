@@ -12,6 +12,7 @@ export const defaultCompany: Company = {
   okrug_id: null,
   rgb_color: '',
   short_name: '',
+  use_pouring: false,
 };
 
 export const getDefaultCompanyElement: GetDefaultCompanyElement = (element) => {

@@ -1,5 +1,6 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsCar, CarWrap } from './@types/CarForm';
+import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {
   properties: {
@@ -7,17 +8,17 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
       title: 'Серия и номер свидетельства о регистрации',
       type: 'string',
       dependencies: [
-        (value, {passport_data_type}) => {
+        (value, { passport_data_type }, _, carInfo) => {
           const errorText = 'Недопустимое значение серии и номера свидетельства о регистрации. Данные не будут сохранены';
           if(value) {
-            if (passport_data_type === 'GIBDD') { 
+            if (passport_data_type === 'GIBDD' && carInfo.is_gibdd_passport) { 
               const stsRegExp = /^[АВЕКМНОРСТУХ\d]{10}$/;
               return stsRegExp.exec(value) ? '' : errorText;
             }
             if(/[^\dАВЕКМНОРСТУХ]/.exec(value)) {
               return errorText;
             }
-            if(passport_data_type === 'GTN') {
+            if(passport_data_type === 'GTN' && carInfo.is_gtn_passport) {
               const srmRegExp = /^[АВЕКМНОРСТУХ\d]{8}$/;
               return srmRegExp.exec(value) ? '' : errorText;
             }
@@ -421,6 +422,21 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       title: 'Режим работы',
       type: 'string',
       maxLength: 100,
-    }
+    },
+    engine_kind_ids: {
+      title: 'Тип двигателя',
+      type: 'valueOfArray',
+      dependencies: [
+        (value) => {
+          if (!value
+            || Array.isArray(value) && !value.length
+            || value.length === 1 && value.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Тип двигателя" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
+    },
   },
 };

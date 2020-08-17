@@ -50,6 +50,12 @@ export const config: TypeConfigData<Company> = {
         title: 'Наличие дистанционного мед. осмотра',
         options: YES_NO_SELECT_OPTIONS_BOOL,
       },
+      {
+        valueKey: 'use_pouring',
+        type: 'multiselect',
+        title: 'Использование типа заправки "Налив"',
+        options: YES_NO_SELECT_OPTIONS_BOOL,
+      },
     ],
   },
   list: {
@@ -88,6 +94,12 @@ export const config: TypeConfigData<Company> = {
         {
           key: 'has_remote_checkup',
           title: 'Наличие дистанционного мед. осмотра',
+          width: 300,
+          format: 'boolean',
+        },
+        {
+          key: 'use_pouring',
+          title: 'Использование типа заправки "Налив"',
           width: 300,
           format: 'boolean',
         },

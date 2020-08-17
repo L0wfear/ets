@@ -75,6 +75,19 @@ const CompanyForm: React.FC<PropsCompany> = React.memo(
                 disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                id="use_pouring"
+                modalKey={page}
+                type="boolean"
+                label={`Использование типа заправки "Налив"`}
+                value={state.use_pouring}
+                error={errors.use_pouring}
+                onChange={props.handleChangeBoolean}
+                boundKeys="use_pouring"
+                disabled={!isPermitted}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>

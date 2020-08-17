@@ -168,6 +168,7 @@ export type Car = {
   type_image_name: string;
   type_name: string;
   vin: string;
+  engine_kind_ids: Array<Number>;
 };
 
 export type CarFuncTypes = {

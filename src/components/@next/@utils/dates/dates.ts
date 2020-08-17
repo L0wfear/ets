@@ -76,6 +76,7 @@ export function makeUnixTime(timeOwn) {
 export function makeUnixTimeMskTimezone(timeOwn) {
   let time = timeOwn;
   if (typeof time === 'string') {
+    // eslint-disable-next-line no-param-reassign
     time = MomentTimezone.tz(time, 'Europe/Moscow' );
   }
   return Math.floor(time / 1000);

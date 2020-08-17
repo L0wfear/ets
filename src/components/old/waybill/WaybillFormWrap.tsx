@@ -150,7 +150,7 @@ let timeIdGlobal: any = null;
 type StateProps = {
   currentUser: InitialStateSession['userData'];
   userCompanyId: InitialStateSession['userData']['company_id'];
-  userStructureId: InitialStateSession['userData']['structure_id'];
+  userCompanies: InitialStateSession['userData']['companies'];
   fuelCardsList: Array<FuelCard>;
   refillTypeList: Array<RefillType>;
   carList: Array<Car>;
@@ -210,6 +210,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       canSave: false,
       canClose: false,
       canPrint: false,
+      usePouring: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
         update: props.currentUser.permissionsSet.has(waybillPermissions.update),
@@ -248,6 +249,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       () => this.checkError(),
       (60 - currentDate.getSeconds()) * 1000,
     );
+
+    const company = this.props.userCompanies.find((company) => company.asuods_id === this.props.userCompanyId);
+    this.setState({
+      usePouring: company.use_pouring,
+    });
 
     if (this.props.element === null) {
       const defaultBill: any = getDefaultBill({
@@ -1088,6 +1094,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               setEdcRequestIds={this.setEdcRequestIds}
               formErrors={this.state.formErrors}
               entity={'waybill'}
+              usePouring={this.state.usePouring}
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}
@@ -1115,6 +1122,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
   (state) => ({
     currentUser: state.session.userData,
     userCompanyId: getSessionState(state).userData.company_id,
+    userCompanies: getSessionState(state).userData.companies,
     userStructureId: getSessionState(state).userData.structure_id,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,

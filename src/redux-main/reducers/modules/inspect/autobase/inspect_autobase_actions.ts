@@ -200,9 +200,6 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
   const action = get(inspectAutobase, 'action', defaultInspectAutobase.action);
 
-  if (commission_members.length && inspectAutobase.status === 'completed') { // Удаляем первого члена комиссии, бек его сам добавляет
-    commission_members.shift();
-  }
   const payload = {
     agents_from_gbu,
     commission_members,

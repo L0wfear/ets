@@ -12,6 +12,7 @@ import FieldSelectDriverCar from './inside_fields/drivers_data/FieldSelectDriver
 import { MarginTopRow } from '../registration/styled';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import FieldSelectEngine from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 type MainInfoTab = {
   isPermitted: boolean;
@@ -171,6 +172,16 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 error={errors.operating_mode}
               />
             </EtsBootstrap.Col>
+            <FieldSelectEngine
+              onChange={props.onChangeBoolean}
+              isPermitted={isPermitted}
+              formErrors={errors}
+              page={props.page}
+              path={props.path}
+              engine_kind_ids={state.engine_kind_ids}
+              car_id={state.asuods_id}
+              is_main
+            />
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>
       </MarginTopRow>

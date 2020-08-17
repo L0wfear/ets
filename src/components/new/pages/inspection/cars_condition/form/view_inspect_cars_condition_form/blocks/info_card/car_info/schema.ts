@@ -277,14 +277,19 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Номер ОСАГО',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
+          const osagoNotRequired = !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null);
+          const noValidOsago = get(formState, 'data.no_valid_osago', null) || get(formState, 'no_valid_osago', null);
+          if ((osagoNotRequired && !noValidOsago) && !value) {
             return 'Поле "Номер ОСАГО" должно быть заполнено';
+          }
+          if (noValidOsago) {
+            return 'Вы отметили, что у ТС отсутствует действующий полис ОСАГО. Необходимо сверить данные полиса ОСАГО';
           }
         },
       ],
       dependenciesDisable: [
         (_, formState) => {
-          if (get(formState, 'osago_not_required', null)) {
+          if (get(formState, 'osago_not_required', null) || get(formState, 'data.no_valid_osago', null)) {
             return true;
           }
         },
@@ -295,14 +300,16 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Действует до',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
+          const osagoNotRequired = !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null);
+          const noValidOsago = get(formState, 'data.no_valid_osago', null) || get(formState, 'no_valid_osago', null);
+          if ((osagoNotRequired && !noValidOsago) && !value) {
             return 'Поле "Действует до" должно быть заполнено';
           }
         },
       ],
       dependenciesDisable: [
         (_, formState) => {
-          if (get(formState, 'osago_not_required', null)) {
+          if (get(formState, 'osago_not_required', null) || get(formState, 'data.no_valid_osago', null)) {
             return true;
           }
         },

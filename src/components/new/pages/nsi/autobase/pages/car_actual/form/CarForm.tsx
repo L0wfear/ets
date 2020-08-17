@@ -45,7 +45,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
         return state.passport_data;
       }
       return [];
-    }, [state.passport_data]);
+    }, [state.passport_data, state.is_gibdd_passport, state.is_gtn_passport]);
 
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {

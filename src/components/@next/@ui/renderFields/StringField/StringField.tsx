@@ -11,6 +11,7 @@ import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 import styled from 'styled-components';
+import { get } from 'lodash';
 
 const StringFieldWrapperStyled = styled.div`
   position: relative;
@@ -47,7 +48,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
 
     const onChange = React.useCallback(
       (event) => {
-        const { value } = event.target;
+        const value = get(event, ['target', 'value'], event);
         const changeVal = toUpperCase ? value.toUpperCase() : value;
 
         props.onChange(changeVal, {

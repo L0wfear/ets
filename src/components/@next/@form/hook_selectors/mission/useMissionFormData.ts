@@ -313,6 +313,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
           && date_start
           && newPartialFormState.route_id
           && passes_count
+          && (passes_count^0) === passes_count
           && (
             norm_id !== prev_norm_id
             || newPartialFormState.municipal_facility_id !== prev_municipal_facility_id

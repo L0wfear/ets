@@ -7,17 +7,17 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
       title: 'Серия и номер свидетельства о регистрации',
       type: 'string',
       dependencies: [
-        (value, {passport_data_type}) => {
+        (value, { passport_data_type }, _, carInfo) => {
           const errorText = 'Недопустимое значение серии и номера свидетельства о регистрации. Данные не будут сохранены';
           if(value) {
-            if (passport_data_type === 'GIBDD') { 
+            if (passport_data_type === 'GIBDD' && carInfo.is_gibdd_passport) { 
               const stsRegExp = /^[АВЕКМНОРСТУХ\d]{10}$/;
               return stsRegExp.exec(value) ? '' : errorText;
             }
             if(/[^\dАВЕКМНОРСТУХ]/.exec(value)) {
               return errorText;
             }
-            if(passport_data_type === 'GTN') {
+            if(passport_data_type === 'GTN' && carInfo.is_gtn_passport) {
               const srmRegExp = /^[АВЕКМНОРСТУХ\d]{8}$/;
               return srmRegExp.exec(value) ? '' : errorText;
             }

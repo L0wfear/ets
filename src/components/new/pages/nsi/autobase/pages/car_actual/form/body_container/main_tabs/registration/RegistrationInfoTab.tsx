@@ -49,7 +49,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
           },
         });
       },
-      [registration_data],
+      [registration_data, registration_data.passport_data_type],
     );
 
     if(!registration_data.passport_data_type) {

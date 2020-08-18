@@ -1703,7 +1703,6 @@ class WaybillForm extends React.Component<Props, State> {
 
   handleSubmit = async () => {
     if (this.checkOnValidHasEquipment()) {
-      delete this.props.formState.is_bnso_broken;
       if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
         const { rejectMissionList } = this.state;
         this.rejectMissionHandler(rejectMissionList).then((res) => {

@@ -281,7 +281,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: false,
       dependencies: [
         (value) => {
-          if (value <= 0) {
+          if (value < 0) {
             return getRequiredFieldNumberMoreThenZero('Наработка м/ч на дату проведения последнего ТО');
           }
         }

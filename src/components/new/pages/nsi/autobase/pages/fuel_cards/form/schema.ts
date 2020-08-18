@@ -70,11 +70,6 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                 const validDateReleasedAt = createValidDate(released_at);
 
                 return ({
-                  car_id: (
-                    !d.car_id
-                      ? 'Поле "Рег. номер ТС" должно быть заполнено'
-                      : ''
-                  ),
                   installed_at: (
                     !d.installed_at
                       ? 'Поле "Дата с" должно быть заполнено'

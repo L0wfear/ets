@@ -172,6 +172,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             key: 'gov_number_text',
             title: 'Рег. номер ТС',
             width: 200,
+            defaultValue: 'Малая механизация',
           },
           {
             key: 'garage_number',

@@ -425,7 +425,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         this.handleMultipleChange({
           odometr_start: this.state?.lastWaybill?.odometr_end,
           odometr_reason_id: null,
-          files: files.map(
+          files: files && files.map(
             (elem) => elem.kind === 'odometr' ? { ...elem, action: 'delete'} : {...elem}
           ),
           is_edited_odometr: false,
@@ -494,7 +494,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         this.handleMultipleChange({
           motohours_equip_start: this.state?.lastWaybill?.motohours_equip_end,
           motohours_equip_reason_id: null,
-          files: files.map(
+          files: files && files.map(
             (elem) => elem.kind === 'motohours_equip' ? { ...elem, action: 'delete'} : {...elem}
           ),
           is_edited_motohours_equip: false,

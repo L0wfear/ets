@@ -22,6 +22,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
   sortable?: boolean;
   width?: number;
   dashIfEmpty?: boolean;
+  defaultValue?: string;
   title?: Title;
   renderParams?: ExtFieldType;
   groupOpt?: {

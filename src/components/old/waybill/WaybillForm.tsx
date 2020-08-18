@@ -459,12 +459,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         this.handleMultipleChange({
           motohours_start: this.state?.lastWaybill?.motohours_end,
           motohours_reason_id: null,
-          files: files.map(
+          files: files && files.map(
             (elem) => elem.kind === 'motohours' ? { ...elem, action: 'delete'} : {...elem}
           ),
           is_edited_motohours: false,
         });
-      }).catch(() => {
+      }).catch((e) => {
+        console.error(e);
         return;
       });
     } else {

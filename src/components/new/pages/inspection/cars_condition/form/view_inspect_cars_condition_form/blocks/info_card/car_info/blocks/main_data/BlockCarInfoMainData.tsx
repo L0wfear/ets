@@ -74,22 +74,26 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
 
     React.useEffect(() => {
       if (state.data.osago_not_required || state.data.no_valid_osago) {
+        const comment = state.data.comments?.length
+          ? 'Необходимо сверить данные полиса ОСАГО \n' + state.data.comments
+          : 'Необходимо сверить данные полиса ОСАГО';
         props.handleChange({
           osago: null,
           osago_finished_at: null,
           data: {
             ...state.data,
-            comments: state.data.no_valid_osago ? 'Необходимо сверить данные полиса ОСАГО' : state.data.comments,
+            comments: state.data.no_valid_osago ? comment : state.data.comments,
           },
         });
       } else {
-        dispatch(actionGetCarsConditionsCarById(state.id, { page: props.page })).then((result) => {
+        const comment = state.data.comments?.length ? state.data.comments.replace('Необходимо сверить данные полиса ОСАГО', '') : null;
+        dispatch(actionGetCarsConditionsCarById(state.id, {page: props.page})).then((result) => {
           props.handleChange({
             osago: result.osago,
             osago_finished_at: result.osago_finished_at,
             data: {
               ...state.data,
-              comments: state.data.no_valid_osago ? null : state.data.comments,
+              comments: !state.data.no_valid_osago ? comment : state.data.comments,
             },
           });
         }

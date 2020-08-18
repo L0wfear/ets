@@ -289,7 +289,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
       dependenciesDisable: [
         (_, formState) => {
-          if (get(formState, 'osago_not_required', null) || get(formState, 'data.no_valid_osago', null)) {
+          if (get(formState, 'osago_not_required', null)) {
             return true;
           }
         },
@@ -309,7 +309,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
       dependenciesDisable: [
         (_, formState) => {
-          if (get(formState, 'osago_not_required', null) || get(formState, 'data.no_valid_osago', null)) {
+          if (get(formState, 'osago_not_required', null)) {
             return true;
           }
         },

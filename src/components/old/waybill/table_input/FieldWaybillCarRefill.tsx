@@ -304,7 +304,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
                   {
                     ...element,
                     type_id: refillTypeData.value,
-                    fuel_card_id: filteredFuelCardIdOptions[0].value,
+                    fuel_card_id: filteredFuelCardIdOptions.length
+                      ? filteredFuelCardIdOptions[0].value
+                      : null,
                   },
                 ];
                 props.handleChange(newArr);
@@ -313,7 +315,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               for (const i in newArr) {
                 if (refillTypeData && (isNullOrUndefined(fuelCardValue[i]) === isNullOrUndefined(previousfuelCardValue[i]))) {
                   newArr[i].type_id = refillTypeData.value;
-                  newArr[i].fuel_card_id = filteredFuelCardIdOptions[0].value;
+                  newArr[i].fuel_card_id = filteredFuelCardIdOptions.length
+                    ? filteredFuelCardIdOptions[0].value
+                    : null;
                 }
               }
             }

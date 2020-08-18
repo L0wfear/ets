@@ -67,7 +67,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
     const inLoading = etsUseSelector(
       (state) => {
         return (getMonitorPageState(state).carInfo.trackCaching.track === -1
-        || getMonitorPageState(state).carInfo.missionsData.missions === -1);
+        || getMonitorPageState(state).carInfo.missionsAndWaybillsData.missions === -1);
       },
     );
     const has_front_events_list = etsUseSelector((state) => Boolean(getMonitorPageState(state).carInfo.trackCaching.front_events_list[0]));

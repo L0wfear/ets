@@ -150,8 +150,8 @@ export default compose<any, any>(
       SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
       track: state.monitorPage.carInfo.trackCaching.track,
       lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-      mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-      speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+      mkad_speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.mkad_speed_lim,
+      speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.speed_lim,
     }),
   ),
   withLayerProps({

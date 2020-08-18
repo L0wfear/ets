@@ -72,13 +72,13 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
 
 export default compose<any, any>(
   withShowByProps({
-    path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
+    path: ['monitorPage', 'carInfo', 'missionsAndWaybillsData', 'missions'],
     type: 'loader-field',
-    checkErrorPath: ['monitorPage', 'carInfo', 'missionsData', 'error'],
+    checkErrorPath: ['monitorPage', 'carInfo', 'missionsAndWaybillsData', 'error'],
   }),
   connect<any, any, any, ReduxState>(
     (state) => ({
-      missions: state.monitorPage.carInfo.missionsData.missions,
+      missions: state.monitorPage.carInfo.missionsAndWaybillsData.missions,
     }),
   ),
 )(MissionsList);

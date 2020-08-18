@@ -133,6 +133,9 @@ export type TypeFields<F extends any> = {
   key: 'show_edc_comments';
   title: string;
   displayIfPermission?: string | Array<string>;
+}| {
+  key: 'showCarOnMap';
+  title: string;
 };
 
 export type TypeConfigData<F> = {

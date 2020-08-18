@@ -17,6 +17,7 @@ import DefaultTdTitle from 'components/new/ui/registry/components/data/table-dat
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import ShowCarOnMap from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowCarOnMap';
 
 type Props = CommontTdTiteProps;
 
@@ -32,6 +33,7 @@ const componentsByKey: Record<TypeFieldsAvalibaleKey<void>, React.ComponentType<
   services_actions_on_off: ServicesActionsOnOffTdTitle,
   service_files: ServiceFilesTdTitle,
   edc_request_info: EdcRequestInfoTdTitle,
+  showCarOnMap: ShowCarOnMap,
 };
 
 const Td: React.FC<Omit<Props, 'id'>> = React.memo(

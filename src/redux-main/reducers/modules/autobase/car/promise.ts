@@ -145,7 +145,7 @@ type Paylaod = (
   | { car_id: Car['asuods_id']; date_start: string; date_end: string; }
 );
 
-export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
+export const promiseGetCarMissionsAndWaybillsByTimestamp = async (payload: Paylaod) => {
   let response = null;
 
   try {
@@ -160,7 +160,9 @@ export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
     contractor_name: string;
     customer_name: string;
     owner_name: string;
+    waybills: Array<any>;
   } = get(response, 'result');
 
   return result;
 };
+

@@ -2,8 +2,8 @@ import {
   CAR_INFO_SET_GPS_CODE,
   CAR_INFO_SET_STATUS,
   CAR_INFO_SET_TRACK_CACHING,
-  CAR_INFO_SET_MISSIONS_DATA,
-  CAR_INFO_RESET_MISSIONS_DATA,
+  CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA,
+  CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA,
   CAR_INFO_PUSH_POINT_INTO_TRACK,
   CAR_INFO_TOGGLE_FOR_TODAY,
   CAR_INFO_RESET_TRACK_CACHING,
@@ -16,7 +16,7 @@ import {
   CAR_INFO_SET_POPUP_TRACK_POINT,
   CAR_INFO_SET_POPUP_PARKING_POINT,
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
-  CAR_INFO_REFRESH_DATE_FOR_TODAY,
+  CAR_INFO_CHANGE_DATE_AND_FOR_TODAY,
   initialState,
 } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
@@ -29,7 +29,7 @@ import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tr
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { actionGetCarMissionsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionGetCarMissionsAndWaybillsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
 
 export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {  // <<< gps_code
   return dispatch({
@@ -53,9 +53,13 @@ export const carInfoToggleForToday = () => ({
   payload: {},
 });
 
-export const carInfoRefreshDateForToday = () => ({
-  type: CAR_INFO_REFRESH_DATE_FOR_TODAY,
-  payload: {},
+export const carInfoChangeDateAndForToday = (forToday, date_start, date_end) => ({
+  type: CAR_INFO_CHANGE_DATE_AND_FOR_TODAY,
+  payload: {
+    forToday, 
+    date_start, 
+    date_end,
+  },
 });
 
 export const carInfoChangeDate = (field, value) => ({
@@ -78,10 +82,11 @@ export const carInfoSetTrack = (trackCaching, gps_code, odh_mkad) => ({
   },
 });
 
-export const carInfoSetMissionsData = ({ missions, carTabInfo }, gps_code) => ({
-  type: CAR_INFO_SET_MISSIONS_DATA,
+export const carInfoSetMissionsAndWaybillsData = ({ missions, waybills, carTabInfo }, gps_code) => ({
+  type: CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA,
   payload: {
     missions,
+    waybills,
     ...getMaxSpeeds(missions),
     carTabInfo,
     gps_code,
@@ -94,8 +99,8 @@ export const carInfoResetTrackCahing = () => ({
   payload: {},
 });
 
-export const carInfoResetMissionsData = () => ({
-  type: CAR_INFO_RESET_MISSIONS_DATA,
+export const carInfoResetMissionsAndWaybillsData = () => ({
+  type: CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA,
   payload: {},
 });
 
@@ -186,11 +191,11 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
     },
   } = getState();
 
-  dispatch(carInfoResetMissionsData());
+  dispatch(carInfoResetMissionsAndWaybillsData());
 
   let result = null;
   result = await dispatch(
-    actionGetCarMissionsByTimestamp(
+    actionGetCarMissionsAndWaybillsByTimestamp(
       {
         car_id: payloadData.asuods_id,
         date_start: createValidDateTime(payloadData.date_start || date_start),
@@ -203,9 +208,10 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
   const monitorPage = getMonitorPageState(getState());
   if (monitorPage && monitorPage.carInfo && monitorPage.carInfo.gps_code === payloadData.gps_code) {
     dispatch({
-      type: CAR_INFO_SET_MISSIONS_DATA,
+      type: CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA,
       payload: {
         missions: result.missions,
+        waybills: result.waybills,
         ...getMaxSpeeds(result.missions),
         gps_code: payloadData.gps_code,
         carTabInfo: getCarTabInfo(result),

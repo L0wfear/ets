@@ -11,6 +11,12 @@ import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
 import CarCreateMission from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
 import { CarInfoBlockTabData } from 'components/old/monitor/styled';
+import CarWaybills from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-waybills/CarWaybills';
+import WaybillFormWrap from 'components/old/waybill/WaybillFormWrap';
+import { compose } from 'redux';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -26,6 +32,7 @@ export type TypeLastPoint = {
 };
 
 export type PropsCarAttributeInformation = {
+  asuods_id: {asuods_id: number;};
   company_name: string;
   gov_number: string;
   garage_number: string;
@@ -36,10 +43,10 @@ export type PropsCarAttributeInformation = {
   lastPoint: TypeLastPoint;
   errorInLoadTrack: boolean;
   map: Map;
-  carActualGpsNumberIndex: any;
-
-  missionsData: any;
-};
+  fetchMissionsData: any;
+  missionsAndWaybillsData: any;
+  dispatch: EtsDispatch;
+} & WithSearchProps;
 
 type OneAtt<P> = {
   key?: string;
@@ -47,7 +54,7 @@ type OneAtt<P> = {
   value: (props: P) => string | number | JSX.Element | Array<JSX.Element>;
   loader?: boolean;
   carActualGpsNumberIndex?: boolean;
-  missionsData?: boolean;
+  missionsAndWaybillsData?: boolean;
 };
 
 export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
@@ -60,20 +67,20 @@ export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
   {
     key: 'customer_name',
     title: 'Заказчик',
-    value: ({ missionsData: { carTabInfo: { customer_name } } }) => customer_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { customer_name } } }) => customer_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'contractor_name',
     title: 'Подрядчик',
-    value: ({ missionsData: { carTabInfo: { contractor_name } } }) => contractor_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { contractor_name } } }) => contractor_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'owner_name',
     title: 'Владелец техники',
-    value: ({ missionsData: { carTabInfo: { owner_name } } }) => owner_name,
-    missionsData: true,
+    value: ({ missionsAndWaybillsData: { carTabInfo: { owner_name } } }) => owner_name,
+    missionsAndWaybillsData: true,
   },
   {
     key: 'gov_number',
@@ -114,7 +121,35 @@ export const attributeList: Array<OneAtt<PropsCarAttributeInformation>> = [
 
 const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.memo(
   (props) => {
-    const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
+    const { 
+      lastPoint, 
+      errorInLoadTrack,
+      gps_code, 
+      missionsAndWaybillsData, 
+      asuods_id,
+      fetchMissionsData, 
+      setParamsAndSearch,
+      searchState,
+    } = props;
+
+    const [showWaybillForm, setShowWaybillForm] = React.useState(false);
+    const [waybillData, setWaybillData] = React.useState(null);
+    const [defaultCarData, setDefaultCarData] = React.useState(null);
+
+    const handleHideWaybillForm = React.useCallback(() => {
+      setParamsAndSearch({
+        params: {waybill_id: null}, 
+        search: {
+          date_start: searchState.date_start,
+          date_end: searchState.date_end,
+        }
+      });
+      fetchMissionsData({
+        asuods_id,
+        gps_code,
+      });
+    }, [asuods_id, searchState.date_start, searchState.date_end]);
+
     return (
       <div>
         <CarInfoBlockTabData>
@@ -127,7 +162,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
                   <div key={attr.title}>
                     <span className="car_info-attr_title">{`${attr.title}: `}</span>
                     {
-                      (attr.missionsData ? missionsData.isLoading : (!value && value !== null))
+                      (attr.missionsAndWaybillsData ? missionsAndWaybillsData.isLoading : (!value && value !== null))
                         ? <PreloadNew typePreloader="field" />
                         : <span className="car_info-attr_value">{value || '-'}</span>
                     }
@@ -156,9 +191,27 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
           </div>
         </CarInfoBlockTabData>
         <CarMissions />
+        <CarWaybills 
+          setShowWaybillForm={setShowWaybillForm}
+          setWaybillData={setWaybillData}
+          setDefaultCarData={setDefaultCarData}
+          gps_code={gps_code}
+          showWaybillForm={showWaybillForm}
+        />
         <CarCreateMission
           gps_code={gps_code}
         />
+        {
+          showWaybillForm
+            && (
+              <WaybillFormWrap
+                onFormHide={handleHideWaybillForm}
+                onCallback={handleHideWaybillForm}
+                defaultCarData={defaultCarData}
+                element={waybillData}
+              />
+            )
+        }
       </div>
     );
   },
@@ -177,10 +230,37 @@ const mapStateToProps = (state) => ({
   status: state.monitorPage.carInfo.status,
   lastPoint: makeLastPointTrack(state.monitorPage.carInfo.trackCaching),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
-  carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
-  missionsData: state.monitorPage.carInfo.missionsData,
+  missionsAndWaybillsData: state.monitorPage.carInfo.missionsAndWaybillsData,
+  asuods_id: (
+    state.monitorPage.carActualGpsNumberIndex[
+      state.monitorPage.carInfo.gps_code
+    ] || { asuods_id: null }
+  ).asuods_id,
 });
 
-export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    fetchMissionsData: (props) => {
+      return dispatch(
+        fetchCarInfo(
+          {
+            asuods_id: props.asuods_id,
+            gps_code: props.gps_code,
+          },
+          {
+            page: 'mainpage',
+          },
+        ),
+      );
+    },
+  };
+};
+
+export default compose<any>(
+  withSearch, 
+  connect<any, any, any, ReduxState>(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(CarAttributeInformation);

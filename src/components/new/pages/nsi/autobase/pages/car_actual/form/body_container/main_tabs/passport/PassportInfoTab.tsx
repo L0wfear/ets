@@ -149,46 +149,16 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
       }
     }, []);
 
-    React.useEffect(() => { // <<< Костыль, когда создан паспорт ГИБДД, но {... is_gtn_passport: true, is_gibdd_passport: false}
+    React.useEffect(() => {
       const initialType = is_gibdd_passport
         ? 'GIBDD'
-        : 'GTN'; // паспорт ГИМС нереализован в системе
-      
-      if ((!passport_data.type || passport_data.type !== initialType)
-        && !(is_gibdd_passport && is_gtn_passport)) { // ???
-        let changeObj: Partial<CarWrap['passport_data']> = {
-          type: initialType,
-          vin: state.vin || '',
-        };
-
-        if (passport_data.type && passport_data.type !== initialType) {
-          const { car_id, id, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
-          changeObj = {
-            ...defaultPassportData,
-            ...changeObj,
-          };
-        }
-
-        if (initialType === 'GIBDD') {
-          changeObj.seria_number = passport_data.number;
-        }
-        if (initialType === 'GTN') {
-          changeObj.number = passport_data.seria_number;
-        }
-        onChange(changeObj);
+        : is_gtn_passport
+          ? 'GTN'
+          : 'None'; // паспорт ГИМС нереализован в системе
+      if(!(is_gibdd_passport && is_gtn_passport)) {
+        onChangePassportType(initialType);
       }
     }, [is_gibdd_passport, is_gtn_passport]);
-
-    // React.useEffect(() => { // то, как правильно менять паспорт ТС
-    //   const initialType = is_gibdd_passport
-    //     ? 'GIBDD'
-    //     : is_gtn_passport
-    //       ? 'GTN'
-    //       : 'None'; // паспорт ГИМС нереализован в системе
-    //   if(!(is_gibdd_passport && is_gtn_passport)) {
-    //     onChangePassportType(initialType);
-    //   }
-    // }, [is_gibdd_passport, is_gtn_passport]);
 
     return (
       <>

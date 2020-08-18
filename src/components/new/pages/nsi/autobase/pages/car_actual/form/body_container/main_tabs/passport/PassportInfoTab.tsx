@@ -149,17 +149,6 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
       }
     }, []);
 
-    React.useEffect(() => {
-      const initialType = is_gibdd_passport
-        ? 'GIBDD'
-        : is_gtn_passport
-          ? 'GTN'
-          : 'None'; // паспорт ГИМС нереализован в системе
-      if(!(is_gibdd_passport && is_gtn_passport)) {
-        onChangePassportType(initialType);
-      }
-    }, [is_gibdd_passport, is_gtn_passport]);
-
     return (
       <>
         <MarginTopRow>

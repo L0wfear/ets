@@ -2,20 +2,22 @@
 import * as React from 'react';
 
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
-import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { actionGetAndSetInStoreEngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/actions';
 import { EngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/@types';
+import { FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 type UseEngineKindsListAns = Array<DefaultSelectOption<number, string, EngineKind>>;
 type UseEngineKindsList = (
-	car_id: CarWrap['asuods_id'],
 	is_main: boolean,
   meta: LoadingMeta,
+  formKey?: string, // на какой модалке вызывается
 ) => UseEngineKindsListAns;
 
-const UseEngineKindsList: UseEngineKindsList = (car_id, is_main, meta) => {
+const formForDvs = ['carForm'];
+
+const UseEngineKindsList: UseEngineKindsList = (is_main, meta, formKey = '') => {
 
   const [engineKindsList, setEngineKindsList] = React.useState([]);
   const dispatch = etsUseDispatch();
@@ -34,6 +36,9 @@ const UseEngineKindsList: UseEngineKindsList = (car_id, is_main, meta) => {
     () => {
       return  engineKindsList.reduce( // Фильтруем типы двигателя для карточки ТС -- is_main
         (newArr, currVal) => {
+          if (formForDvs.includes(formKey) && currVal.id === FUEL_ENGINE_TYPE_ID) {
+            currVal.name = 'ДВС';
+          }
           if (is_main && currVal.is_main) {
             newArr.push({
               value: currVal.id,
@@ -51,7 +56,7 @@ const UseEngineKindsList: UseEngineKindsList = (car_id, is_main, meta) => {
         },
         []);
     },
-    [engineKindsList, car_id, ],
+    [engineKindsList, ],
   );
 
   return engineKindsOptions;

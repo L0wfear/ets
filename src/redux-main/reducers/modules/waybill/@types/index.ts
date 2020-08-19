@@ -1,4 +1,5 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 type WaybillCarRefill = {
   fuel_card_id: number;
@@ -20,6 +21,7 @@ export type waybillDiff = { // Поля, которые есть в ПЛ, но �
   trailer_type_name: string;
   trailer_gps_code: string;
   hasEquipmentFuelRates: boolean | number;
+  engine_kind_ids: Car['engine_kind_ids'];
 };
 
 export type WaybillRegistryRow = {

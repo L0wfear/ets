@@ -110,6 +110,7 @@ import { getReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list
 import FuelNavHeader from 'components/old/waybill/form/fuelTabs/FuelNavHeader';
 import FuelBodyContainer from 'components/old/waybill/form/fuelTabs/FuelBodyContainer';
 import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
+import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -2285,7 +2286,24 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 </EtsBootstrap.Col>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 6 : 12}>
+            
+            <EtsBootstrap.Col md={6}>
+              <WaybillEngineKind
+                carIndex={carIndex}
+                car_id={state.car_id}
+                waybillStatus={{
+                  IS_CREATING,
+                  IS_ACTIVE,
+                  IS_DRAFT,
+                  IS_CLOSED,
+                  IS_DELETE,
+                }}
+                engine_kind_ids={state.engine_kind_ids}
+                handleChange={this.handleChange}
+              />
+            </EtsBootstrap.Col>
+            
+            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 3 : 6}>
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}
                 is_bnso_broken={state.is_bnso_broken}

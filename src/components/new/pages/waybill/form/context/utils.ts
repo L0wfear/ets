@@ -111,6 +111,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   refill_type_ids: null,
   car_has_motohours: null,
   car_has_odometr: null,
+  engine_kind_ids: [],
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

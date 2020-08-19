@@ -48,10 +48,14 @@ const StringField: React.FC<ExtFieldString> = React.memo(
 
     const onChange = React.useCallback(
       (event) => {
-        const value = get(event, ['target', 'value'], event);
+        const value = get(event, ['target', 'currentTarget', 'value'], event);
         const changeVal = toUpperCase ? value.toUpperCase() : value;
 
         props.onChange(changeVal, {
+          currentTarget: {
+            value: changeVal,
+            ...event.currentTarget,
+          },
           target: {
             value: changeVal,
             ...event.target,

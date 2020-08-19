@@ -22,6 +22,7 @@ import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
+import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -72,14 +73,34 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     }, []);
 
     React.useEffect(() => {
-      if (state.data.osago_not_required) {
+      if (state.data.osago_not_required || state.data.no_valid_osago) {
+        const comment = state.data.comments?.length
+          ? 'Необходимо сверить данные полиса ОСАГО \n' + state.data.comments
+          : 'Необходимо сверить данные полиса ОСАГО';
         props.handleChange({
           osago: null,
           osago_finished_at: null,
+          data: {
+            ...state.data,
+            comments: state.data.no_valid_osago ? comment : state.data.comments,
+          },
         });
+      } else {
+        const comment = state.data.comments?.length ? state.data.comments.replace('Необходимо сверить данные полиса ОСАГО', '') : null;
+        dispatch(actionGetCarsConditionsCarById(state.id, {page: props.page})).then((result) => {
+          props.handleChange({
+            osago: result.osago,
+            osago_finished_at: result.osago_finished_at,
+            data: {
+              ...state.data,
+              comments: !state.data.no_valid_osago ? comment : state.data.comments,
+            },
+          });
+        }
+        );
       }
     },
-    [state.data.osago_not_required]);
+    [state.data.osago_not_required, state.data.no_valid_osago]);
 
     const handleChangeDataForIA = React.useCallback(
       (data) => {
@@ -476,7 +497,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.osago}
               boundKeys="osago"
-              disabled={!props.isPermitted || state.data.osago_not_required}
+              disabled={!props.isPermitted || state.data.osago_not_required || state.data.no_valid_osago}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -490,7 +511,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.osago_finished_at}
               boundKeys="osago_finished_at"
-              disabled={!props.isPermitted || state.data.osago_not_required}
+              disabled={!props.isPermitted || state.data.osago_not_required || state.data.no_valid_osago}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>

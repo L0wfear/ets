@@ -2,6 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
+import { getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const isNewRow = (formState) => {
   return Boolean(get(formState, 'isNewRow', null));
@@ -266,19 +267,38 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'number',
       title: 'Пробег на дату проведения последнего ТО',
       required: false,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Пробег на дату проведения последнего ТО" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     motohours_fact: {
       type: 'number',
       title: 'Наработка м/ч на дату проведения последнего ТО',
       required: false,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return getRequiredFieldNumberMoreThenZero('Наработка м/ч на дату проведения последнего ТО');
+          }
+        }
+      ],
     },
     osago: {
       type: 'string',
       title: 'Номер ОСАГО',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
+          const osagoNotRequired = !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null);
+          const noValidOsago = get(formState, 'data.no_valid_osago', null) || get(formState, 'no_valid_osago', null);
+          if ((osagoNotRequired && !noValidOsago) && !value) {
             return 'Поле "Номер ОСАГО" должно быть заполнено';
+          }
+          if (noValidOsago) {
+            return 'Вы отметили, что у ТС отсутствует действующий полис ОСАГО. Необходимо сверить данные полиса ОСАГО';
           }
         },
       ],
@@ -295,7 +315,9 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Действует до',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
+          const osagoNotRequired = !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null);
+          const noValidOsago = get(formState, 'data.no_valid_osago', null) || get(formState, 'no_valid_osago', null);
+          if ((osagoNotRequired && !noValidOsago) && !value) {
             return 'Поле "Действует до" должно быть заполнено';
           }
         },

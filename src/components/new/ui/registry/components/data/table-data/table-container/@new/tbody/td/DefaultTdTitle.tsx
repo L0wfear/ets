@@ -119,10 +119,6 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     value = !value && value !== 0 ? '-' : value;
   }
 
-  if ('defaultValue' in fieldMeta && fieldMeta.defaultValue) {
-    value = value === null ? fieldMeta.defaultValue : value;
-  }
-
   if(value && !isNullOrUndefined(value) && isNumber(value)){
     value = value.toString().replace('.', ',');
   }

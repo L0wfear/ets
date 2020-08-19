@@ -84,7 +84,7 @@ function singleFilterTypeHandler(SourcerFilterInput) {
         fieldName: this.props.fieldName,
       });
 
-      if (this.props.type === 'date') {
+      if (this.props.type === 'date' || this.props.type === 'datetime') {
         this.props.onChange({
           value,
           filterValue: [filterValue],

@@ -9,6 +9,9 @@ const isValidLicense = (data) => {
 };
 
 const isValidFormat = (data) => {
+  if (data.length <= 2 || data.length >= 5) {
+    return isNaN(data.charAt(data.length - 1)) === true;
+  }
   if (data.length === 4) {
     return isNaN(data.charAt(2)) !== isNaN(data.charAt(3));
   }

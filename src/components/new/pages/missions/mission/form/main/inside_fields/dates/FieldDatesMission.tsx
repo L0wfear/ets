@@ -13,7 +13,7 @@ import {
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
-import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates, addSecond } from 'components/@next/@utils/dates/dates';
+import { getTomorrow9amMoscowServerTime, addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates, addSecond } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -66,10 +66,11 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
   componentDidMount() {
     const {
       IS_CREATING,
-      MISSION_IS_ORDER_SOURCE,
       date_start,
+      date_end,
     } = this.props;
-    if (IS_CREATING && MISSION_IS_ORDER_SOURCE && date_start) {
+
+    if (IS_CREATING && date_start && date_end) {
       this.updateDateStartByCurrentTime();
     }
   }
@@ -111,11 +112,12 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
 
     const currentTime = createValidDateTime(getDateWithMoscowTzByTimestamp(date));
 
-    const { date_start } = this.props;
+    const { date_start, date_end } = this.props;
 
-    if (diffDates(currentTime, date_start) > 0) {
+    if (diffDates(currentTime, date_start) > 0 && diffDates(getTomorrow9amMoscowServerTime(currentTime), date_end) > 0) {
       this.props.onChange({
         date_start: currentTime,
+        date_end: getTomorrow9amMoscowServerTime(currentTime),
       });
     }
   }

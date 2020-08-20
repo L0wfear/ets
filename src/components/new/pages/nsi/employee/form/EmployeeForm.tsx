@@ -254,7 +254,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
   // ХХХ-ХХХ-ХХХ YY
   private readonly handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string): void => {
-    let value = get(fieldValue, 'target.value', null);
+    let value = get(fieldValue, 'target.value', fieldValue);
 
     if (value) {
       value = value.match(/\d+/g).join('');

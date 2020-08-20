@@ -129,6 +129,11 @@ export type OneFilterType<F> = {
         | 'work_mode_label'
       );
     };
+    makeOptionsFromSessionData?: {
+      groupName: string;
+      valueKey: string;
+      labelKey: string;
+    };
   } | {
     type: 'advanced-select-like';
     options: Array<any>;

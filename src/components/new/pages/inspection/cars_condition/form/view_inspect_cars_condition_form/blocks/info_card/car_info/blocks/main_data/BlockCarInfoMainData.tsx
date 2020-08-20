@@ -39,7 +39,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       formErrors: errors,
     } = props;
 
-    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(false);
+    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(true);
     const [defectShow, SetDefectShow] = React.useState(false);
     const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
     const countryOptionData = useCountryOptions(props.page, props.path, 'short_name');

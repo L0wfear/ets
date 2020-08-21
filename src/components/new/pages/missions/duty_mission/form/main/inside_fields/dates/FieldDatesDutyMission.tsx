@@ -21,14 +21,31 @@ import {
   ColEndDatePicker,
 } from './styled';
 import { routeTypesByTitle } from 'constants/route';
-import { addTime, createValidDateTime, addSecond } from 'components/@next/@utils/dates/dates';
+import {
+  addTime,
+  createValidDateTime,
+  addSecond,
+  getDateWithMoscowTzByTimestamp, diffDates, getTomorrow9amMoscowServerTime
+} from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { actionLoadConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/actions';
+import {actionLoadTimeMoscow} from '../../../../../../../../../redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 /**
  * Поля дат наряд-задания (плановые и фактические)
  */
 class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMission, StateFieldDatesDutyMission> {
+  componentDidMount() {
+    const {
+      id,
+      plan_date_start,
+      plan_date_end,
+    } = this.props;
+
+    if (!id && plan_date_start && plan_date_end) {
+      this.updateDateStartByCurrentTime();
+    }
+  }
   componentDidUpdate(prevProps) {
     const {
       is_cleaning_norm,
@@ -50,6 +67,31 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
           });
         }
       }
+    }
+  }
+
+  async updateDateStartByCurrentTime() {
+    const {
+      date,
+    } = await this.props.dispatch(
+      actionLoadTimeMoscow(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      ),
+    );
+
+    const currentTime = createValidDateTime(getDateWithMoscowTzByTimestamp(date));
+
+    const { plan_date_start, plan_date_end } = this.props;
+
+    if (diffDates(currentTime, plan_date_start) > 0 && diffDates(getTomorrow9amMoscowServerTime(currentTime), plan_date_end) > 0) {
+      this.props.onChange({
+        plan_date_start: currentTime,
+        plan_date_end: getTomorrow9amMoscowServerTime(currentTime),
+      });
     }
   }
 

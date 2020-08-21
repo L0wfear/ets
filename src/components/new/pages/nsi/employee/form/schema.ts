@@ -82,7 +82,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
           }
           const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;
@@ -104,7 +104,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
           }
           const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;

@@ -911,7 +911,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           try {
             newState.status = 'active';
 
-            await this.updateWaybill({...newState, is_bnso_broken: formState.is_bnso_broken});
+            await this.updateWaybill(newState);
             callback(id);
             this.props.onCallback();
           } catch (error) {

@@ -3,6 +3,24 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
+import { WaybillGas } from 'redux-main/reducers/modules/waybill/@types/index';
+
+export const gasDefaultElement: WaybillGas = {
+  // gas
+  gas_fuel_type: null, // Тип топлива
+  gas_fuel_start: null, // Выезд, л
+  gas_fuel_given: null, // Выдано, л
+  gas_fuel_end: null, // Возврат по таксировке, л
+  gas_fact_fuel_end: null, // Возврат фактический, л
+  gas_tax_data: [], // Расчет по норме
+  gas_refill: [], // Заправки
+
+  // Расчетные поля (только GET), не храним в бд
+  gas_tax_consumption: null, // Расход по таксировке, л
+  gas_fact_consumption: null, // Расход фактический, л
+  gas_diff_consumption: null, // Расхождение в данных расхода, л
+};
+
 export const getDefaultWaybill = (company_id): Waybill => ({
   accompanying_person_id: null,
   accompanying_person_name: '',
@@ -112,6 +130,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   car_has_motohours: null,
   car_has_odometr: null,
   engine_kind_ids: [],
+  ...gasDefaultElement,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

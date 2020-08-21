@@ -7,7 +7,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore, gasFuelCardsGetAndSetInStore, } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -43,7 +43,7 @@ type Props = {
   is_one_fuel_tank?: boolean;
   use_pouring?: boolean;
   boundKey: string;
-  fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'];
+  fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'] | IStateAutobase['gasFuelCardsList'];
 
   canEditIfClose: boolean;
   gov_number?: Waybill['gov_number'];
@@ -58,10 +58,15 @@ type Props = {
     arrayOrigin: Waybill['equipment_refill'];
     fuel_given: Waybill['equipment_fuel_given'];
     fuel_type: Waybill['equipment_fuel_type'];
+  } | {
+    array: Waybill['gas_refill'];
+    arrayOrigin: Waybill['gas_refill'];
+    fuel_given: Waybill['gas_fuel_given'];
+    fuel_type: Waybill['gas_fuel_type'];
   }
 );
 
-const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
+const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['gas_refill']>> = {
   key: 'type_id',
   title: 'Способ заправки',
   format: 'select',
@@ -92,6 +97,12 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
   format: 'toFixed3',
 };
 
+const storeFuelCardsKey = {
+  equipment_refill: 'equipmentFuelCardsList',
+  car_refill: 'fuelCardsList',
+  gas_refill: 'gasFuelCardsList',
+};
+
 const FieldWaybillCarRefill: React.FC<Props> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
@@ -99,13 +110,14 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const dispatch = etsUseDispatch();
     const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
     const isCarRefilBlock = props.boundKey === 'car_refill';
+    const isGasRefilBlock = props.boundKey === 'gas_refill';
 
     const isPermittedWaybillRefill = etsUseSelector((state) => getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill));
-    const fuelCardsList = etsUseSelector((state) => isCarRefilBlock
-      ? getAutobaseState(state).fuelCardsList
-      : getAutobaseState(state).equipmentFuelCardsList
-    );
-    const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList);
+    const fuelCardsList = !isNullOrUndefined(props.boundKey)
+      ? etsUseSelector((state) => getAutobaseState(state)[storeFuelCardsKey[props.boundKey]])
+      : [];
+
+    const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList); // <<< gas
     const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
 
     React.useEffect(() => {
@@ -146,6 +158,10 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           {
             ...metaTypeId,
             options: typeIdOptions,
+            disabled: isGasRefilBlock,
+            default_value: isGasRefilBlock
+              ? 1
+              : null,
           },
           {
             ...metaFuelCardId,
@@ -163,7 +179,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
         return meta;
       },
-      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex],
+      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex, isGasRefilBlock],
     );
     const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
     const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
@@ -215,6 +231,16 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               path: props.path,
             },
           ));
+        } else if (isGasRefilBlock) {
+          dispatch(gasFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
         }
       },
       [
@@ -228,6 +254,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         plan_arrival_date,
         isCarRefilBlock,
         isEquipmentRefilBlock,
+        isGasRefilBlock,
       ],
     );
 
@@ -249,27 +276,19 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         })).then((res) => {
           setLastClosedWaybill(res);
         });
-      }, [props.car_id]);
+      }, [props.car_id, props.page, props.path]);
 
     const fuelCardValue = React.useMemo(
-      () => {
-        const isFuelCardSelected = props.array.map(
-          ( data ) => data.fuel_card_id,
-        );
-
-        if (isFuelCardSelected) {
-          return isFuelCardSelected;
-        }
-
-        return null;
-      },
+      () => props.array.map(
+        ( data ) => data.fuel_card_id,
+      ),
       [props.array],
     );
 
     const previousfuelCardValue = usePrevious(fuelCardValue);
 
     const handleChange = React.useCallback(
-      async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string): void => {
+      async (array: Props['array'], rowIndex?: number, cellValue?: number, cellKey?: string) => {
         let newArr = array;
         const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
 
@@ -282,7 +301,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             const firstElement = newArr[0];
             if (!firstElement.fuel_card_id && firstElement.type_id === 1) {
               const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === firstElement.type_id);
-              if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
+              if (refillTypeData && (isNullOrUndefined(fuelCardValue?.[0]) === isNullOrUndefined(previousfuelCardValue?.[0]))
+              ) {
                 newArr = [
                   {
                     ...firstElement,
@@ -293,13 +313,17 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             }
           }
         }
+        // http://localhost:3000/#/waybills/8491089?Waybills_filters=%257B%2522car_id__in%2522%253A%255B19707%255D%257D
+        // http://localhost:3000/#/waybills/8491050?Waybills_filters=%257B%2522status__in%2522%253A%255B%2522active%2522%255D%257D
+        // http://localhost:3000/#/nsi/autobase/car_actual/19707/main_info?CarActual_filters=%257B%2522gov_number__in%2522%253A%255B%25220302%25D0%259D%25D0%259277%2522%255D%257D
 
-        if (!props.use_pouring) {
+        // DITETS20A-25 Добавление возможности отключения способа заправки Налив для некоторых организаций
+        if (!props.use_pouring) { /// <<< gas?
           const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === 1);
-          const element = newArr[0];
+          const element = newArr?.[0];
           if (newArr.length > 0) {
             if (newArr.length === 1) {
-              if (refillTypeData && (isNullOrUndefined(fuelCardValue[0]) === isNullOrUndefined(previousfuelCardValue[0]))) {
+              if (refillTypeData && (isNullOrUndefined(fuelCardValue?.[0]) === isNullOrUndefined(previousfuelCardValue?.[0]))) {
                 newArr = [
                   {
                     ...element,
@@ -313,7 +337,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               }
             } else {
               for (const i in newArr) {
-                if (refillTypeData && (isNullOrUndefined(fuelCardValue[i]) === isNullOrUndefined(previousfuelCardValue[i]))) {
+                if (refillTypeData && (isNullOrUndefined(fuelCardValue?.[i]) === isNullOrUndefined(previousfuelCardValue?.[i]))) {
                   newArr[i].type_id = refillTypeData.value;
                   newArr[i].fuel_card_id = filteredFuelCardIdOptions.length
                     ? filteredFuelCardIdOptions[0].value
@@ -369,6 +393,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         props.handleChange,
         typeIdOptions,
         fuelCardIdOptions,
+        fuelCardValue,
+        props.use_pouring,
+        previousfuelCardValue,
       ],
     );
 
@@ -413,19 +440,29 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ],
     );
 
+    // Можно наверное уйти к одному флагу
     const showForEquipmentCarRefil = !props.is_one_fuel_tank
       && (props.array.length
           || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill))); // если массив пустой и мы можем добавить строку
     const showForCarRefil = props.array.length
       || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
-
+    const showForGasRefil = props.array.length
+      || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
+    
+    // Можно наверное уйти к одному флагу
     const showBlock = isEquipmentRefilBlock
       ? showForEquipmentCarRefil
       : isCarRefilBlock
         ? showForCarRefil
-        : false;
+        : isGasRefilBlock
+          ? showForGasRefil
+          : false;
 
-    const defaultItem: FuelCardOnCars = {...defaultFuelCardOnCarsItem, gov_number: props.gov_number, car_id: props.car_id,};  
+    const defaultItem: FuelCardOnCars = { // для создания топливной карты
+      ...defaultFuelCardOnCarsItem,
+      gov_number: props.gov_number,
+      car_id: props.car_id,
+    };
 
     return showBlock && (
       <div>

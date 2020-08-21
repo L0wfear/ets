@@ -18,7 +18,9 @@ type Props = {
 		IS_CLOSED: boolean;
 		IS_DELETE: boolean;
 	};
-	handleChange: (field: string, e: any, index?: number) => any;
+  handleChange: (field: string, e: any, index?: number) => any;
+  handleMultipleChange: (fields: any) => void;
+  setIsGasKind: (isGasKind: boolean) => any;
 };
 
 export const WaybillEngineKindStyled = styled.div`
@@ -28,14 +30,20 @@ export const WaybillEngineKindStyled = styled.div`
 Обработать кейсы:
 1) Черновик открыт, изменили вид двигателя, нажали на созранить в ПЛ
 ФР: при сохранении ПЛ бек ругнется на несоответствие типа двигателя и тачки, пользаку надо обновить тип двигателя
-ОР: Фронт каким-то образом, болжен обновлять тип двигателя до или после соъранения
-
+ОР: Фронт каким-то образом, должен обновлять тип двигателя до или после соъранения
+2) Заполнить блок со спецоборудованием в ПЛ -> Сохранить -> У ТС поменять на газ -> Открыть ПЛ
+ОР:
+- На ТС установлено спецоборудование установленно на 'Нет' и задисейблено
+- Нет всплывашки, что очиститься блок спецоборудования
+- Значения в блоке спецоборудования сброшены
+- Карточка сохраняется при нажатии на сохранить
+3)
 */
 
 const WaybillEngineKind: React.FC<Props> = React.memo(
   (props) => {
     const canChangeEngineKindIds = Boolean(props.waybillStatus?.IS_CREATING || props.waybillStatus?.IS_DRAFT);
-    const engineKindsOptions = UseEngineKindsList(true, {page: null, path: null} );
+    const engineKindsOptions = UseEngineKindsList(true, {page: null, path: null}, 'waybillForm' );
     const engineKindIdsByStatus = React.useMemo(
       () => canChangeEngineKindIds
         ? (get(props.carIndex, `${props.car_id}.engine_kind_ids`) || [])
@@ -53,8 +61,14 @@ const WaybillEngineKind: React.FC<Props> = React.memo(
       () => (engineKindsOptions.find( (elem) => engineKindIdsByStatus.includes(elem.value) )?.label || '-'),
       [engineKindIdsByStatus, engineKindsOptions]);
 
-    const isGasKind = React.useMemo(() => engineKindIdsByStatus.includes(GAS_ENGINE_TYPE_ID), [engineKindIdsByStatus]);
-		
+    const isGasKind = React.useMemo(
+      () => engineKindIdsByStatus.includes(GAS_ENGINE_TYPE_ID),
+      [engineKindIdsByStatus]);
+    
+    React.useEffect(() => {
+      props.setIsGasKind(isGasKind);
+    }, [ isGasKind ]);
+
     return <WaybillEngineKindStyled>
       <b>Тип двигателя: </b> { fuelKind } <br/>
       <b>На ТС установлено газовое оборудование: </b> { isGasKind ? 'Да' : 'нет' }

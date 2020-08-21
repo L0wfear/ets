@@ -20,6 +20,7 @@ export type OneTabDataCommon = {
   tabKey: string;
   title: string;
   errorsFieldList?: Array<string>;
+  showTabIntoNavFlagKey?: 'isGasKind' | 'isFuelKind' | 'isElectricityKind';
 };
 
 export type OneTabDataParent = (
@@ -83,6 +84,7 @@ export const fuelTab: OneTabData = { // Вкладка для топлива
     'car_refill', // array of Objects, учесть
     'tax_data_rows', // array of Objects, учесть
   ],
+  showTabIntoNavFlagKey: 'isFuelKind',
 };
 
 export const gasTab: OneTabData = { // Вкладка для газа
@@ -91,7 +93,20 @@ export const gasTab: OneTabData = { // Вкладка для газа
   component: null,
   path: '', // выпилить, мы не будем мспользовать URl
   isRegistry: false,
-  errorsFieldList:[],
+  errorsFieldList:[
+    'gas_fuel_type',
+    'gas_fuel_start',
+    'gas_fuel_given',
+    'gas_fuel_end',
+    'gas_fact_fuel_end',
+    'gas_tax_data',
+    'gas_refill',
+    'gas_tax_data_rows', // array of Objects, учесть
+    'tax_consumption',
+    'gas_fact_consumption',
+    'gas_diff_consumption',
+  ],
+  showTabIntoNavFlagKey: 'isGasKind',
 };
 export const electricityTab: OneTabData = { // Вкладка для газа
   title: 'Электроэнергия',
@@ -99,7 +114,8 @@ export const electricityTab: OneTabData = { // Вкладка для газа
   component: null,
   path: '', // выпилить, мы не будем мспользовать URl
   isRegistry: false,
-  errorsFieldList:[]
+  errorsFieldList:[],
+  showTabIntoNavFlagKey: 'isElectricityKind',
 };
 
 export const fuelKindFormTabKey: Array<OneTabData> = [

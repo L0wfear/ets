@@ -53,6 +53,7 @@ const canSaveNotCheckField = [
   'distance',
   'motohours_equip_end',
   'equipment_tax_data',
+  'gas_tax_data',
   'tax_data',
   'motohours_end',
   'odometr_end',
@@ -157,6 +158,7 @@ type StateProps = {
   carIndex: Record<Car['asuods_id'], Car>;
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
+  gasFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
 };
@@ -278,6 +280,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       }
       if (!waybill.equipment_tax_data) {
         waybill.equipment_tax_data = [];
+      }
+      if (!waybill.gas_tax_data) {
+        waybill.gas_tax_data = [];
       }
       if (waybill.mission_id_list.filter((v) => v).length === 0) {
         waybill.mission_id_list = [];
@@ -1124,12 +1129,13 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     userCompanyId: getSessionState(state).userData.company_id,
     userCompanies: getSessionState(state).userData.companies,
     userStructureId: getSessionState(state).userData.structure_id,
-    fuelCardsList: getAutobaseState(state).fuelCardsList,
+    fuelCardsList: getAutobaseState(state).fuelCardsList, // Используется в схеме валидации
     refillTypeList: getSomeUniqState(state).refillTypeList,
     carList: getAutobaseState(state).carList,
     carIndex: getAutobaseState(state).carIndex,
     employeeIndex: getEmployeeState(state).employeeIndex,
-    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
+    equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList, // // Используется в схеме валидации
+    gasFuelCardsList: getAutobaseState(state).gasFuelCardsList, // // Используется в схеме валидации
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
   }),

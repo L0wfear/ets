@@ -8,7 +8,22 @@ type WaybillCarRefill = {
   number: string;
 };
 
+type TaxDataCar = {
+  FACT_VALUE: number;
+  FUEL_RATE: number;
+  OPERATION: number;
+  RESULT: number;
+  comment: string;
+  fuel_correction_rate: number;
+  is_excluding_mileage: boolean;
+  measure_unit_name: string;
+  operation_name: string;
+  iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
+};
+
 type WaybillEquipmentRefill = WaybillCarRefill;
+type WaybillGasRefill = WaybillCarRefill;
+type WaybillTaxDataGas = TaxDataCar;
 
 export type waybillDiff = { // Поля, которые есть в ПЛ, но нет в строке реестра ПЛ, для увеличения производительности бека
   car_gps_code: string;
@@ -111,18 +126,7 @@ export type WaybillRegistryRow = {
   status_text: string;
   structure_id: number;
   structure_name: string;
-  tax_data: Array<{
-    FACT_VALUE: number;
-    FUEL_RATE: number;
-    OPERATION: number;
-    RESULT: number;
-    comment: string;
-    fuel_correction_rate: number;
-    is_excluding_mileage: boolean;
-    measure_unit_name: string;
-    operation_name: string;
-    iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
-  }>;
+  tax_data: Array<TaxDataCar>;
   track_length: number;
   track_length_km: number;
   trailer_id: number;
@@ -133,6 +137,21 @@ export type WaybillRegistryRow = {
   season: 'winter' | 'summer';
   car_has_motohours: boolean;
   car_has_odometr: boolean;
+};
+
+export type WaybillGas = {
+  gas_fuel_type: string; // Тип топлива
+  gas_fuel_start: number; // Выезд, л
+  gas_fuel_given: number; // Выдано, л
+  gas_fuel_end: number; // Возврат по таксировке, л
+  gas_fact_fuel_end: number; // Возврат фактический, л
+  gas_tax_data: Array<WaybillTaxDataGas>; // Расчет по норме
+  gas_refill: Array<WaybillGasRefill>; // Заправки
+
+  // Расчетные поля (только GET), не храним в бд
+  gas_tax_consumption: number; // Расход по таксировке, л
+  gas_fact_consumption: number; // Расход фактический, л
+  gas_diff_consumption: number; // Расхождение в данных расхода, л
 };
 
 export type Waybill = (
@@ -147,6 +166,7 @@ export type Waybill = (
     odometr_diff?: number; // для жизни
     motohours_diff?: number; // для жизни
   }
+  & WaybillGas
 );
 
 export type IStateWaybill = {

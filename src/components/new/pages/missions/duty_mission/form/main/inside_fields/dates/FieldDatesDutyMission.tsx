@@ -90,7 +90,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
     if (diffDates(currentTime, plan_date_start) > 0 && diffDates(getTomorrow9amMoscowServerTime(currentTime), plan_date_end) > 0) {
       this.props.onChange({
         plan_date_start: currentTime,
-        plan_date_end: getTomorrow9amMoscowServerTime(currentTime),
+        plan_date_end: createValidDateTime(getTomorrow9amMoscowServerTime(currentTime)),
       });
     }
   }

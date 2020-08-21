@@ -12,6 +12,8 @@ export type FuelRate = {
   company_name: string | null;
   company_structure_id: number | null;
   company_structure_name: string | null;
+  engine_kind_id: number;
+  engine_kind_name: string;
   full_model_name: string | null;
   gov_number: string | null;
   id: number | null;

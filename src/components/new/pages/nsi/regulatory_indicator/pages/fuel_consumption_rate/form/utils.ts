@@ -14,6 +14,8 @@ export const makeDefaultFuelRate = (): FuelRate => ({
   company_name: null,
   company_structure_id: null,
   company_structure_name: null,
+  engine_kind_id: null,
+  engine_kind_name: null,
   full_model_name: null,
   gov_number: null,
   id: null,

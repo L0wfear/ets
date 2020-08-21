@@ -106,6 +106,12 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'engine_kind_id',
+          labelKey: 'engine_kind_name',
+          title: 'Тип двигателя',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'operation_equipment',
           title: 'Для спецоборудования',
           type: 'multiselect',
@@ -211,6 +217,11 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           {
             key: 'full_model_name',
             title: 'Марка шасси ТС',
+            width: 200,
+          },
+          {
+            key: 'engine_kind_name',
+            title: 'Тип двигателя',
             width: 200,
           },
           {

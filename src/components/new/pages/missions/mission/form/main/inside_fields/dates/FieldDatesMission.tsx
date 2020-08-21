@@ -118,7 +118,7 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
     if (diffDates(currentTime, date_start) > 0 && diffDates(getTomorrow9amMoscowServerTime(currentTime), date_end) > 0) {
       this.props.onChange({
         date_start: currentTime,
-        date_end: MISSION_IS_ORDER_SOURCE ? date_end : getTomorrow9amMoscowServerTime(currentTime),
+        date_end: MISSION_IS_ORDER_SOURCE ? date_end : createValidDateTime(getTomorrow9amMoscowServerTime(currentTime)),
       });
     }
   }

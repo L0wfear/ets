@@ -318,6 +318,11 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         labelKey: 'company_name',
         title: 'Организация',
         type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
       },
       {
         valueKey: 'okrug_id',

@@ -181,7 +181,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
       const changeObject: any = {
-        [field]: value,
+        [field]: (field === 'special_license' || field === 'drivers_license') ? value.trim() : value,
       };
 
       if (field === 'special_license') {

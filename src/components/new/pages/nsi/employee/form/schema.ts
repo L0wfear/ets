@@ -9,6 +9,9 @@ const isValidLicense = (data) => {
 };
 
 const isValidFormat = (data) => {
+  if (data.length <= 2 || data.length >= 5) {
+    return isNaN(data.charAt(data.length - 1)) === true;
+  }
   if (data.length === 4) {
     return isNaN(data.charAt(2)) !== isNaN(data.charAt(3));
   }
@@ -79,7 +82,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
           }
           const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;
@@ -101,7 +104,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
           }
           const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;

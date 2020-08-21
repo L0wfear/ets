@@ -109,6 +109,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
     
     const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
+    const filteredFuelTypeOptions = fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICITY'); // <<< сделать через отдлеьный хук DITETS20A-134, URL: /fuel_type/, /fuel_type/<id>/ | GET
     
     return (
       <EtsBootstrap.ModalContainer
@@ -166,7 +167,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 type="select"
                 label="Тип топлива"
                 error={errors.fuel_type}
-                options={fuelTypeOptions}
+                options={filteredFuelTypeOptions}
                 value={state.fuel_type}
                 onChange={props.handleChange}
                 boundKeys="fuel_type"

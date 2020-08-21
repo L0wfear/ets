@@ -8,6 +8,12 @@ const isValidLicense = (data) => {
   return /[^АВЕКМНОРСТУХ0-9_ ]/g.test(data);
 };
 
+const isValidFormat = (data) => {
+  if (data.length === 4) {
+    return isNaN(data.charAt(2)) !== isNaN(data.charAt(3));
+  }
+};
+
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {
     last_name: {
@@ -63,7 +69,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && isValidLicense(value)) {
+          if (value && (isValidLicense(value) || isValidFormat(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -71,7 +77,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          const maxLengthString = 12;
+          const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
           }
@@ -85,7 +91,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && isValidLicense(value)) {
+          if (value && isValidLicense(value) && isValidFormat(value)) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -93,7 +99,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          const maxLengthString = 12;
+          const maxLengthString = 10;
           if ( value ? value.length > maxLengthString : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
           }

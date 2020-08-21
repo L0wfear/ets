@@ -94,7 +94,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
             type="string"
             label="Причина"
             value={self.state.comment}
-            onChange={({ target: { value: comment } }) => self.setState({ comment })}
+            onChange={(comment) => self.setState({ comment })}
           />
         ),
         defaultState: {

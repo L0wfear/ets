@@ -31,8 +31,8 @@ const getValueFromEvent = (key, value, filedToCheckByKey) => {
         );
       }
     }
-    case 'text':
-    case 'string': return get(value, 'target.value', null) || null;
+    case 'text': return get(value, 'target.value', null) || null;
+    case 'string': return value || null;
     case 'select': return value;
     case 'date': {
       if (value) {

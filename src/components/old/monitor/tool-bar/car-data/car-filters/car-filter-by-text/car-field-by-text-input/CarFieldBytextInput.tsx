@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
       monitorPageChangeFilter('carFilterText', ''),
     )
   ),
-  changeCarFilterText: ({ target: { value } }) => (
+  changeCarFilterText: (value) => (
     dispatch(
       monitorPageChangeFilter('carFilterText', value),
     )

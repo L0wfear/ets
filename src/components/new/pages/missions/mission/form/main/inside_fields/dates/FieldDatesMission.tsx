@@ -98,7 +98,7 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
   }
 
   async updateDateStartByCurrentTime() {
-    const { MISSION_IS_ORDER_SOURCE  } = this.props;
+    const { MISSION_IS_ORDER_SOURCE } = this.props;
     const {
       date,
     } = await this.props.dispatch(

@@ -27,6 +27,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { componentsForMissionSelect } from './MultiValueMissionField';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import memoizeOne from 'memoize-one';
+import { actionGetAndSetInStoreSelectedMissions } from 'redux-main/reducers/modules/some_uniq/waybill/actions';
 
 const MissionFieldStyled = styled.div`
   margin-bottom: 15px;
@@ -66,6 +67,19 @@ class MissionField extends React.Component<Props, any> {
     return (
       <components.MultiValueContainer innerProps={newInnerProps} {...props} />
     );
+  }
+
+  componentDidMount() {
+    const { state } = this.props;
+
+    this.props.dispatch(actionGetAndSetInStoreSelectedMissions({
+      car_id: state.car_id,
+      date_from: state.fact_departure_date || state.plan_departure_date,
+      date_to: state.fact_arrival_date || state.plan_arrival_date,
+      status: state.status,
+      waybill_id: state.id,
+    }, this.props
+    ));
   }
 
   handleMissionsChange = (newFormData) => {

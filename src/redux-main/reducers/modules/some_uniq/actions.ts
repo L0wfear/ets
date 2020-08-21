@@ -13,6 +13,7 @@ import * as sensorTypeActions from 'redux-main/reducers/modules/some_uniq/sensor
 import * as MoscowTimeServer from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as ReasonList from 'redux-main/reducers/modules/some_uniq/reason_list/actions';
 import * as engineKindList from 'redux-main/reducers/modules/some_uniq/engine_kind/actions';
+import * as selectedMissionsList from 'redux-main/reducers/modules/some_uniq/waybill/actions';
 
 const someUniqActions = {
   ...special_model,
@@ -30,6 +31,7 @@ const someUniqActions = {
   ...MoscowTimeServer,
   ...ReasonList,
   ...engineKindList,
+  ...selectedMissionsList,
 };
 
 export default someUniqActions;

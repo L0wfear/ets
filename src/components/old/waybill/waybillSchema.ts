@@ -10,6 +10,7 @@ import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils'
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { get } from 'lodash';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -228,18 +229,26 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (
           value,
-          { structure_id, status },
-          { carList },
+          { structure_id, status, car_id },
+          { carList, selectedMissions },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
           const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
+          const chosenTrailer = carList.find((elem) => elem.asuods_id === car_id);
+          const isTrailerRequired = get(chosenTrailer, 'rowData.is_trailer_required', true)
+            || get(correctTrailer, 'rowData.is_trailer_required', true);
+          const isTrailerRequiredMission = selectedMissions.some(({ is_trailer_required }) => is_trailer_required);
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
 
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
+          }
+
+          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && isTrailerRequiredMission)) {
+            return 'Поле "Прицеп" должно быть заполнено';
           }
 
           return false;

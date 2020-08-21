@@ -39,7 +39,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       formErrors: errors,
     } = props;
 
-    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(true);
     const [defectShow, SetDefectShow] = React.useState(false);
     const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
     const countryOptionData = useCountryOptions(props.page, props.path, 'short_name');
@@ -52,13 +51,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         setInspectionConfigOptions(inspectionConfig);
       }
     }, [inspectionConfig]);
-
-    const handleChangeAdditionalInfoMain = React.useCallback(
-      () => {
-        SetAdditionalInfoMainShow(!additionalInfoMainShow);
-      },
-      [SetAdditionalInfoMainShow, additionalInfoMainShow],
-    );
 
     const handleChangeDefectShow = React.useCallback(
       () => {
@@ -334,139 +326,132 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <AdditionalInfoWrapper>
-              <EtsBootstrap.Button onClick={handleChangeAdditionalInfoMain}>
-                {
-                  additionalInfoMainShow
-                    ? <EtsBootstrap.Glyphicon glyph="minus" />
-                    : <EtsBootstrap.Glyphicon glyph="plus" />
-                }
-                Доп. информация
-              </EtsBootstrap.Button>
-              {
-                additionalInfoMainShow
-                  && <AdditionalInfoBlock>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          type="number"
-                          label="Год выпуска:"
-                          value={state.manufactured_at}
-                          onChange={props.handleChange}
-                          error={errors.manufactured_at}
-                          boundKeys="manufactured_at"
-                          disabled={!props.isPermitted}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="environmental_class_id"
-                          type="select"
-                          label="Экологический стандарт ТС"
-                          value={state.environmental_class}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'environmental_class', [])}
-                          error={errors.environmental_class}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'environmental_class'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="engine_type_id"
-                          type="select"
-                          label="Тип двигателя"
-                          value={state.engine_type}
-                          onChange={props.handleChange}
-                          options={engineTypeOptionData.options}
-                          etsIsLoading={engineTypeOptionData.isLoading}
-                          error={errors.engine_type}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'engine_type'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          type="number"
-                          label="Разрешенная масса (кг)"
-                          value={state.max_weight}
-                          error={errors.max_weight}
-                          onChange={props.handleChange}
-                          boundKeys="max_weight"
-                          disabled={!props.isPermitted}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="origin_country_id"
-                          type="select"
-                          label="Страна изготовитель"
-                          value={state.origin_country}
-                          onChange={props.handleChange}
-                          options={ countryOptionData.options}
-                          error={errors.origin_country}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          etsIsLoading={countryOptionData.isLoading}
-                          boundKeys={'origin_country'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="classifier_id"
-                          type="select"
-                          label="Классификатор"
-                          value={state.data.classifier}
-                          onChange={handleChangeDataOptions}
-                          options={ get(inspectionConfigOptions, 'classifier', []) }
-                          error={errors.data.classifier}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'classifier'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="kind_id"
-                          type="select"
-                          label="Вид техники"
-                          value={state.kind}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'kind', []) }
-                          error={errors.kind}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'kind'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="kind_purchase_id"
-                          type="select"
-                          label="Вид приобретения"
-                          value={state.kind_purchase}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'kind_purchase', []) }
-                          error={errors.kind_purchase}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'kind_purchase'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                  </AdditionalInfoBlock>
-              }
-            </AdditionalInfoWrapper>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <h4>
+                  Дополнительная информация
+                </h4>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="number"
+                  label="Год выпуска:"
+                  value={state.manufactured_at}
+                  onChange={props.handleChange}
+                  error={errors.manufactured_at}
+                  boundKeys="manufactured_at"
+                  disabled={!props.isPermitted}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="environmental_class_id"
+                  type="select"
+                  label="Экологический стандарт ТС"
+                  value={state.environmental_class}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'environmental_class', [])}
+                  error={errors.environmental_class}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'environmental_class'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="engine_type_id"
+                  type="select"
+                  label="Тип двигателя"
+                  value={state.engine_type}
+                  onChange={props.handleChange}
+                  options={engineTypeOptionData.options}
+                  etsIsLoading={engineTypeOptionData.isLoading}
+                  error={errors.engine_type}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'engine_type'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="number"
+                  label="Разрешенная масса (кг)"
+                  value={state.max_weight}
+                  error={errors.max_weight}
+                  onChange={props.handleChange}
+                  boundKeys="max_weight"
+                  disabled={!props.isPermitted}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="origin_country_id"
+                  type="select"
+                  label="Страна изготовитель"
+                  value={state.origin_country}
+                  onChange={props.handleChange}
+                  options={ countryOptionData.options}
+                  error={errors.origin_country}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  etsIsLoading={countryOptionData.isLoading}
+                  boundKeys={'origin_country'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="classifier_id"
+                  type="select"
+                  label="Классификатор"
+                  value={state.data.classifier}
+                  onChange={handleChangeDataOptions}
+                  options={ get(inspectionConfigOptions, 'classifier', []) }
+                  error={errors.data.classifier}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'classifier'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="kind_id"
+                  type="select"
+                  label="Вид техники"
+                  value={state.kind}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'kind', []) }
+                  error={errors.kind}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'kind'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="kind_purchase_id"
+                  type="select"
+                  label="Вид приобретения"
+                  value={state.kind_purchase}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'kind_purchase', []) }
+                  error={errors.kind_purchase}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'kind_purchase'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <HrDelimiter />
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField

@@ -42,6 +42,7 @@ import fuelRatesPermissions from '../_config-data/permissions';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import UseEngineKindsList from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/useEngineKindsList';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   const {
@@ -56,7 +57,6 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   } = props;
 
   const engineKindsOptions = UseEngineKindsList(false, {page, path});
-
   const [carListOptions, setCarListOptions] = React.useState([]);
 
   React.useEffect(() => {
@@ -90,7 +90,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
                   car_id: rowData.asuods_id,
                 },
                 value: rowData.asuods_id,
-                label: rowData.gov_number,
+                label: carActualOptionLabelGarage(rowData),
               }),
             ),
           )

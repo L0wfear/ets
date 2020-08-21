@@ -9,7 +9,7 @@ type PropsFieldIsMain = {
 };
 
 class FieldIsMain extends React.PureComponent<PropsFieldIsMain, {}> {
-  handleChange: React.KeyboardEventHandler<HTMLInputElement> = ({ currentTarget: { value } }) => {
+  handleChange: React.KeyboardEventHandler<HTMLInputElement> = (value) => {
     this.props.onChange({
       name: value,
     });

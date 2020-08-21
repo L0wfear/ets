@@ -36,10 +36,10 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
     );
 
     const handleChangeNewAgent = React.useCallback(
-      (key, event) => {
+      (key, value) => {
         setNewAgent({
           ...newAgent,
-          [key]: event.target.value,
+          [key]: value,
         });
       },
       [setNewAgent, newAgent],

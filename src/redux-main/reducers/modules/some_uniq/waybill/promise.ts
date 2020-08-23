@@ -1,5 +1,4 @@
 import { WaybillAvailableMissionsService } from 'api/Services';
-import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import { SelectedMissionsList } from 'redux-main/reducers/modules/some_uniq/waybill/@types';
@@ -8,15 +7,8 @@ import { get } from 'lodash';
 const getMissionFilterStatus = (waybillStatus) => {
   return waybillStatus ? undefined : 'not_assigned';
 };
-type PromiseGetMissionsByCarAndDatesPayload = {
-  car_id: Waybill['car_id'];
-  date_from: Waybill['fact_departure_date'] | Waybill['plan_departure_date'];
-  date_to: Waybill['fact_arrival_date'] | Waybill['plan_arrival_date'];
-  status: Waybill['status'];
-  waybill_id: Waybill['id'];
-};
 
-export const promiseGetMissionsByCarAndDates = async (payloadOwn: PromiseGetMissionsByCarAndDatesPayload) => {
+export const promiseGetSelectedMissions = async (payloadOwn) => {
   const payload: Dictionary<any> = {};
 
   const status = getMissionFilterStatus(payloadOwn.status);
@@ -43,7 +35,7 @@ export const promiseGetMissionsByCarAndDates = async (payloadOwn: PromiseGetMiss
 
   const response = await WaybillAvailableMissionsService.get(payload);
 
-  const data: SelectedMissionsList = get(response, 'result.rows', []);
+  const data: Array<SelectedMissionsList> = get(response, 'result.rows', []);
 
   return data;
 };

@@ -82,6 +82,22 @@ class MissionField extends React.Component<Props, any> {
     ));
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { state } = this.props;
+    const { selectedMission } = this.state;
+
+    if (selectedMission !== prevState.selectedMission) {
+      this.props.dispatch(actionGetAndSetInStoreSelectedMissions({
+        car_id: state.car_id,
+        date_from: state.fact_departure_date || state.plan_departure_date,
+        date_to: state.fact_arrival_date || state.plan_arrival_date,
+        status: state.status,
+        waybill_id: state.id,
+      }, this.props
+      ));
+    }
+  }
+
   handleMissionsChange = (newFormData) => {
     // Если удаляем миссию и статус ПЛ Активен
     if ( newFormData.length < this.props.state.mission_id_list.length && this.props.state.status === 'active' ) {

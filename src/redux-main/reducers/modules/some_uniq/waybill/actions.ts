@@ -3,13 +3,13 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import { promiseGetMissionsByCarAndDates } from 'redux-main/reducers/modules/some_uniq/waybill/promise';
+import { promiseGetSelectedMissions } from 'redux-main/reducers/modules/some_uniq/waybill/promise';
 
 /* --------------- запрос --------------- */
-export const actionGetSelectedMissions = (payload: Parameters<typeof promiseGetMissionsByCarAndDates>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMissionsByCarAndDates>> => (dispatch) => (
+export const actionGetSelectedMissions = (payload: Parameters<typeof promiseGetSelectedMissions>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetSelectedMissions>> => (dispatch) => (
   etsLoadingCounter(
     dispatch,
-    promiseGetMissionsByCarAndDates(payload),
+    promiseGetSelectedMissions(payload),
     meta,
   )
 );
@@ -30,7 +30,7 @@ export const actionResetSelectedMissions = (): EtsAction<EtsActionReturnType<typ
   )
 );
 
-export const actionGetAndSetInStoreSelectedMissions = (payload: Parameters<typeof promiseGetMissionsByCarAndDates>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetSelectedMissions>> => async (dispatch) => {
+export const actionGetAndSetInStoreSelectedMissions = (payload: Parameters<typeof promiseGetSelectedMissions>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetSelectedMissions>> => async (dispatch) => {
   const result = await dispatch(
     actionGetSelectedMissions(payload, meta),
   );

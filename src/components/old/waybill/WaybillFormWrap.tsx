@@ -15,11 +15,13 @@ import {
   getSomeUniqState,
   getSessionState,
   getEmployeeState,
+  getCompanyState,
 } from 'redux-main/reducers/selectors';
 import {
   actionLoadRefillTypeAndSetInStore,
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
+import { actionGetAndSetInStoreCompany } from 'redux-main/reducers/modules/company/actions';
 import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -45,6 +47,7 @@ import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours } from 'utils/functions';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -155,6 +158,7 @@ type StateProps = {
   refillTypeList: Array<RefillType>;
   carList: Array<Car>;
   carIndex: Record<Car['asuods_id'], Car>;
+  companyList: IStateCompany['companyList'];
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
@@ -242,6 +246,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
     this.props.dispatch(fuelCardsActions.actionLoadOriginFuelCardsGetAndSetInStore(this.props));
     await this.props.dispatch(actionGetAndSetInStoreMoscowTimeServer({}, this.props));
+    await this.props.dispatch(actionGetAndSetInStoreCompany({}, this.props));
 
     const currentDate = new Date();
 
@@ -250,7 +255,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       (60 - currentDate.getSeconds()) * 1000,
     );
 
-    const company = this.props.userCompanies.find((company) => company.asuods_id === this.props.userCompanyId);
+    const company = this.props.companyList.find((company) => company.company_id === this.props.userCompanyId);
     this.setState({
       usePouring: company.use_pouring,
     });
@@ -1132,5 +1137,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
+    companyList: getCompanyState(state).companyList,
   }),
 )(WaybillFormWrap);

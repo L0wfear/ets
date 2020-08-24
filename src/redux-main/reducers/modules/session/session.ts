@@ -80,6 +80,7 @@ const initialState: InitialStateSession = {
     last_name: null,
     login: null,
     middle_name: null,
+    okrugs: [],
     okrug_id: null,
     okrug_name: '',
     role: null,

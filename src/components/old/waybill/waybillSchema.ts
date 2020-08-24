@@ -572,7 +572,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             gas_refill,
             refillTypeList,
             gasFuelCardsList,
-            formState.fuel_type,
+            formState.gas_fuel_type,
             notFiltredFuelCardsIndex,
             formState,
             companyList

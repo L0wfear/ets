@@ -132,7 +132,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         return refillTypeList.map((rowData) => ({
           value: rowData.id,
           label: rowData.name,
-          isNotVisible: !rowData.is_selectable || (rowData.id === 2 && !props.use_pouring),
+          isNotVisible: !rowData.is_selectable,
           isDisabled: rowData.id === 2 && !props.use_pouring,
           rowData,
         }));

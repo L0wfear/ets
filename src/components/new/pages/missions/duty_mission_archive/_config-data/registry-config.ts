@@ -57,6 +57,11 @@ export const config: TypeConfigData<DutyMission> = {
           }
         ],
         type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'okrugs',
+          valueKey: 'id',
+          labelKey: 'name',
+        }
       },
       {
         valueKey: 'company_name',
@@ -67,6 +72,11 @@ export const config: TypeConfigData<DutyMission> = {
           },
         ],
         type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
       },
       {
         valueKey: 'status',

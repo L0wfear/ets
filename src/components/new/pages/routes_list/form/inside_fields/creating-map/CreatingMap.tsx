@@ -350,7 +350,7 @@ class CreatingMap extends React.PureComponent<
       });
     }
   };
-  handleChangePointName = (index, { currentTarget: { value } }) => {
+  handleChangePointName = (index, value) => {
     if (this.props.isPermitted) {
       this.props.onChange({
         object_list: setNameForPointByIndex(

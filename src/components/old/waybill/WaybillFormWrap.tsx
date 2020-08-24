@@ -163,6 +163,7 @@ type StateProps = {
   equipmentFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
+  selectedMissions: IStateSomeUniq['selectedMissionsList'];
 };
 type DispatchProps = {
   dispatch: EtsDispatch;
@@ -1138,5 +1139,6 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
     companyList: getCompanyState(state).companyList,
+    selectedMissions: getSomeUniqState(state).selectedMissionsList,
   }),
 )(WaybillFormWrap);

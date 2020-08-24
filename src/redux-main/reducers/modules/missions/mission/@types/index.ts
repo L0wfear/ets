@@ -28,6 +28,7 @@ export type Mission = {
   description: string;
   id: number | null;
   is_archive: boolean;
+  is_trailer_required: boolean;
   is_new: boolean;
   is_cleaning_norm?: boolean;
   is_valid_to_order_operation: boolean | null;

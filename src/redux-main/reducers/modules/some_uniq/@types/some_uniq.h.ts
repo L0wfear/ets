@@ -24,6 +24,7 @@ import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some
 import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/properties/@types';
 import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@types';
 import { EngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/@types';
+import { SelectedMissionsList } from 'redux-main/reducers/modules/some_uniq/waybill/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -89,4 +90,6 @@ export type IStateSomeUniq = {
   };
   reasonList: Array<ReasonList>;
   engineKindList: Array<EngineKind>;
+
+  selectedMissionsList: Array<SelectedMissionsList>;
 };

@@ -39,6 +39,7 @@ export const getDefaultCar = (): CarWrap => ({
   is_gtn_passport: false,
   is_gims_passport: false,
   is_trailer: null,
+  is_trailer_required: null,
   level_sensors_num: null,
   load_capacity: null,
   max_speed: null,

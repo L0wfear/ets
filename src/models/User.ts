@@ -22,6 +22,7 @@ export default class User extends Model {
   fio: string;
   permissions: Array<string>;
   permissionsSet: Set<string>;
+  okrugs: string;
   okrug_id: number;
   okrug_name: string;
   stableRedirect: string;
@@ -50,6 +51,7 @@ export default class User extends Model {
       fio: 'string',
       okrug_id: 'integer',
       okrug_name: 'string',
+      okrugs: 'array',
       stableRedirect: 'string',
       isGlavControl: 'boolean',
       isOkrug: 'boolean',
@@ -77,6 +79,7 @@ export default class User extends Model {
     this.fio = user.fio;
     this.permissions = user.permissions || [];
     this.permissionsSet = user.permissionsSet || new Set();
+    this.okrugs = user.okrugs || [];
     this.okrug_id = user.okrug_id;
     this.okrug_name = user.okrug_name;
     this.stableRedirect = user.stableRedirect || '/login';

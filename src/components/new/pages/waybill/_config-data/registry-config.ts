@@ -161,16 +161,6 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         type: 'advanced-date',
       },
       {
-        valueKey: 'fuel_card_ids',
-        title: 'Топливная карта',
-        type: 'multiselect',
-        getRegistryData: {
-          entity: 'fuel_cards',
-          valueKey: 'id',
-          labelKey: 'number',
-        },
-      },
-      {
         valueKey: 'created_by_employee_id',
         title: 'Создан',
         type: 'multiselect',
@@ -314,16 +304,36 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'company_id',
-        labelKey: 'company_name',
-        title: 'Организация',
+        valueKey: 'fuel_card_ids',
+        title: 'Топливная карта',
         type: 'multiselect',
+        getRegistryData: {
+          entity: 'fuel_cards',
+          valueKey: 'id',
+          labelKey: 'number',
+        },
       },
       {
         valueKey: 'okrug_id',
         labelKey: 'okrug_name',
         title: 'Округ',
         type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'okrugs',
+          valueKey: 'id',
+          labelKey: 'name',
+        }
+      },
+      {
+        valueKey: 'company_id',
+        labelKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
       },
     ],
   },

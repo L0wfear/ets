@@ -28,8 +28,8 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
     );
 
     const handleChangeComment = React.useCallback(
-      (event) => {
-        setComment(event.target.value);
+      (value) => {
+        setComment(value);
       },
       [],
     );

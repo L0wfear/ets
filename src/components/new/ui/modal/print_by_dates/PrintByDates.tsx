@@ -5,6 +5,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getToday9am, diffDates, getTomorrow9am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import DatePickerRange from '../../date_picker/DatePickerRange';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 type Props = {
   initial_date_from?: string;
@@ -25,17 +27,11 @@ const PrintByDates: React.FC<Props> = React.memo(
       error_date_from: '',
       error_date_to: '',
     });
+    const companies = etsUseSelector((state) => getSessionState(state).userData.companies);
 
     const handleSubmit = React.useCallback(
       () => {
         const { date_from, date_to } = datesData;
-
-        const diffMonths = diffDates(date_to, date_from, 'months', true);
-
-        if (diffMonths >= 12) {
-          global.NOTIFICATION_SYSTEM.notify('Период выгрузки должен быть ограничен 12 месяцами', 'warning');
-          return;
-        }
 
         const exportPayload = {
           date_from: createValidDateTime(date_from),
@@ -55,6 +51,7 @@ const PrintByDates: React.FC<Props> = React.memo(
               ...oldState,
               [field]: value,
             };
+            const diffMonths = diffDates(newState.date_to, newState.date_from, 'months', true);
 
             newState.error_date_to = (
               (
@@ -67,12 +64,29 @@ const PrintByDates: React.FC<Props> = React.memo(
                   ? 'Дата должна быть заполнена'
                   : ''
               )
+              || (
+                ((companies.length > 1) && diffMonths >= 3
+                  || diffMonths >= 12)
+                  ? ' '
+                  : ''
+              )
             );
 
             newState.error_date_from = (
-              !newState.date_from
-                ? 'Дата должна быть заполнена'
+              (
+                !newState.date_from
+                  ? 'Дата должна быть заполнена'
+                  : ''
+              )
+              || (
+                ((companies.length > 1) && diffMonths >= 3)
+                  ? 'Период формирования выгрузки не должен превышать 3 месяца'
+                  : ''
+              )
+              || (diffMonths >= 12
+                ? 'Период формирования выгрузки не должен превышать 1 год'
                 : ''
+              )
             );
 
             return newState;

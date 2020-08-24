@@ -41,6 +41,8 @@ import { fuelRateSchema } from './schema';
 import fuelRatesPermissions from '../_config-data/permissions';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import UseEngineKindsList from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/useEngineKindsList';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   const {
@@ -54,6 +56,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
     path,
   } = props;
 
+  const engineKindsOptions = UseEngineKindsList(false, {page, path});
   const [carListOptions, setCarListOptions] = React.useState([]);
 
   React.useEffect(() => {
@@ -87,7 +90,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
                   car_id: rowData.asuods_id,
                 },
                 value: rowData.asuods_id,
-                label: rowData.gov_number,
+                label: carActualOptionLabelGarage(rowData),
               }),
             ),
           )
@@ -276,6 +279,18 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               onChange={props.handleChange}
               boundKeys="car_model_id"
               disabled={!isPermitted || !state.car_special_model_id || Boolean(state.car_id)}
+            />
+            <ExtField
+              id="engine_kind_id"
+              modalKey={page}
+              label="Тип двигателя"
+              error={errors.engine_kind_id}
+              type="select"
+              options={engineKindsOptions}
+              value={state.engine_kind_id}
+              onChange={props.handleChange}
+              boundKeys="engine_kind_id"
+              disabled={!isPermitted}
             />
             <ExtField
               id="company_structure_id"

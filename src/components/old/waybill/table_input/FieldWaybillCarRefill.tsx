@@ -318,7 +318,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         // http://localhost:3000/#/nsi/autobase/car_actual/19707/main_info?CarActual_filters=%257B%2522gov_number__in%2522%253A%255B%25220302%25D0%259D%25D0%259277%2522%255D%257D
 
         // DITETS20A-25 Добавление возможности отключения способа заправки Налив для некоторых организаций
-        if (!props.use_pouring) { /// <<< gas?
+        if (!props.use_pouring) { /// gas учтен при передаче use_pouring параметра в компонент выше
           const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === 1);
           const element = newArr?.[0];
           if (newArr.length > 0) {

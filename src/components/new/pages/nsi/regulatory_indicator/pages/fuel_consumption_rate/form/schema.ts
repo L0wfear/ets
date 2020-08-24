@@ -63,5 +63,10 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
       type: 'valueOfArray',
       required: true,
     },
+    engine_kind_id: {
+      title: 'Тип двигателя',
+      type: 'valueOfArray',
+      required: true,
+    },
   },
 };

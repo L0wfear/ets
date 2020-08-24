@@ -146,6 +146,7 @@ export type Car = {
   is_gtn_passport: boolean;
   is_gims_passport: boolean;
   is_trailer: boolean;
+  is_trailer_required: boolean;
   level_sensors_num: number;
   load_capacity: number;
   max_speed: number;

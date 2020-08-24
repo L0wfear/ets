@@ -10,6 +10,8 @@ import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils'
 import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
+import { get } from 'lodash';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -74,13 +76,13 @@ const checkCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
-    usePouring,
+    companyList: IStateCompany['companyList'],
   ) => {
     return car_refill.map((rowData) => {
       return {
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
-          : !usePouring && rowData.type_id === 2
+          : companyList.find((company) => company.use_pouring === false) && rowData.type_id === 2
           && (formState.status !== 'closed' && formState.status !== 'deleted')
             ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
             : '',
@@ -115,13 +117,13 @@ const checkEquipmentCarRefill = memoizeOne(
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
-    usePouring,
+    companyList: IStateCompany['companyList'],
   ) => {
     return car_refill.map((rowData) => {
       return {
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
-          : !usePouring && rowData.type_id === 2
+          : companyList.find((company) => company.use_pouring === false) && rowData.type_id === 2
           && (formState.status !== 'closed' && formState.status !== 'deleted')
             ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
             : '',
@@ -228,18 +230,26 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (
           value,
-          { structure_id, status },
-          { carList },
+          { structure_id, status, car_id },
+          { carList, selectedMissions },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
           const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
+          const chosenTrailer = carList.find((elem) => elem.asuods_id === car_id);
+          const isTrailerRequired = get(chosenTrailer, 'rowData.is_trailer_required', true)
+            || get(correctTrailer, 'rowData.is_trailer_required', true);
+          const isTrailerRequiredMission = selectedMissions.some(({ is_trailer_required }) => is_trailer_required);
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
 
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
+          }
+
+          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && isTrailerRequiredMission)) {
+            return 'Поле "Прицеп" должно быть заполнено';
           }
 
           return false;
@@ -535,8 +545,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex },
-          usePouring,
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList },
         ) => {
           return checkCarRefill(
             car_refill,
@@ -545,7 +554,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState.fuel_type,
             notFiltredFuelCardsIndex,
             formState,
-            usePouring,
+            companyList
           );
         },
       ],
@@ -557,17 +566,16 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           gas_refill,
           formState,
-          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex },
-          usePouring,
+          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex, companyList},
         ) => {
           return checkCarRefill(
             gas_refill,
             refillTypeList,
             gasFuelCardsList,
-            formState.gas_fuel_type,
+            formState.fuel_type,
             notFiltredFuelCardsIndex,
             formState,
-            usePouring,
+            companyList
           );
         },
       ],
@@ -579,8 +587,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           equipment_refill,
           formState,
-          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex },
-          usePouring,
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex, companyList },
         ) => {
           return checkEquipmentCarRefill(
             equipment_refill,
@@ -589,7 +596,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             formState.equipment_fuel_type,
             notFiltredFuelCardsIndex,
             formState,
-            usePouring
+            companyList
           );
         },
       ],

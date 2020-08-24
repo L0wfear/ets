@@ -264,6 +264,24 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_fuel_start: {
+      title: 'Топливо.Выезд',
+      type: 'number',
+      float: 3,
+      dependencies: [
+        (value, { status }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Топливо.Выезд', 3);
+          }
+        },
+      ],
+    },
     equipment_fuel_type: {
       title: 'Тип топлива',
       type: 'valueOfArray',
@@ -316,7 +334,27 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_fuel_type: {
+      title: 'Топливо.Тип',
+      type: 'string',
+      dependencies: [
+        (value, { status }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && !value
+          ) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+    },
+    gas_fuel_given: {
       title: 'Выдано, л',
       type: 'number',
       float: 3,
@@ -512,6 +550,28 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_refill: {
+      title: 'gas_refill',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (
+          gas_refill,
+          formState,
+          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex },
+          usePouring,
+        ) => {
+          return checkCarRefill(
+            gas_refill,
+            refillTypeList,
+            gasFuelCardsList,
+            formState.gas_fuel_type,
+            notFiltredFuelCardsIndex,
+            formState,
+            usePouring,
+          );
+        },
+      ],
+    },
     equipment_refill: {
       title: 'equipment_refill',
       type: 'multiValueOfArray',
@@ -663,7 +723,45 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_fuel_end: {
+      title: 'Возврат по таксировке, л',
+      type: 'number',
+      dependencies: [
+        (value, { status, }) => {
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          if (
+            fieldNotHidden
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Возврат по таксировке, л" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fact_fuel_end: {
+      title: 'Топливо.Возврат фактический',
+      type: 'number',
+      float: 3,
+      min: 0,
+      dependencies: [
+        (value, { status, equipment_fuel, is_one_fuel_tank }) => {
+          if (
+            equipment_fuel
+            && !is_one_fuel_tank
+            && status === 'active'
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Возврат фактический, л', 3);
+          }
+        },
+      ],
+    },
+    gas_fact_fuel_end: {
       title: 'Топливо.Возврат фактический',
       type: 'number',
       float: 3,
@@ -807,6 +905,21 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         }
       ],
     },
+    gas_tax_data: {
+      title: 'Расчет газа по норме',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (value, {odometr_diff, motohours_diff, gov_number}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          if (
+            (!isArray(value) || (isArray(value) && !value.length))
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
+          ) {
+            return 'В поле "Расчет газа по норме" необходимо добавить операцию';
+          }
+        }
+      ],
+    },
     equipment_tax_data_rows: {
       title: 'Расчет топлива по норме для оборудования(таблица)',
       type: 'multiValueOfArray',
@@ -825,9 +938,20 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме(таблица)',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, { tax_data, equipment_fuel, hasEquipmentFuelRates }) => {
+        (_, { tax_data }) => {
           if ((isArray(tax_data) && tax_data.length)) {
             return checkTaxData(tax_data);
+          }
+        },
+      ],
+    },
+    gas_tax_data_rows: {
+      title: 'Расчет газа по норме(таблица)',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (_, { gas_tax_data }) => {
+          if ((isArray(gas_tax_data) && gas_tax_data.length)) {
+            return checkTaxData(gas_tax_data);
           }
         },
       ],

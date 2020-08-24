@@ -33,6 +33,8 @@ export const makeDefaultFuelRate = (): FuelRate => ({
   order_number: null,
   summer_rate: null,
   winter_rate: null,
+  engine_kind_id: null,
+  engine_kind_name: null,
 });
 
 export const getDefaultFuelRateElement = (element?: Partial<FuelRate>) => {

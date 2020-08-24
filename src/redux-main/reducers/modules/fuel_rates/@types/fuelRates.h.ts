@@ -31,6 +31,8 @@ export type FuelRate = {
   season?: string;
   summer_rate: number | null;
   winter_rate: number | null;
+  engine_kind_id: number;
+  engine_kind_name: string;
 };
 
 export type IStateFuelRates = {

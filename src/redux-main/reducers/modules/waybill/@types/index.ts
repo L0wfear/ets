@@ -140,18 +140,18 @@ export type WaybillRegistryRow = {
 };
 
 export type WaybillGas = {
-  gas_fuel_type: string; // Тип топлива
-  gas_fuel_start: number; // Выезд, л
-  gas_fuel_given: number; // Выдано, л
-  gas_fuel_end: number; // Возврат по таксировке, л
-  gas_fact_fuel_end: number; // Возврат фактический, л
-  gas_tax_data: Array<WaybillTaxDataGas>; // Расчет по норме
-  gas_refill: Array<WaybillGasRefill>; // Заправки
+  gas_fuel_type: string;                      // + + + Тип топлива
+  gas_fuel_start: number;                     // + + + Выезд, л
+  gas_fuel_given: number;                     // + + + Выдано, л
+  gas_fuel_end: number;                       // + + + Возврат по таксировке, л
+  gas_fact_fuel_end: number;                  // + + + Возврат фактический, л
+  gas_tax_data: Array<WaybillTaxDataGas>;     // + + + Расчет по норме
+  gas_refill: Array<WaybillGasRefill>;        // + + + Заправки
 
   // Расчетные поля (только GET), не храним в бд
-  gas_tax_consumption: number; // Расход по таксировке, л
-  gas_fact_consumption: number; // Расход фактический, л
-  gas_diff_consumption: number; // Расхождение в данных расхода, л
+  gas_tax_consumption: number;                // + + + Расход по таксировке, л
+  gas_fact_consumption: number;               // + + + Расход фактический, л
+  gas_diff_consumption: number;               // + + + Расхождение в данных расхода, л
 };
 
 export type Waybill = (
@@ -160,6 +160,7 @@ export type Waybill = (
   & {
     equipment_tax_data_rows?: Array<any>; // для валидации
     tax_data_rows?: Array<any>; // для валидации
+    gas_tax_data_rows?: Array<any>; // для валидации
     distance?: number; // для валидации
     hasEquipmentFuelRates?: boolean;
 

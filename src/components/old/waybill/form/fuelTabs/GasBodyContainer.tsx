@@ -42,7 +42,7 @@ type Props = {
 	setTotalValueError: WaybillProps['setTotalValueError'];
 	// transfer
 	gasFuelCardsList: WaybillProps['gasFuelCardsList'];
-	tax_data: any;
+	gas_tax_data: any;
 	FUEL_TYPES: any;
 	IS_KAMAZ: boolean;
 	disableFieldWaybillCarRefill: boolean;
@@ -58,11 +58,12 @@ type Props = {
 /*
 // <<< gas
 0) Типы топлива, список +
-1) fuelCards +
-2) Taxes, в поиске equipment_tax_data, сначало переделать <Taxes!!!
+1) fuelCards +- не удаляется ТК
+2) Taxes +-, на Ире аналитика насчет ошибки
 3) refill +
-4) waybillForm
-5) waybillFormWrap
+4) waybillForm +
+5) waybillFormWrap +
+6) validate +
 */
 
 const GasBodyContainer: React.FC<Props> = React.memo(
@@ -90,15 +91,30 @@ const GasBodyContainer: React.FC<Props> = React.memo(
       waybillState,
       use_pouring,
       isGasKind,
+      gas_tax_data,
     } = props;
 
-    React.useEffect(() => {
+    const updateGasFields = React.useCallback(() => {
       if(isGasKind) {
         props.handleEquipmentFuel(false, false); // ??? Проверить на работоспособность
       } else if (!isGasKind) {
-        props.handleMultipleChange(gasDefaultElement); // ??? Проверить на работоспособность
+        props.handleMultipleChange(gasDefaultElement);
       }
-    }, [ isGasKind, props.handleEquipmentFuel, props.handleMultipleChange, gasDefaultElement]);
+    }, [
+      props.handleEquipmentFuel,
+      props.handleMultipleChange,
+      isGasKind,
+    ]);
+
+    React.useEffect(() => {
+      updateGasFields();
+    }, [
+      isGasKind,
+      props.handleEquipmentFuel,
+      props.handleMultipleChange,
+      props.origFormState,
+    ]
+    );
 
     React.useEffect(() => {
       if(isGasKind && isNullOrUndefined(waybillFormState.gas_fuel_type)) {
@@ -107,13 +123,6 @@ const GasBodyContainer: React.FC<Props> = React.memo(
         });
       }
     }, [isGasKind, waybillFormState.gas_fuel_type]);
-
-    // console.log('waybillFormState === ', {
-    //   waybillFormState,
-    //   isGasKind,
-    //   gas_fuel_type:  waybillFormState.gas_fuel_type,
-    //   FUEL_TYPES,
-    // });
 
     return props.showComponent && (
       <TabBodyContainerStyled>
@@ -292,7 +301,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={12} zIndex={1}>
           <EtsBootstrap.Col md={12}>
-            <Taxes // <<< gas  modify for gas_tax_data or new like a equipment?
+            <Taxes
               modalKey={modalKey}
               hidden={
                 !(IS_CLOSED || IS_ACTIVE)
@@ -305,20 +314,21 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               }
               readOnly={IS_DELETE || (!IS_ACTIVE && !waybillState.canEditIfClose) || !isPermittedByKey.update}
               IS_CLOSED={IS_CLOSED}
-              title="Расчет топлива по норме"
-              taxes={waybillFormState.gas_tax_data} // <<< gas_tax_data
-              operations={waybillState.operations}
-              fuelRates={waybillState.fuelRates} // <<< для газа отдельно
-              onChange={props.handleChangeTaxes} // <<< 
+              title="Расчет газа по норме"
+              taxes={gas_tax_data}
+              operations={waybillState.gasOperations}
+              fuelRates={waybillState.gasFuelRates}
+              onChange={props.handleChangeTaxes}
               correctionRate={waybillState.fuel_correction_rate}
               baseFactValue={
                 CAR_HAS_ODOMETER
-                  ? waybillFormState.odometr_diff
-                  : waybillFormState.motohours_diff
+                  ? waybillFormState.odometr_diff // <<< для газа и Топлива??? красный цвет в итого
+                  : waybillFormState.motohours_diff // <<< для газа и Топлива???
               }
-              setTotalValueError={props.setTotalValueError} // !!! <<< поправить, сделать валидацию через схему!!!
+              setTotalValueError={props.setTotalValueError}
               type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
               errorsAll={errors}
+              boundKey={'gas_tax_data'}
             />
             <ErrorsBlock error={errors.gas_tax_data} />
           </EtsBootstrap.Col>

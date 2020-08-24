@@ -112,6 +112,7 @@ import FuelBodyContainer from 'components/old/waybill/form/fuelTabs/FuelBodyCont
 import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContainer';
 import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
+import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -291,8 +292,10 @@ export type WaybillProps = (
 
 export type WaybillState = {
   operations: Array<any>;
+  gasOperations: Array<any>;
   equipmentOperations: Array<any>;
   fuelRates: Array<any>;
+  gasFuelRates: Array<any>;
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
@@ -325,8 +328,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
     this.state = {
       operations: [],
+      gasOperations: [],
       equipmentOperations: [],
       fuelRates: [],
+      gasFuelRates: [],
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
@@ -594,7 +599,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       await this.props
         .dispatch(actionGetWaybillById(formState.id, this.props))
         .then((waybill) => {
-          this.handleMultipleChange(waybill);
+          this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
           this.setState({
             canEditIfClose: waybill.closed_editable
               ? this.props.userPermissionsSet.has('waybill.update_closed')
@@ -656,38 +661,77 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             fuel_correction_rate,
           ]) => {
             const fuelOperationsListById = keyBy(fuelOperationsList, 'id');
+            const operations = fuelRates.reduce(
+              (
+                newArr,
+                {
+                  id,
+                  operation_name,
+                  operation_id,
+                  is_excluding_mileage,
+                  measure_unit_name,
+                  rate_on_date,
+                  comment,
+                  engine_kind_id,
+                },
+              ) => {
+                if (fuelOperationsListById[operation_id] && engine_kind_id === FUEL_ENGINE_TYPE_ID) {
+                  newArr.push({
+                    ...fuelOperationsListById[operation_id],
+                    name: operation_name,
+                    uniqKey: id,
+                    rate_on_date,
+                    comment,
+                    measure_unit_name,
+                    is_excluding_mileage,
+                  });
+                }
+
+                return newArr;
+              },
+              [],
+            );
+
+            const gasOperations = fuelRates.reduce(
+              (
+                newArr,
+                {
+                  id,
+                  operation_name,
+                  operation_id,
+                  is_excluding_mileage,
+                  measure_unit_name,
+                  rate_on_date,
+                  comment,
+                  engine_kind_id,
+                },
+              ) => {
+                if (fuelOperationsListById[operation_id] && engine_kind_id === GAS_ENGINE_TYPE_ID) {
+                  newArr.push({
+                    ...fuelOperationsListById[operation_id],
+                    name: operation_name,
+                    uniqKey: id,
+                    rate_on_date,
+                    comment,
+                    measure_unit_name,
+                    is_excluding_mileage,
+                  });
+                }
+
+                return newArr;
+              },
+              [],
+            );
+
+            const gasFuelRates = fuelRates.filter(
+              ({ engine_kind_id }) => engine_kind_id === GAS_ENGINE_TYPE_ID
+            );
 
             this.setState({
               fuelRates,
-              operations: fuelRates.reduce(
-                (
-                  newArr,
-                  {
-                    id,
-                    operation_name,
-                    operation_id,
-                    is_excluding_mileage,
-                    measure_unit_name,
-                    rate_on_date,
-                    comment,
-                  },
-                ) => {
-                  if (fuelOperationsListById[operation_id]) {
-                    newArr.push({
-                      ...fuelOperationsListById[operation_id],
-                      name: operation_name,
-                      uniqKey: id,
-                      rate_on_date,
-                      comment,
-                      measure_unit_name,
-                      is_excluding_mileage,
-                    });
-                  }
-
-                  return newArr;
-                },
-                [],
-              ),
+              gasFuelRates,
+              operations,
+              gasOperations,
               fuel_correction_rate,
               equipmentFuelRates,
               equipmentOperations: equipmentFuelRates.reduce(
@@ -732,7 +776,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
           this.setState({
             fuelRates: [],
+            gasFuelRates: [],
             operations: [],
+            gasOperations: [],
             fuel_correction_rate: 1,
             equipmentFuelRates: [],
             equipmentOperations: [],
@@ -1094,6 +1140,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           structure_id,
           car_type_id: get(selectedCar, 'rowData.type_id', null),
           car_refill: [],
+          gas_refill: [],
           equipment_refill: [],
         };
 
@@ -1139,6 +1186,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
         fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       }
+      if (isNotNull(lastCarUsedWaybill.gas_fact_fuel_end)) {
+        fieldsToChange.gas_fuel_start = lastCarUsedWaybill.gas_fact_fuel_end;
+        fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start;
+      }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
       }
@@ -1180,6 +1231,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
+      fieldsToChange.gas_fuel_start = 0;
+      fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = null;
     }
@@ -1265,7 +1318,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
     if (changeObj.structure_id) {
       changeObj.car_refill = [];
+      changeObj.gas_refill = [];
       changeObj.fuel_given = 0;
+      changeObj.gas_fuel_given = 0;
       changeObj.equipment_refill = [];
       changeObj.equipment_fuel_given = null;
     }
@@ -1293,7 +1348,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         }
       }
     }
-
     this.props.handleMultipleChange(changeObj);
   };
 
@@ -2006,7 +2060,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const gas_tax_data = get(state, 'gas_tax_data', []) || [];
 
     if (this.state.fuelRates.length) {
-      taxesControl = validateTaxesControl([...tax_data]);
+      taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data]);
     } else {
       taxesControl = true;
     }
@@ -2349,6 +2403,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 handleChange={this.handleChange}
                 handleMultipleChange={this.handleMultipleChange}
                 setIsGasKind={this.setIsGasKind}
+                origFormState={this.state.origFormState}
+                waybillFormState={state}
               />
             </EtsBootstrap.Col>
             
@@ -2494,6 +2550,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     value={
                       Number(state.equipment_fuel_start)
                       + Number(state.fuel_start)
+                      + Number(state.gas_fuel_start)
                     }
                     format="toFixed3"
                     disabled
@@ -2840,11 +2897,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           CAR_HAS_ODOMETER={CAR_HAS_ODOMETER}
                           setTotalValueError={this.props.setTotalValueError}
                           gasFuelCardsList={this.props.gasFuelCardsList}
-                          tax_data={gas_tax_data}
+                          gas_tax_data={gas_tax_data}
                           FUEL_TYPES={FUEL_TYPES}
                           IS_KAMAZ={IS_KAMAZ}
                           disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
-                          handleChangeTaxes={this.handleChangeTaxes}
+                          handleChangeTaxes={this.handleChangeGasTaxes}
                           isGasKind={this.state.isGasKind}
                           isFuelKind={this.state.isFuelKind}
                           isElectricityKind={this.state.isElectricityKind}

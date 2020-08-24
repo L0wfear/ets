@@ -42,6 +42,7 @@ export default class Taxes extends React.Component<any, any> {
       baseFactValue: PropTypes.any,
       fuelRates: PropTypes.array,
       onChange: PropTypes.func.isRequired,
+      boundKey: PropTypes.string,
     };
   }
 
@@ -163,11 +164,16 @@ export default class Taxes extends React.Component<any, any> {
           return op;
         });
 
-        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
+        const errors = get(
+          this.state,
+          this.props.boundKey === 'gas_tax_data'
+            ? 'errorsAll.gas_tax_data_rows'
+            : 'errorsAll.tax_data_rows',
+          []);
         const errorsMsg = errors.length
           ? get(errors, `${index}.OPERATION`)
           : '';
-
+        
         return (
           <div>
             <ReactSelect
@@ -204,7 +210,13 @@ export default class Taxes extends React.Component<any, any> {
             || this.props.readOnly,
         };
 
-        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
+        const errors = get(
+          this.state,
+          this.props.boundKey === 'gas_tax_data'
+            ? 'errorsAll.gas_tax_data_rows'
+            : 'errorsAll.tax_data_rows',
+          []);
+
         const errorsMsg = errors.length
           ? get(errors, `${index}.FACT_VALUE`)
           : '';
@@ -286,7 +298,11 @@ export default class Taxes extends React.Component<any, any> {
 
     if (this.state.totalValueError !== error && hasTaxes) {
       this.setState({totalValueError: error});
-      setTotalValueError('taxesTotalValueError', Boolean(error));
+      setTotalValueError(
+        this.props.boundKey === 'gas_tax_data'
+          ? 'gasTaxesTotalValueError'
+          : 'taxesTotalValueError', Boolean(error)
+      );
     }
   }
 
@@ -315,7 +331,11 @@ export default class Taxes extends React.Component<any, any> {
 
     current.RESULT = Taxes.getResult(current);
     this.setState({ tableData });
-    this.props.onChange(tableData, 'taxes_fact_value', index);
+    this.props.onChange(tableData,
+      this.props.boundKey === 'gas_tax_data'
+        ? 'gas_taxes_fact_value'
+        : 'taxes_fact_value', index
+    );
   };
 
   handleOperationChange = (index, rawValue, allOption) => {
@@ -352,7 +372,12 @@ export default class Taxes extends React.Component<any, any> {
       tableData[index].measure_unit_name = measure_unit_name;
 
       this.setState({ tableData });
-      this.props.onChange(tableData, 'taxes_operation', index);
+      this.props.onChange(
+        tableData,
+        this.props.boundKey === 'gas_tax_data'
+          ? 'gas_taxes_operation'
+          : 'taxes_operation',
+        index);
     }
   };
 

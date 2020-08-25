@@ -16,7 +16,6 @@ import FieldWaybillCarRefill from 'components/old/waybill/table_input/FieldWaybi
 import Taxes from 'components/old/waybill/Taxes';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
-import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 
 type Props = {
 	modalKey: string;
@@ -49,21 +48,21 @@ type Props = {
 	disableFieldWaybillCarRefill: boolean;
   use_pouring: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
-  isGasKind: boolean;
   isFuelKind: boolean;
   isElectricityKind: boolean;
   showComponent: boolean;
   handleEquipmentFuel: (equipment_fuel: boolean, withConfirmDialog: boolean) => void;
+  updateEngineKindsFields: () => any;
 };
 
 /*
 // <<< gas
 0) Типы топлива, список +
 1) fuelCards +- не удаляется ТК
-2) Taxes +-, на Ире аналитика насчет ошибки
+2) Taxes +-
   2.1) Раскраска +
   2.2) error +
-  2.3) autocompleteFactValue
+  2.3) autocompleteFactValue !!!
 3) refill +
 4) waybillForm +
 5) waybillFormWrap +
@@ -94,40 +93,9 @@ const GasBodyContainer: React.FC<Props> = React.memo(
       waybillFormState,
       waybillState,
       use_pouring,
-      isGasKind,
       gas_tax_data,
       tax_data,
     } = props;
-
-    const updateGasFields = React.useCallback(() => {
-      if(isGasKind) {
-        props.handleEquipmentFuel(false, false); // ??? Проверить на работоспособность
-      } else if (!isGasKind) {
-        props.handleMultipleChange(gasDefaultElement);
-      }
-    }, [
-      props.handleEquipmentFuel,
-      props.handleMultipleChange,
-      isGasKind,
-    ]);
-
-    React.useEffect(() => {
-      updateGasFields();
-    }, [
-      isGasKind,
-      props.handleEquipmentFuel,
-      props.handleMultipleChange,
-      props.origFormState,
-    ]
-    );
-
-    React.useEffect(() => {
-      if(isGasKind && isNullOrUndefined(waybillFormState.gas_fuel_type)) {
-        props.handleMultipleChange({
-          gas_fuel_type: 'GAS',
-        });
-      }
-    }, [isGasKind, waybillFormState.gas_fuel_type]);
 
     return <TabBodyContainerStyled showComponent={props.showComponent}>
       {/* <-- start  Tab Газ */}
@@ -327,8 +295,8 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             correctionRate={waybillState.fuel_correction_rate}
             baseFactValue={
               CAR_HAS_ODOMETER
-                ? waybillFormState.odometr_diff // <<< для газа и Топлива??? красный цвет в итого
-                : waybillFormState.motohours_diff // <<< для газа и Топлива???
+                ? waybillFormState.odometr_diff
+                : waybillFormState.motohours_diff
             }
             setTotalValueError={props.setTotalValueError}
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}

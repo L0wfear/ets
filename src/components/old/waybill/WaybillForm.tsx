@@ -113,6 +113,7 @@ import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContai
 import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -407,6 +408,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         );
       }
     }
+
+    // For GAS
+    if(oldFormState.car_id !== nextFormState.car_id) {
+      this.setEngineKindIds();
+    }
   }
 
   setMissionHasError = (missionHasError: WaybillState['missionHasError']) => {
@@ -540,6 +546,41 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     });
   };
 
+  updateEngineKindsFields = () => {
+    // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
+    const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
+    if(isGasKind) { // Значит на ТС установлен газ
+      this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
+      this.handleChange('gas_fuel_type', 'GAS',);
+      // this.refresh(true, false); // await???
+    } else if(!isGasKind) {
+      this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
+    }
+  };
+
+  setEngineKindIds = () => { // определение  engine_kind_ids в ПЛ, в зависимости от статуса ПЛ
+    const {
+      formState,
+      formState: { status, car_id, },
+      carIndex,
+    } = this.props;
+
+    const IS_CREATING = !status;
+    const IS_DRAFT = status === 'draft';
+
+    const canChangeEngineKindIds = Boolean(IS_CREATING || IS_DRAFT);
+    const engineKindIdsByStatus = canChangeEngineKindIds
+      ? get(carIndex, `${car_id}.engine_kind_ids`, [])
+      : formState.engine_kind_ids;
+
+    if(canChangeEngineKindIds){
+      this.handleMultipleChange({
+        engine_kind_ids: engineKindIdsByStatus,
+      });
+    }
+    this.updateEngineKindsFields(); // trigger update
+  };
+
   async componentDidMount() {
     const {
       formState,
@@ -600,12 +641,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         .dispatch(actionGetWaybillById(formState.id, this.props))
         .then((waybill) => {
           this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
+          waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
           this.setState({
             canEditIfClose: waybill.closed_editable
               ? this.props.userPermissionsSet.has('waybill.update_closed')
               : false,
             origFormState: formState,
           });
+          this.setEngineKindIds();
         })
         .catch((e) => {
           console.error(e);  // eslint-disable-line
@@ -795,6 +838,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
+        this.updateEngineKindsFields();
       });
     }
   }
@@ -1173,8 +1217,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             driver_id: null,
           }),
         );
-      }).then((fieldsToChange) =>
-        this.props.handleMultipleChange(fieldsToChange),
+      }).then((fieldsToChange) => {
+        this.props.handleMultipleChange(fieldsToChange);
+        this.setEngineKindIds();
+      },
       );
     }, 0);
   };
@@ -1300,6 +1346,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           trailer_id,
         };
         this.props.handleMultipleChange(fieldsToChange);
+        this.updateEngineKindsFields();
       } else if (showInfo) {
         global.NOTIFICATION_SYSTEM.notify('Отсутствует информация о предыдущих закрытых путевых листах на указанное ТС', 'info', 'tr');
       }
@@ -2146,7 +2193,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursFilesError = errors.files?.motohours;
     const motohoursEquipFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours_equip') : [];
     const motohoursEquipFilesError = errors.files?.motohours_equip;
-    
+
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"
@@ -2405,6 +2452,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 setIsGasKind={this.setIsGasKind}
                 origFormState={this.state.origFormState}
                 waybillFormState={state}
+                updateEngineKindsFields={this.updateEngineKindsFields}
               />
             </EtsBootstrap.Col>
             
@@ -2904,11 +2952,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           IS_KAMAZ={IS_KAMAZ}
                           disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
                           handleChangeTaxes={this.handleChangeGasTaxes}
-                          isGasKind={this.state.isGasKind}
                           isFuelKind={this.state.isFuelKind}
                           isElectricityKind={this.state.isElectricityKind}
                           showComponent={this.state.fuelActiveTabKey === 'gas'}
                           handleEquipmentFuel={this.handleEquipmentFuel}
+                          updateEngineKindsFields={this.updateEngineKindsFields}
                         />
                       }
                       {/* <-- end  Tab gas */}

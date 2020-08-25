@@ -22,7 +22,8 @@ type Props = {
   handleMultipleChange: (fields: any) => void;
   setIsGasKind: (isGasKind: boolean) => any;
   origFormState: WaybillProps['formState'];
-	waybillFormState: WaybillProps['formState']; // state in render WaybillForm
+  waybillFormState: WaybillProps['formState']; // state in render WaybillForm
+  updateEngineKindsFields: () => any;
 };
 
 export const WaybillEngineKindStyled = styled.div`
@@ -57,19 +58,6 @@ const WaybillEngineKind: React.FC<Props> = React.memo(
         canChangeEngineKindIds,
       ]
     );
-		
-    React.useEffect(() => {
-      if(canChangeEngineKindIds){
-        props.handleChange('engine_kind_ids', engineKindIdsByStatus); // <<< неперетираются старые значения, если открыть карточку без газа, при сохранении engine_kind_ids: [1, 2]
-      }
-    }, [
-      props.car_id,
-      canChangeEngineKindIds,
-      props.handleChange,
-      props.carIndex,
-      props.origFormState,
-      props.waybillFormState.gas_fuel_type,
-    ]);
 
     const fuelKind = React.useMemo(
       () => (engineKindsOptions.find( (elem) => engineKindIdsByStatus.includes(elem.value) )?.label || '-'),
@@ -80,13 +68,14 @@ const WaybillEngineKind: React.FC<Props> = React.memo(
       [engineKindIdsByStatus]);
     
     React.useEffect(() => {
-      props.setIsGasKind(isGasKind);
+      props.setIsGasKind(isGasKind); // ???
     }, [ isGasKind ]);
 
     return <WaybillEngineKindStyled>
       <b>Тип двигателя: </b> { fuelKind } <br/>
       <b>На ТС установлено газовое оборудование: </b> { isGasKind ? 'Да' : 'нет' }
-      {/* <br/> <b>Можно поменять ВИД двигателя в ПЛ???: </b> { canChangeEngineKindIds ? 'Да' : 'нет' } */}
+      {/* <br/> <b>props.engine_kind_ids: </b> { props.engine_kind_ids?.join(',') }
+      <br/> <b>engineKindIdsByStatus: </b> { engineKindIdsByStatus?.join(',') } */}
     </WaybillEngineKindStyled>;
   },
 );

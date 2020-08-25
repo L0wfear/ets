@@ -2864,6 +2864,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         setTotalValueError={this.props.setTotalValueError}
                         fuelCardsList={this.props.fuelCardsList}
                         tax_data={tax_data}
+                        gas_tax_data={gas_tax_data}
                         FUEL_TYPES={FUEL_TYPES}
                         IS_KAMAZ={IS_KAMAZ}
                         disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
@@ -2898,6 +2899,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           setTotalValueError={this.props.setTotalValueError}
                           gasFuelCardsList={this.props.gasFuelCardsList}
                           gas_tax_data={gas_tax_data}
+                          tax_data={tax_data}
                           FUEL_TYPES={FUEL_TYPES}
                           IS_KAMAZ={IS_KAMAZ}
                           disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}

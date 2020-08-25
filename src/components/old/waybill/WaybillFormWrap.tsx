@@ -1179,7 +1179,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               handlePrint={this.handlePrint}
               handlePrintFromMiniButton={this.handlePrintFromMiniButton}
               setEdcRequestIds={this.setEdcRequestIds}
-              formErrors={this.state.formErrors}
+              formErrors={{
+                ...this.state.formErrors,
+                gasTaxesTotalValueError: this.state.gasTaxesTotalValueError,
+                taxesTotalValueError: this.state.taxesTotalValueError,
+              }}
               entity={'waybill'}
               usePouring={this.state.usePouring}
               isPermittedByKey={this.state.isPermittedByKey}

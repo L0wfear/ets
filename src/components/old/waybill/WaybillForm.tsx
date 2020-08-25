@@ -1598,7 +1598,7 @@ class WaybillForm extends React.Component<Props, State> {
   handleChangeCarReFill = (car_refill) => {
     this.handleMultipleChange({
       car_refill,
-      fuel_given: car_refill.reduce((summ, { value }) => summ + value, 0),
+      fuel_given: car_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2),
     });
   };
 
@@ -1608,7 +1608,7 @@ class WaybillForm extends React.Component<Props, State> {
       equipment_fuel_given: equipment_refill.reduce(
         (summ, { value }) => summ + value,
         0,
-      ),
+      ).toFixed(2),
     });
   };
 
@@ -2786,6 +2786,7 @@ class WaybillForm extends React.Component<Props, State> {
                                   label="Выдано, л"
                                   error={errors.fuel_given}
                                   value={state.fuel_given}
+                                  format="toFixed2"
                                   disabled
                                 />
                               </EtsBootstrap.Col>

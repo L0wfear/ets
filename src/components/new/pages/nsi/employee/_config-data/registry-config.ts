@@ -114,6 +114,11 @@ export const config: TypeConfigData<Employee> = {
         type: 'advanced-date',
       },
       {
+        valueKey: 'category_special_license',
+        title: 'Категория специального удостоверения',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_structure_name',
         title: 'Подразделение',
         type: 'multiselect',

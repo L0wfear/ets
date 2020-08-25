@@ -66,9 +66,10 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
 
     React.useEffect(() => {
       if (state.data.osago_not_required || state.data.no_valid_osago) {
-        const comment = state.data.comments?.length
-          ? 'Необходимо сверить данные полиса ОСАГО \n' + state.data.comments
-          : 'Необходимо сверить данные полиса ОСАГО';
+        const osagoCommentList = state.data.comments.includes('Необходимо сверить данные полиса ОСАГО')
+          ? state.data.comments
+          : 'Необходимо сверить данные полиса ОСАГО \n' + state.data.comments;
+        const comment = state.data.comments?.length ? osagoCommentList : 'Необходимо сверить данные полиса ОСАГО';
         props.handleChange({
           osago: null,
           osago_finished_at: null,

@@ -552,7 +552,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     if(isGasKind) { // Значит на ТС установлен газ
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
       this.handleChange('gas_fuel_type', 'GAS',);
-      // this.refresh(true, false); // await???
     } else if(!isGasKind) {
       this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
     }
@@ -579,6 +578,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
+    this.refresh(true, false);
   };
 
   async componentDidMount() {

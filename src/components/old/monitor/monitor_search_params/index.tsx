@@ -129,6 +129,27 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
 
     React.useEffect(
       () => {
+        const validDateStartMoscow = createValidDateTime(date_start_Moscow);
+        const validDateEndMoscow = createValidDateTime(date_end_Moscow);
+        if (gov_number !== gov_number_old) {
+          if (gov_number) {
+            props.setDataInSearch({
+              date_start: createValidDateTime(!gov_number_old && date_start || validDateStartMoscow),
+              date_end: createValidDateTime(!gov_number_old && date_end || validDateEndMoscow),
+            });
+          } else {
+            props.setDataInSearch({
+              date_start: null,
+              date_end: null,
+            });
+          }
+        }
+      },
+      [gov_number_old, gov_number, date_start, date_end, props.setDataInSearch],
+    );
+
+    React.useEffect(
+      () => {
         if (refresh && date_start && date_end && carData.data) {
           const payload = {
             asuods_id: carData.data.asuods_id,

@@ -2193,7 +2193,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursFilesError = errors.files?.motohours;
     const motohoursEquipFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours_equip') : [];
     const motohoursEquipFilesError = errors.files?.motohours_equip;
-
+    const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required);
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"
@@ -2407,7 +2408,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT)}
+                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2420,7 +2421,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id)}
                     value={
                       state.trailer_id
                         ? `${

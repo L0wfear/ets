@@ -12,6 +12,7 @@ import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refil
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { get } from 'lodash';
+import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -230,7 +231,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (
           value,
-          { structure_id, status, car_id },
+          { structure_id, status, car_id, mission_id_list },
           { carList, selectedMissions },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
@@ -243,12 +244,13 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          const isMissionListExists = mission_id_list.length > 0;
 
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
 
-          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && isTrailerRequiredMission)) {
+          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && (isTrailerRequiredMission && isMissionListExists))) {
             return 'Поле "Прицеп" должно быть заполнено';
           }
 
@@ -269,6 +271,25 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
           if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Топливо.Выезд', 3);
+          }
+        },
+      ],
+    },
+    gas_fuel_start: {
+      title: 'Топливо.Выезд',
+      type: 'number',
+      float: 3,
+      dependencies: [
+        (value, { status, engine_kind_ids }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value) && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID) ) {
             return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }
         },
@@ -326,7 +347,27 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_fuel_type: {
+      title: 'Топливо.Тип',
+      type: 'string',
+      dependencies: [
+        (value, { status, engine_kind_ids, }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && !value && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fuel_given: {
+      title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+    },
+    gas_fuel_given: {
       title: 'Выдано, л',
       type: 'number',
       float: 3,
@@ -521,6 +562,29 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_refill: {
+      title: 'gas_refill',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (
+          gas_refill,
+          formState,
+          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex, companyList},
+        ) => {
+          if(formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)) {
+            return checkCarRefill(
+              gas_refill,
+              refillTypeList,
+              gasFuelCardsList,
+              formState.gas_fuel_type,
+              notFiltredFuelCardsIndex,
+              formState,
+              companyList
+            );
+          }
+        },
+      ],
+    },
     equipment_refill: {
       title: 'equipment_refill',
       type: 'multiValueOfArray',
@@ -671,6 +735,24 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    gas_fuel_end: {
+      title: 'Возврат по таксировке, л',
+      type: 'number',
+      dependencies: [
+        (value, { status, engine_kind_ids }) => {
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          if (
+            fieldNotHidden
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Возврат по таксировке, л" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fact_fuel_end: {
       title: 'Топливо.Возврат фактический',
       type: 'number',
@@ -683,6 +765,28 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             && !is_one_fuel_tank
             && status === 'active'
             && (!value && value !== 0)
+          ) {
+            return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Возврат фактический, л', 3);
+          }
+        },
+      ],
+    },
+    gas_fact_fuel_end: {
+      title: 'Топливо.Возврат фактический',
+      type: 'number',
+      float: 3,
+      min: 0,
+      dependencies: [
+        (value, { status, equipment_fuel, is_one_fuel_tank, engine_kind_ids }) => {
+          if (
+            equipment_fuel
+            && !is_one_fuel_tank
+            && status === 'active'
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
@@ -804,13 +908,43 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, {odometr_diff, motohours_diff, gov_number}) => {
+        (_, {gas_tax_data, tax_data, odometr_diff, motohours_diff, gov_number}) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          let taxes = [];
+          if(isArray(gas_tax_data)){
+            taxes = [...taxes, ...gas_tax_data];
+          }
+          if(isArray(tax_data)){
+            taxes = [...taxes, ...tax_data];
+          }
           if (
-            (!isArray(value) || (isArray(value) && !value.length))
+            (!isArray(taxes) || (isArray(taxes) && !taxes.length))
               && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
           ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
+          }
+        }
+      ],
+    },
+    gas_tax_data: {
+      title: 'Расчет газа по норме',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (_, {gas_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          let taxes = [];
+          if(isArray(gas_tax_data)){
+            taxes = [...taxes, ...gas_tax_data];
+          }
+          if(isArray(tax_data)){
+            taxes = [...taxes, ...tax_data];
+          }
+          if (
+            (!isArray(taxes) || (isArray(taxes) && !taxes.length))
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
+              && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'В поле "Расчет газа по норме" необходимо добавить операцию';
           }
         }
       ],
@@ -833,9 +967,20 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме(таблица)',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, { tax_data, equipment_fuel, hasEquipmentFuelRates }) => {
+        (_, { tax_data }) => {
           if ((isArray(tax_data) && tax_data.length)) {
             return checkTaxData(tax_data);
+          }
+        },
+      ],
+    },
+    gas_tax_data_rows: {
+      title: 'Расчет газа по норме(таблица)',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (_, { gas_tax_data, engine_kind_ids }) => {
+          if ((isArray(gas_tax_data) && gas_tax_data.length) && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)) {
+            return checkTaxData(gas_tax_data);
           }
         },
       ],

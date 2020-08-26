@@ -8,6 +8,12 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ReduxState } from 'redux-main/@types/state';
 import { carInfoChangeDateAndForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { FlexContainer } from 'global-styled/global-styled';
+import styled from 'styled-components';
+
+export const FlexContainerStyled = styled(FlexContainer)`
+  justify-content: space-between;
+`;
 
 type PropsCarWaybills = {
   waybills: Array<any>;
@@ -25,11 +31,29 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
       setParamsAndSearch,
     } = props;
 
-    const setDatesInSearch = React.useCallback((date_start, date_end, id) => {
+    const setShowWaybill = React.useCallback((date_start, date_end, id) => {
+      setParamsAndSearch({
+        params: {
+          waybill_id: id
+        },
+        search: {
+          date_start, date_end
+        }
+      });
+    }, [setParamsAndSearch]);
+
+    const setDatesInSearch = React.useCallback((date_start, date_end) => {
       if (forToday) {
         carInfoChangeDateAndForToday(false, date_start, date_end);
       }
-      setParamsAndSearch({params: {waybill_id: id}, search: {date_start, date_end,}});
+      setParamsAndSearch({
+        params: {
+          waybill_id: null
+        },
+        search: {
+          date_start, date_end
+        }
+      });
     }, [forToday, carInfoChangeDateAndForToday, setParamsAndSearch]);
     return (
       <div className="car_info-missions_list_container">
@@ -62,7 +86,13 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
                         )
                       }
                     </div>
-                    <EtsBootstrap.Glyphicon glyph="info-sign" className="pointer fontSize24" data-id={waybill.id} onClick={() => setDatesInSearch(waybill.date_start, waybill.date_end, waybill.id)} />
+                    <FlexContainerStyled direction="column" alignItems="center">
+                      <EtsBootstrap.Glyphicon glyph="info-sign" className="pointer fontSize24"
+                        onClick={() => setShowWaybill(waybill.date_start, waybill.date_end, waybill.id)} />
+                      <EtsBootstrap.Button id="refresh" data-id={waybill.id} onClick={() => setDatesInSearch(waybill.date_start, waybill.date_end)}>
+                        <EtsBootstrap.Glyphicon glyph="refresh" />
+                      </EtsBootstrap.Button>
+                    </FlexContainerStyled>
                   </div>
                 );
               })

@@ -34,24 +34,42 @@ type Props = {
 	lastWaybill: WaybillState['lastWaybill'];
 	origFormState: WaybillState['origFormState'];
 	handleChange: (field: string, e: any, index?: number) => any;
-	handleChangeCarReFill: (car_refill: any) => any;
+	handleChangeGasReFill: (gas_refill: any) => any;
 	page: string;
 	path?: string;
 	CAR_HAS_ODOMETER: boolean;
 	setTotalValueError: WaybillProps['setTotalValueError'];
 	// transfer
-	fuelCardsList: WaybillProps['fuelCardsList'];
-	tax_data: any;
+	gasFuelCardsList: WaybillProps['gasFuelCardsList'];
 	gas_tax_data: any;
-	FUEL_TYPES: any; 
+	tax_data: any;
+	FUEL_TYPES: any;
 	IS_KAMAZ: boolean;
 	disableFieldWaybillCarRefill: boolean;
   use_pouring: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
+  isFuelKind: boolean;
+  isElectricityKind: boolean;
   showComponent: boolean;
+  handleEquipmentFuel: (equipment_fuel: boolean, withConfirmDialog: boolean) => void;
+  updateEngineKindsFields: () => any;
 };
 
-const FuelBodyContainer: React.FC<Props> = React.memo(
+/*
+// <<< gas
+0) Типы топлива, список +
+1) fuelCards +- не удаляется ТК
+2) Taxes +-
+  2.1) Раскраска +
+  2.2) error +
+  2.3) autocompleteFactValue !!!
+3) refill +
+4) waybillForm +
+5) waybillFormWrap +
+6) validate +
+*/
+
+const GasBodyContainer: React.FC<Props> = React.memo(
   (props) => {
 
     const {
@@ -68,50 +86,43 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
       IS_KAMAZ,
       modalKey,
       origFormState,
-      handleChangeCarReFill,
+      handleChangeGasReFill,
       disableFieldWaybillCarRefill,
-      tax_data,
-      gas_tax_data,
       CAR_HAS_ODOMETER,
       FUEL_TYPES,
       waybillFormState,
       waybillState,
       use_pouring,
+      gas_tax_data,
+      tax_data,
     } = props;
 
-    const fuelTypesOption = React.useMemo(() => FUEL_TYPES.filter(
-      (elem) => elem?.value !== 'GAS' && elem?.value !== 'ELECTRICITY'
-    ), [FUEL_TYPES]);
-
     return <TabBodyContainerStyled showComponent={props.showComponent}>
-      {/* <-- start  Tab Топливо */}
+      {/* <-- start  Tab Газ */}
       <EtsBootstrap.Col md={12}>
-        {/* <-- start  Топливо-fields */}
+        {/* <-- start  Газ-fields */}
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <FuelType
                   modalKey={modalKey}
-                  keyField="fuel_type"
-                  value={waybillFormState.fuel_type}
-                  error={errors.fuel_type}
-                  disabled={
-                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-															|| (lastWaybill && lastWaybill['fuel_type'])
-                  }
-                  options={fuelTypesOption}
+                  keyField="gas_fuel_type"
+                  value={waybillFormState.gas_fuel_type}
+                  error={errors.gas_fuel_type}
+                  disabled={true} // всегда установлен газ
+                  options={FUEL_TYPES}
                   handleChange={props.handleMultipleChange}
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 {!(IS_DRAFT || IS_CREATING) && (
                   <ExtField
-                    id="fuel-end"
+                    id="gas-fuel-end"
                     type="number"
                     label="Возврат по таксировке, л"
-                    error={errors.fuel_end}
-                    value={waybillFormState.fuel_end}
+                    error={errors.gas_fuel_end}
+                    value={waybillFormState.gas_fuel_end}
                     format="toFixed3"
                     disabled
                   />
@@ -119,11 +130,11 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="tax-consumption"
+                  id="gas-tax-consumption"
                   type="number"
                   label="Расход по таксировке, л"
-                  error={errors.tax_consumption}
-                  value={waybillFormState.tax_consumption}
+                  error={errors.gas_tax_consumption}
+                  value={waybillFormState.gas_tax_consumption}
                   format="toFixed3"
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
@@ -133,53 +144,53 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="fuel_start"
+                  id="gas_fuel_start"
                   type="number"
                   label="Выезд, л"
-                  error={errors.fuel_start}
-                  value={waybillFormState.fuel_start}
+                  error={errors.gas_fuel_start}
+                  value={waybillFormState.gas_fuel_start}
                   disabled={
-                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-															|| Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['fact_fuel_end']))
+                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+															|| Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['gas_fact_fuel_end']))
                   }
                   onChange={props.handleChange}
-                  boundKeys="fuel_start"
+                  boundKeys="gas_fuel_start"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="fact-fuel-end"
+                  id="gas-fact-fuel-end"
                   type="number"
                   modalKey={modalKey}
                   label="Возврат фактический, л"
-                  error={errors.fact_fuel_end}
-                  value={waybillFormState.fact_fuel_end}
+                  error={errors.gas_fact_fuel_end}
+                  value={waybillFormState.gas_fact_fuel_end}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled={
                     IS_DELETE || !(IS_ACTIVE || waybillState.canEditIfClose)
 															|| !isPermittedByKey.update
                   }
                   onChange={props.handleChange}
-                  boundKeys="fact_fuel_end"
+                  boundKeys="gas_fact_fuel_end"
                   showRedBorder={
-                    waybillFormState.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
+                    waybillFormState.gas_fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
                   }
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="fact-consuption"
+                  id="gas-fact-consuption"
                   type="number"
                   modalKey={modalKey}
                   label="Расход фактический, л"
-                  error={errors.fact_consumption}
-                  value={waybillFormState.fact_consumption}
+                  error={errors.gas_fact_consumption}
+                  value={waybillFormState.gas_fact_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
                   onChange={props.handleChange}
-                  boundKeys="fact_consumption"
+                  boundKeys="gas_fact_consumption"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
@@ -187,11 +198,11 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="fuel-given"
+                  id="gas-fuel-given"
                   type="number"
                   label="Выдано, л"
-                  error={errors.fuel_given}
-                  value={waybillFormState.fuel_given}
+                  error={errors.gas_fuel_given}
+                  value={waybillFormState.gas_fuel_given}
                   disabled
                 />
               </EtsBootstrap.Col>
@@ -205,41 +216,41 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="consuption-diff"
+                  id="gas-consuption-diff"
                   type="number"
                   modalKey={modalKey}
                   label="Расхождение в данных расхода, л"
-                  error={errors.diff_consumption}
-                  value={waybillFormState.diff_consumption}
+                  error={errors.gas_diff_consumption}
+                  value={waybillFormState.gas_diff_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
                   onChange={props.handleChange}
-                  boundKeys="diff_consumption"
+                  boundKeys="gas_diff_consumption"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
-        {/* <-- end  Топливо-fields */}
+        {/* <-- end  Газ-fields */}
       </EtsBootstrap.Col>
       <EtsBootstrap.Col md={12} zIndex={2}>
         <EtsBootstrap.Col md={12}>
-          <FieldWaybillCarRefill
-            id="car_refill"
-            array={waybillFormState.car_refill}
-            arrayOrigin={origFormState.car_refill}
+          <FieldWaybillCarRefill // <<< gas
+            id="gas_refill"
+            array={waybillFormState.gas_refill}
+            arrayOrigin={origFormState.gas_refill}
             errors={get(
               errors,
-              'car_refill',
-              waybillFormState.car_refill.map(() => ({})),
+              'gas_refill',
+              waybillFormState.gas_refill.map(() => ({})),
             )} // временно
-            title="Заправка топлива"
+            title="Заправка газа"
             use_pouring={use_pouring}
-            handleChange={handleChangeCarReFill}
-            fuel_given={waybillFormState.fuel_given}
+            handleChange={handleChangeGasReFill}
+            fuel_given={waybillFormState.gas_fuel_given}
             structure_id={waybillFormState.structure_id}
-            fuel_type={waybillFormState.fuel_type}
+            fuel_type={'GAS'}
             car_id={waybillFormState.car_id}
             gov_number={waybillFormState.gov_number}
             date_for_valid={{
@@ -255,8 +266,8 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
             path={props.path}
-            boundKey={'car_refill'}
-            fuelCardsList={props.fuelCardsList}
+            boundKey={'gas_refill'}
+            fuelCardsList={props.gasFuelCardsList}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
@@ -268,18 +279,18 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
               !(IS_CLOSED || IS_ACTIVE)
                             || IS_DRAFT
                             || (IS_CLOSED
-                              && waybillFormState.tax_data
-                              && waybillFormState.tax_data.length === 0
+                              && waybillFormState.gas_tax_data
+                              && waybillFormState.gas_tax_data.length === 0
                               && !waybillState.canEditIfClose)
-                            || (IS_CLOSED && !waybillFormState.tax_data && !waybillState.canEditIfClose)
+                            || (IS_CLOSED && !waybillFormState.gas_tax_data && !waybillState.canEditIfClose)
             }
             readOnly={IS_DELETE || (!IS_ACTIVE && !waybillState.canEditIfClose) || !isPermittedByKey.update}
             IS_CLOSED={IS_CLOSED}
-            title="Расчет топлива по норме"
-            taxes={tax_data}
+            title="Расчет газа по норме"
+            taxes={gas_tax_data}
             sameTaxes={[...gas_tax_data, ...tax_data]}
-            operations={waybillState.operations}
-            fuelRates={waybillState.fuelRates}
+            operations={waybillState.gasOperations}
+            fuelRates={waybillState.gasFuelRates}
             onChange={props.handleChangeTaxes}
             correctionRate={waybillState.fuel_correction_rate}
             baseFactValue={
@@ -287,17 +298,18 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                 ? waybillFormState.odometr_diff
                 : waybillFormState.motohours_diff
             }
-            setTotalValueError={props.setTotalValueError} // <<< поправить, сделать валидацию через схему!!!
+            setTotalValueError={props.setTotalValueError}
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
+            boundKey={'gas_tax_data'}
           />
-          <ErrorsBlock error={errors.tax_data} />
+          <ErrorsBlock error={errors.gas_tax_data} />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
                     
-      {/* <-- end  Tab Топливо */}
+      {/* <-- end  Tab Газ */}
     </TabBodyContainerStyled>;
   },
 );
 
-export default FuelBodyContainer;
+export default GasBodyContainer;

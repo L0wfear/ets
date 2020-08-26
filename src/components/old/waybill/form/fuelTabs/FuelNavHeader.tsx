@@ -9,6 +9,9 @@ type OwnProps = {
   activeTabKey: string;
   handleTabChange: (tabKey: string) => any;
   errors: WaybillProps['formErrors'];
+  isGasKind: boolean;
+  isFuelKind: boolean;
+  isElectricityKind: boolean;
 };
 type Props = OwnProps;
 
@@ -23,9 +26,10 @@ const FuelNavHeader: React.FC<Props> = React.memo(
         activeKey={activeTabKey}
       >
         {
-          fuelKindFormTabKey.map(({ tabKey: tabKeyScheme, title, errorsFieldList }) => {
+          fuelKindFormTabKey.map(({ tabKey: tabKeyScheme, title, errorsFieldList, showTabIntoNavFlagKey, }) => {
             const isActive = activeTabKey === tabKeyScheme ? true : false;
             const tabHasErrors = checkErrorsIntoTab(props.errors, errorsFieldList);
+            const showTabIntoNav = showTabIntoNavFlagKey && props?.[showTabIntoNavFlagKey];
             
             return (
               <React.Fragment key={tabKeyScheme} >
@@ -35,6 +39,7 @@ const FuelNavHeader: React.FC<Props> = React.memo(
                   tabKey={tabKeyScheme}
                   handleTabChange={props.handleTabChange}
                   tabHasErrors={tabHasErrors}
+                  showTabIntoNav={showTabIntoNav}
                 />
               </React.Fragment>
             );

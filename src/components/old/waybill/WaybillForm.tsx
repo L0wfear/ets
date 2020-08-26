@@ -2786,7 +2786,6 @@ class WaybillForm extends React.Component<Props, State> {
                                   label="Выдано, л"
                                   error={errors.fuel_given}
                                   value={state.fuel_given}
-                                  format="toFixed2"
                                   disabled
                                 />
                               </EtsBootstrap.Col>

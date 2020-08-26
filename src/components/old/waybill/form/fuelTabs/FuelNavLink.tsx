@@ -21,6 +21,7 @@ type Props = {
 	tabKey: string;
   handleTabChange: (tab: string) => any;
   tabHasErrors: boolean;
+  showTabIntoNav: boolean;
 };
 
 const FuelNavLink: React.FC<Props> = React.memo(
@@ -30,6 +31,7 @@ const FuelNavLink: React.FC<Props> = React.memo(
       title,
       tabKey,
       tabHasErrors,
+      showTabIntoNav,
     } = props;
 
     const handleClick = React.useCallback(
@@ -39,7 +41,7 @@ const FuelNavLink: React.FC<Props> = React.memo(
       [tabKey, props.handleTabChange],
     );
 
-    return (
+    return showTabIntoNav && (
       <FuelNavLinkStyled role="button" active={isActive} onClick={handleClick} tabHasErrors={tabHasErrors}>
         { tabHasErrors
           && <EtsBootstrap.Glyphicon glyph={'exclamation-sign'} />

@@ -12,10 +12,10 @@ type UseEngineKindsListAns = Array<DefaultSelectOption<number, string, EngineKin
 type UseEngineKindsList = (
 	is_main: boolean,
   meta: LoadingMeta,
-  formKey?: string, // на какой модалке вызывается
+  formKey?: 'carForm' | 'waybillForm' | '', // на какой модалке вызывается
 ) => UseEngineKindsListAns;
 
-const formForDvs = ['carForm'];
+const formForDvs = ['carForm', 'waybillForm'];
 
 const UseEngineKindsList: UseEngineKindsList = (is_main, meta, formKey = '') => {
 

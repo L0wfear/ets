@@ -291,8 +291,9 @@ export default class Taxes extends React.Component<any, any> {
       type,
       setTotalValueError,
       sameTaxes,
+      taxes,
     } = this.props;
-    const hasTaxes = sameTaxes?.length > 0;
+    const hasTaxes = taxes?.length > 0;
     const finalFactValueSameTaxes = Taxes.calculateFinalFactValue(sameTaxes, type); // { withMileage, withoutMileage}
     const finalFactValueMoreOrEqualBaseValue
       = Number(baseFactValue) <= Number(finalFactValueSameTaxes?.withMileage);

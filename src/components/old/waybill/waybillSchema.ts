@@ -250,7 +250,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
 
-          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && (isTrailerRequiredMission && isMissionListExists))) {
+          if (!value && correctTrailer || !value && isTrailerRequired && isTrailerRequiredMission && isMissionListExists) {
             return 'Поле "Прицеп" должно быть заполнено';
           }
 

@@ -1748,24 +1748,24 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   handleChangeCarReFill = (car_refill) => {
     this.handleMultipleChange({
       car_refill,
-      fuel_given: car_refill.reduce((summ, { value }) => summ + value, 0),
+      fuel_given: parseFloat(car_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2)),
     });
   };
 
   handleChangeEquipmentRefill = (equipment_refill) => {
     this.handleMultipleChange({
       equipment_refill,
-      equipment_fuel_given: equipment_refill.reduce(
+      equipment_fuel_given: parseFloat(equipment_refill.reduce(
         (summ, { value }) => summ + value,
         0,
-      ),
+      ).toFixed(2)),
     });
   };
 
   handleChangeGasReFill = (gas_refill) => {
     this.handleMultipleChange({
       gas_refill,
-      gas_fuel_given: gas_refill.reduce((summ, { value }) => summ + value, 0),
+      gas_fuel_given: parseFloat(gas_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2)),
     });
   };
 

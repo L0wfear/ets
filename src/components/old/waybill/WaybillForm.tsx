@@ -271,6 +271,7 @@ type OwnProps = {
   isPermittedByKey: {
     update: boolean;
     departure_and_arrival_values: boolean;
+    change_departure: boolean;
     refill: boolean;
     update_closed: boolean;
   };
@@ -2718,7 +2719,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="odometr_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || !isPermittedByKey.update,
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
@@ -2802,7 +2803,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="motohours_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || !isPermittedByKey.update,
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
@@ -3009,7 +3010,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="motohours_equip_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || !isPermittedByKey.update,
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',

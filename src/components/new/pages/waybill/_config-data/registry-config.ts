@@ -200,8 +200,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         getRegistryData: {
           entity: 'employee_in_waybill',
           typeAns: 'result',
-          valueKey: 'id',
-          labelKey: 'personnel_number',
+          valueKey: 'personnel_number',
         },
       },
       {

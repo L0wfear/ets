@@ -114,6 +114,7 @@ import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybi
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { carActualOptionLabel } from 'components/@next/@form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_car_id/useWaybillCarActualOptions';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -552,7 +553,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     if(isGasKind) { // Значит на ТС установлен газ
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
       this.handleChange('gas_fuel_type', 'GAS',);
-      // this.refresh(true, false); // await???
     } else if(!isGasKind) {
       this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
     }
@@ -579,6 +579,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
+    this.refresh(true, false);
   };
 
   async componentDidMount() {
@@ -1747,24 +1748,24 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   handleChangeCarReFill = (car_refill) => {
     this.handleMultipleChange({
       car_refill,
-      fuel_given: car_refill.reduce((summ, { value }) => summ + value, 0),
+      fuel_given: parseFloat(car_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2)),
     });
   };
 
   handleChangeEquipmentRefill = (equipment_refill) => {
     this.handleMultipleChange({
       equipment_refill,
-      equipment_fuel_given: equipment_refill.reduce(
+      equipment_fuel_given: parseFloat(equipment_refill.reduce(
         (summ, { value }) => summ + value,
         0,
-      ),
+      ).toFixed(2)),
     });
   };
 
   handleChangeGasReFill = (gas_refill) => {
     this.handleMultipleChange({
       gas_refill,
-      gas_fuel_given: gas_refill.reduce((summ, { value }) => summ + value, 0),
+      gas_fuel_given: parseFloat(gas_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2)),
     });
   };
 
@@ -2194,6 +2195,16 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursEquipFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours_equip') : [];
     const motohoursEquipFilesError = errors.files?.motohours_equip;
 
+    const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required) && state.mission_id_list.length > 0;
+    const activeTrailerId = TRAILERS.filter((option) => option.value === state.trailer_id).map((trailer) => {
+      return carActualOptionLabel(
+        trailer.rowData.gov_number,
+        trailer.rowData.model_name,
+        trailer.rowData.special_model_name,
+        trailer.rowData.type_name,
+      );
+    });
+    
     return (
       <EtsBootstrap.ModalContainer
         id="modal-waybill"
@@ -2407,7 +2418,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT)}
+                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2420,15 +2431,16 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id)}
                     value={
-                      state.trailer_id
+                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && state.trailer_id)
                         ? `${
                           state.trailer_gov_number
                         } [${state.trailer_special_model_name || ''}${
                           state.trailer_special_model_name ? '/' : ''
                         }${state.trailer_model_name || ''}]`
-                        : 'Н/Д'
+                        : IS_ACTIVE && isUsePouringMission ? activeTrailerId[0]
+                          : 'Н/Д'
                     }
                   />
                 </EtsBootstrap.Col>

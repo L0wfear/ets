@@ -198,7 +198,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         title: 'Табельный номер',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'driver',
+          entity: 'employee_in_waybill',
           typeAns: 'result',
           valueKey: 'personnel_number',
         },

@@ -231,7 +231,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       dependencies: [
         (
           value,
-          { structure_id, status, car_id },
+          { structure_id, status, car_id, mission_id_list },
           { carList, selectedMissions },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
@@ -244,12 +244,13 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          const isMissionListExists = mission_id_list.length > 0;
 
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
 
-          if (!value && (chosenTrailer || correctTrailer) && (isTrailerRequired && isTrailerRequiredMission)) {
+          if (!value && correctTrailer || !value && isTrailerRequired && isTrailerRequiredMission && isMissionListExists) {
             return 'Поле "Прицеп" должно быть заполнено';
           }
 

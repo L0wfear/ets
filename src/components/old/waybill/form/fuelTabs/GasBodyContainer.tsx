@@ -201,8 +201,8 @@ const GasBodyContainer: React.FC<Props> = React.memo(
                   id="gas-fuel-given"
                   type="number"
                   label="Выдано, л"
-                  error={errors.gas_gas_fuel_given}
-                  value={waybillFormState.gas_gas_fuel_given}
+                  error={errors.gas_fuel_given}
+                  value={waybillFormState.gas_fuel_given}
                   disabled
                 />
               </EtsBootstrap.Col>
@@ -250,7 +250,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             handleChange={handleChangeGasReFill}
             fuel_given={waybillFormState.gas_fuel_given}
             structure_id={waybillFormState.structure_id}
-            fuel_type={waybillFormState.gas_fuel_type}
+            fuel_type={'GAS'}
             car_id={waybillFormState.car_id}
             gov_number={waybillFormState.gov_number}
             date_for_valid={{

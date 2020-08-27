@@ -11,7 +11,6 @@ import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { get } from 'lodash';
 import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 const isValidToFixed3 = (data) => {
@@ -238,8 +237,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
           const chosenTrailer = carList.find((elem) => elem.asuods_id === car_id);
-          const isTrailerRequired = get(chosenTrailer, 'rowData.is_trailer_required', true)
-            || get(correctTrailer, 'rowData.is_trailer_required', true);
+          const isTrailerRequired = chosenTrailer?.is_trailer_required;
           const isTrailerRequiredMission = selectedMissions.some(({ is_trailer_required }) => is_trailer_required);
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';

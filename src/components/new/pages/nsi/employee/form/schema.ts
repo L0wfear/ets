@@ -17,6 +17,10 @@ const isValidFormat = (data) => {
   }
 };
 
+const isValidValue = (data) => {
+  return /[0-9]{2}[АВЕКМНОРСТУХ0-9]{2}[0-9]{6}/.test(data);
+};
+
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {
     last_name: {
@@ -72,7 +76,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && (isValidLicense(value) || isValidFormat(value))) {
+          if (value && (isValidLicense(value) || isValidFormat(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -94,7 +98,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && isValidLicense(value) && isValidFormat(value)) {
+          if (value && (isValidLicense(value) || isValidFormat(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {

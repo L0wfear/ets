@@ -290,8 +290,8 @@ export default class Taxes extends React.Component<any, any> {
       baseFactValue,
       type,
       setTotalValueError,
-      sameTaxes,
       taxes,
+      sameTaxes
     } = this.props;
     const hasTaxes = taxes?.length > 0;
     const finalFactValueSameTaxes = Taxes.calculateFinalFactValue(sameTaxes, type); // { withMileage, withoutMileage}
@@ -302,12 +302,22 @@ export default class Taxes extends React.Component<any, any> {
       : '';
 
     if (this.state.totalValueError !== error && hasTaxes) {
+      if(taxes?.length === sameTaxes?.length){ // если Нормы добавлены только в одном из блоков, выводим ошибку в одном из блоков
+        setTotalValueError( // устанавливаем ошибку в первом блоке
+          this.props.boundKey === 'gas_tax_data'
+            ? 'gasTaxesTotalValueError'
+            : 'taxesTotalValueError', Boolean(error)
+        );
+        setTotalValueError( // перетираем ошибку во втором блоке
+          this.props.boundKey === 'gas_tax_data'
+            ? 'taxesTotalValueError'
+            : 'gasTaxesTotalValueError', false
+        );
+      } else { // если Нормы добавлены в оба блока, выводим ошибку в обоих блоках
+        setTotalValueError('gasTaxesTotalValueError', Boolean(error));
+        setTotalValueError('taxesTotalValueError', Boolean(error));
+      }
       this.setState({totalValueError: error});
-      setTotalValueError(
-        this.props.boundKey === 'gas_tax_data'
-          ? 'gasTaxesTotalValueError'
-          : 'taxesTotalValueError', Boolean(error)
-      );
     }
   }
 

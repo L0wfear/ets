@@ -114,6 +114,7 @@ import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybi
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { carActualOptionLabel } from 'components/@next/@form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_car_id/useWaybillCarActualOptions';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -2193,7 +2194,16 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursFilesError = errors.files?.motohours;
     const motohoursEquipFiles = state.files ? state.files.filter(({ kind }) => kind === 'motohours_equip') : [];
     const motohoursEquipFilesError = errors.files?.motohours_equip;
-    const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required);
+
+    const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required) && state.mission_id_list.length > 0;
+    const activeTrailerId = TRAILERS.filter((option) => option.value === state.trailer_id).map((trailer) => {
+      return carActualOptionLabel(
+        trailer.rowData.gov_number,
+        trailer.rowData.model_name,
+        trailer.rowData.special_model_name,
+        trailer.rowData.type_name,
+      );
+    });
     
     return (
       <EtsBootstrap.ModalContainer
@@ -2423,13 +2433,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     readOnly
                     hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id)}
                     value={
-                      state.trailer_id
+                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && state.trailer_id)
                         ? `${
                           state.trailer_gov_number
                         } [${state.trailer_special_model_name || ''}${
                           state.trailer_special_model_name ? '/' : ''
                         }${state.trailer_model_name || ''}]`
-                        : 'Н/Д'
+                        : IS_ACTIVE && isUsePouringMission ? activeTrailerId[0]
+                          : 'Н/Д'
                     }
                   />
                 </EtsBootstrap.Col>

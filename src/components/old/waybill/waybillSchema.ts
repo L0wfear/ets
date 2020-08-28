@@ -231,13 +231,12 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           value,
           { structure_id, status, car_id, mission_id_list },
-          { carList, selectedMissions },
+          { carList, carIndex, selectedMissions },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
           const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
-          const chosenTrailer = carList.find((elem) => elem.asuods_id === car_id);
-          const isTrailerRequired = chosenTrailer?.is_trailer_required;
+          const isTrailerRequired = carIndex[car_id]?.is_trailer_required;
           const isTrailerRequiredMission = selectedMissions.some(({ is_trailer_required }) => is_trailer_required);
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';

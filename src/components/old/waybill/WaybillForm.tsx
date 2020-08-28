@@ -2199,6 +2199,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursEquipFilesError = errors.files?.motohours_equip;
 
     const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required) && state.mission_id_list.length > 0;
+    const isTrailerRequired = carIndex[state.car_id]?.is_trailer_required;
     const activeTrailerId = TRAILERS.filter((option) => option.value === state.trailer_id).map((trailer) => {
       return carActualOptionLabel(
         trailer.rowData.gov_number,
@@ -2421,7 +2422,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id))}
+                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired && !state.trailer_id))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2434,15 +2435,15 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id)}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired  && !state.trailer_id)}
                     value={
-                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && state.trailer_id)
+                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && isTrailerRequired && state.trailer_id)
                         ? `${
                           state.trailer_gov_number
                         } [${state.trailer_special_model_name || ''}${
                           state.trailer_special_model_name ? '/' : ''
                         }${state.trailer_model_name || ''}]`
-                        : IS_ACTIVE && isUsePouringMission ? activeTrailerId[0]
+                        : IS_ACTIVE && isUsePouringMission && isTrailerRequired ? activeTrailerId[0]
                           : 'Н/Д'
                     }
                   />

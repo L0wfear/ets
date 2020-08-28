@@ -1229,13 +1229,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   getFieldsToChangeBasedOnLastWaybill = (lastCarUsedWaybill) => {
     let fieldsToChange: any = {};
     if (isNotNull(lastCarUsedWaybill)) {
-      if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
-        fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
-        fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
+      if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) { // если в последнем ПЛ 'Возврат фактический, л' не null, то 
+        fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end; // Выезд, л = Возврат фактический, л из последнего ПЛ
+        // fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start; // DITETS19-2768 // Возврат фактический, л = Выезд, л из последнего ПЛ
       }
       if (isNotNull(lastCarUsedWaybill.gas_fact_fuel_end)) {
         fieldsToChange.gas_fuel_start = lastCarUsedWaybill.gas_fact_fuel_end;
-        fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start;
+        // fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start; // DITETS19-2768
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;

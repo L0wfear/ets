@@ -49,6 +49,7 @@ type Props = {
   use_pouring: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
   showComponent: boolean;
+  isGasKind: boolean;
 };
 
 const FuelBodyContainer: React.FC<Props> = React.memo(
@@ -290,6 +291,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             setTotalValueError={props.setTotalValueError} // <<< поправить, сделать валидацию через схему!!!
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
+            isGasKind={props.isGasKind}
           />
           <ErrorsBlock error={errors.tax_data} />
         </EtsBootstrap.Col>

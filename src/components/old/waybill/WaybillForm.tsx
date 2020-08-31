@@ -2934,6 +2934,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
                         handleChangeTaxes={this.handleChangeTaxes}
                         showComponent={this.state.fuelActiveTabKey === 'fuel'}
+                        isGasKind={this.state.isGasKind}
                       />
                       {/* <-- end  Tab Топливо */}
                       {/* <-- start  Tab gas */}
@@ -2973,6 +2974,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           showComponent={this.state.fuelActiveTabKey === 'gas'}
                           handleEquipmentFuel={this.handleEquipmentFuel}
                           updateEngineKindsFields={this.updateEngineKindsFields}
+                          isGasKind={this.state.isGasKind}
                         />
                       }
                       {/* <-- end  Tab gas */}

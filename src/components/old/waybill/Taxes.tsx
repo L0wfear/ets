@@ -44,6 +44,7 @@ export default class Taxes extends React.Component<any, any> {
       fuelRates: PropTypes.array,
       onChange: PropTypes.func.isRequired,
       boundKey: PropTypes.string,
+      isGasKind: PropTypes.bool,
     };
   }
 
@@ -291,14 +292,19 @@ export default class Taxes extends React.Component<any, any> {
       type,
       setTotalValueError,
       taxes,
-      sameTaxes
+      sameTaxes,
+      isGasKind,
     } = this.props;
     const hasTaxes = taxes?.length > 0;
     const finalFactValueSameTaxes = Taxes.calculateFinalFactValue(sameTaxes, type); // { withMileage, withoutMileage}
     const finalFactValueMoreOrEqualBaseValue
       = Number(baseFactValue) <= Number(finalFactValueSameTaxes?.withMileage);
-    const error = !finalFactValueMoreOrEqualBaseValue
+    
+    const errorTextByKind = isGasKind
       ? 'Суммарное значение в поле "Итого" по топливу и газу должно быть не меньше пробега по основному счетчику, установленному на ТС'
+      : 'Значение в поле "Итого" должно быть не меньше пробега по основному счетчику, установленному на ТС';
+    const error = !finalFactValueMoreOrEqualBaseValue
+      ? errorTextByKind
       : '';
 
     if (this.state.totalValueError !== error && hasTaxes) {

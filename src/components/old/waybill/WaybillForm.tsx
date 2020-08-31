@@ -568,6 +568,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
+    const IS_CLOSED = status === 'closed';
 
     const canChangeEngineKindIds = Boolean(IS_CREATING || IS_DRAFT);
     const engineKindIdsByStatus = canChangeEngineKindIds
@@ -580,7 +581,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
-    this.refresh(true, false);
+    if(!IS_CLOSED) {
+      this.refresh(true, false);
+    }
   };
 
   async componentDidMount() {
@@ -1230,13 +1233,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   getFieldsToChangeBasedOnLastWaybill = (lastCarUsedWaybill) => {
     let fieldsToChange: any = {};
     if (isNotNull(lastCarUsedWaybill)) {
-      if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
-        fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
-        fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
+      if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) { // если в последнем ПЛ 'Возврат фактический, л' не null, то 
+        fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end; // Выезд, л = Возврат фактический, л из последнего ПЛ
+        // fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start; // DITETS19-2768 // Возврат фактический, л = Выезд, л из последнего ПЛ
       }
       if (isNotNull(lastCarUsedWaybill.gas_fact_fuel_end)) {
         fieldsToChange.gas_fuel_start = lastCarUsedWaybill.gas_fact_fuel_end;
-        fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start;
+        // fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start; // DITETS19-2768
       }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
@@ -2197,6 +2200,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const motohoursEquipFilesError = errors.files?.motohours_equip;
 
     const isUsePouringMission = missionsList?.some(({ is_trailer_required }) => is_trailer_required) && state.mission_id_list.length > 0;
+    const isTrailerRequired = carIndex[state.car_id]?.is_trailer_required;
     const activeTrailerId = TRAILERS.filter((option) => option.value === state.trailer_id).map((trailer) => {
       return carActualOptionLabel(
         trailer.rowData.gov_number,
@@ -2419,7 +2423,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id))}
+                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired && !state.trailer_id))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2432,15 +2436,15 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && !state.trailer_id)}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired  && !state.trailer_id)}
                     value={
-                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && state.trailer_id)
+                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && isTrailerRequired && state.trailer_id)
                         ? `${
                           state.trailer_gov_number
                         } [${state.trailer_special_model_name || ''}${
                           state.trailer_special_model_name ? '/' : ''
                         }${state.trailer_model_name || ''}]`
-                        : IS_ACTIVE && isUsePouringMission ? activeTrailerId[0]
+                        : IS_ACTIVE && isUsePouringMission && isTrailerRequired ? activeTrailerId[0]
                           : 'Н/Д'
                     }
                   />
@@ -2931,6 +2935,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
                         handleChangeTaxes={this.handleChangeTaxes}
                         showComponent={this.state.fuelActiveTabKey === 'fuel'}
+                        isGasKind={this.state.isGasKind}
                       />
                       {/* <-- end  Tab Топливо */}
                       {/* <-- start  Tab gas */}
@@ -2970,6 +2975,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           showComponent={this.state.fuelActiveTabKey === 'gas'}
                           handleEquipmentFuel={this.handleEquipmentFuel}
                           updateEngineKindsFields={this.updateEngineKindsFields}
+                          isGasKind={this.state.isGasKind}
                         />
                       }
                       {/* <-- end  Tab gas */}

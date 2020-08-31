@@ -53,21 +53,8 @@ type Props = {
   showComponent: boolean;
   handleEquipmentFuel: (equipment_fuel: boolean, withConfirmDialog: boolean) => void;
   updateEngineKindsFields: () => any;
+  isGasKind: boolean;
 };
-
-/*
-// <<< gas
-0) Типы топлива, список +
-1) fuelCards +- не удаляется ТК
-2) Taxes +-
-  2.1) Раскраска +
-  2.2) error +
-  2.3) autocompleteFactValue !!!
-3) refill +
-4) waybillForm +
-5) waybillFormWrap +
-6) validate +
-*/
 
 const GasBodyContainer: React.FC<Props> = React.memo(
   (props) => {
@@ -302,6 +289,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
             boundKey={'gas_tax_data'}
+            isGasKind={props.isGasKind}
           />
           <ErrorsBlock error={errors.gas_tax_data} />
         </EtsBootstrap.Col>

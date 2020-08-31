@@ -1,5 +1,5 @@
 import * as React from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import * as PropTypes from 'prop-types';
 import { isArray } from 'util';
 
@@ -88,14 +88,32 @@ class FilterRow extends React.Component<Props, {}> {
               [],
             );
           }
-          options = _(tableDataForOption)
-            .uniqBy(name)
-            .map((d) => ({
-              value: typeof d[name] === 'boolean' ? +d[name] : d[name],
-              label: labelFunction(d[byLabel || name]),
-            }))
-            .filter((d) => d.label && d.label !== '0')
-            .value(); 
+
+          if (isArray(tableDataForOption[0][name])) {
+            const reducedTableDataOptions = tableDataForOption
+              .reduce((newArr, currentArr) => {
+                newArr.push(currentArr[name]);
+                return newArr;
+              }, [])
+              .flat();
+            options = _(reducedTableDataOptions)
+              .uniqBy('id')
+              .map((d) => ({
+                value: d.id,
+                label: labelFunction(d.name),
+              }))
+              .filter((d) => d.label && d.label !== '0')
+              .value();
+          } else {
+            options = _(tableDataForOption)
+              .uniqBy(name)
+              .map((d) => ({
+                value: typeof d[name] === 'boolean' ? +d[name] : d[name],
+                label: labelFunction(d[byLabel || name]),
+              }))
+              .filter((d) => d.label && d.label !== '0')
+              .value();
+          }
         }
 
         if (options.length && Array.isArray(options[0].value)) {

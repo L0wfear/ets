@@ -2437,14 +2437,15 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     readOnly
                     hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired  && !state.trailer_id)}
                     value={
-                      state.trailer_id && !(IS_ACTIVE && isUsePouringMission && isTrailerRequired && state.trailer_id)
+                      state.trailer_id && !(IS_ACTIVE && activeTrailerId && isTrailerRequired && state.trailer_id)
                         ? `${
                           state.trailer_gov_number
                         } [${state.trailer_special_model_name || ''}${
                           state.trailer_special_model_name ? '/' : ''
                         }${state.trailer_model_name || ''}]`
                         : IS_ACTIVE && isUsePouringMission && isTrailerRequired ? activeTrailerId[0]
-                          : 'Н/Д'
+                          : activeTrailerId.length > 0 ? activeTrailerId[0]
+                            : 'Н/Д'
                     }
                   />
                 </EtsBootstrap.Col>

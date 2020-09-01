@@ -82,8 +82,8 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
   const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
   const objects_info = get(props.carsTravelTimeList, 'objects_info', []);
-  const travel_time_out_waybill = `Время движения вне ПЛ: ${get(props.carsTravelTimeList, 'travel_time_out_waybill', null)} (ч:мин)`;
-  const distance_out_waybill = `Пройденное расстояние вне ПЛ: ${get(props.carsTravelTimeList, 'distance_out_waybill', null)} км.`;
+  const travel_time_out_waybill = `Время движения вне ПЛ(ч:мин): ${get(props.carsTravelTimeList, 'travel_time_out_waybill', null)}`;
+  const distance_out_waybill = `Пройденное расстояние вне ПЛ, км: ${get(props.carsTravelTimeList, 'distance_out_waybill', null)}`;
 
   const setGeoobjectsValidValue = React.useCallback(() => {
     if (Object.values(objects_info).length) {

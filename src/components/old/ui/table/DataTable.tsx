@@ -580,7 +580,7 @@ export default class DataTable extends React.Component<Props, State> {
             } else if (
               !obj[key].find(
                 (el) =>
-                  (el.id && value.indexOf(el.id.toString()) > -1)
+                  (el.id && value.indexOf(el.id) > -1)
                   || (el && value.indexOf(el) > -1),
               )
             ) {

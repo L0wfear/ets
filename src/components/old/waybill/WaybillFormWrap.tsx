@@ -542,6 +542,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     formState.equipment_fuel_given = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : formState.equipment_fuel_given;
+    
+    if(isNullOrUndefined(formState.fuel_given)) {
+      formState.fuel_given = 0;
+    }
+    if(isNullOrUndefined(formState.gas_fuel_given)) {
+      formState.gas_fuel_given = 0;
+    }
 
     const fuelStart = formState.fuel_start
       ? parseFloat(formState.fuel_start)

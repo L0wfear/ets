@@ -89,7 +89,7 @@ class FilterRow extends React.Component<Props, {}> {
             );
           }
 
-          if (isArray(tableDataForOption[0][name])) {
+          if (tableDataForOption[0] && isArray(tableDataForOption[0][name])) {
             const reducedTableDataOptions = tableDataForOption
               .reduce((newArr, currentArr) => {
                 newArr.push(currentArr[name]);

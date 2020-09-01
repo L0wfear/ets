@@ -12,9 +12,19 @@ const isValidFormat = (data) => {
   if (data.length <= 2 || data.length >= 5) {
     return isNaN(data.charAt(data.length - 1)) === true;
   }
-  if (data.length === 4) {
+  if (data.length >= 4) {
     return isNaN(data.charAt(2)) !== isNaN(data.charAt(3));
   }
+};
+
+const isValidString = (data) => {
+  let err = 0;
+  for (let char of data) {
+    if (isNaN(char) && (data.length <= 2 || data.length >= 5) && data.indexOf(char) !== 2 && data.indexOf(char) !== 3) {
+      err += 1;
+    }
+  }
+  return Boolean(err);
 };
 
 const isValidValue = (data) => {
@@ -76,7 +86,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && (isValidLicense(value) || isValidFormat(value) || value.length === 10 && !isValidValue(value))) {
+          if (value && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -85,7 +95,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
             }
           }
           const maxLengthString = 10;
-          if ( value ? value.length > maxLengthString : false) {
+          if (value ? value.length > maxLengthString : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
@@ -98,7 +108,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && (isValidLicense(value) || isValidFormat(value) || value.length === 10 && !isValidValue(value))) {
+          if (value && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -107,7 +117,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
             }
           }
           const maxLengthString = 10;
-          if ( value ? value.length > maxLengthString : false) {
+          if (value ? value.length > maxLengthString : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 

@@ -11,6 +11,8 @@ import {
   carInfoChangeDateAndForToday,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
+import DistanceOverSpeed from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceOverSpeed';
+import TravelTime from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/TravelTime';
 import { diffDates, createValidDateTime, minusTime, addTime, getStartOfServerToday } from 'components/@next/@utils/dates/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
@@ -341,6 +343,8 @@ class TitleTrackTab extends React.Component<
             error={errorDates}
           />
           <DistanceAgg />
+          <DistanceOverSpeed />
+          <TravelTime />
         </div>
       </CarInfoBlockTabDataColumn>
     );

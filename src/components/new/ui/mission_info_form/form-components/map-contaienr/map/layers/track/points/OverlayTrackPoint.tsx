@@ -24,6 +24,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { OverlayLineObjectsStringContainer } from 'components/old/monitor/layers/track/points/styled/styled';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vector_object/actions';
+import { actionGetCarMissionsAndWaybillsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
 
 type Props = {
   dispatch: EtsDispatch;
@@ -35,17 +36,33 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
     objectsString: '',
+    missions: [],
   };
 
   componentDidMount() {
     this.getObjectData(this.props);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { trackPoint } = this.props;
     if (prevProps.trackPoint !== trackPoint) {
       if (!this.state.trackPoint || trackPoint.timestamp !== this.state.trackPoint.timestamp) {
         this.getObjectData(this.props);
+        this.props.dispatch(
+          actionGetCarMissionsAndWaybillsByTimestamp(
+            {
+              car_id: this.props.car_id,
+              point_timestamp: this.props.trackPoint.timestamp * 1000,
+            },
+            {
+              page: 'cars_travel_time',
+            },
+          ),
+        ).then((result) => {
+          this.setState({
+            missions: result.missions,
+          });
+        });
       }
     }
   }
@@ -83,7 +100,6 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     const { objectsString } = this.state;
 
     const {
-      missionNumber,
       trackPoint: {
         coords_msk,
         timestamp,
@@ -93,7 +109,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         nsat,
       },
     } = this.props;
-
+    const { missions } = this.state;
     const moscowDateTime = getDateWithMoscowTzByTimestamp(timestamp * 1000);
 
     const datetime = `${makeDate(moscowDateTime)} ${makeTime(moscowDateTime, true)}`;
@@ -126,7 +142,23 @@ class OverlayTrackPoint extends React.Component<Props, any> {
           }
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
-          <div>{`Задание №${missionNumber}`}</div>
+          {
+            missions === undefined
+              ? (
+                <PreloadNew typePreloader="field" />
+              )
+              :            (
+                missions.length === 0
+                  ? (
+                    <div>Нет выполняемых заданий</div>
+                  )
+                  :              (
+                    missions.map(({ number }) => (
+                      <div key={number}>{`Задание №${number}`}</div>
+                    ))
+                  )
+              )
+          }
         </OverlayLineInfoContainer>
         {
           !pointSensors.length

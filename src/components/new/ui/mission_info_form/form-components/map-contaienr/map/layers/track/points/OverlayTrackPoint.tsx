@@ -43,7 +43,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     this.getObjectData(this.props);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { trackPoint } = this.props;
     if (prevProps.trackPoint !== trackPoint) {
       if (!this.state.trackPoint || trackPoint.timestamp !== this.state.trackPoint.timestamp) {

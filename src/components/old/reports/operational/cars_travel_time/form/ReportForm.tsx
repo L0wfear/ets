@@ -239,7 +239,6 @@ export default connect<CarsTravelTimeModalStateProps, CarsTravelTimeModalDispatc
     tracksCaching: getSomeUniqState(state)
       .tracksCaching,
     company_id: getSessionState(state).userData.company_id,
-    trackPoint: state.monitorPage.carInfo.popups.trackPoint,
   }),
   (dispatch: any) => ({
     actionGetAndSetInStoreCarsTravelTime: (...arg) => (

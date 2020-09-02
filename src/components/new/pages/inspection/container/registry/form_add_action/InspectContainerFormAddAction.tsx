@@ -4,7 +4,6 @@ import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { diffDates, createValidDate } from 'components/@next/@utils/dates/dates';
-import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
 import { isString } from 'util';
@@ -46,8 +45,8 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
   };
 
   const setNameFromEvent = React.useCallback(
-    (event) => {
-      setName(get(event, 'target.value', ''));
+    (value) => {
+      setName(value);
     },
     [],
   );

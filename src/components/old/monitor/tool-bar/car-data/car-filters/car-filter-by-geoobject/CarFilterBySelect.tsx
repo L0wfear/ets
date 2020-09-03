@@ -59,7 +59,6 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
                         {
                           <DefaultInput
                             key={'geoobjects'}
-                            keyField={'geoobjects'}
                             OPTIONS={options}
                             placeholder={'Тип геообъекта'}
                           />

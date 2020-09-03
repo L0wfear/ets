@@ -4,7 +4,6 @@ import {
 
 export type PropsDefaultInput = {
   value: Array<number>;
-  keyField: string;
   changeFilter: any;
   OPTIONS: Array<IReactSelectOption>;
   placeholder: string;

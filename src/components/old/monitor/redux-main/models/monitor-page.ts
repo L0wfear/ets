@@ -26,6 +26,7 @@ export const MONITOR_PAGE_RESER = MONITOR_PAGE`RESER`;
 export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
+export const MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER = MONITOR_PAGE`CHANGE_GEOOBJECTS_FILTER`;
 export const MONITOR_PAGE_TOGGLE_DRAW_ACTIVE = MONITOR_PAGE`TOGGLE_DRAW_ACTIVE`;
 export const MONITOR_PAGE_FALSE_DRAW_ACTIVE = MONITOR_PAGE`FALSE_DRAW_ACTIVE`;
 
@@ -82,6 +83,7 @@ export type IStateMonitorPage = {
     };
     filtredCarGpsCode: Array<number>;
   };
+  geoobjectsFilter: string;
   companiesIndex: -1 | object;
   drawActive: {
     all: boolean;
@@ -154,6 +156,7 @@ export const initialMonitorState: IStateMonitorPage = {
     },
     filtredCarGpsCode: [],
   },
+  geoobjectsFilter: 'cars',
   companiesIndex: -1,
   drawActive: {
     all: false,
@@ -356,6 +359,13 @@ export default (state = initialMonitorState, { type, payload }) => {
             [payload.type]: payload.value,
           },
         },
+      };
+    }
+    case MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER: {
+      return {
+        ...state,
+        geoobjectsFilter: payload.value,
+        filters: initialMonitorState.filters,
       };
     }
     case MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST: {

@@ -84,7 +84,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const objects_info = get(props.carsTravelTimeList, 'objects_info', []);
   const travel_time_out_waybill = `Время движения вне ПЛ(ч:мин): ${get(props.carsTravelTimeList, 'travel_time_out_waybill', null)}`;
   const distance_out_waybill = `Пройденное расстояние вне ПЛ, км: ${get(props.carsTravelTimeList, 'distance_out_waybill', null)}`;
-
+  const car_id = get(props.selectedElement, 'car_id', null);
   const setGeoobjectsValidValue = React.useCallback(() => {
     if (Object.values(objects_info).length) {
       const typeLayer = 'any';
@@ -189,13 +189,13 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
             <MapContainer
               gov_number={gov_number}
               gps_code={gps_code}
+              car_id={car_id}
               track={track}
               geoobjects={geoobjects}
               inputLines={[]} //
               front_parkings={front_parkings}
               speed_limits={{mkad_speed_lim: 60, speed_lim: 60}}
               cars_sensors={cars_sensors} //
-              missionNumber={777} //
               has_mkad={has_mkad}
               object_type_name={type}
             />

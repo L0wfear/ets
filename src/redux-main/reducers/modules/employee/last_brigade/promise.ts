@@ -1,5 +1,6 @@
 import {
   get,
+  uniq,
 } from 'lodash';
 
 import { LastBrigadeService } from 'api/Services';
@@ -15,8 +16,8 @@ export const promiseLoadLastBrigade = async ({ id }: { id: number; }) => {
   }
 
   const lastBrigade: LastBrigade = {
-    last_brigade: get(respose, ['result', 'last_brigade'], []),
-    last_brigade_fios: get(respose, ['result', 'last_brigade_fios'], []),
+    last_brigade: uniq(get(respose, ['result', 'last_brigade'], [])),
+    last_brigade_fios: uniq(get(respose, ['result', 'last_brigade_fios'], [])),
   };
 
   return lastBrigade;

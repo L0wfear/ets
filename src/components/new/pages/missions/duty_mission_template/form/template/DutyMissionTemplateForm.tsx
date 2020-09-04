@@ -35,6 +35,7 @@ import {
   PropsDutyMissionTemplateWithForm,
 } from './@types/index.h';
 import { ReduxState } from 'redux-main/@types/state';
+import { uniq } from 'lodash';
 
 /**
  * Форма шаблона наряд-заданий
@@ -68,6 +69,22 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = React.me
       [isPermitted],
     );
     const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
+
+    const handleSubmit = React.useCallback(() => {
+      const brigade_employee_id_list_id = uniq(state.brigade_employee_id_list_id);
+      const brigade_employee_id_list_fio = uniq(state.brigade_employee_id_list_fio);
+      props.handleChange({
+        brigade_employee_id_list: brigade_employee_id_list_id.map((id, index) => ({
+          employee_id: id,
+          employee_fio: brigade_employee_id_list_fio[index],
+        })),
+        brigade_employee_id_list_id,
+        brigade_employee_id_list_fio,
+      });
+      setTimeout(() => {
+        props.defaultSubmit();
+      }, 0);
+    }, [props.defaultSubmit, props.handleChange, state.brigade_employee_id_list_id, state.brigade_employee_id_list_fio]);
 
     return (
       <EtsBootstrap.ModalContainer
@@ -213,7 +230,7 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = React.me
           {isPermitted ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
               disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
+              onClick={handleSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (

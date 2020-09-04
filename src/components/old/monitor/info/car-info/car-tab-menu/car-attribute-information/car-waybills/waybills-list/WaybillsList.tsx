@@ -10,8 +10,11 @@ import { ReduxState } from 'redux-main/@types/state';
 import { carInfoChangeDateAndForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { FlexContainer } from 'global-styled/global-styled';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import * as queryString from 'query-string';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
-export const FlexContainerStyled = styled(FlexContainer)`
+export const FlexContainerStyled = styled(FlexContainer as any)`
   justify-content: space-between;
 `;
 
@@ -30,7 +33,12 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
       carInfoChangeDateAndForToday,
       setParamsAndSearch,
     } = props;
-
+    const location = useLocation();
+    const popoverHoverFocus = (
+      <EtsBootstrap.Popover id="popover-trigger-hover">
+        {'Обновление информации на карте и в карточке ТС в соответствии с периодом действия ПЛ'}
+      </EtsBootstrap.Popover>
+    );
     const setShowWaybill = React.useCallback((date_start, date_end, id) => {
       setParamsAndSearch({
         params: {
@@ -43,18 +51,22 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
     }, [setParamsAndSearch]);
 
     const setDatesInSearch = React.useCallback((date_start, date_end) => {
+      const searchParams = queryString.parse(location.search);
       if (forToday) {
         carInfoChangeDateAndForToday(false, date_start, date_end);
       }
-      setParamsAndSearch({
-        params: {
-          waybill_id: null
-        },
-        search: {
-          date_start, date_end
-        }
-      });
-    }, [forToday, carInfoChangeDateAndForToday, setParamsAndSearch]);
+      if (searchParams.date_start !== date_start || searchParams.date_end !== date_end) {
+        setParamsAndSearch({
+          params: {
+            waybill_id: null
+          },
+          search: {
+            date_start, date_end
+          }
+        });
+      }
+    }, [forToday, carInfoChangeDateAndForToday, setParamsAndSearch, location]);
+
     return (
       <div className="car_info-missions_list_container">
         {
@@ -89,9 +101,23 @@ const WaybillsList: React.FC<PropsCarWaybills> = React.memo(
                     <FlexContainerStyled direction="column" alignItems="center">
                       <EtsBootstrap.Glyphicon glyph="info-sign" className="pointer fontSize24"
                         onClick={() => setShowWaybill(waybill.date_start, waybill.date_end, waybill.id)} />
-                      <EtsBootstrap.Button id="refresh" data-id={waybill.id} onClick={() => setDatesInSearch(waybill.date_start, waybill.date_end)}>
-                        <EtsBootstrap.Glyphicon glyph="refresh" />
-                      </EtsBootstrap.Button>
+                      <EtsButtonsContainer>
+                        <EtsBootstrap.OverlayTrigger
+                          trigger={['hover']}
+                          placement="top"
+                          overlay={popoverHoverFocus}
+                        >
+                          <EtsBootstrap.Button
+                            id="refresh"
+                            data-id={waybill.id}
+                            onClick={() =>
+                              setDatesInSearch(waybill.date_start, waybill.date_end)
+                            }
+                          >
+                            <EtsBootstrap.Glyphicon glyph="refresh" />
+                          </EtsBootstrap.Button>
+                        </EtsBootstrap.OverlayTrigger>
+                      </EtsButtonsContainer>
                     </FlexContainerStyled>
                   </div>
                 );

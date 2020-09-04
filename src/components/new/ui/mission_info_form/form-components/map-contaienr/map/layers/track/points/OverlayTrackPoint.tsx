@@ -102,6 +102,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     const { objectsString } = this.state;
 
     const {
+      missionNumber,
       trackPoint: {
         coords_msk,
         timestamp,
@@ -144,8 +145,9 @@ class OverlayTrackPoint extends React.Component<Props, any> {
           }
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
-          {
-            missions === null
+          {missionNumber 
+            ? <div>{`Задание №${missionNumber}`}</div>
+            : missions === null
               ? (
                 <PreloadNew typePreloader="field" />
               )

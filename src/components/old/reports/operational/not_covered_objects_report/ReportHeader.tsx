@@ -75,10 +75,8 @@ const NotCoveredObjectsReportHeader: React.FC<IPropsNotCoveredObjectsReportHeade
             <DatePickerRange
               date_start_id="date_from"
               date_start_value={date_from}
-              date_start_time={false}
               date_end_id="date_to"
               date_end_value={date_to}
-              date_end_time={false}
               date_start_error={validDateRange.date_start_error}
               disabled={readOnly}
               onChange={props.handleChange}

@@ -11,7 +11,7 @@ export type PropsMapContainer = {
   missionNumber?: number;
   has_mkad: boolean;
   object_type_name: string;
-  car_id?: number;
+  car_id: number;
   speed_limits: ISpeedLimits;
 };
 

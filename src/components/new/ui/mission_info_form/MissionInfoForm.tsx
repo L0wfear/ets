@@ -270,9 +270,9 @@ class MissionInfoForm extends React.Component<
                 front_parkings={this.state.front_parkings}
                 speed_limits={speed_limits}
                 cars_sensors={this.state.cars_sensors}
-                missionNumber={mission_data.number}
                 has_mkad={route_data.has_mkad}
                 object_type_name={route_data.object_type_name}
+                car_id={car_data.asuods_id}
               />
               {!this.state.tooLongDates ? (
                 <InfoTableData

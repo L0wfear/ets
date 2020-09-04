@@ -36,7 +36,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
     objectsString: '',
-    missions: [],
+    missions: null,
   };
 
   componentDidMount() {
@@ -45,24 +45,26 @@ class OverlayTrackPoint extends React.Component<Props, any> {
 
   componentDidUpdate(prevProps) {
     const { trackPoint } = this.props;
+    if (this.state.missions === null || prevProps.trackPoint !== trackPoint) {
+      this.props.dispatch(
+        actionGetCarMissionsAndWaybillsByTimestamp(
+          {
+            car_id: this.props.car_id,
+            point_timestamp: this.props.trackPoint.timestamp * 1000,
+          },
+          {
+            page: 'cars_travel_time',
+          },
+        ),
+      ).then((result) => {
+        this.setState({
+          missions: result.missions,
+        });
+      });
+    }
     if (prevProps.trackPoint !== trackPoint) {
       if (!this.state.trackPoint || trackPoint.timestamp !== this.state.trackPoint.timestamp) {
         this.getObjectData(this.props);
-        this.props.dispatch(
-          actionGetCarMissionsAndWaybillsByTimestamp(
-            {
-              car_id: this.props.car_id,
-              point_timestamp: this.props.trackPoint.timestamp * 1000,
-            },
-            {
-              page: 'cars_travel_time',
-            },
-          ),
-        ).then((result) => {
-          this.setState({
-            missions: result.missions,
-          });
-        });
       }
     }
   }
@@ -143,7 +145,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           {
-            missions === undefined
+            missions === null
               ? (
                 <PreloadNew typePreloader="field" />
               )

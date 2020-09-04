@@ -113,6 +113,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
               <OverlayTrackPoint
                 map={this.props.map}
                 gov_number={this.props.gov_number}
+                missionNumber={this.props.missionNumber}
                 car_id={this.props.car_id}
                 trackPoint={selectedPoint}
                 track={this.props.track}

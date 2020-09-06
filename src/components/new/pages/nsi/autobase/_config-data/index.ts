@@ -15,6 +15,7 @@ import insurancePolicyList from 'components/new/pages/nsi/autobase/pages/insuran
 import repairCompanyList from 'components/new/pages/nsi/autobase/pages/repair_company/_config-data';
 import fuelCardsList from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data';
 import fuelCardsArchiveList from 'components/new/pages/nsi/autobase/pages/fuel_cards_archive/_config-data';
+import penaltiesList from 'components/new/pages/nsi/autobase/pages/penalties/_config-data';
 
 const children = {
   carActualList,
@@ -32,6 +33,7 @@ const children = {
   repairCompanyList,
   fuelCardsList,
   fuelCardsArchiveList,
+  penaltiesList,
 };
 
 export default {

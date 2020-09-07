@@ -8,10 +8,10 @@ export type PropsMapContainer = {
   front_parkings: Array<any>;
   track: Array<any>;
   cars_sensors: object;
-  missionNumber: number;
+  missionNumber?: number;
   has_mkad: boolean;
   object_type_name: string;
-
+  car_id: number;
   speed_limits: ISpeedLimits;
 };
 

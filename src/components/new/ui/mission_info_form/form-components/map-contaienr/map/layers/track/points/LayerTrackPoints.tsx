@@ -23,7 +23,7 @@ type PropsLayerTrackPoints = {
   map: Map;
   missionNumber: string | number;
   cars_sensors: object;
-
+  car_id?: number;
   carInfoSetTrackPoint: any;
 };
 
@@ -114,6 +114,7 @@ class LayerTrackPoints extends React.Component<PropsLayerTrackPoints, StateLayer
                 map={this.props.map}
                 gov_number={this.props.gov_number}
                 missionNumber={this.props.missionNumber}
+                car_id={this.props.car_id}
                 trackPoint={selectedPoint}
                 track={this.props.track}
                 hidePopup={this.hidePopup}

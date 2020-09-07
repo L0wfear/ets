@@ -568,7 +568,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...fuelDefaultElement,
         is_no_electrical_refill: Boolean(is_no_electrical_refill), 
       }); // чистим все поля, связанные с газом
-      this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
       this.handleChange('electrical_fuel_type', 'ELECTRICITY',);
       this.handleChangeActiveNavTab('electrical');
     } else {

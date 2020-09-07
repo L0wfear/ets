@@ -156,7 +156,16 @@ class TitleTrackTab extends React.Component<
   };
 
   carInfoToggleForToday: any = (e) => {
-    this.props.carInfoToggleForToday();
+    const {
+      actionLoadTimeMoscow,
+      carInfoChangeDateAndForToday,
+      forToday,
+    } = this.props;
+    actionLoadTimeMoscow().then((time) => {
+      const date_start = createValidDateTime(getStartOfServerToday(time.date));
+      const date_end = createValidDateTime(time.date);
+      carInfoChangeDateAndForToday(!forToday, date_start, date_end);
+    });
   };
 
   validateDates = (date_start, date_end) => {

@@ -41,8 +41,9 @@ const NotCoveredObjectsReportHeader: React.FC<IPropsNotCoveredObjectsReportHeade
       onClick({
         date_from: createValidDateTime(date_from),
         date_to: createValidDateTime(date_to),
+        object_type,
       });
-    }, [date_from, date_to, onClick]);
+    }, [date_from, date_to, onClick, object_type]);
 
     const validDateRange = React.useMemo(() => {
       const diffDate = diffDates(date_to, date_from, 'days');

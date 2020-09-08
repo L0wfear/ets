@@ -487,6 +487,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}
                 DUTY_MISSION_IS_ASSIGNED={DUTY_MISSION_IS_ASSIGNED}
                 DUTY_MISSION_IS_COMPLETED={DUTY_MISSION_IS_COMPLETED}
+                IS_CREATING={IS_CREATING}
                 onChange={this.props.handleChange}
                 page={page}
                 path={path}

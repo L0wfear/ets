@@ -31,6 +31,18 @@ export const numberArrayDataMatching = (filterValue, fieldValueArray) =>
 
 const floatFormatter = (value) => parseFloat(value);
 const defaultFormatter = (value) => value;
+const dateFormatter = (value) => (
+  /^(\d{2}\.){2}\d{4}\s\d{2}:\d{2}$/.test(value)
+    ? value.split(' ')
+      .map((el, i) => {
+        if(i === 0) {
+          return el.split('.').reverse().join('-');
+        }
+        return `${el}:00`;
+      })
+      .join('T')
+    : value
+);
 
 const formattedTimeValue = (value) => {
   if (isString(value) && value.includes(':')) {
@@ -51,7 +63,7 @@ export const parseAdvancedFilter = (filterObject, key, value, filterType) => {
     default:
   }
 
-  const formattedValue = valueFormatter(formattedTimeValue(value));
+  const formattedValue = filterType === 'advanced-datetime' ? dateFormatter(value) : valueFormatter(formattedTimeValue(value));
   if (isIntervalFilter) {
     const lteValue = valueFormatter(filterObject[`${key}__lte`]);
     const gteValue = valueFormatter(filterObject[`${key}__gte`]);

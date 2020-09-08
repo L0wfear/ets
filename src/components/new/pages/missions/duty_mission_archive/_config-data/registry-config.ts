@@ -49,7 +49,7 @@ export const config: TypeConfigData<DutyMission> = {
         step: 1,
       },
       {
-        valueKey: 'okrug_name',
+        valueKey: 'okrug_id',
         title: [
           {
             title: 'Округ',
@@ -64,7 +64,7 @@ export const config: TypeConfigData<DutyMission> = {
         }
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_id',
         title: [
           {
             displayIf: displayIfContant.isKgh,

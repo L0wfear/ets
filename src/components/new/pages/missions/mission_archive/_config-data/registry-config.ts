@@ -44,7 +44,7 @@ export const config: TypeConfigData<Mission> = {
   filter: {
     fields: [
       {
-        valueKey: 'okrug_name',
+        valueKey: 'okrug_id',
         title: [
           {
             title: 'Округ',
@@ -59,7 +59,7 @@ export const config: TypeConfigData<Mission> = {
         }
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_id',
         title: [
           {
             displayIf: displayIfContant.isKgh,

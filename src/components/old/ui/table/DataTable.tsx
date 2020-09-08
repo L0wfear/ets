@@ -540,6 +540,11 @@ export default class DataTable extends React.Component<Props, State> {
             && diffDates(obj[key], value) !== 0
           ) {
             isValid = false;
+          }  else if (
+            filter
+            && filter.type === 'advanced-datetime'
+          ) {
+            isValid = parseAdvancedFilter(value, key, obj[key], filter.type);
           } else if (
             moment(obj[key]).format(global.APP_DATE_FORMAT)
             !== moment(value).format(global.APP_DATE_FORMAT)

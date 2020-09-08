@@ -37,12 +37,12 @@ import {actionLoadTimeMoscow} from '../../../../../../../../../redux-main/reduce
 class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMission, StateFieldDatesDutyMission> {
   componentDidMount() {
     const {
-      id,
       plan_date_start,
       plan_date_end,
+      IS_CREATING,
     } = this.props;
 
-    if (!id && plan_date_start && plan_date_end) {
+    if (IS_CREATING && plan_date_start && plan_date_end) {
       this.updateDateStartByCurrentTime();
     }
   }

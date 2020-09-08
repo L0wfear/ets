@@ -59,7 +59,7 @@ export const config: TypeConfigData<Mission> = {
         }
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_id',
         title: [
           {
             displayIf: displayIfContant.isKgh,

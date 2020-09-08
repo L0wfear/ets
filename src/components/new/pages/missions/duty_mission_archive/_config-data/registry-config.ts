@@ -64,7 +64,7 @@ export const config: TypeConfigData<DutyMission> = {
         }
       },
       {
-        valueKey: 'company_name',
+        valueKey: 'company_id',
         title: [
           {
             displayIf: displayIfContant.isKgh,

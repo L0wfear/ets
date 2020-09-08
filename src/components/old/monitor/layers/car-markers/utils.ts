@@ -47,6 +47,11 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
     case 'carFilterMultyTechCondition': return !value.length || value.includes(car_actualData.condition);
     case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
+    case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);
+    case 'levelSensors': return value === null || (value === 1 ? car_actualData.level_sensors_num > 0 : car_actualData.level_sensors_num === 0);
+    case 'withoutMissions':
+    case 'withoutWaybills':
+    case 'carFilterMultyDrivers': return true;
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер
     default: return false;

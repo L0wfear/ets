@@ -62,6 +62,7 @@ export type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {
   type: 'boolean';
   checked?: any;
   checkboxStyle?: any;
+  labelAfter?: boolean;
 };
 
 export type ExtFieldString<V = any> = ExtFieldCommon<V> & {

@@ -78,7 +78,12 @@ export type IStateMonitorPage = {
       carFilterMultyTechCondition: Array<number>;
       carFilterMultyModel: Array<number>;
       carFilterMultyStructure: Array<number>;
+      carFilterMultyOkrug: Array<number>;
       carFilterMultyOwner: Array<number>;
+      levelSensors: 2 | 1;
+      carFilterMultyDrivers: Array<number>;
+      withoutMissions: boolean;
+      withoutWaybills: boolean;
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
     };
     filtredCarGpsCode: Array<number>;
@@ -151,8 +156,13 @@ export const initialMonitorState: IStateMonitorPage = {
       carFilterMultyTechCondition: [],
       carFilterMultyModel: [],
       carFilterMultyStructure: [],
+      carFilterMultyOkrug: [],
       carFilterMultyOwner: [],
+      levelSensors: null,
+      carFilterMultyDrivers: [],
       featureBufferPolygon: null, // DITETSSUP-2007
+      withoutMissions: false,
+      withoutWaybills: false,
     },
     filtredCarGpsCode: [],
   },

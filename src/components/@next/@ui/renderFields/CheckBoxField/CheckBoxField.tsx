@@ -19,7 +19,7 @@ const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
     return (
       <SingleUiElementWrapper hidden={props.hidden} className={className}>
         <FieldLabel>
-          {label}
+          {!props.labelAfter && label}
           <CheckBoxFieldUi
             id={id}
             type="checkbox"
@@ -28,6 +28,7 @@ const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
             onChange={props.onChange}
             disabled={props.disabled}
           />
+          {props.labelAfter && label}
         </FieldLabel>
       </SingleUiElementWrapper>
     );

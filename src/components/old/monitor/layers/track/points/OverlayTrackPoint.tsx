@@ -117,7 +117,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
       actionGetCarMissionsAndWaybillsByTimestamp(
         {
           car_id: asuods_id,
-          point_timestamp: props.trackPoint.timestamp * 1000,
+          point_timestamp: props.trackPoint.timestamp,
         },
         {
           page: 'mainpage',

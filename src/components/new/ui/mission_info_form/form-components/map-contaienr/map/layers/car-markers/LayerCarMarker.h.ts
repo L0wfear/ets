@@ -13,6 +13,7 @@ export type PropsLayerCarMarker = {
   token: string;
   points_ws: string;
   gps_code: string | null;
+  mission_date_end?: string | Date;
 };
 
 export type OneWsDataCardata = {

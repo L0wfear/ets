@@ -127,7 +127,7 @@ export function createValidDateTimeDots(date: string | Date) {
   return moment(date).format('DD.MM.YYYY HH:mm');
 }
 
-export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false, inputFormat?: string,) {
+export function createValidDateTime(date: string | Date | Moment.Moment | number, withSeconds = false, inputFormat?: string,) {
   if (!date) {
     return null;
   }

@@ -4,6 +4,7 @@ import {
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { DefaultInputTypes } from './default-input/DefaultInput.h';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 export type PropsCarFilterByText = {
   active: boolean;
@@ -11,6 +12,7 @@ export type PropsCarFilterByText = {
   company_id: InitialStateSession['userData']['company_id'];
   carActualGpsNumberIndex: any;
   geoobjectsFilter: string;
+  carFilters: IStateMonitorPage['filters']['data'];
 };
 
 export type StateCarFilterByText = {

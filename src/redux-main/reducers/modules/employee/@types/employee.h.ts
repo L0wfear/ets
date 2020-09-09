@@ -34,6 +34,7 @@ export type Employee = {
   medical_certificate: string;
   middle_name: string;
   okrug_name: string;
+  okrug_id: number;
   personnel_number: string;
   phone: string;
   position_id: number;

@@ -16,6 +16,8 @@ import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/Mape
 import { getDistanceValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { getTimeValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/TravelTimeValue';
+import { getDistanceOverSpeedValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceOverSpeedValue';
 
 type Props = ({
   disabled: boolean;
@@ -56,6 +58,9 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
     const date_start: string = props.searchState.date_start;
     const date_end: string = props.searchState.date_end;
+
+    const track = etsUseSelector((state) => getMonitorPageState(state).carInfo.trackCaching.track);
+    const missions = etsUseSelector((state) => getMonitorPageState(state).carInfo.missionsAndWaybillsData.missions);
 
     const distance = etsUseSelector(
       (state) => getMonitorPageState(state).carInfo.trackCaching.distance,
@@ -427,12 +432,16 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               { canvas: canvas_map },
               canvas_text_track,
               canvas_text_track_distance,
+              canvas_text_track_overspeed,
+              canvas_text_track_time,
               canvas_track_sensors_list,
               canvas_car_track_legend,
             ] = await Promise.all([
               props.getMapImageInBase64ByKey(mapKey),
               getTextCanvas('Трекинг:', 'font-size:14px; font-weight:800'),
               getTextCanvas(`Протяженность, км: ${getDistanceValue(distance)}`, 'font-size:14px;'),
+              getTextCanvas(`Дистанция с превышением скорости, км: ${getDistanceOverSpeedValue({ track, missions, date_start, date_end })}`, 'font-size:14px;'),
+              getTextCanvas(`Время движения общее, ч: ${getTimeValue(track)}`, 'font-size:14px;'),
               getCanvasOfElement(document.getElementById('track_sensors_list')),
               getCanvasOfElement(document.getElementById('car_track_legend')),
             ]);
@@ -459,6 +468,30 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             );
 
             topPadding += canvas_text_track_distance.height / editParam;
+
+            // Дистанция с превышением
+            doc.addImage(
+              canvas_text_track_overspeed.toDataURL('image/png'),
+              'JPEG',
+              10,
+              topPadding,
+              canvas_text_track_overspeed.width / editParam,
+              canvas_text_track_overspeed.height / editParam,
+            );
+
+            topPadding += canvas_text_track_overspeed.height / editParam;
+
+            // Общее время
+            doc.addImage(
+              canvas_text_track_time.toDataURL('image/png'),
+              'JPEG',
+              10,
+              topPadding,
+              canvas_text_track_time.width / editParam,
+              canvas_text_track_time.height / editParam,
+            );
+
+            topPadding += canvas_text_track_time.height / editParam;
 
             // карта
             doc.addImage(

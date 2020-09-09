@@ -344,7 +344,7 @@ export const config: TypeConfigData<Mission> = {
           key: 'route_name',
           title: 'Маршрут',
           width: 200,
-        }, 
+        },
         {
           key: 'object_type_name',
           title: 'Тип объекта',

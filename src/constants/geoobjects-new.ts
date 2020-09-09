@@ -82,6 +82,15 @@ export const GEOOBJECTS_OBJ = {
   ...GORMOST_GEOOBJECTS_LIST,
 };
 
+export const GEOOBJECTS_LIST_WITH_CARS = {
+  ...BASE_GEOOBJECTS_LIST,
+  cars: {
+    serverName: 'cars',
+    label: 'ТС',
+    labelSingl: 'ТС',
+  },
+};
+
 export const GEOOBJECTS_OBJ_BY_SERVER_NAME = Object.entries(GEOOBJECTS_OBJ).reduce((newObj, [id, { serverName, ...other }]) => ({
   ...newObj,
   [serverName]: {

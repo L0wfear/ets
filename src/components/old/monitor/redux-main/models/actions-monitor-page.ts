@@ -22,6 +22,7 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
   MONITOR_PAGE_SET_COMPANY,
+  MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -154,6 +155,13 @@ export const monitorPageChangeFilter = (type, value) => ({ // добавлени
   type: MONITOR_PAGE_CHANGE_FILTERS,
   payload: {
     type,
+    value,
+  },
+});
+
+export const monitorPageChangeGeoobjectsFilter = (value) => ({
+  type: MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER,
+  payload: {
     value,
   },
 });

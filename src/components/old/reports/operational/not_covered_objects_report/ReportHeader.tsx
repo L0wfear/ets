@@ -8,7 +8,7 @@ import {
 
 import {
   getToday9am,
-  getTomorrow9am,
+  getYesterday9am,
   createValidDateTime,
   diffDates,
 } from 'components/@next/@utils/dates/dates';
@@ -31,8 +31,8 @@ const NotCoveredObjectsReportHeader: React.FC<IPropsNotCoveredObjectsReportHeade
   (props) => {
     const {
       readOnly,
-      date_from = getToday9am(),
-      date_to = getTomorrow9am(),
+      date_from = getYesterday9am(),
+      date_to = getToday9am(),
       object_type = 'all',
       onClick,
     } = props;

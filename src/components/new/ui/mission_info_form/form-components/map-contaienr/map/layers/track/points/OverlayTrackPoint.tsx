@@ -50,7 +50,7 @@ class OverlayTrackPoint extends React.Component<Props, any> {
         actionGetCarMissionsAndWaybillsByTimestamp(
           {
             car_id: this.props.car_id,
-            point_timestamp: this.props.trackPoint.timestamp * 1000,
+            point_timestamp: this.props.trackPoint.timestamp,
           },
           {
             page: 'cars_travel_time',

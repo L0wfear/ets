@@ -15,8 +15,14 @@ import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
-import { Driver } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import {
+  createValidDateTime,
+  diffDates,
+  getStartOfServerToday,
+} from 'components/@next/@utils/dates/dates';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
@@ -47,31 +53,59 @@ const initialFilterFields: StateCarFilterByText['filterFields'] = [
 ];
 
 const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
-  ({ carActualGpsNumberIndex, isOkrug, company_id, active }) => {
+  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters }) => {
     const [hidden, setHidden] = React.useState(true);
-    const [
-      carFilterMultyDriversOptions,
-      setCarFilterMultyDriversOptions,
-    ] = React.useState<Array<Driver>>([]);
+    const [employeeData, setEmployeeData] = React.useState<Array<Employee>>([]);
+    const [moscowTime, setMoscowTime] = React.useState(null);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
-      dispatch(employeeDriverGetSetDriver({}, { page: '' })).then(
-        ({ data }) => {
-          setCarFilterMultyDriversOptions(
-            data
-              .filter((el) => el.active)
-              .map((el) => ({
-                value: el.id,
-                label: `${el.last_name} ${el.first_name} ${el.middle_name}`,
-              }))
-          );
-        }
-      );
+      (async () => {
+        const employeeData = await (
+          await dispatch(employeeEmployeeGetSetEmployee({}, { page: '' }))
+        ).data;
+        const moscowTime = await dispatch(
+          actionLoadTimeMoscow({}, { page: 'mainpage' })
+        );
+        setEmployeeData(employeeData);
+        setMoscowTime(moscowTime);
+      })();
     }, []);
+
     const calcData = React.useMemo(() => {
       return makeOptions(carActualGpsNumberIndex);
     }, [carActualGpsNumberIndex]);
+
+    const carFilterMultyDriversOptions = React.useMemo(() => {
+      return employeeData.length && moscowTime
+        ? employeeData
+          .filter((el) => {
+            const defaultParams
+                = el.drivers_license
+                && el.active
+                && el.special_license
+                && diffDates(
+                  createValidDateTime(el.drivers_license_date_end),
+                  getStartOfServerToday(createValidDateTime(moscowTime.date))
+                ) > 0
+                && diffDates(
+                  createValidDateTime(el.special_license_date_end),
+                  getStartOfServerToday(createValidDateTime(moscowTime.date))
+                ) > 0;
+            if (defaultParams && carFilters.carFilterMultyOwner.length) {
+              return carFilters.carFilterMultyOwner.includes(el.company_id);
+            }
+            if (defaultParams && carFilters.carFilterMultyOkrug.length) {
+              return carFilters.carFilterMultyOkrug.includes(el.okrug_id);
+            }
+            return defaultParams;
+          })
+          .map((el) => ({
+            value: {id: el.id, cars: el.prefer_car ? el.secondary_car.concat(el.prefer_car) : el.secondary_car},
+            label: `${el.last_name} ${el.first_name} ${el.middle_name ? el.middle_name : ''}`,
+          }))
+        : [];
+    }, [employeeData, moscowTime, carFilters.carFilterMultyOwner, carFilters.carFilterMultyOkrug]);
 
     const optionsArr = React.useMemo(() => {
       return {
@@ -156,8 +190,10 @@ export default connect<any, any, any, ReduxState>((state) => ({
   company_id: state.session.userData.company_id,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   geoobjectsFilter: state.monitorPage.geoobjectsFilter,
+  carFilters: state.monitorPage.filters.data,
   active: initialFilterFields.some(
     (el) =>
-      state.monitorPage.filters.data[el.key]?.length || state.monitorPage.filters.data[el.key] > 0
+      state.monitorPage.filters.data[el.key]?.length
+      || state.monitorPage.filters.data[el.key] > 0
   ),
 }))(CarFilterByText);

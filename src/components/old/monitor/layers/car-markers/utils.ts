@@ -50,8 +50,8 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
     case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);
     case 'levelSensors': return value === null || (value === 1 ? car_actualData.level_sensors_num > 0 : car_actualData.level_sensors_num === 0);
     case 'withoutMissions':
-    case 'withoutWaybills':
-    case 'carFilterMultyDrivers': return true;
+    case 'withoutWaybills': return true;
+    case 'carFilterMultyDrivers': return !value.length || value.some((el) => el.cars.includes(car_actualData.asuods_id));
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер
     default: return false;

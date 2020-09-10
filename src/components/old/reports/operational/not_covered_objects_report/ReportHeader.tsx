@@ -7,7 +7,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import {
-  getToday9am,
+  getToday859am,
   getYesterday9am,
   createValidDateTime,
   diffDates,
@@ -32,7 +32,7 @@ const NotCoveredObjectsReportHeader: React.FC<IPropsNotCoveredObjectsReportHeade
     const {
       readOnly,
       date_from = getYesterday9am(),
-      date_to = getToday9am(),
+      date_to = getToday859am(),
       object_type = 'all',
       onClick,
     } = props;

@@ -274,6 +274,7 @@ class MissionInfoForm extends React.Component<
                 has_mkad={route_data.has_mkad}
                 object_type_name={route_data.object_type_name}
                 car_id={car_data.asuods_id}
+                mission_date_end={mission_data.date_end}
               />
               {!this.state.tooLongDates ? (
                 <InfoTableData

@@ -13,6 +13,7 @@ export type PropsMapContainer = {
   object_type_name: string;
   car_id: number;
   speed_limits: ISpeedLimits;
+  mission_date_end?: string | Date;
 };
 
 export type StateMapContainer = {

@@ -7,7 +7,6 @@ import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/model
 
 import {
   PropsCarFieldBytextInput,
-  StateCarFieldBytextInput,
 } from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput.h';
 
 import {
@@ -18,46 +17,82 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
-class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
-  focusOn = (node) => {
-    const element: any = findDOMNode(node);
-    if (element) {
-      (element.querySelector('.form-control') as HTMLInputElement).focus();
-    }
-  };
+const placeholder = {
+  reg_number: 'рег.номер',
+  garage_number: 'гар.номер',
+  name: 'Наименование',
+  short_name: 'Краткое наименование',
+  full_name: 'Полное наименование',
+  address: 'Адресная привязка',
+  GBU: 'ГБУ',
+};
+const CarFieldBytextInput: React.FC<PropsCarFieldBytextInput> = React.memo(
+  ({carFilterText, changeCarFilterText, resetCarFilterText, handleFocusOnCar, canFocusOnCar, geoobjectsFilter}) => {
 
-  render() {
+    const focusOn = React.useCallback((node) => {
+      const element: any = findDOMNode(node);
+      if (element) {
+        (element.querySelector('.form-control') as HTMLInputElement).focus();
+      }
+    }, []);
+
+    const placeholderText = React.useMemo(() => {
+      if (geoobjectsFilter === 'cars') {
+        return `${placeholder.reg_number}/${placeholder.garage_number}`;
+      }
+      if (geoobjectsFilter === 'dt' || geoobjectsFilter === 'odh') {
+        return `${placeholder.name} ${placeholder.GBU}`;
+      }
+      if (geoobjectsFilter === 'ssp' || geoobjectsFilter === 'msp') {
+        return `${placeholder.full_name}/${placeholder.short_name}`;
+      }
+      if (geoobjectsFilter === 'carpool' || geoobjectsFilter === 'fueling_water') {
+        return placeholder.full_name;
+      }
+      if (geoobjectsFilter === 'danger_zone') {
+        return placeholder.address;
+      }
+      return placeholder.name;
+    }, [geoobjectsFilter]);
+
     return (
       <div className="car_text_filter-container">
         <ExtField
-          ref={this.focusOn}
+          ref={focusOn}
           label={false}
           type="string"
-          value={this.props.carFilterText}
-          onChange={this.props.changeCarFilterText}
-          placeholder="рег.номер/гар.номер"
+          value={carFilterText}
+          onChange={changeCarFilterText}
+          placeholder={placeholderText}
         />
         <div className="input_text_action-wrap">
-          {
-            this.props.carFilterText
-              ? <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
-                <EtsBootstrap.Glyphicon glyph="remove" />
-              </div>
-              :          <DivNone />
-          }
-          {
-            this.props.canFocusOnCar
-              ? <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
-                <EtsBootstrap.Glyphicon glyph="screenshot" />
-                <span>Показать</span>
-              </div>
-              :            <DivNone />
-          }
+          {carFilterText ? (
+            <div
+              className="input_text_action remove"
+              onClick={resetCarFilterText}
+            >
+              <EtsBootstrap.Glyphicon glyph="remove" />
+            </div>
+          ) : (
+            <DivNone />
+          )}
+          {canFocusOnCar ? (
+            <div
+              className="input_text_action show_tc"
+              onClick={handleFocusOnCar}
+            >
+              <EtsBootstrap.Glyphicon glyph="screenshot" />
+              <span>Показать</span>
+            </div>
+          ) : (
+            <DivNone />
+          )}
         </div>
       </div>
     );
   }
-}
+);
+
 const mapStateToProps = (state) => {
   const carsToShow = Object.entries(state.monitorPage.filters.filtredCarGpsCode)
     .filter(([gps_code, show]) => (
@@ -70,6 +105,7 @@ const mapStateToProps = (state) => {
     carsGpsCodeShowList: carsToShow[0],
     canFocusOnCar: carsToShow.length === 1,
     carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
+    geoobjectsFilter: state.monitorPage.geoobjectsFilter,
   };
 };
 

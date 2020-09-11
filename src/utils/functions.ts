@@ -361,4 +361,16 @@ export const metresToKilometeres = (metresVal: number) =>
 
 export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
 
-export const isEmptyObj = (obj: Object) => !!Object.keys(obj).length;
+export const isEmptyObj = (obj: Object) => obj === null || typeof obj !== 'object' || !Object.keys(obj).length;
+
+export const makeObjArrayUniqByKey = (arr: Array<Object>, key: string) => {
+  const valuesArr = [];
+  const result = [];
+  for (let i = 0; i < arr.length; i++) {
+    if(!valuesArr.includes(arr[i][key])) {
+      result.push(arr[i]);
+      valuesArr.push(arr[i][key]);
+    }
+  }
+  return result;
+};

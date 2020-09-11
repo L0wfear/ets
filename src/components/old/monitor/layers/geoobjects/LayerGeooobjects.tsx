@@ -13,7 +13,7 @@ import {
   diffInputProps,
   renderGeoobjects,
 } from 'components/old/monitor/layers/geoobjects/utils';
-
+import { isEmptyObj } from 'utils/functions';
 class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateLayerGeooobjects> {
   componentDidMount() {
     this.props.addLayer({ id: 'GeoObject', zIndex: 0, renderMode: 'image' }).then(() => {
@@ -24,9 +24,11 @@ class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateL
   }
 
   componentDidUpdate(prevProps) {
-    const shouldBeFiltered = this.props.filters !== prevProps.filters;
+    const { geoobjects, geoobjectsFilter } = this.props;
+    const shouldBeFiltered = this.props.filters !== prevProps.filters && !isEmptyObj(geoobjects[geoobjectsFilter]?.data);
+
     if (
-      this.props.geoobjects !== prevProps.geoobjects
+      geoobjects !== prevProps.geoobjects
       || this.props.SHOW_GEOOBJECTS !== prevProps.SHOW_GEOOBJECTS 
       || shouldBeFiltered
     ) {

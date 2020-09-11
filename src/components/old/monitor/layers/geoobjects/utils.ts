@@ -128,6 +128,17 @@ export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithC
   };
 };
 
+const filterObjectsByText = (serverName, filterValue, value): boolean => {
+  const compareFunction = (key) => value[key] && value[key].toString().toLocaleLowerCase().includes(filterValue.toLocaleLowerCase());
+  if(serverName === 'msp' || serverName === 'ssp') {
+    return compareFunction('name') || compareFunction('shortname');
+  }
+  if(serverName === 'danger_zone') {
+    return compareFunction('address_comm');
+  }
+  return compareFunction('name');
+}; 
+
 /**
  * @param thisProps текущие состояние пропсов
  * @param prevProps прошлое состояние пропсов
@@ -144,7 +155,7 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
 
   const filterFields = [];
   Object.keys(filters).forEach((key) => {
-    if (Array.isArray(filters[key]) && filters[key].length) {
+    if ((Array.isArray(filters[key]) || key === 'carFilterText') && filters[key].length) {
       filterFields.push(key);
     }
   });
@@ -156,7 +167,7 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
 
       if (
         geoobjectsFilter === serverName
-        && isEmptyObj(data || {})
+        && !isEmptyObj(data || {})
       ) {
         const result = {};
         Object.keys(data).forEach((key) => {
@@ -173,6 +184,9 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
             }
             if (filterFields[i] === 'carFilterMultyOwner') {
               hasFilterValue = filters.carFilterMultyOwner.includes(data[key].company_id);
+            }
+            if (filterFields[i] === 'carFilterText') {
+              hasFilterValue = filterObjectsByText(serverName, filters.carFilterText, data[key]);
             }
           }
           if(hasFilterValue) {

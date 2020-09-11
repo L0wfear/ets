@@ -19,19 +19,21 @@ class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateL
     this.props.addLayer({ id: 'GeoObject', zIndex: 0, renderMode: 'image' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
-      renderGeoobjects(this.props.geoobjects, this.props.geoobjects, this.props);
+      renderGeoobjects(this.props.geoobjects, this.props.geoobjects, this.props, false);
     });
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.geoobjects !== prevProps.geoobjects || this.props.SHOW_GEOOBJECTS !== prevProps.SHOW_GEOOBJECTS) {
-      const {
-        hasDiff,
-        diffGeoobjects,
-      } = diffInputProps(this.props, prevProps);
+    const shouldBeFiltered = this.props.filters !== prevProps.filters;
+    if (
+      this.props.geoobjects !== prevProps.geoobjects
+      || this.props.SHOW_GEOOBJECTS !== prevProps.SHOW_GEOOBJECTS 
+      || shouldBeFiltered
+    ) {
+      const { hasDiff, diffGeoobjects } = diffInputProps(this.props, prevProps);
 
       if (hasDiff) {
-        renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props);
+        renderGeoobjects(prevProps.geoobjects, diffGeoobjects, this.props, shouldBeFiltered);
       }
     }
   }
@@ -60,6 +62,8 @@ const mapStateToProps = (state) => ({
   companiesIndex: state.monitorPage.companiesIndex,
   geoobjects: state.monitorPage.geoobjects,
   SHOW_GEOOBJECTS: state.monitorPage.statusGeo.SHOW_GEOOBJECTS,
+  geoobjectsFilter: state.monitorPage.geoobjectsFilter,
+  filters: state.monitorPage.filters.data,
 });
 const mapDispatchToProps = (dispatch) => ({
   monitorPageAddToSelectedGeoobjects: (serverName, id, data) => (

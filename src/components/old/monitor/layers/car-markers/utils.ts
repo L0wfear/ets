@@ -49,6 +49,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData) =
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);
     case 'levelSensors': return value === null || (value === 1 ? car_actualData.level_sensors_num > 0 : car_actualData.level_sensors_num === 0);
+    case 'carFilterMultyElement':
     case 'withoutMissions':
     case 'withoutWaybills': return true;
     case 'carFilterMultyDrivers': return !value.length || value.some((el) => el.cars.includes(car_actualData.asuods_id));

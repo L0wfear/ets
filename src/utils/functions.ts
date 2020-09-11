@@ -360,3 +360,5 @@ export const metresToKilometeres = (metresVal: number) =>
     : '';
 
 export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
+
+export const isEmptyObj = (obj: Object) => !!Object.keys(obj).length;

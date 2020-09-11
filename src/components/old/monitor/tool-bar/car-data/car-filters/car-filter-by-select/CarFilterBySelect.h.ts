@@ -11,7 +11,7 @@ export type PropsCarFilterByText = {
   isOkrug: boolean;
   company_id: InitialStateSession['userData']['company_id'];
   carActualGpsNumberIndex: any;
-  geoobjectsFilter: string;
+  geoobjectsFilter: IStateMonitorPage['geoobjectsFilter'];
   carFilters: IStateMonitorPage['filters']['data'];
 };
 

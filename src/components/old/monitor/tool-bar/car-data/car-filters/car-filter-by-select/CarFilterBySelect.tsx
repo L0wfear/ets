@@ -36,6 +36,7 @@ const placeholder = {
   carFilterMultyDrivers: 'Водитель',
   withoutMissions: 'Без заданий',
   withoutWaybills: 'Без ПЛ',
+  carFilterMultyElement: 'Элементы',
 };
 
 const initialFilterFields: StateCarFilterByText['filterFields'] = [
@@ -50,10 +51,11 @@ const initialFilterFields: StateCarFilterByText['filterFields'] = [
   { key: 'levelSensors', type: 'select' },
   { key: 'withoutMissions', type: 'checkbox' },
   { key: 'withoutWaybills', type: 'checkbox' },
+  { key: 'carFilterMultyElement', type: 'multi' },
 ];
 
 const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
-  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters }) => {
+  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter }) => {
     const [hidden, setHidden] = React.useState(true);
     const [employeeData, setEmployeeData] = React.useState<Array<Employee>>([]);
     const [moscowTime, setMoscowTime] = React.useState(null);
@@ -123,20 +125,27 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
           { value: 2, label: 'Без ДУТ' },
         ],
         carFilterMultyDriversOptions,
+        carFilterMultyElementOptions: [],
       };
     }, [calcData, carFilterMultyDriversOptions]);
 
     const filterFields = React.useMemo(() => {
       return initialFilterFields.filter((el) => {
+        if (el.key === 'carFilterMultyElement') {
+          return geoobjectsFilter === 'dt' || geoobjectsFilter === 'odh';
+        }
         if (el.key === 'carFilterMultyOkrug') {
           return !isOkrug && !company_id;
         }
         if (el.key === 'carFilterMultyOwner') {
           return isOkrug || !company_id;
         }
+        if (geoobjectsFilter !== 'cars') {
+          return false;
+        }
         return true;
       });
-    }, [isOkrug, company_id]);
+    }, [isOkrug, company_id, geoobjectsFilter]);
 
     const toggleHidden = React.useCallback(() => {
       setHidden(!hidden);
@@ -148,6 +157,9 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       }
     }, [hidden]);
 
+    if(!filterFields.length) {
+      return <DivNone />;
+    }
     return (
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>

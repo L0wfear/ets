@@ -84,6 +84,7 @@ export type IStateMonitorPage = {
       carFilterMultyDrivers: Array<number>;
       withoutMissions: boolean;
       withoutWaybills: boolean;
+      carFilterMultyElement: Array<number>;
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
     };
     filtredCarGpsCode: Array<number>;
@@ -163,6 +164,7 @@ export const initialMonitorState: IStateMonitorPage = {
       featureBufferPolygon: null, // DITETSSUP-2007
       withoutMissions: false,
       withoutWaybills: false,
+      carFilterMultyElement: [],
     },
     filtredCarGpsCode: [],
   },

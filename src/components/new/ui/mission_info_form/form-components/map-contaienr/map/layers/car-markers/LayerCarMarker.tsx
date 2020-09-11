@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { getStyleForStatusDirectionType } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/car-markers/feature-style';
@@ -56,6 +56,7 @@ class LayerCarMarker extends React.Component<
       track 
       && lastPoint 
       && lastPoint?.timestamp > track[track.length - 1]?.timestamp
+      && createValidDateTime(lastPoint?.timestamp * 1000) <= createValidDateTime(this.props.mission_date_end)
     ) {
       const trackArrCopy = [...track];
       trackArrCopy.push({...lastPoint, speed_avg: lastPoint.speed_max, checkCoordsMsk: { onMkad: checkOnMkad(lastPoint, odh_mkad)},});

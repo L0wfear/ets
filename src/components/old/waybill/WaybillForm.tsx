@@ -2409,6 +2409,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
+                  {console.info(isTrailerRequired)}
                   <ExtField
                     id="trailer-id"
                     type="select"
@@ -2416,7 +2417,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired && !state.trailer_id))}
+                    hidden={ IS_DELETE || !(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isTrailerRequired))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2429,7 +2430,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired  && !state.trailer_id)}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isTrailerRequired) && !IS_DELETE}
                     value={
                       state.trailer_id && !(IS_ACTIVE && activeTrailerLabel && isTrailerRequired && state.trailer_id)
                         ? `${

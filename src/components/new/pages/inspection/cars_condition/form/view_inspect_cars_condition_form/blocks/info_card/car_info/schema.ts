@@ -167,12 +167,12 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     },
     gby_district: {
       type: 'string',
-      title: 'Техника относится к ГБУ Жилищник',
+      title: 'Владелец техники',
       required: true,
     },
     gby_operation_district: {
       type: 'string',
-      title: 'Техника эксплуатируется жилищником',
+      title: 'Подрядчик',
       required: true,
     },
     vin_incorrect: {

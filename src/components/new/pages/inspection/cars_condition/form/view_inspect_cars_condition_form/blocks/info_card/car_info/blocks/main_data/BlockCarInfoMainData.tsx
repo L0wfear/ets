@@ -542,18 +542,18 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника относится к ГБУ Жилищник:"
+              label="Владелец техники:"
               value={state.gby_district}
               onChange={props.handleChange}
               error={errors.gby_district}
               boundKeys="gby_district"
-              disabled={!props.isPermitted}
+              disabled={true}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника эксплуатируется жилищником:"
+              label="Подрядчик:"
               value={state.gby_operation_district}
               onChange={props.handleChange}
               error={errors.gby_operation_district}

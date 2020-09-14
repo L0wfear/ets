@@ -18,13 +18,13 @@ import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const placeholder = {
-  reg_number: 'рег.номер',
-  garage_number: 'гар.номер',
+  reg_number: 'рег. номер',
+  garage_number: 'гар. номер',
   name: 'Наименование',
   short_name: 'Краткое наименование',
   full_name: 'Полное наименование',
   address: 'Адресная привязка',
-  GBU: 'ГБУ',
+  object: 'объекта',
 };
 const CarFieldBytextInput: React.FC<PropsCarFieldBytextInput> = React.memo(
   ({carFilterText, changeCarFilterText, resetCarFilterText, handleFocusOnCar, canFocusOnCar, geoobjectsFilter}) => {
@@ -41,7 +41,7 @@ const CarFieldBytextInput: React.FC<PropsCarFieldBytextInput> = React.memo(
         return `${placeholder.reg_number}/${placeholder.garage_number}`;
       }
       if (geoobjectsFilter === 'dt' || geoobjectsFilter === 'odh') {
-        return `${placeholder.name} ${placeholder.GBU}`;
+        return `${placeholder.name} ${placeholder.object}`;
       }
       if (geoobjectsFilter === 'ssp' || geoobjectsFilter === 'msp') {
         return `${placeholder.full_name}/${placeholder.short_name}`;

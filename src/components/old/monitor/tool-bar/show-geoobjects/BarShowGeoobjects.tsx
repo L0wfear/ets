@@ -39,6 +39,18 @@ class BarShowGeoobjects extends React.Component<any, any> {
     ),
   };
 
+  componentDidUpdate(prevProps) {
+    const { geoobjectsFilter: key } = this.props;
+    if(
+      key
+      && key !== 'cars'
+      && key !== prevProps.geoobjectsFilter
+      && !this.props[GEOOBJECTS_OBJ[key].serverName]
+    ) {
+      this.props.toggleShowStatus([key]);
+    }
+  }
+
   toggleList = (event) => {
     if (this.props.companiesIndex !== -1) {
       this.setState({
@@ -116,6 +128,7 @@ const mapStateToProps = (state) => ({
     ...newObj,
     [serverName]: state.monitorPage.geoobjects[serverName].show,
   }), {}),
+  geoobjectsFilter: state.monitorPage.geoobjectsFilter,
 });
 
 const mergedPropd = (stateProps, { dispatch }, ownProps) => ({

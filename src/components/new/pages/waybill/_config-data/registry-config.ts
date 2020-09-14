@@ -264,6 +264,15 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         step: 0.01,
       },
       {
+        valueKey: 'is_edited_start',
+        title: 'Изменение показателей выезда',
+        type: 'multiselect',
+        options: [
+          { value: true, label: 'да' },
+          { value: false, label: '-' },
+        ],
+      },
+      {
         valueKey: 'structure_id',
         labelKey: 'structure_name',
         type: 'multiselect',
@@ -549,6 +558,12 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 250,
           sortable: false,
           format: 'toFixed3',
+        },
+        {
+          key: 'is_edited_start',
+          title: 'Изменение показателей выезда',
+          width: 250,
+          valueForBoolean: 'да',
         },
         {
           key: 'structure_name',

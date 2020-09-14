@@ -123,7 +123,7 @@ const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
   ...ownProps,
   toggleShowStatus: (typeArr) => {
     const companies = Object.keys(stateProps.companiesIndex);
-    const company_key = companies.length === 1 ? Object.keys(stateProps.companiesIndex)[0] : null;
+    const company_key = companies.length === 1 ? companies[0] : null;
     const company_id = company_key ? stateProps.companiesIndex[company_key].company_id : null;
 
     dispatch(

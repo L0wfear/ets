@@ -2409,7 +2409,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
-                  {console.info(isTrailerRequired)}
                   <ExtField
                     id="trailer-id"
                     type="select"

@@ -101,6 +101,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   plan_arrival_date: createValidDateTime(getTomorrow9am()),
   plan_departure_date: createValidDateTime(getDateWithMoscowTz()),
   sensor_consumption: null,
+  sensor_leak: null,
   sensor_refill: null,
   sensor_start_value: null,
   sensor_finish_value: null,

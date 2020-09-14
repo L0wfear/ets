@@ -1024,6 +1024,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       loadingFields.distance = false;
       loadingFields.consumption = false;
       loadingFields.sensor_consumption = false;
+      loadingFields.sensor_leak = false;
       loadingFields.sensor_refill = false;
       loadingFields.sensor_start_value = false;
       loadingFields.sensor_finish_value = false;
@@ -1042,6 +1043,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       loadingFields.distance = true;
       loadingFields.consumption = true;
       loadingFields.sensor_consumption = true;
+      loadingFields.sensor_leak = true;
       loadingFields.sensor_refill = true;
       loadingFields.sensor_start_value = true;
       loadingFields.sensor_finish_value = true;
@@ -1058,7 +1060,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             this.props,
           ),
         )
-        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value,  }) => {
+        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value, sensor_leak }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -1070,6 +1072,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             sensor_consumption: isNullOrUndefined(consumption)
               ? null
               : parseFloat(consumption),
+            sensor_leak: isNullOrUndefined(sensor_leak)
+              ? null
+              : parseFloat(sensor_leak),
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
@@ -1091,6 +1096,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               distance: false,
               consumption: false,
               sensor_consumption: false,
+              sensor_leak: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -1103,6 +1109,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               distance: false,
               consumption: false,
               sensor_consumption: false,
+              sensor_leak: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -1115,6 +1122,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           distance: false,
           consumption: false,
           sensor_consumption: false,
+          sensor_leak: false,
           sensor_refill: false,
         },
       });
@@ -2656,6 +2664,18 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           error={errors.sensor_refill}
                           value={state.sensor_refill}
                           isLoading={loadingFields.sensor_refill}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_leak"
+                          type="number"
+                          label="Слив по ДУТ, л"
+                          error={errors.sensor_leak}
+                          value={state.sensor_leak}
+                          isLoading={loadingFields.sensor_leak}
                           format="toFixed3"
                           disabled
                         />

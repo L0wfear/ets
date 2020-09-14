@@ -77,6 +77,6 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 
 export default connect<any, any, any, ReduxState>(
   (state) => ({
-    active: Boolean(state.monitorPage.geoobjectsFilter),
+    active: Boolean(state.monitorPage.geoobjectsFilter) && state.monitorPage.geoobjectsFilter !== 'cars',
   }),
 )(CarFilterByText);

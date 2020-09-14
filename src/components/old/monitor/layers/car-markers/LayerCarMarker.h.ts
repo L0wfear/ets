@@ -16,7 +16,7 @@ export type PropsLayerCarMarker = {
   forToday: boolean;
   STATUS_SHOW_GOV_NUMBER: boolean;
   STATUS_TC_FOLLOW_ON_CAR: boolean;
-
+  geoobjectsFilter: IStateMonitorPage['geoobjectsFilter'];
   carActualGpsNumberIndex: any;
   carActualList: Array<Car>;
   carActualGpsCount: number;

@@ -23,6 +23,9 @@ import {
   getStartOfServerToday,
 } from 'components/@next/@utils/dates/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { actionGetNorms } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { makeObjArrayUniqByKey } from 'utils/functions';
 
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
@@ -36,6 +39,7 @@ const placeholder = {
   carFilterMultyDrivers: 'Водитель',
   withoutMissions: 'Без заданий',
   withoutWaybills: 'Без ПЛ',
+  carFilterMultyElement: 'Элементы',
 };
 
 const initialFilterFields: StateCarFilterByText['filterFields'] = [
@@ -50,13 +54,15 @@ const initialFilterFields: StateCarFilterByText['filterFields'] = [
   { key: 'levelSensors', type: 'select' },
   { key: 'withoutMissions', type: 'checkbox' },
   { key: 'withoutWaybills', type: 'checkbox' },
+  { key: 'carFilterMultyElement', type: 'multi' },
 ];
 
 const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
-  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters }) => {
+  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter }) => {
     const [hidden, setHidden] = React.useState(true);
     const [employeeData, setEmployeeData] = React.useState<Array<Employee>>([]);
     const [moscowTime, setMoscowTime] = React.useState(null);
+    const [elements, setElements] = React.useState<Array<Norm>>([]);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
@@ -72,9 +78,40 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       })();
     }, []);
 
+    React.useEffect(() => {
+      (async () => {
+        const elements = await dispatch(
+          actionGetNorms({ page: '' })
+        );
+        setElements(elements);
+      })();
+    }, []);
+
     const calcData = React.useMemo(() => {
       return makeOptions(carActualGpsNumberIndex);
     }, [carActualGpsNumberIndex]);
+
+    const carFilterMultyElementOptions = React.useMemo(() => {
+      if (geoobjectsFilter === 'dt') {
+        const filteredElements = elements
+          .filter((el, i, arr) => arr.indexOf(el) === i && el.objects_text === 'ДТ')
+          .map((el) => ({
+            value: el.elements_text,
+            label: el.elements_text,
+          }));
+        return makeObjArrayUniqByKey(filteredElements, 'value');
+      }
+      if (geoobjectsFilter === 'odh') {
+        const filteredElements = elements
+          .filter((el) => el.objects_text === 'ОДХ')
+          .map((el) => ({
+            value: el.elements_text,
+            label: el.elements_text,
+          }));
+        return makeObjArrayUniqByKey(filteredElements, 'value');
+      }
+      return [];
+    }, [geoobjectsFilter]);
 
     const carFilterMultyDriversOptions = React.useMemo(() => {
       return employeeData.length && moscowTime
@@ -123,20 +160,27 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
           { value: 2, label: 'Без ДУТ' },
         ],
         carFilterMultyDriversOptions,
+        carFilterMultyElementOptions,
       };
-    }, [calcData, carFilterMultyDriversOptions]);
+    }, [calcData, carFilterMultyDriversOptions, carFilterMultyElementOptions]);
 
     const filterFields = React.useMemo(() => {
       return initialFilterFields.filter((el) => {
+        if (el.key === 'carFilterMultyElement') {
+          return geoobjectsFilter === 'dt' || geoobjectsFilter === 'odh';
+        }
         if (el.key === 'carFilterMultyOkrug') {
           return !isOkrug && !company_id;
         }
         if (el.key === 'carFilterMultyOwner') {
           return isOkrug || !company_id;
         }
+        if (geoobjectsFilter !== 'cars') {
+          return false;
+        }
         return true;
       });
-    }, [isOkrug, company_id]);
+    }, [isOkrug, company_id, geoobjectsFilter]);
 
     const toggleHidden = React.useCallback(() => {
       setHidden(!hidden);
@@ -148,6 +192,9 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       }
     }, [hidden]);
 
+    if(!filterFields.length) {
+      return <DivNone />;
+    }
     return (
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>

@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 import { getCasheStyleForGeoobject } from 'components/old/monitor/layers/geoobjects/feature-style';
 import { LayerGeoobjectsUtilsTypes } from 'components/old/monitor/layers/geoobjects/LayerGeooobjects.h';
+import { isEmptyObj } from 'utils/functions';
 
 /**
  * проверка на измнение show в serverName
@@ -127,6 +128,17 @@ export const mergeRetvalWithCaclData: LayerGeoobjectsUtilsTypes.mergeRetvalWithC
   };
 };
 
+const filterObjectsByText = (serverName, filterValue, value): boolean => {
+  const compareFunction = (key) => value[key] && value[key].toString().toLocaleLowerCase().includes(filterValue.toLocaleLowerCase());
+  if(serverName === 'msp' || serverName === 'ssp') {
+    return compareFunction('name') || compareFunction('shortname');
+  }
+  if(serverName === 'danger_zone') {
+    return compareFunction('address_comm');
+  }
+  return compareFunction('name');
+}; 
+
 /**
  * @param thisProps текущие состояние пропсов
  * @param prevProps прошлое состояние пропсов
@@ -135,22 +147,61 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
   thisProps,
   prevProps,
 ) => {
-  const { geoobjects, SHOW_GEOOBJECTS } = thisProps;
+  const { geoobjects, SHOW_GEOOBJECTS, filters, geoobjectsFilter } = thisProps;
   let retValue = {
     hasDiff: false,
     diffGeoobjects: {},
   };
 
+  const filterFields = [];
+  Object.keys(filters).forEach((key) => {
+    if ((Array.isArray(filters[key]) || key === 'carFilterText') && filters[key].length) {
+      filterFields.push(key);
+    }
+  });
+
   for (const serverName in geoobjects) {
     if (serverName in geoobjects) {
-      const data = geoobjects[serverName];
+      const { data } = geoobjects[serverName];
+      const element = {...geoobjects[serverName]};
 
+      if (
+        geoobjectsFilter === serverName
+        && !isEmptyObj(data || {})
+      ) {
+        const result = {};
+        Object.keys(data).forEach((key) => {
+          let hasFilterValue = true;
+          for (let i = 0; i < filterFields.length; i++) {
+            if (!filterFields.length) {
+              hasFilterValue = true;
+            }
+            if (!hasFilterValue) {
+              break;
+            }
+            if (filterFields[i] === 'carFilterMultyOkrug') {
+              hasFilterValue = filters.carFilterMultyOkrug.includes(data[key].okrug_id);
+            }
+            if (filterFields[i] === 'carFilterMultyOwner') {
+              hasFilterValue = filters.carFilterMultyOwner.includes(data[key].company_id);
+            }
+            if (filterFields[i] === 'carFilterText') {
+              hasFilterValue = filterObjectsByText(serverName, filters.carFilterText, data[key]);
+            }
+          }
+          if(hasFilterValue) {
+            result[key] = data[key];
+          }
+        });
+        element.data = result;
+      }
+      
       retValue = mergeRetvalWithCaclData(
         retValue,
         serverName,
-        data,
-        SHOW_GEOOBJECTS && data.show,
-        prevProps.SHOW_GEOOBJECTS && data.show,
+        element,
+        SHOW_GEOOBJECTS && element.show,
+        prevProps.SHOW_GEOOBJECTS && element.show,
         prevProps.geoobjects[serverName],
       );
     }
@@ -274,6 +325,7 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
   geoobjects,
   diffGeoobjects,
   thisProps,
+  shouldBeFiltered,
 ) => {
   for (const serverName in diffGeoobjects) {
     if (serverName in diffGeoobjects) {
@@ -298,6 +350,26 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
             isManyCompany,
           );
           checkShowFalse(show, oldFeature, thisProps);
+        }
+      }
+      if (show && shouldBeFiltered) {
+        for (const id in oldData) {
+          const oldFeature = thisProps.getFeatureById(id);
+          thisProps.removeFeaturesFromSource(oldFeature);
+        }
+        for (const id in data) {
+          if (data[id].shape) {
+            const color = isManyCompany
+              ? thisProps.companiesIndex[data[id].company_id].rgb_color
+              : '';
+            const feature = new Feature({
+              geometry: geoJSON.readGeometry(data[id].shape),
+            });
+            feature.setId(id);
+            feature.set('serverName', serverName);
+            feature.setStyle(getCasheStyleForGeoobject(false, color));
+            thisProps.addFeaturesToSource(feature);
+          }
         }
       }
     }

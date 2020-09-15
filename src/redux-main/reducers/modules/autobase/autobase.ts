@@ -49,6 +49,7 @@ export const autobaseInitialState: IStateAutobase = {
   notFiltredFuelCardsIndex: {},
   fuelTypeList: [],
   typesAttrList: [],
+  penaltyList: [],
 };
 
 export default (state = autobaseInitialState, { type, payload }) => {

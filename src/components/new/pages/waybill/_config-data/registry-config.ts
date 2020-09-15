@@ -566,6 +566,13 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           valueForBoolean: 'да',
         },
         {
+          key: 'sensor_leak',
+          title: 'Топливо, Слив по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
           key: 'structure_name',
           title: [
             {

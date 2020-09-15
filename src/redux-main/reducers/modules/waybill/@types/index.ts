@@ -120,6 +120,7 @@ export type WaybillRegistryRow = {
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
+  sensor_leak: number;
   sensor_refill: number;
   sensor_start_value: number;
   sensor_finish_value: number;

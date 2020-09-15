@@ -166,7 +166,7 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
   const vehicleList = uniqBy(
     [
       ...props.fuelCardsAvailableCarList.options, ...inputList.map(
-        (rowData) => ({ label: rowData.gov_number, value: rowData.car_id, rowData }),
+        (rowData) => ({ label: rowData.gov_number, value: rowData.car_id, isDisabled: true, rowData }),
       )
     ],
     'value',

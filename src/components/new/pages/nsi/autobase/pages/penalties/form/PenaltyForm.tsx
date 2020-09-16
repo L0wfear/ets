@@ -63,11 +63,11 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                type="string"
+                type="number"
                 label="Номер постановления"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.ruling_number}
+                boundKeys="ruling_number"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -75,8 +75,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Дата постановления"
                 readOnly
-                value={state.violation_datetime}
-                boundKeys="violation_datetime"
+                value={state.ruling_date}
+                boundKeys="ruling_date"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -86,8 +86,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Подразделение"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.odps_name}
+                boundKeys="odps_name"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -95,8 +95,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Номер подразделения"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.odps_code}
+                boundKeys="odps_code"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -106,8 +106,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Тип документа нарушителя"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.violation_document_type}
+                boundKeys="violation_document_type"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -157,8 +157,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Дата и время правонарушения"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.violation_datetime}
+                boundKeys="violation_datetime"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -166,8 +166,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Место правонарушения"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.violation_place}
+                boundKeys="violation_place"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -177,8 +177,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Размер штрафа"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.sum_to_pay}
+                boundKeys="sum_to_pay"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -186,8 +186,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Оплачен/не оплачен"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.is_paid ? 'Оплачен' : 'Не оплачен'}
+                boundKeys="is_paid"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -197,8 +197,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Статья КОАП или закона субъекта РФ, состав правонарушения"
                 readOnly
-                value={state.violation_document_number}
-                boundKeys="violation_document_number"
+                value={state.article_koap}
+                boundKeys="article_koap"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -220,7 +220,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 multiple
                 label="Файл"
                 type="file"
-                boundKeys="file"
+                boundKeys="files"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

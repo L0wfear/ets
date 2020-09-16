@@ -55,6 +55,10 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean; co
     this.setState((state) => {
       const countLeft = state.countLeft - 1;
 
+      if (countLeft === 0) {
+        clearInterval(state.intervalId);
+        document.location.reload(true);
+      }
       return {
         ...state,
         countLeft,

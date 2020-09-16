@@ -69,9 +69,17 @@ const canSaveNotCheckField = [
   'fuel_given',
   'gas_fuel_given',
   'equipment_fuel_given',
+  'is_fuel_refill',
+  'is_gas_refill',
+  'is_equipment_refill',
 ];
 
-const canCloseNotCheckField = ['distance'];
+const canCloseNotCheckField = [
+  'distance',
+  'is_fuel_refill',
+  'is_gas_refill',
+  'is_equipment_refill',
+];
 
 const canSaveTestWrap = (formError) => {
   const filredFormErrors = Object.entries(formError).reduce(
@@ -617,18 +625,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       ), 3);
     }
 
-    if (
-      formState.fuel_end !== this.state.formState.fuel_end
-      || isNullOrUndefined(formState.fact_fuel_end)
-    ) {
-      formState.fact_fuel_end = formState.fuel_end;
-    }
-    if (
-      formState.gas_fuel_end !== this.state.formState.gas_fuel_end
-      || isNullOrUndefined(formState.gas_fact_fuel_end)
-    ) {
-      formState.gas_fact_fuel_end = formState.gas_fuel_end;
-    }
     formState.fact_consumption = parseFloatWithFixed((
       fuelStart
       + fuelGiven
@@ -651,14 +647,6 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         - formState.gas_fact_consumption
       ), 3)
     );
-
-    if (
-      formState.equipment_fuel_end
-      !== this.state.formState.equipment_fuel_end
-      || isNullOrUndefined(formState.equipment_fact_fuel_end)
-    ) {
-      formState.equipment_fact_fuel_end = formState.equipment_fuel_end;
-    }
 
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
@@ -1126,6 +1114,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         motohours_diff,
         odometr_diff, 
       } = this.state.formState;
+
+      const {
+        is_fuel_refill,
+        is_gas_refill,
+        is_equipment_refill,
+      } = this.state.formErrors;
+
       const govNumberRegExp = /^[\d]{4}/;
       const checkTaxesControl = Boolean(govNumberRegExp.exec(gov_number)) ? motohours_diff > 0 : odometr_diff > 0;
       if (!taxesControl && checkTaxesControl) {
@@ -1136,7 +1131,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         );
         return;
       }
-
+      if (is_fuel_refill || is_gas_refill || is_equipment_refill) {
+        const carOrEquipmentText = (is_fuel_refill || is_gas_refill) ? 'Транспортное средство' : 'Спецоборудование';
+        const fuelTypeText = is_fuel_refill ? 'Топливо' : is_gas_refill ? 'Газ' : 'Топливо для оборудования';
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(
+            `${carOrEquipmentText}. ${fuelTypeText}. Добавьте заправку или укажите, что ее не было`,
+          ),
+        );
+        return;
+      }
       const formState = cloneDeep(this.state.formState);
 
       global.confirmDialog({

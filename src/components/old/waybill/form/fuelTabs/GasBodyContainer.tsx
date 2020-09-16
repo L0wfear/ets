@@ -5,11 +5,6 @@ import FuelType from 'components/old/waybill/form/FuelType';
 import { WaybillProps, WaybillState } from 'components/old/waybill/WaybillForm';
 import { isNullOrUndefined } from 'util';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import {
-  // BorderDash,
-  // FlexContainer,
-  InfoBlock
-} from 'global-styled/global-styled';
 import { get } from 'lodash';
 
 import FieldWaybillCarRefill from 'components/old/waybill/table_input/FieldWaybillCarRefill';
@@ -194,14 +189,6 @@ const GasBodyContainer: React.FC<Props> = React.memo(
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
-                {
-                  Boolean(IS_ACTIVE || IS_CLOSED)
-                      && <InfoBlock>
-                        Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                      </InfoBlock>
-                }
-              </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={4}>
                 <ExtField
                   id="gas-consuption-diff"
                   type="number"
@@ -235,6 +222,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             title="Заправка газа"
             use_pouring={use_pouring}
             handleChange={handleChangeGasReFill}
+            defaultHandleChange={props.handleChange}
             fuel_given={waybillFormState.gas_fuel_given}
             structure_id={waybillFormState.structure_id}
             fuel_type={'GAS'}
@@ -250,15 +238,17 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               IS_CREATING || IS_DRAFT || IS_ACTIVE
             }
             disabled={disableFieldWaybillCarRefill}
-            canEditIfClose={waybillState.canEditIfClose}
+            canEditIfClose={waybillState.canEditIfClose} 
             page={props.page}
             path={props.path}
+            is_refill={waybillFormState.is_gas_refill}
+            is_refill_error={errors.is_gas_refill}
             boundKey={'gas_refill'}
             fuelCardsList={props.gasFuelCardsList}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={1}>
+      <EtsBootstrap.Col md={12} zIndex={1}> 
         <EtsBootstrap.Col md={12}>
           <Taxes
             modalKey={modalKey}

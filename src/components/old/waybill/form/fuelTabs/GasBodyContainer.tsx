@@ -238,7 +238,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               IS_CREATING || IS_DRAFT || IS_ACTIVE
             }
             disabled={disableFieldWaybillCarRefill}
-            canEditIfClose={waybillState.canEditIfClose} 
+            canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
             path={props.path}
             is_refill={waybillFormState.is_gas_refill}
@@ -248,7 +248,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={1}> 
+      <EtsBootstrap.Col md={12} zIndex={1}>
         <EtsBootstrap.Col md={12}>
           <Taxes
             modalKey={modalKey}

@@ -18,7 +18,7 @@ export const CarRefillTableHeaderStyled = styled(EtsBootstrap.Row as any)`
   }
 `;
 
-const StyledTest = styled.div`
+const StyledCheckBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -135,7 +135,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
               }
             </EtsButtonsContainer>
           </EtsHeaderContainer>
-          <StyledTest>
+          <StyledCheckBox>
             <ExtField
               id={isRefillKeys.id}
               type='boolean'
@@ -146,7 +146,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
               boundKeys={isRefillKeys.boundKeys}
               error={props.is_refill_error}
             />
-          </StyledTest>
+          </StyledCheckBox>
         </EtsHeaderContainerWrap>
       </CarRefillTableHeaderStyled>
     );

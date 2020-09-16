@@ -10,4 +10,5 @@ export type PropsMapMissionInfoWrap = {
   parkings: Array<any>;
   cars_sensors: object;
   missionNumber: string | number;
+  mission_date_end: string | Date;
 };

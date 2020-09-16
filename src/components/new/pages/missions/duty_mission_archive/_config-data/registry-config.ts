@@ -161,6 +161,12 @@ export const config: TypeConfigData<DutyMission> = {
         },
       },
       {
+        valueKey: 'passes_count',
+        title: 'Количество циклов',
+        type: 'advanced-number',
+        step: 1,
+      },
+      {
         valueKey: 'foreman_id',
         labelKey: 'foreman_fio',
         title: 'Бригадир',
@@ -317,6 +323,11 @@ export const config: TypeConfigData<DutyMission> = {
           key: 'object_type_name',
           title: 'Тип объекта',
           width: 150,
+        },
+        {
+          key: 'passes_count',
+          title: 'Количество выполнений',
+          width: 200,
         },
         {
           key: 'foreman_fio',

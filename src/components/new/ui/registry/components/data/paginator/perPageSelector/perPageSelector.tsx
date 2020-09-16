@@ -58,20 +58,21 @@ const PerPageSelector: React.FC<Props> = React.memo(
     const countPagesList: Array<Number> = [15, 25, 50, 100];
 
     const dispatch = etsUseDispatch();
-    React.useEffect(() => {
+    React.useEffect(() => { // Не делать dispatch при первой загрузке страницы?
       if(registryKey) {
         handleChangeCountPages(
           perPageData
             ? Number(perPageData)
-            : 15
+            : 15,
+          true
         );
       }
     }, []);
 
-    const handleChangeCountPages = React.useCallback((value) => {
+    const handleChangeCountPages = React.useCallback((value, isDidMount = false) => { // isDidMount -- что бы при загрузке реестра небыло доп. запроса
       setPerPageLocal(value);
       localStorage.setItem('perPage', value);
-      if(registryKey) {
+      if(registryKey && !isDidMount) {
         dispatch(
           registryChangeDataPaginatorPerPage(
             registryKey,

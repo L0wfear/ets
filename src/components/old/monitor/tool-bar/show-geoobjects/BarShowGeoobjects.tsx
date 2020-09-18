@@ -45,13 +45,17 @@ class BarShowGeoobjects extends React.Component<any, any> {
       key
       && key !== 'cars'
       && key !== prevProps.geoobjectsFilter
-      && !this.props[GEOOBJECTS_OBJ[key].serverName]
     ) {
-      this.props.toggleShowStatus([key]);
+      if(!this.props[GEOOBJECTS_OBJ[key].serverName]) {
+        this.props.toggleShowStatus([key]);
+      }
+      if(!this.state.showGeoObjList) {
+        this.toggleList();
+      }
     }
   }
 
-  toggleList = (event) => {
+  toggleList = () => {
     if (this.props.companiesIndex !== -1) {
       this.setState({
         showGeoObjList: !this.state.showGeoObjList,

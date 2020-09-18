@@ -103,6 +103,9 @@ export type WaybillRegistryRow = {
   is_edited_motohours: boolean;
   is_edited_motohours_equip: boolean;
   is_edited_start: boolean;
+  is_fuel_refill: boolean;
+  is_gas_refill: boolean;
+  is_equipment_refill: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;

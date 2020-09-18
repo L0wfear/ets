@@ -53,7 +53,7 @@ import {
   getEmployeeState,
 } from 'redux-main/reducers/selectors';
 
-import { BorderDash, FlexContainer, InfoBlock } from 'global-styled/global-styled';
+import { BorderDash, FlexContainer } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
@@ -3216,12 +3216,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   />
                                 </EtsBootstrap.Col>
                                 <EtsBootstrap.Col md={4}>
-                                  {Boolean(IS_ACTIVE || IS_CLOSED)
-                                    && <InfoBlock>
-                                      Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                                    </InfoBlock> }
-                                </EtsBootstrap.Col>
-                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-consuption-diff"
                                     type="number"
@@ -3253,6 +3247,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               )} // временно
                               title="Заправка топлива"
                               handleChange={this.handleChangeEquipmentRefill}
+                              defaultHandleChange={this.handleChange}
                               use_pouring={usePouring}
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
@@ -3272,6 +3267,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               path={this.props.path}
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
+                              is_refill={state.is_equipment_refill}
+                              is_refill_error={errors.is_equipment_refill}
                               boundKey={'equipment_refill'}
                               fuelCardsList={this.props.equipmentFuelCardsList}
                             />

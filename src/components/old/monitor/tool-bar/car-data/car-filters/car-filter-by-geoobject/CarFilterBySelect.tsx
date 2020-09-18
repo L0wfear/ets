@@ -40,33 +40,42 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
     const options = Object.values(GEOOBJECTS_LIST_WITH_CARS).map((el) => {
       return {value: el.serverName, label: el.label};
     });
+    const message = 'Выберите геообъект для фильтрации/поиска на карте';
+    const popoverHoverFocus = (
+      <EtsBootstrap.Popover id="popover-trigger-hover-focus">
+        {message}
+      </EtsBootstrap.Popover>
+    );
     return (
       <span>
         <ClickOutHandler onClickOut={this.handleClickOut}>
           <div className={cx('tool_bar-block', { active: this.props.active })}>
             <div className="default_cube flex-row map-car-filter multi">
-              <div className="button-toggle" onClick={this.toggleHidden} >
+              <div className="button-toggle" onClick={this.toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph="menu-hamburger" />
               </div>
-              {
-                this.state.hidden
-                  ? (
-                    <DivNone />
-                  )
-                  :                  (
-                    <div className="car_text_filter-container multi">
-                      <div>
-                        {
-                          <DefaultInput
-                            key={'geoobjects'}
-                            OPTIONS={options}
-                            placeholder={'Тип геообъекта'}
-                          />
-                        }
-                      </div>
+              {this.state.hidden ? (
+                <DivNone />
+              ) : (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  placement="right"
+                  overlay={popoverHoverFocus}
+                  rootClose={true}
+                >
+                  <div className="car_text_filter-container multi">
+                    <div>
+                      {
+                        <DefaultInput
+                          key={'geoobjects'}
+                          OPTIONS={options}
+                          placeholder={'Тип геообъекта'}
+                        />
+                      }
                     </div>
-                  )
-              }
+                  </div>
+                </EtsBootstrap.OverlayTrigger>
+              )}
             </div>
           </div>
         </ClickOutHandler>

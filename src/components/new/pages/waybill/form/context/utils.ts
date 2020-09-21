@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-import { WaybillGas } from 'redux-main/reducers/modules/waybill/@types/index';
+import { WaybillGas, WaybillElectrical } from 'redux-main/reducers/modules/waybill/@types/index';
 
 export const gasDefaultElement: WaybillGas = {
   // gas
@@ -19,6 +19,22 @@ export const gasDefaultElement: WaybillGas = {
   gas_tax_consumption: null, // Расход по таксировке, л
   gas_fact_consumption: null, // Расход фактический, л
   gas_diff_consumption: null, // Расхождение в данных расхода, л
+};
+
+export const electricalDefaultElement: WaybillElectrical = {
+  // electrical
+  electrical_fuel_type: null, // Тип топлива
+  electrical_fuel_start: null, // Выезд, л
+  electrical_fuel_given: null, // Выдано, л
+  electrical_fuel_end: null, // Возврат по таксировке, л
+  electrical_fact_fuel_end: null, // Возврат фактический, л
+  electrical_tax_data: [], // Расчет по норме
+  electrical_refill: [], // Заправки
+
+  // Расчетные поля (только GET), не храним в бд
+  electrical_tax_consumption: null, // Расход по таксировке, л
+  electrical_fact_consumption: null, // Расход фактический, л
+  electrical_diff_consumption: null, // Расхождение в данных расхода, л
 };
 
 export const getDefaultWaybill = (company_id): Waybill => ({
@@ -87,6 +103,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   is_edited_start: false,
   is_fuel_refill: false,
   is_gas_refill: false,
+  is_electrical_refill: false,
   is_equipment_refill: false,
   mission_id_list: [],
   motohours_end: null,
@@ -136,6 +153,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   car_has_odometr: null,
   engine_kind_ids: [],
   ...gasDefaultElement,
+  ...electricalDefaultElement,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

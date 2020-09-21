@@ -20,14 +20,13 @@ import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import {
   getSessionCompanyOptions,
-  getSessionFuelTypeOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
-import { getDefaultFuelCardElement } from './utils';
+import { getDefaultFuelCardElement, usefuelTypeOptions } from './utils';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 
 import FuelCardsToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/vehicle-block/FuelCardsToVehicleBlock';
@@ -92,7 +91,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       path,
       companyOptions,
       userCompanyId,
-      fuelTypeOptions,
       isPermitted,
     } = props;
 
@@ -109,7 +107,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
     
     const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
-    const filteredFuelTypeOptions = fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICITY'); // <<< сделать через отдлеьный хук DITETS20A-134, URL: /fuel_type/, /fuel_type/<id>/ | GET
+    const filteredFuelTypeOptions = usefuelTypeOptions(); // <<< сделать через отдлеьный хук DITETS20A-134, URL: /fuel_type/, /fuel_type/<id>/ | GET
     
     return (
       <EtsBootstrap.ModalContainer
@@ -240,7 +238,6 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
   connect<StatePropsFuelCards, DispatchPropsFuelCards, OwnFuelCardsProps, ReduxState>((state) => ({
     companyOptions: getSessionCompanyOptions(state),
     userCompanyId: getSessionState(state).userData.company_id,
-    fuelTypeOptions: getSessionFuelTypeOptions(state),
     STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
       .STRUCTURE_FIELD_VIEW,
     userStructureId: getSessionState(state).userData.structure_id,

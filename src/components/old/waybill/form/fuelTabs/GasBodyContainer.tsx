@@ -44,7 +44,7 @@ type Props = {
   use_pouring: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
   isFuelKind: boolean;
-  isElectricityKind: boolean;
+  isElectricalKind: boolean;
   showComponent: boolean;
   handleEquipmentFuel: (equipment_fuel: boolean, withConfirmDialog: boolean) => void;
   updateEngineKindsFields: () => any;

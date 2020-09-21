@@ -43,6 +43,7 @@ import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import UseEngineKindsList from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/useEngineKindsList';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   const {
@@ -58,6 +59,18 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
 
   const engineKindsOptions = UseEngineKindsList(false, {page, path});
   const [carListOptions, setCarListOptions] = React.useState([]);
+  const isElectricalKind = React.useMemo(() => {
+    return fuelRateOperationsIsActiveOptions
+      ?.find((el) => el.value === state.operation_id)
+      ?.rowData?.engine_kind_ids.includes(ELECTRICAL_ENGINE_TYPE_ID);
+  }, [state.operation_id, fuelRateOperationsIsActiveOptions]);
+  const filteredEngineKindsOptions = React.useMemo(
+    () =>
+      isElectricalKind
+        ? engineKindsOptions
+        : engineKindsOptions.filter((el) => el.value !== ELECTRICAL_ENGINE_TYPE_ID),
+    [isElectricalKind, engineKindsOptions]
+  );
 
   React.useEffect(() => {
     props.actionGetAndSetInStoreSpecialModel({}, { page, path });
@@ -99,6 +112,19 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
     },
     [],
   );
+
+  React.useEffect(() => {
+    if (isElectricalKind && state.engine_kind_id !== ELECTRICAL_ENGINE_TYPE_ID) {
+      props.handleChange({ engine_kind_id: ELECTRICAL_ENGINE_TYPE_ID });
+    } else if (!isElectricalKind && state.engine_kind_id === ELECTRICAL_ENGINE_TYPE_ID) {
+      props.handleChange({ engine_kind_id: null });
+    }
+  }, [
+    state.operation_id,
+    isElectricalKind,
+    state.engine_kind_id,
+    props.handleChange,
+  ]);
 
   const handleSpecialModelChange = React.useCallback(
     (value) => {
@@ -286,11 +312,11 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               label="Тип двигателя"
               error={errors.engine_kind_id}
               type="select"
-              options={engineKindsOptions}
+              options={filteredEngineKindsOptions}
               value={state.engine_kind_id}
               onChange={props.handleChange}
               boundKeys="engine_kind_id"
-              disabled={!isPermitted}
+              disabled={!isPermitted || isElectricalKind}
             />
             <ExtField
               id="company_structure_id"

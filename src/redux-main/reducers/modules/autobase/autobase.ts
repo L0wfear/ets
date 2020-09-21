@@ -46,6 +46,7 @@ export const autobaseInitialState: IStateAutobase = {
   fuelCardsList: [],
   equipmentFuelCardsList: [],
   gasFuelCardsList: [],
+  electricalFuelCardsList: [],
   notFiltredFuelCardsIndex: {},
   fuelTypeList: [],
   typesAttrList: [],

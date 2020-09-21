@@ -22,6 +22,7 @@ type Props = {
 
 export const GAS_ENGINE_TYPE_ID = 2;
 export const FUEL_ENGINE_TYPE_ID = 1;
+export const ELECTRICAL_ENGINE_TYPE_ID = 3;
 
 const FieldSelectEngine: React.FC<Props> = React.memo(
   (props) => {

@@ -44,6 +44,14 @@ export const setGasFuelCards = (gasFuelCardsList: Array<FuelCard>) => (dispatch)
   )
 );
 
+export const setElectricalFuelCards = (electricalFuelCardsList: Array<FuelCard>) => (dispatch) => (
+  dispatch(
+    autobaseSetNewData({
+      electricalFuelCardsList,
+    }),
+  )
+);
+
 export const setFuelType = (fuelTypeList: Array<FuelType>) => (dispatch) => (
   dispatch(
     autobaseSetNewData({
@@ -115,6 +123,20 @@ export const gasFuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta)
 
   dispatch(
     setGasFuelCards(data),
+  );
+
+  return {
+    data,
+  };
+};
+
+export const electricalFuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelCardsGet>> => async (dispatch) => {
+  const { data } = await dispatch(
+    fuelCardsGet(payload, meta),
+  );
+
+  dispatch(
+    setElectricalFuelCards(data),
   );
 
   return {

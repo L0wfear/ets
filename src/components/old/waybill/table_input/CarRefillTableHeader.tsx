@@ -120,7 +120,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   )
               }
               {
-                props.visibleButtons && (
+                props.visibleButtons && props.fuel_type !== 'ELECTRICAL' && (
                   <ButtonCreateFuelCard
                     id={props.id}
                     handleUpdateFuelCard={props.handleUpdateFuelCard}

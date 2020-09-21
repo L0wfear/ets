@@ -76,7 +76,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
     } = props;
 
     const fuelTypesOption = React.useMemo(() => FUEL_TYPES.filter(
-      (elem) => elem?.value !== 'GAS' && elem?.value !== 'ELECTRICITY'
+      (elem) => elem?.value !== 'GAS' && elem?.value !== 'ELECTRICAL'
     ), [FUEL_TYPES]);
 
     return <TabBodyContainerStyled showComponent={props.showComponent}>

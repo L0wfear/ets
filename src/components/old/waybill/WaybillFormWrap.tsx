@@ -48,8 +48,8 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours } from 'utils/functions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { gasDefaultElement, electricalDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -72,6 +72,7 @@ const canSaveNotCheckField = [
   'is_fuel_refill',
   'is_gas_refill',
   'is_equipment_refill',
+  'is_electrical_refill',
 ];
 
 const canCloseNotCheckField = [
@@ -79,6 +80,7 @@ const canCloseNotCheckField = [
   'is_fuel_refill',
   'is_gas_refill',
   'is_equipment_refill',
+  'is_electrical_refill',
 ];
 
 const canSaveTestWrap = (formError) => {
@@ -144,7 +146,7 @@ const checkDataForDepartureAndArrivalValues = new Set([
   'motohours_equip_end',
 ]);
 
-const checkDataForRefill = new Set(['car_refill', 'equipment_refill', 'gas_refill'],);
+const checkDataForRefill = new Set(['car_refill', 'equipment_refill', 'gas_refill', 'electrical_refill'],);
 
 const filterFormErrorByPerission = (isPermittedByKey, formErrors) => {
   return Object.fromEntries(
@@ -176,6 +178,7 @@ type StateProps = {
   employeeIndex: Record<Employee['id'], Employee>;
   equipmentFuelCardsList: Array<FuelCard>;
   gasFuelCardsList: Array<FuelCard>;
+  electricalFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
   moscowTimeServer: IStateSomeUniq['moscowTimeServer'];
   selectedMissions: IStateSomeUniq['selectedMissionsList'];
@@ -246,6 +249,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       timeId: null, // id таймера
       taxesTotalValueError: false,
       gasTaxesTotalValueError: false,
+      electricalTaxesTotalValueError: false,
       equipmentTaxesTotalValueError: false,
     };
   }
@@ -256,6 +260,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       || this.state.taxesTotalValueError !== prevState.taxesTotalValueError
       || this.state.gasTaxesTotalValueError !== prevState.gasTaxesTotalValueError
       || this.state.equipmentTaxesTotalValueError !== prevState.equipmentTaxesTotalValueError
+      || this.state.electricalTaxesTotalValueError !== prevState.electricalTaxesTotalValueError
     ) {
       this.handleMultipleChange({});
     }
@@ -306,6 +311,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       if (!waybill.gas_tax_data) {
         waybill.gas_tax_data = [];
       }
+      if (!waybill.electrical_tax_data) {
+        waybill.electrical_tax_data = [];
+      }
       if (waybill.mission_id_list.filter((v) => v).length === 0) {
         waybill.mission_id_list = [];
       }
@@ -321,15 +329,22 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         const gasFuelStart = !isNullOrUndefined(waybill.gas_fuel_start)
           ? parseFloat(waybill.gas_fuel_start.toString())
           : 0;
+        const electricalFuelStart = !isNullOrUndefined(waybill.electrical_fuel_start)
+          ? parseFloat(waybill.electrical_fuel_start.toString())
+          : 0;
         const fuelGiven = !isNullOrUndefined(waybill.fuel_given)
           ? parseFloat(waybill.fuel_given.toString())
           : 0;
         const gasFuelGiven = !isNullOrUndefined(waybill.gas_fuel_given)
           ? parseFloat(waybill.gas_fuel_given.toString())
           : 0;
+        const electricalFuelGiven = !isNullOrUndefined(waybill.electrical_fuel_given)
+          ? parseFloat(waybill.electrical_fuel_given.toString())
+          : 0;
         const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
 
         const gasFuelTaxes = Taxes.calculateFinalResult(waybill.gas_tax_data);
+        const electricalFuelTaxes = Taxes.calculateFinalResult(waybill.electrical_tax_data);
         const equipmentFuelStart = !isNullOrUndefined(waybill.equipment_fuel_start)
           ? parseFloat(waybill.equipment_fuel_start.toString())
           : 0;
@@ -358,6 +373,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             gasFuelStart
             + gasFuelGiven
             - gasFuelTaxes
+            - equipmentFuelTaxes
+          ), 3);
+          waybill.electrical_fuel_end = parseFloatWithFixed((
+            electricalFuelStart
+            + electricalFuelGiven
+            - electricalFuelTaxes
             - equipmentFuelTaxes
           ), 3);
           waybill.equipment_fuel_end = null;
@@ -399,7 +420,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               )
               && !this.state.taxesTotalValueError
               && !this.state.gasTaxesTotalValueError
-              && !this.state.equipmentTaxesTotalValueError,
+              && !this.state.equipmentTaxesTotalValueError
+              && !this.state.electricalTaxesTotalValueError,
             canClose:
               this.state.isPermittedByKey.update && canCloseWrap(formErrors),
           });
@@ -426,7 +448,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             && canSaveTestWrap(this.state.formErrors)
             && !this.state.taxesTotalValueError
             && !this.state.gasTaxesTotalValueError
-            && !this.state.equipmentTaxesTotalValueError,
+            && !this.state.equipmentTaxesTotalValueError
+            && !this.state.electricalTaxesTotalValueError,
           canClose: this.state.isPermittedByKey.update && Object.values(formErrors).filter((d) => !!d).length,
           formErrors,
         });
@@ -529,7 +552,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
   handleFieldsChange = async (formState) => {
     let { formErrors } = this.state;
-    const { gasTaxesTotalValueError, taxesTotalValueError, equipmentTaxesTotalValueError } = this.state;
+    const { gasTaxesTotalValueError, taxesTotalValueError, equipmentTaxesTotalValueError, electricalTaxesTotalValueError } = this.state;
     const newState: Partial<State> = {};
 
     formState.fuel_start = formState.fuel_start
@@ -541,9 +564,15 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     formState.gas_fuel_start = formState.gas_fuel_start
       ? parseFloat(formState.gas_fuel_start)
       : formState.gas_fuel_start;
+    formState.electrical_fuel_start = formState.electrical_fuel_start
+      ? parseFloat(formState.electrical_fuel_start)
+      : formState.electrical_fuel_start;
     formState.gas_fuel_given = formState.gas_fuel_given
       ? parseFloat(formState.gas_fuel_given)
       : formState.gas_fuel_given;
+    formState.electrical_fuel_given = formState.electrical_fuel_given
+      ? parseFloat(formState.electrical_fuel_given)
+      : formState.electrical_fuel_given;
     formState.equipment_fuel_start = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
       : formState.equipment_fuel_start;
@@ -557,6 +586,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     if(isNullOrUndefined(formState.gas_fuel_given)) {
       formState.gas_fuel_given = 0;
     }
+    if(isNullOrUndefined(formState.electrical_fuel_given)) {
+      formState.electrical_fuel_given = 0;
+    }
 
     const fuelStart = formState.fuel_start
       ? parseFloat(formState.fuel_start)
@@ -564,14 +596,21 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const gasFuelStart = formState.gas_fuel_start
       ? parseFloat(formState.gas_fuel_start)
       : 0;
+    const electricalFuelStart = formState.electrical_fuel_start
+      ? parseFloat(formState.electrical_fuel_start)
+      : 0;
     const fuelGiven = formState.fuel_given
       ? parseFloat(formState.fuel_given)
       : 0;
     const gasFuelGiven = formState.gas_fuel_given
       ? parseFloat(formState.gas_fuel_given)
       : 0;
+    const electricalFuelGiven = formState.electrical_fuel_given
+      ? parseFloat(formState.electrical_fuel_given)
+      : 0;
     const fuelTaxes = Taxes.calculateFinalResult(formState.tax_data);
     const gasFuelTaxes = Taxes.calculateFinalResult(formState.gas_tax_data);
+    const electricalFuelTaxes = Taxes.calculateFinalResult(formState.electrical_tax_data);
     const equipmentFuelStart = formState.equipment_fuel_start
       ? parseFloat(formState.equipment_fuel_start)
       : 0;
@@ -591,6 +630,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     formState.gas_tax_consumption = formState.is_one_fuel_tank && formState.equipment_fuel
       ? parseFloatWithFixed(equipmentFuelTaxes + gasFuelTaxes, 3)
       : parseFloatWithFixed(gasFuelTaxes, 3);
+    formState.electrical_tax_consumption = formState.is_one_fuel_tank && formState.equipment_fuel
+      ? parseFloatWithFixed(equipmentFuelTaxes + electricalFuelTaxes, 3)
+      : parseFloatWithFixed(electricalFuelTaxes, 3);
     formState.equipment_fact_consumption = parseFloatWithFixed((
       equipmentFuelStart
       + equipmentFuelGiven
@@ -623,6 +665,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         - gasFuelTaxes
         - equipmentFuelTaxes
       ), 3);
+      formState.electrical_fuel_end = parseFloatWithFixed((
+        electricalFuelStart
+        + electricalFuelGiven
+        - electricalFuelTaxes
+        - equipmentFuelTaxes
+      ), 3);
     }
 
     formState.fact_consumption = parseFloatWithFixed((
@@ -634,6 +682,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       gasFuelStart
       + gasFuelGiven
       - formState.gas_fact_fuel_end
+    ), 3);
+    formState.electrical_fact_consumption = parseFloatWithFixed((
+      electricalFuelStart
+      + electricalFuelGiven
+      - formState.electrical_fact_fuel_end
     ), 3);
     formState.diff_consumption = Math.abs(
       parseFloatWithFixed((
@@ -647,6 +700,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         - formState.gas_fact_consumption
       ), 3)
     );
+    formState.electrical_diff_consumption = Math.abs(
+      parseFloatWithFixed((
+        formState.electrical_tax_consumption
+        - formState.electrical_fact_consumption
+      ), 3)
+    );
 
     if (!formState.status || formState.status === 'draft') {
       this.schema = waybillSchema;
@@ -655,19 +714,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     }
 
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
-    if(!isGasKind) {
-      // чистим поля с газом <<< сделать через Object
-      formState.gas_fuel_type = gasDefaultElement.gas_fuel_type; // Тип топлива
-      formState.gas_fuel_start = gasDefaultElement.gas_fuel_start; // Выезд, л
-      formState.gas_fuel_given = gasDefaultElement.gas_fuel_given; // Выдано, л
-      formState.gas_fuel_end = gasDefaultElement.gas_fuel_end; // Возврат по таксировке, л
-      formState.gas_fact_fuel_end = gasDefaultElement.gas_fact_fuel_end; // Возврат фактический, л
-      formState.gas_tax_data = gasDefaultElement.gas_tax_data; // Расчет по норме
-      formState.gas_refill = gasDefaultElement.gas_refill; // Заправки
-      formState.gas_tax_consumption = gasDefaultElement.gas_tax_consumption;// Расход по таксировке, л
-      formState.gas_fact_consumption = gasDefaultElement.gas_fact_consumption; // Расход фактический, л
-      formState.gas_diff_consumption = gasDefaultElement.gas_diff_consumption; // Расхождение в данных расхода, л
-    } else if (isGasKind) {
+    const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    if(isGasKind || isElectricalKind) {
       // чистим поля со спец. оборудованием
       formState.equipment_fact_fuel_end = null;
       formState.equipment_fuel = false;
@@ -681,6 +729,26 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       formState.is_one_fuel_tank = false;
       formState.equipment_diff_consumption = null;
       formState.equipment_fact_consumption = null;
+
+      if(isGasKind) {
+        // чистим поля с электричеством
+        Object.keys(electricalDefaultElement).forEach((key) => {
+          formState[key] = electricalDefaultElement[key];
+        });
+      } else {
+        // чистим поля с газом
+        Object.keys(gasDefaultElement).forEach((key) => {
+          formState[key] = gasDefaultElement[key];
+        });
+      }
+    } else {
+      // чистим поля с газом <<< сделать через Object
+      Object.keys(gasDefaultElement).forEach((key) => {
+        formState[key] = gasDefaultElement[key];
+      });
+      Object.keys(electricalDefaultElement).forEach((key) => {
+        formState[key] = electricalDefaultElement[key];
+      });
     }
 
     formErrors = filterFormErrorByPerission(
@@ -697,7 +765,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       )
       && !taxesTotalValueError
       && !gasTaxesTotalValueError
-      && !equipmentTaxesTotalValueError;
+      && !equipmentTaxesTotalValueError
+      && !electricalTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formState = formState;
@@ -728,7 +797,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       )
       && !this.state.taxesTotalValueError
       && !this.state.gasTaxesTotalValueError
-      && !this.state.equipmentTaxesTotalValueError;
+      && !this.state.equipmentTaxesTotalValueError
+      && !this.state.electricalTaxesTotalValueError;
     newState.canClose = canCloseWrap(formErrors);
 
     newState.formErrors = formErrors;
@@ -782,7 +852,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   calcTaxDataFieldForChange = (
-    tax_data: Waybill['gas_tax_data'] | Waybill['tax_data'],
+    tax_data: Waybill['gas_tax_data'] | Waybill['tax_data'] | Waybill['electrical_tax_data'],
     formState,
     field,
     index,
@@ -793,7 +863,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
 
     tax_data.forEach((currElem) => {
-      const isFirstElemTaxOperationField = (field === 'taxes_operation' || field === 'gas_taxes_operation') && index === firstElemIndex;
+      const isFirstElemTaxOperationField = (field === 'taxes_operation' || field === 'gas_taxes_operation' || field === 'electrical_taxes_operation') && index === firstElemIndex;
       
       if (
         (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
@@ -876,9 +946,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
       this.calcTaxDataFieldForChange(formState.tax_data, formState, field, index);
-    } 
+    }
     if (formState.gas_tax_data && formState.gas_tax_data.length) {
       this.calcTaxDataFieldForChange(formState.gas_tax_data, formState, field, index);
+    } 
+    if (formState.electrical_tax_data && formState.electrical_tax_data.length) {
+      this.calcTaxDataFieldForChange(formState.electrical_tax_data, formState, field, index);
     } 
     
     if (formState.equipment_tax_data && formState.equipment_tax_data.length ) {
@@ -908,6 +981,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       delete formState.equipment_fuel_start;
       delete formState.fuel_start;
       delete formState.gas_fuel_start;
+      delete formState.electrical_fuel_start;
       delete formState.motohours_equip_start;
 
       formState.car_has_motohours = null;
@@ -920,6 +994,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         'equipment_fuel_start',
         'fuel_start',
         'gas_fuel_start',
+        'electrical_fuel_start',
         'motohours_equip_start',
         'clear fields',
         '----->',
@@ -1119,6 +1194,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         is_fuel_refill,
         is_gas_refill,
         is_equipment_refill,
+        is_electrical_refill,
       } = this.state.formErrors;
 
       const govNumberRegExp = /^[\d]{4}/;
@@ -1131,9 +1207,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         );
         return;
       }
-      if (is_fuel_refill || is_gas_refill || is_equipment_refill) {
-        const carOrEquipmentText = (is_fuel_refill || is_gas_refill) ? 'Транспортное средство' : 'Спецоборудование';
-        const fuelTypeText = is_fuel_refill ? 'Топливо' : is_gas_refill ? 'Газ' : 'Топливо для оборудования';
+      if (is_fuel_refill || is_gas_refill || is_equipment_refill || is_electrical_refill) {
+        const carOrEquipmentText = (is_fuel_refill || is_gas_refill || is_electrical_refill) ? 'Транспортное средство' : 'Спецоборудование';
+        const fuelTypeText = is_fuel_refill ? 'Топливо' : is_gas_refill ? 'Газ' : is_electrical_refill ? 'ЭЭ' : 'Топливо для оборудования';
         global.NOTIFICATION_SYSTEM.notify(
           getWarningNotification(
             `${carOrEquipmentText}. ${fuelTypeText}. Добавьте заправку или укажите, что ее не было`,
@@ -1245,6 +1321,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
                 ...this.state.formErrors,
                 gasTaxesTotalValueError: this.state.gasTaxesTotalValueError,
                 taxesTotalValueError: this.state.taxesTotalValueError,
+                electricalTaxesTotalValueError: this.state.electricalTaxesTotalValueError,
               }}
               entity={'waybill'}
               usePouring={this.state.usePouring}
@@ -1284,6 +1361,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     employeeIndex: getEmployeeState(state).employeeIndex,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList, // // Используется в схеме валидации
     gasFuelCardsList: getAutobaseState(state).gasFuelCardsList, // // Используется в схеме валидации
+    electricalFuelCardsList: getAutobaseState(state).electricalFuelCardsList,
     notFiltredFuelCardsIndex: getAutobaseState(state).notFiltredFuelCardsIndex,
     moscowTimeServer: state.some_uniq.moscowTimeServer,
     companyList: getCompanyState(state).companyList,

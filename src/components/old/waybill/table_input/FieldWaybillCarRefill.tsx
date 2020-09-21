@@ -7,7 +7,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore, gasFuelCardsGetAndSetInStore, } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore, gasFuelCardsGetAndSetInStore, electricalFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -43,7 +43,7 @@ type Props = {
   is_one_fuel_tank?: boolean;
   use_pouring?: boolean;
   boundKey: string;
-  fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'] | IStateAutobase['gasFuelCardsList'];
+  fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'] | IStateAutobase['gasFuelCardsList'] | IStateAutobase['electricalFuelCardsList'];
   is_refill: boolean;
   is_refill_error: any;
   canEditIfClose: boolean;
@@ -64,10 +64,15 @@ type Props = {
     arrayOrigin: Waybill['gas_refill'];
     fuel_given: Waybill['gas_fuel_given'];
     fuel_type: Waybill['gas_fuel_type'];
+  } | {
+    array: Waybill['electrical_refill'];
+    arrayOrigin: Waybill['electrical_refill'];
+    fuel_given: Waybill['electrical_fuel_given'];
+    fuel_type: Waybill['electrical_fuel_type'];
   }
 );
 
-const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['gas_refill']>> = {
+const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['gas_refill'] | Waybill['electrical_refill']>> = {
   key: 'type_id',
   title: 'Способ заправки',
   format: 'select',
@@ -76,7 +81,7 @@ const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_
   uniqValueInCol: true,
 };
 
-const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
+const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['electrical_refill']>> = {
   key: 'fuel_card_id',
   title: 'Топливная карта',
   placeholder: '',
@@ -91,7 +96,7 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   options: [],
 };
 
-const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
+const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['electrical_refill']>> = {
   key: 'value',
   title: 'Выдано, л',
   width: 100,
@@ -102,6 +107,7 @@ const storeFuelCardsKey = {
   equipment_refill: 'equipmentFuelCardsList',
   car_refill: 'fuelCardsList',
   gas_refill: 'gasFuelCardsList',
+  electrical_refill: 'electricalFuelCardsList',
 };
 
 const FieldWaybillCarRefill: React.FC<Props> = React.memo(
@@ -112,7 +118,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const isEquipmentRefilBlock = props.boundKey === 'equipment_refill';
     const isCarRefilBlock = props.boundKey === 'car_refill';
     const isGasRefilBlock = props.boundKey === 'gas_refill';
-
+    const isElectricalRefilBlock = props.boundKey === 'electrical_refill';
+    
     const isPermittedWaybillRefill = etsUseSelector((state) => getSessionState(state).userData.permissionsSet.has(waybillPermissions.refill));
     const fuelCardsList = !isNullOrUndefined(props.boundKey)
       ? etsUseSelector((state) => getAutobaseState(state)[storeFuelCardsKey[props.boundKey]])
@@ -159,8 +166,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           {
             ...metaTypeId,
             options: typeIdOptions,
-            disabled: isGasRefilBlock,
-            default_value: isGasRefilBlock
+            disabled: isGasRefilBlock || isElectricalRefilBlock,
+            default_value: isGasRefilBlock || isElectricalRefilBlock
               ? 1
               : null,
           },
@@ -170,6 +177,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           },
           {
             ...metaValue,
+            title: props.fuel_type !== 'ELECTRICAL' ? metaValue.title : 'Выдано, кВт',
             disabled: !props.array[selectedRowIndex]?.type_id
               || (
                 props.array[selectedRowIndex]?.type_id === 1
@@ -180,7 +188,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
         return meta;
       },
-      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex, isGasRefilBlock],
+      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex, isGasRefilBlock, isElectricalRefilBlock],
     );
     const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
     const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
@@ -242,6 +250,16 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               path: props.path,
             },
           ));
+        } else if (isElectricalRefilBlock) {
+          dispatch(electricalFuelCardsGetAndSetInStore(
+            {
+              ...payload,
+            },
+            {
+              page: props.page,
+              path: props.path,
+            },
+          ));
         }
       },
       [
@@ -256,6 +274,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         isCarRefilBlock,
         isEquipmentRefilBlock,
         isGasRefilBlock,
+        isElectricalRefilBlock
       ],
     );
 
@@ -449,6 +468,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
     const showForGasRefil = props.array.length
       || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
+    const showForElectricalRefil = props.array.length
+      || (!props.array.length && !(props.disabled && !isPermittedWaybillRefill)); // если массив пустой и мы можем добавить строку
     
     // Можно наверное уйти к одному флагу
     const showBlock = isEquipmentRefilBlock
@@ -457,7 +478,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         ? showForCarRefil
         : isGasRefilBlock
           ? showForGasRefil
-          : false;
+          : isElectricalRefilBlock
+            ? showForElectricalRefil
+            : false;
 
     const defaultItem: FuelCardOnCars = { // для создания топливной карты
       ...defaultFuelCardOnCarsItem,
@@ -486,7 +509,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
-              noHasFuelCardIdOptions={!fuelCardIdOptions.length}
+              noHasFuelCardIdOptions={!fuelCardIdOptions?.length}
               fuel_card_on_cars = {[defaultItem]}
               handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}

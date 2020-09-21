@@ -45,6 +45,7 @@ export default class Taxes extends React.Component<any, any> {
       onChange: PropTypes.func.isRequired,
       boundKey: PropTypes.string,
       isGasKind: PropTypes.bool,
+      isElectricalKind: PropTypes.bool,
     };
   }
 
@@ -113,7 +114,7 @@ export default class Taxes extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    const { type } = props;
+    const { type, isElectricalKind } = props;
 
     this.tableCaptions = [
       {
@@ -139,7 +140,7 @@ export default class Taxes extends React.Component<any, any> {
         width: 150,
       },
       {
-        value: 'Результат (л)',
+        value: `Результат ${isElectricalKind ? 'кВт' : '(л)'}`,
         width: 125,
       },
     ];
@@ -171,7 +172,9 @@ export default class Taxes extends React.Component<any, any> {
           this.state,
           this.props.boundKey === 'gas_tax_data'
             ? 'errorsAll.gas_tax_data_rows'
-            : 'errorsAll.tax_data_rows',
+            : this.props.boundKey === 'electrical_tax_data'
+              ? 'errorsAll.electrical_tax_data_rows'
+              : 'errorsAll.tax_data_rows',
           []);
         const errorsMsg = errors.length
           ? get(errors, `${index}.OPERATION`)
@@ -529,7 +532,7 @@ export default class Taxes extends React.Component<any, any> {
                 </div>
               </div>
               <div>
-                <b>{finalResult.toFixed(3).replace('.', ',')} л</b>
+                <b>{finalResult.toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
               </div>
             </FooterEnd>
           </>

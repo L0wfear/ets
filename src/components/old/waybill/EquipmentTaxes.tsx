@@ -38,6 +38,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       baseFactValue: PropTypes.any,
       fuelRates: PropTypes.array,
       onChange: PropTypes.func.isRequired,
+      isElectricalKind: PropTypes.bool,
     };
   }
 
@@ -119,7 +120,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         width: 150,
       },
       {
-        value: 'Результат (л)',
+        value: `Результат ${props.isElectricalKind ? 'кВт' : '(л)'}`,
         width: 125,
       },
     ];
@@ -462,7 +463,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
               </div>
             </div>
             <div>
-              <b>{finalResult.toFixed(3).replace('.', ',')} л</b>
+              <b>{finalResult.toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
             </div>
           </FooterEnd>
         )}

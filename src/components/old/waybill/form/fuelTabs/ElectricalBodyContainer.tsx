@@ -281,6 +281,7 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
             errorsAll={errors}
             boundKey={'electrical_tax_data'}
             isElectricalKind={props.isElectricalKind}
+            canEditIfClose={waybillState.canEditIfClose}
           />
           <ErrorsBlock error={errors.electrical_tax_data} />
         </EtsBootstrap.Col>

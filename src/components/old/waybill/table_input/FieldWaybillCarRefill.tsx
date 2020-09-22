@@ -7,7 +7,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import CarRefillTableHeader from './CarRefillTableHeader';
-import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore, gasFuelCardsGetAndSetInStore, electricalFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { fuelCardsGetAndSetInStore, equipmentFuelCardsGetAndSetInStore, gasFuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -167,13 +167,12 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             ...metaTypeId,
             options: typeIdOptions,
             disabled: isGasRefilBlock || isElectricalRefilBlock,
-            default_value: isGasRefilBlock || isElectricalRefilBlock
-              ? 1
-              : null,
+            default_value: isGasRefilBlock ? 1 : isElectricalRefilBlock ? 2 : null,
           },
           {
             ...metaFuelCardId,
             options: fuelCardIdOptions,
+            disabled: isElectricalRefilBlock,
           },
           {
             ...metaValue,
@@ -242,16 +241,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           ));
         } else if (isGasRefilBlock) {
           dispatch(gasFuelCardsGetAndSetInStore(
-            {
-              ...payload,
-            },
-            {
-              page: props.page,
-              path: props.path,
-            },
-          ));
-        } else if (isElectricalRefilBlock) {
-          dispatch(electricalFuelCardsGetAndSetInStore(
             {
               ...payload,
             },

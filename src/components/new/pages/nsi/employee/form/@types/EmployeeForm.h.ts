@@ -34,6 +34,7 @@ export type StateEmployee = {
   positionOptions: DefaultSelectListMapper<Position>;
   companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear>;
   isCommonOptions: Array<{ value: number; label: string; }>;
+  countryOptions: Array<{ value: number; label: string; }>;
   driverStateOptions: Array<{ value: number; label: string; }>;
   categoryDriversLicenseOptions: Array<{ value: number; label: string; }>;
   categorySpecialLicenseOptions: Array<{ value: number; label: string; }>;

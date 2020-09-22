@@ -3409,6 +3409,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               errorsAll={errors}
                               setTotalValueError={this.props.setTotalValueError}
                               isElectricalKind={isElectricalKind}
+                              canEditIfClose={this.state.canEditIfClose}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

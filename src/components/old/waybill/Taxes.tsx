@@ -297,6 +297,8 @@ export default class Taxes extends React.Component<any, any> {
       taxes,
       sameTaxes,
       isGasKind,
+      IS_CLOSED,
+      canEditIfClose,
     } = this.props;
     const hasTaxes = taxes?.length > 0;
     const finalFactValueSameTaxes = Taxes.calculateFinalFactValue(sameTaxes, type); // { withMileage, withoutMileage}
@@ -310,7 +312,11 @@ export default class Taxes extends React.Component<any, any> {
       ? errorTextByKind
       : '';
 
-    if (this.state.totalValueError !== error && hasTaxes) {
+    if (
+      this.state.totalValueError !== error 
+      && hasTaxes
+      && (!IS_CLOSED || canEditIfClose)
+    ) {
       if(taxes?.length === sameTaxes?.length){ // если Нормы добавлены только в одном из блоков, выводим ошибку в одном из блоков
         setTotalValueError( // устанавливаем ошибку в первом блоке
           this.props.boundKey === 'gas_tax_data'

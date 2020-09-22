@@ -290,6 +290,7 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             errorsAll={errors}
             boundKey={'gas_tax_data'}
             isGasKind={props.isGasKind}
+            canEditIfClose={waybillState.canEditIfClose}
           />
           <ErrorsBlock error={errors.gas_tax_data} />
         </EtsBootstrap.Col>

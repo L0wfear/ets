@@ -3301,6 +3301,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="motohours"
                               errorsAll={errors}
                               setTotalValueError={this.props.setTotalValueError}
+                              canEditIfClose={this.state.canEditIfClose}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

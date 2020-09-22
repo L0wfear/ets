@@ -258,6 +258,8 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       baseFactValue,
       type,
       setTotalValueError,
+      IS_CLOSED,
+      canEditIfClose,
     } = this.props;
     const hasTaxes = taxes.length > 0;
     const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes, type).withMileage;
@@ -265,7 +267,11 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       = Number(baseFactValue) <= Number(finalFactValue);
     const error = !finalFactValueMoreOrEqualBaseValue ? 'Значение в поле "Итого" должно быть не меньше пробега оборудования' : ''; 
 
-    if (this.state.totalValueError !== error && hasTaxes) {
+    if (
+      this.state.totalValueError !== error 
+      && hasTaxes
+      && (!IS_CLOSED || canEditIfClose)
+    ) {
       this.setState({totalValueError: error});
       setTotalValueError('equipmentTaxesTotalValueError', Boolean(error));
     }

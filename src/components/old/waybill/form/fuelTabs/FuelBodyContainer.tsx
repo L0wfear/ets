@@ -282,6 +282,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
             isGasKind={props.isGasKind}
+            canEditIfClose={waybillState.canEditIfClose}
           />
           <ErrorsBlock error={errors.tax_data} />
         </EtsBootstrap.Col>

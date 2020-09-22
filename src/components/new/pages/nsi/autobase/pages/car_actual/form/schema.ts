@@ -123,7 +123,7 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       maxLength: 128,
       dependencies: [
         (value) => {
-          if (value.match(/[Йй]/g)) {
+          if (value && value.match(/[Йй]/g)) {
             return 'Введено недоступное значение';
           }
           return false;

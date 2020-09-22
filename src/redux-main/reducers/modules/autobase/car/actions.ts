@@ -154,21 +154,54 @@ export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): Ets
 
   await dispatch(
     actionUpdateCar(car, meta),
-  ).then(() => Promise.all([
+  ).then(() => {
     dispatch(
       actionUpdateCarDrivers(drivers_data, meta),
-    ),
-    dispatch(
-      actionUpdateCarRegistration(registration_data, meta),
-    ),
-    dispatch(
-      actionUpdateCarPassport(passport_data, meta),
-    ),
-  ])).catch((e) => {
-    throw new Error(e);
+    ).catch((e) => {
+      console.error(e);
+    });
   });
 
-  return carWrapOld;
+  const carPassportData = await dispatch(
+    actionUpdateCarPassport(passport_data, meta),
+  )
+    .then((result) => result)
+    .catch((e) => {
+      console.error(e);
+    });
+
+  const registrationData = await dispatch(
+    actionUpdateCarRegistration(registration_data, meta),
+  )
+    .then((result) => result)
+    .catch((e) => {
+      console.error(e);
+    });
+
+  const fullCarData: CarWrap = {
+    ...carWrapOld,
+    registration_data: {
+      ...carWrapOld.registration_data,
+    },
+    passport_data: {
+      ...carWrapOld.passport_data,
+    },
+  };
+
+  if (registrationData) {
+    fullCarData.registration_data = {
+      ...fullCarData.registration_data,
+      ...registrationData,
+    };
+  }
+  if (carPassportData) {
+    fullCarData.passport_data = {
+      ...fullCarData.passport_data,
+      ...carPassportData,
+    };
+  }
+
+  return fullCarData;
 };
 
 export const actionUpdateCarDrivers = (driversData: CarDriversData, meta: LoadingMeta): EtsAction<Promise<CarDriversData>> => async (dispatch) => {

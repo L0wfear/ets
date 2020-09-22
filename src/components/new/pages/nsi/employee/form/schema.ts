@@ -3,6 +3,7 @@ import { PropsEmployee } from 'components/new/pages/nsi/employee/form/@types/Emp
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isEmpty } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const isValidLicense = (data) => {
   return /[^АВЕКМНОРСТУХ0-9_ ]/g.test(data);
@@ -81,12 +82,24 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'valueOfArray',
       required: true,
     },
+    special_license_country_id: {
+      title: 'Страна, выдавшая специальное удостоверение',
+      type: 'number',
+      strick: true,
+      dependencies: [
+        (value, formData) => {
+          if (!value && formData.special_license) {
+            return getRequiredFieldMessage('Страна, выдавшая специальное удостоверение');
+          }
+        }
+      ],
+    },
     special_license: {
       title: 'Специальное удостоверение',
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
+          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -103,12 +116,24 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
         },
       ],
     },
+    driver_license_country_id: {
+      title: 'Страна, выдавшая водительское удостоверение',
+      type: 'number',
+      strick: true,
+      dependencies: [
+        (value, formData) => {
+          if (!value && formData.drivers_license) {
+            return getRequiredFieldMessage('Страна, выдавшая водительское удостоверение');
+          }
+        }
+      ],
+    },
     drivers_license: {
       title: 'Водительское удостоверение',
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
+          if (value && formData.driver_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {

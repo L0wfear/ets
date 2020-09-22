@@ -19,6 +19,7 @@ export type Employee = {
   company_structure_id: null;
   company_structure_name: string;
   drivers_license: string;
+  driver_license_country_id: number;
   drivers_license_date_end: string;
   first_name: string;
   full_name: string;
@@ -44,6 +45,7 @@ export type Employee = {
   secondary_car_text: string;
   snils: string;
   special_license: string;
+  special_license_country_id: number;
   special_license_date_end: string;
   special_marks: string;
   assignment: string;

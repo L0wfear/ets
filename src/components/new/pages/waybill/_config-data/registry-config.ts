@@ -560,17 +560,17 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           format: 'toFixed3',
         },
         {
-          key: 'is_edited_start',
-          title: 'Изменение показателей выезда',
-          width: 250,
-          valueForBoolean: 'да',
-        },
-        {
           key: 'sensor_leak',
           title: 'Топливо, Слив по ДУТ, л',
           width: 250,
           sortable: false,
           format: 'toFixed3',
+        },
+        {
+          key: 'is_edited_start',
+          title: 'Изменение показателей выезда',
+          width: 250,
+          valueForBoolean: 'да',
         },
         {
           key: 'structure_name',

@@ -355,7 +355,9 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
       if (show && shouldBeFiltered) {
         for (const id in oldData) {
           const oldFeature = thisProps.getFeatureById(id);
-          thisProps.removeFeaturesFromSource(oldFeature);
+          if(oldFeature) {
+            thisProps.removeFeaturesFromSource(oldFeature);
+          }
         }
         for (const id in data) {
           if (data[id].shape) {

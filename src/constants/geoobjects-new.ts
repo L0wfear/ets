@@ -29,7 +29,7 @@ export const BASE_GEOOBJECTS_LIST = {
     label: 'Автобазы',
     labelSingl: 'Автобаза',
   },
-  pgm: {
+  pgm_store: {
     serverName: 'pgm_store',
     label: 'Пункты отпуска ПГМ',
     labelSingl: 'Пункт отпуска ПГМ',

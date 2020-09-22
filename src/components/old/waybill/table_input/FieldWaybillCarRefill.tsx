@@ -25,7 +25,7 @@ type Props = {
   errors: Array<any>;
   title: string;
   handleChange: (refill: Waybill['car_refill']) => any;
-
+  defaultHandleChange: any;
   IS_DRAFT_OR_ACTIVE: boolean;
 
   disabled?: boolean;
@@ -44,7 +44,8 @@ type Props = {
   use_pouring?: boolean;
   boundKey: string;
   fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'] | IStateAutobase['gasFuelCardsList'];
-
+  is_refill: boolean;
+  is_refill_error: any;
   canEditIfClose: boolean;
   gov_number?: Waybill['gov_number'];
 } & (
@@ -473,7 +474,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           errors={props.errors}
           meta={metaCarRefillRaw}
           onChange={handleChange}
-
           header={
             <CarRefillTableHeader
               id={props.id}
@@ -482,6 +482,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               array={props.array}
               meta={metaCarRefillRaw}
               onChange={handleChange}
+              defaultHandleChange={props.defaultHandleChange}
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
               fuel_type={props.fuel_type}
@@ -489,9 +490,11 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               fuel_card_on_cars = {[defaultItem]}
               handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}
-
+              is_refill={props.is_refill}
+              is_refill_error={props.is_refill_error}
               buttonWidth={160}
               disabled={props.disabled}
+              errors={props.errors}
             />
           }
           selectedRowIndex={selectedRowIndex}

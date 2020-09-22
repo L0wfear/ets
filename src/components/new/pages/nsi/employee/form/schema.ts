@@ -3,6 +3,34 @@ import { PropsEmployee } from 'components/new/pages/nsi/employee/form/@types/Emp
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isEmpty } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+
+const isValidLicense = (data) => {
+  return /[^АВЕКМНОРСТУХ0-9_ ]/g.test(data);
+};
+
+const isValidFormat = (data) => {
+  if (data.length <= 2 || data.length >= 5) {
+    return isNaN(data.charAt(data.length - 1)) === true;
+  }
+  if (data.length >= 4) {
+    return isNaN(data.charAt(2)) !== isNaN(data.charAt(3));
+  }
+};
+
+const isValidString = (data) => {
+  let err = 0;
+  for (let char of data) {
+    if (isNaN(char) && (data.length <= 2 || data.length >= 5) && data.indexOf(char) !== 2 && data.indexOf(char) !== 3) {
+      err += 1;
+    }
+  }
+  return Boolean(err);
+};
+
+const isValidValue = (data) => {
+  return /[0-9]{2}[АВЕКМНОРСТУХ0-9]{2}[0-9]{6}/.test(data);
+};
 
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {
@@ -54,23 +82,50 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'valueOfArray',
       required: true,
     },
+    special_license_country_id: {
+      title: 'Страна, выдавшая специальное удостоверение',
+      type: 'number',
+      strick: true,
+      dependencies: [
+        (value, formData) => {
+          if (!value && formData.special_license) {
+            return getRequiredFieldMessage('Страна, выдавшая специальное удостоверение');
+          }
+        }
+      ],
+    },
     special_license: {
       title: 'Специальное удостоверение',
       type: 'string',
       dependencies: [
         (value, formData) => {
+          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
+            return 'Недопустимое значение. Данные не будут сохранены';
+          }
           if (formData.is_driver) {
             if (isEmpty(formData.drivers_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          const maxLengthString = 12;
-          if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+          const maxLengthString = 10;
+          if (value ? value.length > maxLengthString : false) {
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;
         },
+      ],
+    },
+    driver_license_country_id: {
+      title: 'Страна, выдавшая водительское удостоверение',
+      type: 'number',
+      strick: true,
+      dependencies: [
+        (value, formData) => {
+          if (!value && formData.drivers_license) {
+            return getRequiredFieldMessage('Страна, выдавшая водительское удостоверение');
+          }
+        }
       ],
     },
     drivers_license: {
@@ -78,14 +133,17 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
+          if (value && formData.driver_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
+            return 'Недопустимое значение. Данные не будут сохранены';
+          }
           if (formData.is_driver) {
             if (isEmpty(formData.special_license) && isEmpty(value)) {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          const maxLengthString = 12;
-          if ( value ? value.length > maxLengthString : false) {
-            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+          const maxLengthString = 10;
+          if (value ? value.length > maxLengthString : false) {
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
           return undefined;

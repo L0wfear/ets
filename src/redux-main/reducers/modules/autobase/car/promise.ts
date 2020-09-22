@@ -106,8 +106,10 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
       false,
       'json',
     );
+
+    return passportData;
   } else {
-    await ServiceName.post(
+    const response = await ServiceName.post(
       {
         ...passportData,
         given_at: createValidDate(passportData.given_at),
@@ -115,9 +117,11 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
       false,
       'json',
     );
-  }
 
-  return passportData;
+    const data = get(response, 'result.rows.0', {});
+
+    return data;
+  }
 };
 
 export const promiseLoadCarDrivers = (car_id: Car['asuods_id']): Promise<CarDriversData> => {

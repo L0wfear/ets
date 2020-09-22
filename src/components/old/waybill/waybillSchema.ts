@@ -236,7 +236,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const getTrailersByStructId = getTrailers(structure_id, null);
           const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
-          const isTrailerRequired = carIndex[car_id]?.is_trailer_required;
+          const IS_CLOSED = status && status === 'closed';
+          const isTrailerRequired = carIndex[car_id]?.is_trailer_required && !IS_CLOSED;
           const isTrailerRequiredMission = selectedMissions.some(({ is_trailer_required }) => is_trailer_required);
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
@@ -756,11 +757,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       float: 3,
       min: 0,
       dependencies: [
-        (value, { status, equipment_fuel, is_one_fuel_tank }) => {
+        (value, { status }) => {
           if (
-            equipment_fuel
-            && !is_one_fuel_tank
-            && status === 'active'
+            status === 'active'
             && (!value && value !== 0)
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
@@ -777,11 +776,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       float: 3,
       min: 0,
       dependencies: [
-        (value, { status, equipment_fuel, is_one_fuel_tank, engine_kind_ids }) => {
+        (value, { status, engine_kind_ids }) => {
           if (
-            equipment_fuel
-            && !is_one_fuel_tank
-            && status === 'active'
+            status === 'active'
             && (!value && value !== 0)
             && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
           ) {
@@ -995,6 +992,54 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           );
           if (abs / 100 > 0.1 && !IS_CLOSED) {
             return 'Расхождение в показателях пробега';
+          }
+          return false;
+        },
+      ],
+    },
+    is_fuel_refill: {
+      title: 'Заправок не было',
+      type: 'boolean',
+      dependencies: [
+        (value, {car_refill, engine_kind_ids}) => {
+          if(
+            !value 
+            && !car_refill.length 
+            && engine_kind_ids.includes(1)
+          ) {
+            return 'Добавьте заправку или укажите, что ее не было';
+          }
+          return false;
+        },
+      ],
+    },
+    is_equipment_refill: {
+      title: 'Заправок не было',
+      type: 'boolean',
+      dependencies: [
+        (value, {equipment_refill, is_one_fuel_tank}) => {
+          if(
+            !value 
+            && !equipment_refill.length
+            && !is_one_fuel_tank
+          ) {
+            return 'Добавьте заправку или укажите, что ее не было';
+          }
+          return false;
+        },
+      ],
+    },
+    is_gas_refill: {
+      title: 'Заправок не было',
+      type: 'boolean',
+      dependencies: [
+        (value, {gas_refill, engine_kind_ids}) => {
+          if(
+            !value 
+            && !gas_refill.length
+            && engine_kind_ids.includes(2)
+          ) {
+            return 'Добавьте заправку или укажите, что ее не было';
           }
           return false;
         },

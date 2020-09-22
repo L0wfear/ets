@@ -67,6 +67,8 @@ export const FuelCardsArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_cards_archive',
 );
 
+export const PenaltiesService = ETS_API_FACTORY.createApiServiceAdapter('penalties');
+
 /* Рабочий стол */
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');
 export const DriverService = ETS_API_FACTORY.createApiServiceAdapter('driver');

@@ -53,7 +53,7 @@ import {
   getEmployeeState,
 } from 'redux-main/reducers/selectors';
 
-import { BorderDash, FlexContainer, InfoBlock } from 'global-styled/global-styled';
+import { BorderDash, FlexContainer } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
@@ -1024,6 +1024,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       loadingFields.distance = false;
       loadingFields.consumption = false;
       loadingFields.sensor_consumption = false;
+      loadingFields.sensor_leak = false;
       loadingFields.sensor_refill = false;
       loadingFields.sensor_start_value = false;
       loadingFields.sensor_finish_value = false;
@@ -1042,6 +1043,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       loadingFields.distance = true;
       loadingFields.consumption = true;
       loadingFields.sensor_consumption = true;
+      loadingFields.sensor_leak = true;
       loadingFields.sensor_refill = true;
       loadingFields.sensor_start_value = true;
       loadingFields.sensor_finish_value = true;
@@ -1058,7 +1060,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             this.props,
           ),
         )
-        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value,  }) => {
+        .then(({ distance, consumption, sensor_refill, sensor_start_value, sensor_finish_value, sensor_leak }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
             distance: isNullOrUndefined(distance)
@@ -1070,6 +1072,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             sensor_consumption: isNullOrUndefined(consumption)
               ? null
               : parseFloat(consumption),
+            sensor_leak: isNullOrUndefined(sensor_leak)
+              ? null
+              : parseFloat(sensor_leak),
             sensor_refill: isNullOrUndefined(sensor_refill)
               ? null
               : parseFloat(sensor_refill),
@@ -1091,6 +1096,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               distance: false,
               consumption: false,
               sensor_consumption: false,
+              sensor_leak: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -1103,6 +1109,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               distance: false,
               consumption: false,
               sensor_consumption: false,
+              sensor_leak: false,
               sensor_refill: false,
               sensor_start_value: false,
               sensor_finish_value: false,
@@ -1115,6 +1122,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           distance: false,
           consumption: false,
           sensor_consumption: false,
+          sensor_leak: false,
           sensor_refill: false,
         },
       });
@@ -2416,7 +2424,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     error={errors.trailer_id}
                     className="white-space-pre-wrap"
-                    hidden={!(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired && !state.trailer_id))}
+                    hidden={ IS_DELETE || !(IS_CREATING || IS_DRAFT || (IS_ACTIVE && isTrailerRequired))}
                     options={TRAILERS}
                     value={state.trailer_id}
                     onChange={this.handleChange}
@@ -2429,7 +2437,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                     label="Прицеп"
                     className="white-space-pre-wrap"
                     readOnly
-                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isUsePouringMission && isTrailerRequired  && !state.trailer_id)}
+                    hidden={IS_CREATING || IS_DRAFT || (IS_ACTIVE && isTrailerRequired) && !IS_DELETE}
                     value={
                       state.trailer_id && !(IS_ACTIVE && activeTrailerLabel && isTrailerRequired && state.trailer_id)
                         ? `${
@@ -2656,6 +2664,18 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           error={errors.sensor_refill}
                           value={state.sensor_refill}
                           isLoading={loadingFields.sensor_refill}
+                          format="toFixed3"
+                          disabled
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={4}>
+                        <ExtField
+                          id="sensor_leak"
+                          type="number"
+                          label="Слив по ДУТ, л"
+                          error={errors.sensor_leak}
+                          value={state.sensor_leak}
+                          isLoading={loadingFields.sensor_leak}
                           format="toFixed3"
                           disabled
                         />
@@ -3196,12 +3216,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   />
                                 </EtsBootstrap.Col>
                                 <EtsBootstrap.Col md={4}>
-                                  {Boolean(IS_ACTIVE || IS_CLOSED)
-                                    && <InfoBlock>
-                                      Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                                    </InfoBlock> }
-                                </EtsBootstrap.Col>
-                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-consuption-diff"
                                     type="number"
@@ -3233,6 +3247,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               )} // временно
                               title="Заправка топлива"
                               handleChange={this.handleChangeEquipmentRefill}
+                              defaultHandleChange={this.handleChange}
                               use_pouring={usePouring}
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
@@ -3252,6 +3267,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               path={this.props.path}
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
+                              is_refill={state.is_equipment_refill}
+                              is_refill_error={errors.is_equipment_refill}
                               boundKey={'equipment_refill'}
                               fuelCardsList={this.props.equipmentFuelCardsList}
                             />
@@ -3284,6 +3301,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="motohours"
                               errorsAll={errors}
                               setTotalValueError={this.props.setTotalValueError}
+                              canEditIfClose={this.state.canEditIfClose}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

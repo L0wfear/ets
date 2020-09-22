@@ -43,6 +43,17 @@ const CarForm: React.FC<PropsCar> = React.memo(
       [state],
     );
 
+    const onSubmit = React.useCallback(
+      async () => {
+        const response = await props.submitAction(state, props.meta);
+
+        if (response) {
+          props.handleChange(response);
+        }
+      },
+      [state, props.submitAction],
+    );
+
     return (
       <CarActualRegistryFormContext.Provider value={contextValue}>
         <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
@@ -66,7 +77,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
             {
               isPermitted // либо обновление, либо создание
                 ? (
-                  <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+                  <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={onSubmit}>Сохранить</EtsBootstrap.Button>
                 )
                 : (
                   <DivNone />

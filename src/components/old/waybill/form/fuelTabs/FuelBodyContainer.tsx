@@ -5,11 +5,6 @@ import FuelType from 'components/old/waybill/form/FuelType';
 import { WaybillProps, WaybillState } from 'components/old/waybill/WaybillForm';
 import { isNullOrUndefined } from 'util';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import {
-  // BorderDash,
-  // FlexContainer,
-  InfoBlock
-} from 'global-styled/global-styled';
 import { get } from 'lodash';
 
 import FieldWaybillCarRefill from 'components/old/waybill/table_input/FieldWaybillCarRefill';
@@ -197,14 +192,6 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
-                {
-                  Boolean(IS_ACTIVE || IS_CLOSED)
-                      && <InfoBlock>
-                        Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-                      </InfoBlock>
-                }
-              </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={4}>
                 <ExtField
                   id="consuption-diff"
                   type="number"
@@ -238,6 +225,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             title="Заправка топлива"
             use_pouring={use_pouring}
             handleChange={handleChangeCarReFill}
+            defaultHandleChange={props.handleChange}
             fuel_given={waybillFormState.fuel_given}
             structure_id={waybillFormState.structure_id}
             fuel_type={waybillFormState.fuel_type}
@@ -252,6 +240,8 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             IS_DRAFT_OR_ACTIVE={
               IS_CREATING || IS_DRAFT || IS_ACTIVE
             }
+            is_refill={waybillFormState.is_fuel_refill}
+            is_refill_error={errors.is_fuel_refill}
             disabled={disableFieldWaybillCarRefill}
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
@@ -292,6 +282,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
             isGasKind={props.isGasKind}
+            canEditIfClose={waybillState.canEditIfClose}
           />
           <ErrorsBlock error={errors.tax_data} />
         </EtsBootstrap.Col>

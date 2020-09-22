@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isNullOrUndefined } from 'util';
 
-export const TabBodyContainerStyled = styled(EtsBootstrap.Row)<{ showComponent?: boolean; }>`
+export const TabBodyContainerStyled = styled(EtsBootstrap.Row as any)<{ showComponent?: boolean; }>`
   border: 1px solid #ddd;
   border-top: none;
   /* border: 1px solid red; */
@@ -85,6 +85,7 @@ export const fuelTab: OneTabData = { // Вкладка для топлива
     'car_refill', // array of Objects, учесть
     'tax_data_rows', // array of Objects, учесть
     'taxesTotalValueError',
+    'is_fuel_refill',
   ],
   showTabIntoNavFlagKey: 'isFuelKind',
 };
@@ -108,6 +109,7 @@ export const gasTab: OneTabData = { // Вкладка для газа
     'gas_fact_consumption',
     'gas_diff_consumption',
     'gasTaxesTotalValueError',
+    'is_gas_refill',
   ],
   showTabIntoNavFlagKey: 'isGasKind',
 };

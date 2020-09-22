@@ -114,6 +114,9 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
       value = metresToKilometeres(value);
     }
   }
+  if ('valueForBoolean' in fieldMeta && fieldMeta.valueForBoolean) {
+    value = value ? fieldMeta.valueForBoolean : '-';
+  }
 
   if ('dashIfEmpty' in fieldMeta && fieldMeta.dashIfEmpty) {
     value = !value && value !== 0 ? '-' : value;

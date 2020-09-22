@@ -102,6 +102,10 @@ export type WaybillRegistryRow = {
   is_edited_odometr: boolean;
   is_edited_motohours: boolean;
   is_edited_motohours_equip: boolean;
+  is_edited_start: boolean;
+  is_fuel_refill: boolean;
+  is_gas_refill: boolean;
+  is_equipment_refill: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
@@ -119,6 +123,7 @@ export type WaybillRegistryRow = {
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
+  sensor_leak: number;
   sensor_refill: number;
   sensor_start_value: number;
   sensor_finish_value: number;

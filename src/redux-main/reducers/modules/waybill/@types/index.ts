@@ -23,7 +23,9 @@ type TaxDataCar = {
 
 type WaybillEquipmentRefill = WaybillCarRefill;
 type WaybillGasRefill = WaybillCarRefill;
+type WaybillelectricalRefill = WaybillCarRefill;
 type WaybillTaxDataGas = TaxDataCar;
+type WaybillTaxDataelectrical = TaxDataCar;
 
 export type waybillDiff = { // Поля, которые есть в ПЛ, но нет в строке реестра ПЛ, для увеличения производительности бека
   car_gps_code: string;
@@ -105,6 +107,7 @@ export type WaybillRegistryRow = {
   is_edited_start: boolean;
   is_fuel_refill: boolean;
   is_gas_refill: boolean;
+  is_electrical_refill: boolean;
   is_equipment_refill: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
@@ -159,6 +162,20 @@ export type WaybillGas = {
   gas_diff_consumption: number;               // + + + Расхождение в данных расхода, л
 };
 
+export type WaybillElectrical = {
+  electrical_fuel_type: string;                      // + + + Тип топлива
+  electrical_fuel_start: number;                     // + + + Выезд, л
+  electrical_fuel_given: number;                     // + + + Выдано, л
+  electrical_fuel_end: number;                       // + + + Возврат по таксировке, л
+  electrical_fact_fuel_end: number;                  // + + + Возврат фактический, л
+  electrical_tax_data: Array<WaybillTaxDataelectrical>;     // + + + Расчет по норме
+  electrical_refill: Array<WaybillelectricalRefill>;        // + + + Заправки
+
+  electrical_tax_consumption: number;                // + + + Расход по таксировке, л
+  electrical_fact_consumption: number;               // + + + Расход фактический, л
+  electrical_diff_consumption: number;               // + + + Расхождение в данных расхода, л
+};
+
 export type Waybill = (
   WaybillRegistryRow
   & waybillDiff
@@ -166,6 +183,7 @@ export type Waybill = (
     equipment_tax_data_rows?: Array<any>; // для валидации
     tax_data_rows?: Array<any>; // для валидации
     gas_tax_data_rows?: Array<any>; // для валидации
+    electrical_tax_data_rows?: Array<any>; // для валидации
     distance?: number; // для валидации
     hasEquipmentFuelRates?: boolean;
 
@@ -173,6 +191,7 @@ export type Waybill = (
     motohours_diff?: number; // для жизни
   }
   & WaybillGas
+  & WaybillElectrical
 );
 
 export type IStateWaybill = {

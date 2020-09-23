@@ -12,4 +12,5 @@ export type FuelOperationActive = {
   measure_unit_id: number;
   measure_unit_name: string;
   name: string;
+  engine_kind_ids?: Array<number>;
 };

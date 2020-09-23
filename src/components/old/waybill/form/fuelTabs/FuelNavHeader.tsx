@@ -11,7 +11,7 @@ type OwnProps = {
   errors: WaybillProps['formErrors'];
   isGasKind: boolean;
   isFuelKind: boolean;
-  isElectricityKind: boolean;
+  isElectricalKind: boolean;
 };
 type Props = OwnProps;
 

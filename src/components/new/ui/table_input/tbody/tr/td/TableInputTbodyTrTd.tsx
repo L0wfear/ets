@@ -63,6 +63,22 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
       [props.metaData.resetIf, props.rowData, props.meta, handleChange, props.value],
     );
 
+    React.useEffect(() => {
+      if (
+        metaData.format === 'select'
+        && !props.value
+        && metaData.default_value
+      ) {
+        handleChange(metaData.default_value);
+      }
+    }, [
+      metaData.format,
+      props.value,
+      metaData.default_value,
+      metaData.default_value,
+      handleChange,
+    ]);
+
     const disabled = React.useMemo(
       () => {
         if (isArray(props.metaData.disabledIf)) {

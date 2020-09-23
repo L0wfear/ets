@@ -1,5 +1,8 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionFuelTypeOptions } from 'redux-main/reducers/modules/session/selectors';
+import * as React from 'react';
 
 export const defaultFuelCard: FuelCard = {
   id: null,
@@ -52,4 +55,14 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
   }
 
   return newElement;
+};
+
+export const usefuelTypeOptions = () => {
+  return etsUseSelector((state) => {
+    const fuelTypeOptions = getSessionFuelTypeOptions(state);
+    return React.useMemo(
+      () => fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICAL'),
+      [fuelTypeOptions]
+    );
+  });
 };

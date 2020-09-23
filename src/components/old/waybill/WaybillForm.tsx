@@ -110,10 +110,11 @@ import { getReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list
 import FuelNavHeader from 'components/old/waybill/form/fuelTabs/FuelNavHeader';
 import FuelBodyContainer from 'components/old/waybill/form/fuelTabs/FuelBodyContainer';
 import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContainer';
-import fuelKindFormTabKey, { TabBodyContainerStyled } from 'components/old/waybill/form/waybillFormTabConfig';
+import fuelKindFormTabKey from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
-import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { gasDefaultElement, electricalDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -236,6 +237,7 @@ type StateProps = {
   fuelCardsList: Array<FuelCard>;
   equipmentFuelCardsList: Array<FuelCard>;
   gasFuelCardsList: Array<FuelCard>;
+  electricalFuelCardsList: Array<FuelCard>;
   workModeList: Array<WorkMode>;
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
   carList: Array<Car>;
@@ -295,9 +297,11 @@ export type WaybillProps = (
 export type WaybillState = {
   operations: Array<any>;
   gasOperations: Array<any>;
+  electricalOperations: Array<any>;
   equipmentOperations: Array<any>;
   fuelRates: Array<any>;
   gasFuelRates: Array<any>;
+  electricalFuelRates: Array<any>;
   equipmentFuelRates: Array<any>;
   fuel_correction_rate: number;
   canEditIfClose: boolean;
@@ -321,7 +325,7 @@ export type WaybillState = {
   fuelActiveTabKey: string;
   isGasKind: boolean;
   isFuelKind: boolean;
-  isElectricityKind: boolean;
+  isElectricalKind: boolean;
 };
 
 class WaybillForm extends React.Component<WaybillProps, WaybillState> {
@@ -331,9 +335,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     this.state = {
       operations: [],
       gasOperations: [],
+      electricalOperations: [],
       equipmentOperations: [],
       fuelRates: [],
       gasFuelRates: [],
+      electricalFuelRates: [],
       equipmentFuelRates: [],
       fuel_correction_rate: 1,
       canEditIfClose: null,
@@ -353,7 +359,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       fuelActiveTabKey: fuelKindFormTabKey[0]?.tabKey,
       isGasKind: false,
       isFuelKind: true,
-      isElectricityKind: false,
+      isElectricalKind: false,
     };
   }
 
@@ -541,20 +547,28 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       isFuelKind,
     });
   };
-  setIsElectricityKind = (isElectricityKind) => {
+  setIsElectricalKind = (isElectricalKind) => {
     this.setState({
-      isElectricityKind,
+      isElectricalKind,
     });
   };
 
   updateEngineKindsFields = () => {
     // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
     const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
+    const isElectricalKind = this.props.formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
     if(isGasKind) { // Значит на ТС установлен газ
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
+      this.handleMultipleChange(electricalDefaultElement);
       this.handleChange('gas_fuel_type', 'GAS',);
     } else if(!isGasKind) {
       this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
+      if(isElectricalKind) {
+        this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
+        this.handleChange('electrical_fuel_type', 'ELECTRICAL',);
+      } else {
+        this.handleMultipleChange(electricalDefaultElement);
+      }
     }
   };
 
@@ -774,11 +788,48 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               ({ engine_kind_id }) => engine_kind_id === GAS_ENGINE_TYPE_ID
             );
 
+            const electricalOperations = fuelRates.reduce(
+              (
+                newArr,
+                {
+                  id,
+                  operation_name,
+                  operation_id,
+                  is_excluding_mileage,
+                  measure_unit_name,
+                  rate_on_date,
+                  comment,
+                  engine_kind_id,
+                },
+              ) => {
+                if (fuelOperationsListById[operation_id] && engine_kind_id === ELECTRICAL_ENGINE_TYPE_ID) {
+                  newArr.push({
+                    ...fuelOperationsListById[operation_id],
+                    name: operation_name,
+                    uniqKey: id,
+                    rate_on_date,
+                    comment,
+                    measure_unit_name,
+                    is_excluding_mileage,
+                  });
+                }
+
+                return newArr;
+              },
+              [],
+            );
+
+            const electricalFuelRates = fuelRates.filter(
+              ({ engine_kind_id }) => engine_kind_id === ELECTRICAL_ENGINE_TYPE_ID
+            );
+
             this.setState({
               fuelRates,
               gasFuelRates,
+              electricalFuelRates,
               operations,
               gasOperations,
+              electricalOperations,
               fuel_correction_rate,
               equipmentFuelRates,
               equipmentOperations: equipmentFuelRates.reduce(
@@ -824,8 +875,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           this.setState({
             fuelRates: [],
             gasFuelRates: [],
+            electricalFuelRates: [],
             operations: [],
             gasOperations: [],
+            electricalOperations: [],
             fuel_correction_rate: 1,
             equipmentFuelRates: [],
             equipmentOperations: [],
@@ -1197,6 +1250,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           car_type_id: get(selectedCar, 'rowData.type_id', null),
           car_refill: [],
           gas_refill: [],
+          electrical_refill: [],
           equipment_refill: [],
         };
 
@@ -1259,6 +1313,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       }
       if (isNotNull(lastCarUsedWaybill.gas_fuel_type)) {
         fieldsToChange.gas_fuel_type = lastCarUsedWaybill.gas_fuel_type;
+      }
+      if (isNotNull(lastCarUsedWaybill.electrical_fuel_type)) {
+        fieldsToChange.electrical_fuel_type = lastCarUsedWaybill.electrical_fuel_type;
       }
       if (isNotNull(lastCarUsedWaybill.trailer_id)) {
         const getTrailersByStructId = getTrailers(
@@ -1378,6 +1435,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     if (changeObj.structure_id) {
       changeObj.car_refill = [];
       changeObj.gas_refill = [];
+      changeObj.electrical_refill = [];
       changeObj.fuel_given = 0;
       changeObj.gas_fuel_given = 0;
       changeObj.equipment_refill = [];
@@ -1780,6 +1838,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     });
   };
 
+  handleChangeElectricalReFill = (electrical_refill) => {
+    this.handleMultipleChange({
+      electrical_refill,
+      electrical_fuel_given: parseFloat(electrical_refill.reduce((summ, { value }) => summ + value, 0).toFixed(2)),
+    });
+  };
+
   rejectMissionHandler = (rejectMissionList) => {
     let rejectMissionSubmitError = false;
     const acceptedRejectMissionsIdList = rejectMissionList.map(
@@ -1960,6 +2025,15 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       index
     );
   };
+  handleChangeElectricalTaxes = (electrical_tax_data, field = 'electrical_tax_data', index = null) => {
+    this.handleChange(
+      field,
+      isArray(electrical_tax_data)
+        ? [...electrical_tax_data]
+        : electrical_tax_data,
+      index
+    );
+  };
 
   handleChangeActiveNavTab = (tabKey) => {
     this.setState({
@@ -2117,6 +2191,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const tax_data = get(state, 'tax_data', []) || [];
     const equipment_tax_data = get(state, 'equipment_tax_data', []) || [];
     const gas_tax_data = get(state, 'gas_tax_data', []) || [];
+    const electrical_tax_data = get(state, 'electrical_tax_data', []) || [];
+    const isElectricalKind = state.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
 
     if (this.state.fuelRates.length) {
       taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data]);
@@ -2560,7 +2636,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   error={errors.equipment_fuel}
                 />
               </EtsBootstrap.Col>
-              {state.equipment_fuel && (
+              {state.equipment_fuel && !isElectricalKind && (
                 <EtsBootstrap.Col md={4}>
                   <ExtField
                     id="is_one_fuel_tank"
@@ -2627,7 +2703,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             </EtsBootstrap.Row>
           )}
           {/*  */}
-          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE)}>
+          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE) || !isElectricalKind}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
                 <h3 style={{ marginBottom: '20px' }} >Данные по ДУТ</h3>
@@ -2912,7 +2988,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           errors={errors}
                           isGasKind={this.state.isGasKind}
                           isFuelKind={this.state.isFuelKind}
-                          isElectricityKind={this.state.isElectricityKind}
+                          isElectricalKind={isElectricalKind}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
@@ -2985,7 +3061,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
                           handleChangeTaxes={this.handleChangeGasTaxes}
                           isFuelKind={this.state.isFuelKind}
-                          isElectricityKind={this.state.isElectricityKind}
+                          isElectricalKind={isElectricalKind}
                           showComponent={this.state.fuelActiveTabKey === 'gas'}
                           handleEquipmentFuel={this.handleEquipmentFuel}
                           updateEngineKindsFields={this.updateEngineKindsFields}
@@ -2993,16 +3069,47 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         />
                       }
                       {/* <-- end  Tab gas */}
-                      {/* <-- start  Tab electricity */}
+                      {/* <-- start  Tab electrical */}
                       {
-                        this.state.fuelActiveTabKey === 'electricity'
-                          && <TabBodyContainerStyled>
-                            <EtsBootstrap.Col md={12}>
-                              <h3>Блок 'Электроэнергия' в разработке</h3>
-                            </EtsBootstrap.Col>
-                          </TabBodyContainerStyled>
+                        <ElectricalBodyContainer
+                          modalKey={modalKey}
+                          waybillState={this.state}
+                          waybillFormState={state}
+                          use_pouring={usePouring && !this.state.isGasKind}
+                          errors={errors}
+                          waybillStatus={{
+                            IS_CREATING,
+                            IS_ACTIVE,
+                            IS_DRAFT,
+                            IS_CLOSED,
+                            IS_DELETE,
+                          }}
+                          handleMultipleChange={this.handleMultipleChange}
+                          isPermittedByKey={isPermittedByKey}
+                          lastWaybill={lastWaybill}
+                          origFormState={origFormState}
+                          handleChange={this.handleChange}
+                          handleChangeElectricalReFill={this.handleChangeElectricalReFill}
+                          page={this.props.page}
+                          path={this.props.path}
+                          CAR_HAS_ODOMETER={CAR_HAS_ODOMETER}
+                          setTotalValueError={this.props.setTotalValueError}
+                          electricalFuelCardsList={this.props.electricalFuelCardsList}
+                          electrical_tax_data={electrical_tax_data}
+                          tax_data={tax_data}
+                          FUEL_TYPES={FUEL_TYPES}
+                          IS_KAMAZ={IS_KAMAZ}
+                          disableFieldWaybillCarRefill={disableFieldWaybillCarRefill}
+                          handleChangeTaxes={this.handleChangeElectricalTaxes}
+                          isFuelKind={this.state.isFuelKind}
+                          isElectricalKind={isElectricalKind}
+                          showComponent={this.state.fuelActiveTabKey === 'electrical'}
+                          handleEquipmentFuel={this.handleEquipmentFuel}
+                          updateEngineKindsFields={this.updateEngineKindsFields}
+                          isGasKind={this.state.isGasKind}
+                        />
                       }
-                      {/* <-- end  Tab electricity */}
+                      {/* <-- end  Tab electrical */}
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>
 
@@ -3294,13 +3401,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}
                               fuelRates={this.state.equipmentFuelRates}
-                              title="Расчет топлива по норме для оборудования"
-                              noDataMessage="Для данного ТС нормы расхода топлива для спецоборудования не указаны."
+                              title={`Расчет ${!isElectricalKind ? 'топлива' : 'ЭЭ'} по норме для оборудования`}
+                              noDataMessage={`Для данного ТС нормы расхода ${!isElectricalKind ? 'топлива' : 'ЭЭ'} для спецоборудования не указаны.`}
                               onChange={this.handleChangeEquipmentTaxes}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                               errorsAll={errors}
                               setTotalValueError={this.props.setTotalValueError}
+                              isElectricalKind={isElectricalKind}
                               canEditIfClose={this.state.canEditIfClose}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
@@ -3341,7 +3449,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             <EtsBootstrap.Col md={4} style={{marginTop: '14px',}}>
               <ExtField
                 type="number"
-                label="Общий расход топлива, л"
+                label={`Общий расход ${!isElectricalKind ? 'топлива, л' : 'ЭЭ, кВт'}`}
                 value={taxesTotal}
                 hidden={taxeTotalHidden}
                 format="toFixed3"
@@ -3495,6 +3603,7 @@ export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     workModeList: getSomeUniqState(state).workModeList,
     equipmentFuelCardsList: getAutobaseState(state).equipmentFuelCardsList,
     gasFuelCardsList: getAutobaseState(state).gasFuelCardsList,
+    electricalFuelCardsList: getAutobaseState(state).electricalFuelCardsList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
     carList: getAutobaseState(state).carList,

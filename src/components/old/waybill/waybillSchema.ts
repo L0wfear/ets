@@ -11,7 +11,7 @@ import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -242,7 +242,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
-          const isMissionListExists = mission_id_list.length > 0;
+          const isMissionListExists = mission_id_list?.length > 0;
 
           if (value && !correctTrailer && fieldNotHidden) {
             return 'В данный момент выбранный прицеп не подходят для заполнения';
@@ -288,6 +288,25 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
           if(value && !isValidToFixed3(value) && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID) ) {
+            return getRequiredFieldToFixed('Топливо.Выезд', 3);
+          }
+        },
+      ],
+    },
+    electrical_fuel_start: {
+      title: 'Топливо.Выезд',
+      type: 'number',
+      float: 3,
+      dependencies: [
+        (value, { status, engine_kind_ids }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value) && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID) ) {
             return getRequiredFieldToFixed('Топливо.Выезд', 3);
           }
         },
@@ -359,6 +378,20 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    electrical_fuel_type: {
+      title: 'Топливо.Тип',
+      type: 'string',
+      dependencies: [
+        (value, { status, engine_kind_ids, }) => {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && !value && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fuel_given: {
       title: 'Выдано, л',
       type: 'number',
@@ -367,6 +400,12 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     },
     gas_fuel_given: {
       title: 'Выдано, л',
+      type: 'number',
+      float: 3,
+      required: false,
+    },
+    electrical_fuel_given: {
+      title: 'Выдано, кВт',
       type: 'number',
       float: 3,
       required: false,
@@ -604,6 +643,29 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    electrical_refill: {
+      title: 'electrical_refill',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (
+          electrical_refill,
+          formState,
+          { refillTypeList, electricalFuelCardsList, notFiltredFuelCardsIndex, companyList},
+        ) => {
+          if(formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)) {
+            return checkCarRefill(
+              electrical_refill,
+              refillTypeList,
+              electricalFuelCardsList,
+              formState.electrical_fuel_type,
+              notFiltredFuelCardsIndex,
+              formState,
+              companyList
+            );
+          }
+        },
+      ],
+    },
     car_has_motohours: {
       title: 'На ТС установлен счетчик моточасов',
       type: 'boolean',
@@ -751,6 +813,24 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
+    electrical_fuel_end: {
+      title: 'Возврат по таксировке, кВт',
+      type: 'number',
+      dependencies: [
+        (value, { status, engine_kind_ids }) => {
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+          if (
+            fieldNotHidden
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Возврат по таксировке, кВт" должно быть заполнено';
+          }
+        },
+      ],
+    },
     fact_fuel_end: {
       title: 'Топливо.Возврат фактический',
       type: 'number',
@@ -786,6 +866,26 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           }
           if(value && !isValidToFixed3(value)) {
             return getRequiredFieldToFixed('Возврат фактический, л', 3);
+          }
+        },
+      ],
+    },
+    electrical_fact_fuel_end: {
+      title: 'Топливо.Возврат фактический',
+      type: 'number',
+      float: 3,
+      min: 0,
+      dependencies: [
+        (value, { status, engine_kind_ids }) => {
+          if (
+            status === 'active'
+            && (!value && value !== 0)
+            && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Возврат фактический, кВт" должно быть заполнено';
+          }
+          if(value && !isValidToFixed3(value)) {
+            return getRequiredFieldToFixed('Возврат фактический, кВт', 3);
           }
         },
       ],
@@ -902,11 +1002,14 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, {gas_tax_data, tax_data, odometr_diff, motohours_diff, gov_number}) => {
+        (_, {gas_tax_data, electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number}) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           let taxes = [];
           if(isArray(gas_tax_data)){
             taxes = [...taxes, ...gas_tax_data];
+          }
+          if(isArray(electrical_tax_data)){
+            taxes = [...taxes, ...electrical_tax_data];
           }
           if(isArray(tax_data)){
             taxes = [...taxes, ...tax_data];
@@ -943,6 +1046,29 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         }
       ],
     },
+    electrical_tax_data: {
+      title: 'Расчет ЭЭ по норме',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (_, {electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids}) => {
+          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+          let taxes = [];
+          if(isArray(electrical_tax_data)){
+            taxes = [...taxes, ...electrical_tax_data];
+          }
+          if(isArray(tax_data)){
+            taxes = [...taxes, ...tax_data];
+          }
+          if (
+            (!isArray(taxes) || (isArray(taxes) && !taxes.length))
+              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
+              && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
+          ) {
+            return 'В поле "Расчет ЭЭ по норме" необходимо добавить операцию';
+          }
+        }
+      ],
+    },
     equipment_tax_data_rows: {
       title: 'Расчет топлива по норме для оборудования(таблица)',
       type: 'multiValueOfArray',
@@ -975,6 +1101,17 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (_, { gas_tax_data, engine_kind_ids }) => {
           if ((isArray(gas_tax_data) && gas_tax_data.length) && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)) {
             return checkTaxData(gas_tax_data);
+          }
+        },
+      ],
+    },
+    electrical_tax_data_rows: {
+      title: 'Расчет ЭЭ по норме(таблица)',
+      type: 'multiValueOfArray',
+      dependencies: [
+        (_, { electrical_tax_data, engine_kind_ids }) => {
+          if ((isArray(electrical_tax_data) && electrical_tax_data.length) && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)) {
+            return checkTaxData(electrical_tax_data);
           }
         },
       ],
@@ -1037,7 +1174,23 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if(
             !value 
             && !gas_refill.length
-            && engine_kind_ids.includes(2)
+            && engine_kind_ids.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Добавьте заправку или укажите, что ее не было';
+          }
+          return false;
+        },
+      ],
+    },
+    is_electrical_refill: {
+      title: 'Заправок не было',
+      type: 'boolean',
+      dependencies: [
+        (value, {electrical_refill, engine_kind_ids}) => {
+          if(
+            !value 
+            && !electrical_refill.length
+            && engine_kind_ids.includes(ELECTRICAL_ENGINE_TYPE_ID)
           ) {
             return 'Добавьте заправку или укажите, что ее не было';
           }

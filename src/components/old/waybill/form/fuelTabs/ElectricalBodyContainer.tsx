@@ -29,14 +29,13 @@ type Props = {
 	lastWaybill: WaybillState['lastWaybill'];
 	origFormState: WaybillState['origFormState'];
 	handleChange: (field: string, e: any, index?: number) => any;
-	handleChangeGasReFill: (gas_refill: any) => any;
+	handleChangeElectricalReFill: (electrical_refill: any) => any;
 	page: string;
 	path?: string;
 	CAR_HAS_ODOMETER: boolean;
 	setTotalValueError: WaybillProps['setTotalValueError'];
 	// transfer
-	gasFuelCardsList: WaybillProps['gasFuelCardsList'];
-	gas_tax_data: any;
+	electrical_tax_data: any;
 	tax_data: any;
 	FUEL_TYPES: any;
 	IS_KAMAZ: boolean;
@@ -49,9 +48,10 @@ type Props = {
   handleEquipmentFuel: (equipment_fuel: boolean, withConfirmDialog: boolean) => void;
   updateEngineKindsFields: () => any;
   isGasKind: boolean;
+  electricalFuelCardsList: WaybillProps['electricalFuelCardsList'];
 };
 
-const GasBodyContainer: React.FC<Props> = React.memo(
+const ElectricalBodyContainer: React.FC<Props> = React.memo(
   (props) => {
 
     const {
@@ -68,31 +68,31 @@ const GasBodyContainer: React.FC<Props> = React.memo(
       IS_KAMAZ,
       modalKey,
       origFormState,
-      handleChangeGasReFill,
+      handleChangeElectricalReFill,
       disableFieldWaybillCarRefill,
       CAR_HAS_ODOMETER,
       FUEL_TYPES,
       waybillFormState,
       waybillState,
       use_pouring,
-      gas_tax_data,
+      electrical_tax_data,
       tax_data,
     } = props;
 
     return <TabBodyContainerStyled showComponent={props.showComponent}>
-      {/* <-- start  Tab Газ */}
+      {/* <-- start  Tab Электричество */}
       <EtsBootstrap.Col md={12}>
-        {/* <-- start  Газ-fields */}
+        {/* <-- start  Электричество-fields */}
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <FuelType
                   modalKey={modalKey}
-                  keyField="gas_fuel_type"
-                  value={waybillFormState.gas_fuel_type}
-                  error={errors.gas_fuel_type}
-                  disabled={true} // всегда установлен газ
+                  keyField="electrical_fuel_type"
+                  value={waybillFormState.electrical_fuel_type}
+                  error={errors.electrical_fuel_type}
+                  disabled={true} // всегда установлен Электричество
                   options={FUEL_TYPES}
                   handleChange={props.handleMultipleChange}
                 />
@@ -100,11 +100,11 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               <EtsBootstrap.Col md={4}>
                 {!(IS_DRAFT || IS_CREATING) && (
                   <ExtField
-                    id="gas-fuel-end"
+                    id="electrical-fuel-end"
                     type="number"
-                    label="Возврат по таксировке, л"
-                    error={errors.gas_fuel_end}
-                    value={waybillFormState.gas_fuel_end}
+                    label="Возврат по таксировке, кВт"
+                    error={errors.electrical_fuel_end}
+                    value={waybillFormState.electrical_fuel_end}
                     format="toFixed3"
                     disabled
                   />
@@ -112,11 +112,11 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas-tax-consumption"
+                  id="electrical-tax-consumption"
                   type="number"
-                  label="Расход по таксировке, л"
-                  error={errors.gas_tax_consumption}
-                  value={waybillFormState.gas_tax_consumption}
+                  label="Расход по таксировке, кВт"
+                  error={errors.electrical_tax_consumption}
+                  value={waybillFormState.electrical_tax_consumption}
                   format="toFixed3"
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
@@ -126,53 +126,53 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas_fuel_start"
+                  id="electrical_fuel_start"
                   type="number"
-                  label="Выезд, л"
-                  error={errors.gas_fuel_start}
-                  value={waybillFormState.gas_fuel_start}
+                  label="Выезд, кВт"
+                  error={errors.electrical_fuel_start}
+                  value={waybillFormState.electrical_fuel_start}
                   disabled={
-                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-															|| Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['gas_fact_fuel_end']))
+                    IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.electrical_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+															|| Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['electrical_fact_fuel_end']))
                   }
                   onChange={props.handleChange}
-                  boundKeys="gas_fuel_start"
+                  boundKeys="electrical_fuel_start"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas-fact-fuel-end"
+                  id="electrical-fact-fuel-end"
                   type="number"
                   modalKey={modalKey}
-                  label="Возврат фактический, л"
-                  error={errors.gas_fact_fuel_end}
-                  value={waybillFormState.gas_fact_fuel_end}
+                  label="Возврат фактический, кВт"
+                  error={errors.electrical_fact_fuel_end}
+                  value={waybillFormState.electrical_fact_fuel_end}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled={
                     IS_DELETE || !(IS_ACTIVE || waybillState.canEditIfClose)
 															|| !isPermittedByKey.update
                   }
                   onChange={props.handleChange}
-                  boundKeys="gas_fact_fuel_end"
+                  boundKeys="electrical_fact_fuel_end"
                   showRedBorder={
-                    waybillFormState.gas_fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
+                    waybillFormState.electrical_fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
                   }
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas-fact-consuption"
+                  id="electrical-fact-consuption"
                   type="number"
                   modalKey={modalKey}
-                  label="Расход фактический, л"
-                  error={errors.gas_fact_consumption}
-                  value={waybillFormState.gas_fact_consumption}
+                  label="Расход фактический, кВт"
+                  error={errors.electrical_fact_consumption}
+                  value={waybillFormState.electrical_fact_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
                   onChange={props.handleChange}
-                  boundKeys="gas_fact_consumption"
+                  boundKeys="electrical_fact_consumption"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
@@ -180,52 +180,52 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas-fuel-given"
+                  id="electrical-fuel-given"
                   type="number"
-                  label="Выдано, л"
-                  error={errors.gas_fuel_given}
-                  value={waybillFormState.gas_fuel_given}
+                  label="Выдано, кВт"
+                  error={errors.electrical_fuel_given}
+                  value={waybillFormState.electrical_fuel_given}
                   disabled
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={4}>
                 <ExtField
-                  id="gas-consuption-diff"
+                  id="electrical-consuption-diff"
                   type="number"
                   modalKey={modalKey}
-                  label="Расхождение в данных расхода, л"
-                  error={errors.gas_diff_consumption}
-                  value={waybillFormState.gas_diff_consumption}
+                  label="Расхождение в данных расхода, кВт"
+                  error={errors.electrical_diff_consumption}
+                  value={waybillFormState.electrical_diff_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
                   onChange={props.handleChange}
-                  boundKeys="gas_diff_consumption"
+                  boundKeys="electrical_diff_consumption"
                   format="toFixed3"
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
-        {/* <-- end  Газ-fields */}
+        {/* <-- end  Электричество-fields */}
       </EtsBootstrap.Col>
       <EtsBootstrap.Col md={12} zIndex={2}>
         <EtsBootstrap.Col md={12}>
-          <FieldWaybillCarRefill // <<< gas
-            id="gas_refill"
-            array={waybillFormState.gas_refill}
-            arrayOrigin={origFormState.gas_refill}
+          <FieldWaybillCarRefill // <<< electrical
+            id="electrical_refill"
+            array={waybillFormState.electrical_refill}
+            arrayOrigin={origFormState.electrical_refill}
             errors={get(
               errors,
-              'gas_refill',
-              waybillFormState.gas_refill.map(() => ({})),
+              'electrical_refill',
+              waybillFormState.electrical_refill.map(() => ({})),
             )} // временно
-            title="Заправка газа"
+            title="Заправка ЭЭ"
             use_pouring={use_pouring}
-            handleChange={handleChangeGasReFill}
+            handleChange={handleChangeElectricalReFill}
             defaultHandleChange={props.handleChange}
-            fuel_given={waybillFormState.gas_fuel_given}
+            fuel_given={waybillFormState.electrical_fuel_given}
             structure_id={waybillFormState.structure_id}
-            fuel_type={'GAS'}
+            fuel_type={'ELECTRICAL'}
             car_id={waybillFormState.car_id}
             gov_number={waybillFormState.gov_number}
             date_for_valid={{
@@ -241,10 +241,10 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
             path={props.path}
-            is_refill={waybillFormState.is_gas_refill}
-            is_refill_error={errors.is_gas_refill}
-            boundKey={'gas_refill'}
-            fuelCardsList={props.gasFuelCardsList}
+            is_refill={waybillFormState.is_electrical_refill}
+            is_refill_error={errors.is_electrical_refill}
+            boundKey={'electrical_refill'}
+            fuelCardsList={props.electricalFuelCardsList}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
@@ -256,18 +256,19 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               !(IS_CLOSED || IS_ACTIVE)
                             || IS_DRAFT
                             || (IS_CLOSED
-                              && waybillFormState.gas_tax_data
-                              && waybillFormState.gas_tax_data.length === 0
+                              && waybillFormState.electrical_tax_data
+                              && waybillFormState.electrical_tax_data.length === 0
                               && !waybillState.canEditIfClose)
-                            || (IS_CLOSED && !waybillFormState.gas_tax_data && !waybillState.canEditIfClose)
+                            || (IS_CLOSED && !waybillFormState.electrical_tax_data && !waybillState.canEditIfClose)
             }
             readOnly={IS_DELETE || (!IS_ACTIVE && !waybillState.canEditIfClose) || !isPermittedByKey.update}
             IS_CLOSED={IS_CLOSED}
-            title="Расчет газа по норме"
-            taxes={gas_tax_data}
-            sameTaxes={[...gas_tax_data, ...tax_data]}
-            operations={waybillState.gasOperations}
-            fuelRates={waybillState.gasFuelRates}
+            title="Расчет ЭЭ по норме"
+            noDataMessage="Для данного ТС нормы расхода ЭЭ не указаны"
+            taxes={electrical_tax_data}
+            sameTaxes={[...electrical_tax_data, ...tax_data]}
+            operations={waybillState.electricalOperations}
+            fuelRates={waybillState.electricalFuelRates}
             onChange={props.handleChangeTaxes}
             correctionRate={waybillState.fuel_correction_rate}
             baseFactValue={
@@ -278,17 +279,17 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             setTotalValueError={props.setTotalValueError}
             type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
             errorsAll={errors}
-            boundKey={'gas_tax_data'}
-            isGasKind={props.isGasKind}
+            boundKey={'electrical_tax_data'}
+            isElectricalKind={props.isElectricalKind}
             canEditIfClose={waybillState.canEditIfClose}
           />
-          <ErrorsBlock error={errors.gas_tax_data} />
+          <ErrorsBlock error={errors.electrical_tax_data} />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
                     
-      {/* <-- end  Tab Газ */}
+      {/* <-- end  Tab Электричество */}
     </TabBodyContainerStyled>;
   },
 );
 
-export default GasBodyContainer;
+export default ElectricalBodyContainer;

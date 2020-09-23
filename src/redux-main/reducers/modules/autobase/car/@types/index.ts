@@ -119,3 +119,8 @@ export type CarPassporntData = (
   CarGibddPasspost
   | CarGtnPasspost
 );
+
+export type CarExcludeOptions = {
+  without_waybill?: boolean;
+  without_mission?: boolean;
+};

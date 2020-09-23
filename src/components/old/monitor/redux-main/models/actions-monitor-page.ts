@@ -23,11 +23,14 @@ import {
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
   MONITOR_PAGE_SET_COMPANY,
   MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER,
+  MONITOR_PAGE_SET_CARS_FOR_EXCLUDE
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
+import { promiseGetCarExclude } from 'redux-main/reducers/modules/autobase/car/promise';
+import { CarExcludeOptions } from 'redux-main/reducers/modules/autobase/car/@types';
 
 export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Company>) => ({
   type: MONITOR_PAGE_SET_COMPANY,
@@ -192,6 +195,17 @@ export const monitorPageToggleFuelEvetnsLeakShow = () => ({
   payload: {},
 });
 
+export const monitorPageSetCarsForExclude = (payload: Array<number>) => ({
+  type: MONITOR_PAGE_SET_CARS_FOR_EXCLUDE,
+  payload,
+});
+
+export const getAndSetInStoreCarsForExclude = (
+  options: CarExcludeOptions
+) => async (dispatch) => {
+  const result = await promiseGetCarExclude(options);
+  dispatch(monitorPageSetCarsForExclude(result));
+};
 /*  ________________ TOGGLE DRAW_ACTIVE_STATUS ________________ */
 export const monitorPageToggleDrawActiveByKey = (drawKey) => ({
   type: MONITOR_PAGE_TOGGLE_DRAW_ACTIVE,

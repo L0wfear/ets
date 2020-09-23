@@ -11,4 +11,5 @@ export type PropsDefaultInput = {
   OPTIONS: Array<IReactSelectOption>;
   placeholder: string;
   type: DefaultInputTypes;
+  setRefreshCheckBoxFilter: React.Dispatch<React.SetStateAction<boolean>>;
 };

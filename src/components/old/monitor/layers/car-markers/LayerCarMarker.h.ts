@@ -25,7 +25,7 @@ export type PropsLayerCarMarker = {
   odh_mkad: Array<any>;
   statusShow: Record<'in_move' | 'stop' | 'parking' | 'not_in_touch', boolean>;
   filters: IStateMonitorPage['filters']['data'];
-
+  carsForExclude: IStateMonitorPage['filters']['carsForExclude'];
   carInfoSetStatus: any;
   carInfoPushPointIntoTrack: any;
   monitorPageResetCarStatus: any;

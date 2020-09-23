@@ -11,6 +11,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
+import inspectPgmBasePermissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 
 type OwnProps = CommonTypesForButton & {
   onClick?: (item: any) => any;
@@ -67,8 +68,11 @@ const ButtonRead: React.FC<Props> = React.memo(
       get(data, 'other_params.uniqKeyForParams.permissions') || permissions,
     );
 
+    const isPermittedToReadPgm = permissions.includes(inspectPgmBasePermissions.read);
+    const isPgmBaseAllowed = props.registryKey === 'inspectionPgmBase' && isPermittedToReadPgm;
+
     return isPermitted && (
-      <EtsBootstrap.Button id={`${props.registryKey}.open-update-form`} bsSize="small" onClick={handleClick} disabled={!selectedRow}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-update-form`} bsSize="small" onClick={handleClick} disabled={!selectedRow || !isPgmBaseAllowed}>
         <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'search') : null} />{data.title || 'Просмотреть'}
       </EtsBootstrap.Button>
     );

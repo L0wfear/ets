@@ -113,6 +113,16 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     if (format === 'metresToKilometeres') {
       value = metresToKilometeres(value);
     }
+    if (format === 'no_passport') {
+      const {
+        is_gibdd_passport,
+        is_gtn_passport,
+        is_gims_passport,
+      } = rowData;
+
+      const noPassport= !is_gibdd_passport && !is_gtn_passport && !is_gims_passport;
+      value = noPassport ? '-' : value;
+    }
   }
   if ('valueForBoolean' in fieldMeta && fieldMeta.valueForBoolean) {
     value = value ? fieldMeta.valueForBoolean : '-';

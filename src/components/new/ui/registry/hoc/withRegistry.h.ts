@@ -84,6 +84,7 @@ export type TypeFields<F extends any> = {
     | 'company_structure_actions'
     | 'waybill_all_missions_status'
     | 'waybill_status_name'
+    | 'no_passport'
   );
   displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   displayIfPermission?: string | Array<string>;

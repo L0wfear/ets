@@ -240,8 +240,8 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             IS_DRAFT_OR_ACTIVE={
               IS_CREATING || IS_DRAFT || IS_ACTIVE
             }
-            is_refill={waybillFormState.is_fuel_refill}
-            is_refill_error={errors.is_fuel_refill}
+            is_refill={waybillFormState.is_no_fuel_refill}
+            is_refill_error={errors.is_no_fuel_refill}
             disabled={disableFieldWaybillCarRefill}
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}

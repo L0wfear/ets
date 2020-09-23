@@ -105,10 +105,6 @@ export type WaybillRegistryRow = {
   is_edited_motohours: boolean;
   is_edited_motohours_equip: boolean;
   is_edited_start: boolean;
-  is_fuel_refill: boolean;
-  is_gas_refill: boolean;
-  is_electrical_refill: boolean;
-  is_equipment_refill: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
@@ -176,6 +172,13 @@ export type WaybillElectrical = {
   electrical_diff_consumption: number;               // + + + Расхождение в данных расхода, л
 };
 
+export type WaybillRefill = {
+  is_no_fuel_refill: boolean;
+  is_no_gas_refill: boolean;
+  is_no_electrical_refill: boolean;
+  is_no_equipment_refill: boolean;
+};
+
 export type Waybill = (
   WaybillRegistryRow
   & waybillDiff
@@ -192,6 +195,7 @@ export type Waybill = (
   }
   & WaybillGas
   & WaybillElectrical
+  & WaybillRefill
 );
 
 export type IStateWaybill = {

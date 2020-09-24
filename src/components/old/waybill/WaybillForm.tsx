@@ -537,19 +537,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
   };
 
-  setIsGasKind = (isGasKind) => {
+  setFuelKinds = (fuelKinds: {isGasKind: boolean; isFuelKind: boolean; isElectricalKind: boolean;}) => {
     this.setState({
-      isGasKind,
-    });
-  };
-  setIsFuelKind = (isFuelKind) => {
-    this.setState({
-      isFuelKind,
-    });
-  };
-  setIsElectricalKind = (isElectricalKind) => {
-    this.setState({
-      isElectricalKind,
+      ...fuelKinds
     });
   };
 
@@ -565,7 +555,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
       if(isElectricalKind) {
         this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
-        this.handleChange('electrical_fuel_type', 'ELECTRICAL',);
+        this.handleChange('electrical_fuel_type', 'ELECTRICITY',);
+        this.handleChangeActiveNavTab('electrical'); // сделать очистку полей Топлива после мерджа DITETS20A-123 с dev
       } else {
         this.handleMultipleChange(electricalDefaultElement);
       }
@@ -2544,7 +2535,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 engine_kind_ids={state.engine_kind_ids}
                 handleChange={this.handleChange}
                 handleMultipleChange={this.handleMultipleChange}
-                setIsGasKind={this.setIsGasKind}
+                setFuelKinds={this.setFuelKinds}
                 origFormState={this.state.origFormState}
                 waybillFormState={state}
                 updateEngineKindsFields={this.updateEngineKindsFields}

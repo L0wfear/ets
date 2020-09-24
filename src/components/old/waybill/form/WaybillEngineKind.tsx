@@ -4,7 +4,7 @@ import { WaybillProps } from 'components/old/waybill/WaybillForm';
 import styled from 'styled-components';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { get } from 'lodash';
-import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import UseEngineKindsList from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/useEngineKindsList';
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
 	};
   handleChange: (field: string, e: any, index?: number) => any;
   handleMultipleChange: (fields: any) => void;
-  setIsGasKind: (isGasKind: boolean) => any;
+  setFuelKinds: (fuelKinds: {isGasKind: boolean; isFuelKind: boolean; isElectricalKind: boolean;}) => void;
   origFormState: WaybillProps['formState'];
   waybillFormState: WaybillProps['formState']; // state in render WaybillForm
   updateEngineKindsFields: () => any;
@@ -66,10 +66,22 @@ const WaybillEngineKind: React.FC<Props> = React.memo(
     const isGasKind = React.useMemo(
       () => engineKindIdsByStatus.includes(GAS_ENGINE_TYPE_ID),
       [engineKindIdsByStatus]);
+
+    const isFuelKind = React.useMemo(
+      () => engineKindIdsByStatus.includes(FUEL_ENGINE_TYPE_ID),
+      [engineKindIdsByStatus]);
+
+    const isElectricalKind = React.useMemo(
+      () => engineKindIdsByStatus.includes(ELECTRICAL_ENGINE_TYPE_ID),
+      [engineKindIdsByStatus]);
     
     React.useEffect(() => {
-      props.setIsGasKind(isGasKind); // ???
-    }, [ isGasKind ]);
+      props.setFuelKinds({
+        isGasKind,
+        isFuelKind,
+        isElectricalKind,
+      }); // ???
+    }, [ isGasKind, isFuelKind, isElectricalKind ]);
 
     return <WaybillEngineKindStyled>
       <b>Тип двигателя: </b> { fuelKind } <br/>

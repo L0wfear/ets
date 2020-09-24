@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
+import { isBoolean, isNull } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
@@ -32,7 +33,8 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
-    const noPassport = !state.is_gibdd_passport && !state.is_gtn_passport && !state.is_gims_passport;
+    const isBool = isBoolean(state.is_gibdd_passport) && isBoolean(state.is_gtn_passport) && isBoolean(state.is_gims_passport);
+    const noPassport = isBool ? !state.is_gibdd_passport && !state.is_gtn_passport && !state.is_gims_passport && isNull(state.passport_number) : false;
 
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {

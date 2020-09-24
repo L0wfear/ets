@@ -262,7 +262,6 @@ export const config: TypeConfigData<Car> = {
           key: 'certificate_number',
           title: 'Номер СТС/СРМ',
           width: 300,
-          format: 'no_passport',
         },
         {
           key: 'passport_number',

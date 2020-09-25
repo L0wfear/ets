@@ -716,21 +716,20 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
     if(isGasKind || isElectricalKind) {
-      // чистим поля со спец. оборудованием
-      formState.equipment_fact_fuel_end = null;
-      formState.equipment_fuel = false;
-      formState.equipment_fuel_end = null;
-      formState.equipment_fuel_given = null;
-      formState.equipment_fuel_start = null;
-      formState.equipment_fuel_to_give = null;
-      formState.equipment_fuel_type = null;
-      formState.equipment_refill = [];
-      formState.equipment_tax_data = [];
-      formState.is_one_fuel_tank = false;
-      formState.equipment_diff_consumption = null;
-      formState.equipment_fact_consumption = null;
-
       if(isGasKind) {
+        // чистим поля со спец. оборудованием
+        formState.equipment_fact_fuel_end = null;
+        formState.equipment_fuel = false;
+        formState.equipment_fuel_end = null;
+        formState.equipment_fuel_given = null;
+        formState.equipment_fuel_start = null;
+        formState.equipment_fuel_to_give = null;
+        formState.equipment_fuel_type = null;
+        formState.equipment_refill = [];
+        formState.equipment_tax_data = [];
+        formState.is_one_fuel_tank = false;
+        formState.equipment_diff_consumption = null;
+        formState.equipment_fact_consumption = null;
         // чистим поля с электричеством
         Object.keys(electricalDefaultElement).forEach((key) => {
           formState[key] = electricalDefaultElement[key];

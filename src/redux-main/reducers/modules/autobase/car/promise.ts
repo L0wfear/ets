@@ -12,8 +12,9 @@ import {
   CarPassportGtnRegistryService,
   CarService,
   CarInfoService,
+  CarExcludeService
 } from 'api/Services';
-import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
+import { CarDriversData, CarRegistrationData, CarPassporntData, CarExcludeOptions } from './@types';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const getCars = autobaseLoadCars;
@@ -56,6 +57,15 @@ export const promiseUpdateCar = async (car: Car): Promise<Car> => {
 
   return car;
 };
+
+export const promiseGetCarExclude = async (options: CarExcludeOptions): Promise<Array<number>> => {
+  const response = await CarExcludeService.get(options);
+
+  const result: Array<number> = get(response, 'result.rows');
+
+  return result;
+};
+
 export const promiseUpdateCarDriversData = async (driversData: CarDriversData): Promise<CarDriversData> => {
   await CarDrivers.path(driversData.car_id).put(
     { ...driversData },

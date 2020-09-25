@@ -287,6 +287,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
               statusShow: defaultStatusShow,
               wsData: carPointsDataWs[gps_code],
               geoobjectsFilter: this.props.geoobjectsFilter,
+              carsForExclude: this.props.carsForExclude,
             },
             gps_code,
           );
@@ -303,6 +304,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                 statusShow,
                 wsData: carPointsDataWs[gps_code],
                 geoobjectsFilter: this.props.geoobjectsFilter,
+                carsForExclude: this.props.carsForExclude,
               },
               gps_code,
             );
@@ -474,6 +476,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   statusShow: defaultStatusShow,
                   wsData: carPointsDataWs[gps_code],
                   geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -488,6 +491,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   statusShow,
                   wsData: carPointsDataWs[gps_code],
                   geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -560,6 +564,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   statusShow,
                   wsData: carPointsDataWs[gps_code],
                   geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -572,6 +577,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   statusShow: defaultStatusShow,
                   wsData: carPointsDataWs[gps_code],
                   geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -668,6 +674,7 @@ const mapStateToProps = (state: ReduxState) => ({
   statusShow: state.monitorPage.status,
   geoobjectsFilter: state.monitorPage.geoobjectsFilter,
   filters: state.monitorPage.filters.data,
+  carsForExclude: state.monitorPage.filters.carsForExclude,
 });
 
 const mapDispatchToProps = (dispatch) => ({

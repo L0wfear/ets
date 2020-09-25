@@ -34,6 +34,7 @@ export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE = MONITOR_PAGE`CHANGE_FUEL_EVE
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_DATA`;
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA`;
 export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUEL_EVENTS_LEAK_SHOW`;
+export const MONITOR_PAGE_SET_CARS_FOR_EXCLUDE = MONITOR_PAGE`SET_CARS_FOR_EXCLUDE`;
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
@@ -88,6 +89,7 @@ export type IStateMonitorPage = {
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
     };
     filtredCarGpsCode: Array<number>;
+    carsForExclude: Array<number>;
   };
   geoobjectsFilter: string;
   companiesIndex: -1 | object;
@@ -167,6 +169,7 @@ export const initialMonitorState: IStateMonitorPage = {
       carFilterMultyElement: [],
     },
     filtredCarGpsCode: [],
+    carsForExclude: [],
   },
   geoobjectsFilter: 'cars',
   companiesIndex: -1,
@@ -479,6 +482,15 @@ export default (state = initialMonitorState, { type, payload }) => {
             data: show ? state.fuelEvents.leak.data : {},
           },
         },
+      };
+    }
+    case MONITOR_PAGE_SET_CARS_FOR_EXCLUDE: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          carsForExclude: payload
+        }
       };
     }
     default: {

@@ -39,7 +39,7 @@ export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
   });
 };
 
-export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, geoobjectsFilter) => {
+export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, geoobjectsFilter, carsForExclude) => {
   if(geoobjectsFilter !== 'cars') {
     return true;
   }
@@ -52,9 +52,9 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, g
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);
     case 'levelSensors': return value === null || (value === 1 ? car_actualData.level_sensors_num > 0 : car_actualData.level_sensors_num === 0);
-    case 'carFilterMultyElement':
-    case 'withoutMissions':
-    case 'withoutWaybills': return true;
+    case 'carFilterMultyElement': return true;
+    case 'withoutMissions': return !value || !carsForExclude.includes(car_actualData.asuods_id);
+    case 'withoutWaybills': return !value || !carsForExclude.includes(car_actualData.asuods_id);
     case 'carFilterMultyDrivers': return !value.length || value.some((el) => el.cars.includes(car_actualData.asuods_id));
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер
@@ -62,7 +62,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, g
   }
 };
 
-export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData, geoobjectsFilter}, gps_code: string): boolean => (
+export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData, geoobjectsFilter, carsForExclude}, gps_code: string): boolean => (
   !!car_actualData
   && statusShow[getFrontStatus(wsData.status).slug]
   && !Object.entries(filters).some(([key, value]) => (
@@ -73,6 +73,7 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData, ge
       wsData,
       car_actualData,
       geoobjectsFilter,
+      carsForExclude
     )
   ))
 );

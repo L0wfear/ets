@@ -17,18 +17,29 @@ const DefaultInput: React.FC<PropsDefaultInput> = ({
   OPTIONS: { length },
   ...props
 }) => {
+
+  const handleChangeCheckBox = React.useCallback(() => {
+    props.changeFilter(!props.value);
+    props.setRefreshCheckBoxFilter(true);
+  }, [props.changeFilter, props.value, props.setRefreshCheckBoxFilter]);
+
+  const handleClickRefresh = React.useCallback(() => {
+    props.setRefreshCheckBoxFilter(true);
+  }, [props.setRefreshCheckBoxFilter]);
+
   return props.type === 'checkbox' ? (
     <FlexContainer>
       <ExtField
         label={props.placeholder}
         type="boolean"
         value={props.value}
-        onChange={() => props.changeFilter(!props.value)}
+        onChange={handleChangeCheckBox}
         labelAfter
       />
       <EtsBootstrap.Button
         title="Перезагрузить данные"
         className="reload-button"
+        onClick={handleClickRefresh}
       >
         <EtsBootstrap.Glyphicon glyph="repeat" />
       </EtsBootstrap.Button>

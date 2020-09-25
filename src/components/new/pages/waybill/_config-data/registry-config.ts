@@ -268,7 +268,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         title: 'Изменение показателей выезда',
         type: 'multiselect',
         options: [
-          { value: true, label: 'да' },
+          { value: true, label: 'Да' },
           { value: false, label: '-' },
         ],
       },
@@ -570,7 +570,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           key: 'is_edited_start',
           title: 'Изменение показателей выезда',
           width: 250,
-          valueForBoolean: 'да',
+          valueForBoolean: 'Да',
         },
         {
           key: 'structure_name',

@@ -204,12 +204,14 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       if (field === 'special_license') {
         if (!changeObject[field]) {
           changeObject.special_license_date_end = null;
+          changeObject.special_license_country_id = null;
           changeObject.category_special_license = [];
         }
       }
       if (field === 'drivers_license') {
         if (!changeObject[field]) {
           changeObject.drivers_license_date_end = null;
+          changeObject.driver_license_country_id = null;
           changeObject.category_drivers_license = [];
         }
       }

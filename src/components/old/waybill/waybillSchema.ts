@@ -1134,7 +1134,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
-    is_fuel_refill: {
+    is_no_fuel_refill: {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [
@@ -1150,7 +1150,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
-    is_equipment_refill: {
+    is_no_equipment_refill: {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [
@@ -1166,7 +1166,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
-    is_gas_refill: {
+    is_no_gas_refill: {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [
@@ -1182,7 +1182,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         },
       ],
     },
-    is_electrical_refill: {
+    is_no_electrical_refill: {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [

@@ -113,7 +113,7 @@ import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContai
 import fuelKindFormTabKey from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement, electricalDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { gasDefaultElement, electricalDefaultElement, defaultRefillObj } from 'components/new/pages/waybill/form/context/utils';
 import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
@@ -557,18 +557,35 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
     const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = this.props.formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
-    if(isGasKind) { // Значит на ТС установлен газ
+    const isOneFuelTank = this.props.formState.is_one_fuel_tank;
+    if (isGasKind) {
+      // Значит на ТС установлен газ
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
-      this.handleMultipleChange(electricalDefaultElement);
-      this.handleChange('gas_fuel_type', 'GAS',);
-    } else if(!isGasKind) {
-      this.handleMultipleChange(gasDefaultElement); // чистим все поля, связанные с газом
-      if(isElectricalKind) {
-        this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
-        this.handleChange('electrical_fuel_type', 'ELECTRICAL',);
-      } else {
-        this.handleMultipleChange(electricalDefaultElement);
-      }
+      this.handleMultipleChange({
+        ...electricalDefaultElement,
+        ...defaultRefillObj,
+        is_no_gas_refill: false,
+      });
+      this.handleChange('gas_fuel_type', 'GAS');
+    } else if (isElectricalKind) {
+      this.handleMultipleChange({
+        ...gasDefaultElement,
+        ...defaultRefillObj,
+        is_no_electrical_refill: false,
+      }); // чистим все поля, связанные с газом
+      this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
+      this.handleChange('electrical_fuel_type', 'ELECTRICAL');
+    } else {
+      const changeObj = {
+        is_no_fuel_refill: false,
+        is_no_equipment_refill: isOneFuelTank ? null : false,
+      };
+      this.handleMultipleChange({
+        ...gasDefaultElement,
+        ...electricalDefaultElement,
+        ...defaultRefillObj,
+        ...changeObj,
+      });
     }
   };
 
@@ -1594,6 +1611,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       equipment_fuel_to_give: null,
       equipment_fuel_start: null,
       equipment_fuel_end: null,
+      is_no_equipment_refill: null,
     };
 
     const changeObj = {
@@ -1689,6 +1707,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...closedEquipmentData,
         ...changeObj,
         equipment_fuel,
+        is_no_equipment_refill: false,
       });
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
@@ -3374,8 +3393,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               path={this.props.path}
                               canEditIfClose={this.state.canEditIfClose}
                               is_one_fuel_tank={state.is_one_fuel_tank}
-                              is_refill={state.is_equipment_refill}
-                              is_refill_error={errors.is_equipment_refill}
+                              is_refill={state.is_no_equipment_refill}
+                              is_refill_error={errors.is_no_equipment_refill}
                               boundKey={'equipment_refill'}
                               fuelCardsList={this.props.equipmentFuelCardsList}
                             />

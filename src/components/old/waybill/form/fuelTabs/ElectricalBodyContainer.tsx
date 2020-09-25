@@ -241,8 +241,8 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
             path={props.path}
-            is_refill={waybillFormState.is_electrical_refill}
-            is_refill_error={errors.is_electrical_refill}
+            is_refill={waybillFormState.is_no_electrical_refill}
+            is_refill_error={errors.is_no_electrical_refill}
             boundKey={'electrical_refill'}
             fuelCardsList={props.electricalFuelCardsList}
           />

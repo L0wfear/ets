@@ -113,7 +113,7 @@ import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContai
 import fuelKindFormTabKey from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement, electricalDefaultElement, defaultRefillObj } from 'components/new/pages/waybill/form/context/utils';
+import { gasDefaultElement, electricalDefaultElement, defaultRefillObj, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
@@ -561,10 +561,12 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       this.handleMultipleChange({
         ...gasDefaultElement,
         ...defaultRefillObj,
-        is_no_electrical_refill: false,
+        ...fuelDefaultElement,
+        is_no_electrical_refill: false, 
       }); // чистим все поля, связанные с газом
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
-      this.handleChange('electrical_fuel_type', 'ELECTRICAL');
+      this.handleChange('electrical_fuel_type', 'ELECTRICITY',);
+      this.handleChangeActiveNavTab('electrical');
     } else {
       const changeObj = {
         is_no_fuel_refill: false,

@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-import { WaybillGas, WaybillElectrical, WaybillRefill } from 'redux-main/reducers/modules/waybill/@types/index';
+import { WaybillGas, WaybillElectrical, WaybillRefill, WaybillFuel } from 'redux-main/reducers/modules/waybill/@types/index';
 
 export const gasDefaultElement: WaybillGas = {
   // gas
@@ -37,6 +37,22 @@ export const electricalDefaultElement: WaybillElectrical = {
   electrical_diff_consumption: null, // Расхождение в данных расхода, л
 };
 
+export const fuelDefaultElement: WaybillFuel = {
+  // fuel
+  fuel_type: 'DT', // Тип топлива
+  fuel_start: null, // Выезд, л
+  fuel_given: null, // Выдано, л
+  fuel_end: null, // Возврат по таксировке, л
+  fact_fuel_end: null, // Возврат фактический, л
+  tax_data: [], // Расчет по норме
+  car_refill: [], // Заправки
+
+  // Расчетные поля (только GET), не храним в бд
+  tax_consumption: null, // Расход по таксировке, л
+  fact_consumption: null, // Расход фактический, л
+  diff_consumption: null, // Расхождение в данных расхода, л
+};
+
 export const defaultRefillObj: WaybillRefill = {
   is_no_fuel_refill: null,
   is_no_gas_refill: null,
@@ -58,7 +74,6 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   car_type_id: null,
   car_type_name: '',
   car_gps_code: '',
-  car_refill: [],
   car_special_model_id: null,
   car_special_model_name: '',
   closed_by_employee_id: null,
@@ -91,14 +106,9 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   equipment_tax_data: [],
   fact_arrival_date: '',
   fact_departure_date: '',
-  fact_fuel_end: null,
   failed_medical_stat_types: false,
   files: [],
-  fuel_end: null,
-  fuel_given: null,
-  fuel_start: null,
   fuel_to_give: null,
-  fuel_type: 'DT',
   garage_number: '',
   gov_number: '',
   id: null,
@@ -133,7 +143,6 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   status_text: '',
   structure_id: null,
   structure_name: '',
-  tax_data: [],
   season: null,
   track_length: null,
   track_length_km: null,
@@ -158,6 +167,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   ...gasDefaultElement,
   ...electricalDefaultElement,
   ...defaultRefillObj,
+  ...fuelDefaultElement,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

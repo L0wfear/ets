@@ -61,7 +61,7 @@ export const usefuelTypeOptions = () => {
   return etsUseSelector((state) => {
     const fuelTypeOptions = getSessionFuelTypeOptions(state);
     return React.useMemo(
-      () => fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICAL'),
+      () => fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICITY'),
       [fuelTypeOptions]
     );
   });

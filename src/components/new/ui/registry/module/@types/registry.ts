@@ -81,6 +81,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_status_name'
       | 'inspectionSelect'
       | 'metresToKilometeres'
+      | 'no_passport'
     );
   } | {
     key: TypeFieldsAvalibaleKey<void>;

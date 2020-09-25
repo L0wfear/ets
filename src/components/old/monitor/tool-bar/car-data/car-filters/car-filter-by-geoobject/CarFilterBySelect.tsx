@@ -22,6 +22,9 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 
     this.state = {
       hidden: true,
+      FILTRED_GEOOBJECTS_LIST: Object.keys(GEOOBJECTS_LIST_WITH_CARS).filter((key) => (
+        this.props.permissions.includes(`${key}.list`)) || key === 'cars',
+      ),
     };
   }
 
@@ -37,8 +40,8 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
   };
 
   render() {
-    const options = Object.values(GEOOBJECTS_LIST_WITH_CARS).map((el) => {
-      return {value: el.serverName, label: el.label};
+    const options = this.state.FILTRED_GEOOBJECTS_LIST.map((key) => {
+      return {value: GEOOBJECTS_LIST_WITH_CARS[key].serverName, label: GEOOBJECTS_LIST_WITH_CARS[key].label};
     });
     const message = 'Выберите геообъект для фильтрации/поиска на карте';
     const popoverHoverFocus = (
@@ -87,5 +90,6 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
 export default connect<any, any, any, ReduxState>(
   (state) => ({
     active: Boolean(state.monitorPage.geoobjectsFilter) && state.monitorPage.geoobjectsFilter !== 'cars',
+    permissions: state.session.userData.permissions,
   }),
 )(CarFilterByText);

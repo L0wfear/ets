@@ -26,6 +26,7 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { actionGetNorms } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { makeObjArrayUniqByKey } from 'utils/functions';
+import { getAndSetInStoreCarsForExclude } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
@@ -58,11 +59,12 @@ const initialFilterFields: StateCarFilterByText['filterFields'] = [
 ];
 
 const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
-  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter }) => {
+  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter, getAndSetInStoreCarsForExclude }) => {
     const [hidden, setHidden] = React.useState(true);
     const [employeeData, setEmployeeData] = React.useState<Array<Employee>>([]);
     const [moscowTime, setMoscowTime] = React.useState(null);
     const [elements, setElements] = React.useState<Array<Norm>>([]);
+    const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
@@ -86,6 +88,26 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
         setElements(elements);
       })();
     }, []);
+
+    React.useEffect(() => {
+      const {
+        withoutMissions,
+        withoutWaybills,
+      } = carFilters;
+      if((withoutMissions || withoutWaybills) && refreshCheckBoxFilter) {
+        const requestOptions = {
+          without_waybill: withoutWaybills,
+          without_mission: withoutMissions,
+        };
+        getAndSetInStoreCarsForExclude(requestOptions);
+        setRefreshCheckBoxFilter(false);
+      }
+    }, [
+      getAndSetInStoreCarsForExclude,
+      carFilters.withoutMissions,
+      carFilters.withoutWaybills,
+      refreshCheckBoxFilter,
+    ]);
 
     const calcData = React.useMemo(() => {
       return makeOptions(carActualGpsNumberIndex);
@@ -219,6 +241,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
+                        setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
                       />
                     ))}
                   </div>
@@ -243,4 +266,4 @@ export default connect<any, any, any, ReduxState>((state) => ({
       state.monitorPage.filters.data[el.key]?.length
       || state.monitorPage.filters.data[el.key] > 0
   ),
-}))(CarFilterByText);
+}), {getAndSetInStoreCarsForExclude})(CarFilterByText);

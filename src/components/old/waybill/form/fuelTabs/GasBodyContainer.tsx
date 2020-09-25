@@ -241,8 +241,8 @@ const GasBodyContainer: React.FC<Props> = React.memo(
             canEditIfClose={waybillState.canEditIfClose}
             page={props.page}
             path={props.path}
-            is_refill={waybillFormState.is_gas_refill}
-            is_refill_error={errors.is_gas_refill}
+            is_refill={waybillFormState.is_no_gas_refill}
+            is_refill_error={errors.is_no_gas_refill}
             boundKey={'gas_refill'}
             fuelCardsList={props.gasFuelCardsList}
           />

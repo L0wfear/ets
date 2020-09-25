@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-import { WaybillGas, WaybillElectrical } from 'redux-main/reducers/modules/waybill/@types/index';
+import { WaybillGas, WaybillElectrical, WaybillRefill } from 'redux-main/reducers/modules/waybill/@types/index';
 
 export const gasDefaultElement: WaybillGas = {
   // gas
@@ -35,6 +35,13 @@ export const electricalDefaultElement: WaybillElectrical = {
   electrical_tax_consumption: null, // Расход по таксировке, л
   electrical_fact_consumption: null, // Расход фактический, л
   electrical_diff_consumption: null, // Расхождение в данных расхода, л
+};
+
+export const defaultRefillObj: WaybillRefill = {
+  is_no_fuel_refill: null,
+  is_no_gas_refill: null,
+  is_no_electrical_refill: null,
+  is_no_equipment_refill: null,
 };
 
 export const getDefaultWaybill = (company_id): Waybill => ({
@@ -101,10 +108,6 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   is_edited_motohours: false,
   is_edited_motohours_equip: false,
   is_edited_start: false,
-  is_fuel_refill: false,
-  is_gas_refill: false,
-  is_electrical_refill: false,
-  is_equipment_refill: false,
   mission_id_list: [],
   motohours_end: null,
   motohours_equip_diff: null,
@@ -154,6 +157,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   engine_kind_ids: [],
   ...gasDefaultElement,
   ...electricalDefaultElement,
+  ...defaultRefillObj,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

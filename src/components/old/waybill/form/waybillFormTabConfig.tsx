@@ -85,7 +85,7 @@ export const fuelTab: OneTabData = { // Вкладка для топлива
     'car_refill', // array of Objects, учесть
     'tax_data_rows', // array of Objects, учесть
     'taxesTotalValueError',
-    'is_fuel_refill',
+    'is_no_fuel_refill',
   ],
   showTabIntoNavFlagKey: 'isFuelKind',
 };
@@ -109,7 +109,7 @@ export const gasTab: OneTabData = { // Вкладка для газа
     'gas_fact_consumption',
     'gas_diff_consumption',
     'gasTaxesTotalValueError',
-    'is_gas_refill',
+    'is_no_gas_refill',
   ],
   showTabIntoNavFlagKey: 'isGasKind',
 };
@@ -132,7 +132,7 @@ export const electricalTab: OneTabData = { // Вкладка для газа
     'electrical_fact_consumption',
     'electrical_diff_consumption',
     'electricalTaxesTotalValueError',
-    'is_electrical_refill',
+    'is_no_electrical_refill',
   ],
   showTabIntoNavFlagKey: 'isElectricalKind',
 };

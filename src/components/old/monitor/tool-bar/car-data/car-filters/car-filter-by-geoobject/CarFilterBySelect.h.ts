@@ -4,10 +4,12 @@ import {
 
 export type PropsCarFilterByText = {
   active: boolean;
+  permissions: Array<string>;
 };
 
 export type StateCarFilterByText = {
   hidden: boolean;
+  FILTRED_GEOOBJECTS_LIST: Array<string>;
 };
 
 export type DefOneAnsData = {

@@ -69,18 +69,18 @@ const canSaveNotCheckField = [
   'fuel_given',
   'gas_fuel_given',
   'equipment_fuel_given',
-  'is_fuel_refill',
-  'is_gas_refill',
-  'is_equipment_refill',
-  'is_electrical_refill',
+  'is_no_fuel_refill',
+  'is_no_gas_refill',
+  'is_no_equipment_refill',
+  'is_no_electrical_refill',
 ];
 
 const canCloseNotCheckField = [
   'distance',
-  'is_fuel_refill',
-  'is_gas_refill',
-  'is_equipment_refill',
-  'is_electrical_refill',
+  'is_no_fuel_refill',
+  'is_no_gas_refill',
+  'is_no_equipment_refill',
+  'is_no_electrical_refill',
 ];
 
 const canSaveTestWrap = (formError) => {
@@ -1191,10 +1191,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       } = this.state.formState;
 
       const {
-        is_fuel_refill,
-        is_gas_refill,
-        is_equipment_refill,
-        is_electrical_refill,
+        is_no_fuel_refill,
+        is_no_gas_refill,
+        is_no_equipment_refill,
+        is_no_electrical_refill,
       } = this.state.formErrors;
 
       const govNumberRegExp = /^[\d]{4}/;
@@ -1207,9 +1207,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         );
         return;
       }
-      if (is_fuel_refill || is_gas_refill || is_equipment_refill || is_electrical_refill) {
-        const carOrEquipmentText = (is_fuel_refill || is_gas_refill || is_electrical_refill) ? 'Транспортное средство' : 'Спецоборудование';
-        const fuelTypeText = is_fuel_refill ? 'Топливо' : is_gas_refill ? 'Газ' : is_electrical_refill ? 'ЭЭ' : 'Топливо для оборудования';
+      if (is_no_fuel_refill || is_no_gas_refill || is_no_equipment_refill || is_no_electrical_refill) {
+        const carOrEquipmentText = (is_no_fuel_refill || is_no_gas_refill || is_no_electrical_refill) ? 'Транспортное средство' : 'Спецоборудование';
+        const fuelTypeText = is_no_fuel_refill ? 'Топливо' : is_no_gas_refill ? 'Газ' : is_no_electrical_refill ? 'ЭЭ' : 'Топливо для оборудования';
         global.NOTIFICATION_SYSTEM.notify(
           getWarningNotification(
             `${carOrEquipmentText}. ${fuelTypeText}. Добавьте заправку или укажите, что ее не было`,

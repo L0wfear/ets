@@ -79,10 +79,10 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
     const isRefillKeys = React.useMemo(() => {
       const boundKeys
       = props.id === 'car_refill'
-        ? 'is_fuel_refill'
+        ? 'is_no_fuel_refill'
         : props.id === 'gas_refill'
-          ? 'is_gas_refill'
-          : 'is_equipment_refill';
+          ? 'is_no_gas_refill'
+          : 'is_no_equipment_refill';
 
       return {
         boundKeys,

@@ -265,6 +265,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             <ViewInspectCarsConditionButtonSubmit
               type={props.type}
               handleSubmit={handleSubmit}
+              isPermitted={props.isPermitted}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}

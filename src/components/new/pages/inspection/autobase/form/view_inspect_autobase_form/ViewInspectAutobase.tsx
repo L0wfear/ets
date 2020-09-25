@@ -172,6 +172,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
             <ViewInspectAutobaseButtonSubmit
               type={props.type}
               handleSubmit={handleSubmit}
+              isPermitted={props.isPermitted}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectAutobase={state}

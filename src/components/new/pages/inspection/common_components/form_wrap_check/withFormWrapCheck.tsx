@@ -54,7 +54,7 @@ type InspectionFormWrapProps = (
   InspectionFormWrapMergedProps
   & WithSearchProps
   & {
-    isPermitted?: boolean;
+    isPermitted: boolean;
     isPermittedToUpdateClose: boolean;
   }
 );

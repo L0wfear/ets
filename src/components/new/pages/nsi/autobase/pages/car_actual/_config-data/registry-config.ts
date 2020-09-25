@@ -267,6 +267,7 @@ export const config: TypeConfigData<Car> = {
           key: 'passport_number',
           title: 'Серия и номер ПТС/ПСМ',
           width: 300,
+          format: 'no_passport',
         },
         {
           key: 'vin',

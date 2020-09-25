@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isNumber, isArray, isNullOrUndefined } from 'util';
+import { isNumber, isArray, isNullOrUndefined, isBoolean, isNull } from 'util';
 
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';
@@ -112,6 +112,18 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     }
     if (format === 'metresToKilometeres') {
       value = metresToKilometeres(value);
+    }
+    if (format === 'no_passport') {
+      const {
+        is_gibdd_passport,
+        is_gtn_passport,
+        is_gims_passport,
+        passport_number,
+      } = rowData;
+
+      const isBool = isBoolean(is_gibdd_passport) && isBoolean(is_gtn_passport) && isBoolean(is_gims_passport);
+      const noPassport= isBool ? !is_gibdd_passport && !is_gtn_passport && !is_gims_passport && isNull(passport_number) : false;
+      value = noPassport ? '-' : value;
     }
   }
   if ('valueForBoolean' in fieldMeta && fieldMeta.valueForBoolean) {

@@ -32,7 +32,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
       path,
     } = this.props;
 
-    const isPermitted = this.props.isPermittedToCreate;
+    const isPermitted = this.props.isPermittedToUpdate;
 
     return (
       <EtsBootstrap.ModalContainer id="modal-penalty" show onHide={this.props.hideWithoutChanges} bsSize="small">

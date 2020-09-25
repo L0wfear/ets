@@ -54,7 +54,6 @@ export type WaybillRegistryRow = {
   car_model_name: string;
   car_type_id: number;
   car_type_name: string;
-  car_refill: Array<WaybillCarRefill>;
   car_special_model_id: number;
   car_special_model_name: string;
   closed_by_employee_id: number;
@@ -87,15 +86,10 @@ export type WaybillRegistryRow = {
   equipment_tax_data: Array<any>;
   fact_arrival_date: string;
   fact_departure_date: string;
-  fact_fuel_end: number;
   failed_medical_stat_types: boolean;
   files: Array<any>;
   fuel_card_ids: number;
-  fuel_end: number;
-  fuel_given: number;
-  fuel_start: number;
   fuel_to_give: number;
-  fuel_type: 'DT' | any;
   garage_number: string;
   gov_number: string;
   id: number;
@@ -130,7 +124,6 @@ export type WaybillRegistryRow = {
   status_text: string;
   structure_id: number;
   structure_name: string;
-  tax_data: Array<TaxDataCar>;
   track_length: number;
   track_length_km: number;
   trailer_id: number;
@@ -141,7 +134,7 @@ export type WaybillRegistryRow = {
   season: 'winter' | 'summer';
   car_has_motohours: boolean;
   car_has_odometr: boolean;
-};
+} & WaybillFuel;
 
 export type WaybillGas = {
   gas_fuel_type: string;                      // + + + Тип топлива
@@ -170,6 +163,20 @@ export type WaybillElectrical = {
   electrical_tax_consumption: number;                // + + + Расход по таксировке, л
   electrical_fact_consumption: number;               // + + + Расход фактический, л
   electrical_diff_consumption: number;               // + + + Расхождение в данных расхода, л
+};
+
+export type WaybillFuel = {
+  fuel_type: string;                      // + + + Тип топлива
+  fuel_start: number;                     // + + + Выезд, л
+  fuel_given: number;                     // + + + Выдано, л
+  fuel_end: number;                       // + + + Возврат по таксировке, л
+  fact_fuel_end: number;                  // + + + Возврат фактический, л
+  tax_data: Array<TaxDataCar>;     // + + + Расчет по норме
+  car_refill: Array<WaybillCarRefill>;        // + + + Заправки
+
+  tax_consumption: number;                // + + + Расход по таксировке, л
+  fact_consumption: number;               // + + + Расход фактический, л
+  diff_consumption: number;              // + + + Расхождение в данных расхода, л
 };
 
 export type WaybillRefill = {

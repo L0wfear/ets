@@ -94,7 +94,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   error={errors.fuel_type}
                   disabled={
                     IS_DELETE || (IS_ACTIVE && isNullOrUndefined(waybillFormState.fuel_type)) || IS_CLOSED || !isPermittedByKey.update
-															|| (lastWaybill && lastWaybill['fuel_type'])
+															|| (lastWaybill && !!lastWaybill['fuel_type'])
                   }
                   options={fuelTypesOption}
                   handleChange={props.handleMultipleChange}

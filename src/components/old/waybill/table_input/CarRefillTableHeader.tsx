@@ -82,7 +82,9 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
         ? 'is_no_fuel_refill'
         : props.id === 'gas_refill'
           ? 'is_no_gas_refill'
-          : 'is_no_equipment_refill';
+          : props.id === 'electrical_refill'
+            ? 'is_no_electrical_refill'
+            : 'is_no_equipment_refill';
 
       return {
         boundKeys,
@@ -120,7 +122,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   )
               }
               {
-                props.visibleButtons && props.fuel_type !== 'ELECTRICAL' && (
+                props.visibleButtons && props.fuel_type !== 'ELECTRICITY' && (
                   <ButtonCreateFuelCard
                     id={props.id}
                     handleUpdateFuelCard={props.handleUpdateFuelCard}

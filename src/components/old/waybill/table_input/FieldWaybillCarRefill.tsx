@@ -176,7 +176,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           },
           {
             ...metaValue,
-            title: props.fuel_type !== 'ELECTRICAL' ? metaValue.title : 'Выдано, кВт',
+            title: props.fuel_type !== 'ELECTRICITY' ? metaValue.title : 'Выдано, кВт',
             disabled: !props.array[selectedRowIndex]?.type_id
               || (
                 props.array[selectedRowIndex]?.type_id === 1

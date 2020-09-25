@@ -292,7 +292,7 @@ export const checkShowTrue: LayerGeoobjectsUtilsTypes.checkShowTrueFunc = (
         thisProps,
         selected,
         isManyCompany
-          ? thisProps.companiesIndex[geoobj.company_id].rgb_color
+          ? thisProps.companiesIndex[geoobj.company_id]?.rgb_color
           : '',
       );
     }
@@ -362,7 +362,7 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
         for (const id in data) {
           if (data[id].shape) {
             const color = isManyCompany
-              ? thisProps.companiesIndex[data[id].company_id].rgb_color
+              ? thisProps.companiesIndex[data[id].company_id]?.rgb_color
               : '';
             const feature = new Feature({
               geometry: geoJSON.readGeometry(data[id].shape),

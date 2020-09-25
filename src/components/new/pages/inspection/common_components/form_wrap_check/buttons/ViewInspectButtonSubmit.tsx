@@ -6,7 +6,7 @@ import ButtonInspectShowActs from 'components/new/ui/registry/components/data/he
 type ViewInspectButtonSubmitProps = {
   type: keyof typeof INSPECT_TYPE_FORM;
   handleSubmit: () => any;
-  isPermitted: boolean;
+  isPermitted?: boolean;
   isPermittedToUpdateClose: boolean;
   handleSubmitClosed: () => any;
   handleCloseAct: () => any;

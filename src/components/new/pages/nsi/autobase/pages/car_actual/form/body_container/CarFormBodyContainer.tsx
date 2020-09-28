@@ -18,6 +18,8 @@ type CarFormBodyContainerOwnProps = {
 
   page: string;
   path: string;
+  gibddPassport: CarWrap['passport_data'];
+  gtnPassport: CarWrap['passport_data'];
 };
 type CarFormBodyContainerProps = (
   CarFormBodyContainerOwnProps
@@ -56,6 +58,8 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
 
                               page={props.page}
                               path={props.path}
+                              gibddPassport={props.gibddPassport}
+                              gtnPassport={props.gtnPassport}
                             />
                           </EtsBootstrap.Col>
                         )

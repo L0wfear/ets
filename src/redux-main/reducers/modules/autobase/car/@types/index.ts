@@ -67,6 +67,7 @@ export type CarGibddPasspost = {
 
   disabled?: boolean;
   files?: Array<any>;
+  car_passports?: Array<CarGtnPasspost | CarGibddPasspost>;
 };
 
 export type CarGtnPasspost = {
@@ -113,6 +114,7 @@ export type CarGtnPasspost = {
 
   disabled?: boolean;
   files?: Array<any>;
+  car_passports?: Array<CarGtnPasspost | CarGibddPasspost>;
 };
 
 export type CarPassporntData = (

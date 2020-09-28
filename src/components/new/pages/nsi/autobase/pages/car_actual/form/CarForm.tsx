@@ -30,11 +30,24 @@ const CarForm: React.FC<PropsCar> = React.memo(
     } = props;
 
     const IS_CREATING = !state.asuods_id;
-
+    const { passport_data } = state;
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
     const isBool = isBoolean(state.is_gibdd_passport) && isBoolean(state.is_gtn_passport) && isBoolean(state.is_gims_passport);
     const noPassport = isBool ? !state.is_gibdd_passport && !state.is_gtn_passport && !state.is_gims_passport && isNull(state.passport_number) : false;
+    const [gibddPassport, setGibddPassport] = React.useState<CarWrap['passport_data']>(null);
+    const [gtnPassport, setGtnPassport] = React.useState<CarWrap['passport_data']>(null);
+
+    React.useEffect(() => {
+      const gibddPassport = passport_data?.car_passports.filter(
+        (el) => el.type === 'GIBDD'
+      );
+      const gtnPassport = passport_data?.car_passports.filter(
+        (el) => el.type === 'GTN'
+      );
+      setGibddPassport(gibddPassport[0]);
+      setGtnPassport(gtnPassport[0]);
+    }, [passport_data.car_passports]);
 
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {
@@ -51,6 +64,11 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
         if (response) {
           props.handleChange(response);
+          if(response.passport_data.type === 'GIBDD') {
+            setGibddPassport(response.passport_data);
+          } else {
+            setGtnPassport(response.passport_data);
+          }
         }
       },
       [state, props.submitAction],
@@ -71,7 +89,8 @@ const CarForm: React.FC<PropsCar> = React.memo(
               formErrors={errors}
               onChange={props.handleChange}
               onChangeBoolean={props.handleChangeBoolean}
-
+              gibddPassport={gibddPassport}
+              gtnPassport={gtnPassport}
               page={props.page}
               path={props.path}
             />

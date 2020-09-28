@@ -2140,6 +2140,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       value: k,
       label: v,
     }));
+    const EQUIPMENT_FUEL_TYPES = FUEL_TYPES.filter((el) => el.value !== 'ELECTRICITY');
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
@@ -3240,7 +3241,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                       IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                       || Boolean(lastWaybill && !lastWaybill['is_one_fuel_tank'] && !isNullOrUndefined(lastWaybill['equipment_fuel_type']))
                                     }
-                                    options={FUEL_TYPES}
+                                    options={EQUIPMENT_FUEL_TYPES}
                                     handleChange={
                                       this.props.handleMultipleChange
                                     }

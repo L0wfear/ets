@@ -19,7 +19,7 @@ export const defaultEmployee: Employee = {
   company_structure_id: null,
   company_structure_name: null,
   drivers_license: null,
-  driver_license_country_id: null,
+  drivers_license_country_id: null,
   drivers_license_date_end: null,
   driver_license_files: [],
   first_name: null,

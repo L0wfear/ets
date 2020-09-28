@@ -116,7 +116,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
         },
       ],
     },
-    driver_license_country_id: {
+    drivers_license_country_id: {
       title: 'Страна, выдавшая водительское удостоверение',
       type: 'number',
       strick: true,
@@ -133,7 +133,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       type: 'string',
       dependencies: [
         (value, formData) => {
-          if (value && formData.driver_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
+          if (value && formData.drivers_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {

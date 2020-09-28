@@ -211,7 +211,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       if (field === 'drivers_license') {
         if (!changeObject[field]) {
           changeObject.drivers_license_date_end = null;
-          changeObject.driver_license_country_id = null;
+          changeObject.drivers_license_country_id = null;
           changeObject.category_drivers_license = [];
         }
       }
@@ -536,16 +536,16 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="driver_license_country_id"
+                    id="drivers_license_country_id"
                     type="select"
                     modalKey={path}
                     label="Страна, выдавшая водительское удостоверение"
-                    value={state.driver_license_country_id}
+                    value={state.drivers_license_country_id}
                     options={this.state.countryOptions}
-                    error={errors.driver_license_country_id}
+                    error={errors.drivers_license_country_id}
                     disabled={!isPermitted || !state.drivers_license}
                     onChange={this.props.handleChange}
-                    boundKeys="driver_license_country_id"
+                    boundKeys="drivers_license_country_id"
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -575,7 +575,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted }
                     onChange={this.handleChangeWithValidate}
                     boundKeys="drivers_license"
-                    hint={state.driver_license_country_id !== 185 ? '' : `Поле «Водительское удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х.`}
+                    hint={state.drivers_license_country_id !== 185 ? '' : `Поле «Водительское удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х.`}
                     toUpperCase
                   />
                 </EtsBootstrap.Col>

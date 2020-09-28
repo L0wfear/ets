@@ -26,12 +26,6 @@ import { actionUpdatePenalty } from 'redux-main/reducers/modules/autobase/action
 
 class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
 
-  handleChangeWrap = (key, value) => {
-    this.props.handleChange({
-      [key]: value,
-    });
-  };
-
   render() {
     const {
       formState: state,
@@ -216,7 +210,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 label="Обжалованный штраф"
                 options={YES_NO_SELECT_OPTIONS_BOOL}
                 value={state.is_appealed}
-                onChange={this.handleChangeWrap}
+                onChange={this.props.handleChange}
                 clearable={false}
                 boundKeys="is_appealed"
               />

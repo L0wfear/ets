@@ -24,7 +24,7 @@ import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { FileField } from 'components/old/ui/input/fields';
 import { actionUpdatePenalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/actions';
 
-class PenaltyForm extends React.Component<PropsPenalty, {}> {
+class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
 
   handleChangeWrap = (key, value) => {
     this.props.handleChange({

@@ -73,6 +73,7 @@ const canSaveNotCheckField = [
   'is_no_gas_refill',
   'is_no_equipment_refill',
   'is_no_electrical_refill',
+  'electrical_tax_data',
 ];
 
 const canCloseNotCheckField = [
@@ -81,6 +82,7 @@ const canCloseNotCheckField = [
   'is_no_gas_refill',
   'is_no_equipment_refill',
   'is_no_electrical_refill',
+  'electrical_tax_data',
 ];
 
 const canSaveTestWrap = (formError) => {

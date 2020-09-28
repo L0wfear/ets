@@ -70,11 +70,11 @@ export const penaltyFormSchema: SchemaType<Penalty, PropsPenalty> = {
     },
     is_appealed: {
       title: 'Обжалованный штраф',
-      type: 'valueOfArray',
+      type: 'boolean',
     },
     files: {
       title: 'Файл',
-      type: 'valueOfArray',
+      type: 'multiValueOfArray',
     },
   },
 };

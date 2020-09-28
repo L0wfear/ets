@@ -16,3 +16,23 @@ export const promiseGetPenaltyList = async (payload) => {
     data,
   };
 };
+
+export const promiseUpdatePenalty = async (ownPayload) => {
+  const payload = {
+    ...ownPayload,
+  };
+
+  const response = await PenaltiesService.put(
+    payload,
+    false,
+    'json',
+  );
+
+  const data = get(
+    response,
+    'result.rows.0',
+    get(response, 'result.0', null),
+  );
+
+  return data;
+};

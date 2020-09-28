@@ -29,7 +29,7 @@ const getValueFromEvent = (valueEvent, renderParams) => {
     case 'boolean': return get(valueEvent, 'target.checked', null);
     case 'number':
     case 'text':
-    case 'string': return get(valueEvent, 'target.value', null) || null;
+    case 'string': return get(valueEvent, 'target.value', valueEvent) || null;
     case 'select': return valueEvent;
     case 'date': {
       if (valueEvent) {

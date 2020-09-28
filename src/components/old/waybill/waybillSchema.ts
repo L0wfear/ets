@@ -11,7 +11,7 @@ import memoizeOne from 'memoize-one';
 import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refillType';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -261,10 +261,11 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       float: 3,
       dependencies: [
-        (value, { status }) => {
+        (value, { status, engine_kind_ids }) => {
           if (
             (status === 'active' || status === 'draft' || !status)
             && (!value && value !== 0)
+            && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
@@ -354,10 +355,11 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Топливо.Тип',
       type: 'string',
       dependencies: [
-        (value, { status }) => {
+        (value, { status, engine_kind_ids }) => {
           if (
             (status === 'active' || status === 'draft' || !status)
             && !value
+            && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'Поле "Топливо.Тип" должно быть заполнено';
           }
@@ -587,15 +589,17 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           formState,
           { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList },
         ) => {
-          return checkCarRefill(
-            car_refill,
-            refillTypeList,
-            fuelCardsList,
-            formState.fuel_type,
-            notFiltredFuelCardsIndex,
-            formState,
-            companyList
-          );
+          if(formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)){
+            return checkCarRefill(
+              car_refill,
+              refillTypeList,
+              fuelCardsList,
+              formState.fuel_type,
+              notFiltredFuelCardsIndex,
+              formState,
+              companyList
+            );
+          }
         },
       ],
     },
@@ -782,13 +786,14 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Возврат по таксировке, л',
       type: 'number',
       dependencies: [
-        (value, { status, }) => {
+        (value, { status, engine_kind_ids, }) => {
           const IS_CREATING = status;
           const IS_DRAFT = status && status === 'draft';
           const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
           if (
             fieldNotHidden
             && (!value && value !== 0)
+            && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'Поле "Возврат по таксировке, л" должно быть заполнено';
           }
@@ -837,10 +842,11 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       float: 3,
       min: 0,
       dependencies: [
-        (value, { status }) => {
+        (value, { status, engine_kind_ids }) => {
           if (
             status === 'active'
             && (!value && value !== 0)
+            && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
@@ -1087,8 +1093,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме(таблица)',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, { tax_data }) => {
-          if ((isArray(tax_data) && tax_data.length)) {
+        (_, { tax_data, engine_kind_ids }) => {
+          if ((isArray(tax_data) && tax_data.length && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID))) {
             return checkTaxData(tax_data);
           }
         },
@@ -1142,7 +1148,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if(
             !value 
             && !car_refill.length 
-            && engine_kind_ids.includes(1)
+            && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'Добавьте заправку или укажите, что ее не было';
           }

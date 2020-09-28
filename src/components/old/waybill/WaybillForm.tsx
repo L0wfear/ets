@@ -578,6 +578,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...defaultRefillObj,
         ...changeObj,
       });
+      this.handleChangeActiveNavTab('fuel');
     }
   };
 

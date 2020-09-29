@@ -22,6 +22,7 @@ import { penaltyFormSchema } from './schema';
 import penaltyPermissions from '../_config-data/permissions';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { FileField } from 'components/old/ui/input/fields';
+import { actionUpdatePenalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/actions';
 
 class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
 
@@ -210,6 +211,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 options={YES_NO_SELECT_OPTIONS_BOOL}
                 value={state.is_appealed}
                 onChange={this.props.handleChange}
+                clearable={false}
                 boundKeys="is_appealed"
               />
             </EtsBootstrap.Col>
@@ -220,6 +222,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 multiple
                 label="Файл"
                 type="file"
+                value={state.files}
+                onChange={this.props.handleChange}
                 boundKeys="files"
               />
             </EtsBootstrap.Col>
@@ -250,6 +254,7 @@ export default compose<PropsPenalty, OwnPenaltyProps>(
   withSearch,
   withForm<PropsPenaltyWithForm, Penalty>({
     uniqField: 'id',
+    updateAction: actionUpdatePenalty,
     mergeElement: (props) => {
       return getDefaultPenaltyElement(props.element);
     },

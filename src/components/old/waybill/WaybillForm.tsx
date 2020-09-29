@@ -1312,6 +1312,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         fieldsToChange.gas_fuel_start = lastCarUsedWaybill.gas_fact_fuel_end;
         // fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start; // DITETS19-2768
       }
+      if (isNotNull(lastCarUsedWaybill.electrical_fact_fuel_end)) {
+        fieldsToChange.electrical_fuel_start = lastCarUsedWaybill.electrical_fact_fuel_end;
+      }
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
       }
@@ -1358,6 +1361,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
       fieldsToChange.gas_fuel_start = 0;
       fieldsToChange.gas_fact_fuel_end = fieldsToChange.gas_fuel_start;
+      fieldsToChange.electrical_fuel_start = 0;
+      fieldsToChange.electrical_fact_fuel_end = fieldsToChange.electrical_fuel_start;
       fieldsToChange.odometr_start = 0;
       fieldsToChange.motohours_start = null;
     }

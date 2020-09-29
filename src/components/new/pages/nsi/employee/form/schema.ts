@@ -29,7 +29,7 @@ const isValidString = (data) => {
 };
 
 const isValidValue = (data) => {
-  return /[0-9]{2}[АВЕКМНОРСТУХ0-9]{2}[0-9]{6}/.test(data);
+  return /[0-9]{2}[0-9]{2}[0-9]{6}/.test(data) || /[0-9]{2}[АВЕКМНОРСТУХ]{2}[0-9]{6}/.test(data);
 };
 
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {

@@ -257,11 +257,13 @@ export const config: TypeConfigData<Car> = {
           key: 'full_model_name',
           title: 'Марка шасси ТС',
           width: 300,
+          dashIfEmpty: true,
         },
         {
           key: 'certificate_number',
           title: 'Номер СТС/СРМ',
           width: 300,
+          dashIfEmpty: true,
         },
         {
           key: 'passport_number',

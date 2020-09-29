@@ -201,7 +201,7 @@ export default class Taxes extends React.Component<any, any> {
         : '',
       RESULT: (RESULT) => {
         const resultView = RESULT ? parseFloat(RESULT).toFixed(3)?.replace('.', ',') : '';
-        return `${resultView ? `${resultView} л` : ''}`;
+        return `${resultView ? `${resultView} ${props.isElectricalKind ? 'кВт' : 'л'}` : ''}`;
       },
       fuel_correction_rate: (fuel_correction_rate) =>
         fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3)?.replace('.', ',') : 1,

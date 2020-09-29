@@ -120,7 +120,7 @@ export const getDefaultCar = (): CarWrap => ({
     tech_inspection_certificate: '',
     type: null,
     vin: '',
-
+    car_passports: [],
     disabled: false,
     files: [],
   },

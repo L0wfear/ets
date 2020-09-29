@@ -173,7 +173,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         : '',
       RESULT: (RESULT) => {
         const resultView = RESULT ? parseFloat(RESULT).toFixed(3)?.replace('.', ',') : '';
-        return `${resultView ? `${resultView} л` : ''}`;
+        return `${resultView ? `${resultView} ${props.isElectricalKind ? 'кВт' : 'л'}` : ''}`;
       },
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {

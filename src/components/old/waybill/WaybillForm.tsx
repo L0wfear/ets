@@ -2208,7 +2208,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const isElectricalKind = state.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
 
     if (this.state.fuelRates.length) {
-      taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data]);
+      taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data, ...electrical_tax_data]);
     } else {
       taxesControl = true;
     }

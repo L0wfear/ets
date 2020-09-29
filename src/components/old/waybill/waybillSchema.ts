@@ -83,7 +83,7 @@ const checkCarRefill = memoizeOne(
         type_id: !rowData.type_id
           ? 'Поле "Способ заправки" должно быть заполнено'
           : companyList.find((company) => company.use_pouring === false) && rowData.type_id === 2
-          && (formState.status !== 'closed' && formState.status !== 'deleted')
+          && (formState.status !== 'closed' && formState.status !== 'deleted' && fuel_type !== 'ELECTRICITY')
             ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
             : '',
         fuel_card_id: validateFuelCardId(

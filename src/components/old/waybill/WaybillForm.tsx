@@ -2716,7 +2716,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             </EtsBootstrap.Row>
           )}
           {/*  */}
-          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE) || !isElectricalKind}>
+          <Div hidden={!Boolean(IS_ACTIVE || IS_CLOSED || IS_DELETE) || isElectricalKind}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
                 <h3 style={{ marginBottom: '20px' }} >Данные по ДУТ</h3>

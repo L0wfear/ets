@@ -29,6 +29,8 @@ type PassportInfoTabProps = {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
   page: string;
   path: string;
+  gibddPassport: CarWrap['passport_data'];
+  gtnPassport: CarWrap['passport_data'];
 };
 
 const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
@@ -39,6 +41,8 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
       formErrors: {
         passport_data: errors,
       },
+      gibddPassport,
+      gtnPassport,
     } = props;
 
     const {
@@ -53,12 +57,16 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     const onChange = React.useCallback(
       (key: any, value?: any) => {
         if (isObject(key)) {
+          const changeObj = {
+            ...passport_data,
+            ...key,
+          };
           props.onChange({
-            passport_data: {
-              ...passport_data,
-              ...key,
-            },
+            passport_data: changeObj,
           });
+          if(passport_data.type === 'GIBDD') {
+
+          }
         } else {
           props.onChange({
             passport_data: {
@@ -99,10 +107,11 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   title: 'Смена типа паспорта',
                   body: `Будут очищены поля, которые относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
                 });
+                const passport = type === 'GIBDD' ? gibddPassport : gtnPassport;
 
-                const { car_id, id, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
+                const { car_id, ...passportData } = passport || getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
                 changeObj = {
-                  ...defaultPassportData,
+                  ...passportData,
                   ...changeObj,
                 };
               } catch (e) {
@@ -121,7 +130,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
           onChange(changeObj);
         }
       },
-      [onChange, passport_data, state.vin],
+      [onChange, passport_data, state.vin, gibddPassport, gtnPassport],
     );
 
     const showTitle = React.useMemo(
@@ -129,7 +138,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
         is_gibdd_passport
         || is_gtn_passport
         || is_gims_passport
-      ) && !Boolean(is_gibdd_passport && is_gtn_passport), [
+      ) || (is_gibdd_passport === null && is_gtn_passport === null), [
         is_gibdd_passport,
         is_gtn_passport,
         is_gims_passport,
@@ -163,7 +172,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   </EtsBootstrap.Col>
               }
               {
-                Boolean(is_gibdd_passport && is_gtn_passport)
+                Boolean(is_gibdd_passport && is_gtn_passport) || (is_gibdd_passport === null && is_gtn_passport === null)
                   && <React.Fragment>
                     <EtsBootstrap.Col md={6}>
                       <ExtField

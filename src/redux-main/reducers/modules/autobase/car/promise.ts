@@ -148,10 +148,11 @@ export const promiseLoadCarRegistration = async (car_id: Car['asuods_id']) => {
 
 export const promiseLoadCarPassport = async (car_id: Car['asuods_id']) => {
   const response = await CarPassportRegistryService.get({ car_id });
+  
+  const carPassporntData = response?.result?.rows.filter((el) => !el.is_deleted);
+  const car_passports = get(response, 'result.rows', []);
 
-  const carPassporntData: CarPassporntData = get(response, 'result.rows.0', null);
-
-  return carPassporntData;
+  return car_passports.length ? {...carPassporntData[0], car_passports} : null;
 };
 
 type Paylaod = (

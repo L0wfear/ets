@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.38.7",
+    "version": "2.38.8",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -151,12 +151,13 @@
         "test": "cross-env JEST_JUNIT_OUTPUT_DIR='./coverageDirectory' jest",
         "lint": "eslint -c .eslintrc.js --ext .ts --ext .tsx src",
         "lint:fix": "eslint -c .eslintrc.js --ext .ts --ext .tsx src --fix --quiet",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "tsc": "tsc --noEmit"
     },
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged && npm --no-git-tag-version version patch && git add package.json && git add package-lock.json",
-            "pre-push": "tsc --noEmit"
+            "pre-push": "tsc"
         }
     },
     "lint-staged": {

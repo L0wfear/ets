@@ -74,6 +74,7 @@ const canSaveNotCheckField = [
   'is_no_equipment_refill',
   'is_no_electrical_refill',
   'electrical_tax_data',
+  'electrical_fact_fuel_end',
 ];
 
 const canCloseNotCheckField = [
@@ -858,8 +859,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     field,
     index,
   ) => {
+    const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    const motohoursMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/моточас`;
+    const odometrMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/км`;
     const motohoursMain = hasMotohours(formState.gov_number);
-    const elemMeasureUnitName = motohoursMain ? 'л/моточас' : 'л/км';
+    const elemMeasureUnitName = motohoursMain ? motohoursMeasureUnitName : odometrMeasureUnitName;
     const firstElemIndex = tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
 
@@ -868,9 +872,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       
       if (
         (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
-            && currElem.measure_unit_name !== 'л/моточас'
+            && currElem.measure_unit_name !== motohoursMeasureUnitName
             && formState.odometr_diff >= 0
-            && (currElem.measure_unit_name === 'л/км')
+            && (currElem.measure_unit_name === odometrMeasureUnitName)
       ) {
         if (currElem.is_excluding_mileage) {
           currElem.iem_FACT_VALUE = !isGasKind
@@ -887,9 +891,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       }
       if (
         (field === 'motohours_end' || isFirstElemTaxOperationField || field === 'motohours_start')
-            && currElem.measure_unit_name !== 'л/км'
+            && (currElem.measure_unit_name !== odometrMeasureUnitName)
             && formState.motohours_diff >= 0
-            && (currElem.measure_unit_name === 'л/моточас')
+            && (currElem.measure_unit_name === motohoursMeasureUnitName)
       ) {
         if (currElem.is_excluding_mileage) {
           if(!isGasKind){
@@ -903,8 +907,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         }
       }
       if (
-        currElem.measure_unit_name !== 'л/моточас'
-            && (currElem.measure_unit_name === 'л/км')
+        currElem.measure_unit_name !== motohoursMeasureUnitName
+            && (currElem.measure_unit_name === odometrMeasureUnitName)
             && formState.odometr_diff <= 0
             && isFirstElemTaxOperationField
       ) {
@@ -919,8 +923,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       }
 
       if (
-        currElem.measure_unit_name !== 'л/км'
-            && (currElem.measure_unit_name === 'л/моточас')
+        (currElem.measure_unit_name !== odometrMeasureUnitName)
+            && (currElem.measure_unit_name === motohoursMeasureUnitName)
             && formState.motohours_diff <= 0
             && isFirstElemTaxOperationField
       ) {

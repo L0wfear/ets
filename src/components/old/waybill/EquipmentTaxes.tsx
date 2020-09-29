@@ -77,8 +77,8 @@ export default class EquipmentTaxes extends React.Component<any, any> {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
           if (
             !cur.measure_unit_name
-            || (type === 'motohours' && cur.measure_unit_name === 'л/моточас')
-            || (type === 'odometr' && cur.measure_unit_name === 'л/км')
+            || (type === 'motohours' && (cur.measure_unit_name === 'л/моточас' || cur.measure_unit_name === 'кВт/моточас'))
+            || (type === 'odometr' && (cur.measure_unit_name === 'л/км' || cur.measure_unit_name === 'кВт/км'))
           ) {
             res.withMileage += parseFloat(cur.FACT_VALUE); // eslint-disable-line
           } else {

@@ -166,8 +166,6 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
     if (isNotNull(lastCarUsedWaybill.equipment_fact_fuel_end)) {
       fieldsToChange.equipment_fuel_start
         = lastCarUsedWaybill.equipment_fact_fuel_end;
-      fieldsToChange.equipment_fact_fuel_end
-        = fieldsToChange.equipment_fuel_start;
     }
 
     if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {

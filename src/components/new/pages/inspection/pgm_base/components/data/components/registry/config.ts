@@ -18,12 +18,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
         },
       },
       getBlobData: {
-        entity: 'inspect/registry',
-        payload: {
-          base_id: pgmBaseId,
-          type: 'pgm_base',
-          format: 'xls',
-        },
+        entity: 'inspection/pgm_base/export',
       },
     },
     registryKey,
@@ -34,7 +29,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
         buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

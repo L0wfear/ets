@@ -12,6 +12,9 @@ export const config: TypeConfigData<PgmStore> = {
     getRegistryData: {
       entity: `geozones/${geoozones.pgm_store}`,
     },
+    getBlobData: {
+      entity:  'geozones/pgm_store/export',
+    }
   },
   registryKey,
   header: {
@@ -19,7 +22,7 @@ export const config: TypeConfigData<PgmStore> = {
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.read,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {

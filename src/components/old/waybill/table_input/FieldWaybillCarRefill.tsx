@@ -328,7 +328,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
         // DITETS20A-25 Добавление возможности отключения способа заправки Налив для некоторых организаций
         if (!props.use_pouring) { /// gas учтен при передаче use_pouring параметра в компонент выше
-          const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === 1);
+          const refillTypeData = typeIdOptions.find(({ rowData }) => rowData.id === (isElectricalRefilBlock ? 2 : 1));
           const element = newArr?.[0];
           if (newArr.length > 0) {
             if (newArr.length === 1) {
@@ -405,6 +405,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         fuelCardValue,
         props.use_pouring,
         previousfuelCardValue,
+        isElectricalRefilBlock,
       ],
     );
 

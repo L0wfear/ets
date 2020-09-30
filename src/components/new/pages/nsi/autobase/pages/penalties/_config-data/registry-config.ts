@@ -52,7 +52,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
         {
           valueKey: 'violation_datetime',
           title: 'Дата и время правонарушения',
-          type: 'advanced-date',
+          type: 'advanced-datetime',
         },
         {
           valueKey: 'violation_document_number',

@@ -11,3 +11,5 @@ type SelectedGeoobjectsByserverName = {
 export type TypeSelectedGeoobjects = {
   [serverName: string]: SelectedGeoobjectsByserverName;
 };
+export type GeoobjsFilterByElem = {[key: number]: Array<number>;};
+export type GeoobjsFilterByElemArr = Array<GeoobjsFilterByElem>;

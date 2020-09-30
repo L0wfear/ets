@@ -3,7 +3,7 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import { Penalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/@types';
 import penaltyPermissions from './permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'Penalties';
 
@@ -81,7 +81,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
           valueKey: 'is_appealed',
           title: 'Обжалованный штраф',
           type: 'multiselect',
-          options: YES_NO_SELECT_OPTIONS_INT,
+          options: YES_NO_SELECT_OPTIONS_BOOL,
         },
       ],
     },
@@ -147,7 +147,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
           {
             key: 'is_appealed',
             title: 'Обжалованный штраф',
-            format: 'boolean',
+            format: 'yesOrNot',
             width: 150,
           },
         ],

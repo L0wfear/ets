@@ -53,6 +53,12 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     } = state;
 
     const IS_CREATING_PASPORT = React.useMemo(() => Boolean(passport_data.id), [passport_data]);
+    const canHaveTwoPassports = React.useMemo(
+      () =>
+        (is_gibdd_passport && is_gtn_passport)
+        || (is_gibdd_passport === null && is_gtn_passport === null),
+      [is_gibdd_passport, is_gtn_passport]
+    );
 
     const onChange = React.useCallback(
       (key: any, value?: any) => {
@@ -138,11 +144,12 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
         is_gibdd_passport
         || is_gtn_passport
         || is_gims_passport
-      ) || (is_gibdd_passport === null && is_gtn_passport === null), [
+      ) && !(canHaveTwoPassports), [
         is_gibdd_passport,
         is_gtn_passport,
         is_gims_passport,
         IS_CREATING_PASPORT,
+        canHaveTwoPassports,
       ]
     );
 
@@ -156,7 +163,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
       ){
         onChangePassportType(initialType);
       }
-    }, []);
+    }, [showTitle, IS_CREATING_PASPORT]);
 
     return (
       <>
@@ -172,8 +179,8 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   </EtsBootstrap.Col>
               }
               {
-                Boolean(is_gibdd_passport && is_gtn_passport) || (is_gibdd_passport === null && is_gtn_passport === null)
-                  && <React.Fragment>
+                canHaveTwoPassports
+                  && <>
                     <EtsBootstrap.Col md={6}>
                       <ExtField
                         id="GIBDD"
@@ -198,7 +205,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                         disabled={!props.isPermitted}
                       />
                     </EtsBootstrap.Col>
-                  </React.Fragment>
+                  </>
               }
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>

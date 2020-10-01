@@ -14,6 +14,9 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
         payload: {
         },
       },
+      getBlobData: {
+        entity:  'autobase/tachograph_repair/export',
+      }
     },
     registryKey,
     header: {
@@ -24,7 +27,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
         buttonsTypes.create,
         buttonsTypes.read,
         buttonsTypes.remove,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

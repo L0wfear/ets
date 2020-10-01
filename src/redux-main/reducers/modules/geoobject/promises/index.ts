@@ -1,9 +1,11 @@
 import {
   GeozonesService,
   GormostService,
+  GeozoneMunicipalFacilityService,
 } from 'api/Services';
 import { get } from 'lodash';
 import { geoozones, gormost } from 'redux-main/reducers/modules/geoobject/constants';
+import { GeoobjsFilterByElemOptions } from '../@types/geoobject.h';
 
 export const makeShape = <F extends any>(geomOwn: F) => {
   const geom = { ...geomOwn };
@@ -71,6 +73,13 @@ export const geoozonesRemoveByType = (keyType: keyof typeof geoozones) => (id: n
   });
 };
 
+export const promiseGetGeoobjsFilterByElem = async (options: GeoobjsFilterByElemOptions): Promise<Array<number>> => {
+  const response = await GeozoneMunicipalFacilityService.get(options);
+  
+  const result: Array<number> = get(response, 'result').map((el) => el.id);
+
+  return result;
+};
 /* ------------- gormost ------------- */
 export const gormostLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof gormost) => async (payload = {}) => {
   let response = null;

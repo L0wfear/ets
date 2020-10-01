@@ -23,7 +23,8 @@ import {
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
   MONITOR_PAGE_SET_COMPANY,
   MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER,
-  MONITOR_PAGE_SET_CARS_FOR_EXCLUDE
+  MONITOR_PAGE_SET_CARS_FOR_EXCLUDE,
+  MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -31,6 +32,9 @@ import { Company } from 'redux-main/reducers/modules/company/@types';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { promiseGetCarExclude } from 'redux-main/reducers/modules/autobase/car/promise';
 import { CarExcludeOptions } from 'redux-main/reducers/modules/autobase/car/@types';
+import { promiseGetGeoobjsFilterByElem } from 'redux-main/reducers/modules/geoobject/promises';
+import { GeoobjsFilterByElemOptions } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
+import { GeoobjsFilterByElem } from './monitor-page.h';
 
 export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Company>) => ({
   type: MONITOR_PAGE_SET_COMPANY,
@@ -200,11 +204,23 @@ export const monitorPageSetCarsForExclude = (payload: Array<number>) => ({
   payload,
 });
 
+export const monitorPageSetGeoobjsFilterByElem = (payload: GeoobjsFilterByElem) => ({
+  type: MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM,
+  payload,
+});
+
 export const getAndSetInStoreCarsForExclude = (
   options: CarExcludeOptions
 ) => async (dispatch) => {
   const result = await promiseGetCarExclude(options);
   dispatch(monitorPageSetCarsForExclude(result));
+};
+
+export const getAndSetInStoreGeoobjsFilterByElem = (
+  options: GeoobjsFilterByElemOptions
+) => async (dispatch) => {
+  const result = await promiseGetGeoobjsFilterByElem(options);
+  dispatch(monitorPageSetGeoobjsFilterByElem({[options.municipal_facility_id]: result}));
 };
 /*  ________________ TOGGLE DRAW_ACTIVE_STATUS ________________ */
 export const monitorPageToggleDrawActiveByKey = (drawKey) => ({

@@ -545,6 +545,12 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
     const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = this.props.formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    const {
+      is_no_electrical_refill,
+      is_no_gas_refill,
+      is_no_equipment_refill,
+      is_no_fuel_refill,
+    } = this.props.formState;
     const isOneFuelTank = this.props.formState.is_one_fuel_tank;
     if (isGasKind) {
       // Значит на ТС установлен газ
@@ -552,7 +558,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       this.handleMultipleChange({
         ...electricalDefaultElement,
         ...defaultRefillObj,
-        is_no_gas_refill: false,
+        is_no_gas_refill: Boolean(is_no_gas_refill),
       });
       this.handleChange('gas_fuel_type', 'GAS');
     } else if (isElectricalKind) {
@@ -560,15 +566,15 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...gasDefaultElement,
         ...defaultRefillObj,
         ...fuelDefaultElement,
-        is_no_electrical_refill: false, 
+        is_no_electrical_refill: Boolean(is_no_electrical_refill), 
       }); // чистим все поля, связанные с газом
       this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
       this.handleChange('electrical_fuel_type', 'ELECTRICITY',);
       this.handleChangeActiveNavTab('electrical');
     } else {
       const changeObj = {
-        is_no_fuel_refill: false,
-        is_no_equipment_refill: isOneFuelTank ? null : false,
+        is_no_fuel_refill: Boolean(is_no_fuel_refill),
+        is_no_equipment_refill: isOneFuelTank ? null : Boolean(is_no_equipment_refill),
       };
       this.handleMultipleChange({
         ...gasDefaultElement,

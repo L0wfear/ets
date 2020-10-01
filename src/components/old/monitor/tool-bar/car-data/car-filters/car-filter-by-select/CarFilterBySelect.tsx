@@ -26,7 +26,7 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { actionGetNorms } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { makeObjArrayUniqByKey } from 'utils/functions';
-import { getAndSetInStoreCarsForExclude } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
@@ -59,12 +59,13 @@ const initialFilterFields: StateCarFilterByText['filterFields'] = [
 ];
 
 const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
-  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter, getAndSetInStoreCarsForExclude }) => {
+  ({ carActualGpsNumberIndex, isOkrug, company_id, active, carFilters, geoobjectsFilter, getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem, geoobjsFilterByElem }) => {
     const [hidden, setHidden] = React.useState(true);
     const [employeeData, setEmployeeData] = React.useState<Array<Employee>>([]);
     const [moscowTime, setMoscowTime] = React.useState(null);
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
+    const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
@@ -85,7 +86,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
         const elements = await dispatch(
           actionGetNorms({ page: '' })
         );
-        setElements(elements);
+        setElements(elements.filter((el) => el.elements_text !== 'Отсутствует элемент'));
       })();
     }, []);
 
@@ -109,6 +110,29 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       refreshCheckBoxFilter,
     ]);
 
+    React.useEffect(() => {
+      const { carFilterMultyElement } = carFilters;
+      const lastElemIndex = carFilterMultyElement.length - 1;
+      if (
+        carFilterMultyElement.length
+        && carFilterMultyElement.length > geoobjsFilteredByElemArrLength
+        && !~geoobjsFilterByElem.findIndex(
+          (el) => el[carFilterMultyElement[lastElemIndex]]
+        )
+      ) {
+        getAndSetInStoreGeoobjsFilterByElem({
+          municipal_facility_id: carFilterMultyElement[lastElemIndex],
+          object_type_id: geoobjectsFilter === 'dt' ? 2 : 1,
+        });
+      }
+      setGeoobjsFilteredByElemArrLength(carFilterMultyElement.length);
+    }, [
+      carFilters.carFilterMultyElement,
+      geoobjectsFilter,
+      geoobjsFilterByElem,
+      geoobjsFilteredByElemArrLength,
+    ]);
+
     const calcData = React.useMemo(() => {
       return makeOptions(carActualGpsNumberIndex);
     }, [carActualGpsNumberIndex]);
@@ -118,19 +142,19 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
         const filteredElements = elements
           .filter((el, i, arr) => arr.indexOf(el) === i && el.objects_text === 'ДТ')
           .map((el) => ({
-            value: el.elements_text,
+            value: el.municipal_facility_ids[0],
             label: el.elements_text,
           }));
-        return makeObjArrayUniqByKey(filteredElements, 'value');
+        return makeObjArrayUniqByKey(filteredElements, 'label');
       }
       if (geoobjectsFilter === 'odh') {
         const filteredElements = elements
           .filter((el) => el.objects_text === 'ОДХ')
           .map((el) => ({
-            value: el.elements_text,
+            value: el.municipal_facility_ids[0],
             label: el.elements_text,
           }));
-        return makeObjArrayUniqByKey(filteredElements, 'value');
+        return makeObjArrayUniqByKey(filteredElements, 'label');
       }
       return [];
     }, [geoobjectsFilter]);
@@ -261,9 +285,10 @@ export default connect<any, any, any, ReduxState>((state) => ({
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
   geoobjectsFilter: state.monitorPage.geoobjectsFilter,
   carFilters: state.monitorPage.filters.data,
+  geoobjsFilterByElem: state.monitorPage.filters.geoobjsFilterByElem,
   active: initialFilterFields.some(
     (el) =>
       state.monitorPage.filters.data[el.key]?.length
       || state.monitorPage.filters.data[el.key] > 0
   ),
-}), {getAndSetInStoreCarsForExclude})(CarFilterByText);
+}), {getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem})(CarFilterByText);

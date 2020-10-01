@@ -152,8 +152,11 @@ export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): Ets
     ...car
   } = carWrapOld;
 
+  const copyCar = { ...car };
+  delete copyCar.employee_data;
+
   await dispatch(
-    actionUpdateCar(car, meta),
+    actionUpdateCar(copyCar, meta),
   ).then(() => {
     dispatch(
       actionUpdateCarDrivers(drivers_data, meta),

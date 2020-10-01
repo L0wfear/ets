@@ -3,6 +3,7 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { cloneDeep, find } from 'lodash';
 import UNSAFE_ElementsList from 'components/old/program_registry/UNSAFE_ElementsList';
+import {ElementsListState} from 'components/old/program_registry/UNSAFE_ElementsList';
 import {
   ButtonCreateNew,
   ButtonReadNew,
@@ -13,7 +14,7 @@ import {
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
  * @extends React.Component
  */
-class CheckableElementsList<P extends any, S extends any> extends UNSAFE_ElementsList<P, S> {
+class CheckableElementsList<P extends Record<string, any>, S extends ElementsListState > extends UNSAFE_ElementsList<P, S> {
   constructor(props) {
     super(props);
 

@@ -8,7 +8,7 @@ import { geoozones, gormost } from 'redux-main/reducers/modules/geoobject/consta
 import { GeoobjsFilterByElemOptions } from '../@types/geoobject.h';
 
 export const makeShape = <F extends any>(geomOwn: F) => {
-  const geom = { ...geomOwn };
+  const geom = { ...geomOwn as any };
   try {
     geom.shape = JSON.parse(geom.shape);
   } catch (e) {

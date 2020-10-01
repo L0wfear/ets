@@ -1527,6 +1527,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       equipment_fuel_to_give: null,
       equipment_fuel_start: null,
       equipment_fuel_end: null,
+      equipment_fact_fuel_end: null,
+      equipment_tax_data: [],
     };
 
     const changeObj = {

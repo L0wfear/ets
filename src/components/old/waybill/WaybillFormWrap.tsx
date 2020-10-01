@@ -882,7 +882,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
-    console.info(field, value); // eslint-disable-line
+    //console.info(field, value); // eslint-disable-line
     formState = calculateWaybillMetersDiff(formState, field, value);
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
@@ -944,7 +944,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     handleMultipleChange = (fields) => {
       let formState = cloneDeep(this.state.formState);
       Object.entries(fields).forEach(([field, value]) => {
-        console.info(field, value); // eslint-disable-line
+        //console.info(field, value); // eslint-disable-line
 
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);

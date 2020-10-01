@@ -992,12 +992,13 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме для оборудования',
       type: 'multiValueOfArray',
       dependencies: [
-        (value, { equipment_fuel, hasEquipmentFuelRates, motohours_equip_diff}) => {
+        (value, { equipment_fuel, hasEquipmentFuelRates, motohours_equip_diff, engine_kind_ids}) => {
           if (
             equipment_fuel
             && hasEquipmentFuelRates
             && (!isArray(value) || (isArray(value) && !value.length))
             && motohours_equip_diff > 0
+            && !engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
           ) {
             return 'В поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
           }
@@ -1048,29 +1049,6 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
               && engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)
           ) {
             return 'В поле "Расчет газа по норме" необходимо добавить операцию';
-          }
-        }
-      ],
-    },
-    electrical_tax_data: {
-      title: 'Расчет ЭЭ по норме',
-      type: 'multiValueOfArray',
-      dependencies: [
-        (_, {electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
-          let taxes = [];
-          if(isArray(electrical_tax_data)){
-            taxes = [...taxes, ...electrical_tax_data];
-          }
-          if(isArray(tax_data)){
-            taxes = [...taxes, ...tax_data];
-          }
-          if (
-            (!isArray(taxes) || (isArray(taxes) && !taxes.length))
-              && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
-              && engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)
-          ) {
-            return 'В поле "Расчет ЭЭ по норме" необходимо добавить операцию';
           }
         }
       ],

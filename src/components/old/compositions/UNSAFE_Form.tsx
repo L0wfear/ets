@@ -7,7 +7,7 @@ import { FluxContext } from 'utils/decorators';
  * @abstract
  */
 @FluxContext
-class Form<P extends any, S extends any> extends React.Component<P, S> {
+class Form<P extends Record<string, any>, S extends Record<string, any>> extends React.Component<P, S> {
   static defaultProps() {
     return {
       handleMultipleChange: (v) => v,

@@ -1,13 +1,12 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
-import * as ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import * as MomentLocalesPlugin from 'moment-locales-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 const packageJson = require(path.join(__dirname, 'package.json'));
 const packageJson_version = packageJson.version;
@@ -48,32 +47,34 @@ const getPlugins = () => {
         path.join(__dirname, 'dist'),
       ],
     }),
-    new CopyWebpackPlugin([
-      {
-        from: path.join(__dirname, 'src', 'assets', 'fonts'),
-        to: 'fonts'
-      },
-      {
-        from: path.join(__dirname, 'src', 'assets', 'images'),
-        to: 'images'
-      },
-      {
-        from: path.join(__dirname, 'webpack', 'otherToDist', 'construct'),
-        to: 'construct'
-      },
-      {
-        from: path.join(__dirname, 'webpack', 'otherToDist', 'robots.txt'),
-        to: 'robots.txt'
-      },
-      {
-        from: path.resolve(__dirname, 'webpack', 'templates', 'sw.js'),
-        to: 'sw.js'
-      },
-      {
-        from: path.resolve(__dirname, 'webpack', 'templates', 'images', getNameFavicon(stand), 'icons'),
-        to: 'icons'
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.join(__dirname, 'src', 'assets', 'fonts'),
+          to: 'fonts'
+        },
+        {
+          from: path.join(__dirname, 'src', 'assets', 'images'),
+          to: 'images'
+        },
+        {
+          from: path.join(__dirname, 'webpack', 'otherToDist', 'construct'),
+          to: 'construct'
+        },
+        {
+          from: path.join(__dirname, 'webpack', 'otherToDist', 'robots.txt'),
+          to: 'robots.txt'
+        },
+        {
+          from: path.resolve(__dirname, 'webpack', 'templates', 'sw.js'),
+          to: 'sw.js'
+        },
+        {
+          from: path.resolve(__dirname, 'webpack', 'templates', 'images', getNameFavicon(stand), 'icons'),
+          to: 'icons'
+        },
+      ]
+    }),
     new ManifestPlugin({
       generate: (seed, files) => files.reduce(
         (manifest, {name, path}) => {
@@ -172,13 +173,13 @@ const getPlugins = () => {
     plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
-  if (false) {
-    plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static'
-      }),
-    );
-  }
+  // if (false) {
+  //   plugins.push(
+  //     new BundleAnalyzerPlugin({
+  //       analyzerMode: 'static'
+  //     }),
+  //   );
+  // }
 
   return plugins;
 };

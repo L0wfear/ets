@@ -5,8 +5,8 @@ export type CompanyStructure = {
   note: string | null;
   parent_id?: number | null;
   type: number | null;
-  children: Array<CompanyStructure>;
   type_display: string | null;
+  children: Array<CompanyStructure>;
 
 };
 export type CompanyStructureLinear = {
@@ -16,7 +16,7 @@ export type CompanyStructureLinear = {
   note: string | null;
   parent_id: number | null;
   type: number | null;
-  type_display: string | null;
+  type_display: string;
   carpool_ids: [];
   carpool_names: [];
 };

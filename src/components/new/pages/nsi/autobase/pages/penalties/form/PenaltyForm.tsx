@@ -23,6 +23,7 @@ import penaltyPermissions from '../_config-data/permissions';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { FileField } from 'components/old/ui/input/fields';
 import { actionUpdatePenalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/actions';
+import { createValidDateDots, createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 
 class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
 
@@ -34,6 +35,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
     } = this.props;
 
     const isPermitted = this.props.isPermittedToUpdate;
+    const formatedRulingDate = createValidDateDots(state.ruling_date);
+    const formatedViolationDatetime = createValidDateTimeDots(state.violation_datetime);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-penalty" show onHide={this.props.hideWithoutChanges} bsSize="small">
@@ -76,7 +79,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Дата постановления"
                 readOnly
-                value={state.ruling_date}
+                value={formatedRulingDate}
                 boundKeys="ruling_date"
               />
             </EtsBootstrap.Col>
@@ -107,8 +110,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Тип документа нарушителя"
                 readOnly
-                value={state.violation_document_type}
-                boundKeys="violation_document_type"
+                value={state.violation_document_type_text}
+                boundKeys="violation_document_type_text"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -158,7 +161,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Дата и время правонарушения"
                 readOnly
-                value={state.violation_datetime}
+                value={formatedViolationDatetime}
                 boundKeys="violation_datetime"
               />
             </EtsBootstrap.Col>

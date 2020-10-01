@@ -28,7 +28,7 @@ export const penaltyFormSchema: SchemaType<Penalty, PropsPenalty> = {
       title: 'Номер подразделения',
       type: 'string',
     },
-    violation_document_type: {
+    violation_document_type_text: {
       title: 'Тип документа нарушителя',
       type: 'string',
     },

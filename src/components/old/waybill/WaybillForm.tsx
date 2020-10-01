@@ -1391,6 +1391,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       is_edited_odometr, 
       is_edited_motohours, 
       is_edited_motohours_equip,
+      fuel_type: formStateFuelType,
     } = this.props.formState;
 
     const plan_departure_date
@@ -1416,6 +1417,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)
           ? state.motohours_equip_start
           : lastWaybill.motohours_equip_end;
+        const fuel_type = formStateFuelType || lastWaybill.fuel_type;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1432,6 +1434,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           motohours_equip_start,
           equipment_fuel,
           trailer_id,
+          fuel_type,
         };
         this.props.handleMultipleChange(fieldsToChange);
         this.updateEngineKindsFields();

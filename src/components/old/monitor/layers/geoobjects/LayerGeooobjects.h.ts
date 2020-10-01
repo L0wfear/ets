@@ -16,6 +16,7 @@ export type PropsLayerGeooobjects = {
   geoobjectsFilter: IStateMonitorPage['geoobjectsFilter'];
   filters: IStateMonitorPage['filters']['data'];
   monitorPageAddToSelectedGeoobjects: any;
+  geoobjsFilterByElem: IStateMonitorPage['filters']['geoobjsFilterByElem'];
 };
 
 type TypeGeoObjectDataIndex = {

@@ -3,6 +3,7 @@ import carInfoReducer, { IStateCarInfo, initialState as carInfoInitialState } fr
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { getToday0am, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { GeoobjsFilterByElemArr } from './monitor-page.h';
 
 const MONITOR_PAGE = createPath('MONITOR_PAGE');
 
@@ -35,6 +36,7 @@ export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUE
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA`;
 export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUEL_EVENTS_LEAK_SHOW`;
 export const MONITOR_PAGE_SET_CARS_FOR_EXCLUDE = MONITOR_PAGE`SET_CARS_FOR_EXCLUDE`;
+export const MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM = MONITOR_PAGE`SET_GEOOBJS_FILTER_BY_ELEM`;
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
@@ -90,6 +92,7 @@ export type IStateMonitorPage = {
     };
     filtredCarGpsCode: Array<number>;
     carsForExclude: Array<number>;
+    geoobjsFilterByElem: GeoobjsFilterByElemArr;
   };
   geoobjectsFilter: string;
   companiesIndex: -1 | object;
@@ -170,6 +173,7 @@ export const initialMonitorState: IStateMonitorPage = {
     },
     filtredCarGpsCode: [],
     carsForExclude: [],
+    geoobjsFilterByElem: [],
   },
   geoobjectsFilter: 'cars',
   companiesIndex: -1,
@@ -490,6 +494,15 @@ export default (state = initialMonitorState, { type, payload }) => {
         filters: {
           ...state.filters,
           carsForExclude: payload
+        }
+      };
+    }
+    case MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          geoobjsFilterByElem: [...state.filters.geoobjsFilterByElem].concat(payload),
         }
       };
     }

@@ -44,6 +44,7 @@ export type Norm = {
   kind_task_names_text: string;
   max_speed: number;
   max_speed_text: string;
+  municipal_facility_ids?: Array<number>;
   name: string;
   norm: number;
   norm_registry_id: number;

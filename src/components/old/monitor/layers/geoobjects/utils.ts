@@ -147,7 +147,7 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
   thisProps,
   prevProps,
 ) => {
-  const { geoobjects, SHOW_GEOOBJECTS, filters, geoobjectsFilter } = thisProps;
+  const { geoobjects, SHOW_GEOOBJECTS, filters, geoobjectsFilter, geoobjsFilterByElem } = thisProps;
   let retValue = {
     hasDiff: false,
     diffGeoobjects: {},
@@ -187,6 +187,14 @@ export const diffInputProps: LayerGeoobjectsUtilsTypes.diffInputPropsFunc = (
             }
             if (filterFields[i] === 'carFilterText') {
               hasFilterValue = filterObjectsByText(serverName, filters.carFilterText, data[key]);
+            }
+            if (filterFields[i] === 'carFilterMultyElement') {
+              hasFilterValue = geoobjsFilterByElem.filter((el) =>
+                filters.carFilterMultyElement.includes(+Object.keys(el)[0]))
+                .map((el) => Object.values(el).flat())
+                .flat()
+                .filter((el, i, arr) => arr.indexOf(el) === i)
+                .includes(data[key].id);
             }
           }
           if(hasFilterValue) {

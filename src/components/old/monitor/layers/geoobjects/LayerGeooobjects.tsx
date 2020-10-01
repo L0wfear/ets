@@ -24,8 +24,11 @@ class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateL
   }
 
   componentDidUpdate(prevProps) {
-    const { geoobjects, geoobjectsFilter } = this.props;
-    const shouldBeFiltered = this.props.filters !== prevProps.filters && !isEmptyObj(geoobjects[geoobjectsFilter]?.data);
+    const { geoobjects, geoobjectsFilter, geoobjsFilterByElem } = this.props;
+    const shouldBeFiltered
+    = (this.props.filters !== prevProps.filters
+      && !isEmptyObj(geoobjects[geoobjectsFilter]?.data))
+    || geoobjsFilterByElem !== prevProps.geoobjsFilterByElem;
 
     if (
       geoobjects !== prevProps.geoobjects
@@ -66,6 +69,7 @@ const mapStateToProps = (state) => ({
   SHOW_GEOOBJECTS: state.monitorPage.statusGeo.SHOW_GEOOBJECTS,
   geoobjectsFilter: state.monitorPage.geoobjectsFilter,
   filters: state.monitorPage.filters.data,
+  geoobjsFilterByElem: state.monitorPage.filters.geoobjsFilterByElem,
 });
 const mapDispatchToProps = (dispatch) => ({
   monitorPageAddToSelectedGeoobjects: (serverName, id, data) => (

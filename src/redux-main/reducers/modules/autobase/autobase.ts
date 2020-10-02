@@ -27,6 +27,7 @@ export const autobaseInitialState: IStateAutobase = {
   techMaintOrderList: [],
   techMaintTypeList: [],
   measureUnitRunList: [],
+  tachographPeriodicVerificationList: [],
   tireModelList: [],
   tireManufacturerList: [],
   tireList: [],

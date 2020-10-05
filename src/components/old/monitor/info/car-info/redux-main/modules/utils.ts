@@ -38,20 +38,23 @@ export const getMaxSpeeds = (missions) =>
     )
     : { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed };
 
-export const checkOnMkad = ({ coords_msk }, odh_mkad) =>
-  Object.values(odh_mkad).some(({ shape: { coordinates, type } }) => {
+export const checkOnMkad = (point, odh_mkad) => {
+  const {
+    coords_msk,
+  } = point;
+  return Object.values(odh_mkad).some(({ shape: { coordinates, type } }) => {
     if (type === 'Polygon') {
       return coordinates.some((polygon) => insider(coords_msk, polygon));
     }
 
     if (type === 'MultiPolygon') {
-      return coordinates.some((mpolygon) =>
-        mpolygon.some((polygon) => insider(coords_msk, polygon)),
+      return coordinates.some((mpolygon) => mpolygon.some((polygon) => insider(coords_msk, polygon))
       );
     }
 
     return false;
   });
+};
 
 export const checkAndModifyTrack = async (
   { track: track_old, cars_sensors, events, parkings },
@@ -104,7 +107,7 @@ export const checkAndModifyTrack = async (
   // чтобы не тормозила карта во время обработки
   const track = await async_map(
     track_old,
-    (pointOwn) => {
+    (pointOwn: Record<string, any>) => {
       const point = cloneDeep(pointOwn);
       point.coords = swapCoords(point.coords);
       point.coords_msk = swapCoords(point.coords_msk);

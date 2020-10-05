@@ -46,7 +46,7 @@ export type WithFormRegistrySearchProps<F = any> = {
   path?: string;
 };
 
-const findRecondInDeepArray = <F extends any>(array: Array<F>, uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
+const findRecondInDeepArray = <F extends Record<string, any>>(array: Array<F>, uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
   const children = [];
 
   const selectedItem = array.find((rowData) => {

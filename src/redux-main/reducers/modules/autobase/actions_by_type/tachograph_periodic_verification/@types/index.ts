@@ -16,4 +16,7 @@ export type Tachograph = {
   comment: string;
   calibration_type_name: string;
   files: Array<any>;
+  dataForValidation: {
+    installed_at: string | Date;
+  }; // сторонние данные чтобы валдидировать через схему 
 };

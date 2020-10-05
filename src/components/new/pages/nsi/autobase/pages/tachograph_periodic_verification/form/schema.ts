@@ -1,6 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTachograph } from 'components/new/pages/nsi/autobase/pages/tachograph_periodic_verification/form/@types/TachographPeriodicVerificationForm';
 import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
+import { diffDates, getStartOfToday, createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, PropsTachograph> = {
   properties: {
@@ -13,33 +14,51 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       title: 'Дата калибровки',
       type: 'date',
       required: true,
-      dependencies: [ // указать зависимости
-        () => {
-          return false;
+      dependencies: [
+        (value, {dataForValidation}) => {
+          if (value && dataForValidation) {
+            return diffDates(createValidDate(value), createValidDate(dataForValidation.installed_at)) < 0
+              ? 'Дата калибровки не может быть раньше даты установки тахографа'
+              : diffDates(createValidDate(value), getStartOfToday()) > 0
+                ? 'Дата калибровки не может быть больше текущей'
+                : false;
+          }
         }
       ] 
     },
     calibration_type_name: {
       title: 'Тип калибровки',
-      type: 'boolean',
+      type: 'string',
       required: true,
     },
     verification_reason_name: {
       title: 'Причина внеплановой калибровки',
-      type: 'multiValueOfArray',
-      dependencies: [], // указать зависимости
+      type: 'valueOfArray',
+      dependencies: [
+        (value, {calibration_type}) => {
+          if(!value && calibration_type === 'unscheduled') {
+            return 'Поле "Причина внеплановой калибровки" обязательно для заполнения';
+          }
+        }
+      ],
     },
     other_reason: {
       title: 'Другое',
       type: 'string',
-      dependencies: [], // указать зависимости
+      dependencies: [
+        (value, {verification_reason_name}) => {
+          if(!value && verification_reason_name === 'Другое') {
+            return 'Поле "Другое" обязательно для заполнения';
+          }
+        }
+      ],
     },
     next_calibration_date: {
       title: 'Дата следующей калибровки (план)',
       type: 'date',
       required: true,
     },
-    tachograph_brand_name: {
+    tachograph_id: {
       title: 'Марка тахографа',
       type: 'valueOfArray',
       required: true,

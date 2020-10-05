@@ -10,8 +10,6 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
     Service: {
       getRegistryData: {
         entity: 'autobase/tachograph_periodic_verification',
-        payload: {
-        },
       },
     },
     registryKey,

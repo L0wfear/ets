@@ -20,6 +20,7 @@ export const defaultTachograph: Tachograph = {
   comment: '',
   calibration_type_name: '',
   files: [],
+  dataForValidation: null,
 };
 
 export const getDefaultTachographElement = (element: Partial<Tachograph>): Tachograph => {

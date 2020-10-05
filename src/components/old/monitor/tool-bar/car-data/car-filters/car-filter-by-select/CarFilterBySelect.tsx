@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as ClickOutHandler from 'react-onclickout';
 import * as cx from 'classnames';
+import styled from 'styled-components';
 
 import { makeOptions } from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/utils';
 
@@ -27,6 +28,11 @@ import { actionGetNorms } from 'redux-main/reducers/modules/some_uniq/norm_regis
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { makeObjArrayUniqByKey } from 'utils/functions';
 import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+
+const StyledFilter = styled.div`
+  max-height: 532px;
+  overflow-y: scroll;
+`;
 
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
@@ -245,7 +251,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
           <div className={cx('tool_bar-block', { active })}>
-            <div className='default_cube flex-row map-car-filter multi'>
+            <StyledFilter className="default_cube flex-row map-car-filter multi">
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
               </div>
@@ -271,7 +277,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                   </div>
                 </div>
               )}
-            </div>
+            </StyledFilter>
           </div>
         </ClickOutHandler>
       </span>

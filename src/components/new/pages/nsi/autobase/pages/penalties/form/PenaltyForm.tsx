@@ -73,11 +73,13 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                type="string"
+                type="date"
                 label="Дата постановления"
                 readOnly
+                disabled
                 value={state.ruling_date}
                 boundKeys="ruling_date"
+                makeGoodFormat
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -107,8 +109,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
                 type="string"
                 label="Тип документа нарушителя"
                 readOnly
-                value={state.violation_document_type}
-                boundKeys="violation_document_type"
+                value={state.violation_document_type_text}
+                boundKeys="violation_document_type_text"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
@@ -155,11 +157,13 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                type="string"
+                type="date"
                 label="Дата и время правонарушения"
+                disabled
                 readOnly
                 value={state.violation_datetime}
                 boundKeys="violation_datetime"
+                makeGoodFormat
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

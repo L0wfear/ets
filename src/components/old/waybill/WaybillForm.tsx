@@ -1391,6 +1391,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       is_edited_odometr, 
       is_edited_motohours, 
       is_edited_motohours_equip,
+      fuel_type: formStateFuelType,
     } = this.props.formState;
 
     const plan_departure_date
@@ -1416,6 +1417,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)
           ? state.motohours_equip_start
           : lastWaybill.motohours_equip_end;
+        const fuel_type = formStateFuelType || lastWaybill.fuel_type;
 
         const lastWaybillMod = {
           ...lastWaybill,
@@ -1432,6 +1434,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           motohours_equip_start,
           equipment_fuel,
           trailer_id,
+          fuel_type,
         };
         this.props.handleMultipleChange(fieldsToChange);
         this.updateEngineKindsFields();
@@ -1614,6 +1617,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       equipment_fuel_start: null,
       equipment_fuel_end: null,
       is_no_equipment_refill: null,
+      equipment_fact_fuel_end: null,
+      equipment_tax_data: [],
     };
 
     const changeObj = {
@@ -2149,7 +2154,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       value: k,
       label: v,
     }));
-    const EQUIPMENT_FUEL_TYPES = FUEL_TYPES.filter((el) => el.value !== 'ELECTRICITY');
+    const EQUIPMENT_FUEL_TYPES = FUEL_TYPES.filter((el) => el.value !== 'ELECTRICITY' && el.value !== 'GAS');
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
@@ -2846,7 +2851,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="odometr_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
@@ -2930,7 +2935,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="motohours_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
@@ -3170,7 +3175,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="motohours_equip_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',

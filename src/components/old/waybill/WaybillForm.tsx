@@ -2154,7 +2154,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       value: k,
       label: v,
     }));
-    const EQUIPMENT_FUEL_TYPES = FUEL_TYPES.filter((el) => el.value !== 'ELECTRICITY');
+    const EQUIPMENT_FUEL_TYPES = FUEL_TYPES.filter((el) => el.value !== 'ELECTRICITY' && el.value !== 'GAS');
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 

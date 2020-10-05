@@ -39,7 +39,7 @@ const CarWaybills: React.FC<PropsCarMissions> = React.memo(({
 }) => {
 
   const [stateWaybillId, setStateWaybillId] = React.useState(null);
-  const { waybill_id } = useParams();
+  const { waybill_id } = useParams() as Record<string, any>;
 
   React.useEffect(() => {
     if(waybill_id === 'create' && !showWaybillForm) {

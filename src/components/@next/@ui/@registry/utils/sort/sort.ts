@@ -18,7 +18,7 @@ export const makeStirngNameFormArray = (item: string | number | ObjWithName) => 
   return item.name;
 };
 
-export const makeStringFromField = (value: number | string | Array<ObjWithName>) => {
+export const makeStringFromField = (value: number | string | Array<ObjWithName> | any) => {
   if (isArray(value)) {
     return value.map((item) => makeStirngNameFormArray(item)).join(', ');
   }

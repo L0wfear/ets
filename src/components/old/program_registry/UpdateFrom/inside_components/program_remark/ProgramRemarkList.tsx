@@ -71,7 +71,6 @@ const notifyTexts = {
 type Props = {
   program_version_id: any;
   program_version_status: any;
-
   programRemarkRegistryList: Array<any>;
 };
 type State = any;

@@ -8,9 +8,14 @@ export type DefaultSelectOption<V, L, R> = {
   [k: string]: any;
 };
 
-export type DefaultSelectListMapper<R extends any> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
+export type DefaultSelectListMapper<R extends Record<string, any>> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
 
-export const defaultSelectListMapper = <R extends any>(rowData: R): DefaultSelectOption<R['id'], R['name'], R> => ({ value: rowData.id, label: rowData.name, rowData });
+export const defaultSelectListMapper = <R extends Record<string, any>>
+  (rowData: R): DefaultSelectOption<
+    R['id'],
+    R['name'],
+    R
+  > => ({ value: rowData.id, label: rowData.name, rowData });
 
 export const onChangeSelectLegacy = (sValue, multi) => {
   let newValue = null;

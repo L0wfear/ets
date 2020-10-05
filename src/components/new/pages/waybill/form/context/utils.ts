@@ -39,7 +39,7 @@ export const electricalDefaultElement: WaybillElectrical = {
 
 export const fuelDefaultElement: WaybillFuel = {
   // fuel
-  fuel_type: 'DT', // Тип топлива
+  fuel_type: null, // Тип топлива
   fuel_start: null, // Выезд, л
   fuel_given: null, // Выдано, л
   fuel_end: null, // Возврат по таксировке, л

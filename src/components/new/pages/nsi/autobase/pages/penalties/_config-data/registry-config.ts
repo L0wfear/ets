@@ -15,6 +15,9 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
         payload: {
         },
       },
+      getBlobData: {
+        entity:  'penalties/export',
+      }
     },
     registryKey,
     header: {
@@ -23,7 +26,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

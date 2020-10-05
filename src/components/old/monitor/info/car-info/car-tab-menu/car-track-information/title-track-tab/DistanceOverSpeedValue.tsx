@@ -19,10 +19,10 @@ export const getDistanceOverSpeedValue = (props) => {
     if (missions !== -1 && missions.length > 0) {
       const dateRange = missions.map((mission) => {
         return {
-          date_start: diffDates(state_date_start, mission.date_start) < 0
-            ? createValidDateTime(mission.date_start)
-            : createValidDateTime(state_date_start),
-          date_end: diffDates(mission.date_end, state_date_end) < 0
+          date_start: diffDates(state_date_start, mission.date_start) > 0
+            ? createValidDateTime(state_date_start)
+            : createValidDateTime(mission.date_start),
+          date_end: diffDates(state_date_end, mission.date_end) > 0
             ? createValidDateTime(mission.date_end)
             : createValidDateTime(state_date_end),
         };
@@ -31,7 +31,7 @@ export const getDistanceOverSpeedValue = (props) => {
       for (let index = 0; index < dateRange.length; index++) {
         dist = track.reduce((acc, curr, i) => {
           const pointTimestamp = getDateWithMoscowTzByTimestamp(track[i].timestamp * 1000);
-          const range = moment.range(dateRange[index]);
+          const range = moment.range(dateRange[index].date_start, dateRange[index].date_end);
           range.contains(pointTimestamp);
           if (missions[index].speed_limits.speed_lim < track[i].speed_avg && range.contains(pointTimestamp)) {
             // eslint-disable-next-line no-param-reassign

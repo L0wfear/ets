@@ -70,7 +70,7 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
     },
     gov_number: {
       title: 'Рег. номер ТС',
-      type: 'valueOfArray',
+      type: 'string',
       required: true,
     },
     comment: {

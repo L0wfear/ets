@@ -273,7 +273,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
             <EtsBootstrap.Col md={12}>
               <FileField
                 multiple
-                label="Файл"
+                label="Сертификат"
                 type="file"
                 value={state.files}
                 onChange={props.handleChange}

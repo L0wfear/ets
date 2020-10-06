@@ -4,7 +4,7 @@ import {
   TachographVerificationReasonService,
 } from 'api/Services';
 import { get } from 'lodash';
-import { Tachograph } from './@types';
+import { Tachograph, TachographListElement } from './@types';
 
 export const promiseGetTachographPeriodicVerificationList = async (payload) => {
   let response = null;
@@ -65,7 +65,7 @@ export const promiseGetTachographsList = async (payload) => {
     //
   }
 
-  const data: Array<any> = get(response, ['result', 'rows'], []);
+  const data: Array<TachographListElement> = get(response, ['result', 'rows'], []);
 
   return {
     data,

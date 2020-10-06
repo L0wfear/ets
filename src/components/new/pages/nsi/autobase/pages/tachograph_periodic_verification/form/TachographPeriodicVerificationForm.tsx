@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
+import { Tachograph, TachographListElement } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
 import { getDefaultTachographElement } from './utils';
 import { tachographPeriodicVerificationFormSchema } from './schema';
 import tachographPermissions from '../_config-data/permissions';
@@ -27,6 +27,7 @@ import {
   actionGetTachographVerificationReasonList,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/actions';
 import { ReduxState } from 'redux-main/@types/state';
+import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
 
 const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo(
   (props) => {
@@ -53,13 +54,24 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     const [
       tachographBrandNameList,
       setTachographBrandNameList,
-    ] = React.useState<Array<any>>([]);
+    ] = React.useState<Array<TachographListElement>>([]);
 
     const isPermitted = props.isPermittedToUpdate;
     const calibrationOptions = [
       { value: 'unscheduled', label: 'Внеплановая' },
       { value: 'scheduled', label: 'Плановая' },
     ];
+
+    const handleChangeCalibrationDate = React.useCallback((key, value) => {
+      const next_calibration_date = getDatePlusSomeYears(value, 2);
+      const objChange: Partial<Tachograph> = {
+        next_calibration_date,
+        [key]: value,
+      };
+      (Object.keys(objChange) as Array<keyof typeof objChange>).forEach((key) => {
+        props.handleChange(key, objChange[key]);
+      });
+    }, []);
 
     React.useEffect(() => {
       (async () => {
@@ -72,9 +84,9 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
           { page }
         );
         setTachographBrandNameList(tachographBrandNameList.data);
-        const tachographVerificationReasonOptions = tachographVerificationReasonList.data.map(
+        const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
           (el) => ({ value: el.name, label: el.name })
-        );
+        ) ?? [];
         setVerificationReasonOptions(tachographVerificationReasonOptions);
       })();
     }, []);
@@ -84,7 +96,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
         const tachographBrandNameOptions = tachographBrandNameList?.map(
           (el) => ({ value: el.id, label: el.tachograph_brand_name })
-        );
+        ) ?? [];
         setTachographBrandNameOptions(tachographBrandNameOptions);
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
@@ -153,7 +165,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 label="Дата калибровки"
                 value={state.calibration_date}
                 boundKeys="calibration_date"
-                onChange={props.handleChange}
+                onChange={handleChangeCalibrationDate}
                 error={errors.calibration_date}
               />
             </EtsBootstrap.Col>
@@ -194,8 +206,8 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 readOnly
                 value={state.next_calibration_date}
                 boundKeys="next_calibration_date"
-                onChange={props.handleChange}
                 error={errors.next_calibration_date}
+                disabled
               />
             </EtsBootstrap.Col>
             {state.verification_reason_name === 'Другое' && (

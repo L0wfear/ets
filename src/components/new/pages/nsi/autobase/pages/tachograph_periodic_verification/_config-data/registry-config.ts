@@ -11,6 +11,12 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
       getRegistryData: {
         entity: 'autobase/tachograph_periodic_verification',
       },
+      getBlobData: {
+        entity: 'autobase/tachograph_periodic_verification',
+        payload: {
+          format: 'xls',
+        },
+      }
     },
     registryKey,
     header: {
@@ -21,7 +27,7 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
         buttonsTypes.create,
         buttonsTypes.read,
         buttonsTypes.remove,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

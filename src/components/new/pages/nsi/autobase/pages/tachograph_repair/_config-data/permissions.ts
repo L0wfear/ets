@@ -1,9 +1,9 @@
 const tachographRepairPermissions = {
-  list: 'waybill.list',
-  read: 'waybill.read',
-  create: 'waybill.create',
-  update: 'waybill.update',
-  delete: 'waybill.delete',
+  list: 'tachograph_repair.list',
+  read: 'tachograph_repair.read',
+  create: 'tachograph_repair.create',
+  update: 'tachograph_repair.update',
+  delete: 'tachograph_repair.delete',
 };
 
 export default tachographRepairPermissions;

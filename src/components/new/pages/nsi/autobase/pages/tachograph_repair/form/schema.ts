@@ -39,8 +39,8 @@ export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTacho
             return getRequiredFieldMessage('Заводской номер тахографа');
           }
           if (factory_number) {
-            const chosenTachograph = tachographList.find((tachograph) => tachograph.factory_number === factory_number);
-            if (diffDates(chosenTachograph.installed_at, value, 'days') > 0) {
+            const chosenTachograph = tachographList?.find((tachograph) => tachograph.factory_number === factory_number);
+            if (diffDates(chosenTachograph?.installed_at, value, 'days') > 0) {
               return 'Дата ремонта не может быть раньше даты установки тахографа';
             }
           }

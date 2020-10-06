@@ -24,6 +24,7 @@ import { autobaseCreateTachographRepair, autobaseUpdateTachographRepair } from '
 import { actionGetAndSetInStoreTachographRepairReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/actions';
 import { actionGetAndSetInStoreTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { getReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/selectors';
+import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 
 const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
   (props) => {
@@ -35,7 +36,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
       IS_CREATING,
     } = props;
 
-    const [tachographListData, setTachographListData] = React.useState<Array<any>>([]);
+    const [tachographListData, setTachographListData] = React.useState<Array<TachographList>>([]);
     const [brandsOptions, setBrands] = React.useState<Array<{ value: string; label: string; }>>([]);
     const [factoryNumbersOptions, setFactoryNumbers] = React.useState<Array<{ value: string; label: string; }>>([]);
 

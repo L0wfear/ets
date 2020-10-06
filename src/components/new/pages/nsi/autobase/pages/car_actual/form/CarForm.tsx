@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { isBoolean, isNull } from 'util';
-import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
@@ -49,10 +48,6 @@ const CarForm: React.FC<PropsCar> = React.memo(
       setGibddPassport(gibddPassport[0]);
       setGtnPassport(gtnPassport[0]);
     }, [passport_data.car_passports]);
-
-    React.useEffect(() => {
-      state.exploitation_date_start = createValidDate(state.exploitation_date_start);
-    }, [state.exploitation_date_start]);
 
     const contextValue: CarActualRegistryFormContextType = React.useMemo(
       () => {

@@ -6,6 +6,7 @@ import * as React from 'react';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/penalties/ReportHeader';
+import PhotoLink from 'components/old/reports/operational/penalties/PhotoLink/PhotoLink';
 
 const serviceUrl = 'report/penalties';
 const reportUrl = 'penalties';
@@ -16,7 +17,7 @@ const schemaMakers: ISchemaMaker = {
 };
 
 const renderers = {
-  photo_url: ({ data }) => data ? <a target="_blank" href={data}>Просмотр</a> : '-',
+  photo_url: ({ data }) => data ? <PhotoLink data={data} /> : '-',
 };
 
 const reportProps: IReportProps = {

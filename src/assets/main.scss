@@ -574,7 +574,7 @@ body.application {
           display: flex;
           align-items: center;
           &.multi {
-            align-items: end;
+            align-items: start;
 
             >div:nth-child(n + 2) {
               padding: 10px 0px;

@@ -30,8 +30,10 @@ import { makeObjArrayUniqByKey } from 'utils/functions';
 import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const StyledFilter = styled.div`
-  max-height: 532px;
-  overflow-y: scroll;
+  &.active {
+    max-height: 532px;
+    overflow-y: scroll;
+  }
 `;
 
 const placeholder = {
@@ -251,7 +253,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
           <div className={cx('tool_bar-block', { active })}>
-            <StyledFilter className="default_cube flex-row map-car-filter multi">
+            <StyledFilter className={`default_cube flex-row map-car-filter multi ${hidden ? '' : 'active'}`}>
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
               </div>

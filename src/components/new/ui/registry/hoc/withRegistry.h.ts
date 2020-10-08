@@ -137,6 +137,9 @@ export type TypeFields<F extends any> = {
 }| {
   key: 'showCarOnMap';
   title: string;
+} | {
+  key: 'files';
+  title: string;
 };
 
 export type TypeConfigData<F> = {

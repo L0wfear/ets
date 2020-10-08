@@ -245,7 +245,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const isMissionListExists = mission_id_list?.length > 0;
 
           if (value && !correctTrailer && fieldNotHidden) {
-            return 'В данный момент выбранный прицеп не подходят для заполнения';
+            return 'В данный момент выбранный прицеп не подходит для заполнения';
           }
 
           if (!value && correctTrailer || !value && isTrailerRequired && isTrailerRequiredMission && isMissionListExists) {

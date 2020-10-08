@@ -2220,13 +2220,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const electrical_tax_data = get(state, 'electrical_tax_data', []) || [];
     const isElectricalKind = state.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
 
-    if (this.state.fuelRates.length) {
+    if (this.state.fuelRates.length && state.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)) {
       taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data, ...electrical_tax_data]);
     } else {
       taxesControl = true;
     }
 
-    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data];
+    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
     const taxesTotal = allTaxes.reduce(
       (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
       0,

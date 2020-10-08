@@ -116,9 +116,10 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
     list: {
       permissions: fuelCardsPermissions,
       data: {
-        uniqKey: 'id',
+        uniqKey: 'composite_id',
         fixedWidth: true,
         uniqKeyForParams,
+        uniqKeyForDoubleClick: 'id',
       },
       meta: {
         fields: [

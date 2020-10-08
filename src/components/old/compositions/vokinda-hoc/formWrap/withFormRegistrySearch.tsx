@@ -79,6 +79,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
 
         const array: Array<any> = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
+        const uniqKeyForDoubleClick = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForDoubleClick);
         const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
         const hasButtonToCreate = etsUseSelector((state) => {
@@ -174,19 +175,20 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
                       handleHide(false);
                     }
                   } else {
+                    const key = uniqKeyForDoubleClick || uniqKey;
                     const param_uniq_value_number = Number(param_uniq_value);
-                    const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
+                    const elementPick = findRecondInDeepArray(array, key, param_uniq_value_number);
 
                     if (elementPick || config.no_find_in_arr) {
                       if (isPermittedToSee) {
                         if (elementPick) {
                           setElement({
-                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                            [config.replace_uniqKey_on || key]: param_uniq_value_number,
                             ...elementPick,
                           });
                         } else {
                           setElement({
-                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                            [config.replace_uniqKey_on || key]: param_uniq_value_number,
                           } as any);
                         }
                       } else {
@@ -211,6 +213,8 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
             param_uniq_value_prev,
             array,
             handleHide,
+            uniqKeyForDoubleClick,
+            uniqKey,
           ],
         );
 

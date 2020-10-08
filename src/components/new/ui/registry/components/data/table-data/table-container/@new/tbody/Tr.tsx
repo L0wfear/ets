@@ -37,6 +37,7 @@ const TrHead: React.FC<Props> = React.memo(
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
 
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
+    const uniqKeyForDoubleClick = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForDoubleClick);
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
 
     const row_double_click = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.row_double_click);
@@ -54,6 +55,7 @@ const TrHead: React.FC<Props> = React.memo(
 
     const handleDoubleClick = React.useCallback(
       () => {
+        const key = uniqKeyForDoubleClick || uniqKey;
         if (isPermitted) {
           const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
           if (buttonReadData && row_double_click) {
@@ -61,13 +63,13 @@ const TrHead: React.FC<Props> = React.memo(
               buttonReadData,
               rowData,
               uniqKeyForParams,
-              uniqKey,
+              key,
             );
 
             props.setParams(changeObj);
           } else if (row_double_click) {
             props.setParams({
-              [uniqKeyForParams]: get(rowData, uniqKey, null),
+              [uniqKeyForParams]: get(rowData, key, null),
             });
           }
         }
@@ -81,6 +83,7 @@ const TrHead: React.FC<Props> = React.memo(
         uniqKeyForParams,
         uniqKey,
         rowData,
+        uniqKeyForDoubleClick,
       ],
     );
 

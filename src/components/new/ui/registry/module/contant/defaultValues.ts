@@ -29,6 +29,7 @@ const registryDefaultObj: OneRegistryData<any> = {
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',
+      uniqKeyForDoubleClick: null,
       selectedRow: null,
       checkedRows: {},
       fixedWidth: false,

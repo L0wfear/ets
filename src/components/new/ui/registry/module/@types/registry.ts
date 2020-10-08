@@ -216,6 +216,7 @@ export type OneRegistryData<F = any> = {
       objectExtra: Record<string, any>; // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
+      uniqKeyForDoubleClick?: Extract<keyof F, string>;
       uniqKeyForParams: string;
       selectedRow: F;
       checkedRows: Record<Extract<keyof F, string>, F>;

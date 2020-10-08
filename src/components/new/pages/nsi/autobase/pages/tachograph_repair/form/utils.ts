@@ -26,3 +26,30 @@ export const getDefaultTachographRepairElement = (element: Partial<TachographRep
 
   return newElement;
 };
+
+export const getOptions = (data, state, key) => {
+  if (key === 'brands') {
+    const dataList = state.factory_number
+      ? data.filter(({ factory_number }) => factory_number === state.factory_number)
+      : data;
+
+    return dataList.map(({ tachograph_brand_name }) => {
+      return ({
+        value: tachograph_brand_name,
+        label: tachograph_brand_name,
+      });
+    });
+  }
+
+  if (key === 'factoryNumbers') {
+    const dataList = state.tachograph_brand_name
+      ? data.filter(({ tachograph_brand_name }) => tachograph_brand_name === state.tachograph_brand_name)
+      : data;
+    return dataList.map(({ factory_number }) => {
+      return ({
+        value: factory_number,
+        label: factory_number,
+      });
+    });
+  }
+};

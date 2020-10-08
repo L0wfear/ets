@@ -17,12 +17,18 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { TachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
-import { getDefaultTachographRepairElement } from './utils';
+import { getDefaultTachographRepairElement, getOptions } from './utils';
 import { tachographRepairFormSchema } from './schema';
 import tachographRepairPermissions from '../_config-data/permissions';
 import { autobaseCreateTachographRepair, autobaseUpdateTachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/actions';
-import { actionGetAndSetInStoreTachographRepairReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/actions';
-import { actionGetAndSetInStoreTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
+import {
+  actionGetAndSetInStoreTachographRepairReasonList,
+  actionResetTachographRepairReasonList
+} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/actions';
+import {
+  actionGetAndSetInStoreTachographList,
+  actionResetTachographList
+} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { getReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/selectors';
 import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 
@@ -47,53 +53,20 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
         props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page }));
         const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
         setTachographListData(tachographList.data);
+
+        return () => {
+          props.dispatch(actionResetTachographRepairReasonList());
+          props.dispatch(actionResetTachographList());
+        };
       })();
     }, []);
 
     React.useEffect(() => {
-      if (tachographListData.length) {
-        if (state.factory_number) {
-          const BRANDS
-            = tachographListData
-              ?.filter(({ factory_number }) => factory_number === state.factory_number)
-              .map(({ tachograph_brand_name }) => {
-                return ({
-                  value: tachograph_brand_name,
-                  label: tachograph_brand_name,
-                });
-              });
-          setBrands(BRANDS);
-        } else {
-          const BRANDS = tachographListData?.map(({ tachograph_brand_name }) => {
-            return ({
-              value: tachograph_brand_name,
-              label: tachograph_brand_name,
-            });
-          }) ;
-          setBrands(BRANDS);
-        }
-        if (state.tachograph_brand_name) {
-          const FACTORY_NUMBERS
-            = tachographListData
-              ?.filter(({ tachograph_brand_name }) => tachograph_brand_name === state.tachograph_brand_name)
-              .map(({ factory_number }) => {
-                return ({
-                  value: factory_number,
-                  label: factory_number,
-                });
-              });
-          setFactoryNumbers(FACTORY_NUMBERS);
-        } else {
-          const FACTORY_NUMBERS = tachographListData?.map(({ factory_number }) => {
-            return ({
-              value: factory_number,
-              label: factory_number,
-            });
-          });
-          setFactoryNumbers(FACTORY_NUMBERS);
-        }
+      if (tachographListData.length > 0) {
+        setBrands(getOptions(tachographListData, state,'brands'));
+        setFactoryNumbers(getOptions(tachographListData, state,'factoryNumbers'));
       }
-    }, [tachographListData, state.factory_number, state.tachograph_brand_name]);
+    }, [tachographListData, state]);
 
     const handleChange = React.useCallback(
       (key, value) => {
@@ -129,12 +102,8 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
           comment,
         };
 
-        const result = await props.submitAction(data);
-
-        if (result) {
-          props.handleChange(result);
-        }
-      }, [props.handleChange, tachographListData, state]);
+        await props.submitAction(data);
+      }, [tachographListData, state]);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-tachograph-repair" show onHide={props.hideWithoutChanges}>

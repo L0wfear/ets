@@ -15,7 +15,7 @@ export const actionSetTachographList = (tachographList: Array<TachographList>): 
 );
 
 /* --------------- сброс стора --------------- */
-export const actionResetTachographRepairList = (): EtsAction<EtsActionReturnType<typeof actionSetTachographList>> => (dispatch) => (
+export const actionResetTachographList = (): EtsAction<EtsActionReturnType<typeof actionSetTachographList>> => (dispatch) => (
   dispatch(
     actionSetTachographList([]),
   )

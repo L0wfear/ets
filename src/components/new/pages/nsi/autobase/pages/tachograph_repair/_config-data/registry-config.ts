@@ -80,7 +80,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'penalties_id',
+        uniqKeyForParams: 'id',
       },
       meta: {
         fields: [

@@ -2226,7 +2226,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       taxesControl = true;
     }
 
-    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data];
+    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
     const taxesTotal = allTaxes.reduce(
       (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
       0,

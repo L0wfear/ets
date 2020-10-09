@@ -102,7 +102,11 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
           comment,
         };
 
-        await props.submitAction(data);
+        const result = await props.submitAction(data);
+
+        if (result) {
+          props.handleHide(true, result);
+        }
       }, [tachographListData, state]);
 
     return (
@@ -145,6 +149,8 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 error={errors.repair_date}
                 onChange={props.handleChange}
                 boundKeys="repair_date"
+                makeGoodFormat
+                makeGoodFormatInitial
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

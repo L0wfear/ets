@@ -48,7 +48,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours } from 'utils/functions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 
 const canSaveNotCheckField = [
@@ -718,10 +718,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    const isFuelKind = formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
     if(isGasKind || isElectricalKind) {
-      Object.keys(fuelDefaultElement).forEach((key) => {
-        formState[key] = fuelDefaultElement[key];
-      });
+      if (!isFuelKind) {
+        Object.keys(fuelDefaultElement).forEach((key) => {
+          formState[key] = fuelDefaultElement[key];
+        });
+      }
       if(isGasKind) {
         // чистим поля со спец. оборудованием
         formState.equipment_fact_fuel_end = null;

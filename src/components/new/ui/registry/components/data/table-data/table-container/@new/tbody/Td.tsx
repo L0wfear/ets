@@ -46,7 +46,8 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
 
     const Component = componentsByKey[fieldMeta.key] || DefaultTdTitle;
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
-
+    const uniqKeyForSelect = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForSelect);
+    const key = uniqKeyForSelect || uniqKey;
     const groupOpt = get(fieldMeta, 'groupOpt', null);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const isActive = (
@@ -58,7 +59,7 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
     return (
       isActive
         && <Component
-          id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
+          id={`${props.registryKey}.${props.rowData[key]}.${props.indexRow}.${fieldMeta.key}`}
           key={props.fieldMeta.key}
           registryKey={props.registryKey}
           rowData={props.rowData}

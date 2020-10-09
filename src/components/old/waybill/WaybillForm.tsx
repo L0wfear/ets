@@ -545,6 +545,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
     const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = this.props.formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    const isFuelKind = this.props.formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
     const {
       is_no_electrical_refill,
       is_no_gas_refill,
@@ -559,6 +560,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...electricalDefaultElement,
         ...defaultRefillObj,
         is_no_gas_refill: Boolean(is_no_gas_refill),
+        is_no_fuel_refill: isFuelKind ? Boolean(is_no_fuel_refill) : defaultRefillObj.is_no_fuel_refill,
       });
       this.handleChange('gas_fuel_type', 'GAS');
     } else if (isElectricalKind) {

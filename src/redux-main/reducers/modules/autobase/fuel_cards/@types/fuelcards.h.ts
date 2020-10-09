@@ -22,10 +22,12 @@ export type FuelCard = {
   id: number | null;
   number: string | null; // Поле "Номер"
   fuel_type: string | null; // Поле «Тип топлива»
+  fuel_types: Array<string>;
   company_id: number | null;
   company_name: string | null;
   company_short_name: string | null;
   company: string | null; // Организация
+  composite_id: string;
   is_used_in_waybill: boolean | null;
   is_archive: boolean;
   fuel_type_text: string | null;

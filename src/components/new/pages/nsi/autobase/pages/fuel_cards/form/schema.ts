@@ -23,9 +23,9 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
         },
       ],
     },
-    fuel_type: {
+    fuel_types: {
       title: 'Тип топлива',
-      type: 'valueOfArray',
+      type: 'multiValueOfArray',
       required: true,
     },
     company_id: {

@@ -517,7 +517,7 @@ export const registryChangeFilterData = (registryKey: string, filter: OneRegistr
   },
 });
 
-export const registryChangeFilterRawValues = <F extends Record<string, any>>(registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+export const registryChangeFilterRawValues = (registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
 
@@ -960,7 +960,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
   const prevRendersFields = get(list, 'rendersFields');
   const rendersFieldsValues = get(list, 'rendersFields.values');
 
-  const uniqKey = get(data, 'uniqKey');
+  const uniqKey = get(data, 'uniqKeyForSelect') || get(data, 'uniqKey');
   const prevSelectedRow = get(data, 'selectedRow');
 
   const isEqualSelectedRow = (

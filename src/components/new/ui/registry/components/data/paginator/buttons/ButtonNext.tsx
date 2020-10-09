@@ -46,7 +46,7 @@ const ButtonNext: React.FC<Props> = React.memo(
 export default connect<StateProps, {}, OwnProps, ReduxState>(
   (state, { registryKey }) => {
     const {
-      data: { total_count },
+      processed: { total_count },
       paginator,
     } = getListData(state.registry, registryKey);
 

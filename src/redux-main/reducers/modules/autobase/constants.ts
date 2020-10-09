@@ -29,6 +29,9 @@ export const techMaint = 'techMaint';
 export const carCategory = 'carCategory';
 export const engineType = 'engineType';
 export const propulsionType = 'propulsionType';
+export const tachographRepair = 'tachographRepair';
+export const tachographRepairReason = 'tachographRepairReason';
+export const tachographMetrologicalVerification = 'tachographMetrologicalVerification';
 
 export default {
   [sparePart]: 'spare_part_registry',
@@ -62,4 +65,7 @@ export default {
   [carCategory]: 'car_category',
   [engineType]: 'engine_type',
   [propulsionType]: 'propulsion_type',
+  [tachographRepair]: 'tachograph_repair',
+  [tachographRepairReason]: 'tachograph_repair_reason',
+  [tachographMetrologicalVerification]: 'tachograph_metrological_verification',
 };

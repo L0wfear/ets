@@ -1,0 +1,230 @@
+import * as React from 'react';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { DivNone } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import {
+  OwnTachographMetrologicalVerificationProps,
+  PropsTachographMetrologicalVerification,
+  StatePropsTachographMetrologicalVerification,
+  PropsTachographMetrologicalVerificationWithForm
+} from 'components/new/pages/nsi/autobase/pages/tachograph_metrological_verification/form/@types/TachographMetrologicalVerificationForm';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { TachographMetrologicalVerification } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/@types';
+import { getDefaultTachographMetrologicalVerificationElement } from './utils';
+import { tachographMetrologicalVerificationFormSchema } from './schema';
+import tachographMetrologicalVerificationPermissions from '../_config-data/permissions';
+import { autobaseCreateTachographMetrologicalVerification, autobaseUpdateTachographMetrologicalVerification } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/actions';
+import {
+  actionGetAndSetInStoreTachographList,
+  actionResetTachographList
+} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
+import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
+import { FileField } from 'components/old/ui/input/fields';
+import { getOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
+
+const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologicalVerification> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      formErrors: errors,
+      page,
+      path,
+      IS_CREATING,
+    } = props;
+
+    const [tachographListData, setTachographListData] = React.useState<Array<TachographList>>([]);
+    const [brandsOptions, setBrands] = React.useState<Array<{ value: string; label: string; }>>([]);
+    const [factoryNumbersOptions, setFactoryNumbers] = React.useState<Array<{ value: string; label: string; }>>([]);
+
+    const isPermitted = props.isPermittedToUpdate;
+
+    React.useEffect(() => {
+      (async () => {
+        const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
+        setTachographListData(tachographList.data);
+
+        return () => {
+          props.dispatch(actionResetTachographList());
+        };
+      })();
+    }, []);
+
+    React.useEffect(() => {
+      if (tachographListData.length > 0) {
+        setBrands(getOptions(tachographListData, state,'brands'));
+        setFactoryNumbers(getOptions(tachographListData, state,'factoryNumbers'));
+      }
+    }, [tachographListData, state]);
+
+    const handleChange = React.useCallback(
+      (key, value) => {
+        const changeObject: any = {
+          [key]: value,
+        };
+
+        if (key === 'factory_number') {
+          if (!changeObject[key]) {
+            changeObject.gov_number = null;
+          } else {
+            const chosenTachograph = tachographListData?.find(({ factory_number }) => factory_number === value);
+            changeObject.gov_number = chosenTachograph.gov_number;
+          }
+        }
+
+        props.handleChange(changeObject);
+      }, [props.handleChange, tachographListData]);
+
+    const handleSubmit = React.useCallback(
+      async () => {
+        const {
+          formState: { factory_number, verification_date, verification_number, comment, files },
+        } = props;
+
+        const chosenTachograph = tachographListData?.find((tachograph) => tachograph.factory_number === factory_number);
+
+        const data = {
+          files,
+          factory_number,
+          verification_date,
+          verification_number,
+          tachograph_id: chosenTachograph?.id,
+          comment,
+        };
+
+        await props.submitAction(data);
+      }, [tachographListData, state]);
+
+    return (
+      <EtsBootstrap.ModalContainer id="modal-tachograph_metrological_verification" show onHide={props.hideWithoutChanges}>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{!IS_CREATING ? 'Изменение записи' : 'Создание записи'}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="string"
+                label="Номер поверки"
+                value={state.verification_number}
+                error={errors.verification_number}
+                onChange={props.handleChange}
+                boundKeys="verification_number"
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="date"
+                time={false}
+                label="Дата проведения поверки"
+                date={state.verification_date}
+                error={errors.verification_date}
+                onChange={props.handleChange}
+                boundKeys="verification_date"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="tachograph_brand_name"
+                type="select"
+                label="Марка тахографа"
+                options={brandsOptions}
+                value={state.tachograph_brand_name}
+                error={errors.tachograph_brand_name}
+                onChange={handleChange}
+                boundKeys="tachograph_brand_name"
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="select"
+                label="Заводской номер тахографа"
+                value={state.factory_number}
+                error={errors.factory_number}
+                options={factoryNumbersOptions}
+                onChange={handleChange}
+                boundKeys="factory_number"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="string"
+                label="Рег. номер ТС"
+                value={state.gov_number}
+                error={errors.gov_number}
+                disabled
+                onChange={props.handleChange}
+                boundKeys="gov_number"
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                error={errors.comment}
+                onChange={props.handleChange}
+                boundKeys="comment"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <FileField
+                label="Сертификат"
+                type="file"
+                formats=".pdf"
+                kind="tachograph_metrological_verification"
+                value={state.files}
+                error={errors.files}
+                onChange={props.handleChange}
+                boundKeys="files"
+                askBefoeRemove
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </ModalBodyPreloader>
+        <EtsBootstrap.ModalFooter>
+          {
+            isPermitted
+              ? (
+                <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
+          }
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
+    );
+  }
+);
+
+export default compose<PropsTachographMetrologicalVerification, OwnTachographMetrologicalVerificationProps>(
+  connect<StatePropsTachographMetrologicalVerification, {}, OwnTachographMetrologicalVerificationProps, ReduxState>(
+    (state) => ({
+      tachographList: getAutobaseState(state).tachographList,
+    }),
+  ),
+  withSearch,
+  withForm<PropsTachographMetrologicalVerificationWithForm, TachographMetrologicalVerification>({
+    uniqField: 'id',
+    createAction: autobaseCreateTachographMetrologicalVerification,
+    updateAction: autobaseUpdateTachographMetrologicalVerification,
+    mergeElement: (props) => {
+      return getDefaultTachographMetrologicalVerificationElement(props.element);
+    },
+    schema: tachographMetrologicalVerificationFormSchema,
+    permissions: tachographMetrologicalVerificationPermissions,
+  }),
+)(TachographMetrologicalVerificationForm);

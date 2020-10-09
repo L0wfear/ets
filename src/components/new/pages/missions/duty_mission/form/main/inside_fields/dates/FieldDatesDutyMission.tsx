@@ -25,7 +25,7 @@ import {
   addTime,
   createValidDateTime,
   addSecond,
-  getDateWithMoscowTzByTimestamp, diffDates, getTomorrow9amMoscowServerTime
+  diffDates, getTomorrow9amMoscowServerTime
 } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { actionLoadConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/actions';
@@ -83,11 +83,10 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
       ),
     );
 
-    const currentTime = createValidDateTime(getDateWithMoscowTzByTimestamp(date));
+    const currentTime = createValidDateTime(date);
 
     const { plan_date_start, plan_date_end } = this.props;
-
-    if (diffDates(currentTime, plan_date_start) > 0 && diffDates(getTomorrow9amMoscowServerTime(currentTime), plan_date_end) > 0) {
+    if (diffDates(currentTime, plan_date_start) !== 0 || diffDates(getTomorrow9amMoscowServerTime(currentTime), plan_date_end) !== 0) {
       this.props.onChange({
         plan_date_start: currentTime,
         plan_date_end: createValidDateTime(getTomorrow9amMoscowServerTime(currentTime)),

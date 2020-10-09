@@ -145,7 +145,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
             op.isDisabled = true;
           }
           return op;
-        });
+        }).filter((el) => this.props.isElectricalKind ? el.measure_unit_name === 'кВт/моточас' || el.measure_unit_name === 'кВт/км' : el);
 
         const errors = get(this.state, 'errorsAll.equipment_tax_data_rows', []);
         const errorsMsg = errors.length

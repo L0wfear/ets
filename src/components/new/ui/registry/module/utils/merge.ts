@@ -137,7 +137,7 @@ export const mergeListData = <F extends Record<string, any>>(data: TypeConfigDat
         if (key === 'uniqKey') {
           newObj[key] = isString(data[key]) ? data[key] : value;
         }
-        if (key === 'uniqKeyForDoubleClick') {
+        if (key === 'uniqKeyForSelect') {
           newObj[key] = isString(data[key]) ? data[key] : value;
         }
 

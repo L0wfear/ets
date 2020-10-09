@@ -17,6 +17,7 @@ import fuelCardsList from 'components/new/pages/nsi/autobase/pages/fuel_cards/_c
 import fuelCardsArchiveList from 'components/new/pages/nsi/autobase/pages/fuel_cards_archive/_config-data';
 import penaltiesList from 'components/new/pages/nsi/autobase/pages/penalties/_config-data';
 import tachographRepairList from 'components/new/pages/nsi/autobase/pages/tachograph_repair/_config-data';
+import tachographMetrologicalVerificationList from 'components/new/pages/nsi/autobase/pages/tachograph_metrological_verification/_config-data';
 
 const children = {
   carActualList,
@@ -36,6 +37,7 @@ const children = {
   fuelCardsArchiveList,
   penaltiesList,
   tachographRepairList,
+  tachographMetrologicalVerificationList,
 };
 
 export default {

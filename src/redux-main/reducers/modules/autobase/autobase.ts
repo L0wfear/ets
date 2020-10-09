@@ -54,6 +54,7 @@ export const autobaseInitialState: IStateAutobase = {
   tachographList: [],
   tachographRepairList: [],
   tachographRepairReasonList: [],
+  tachographMetrologicalVerificationList: [],
 };
 
 export default (state = autobaseInitialState, { type, payload }) => {

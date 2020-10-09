@@ -31,6 +31,7 @@ export const engineType = 'engineType';
 export const propulsionType = 'propulsionType';
 export const tachographRepair = 'tachographRepair';
 export const tachographRepairReason = 'tachographRepairReason';
+export const tachographMetrologicalVerification = 'tachographMetrologicalVerification';
 
 export default {
   [sparePart]: 'spare_part_registry',
@@ -66,4 +67,5 @@ export default {
   [propulsionType]: 'propulsion_type',
   [tachographRepair]: 'tachograph_repair',
   [tachographRepairReason]: 'tachograph_repair_reason',
+  [tachographMetrologicalVerification]: 'tachograph_metrological_verification',
 };

@@ -293,6 +293,7 @@ export const CarPassportGtnRegistryService = ETS_API_FACTORY.createApiServiceAda
 );
 export const TachographService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_registry');
 export const TachographRepairService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_repair');
+export const TachographMetrologicalVerificationService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_metrological_verification');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(

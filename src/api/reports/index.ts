@@ -102,3 +102,8 @@ export const ConsumableMaterialUsageReport = ETS_API_FACTORY.createApiServiceAda
   'consumable_material_usage_report',
   {},
 );
+
+export const PenaltiesReport = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/penalties',
+  {},
+);

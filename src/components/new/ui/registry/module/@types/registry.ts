@@ -50,6 +50,7 @@ export type TypeFieldsAvalibaleKey<F> = (
   | 'show_file_list'
   | 'show_edc_comments'
   | 'showCarOnMap'
+  | 'files'
 );
 
 export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = (

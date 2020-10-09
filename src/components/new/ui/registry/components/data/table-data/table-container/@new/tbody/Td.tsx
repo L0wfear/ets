@@ -7,6 +7,7 @@ import EnumeratedTdTitle from 'components/new/ui/registry/components/data/table-
 import IsOpenTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/IsOpenTdTitle';
 import CloneTireTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CloneTireTdTitle';
 import ShowFileListTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowFileListTdTitle';
+import ShowFileTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowFileTdTitle';
 import ShowEdcCommentsTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowEdcCommentsTdTitle';
 import ShowMissionInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowMissionInfoTdTitle';
 import CompanyStructureActionsTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CompanyStructureActionsTdTitle';
@@ -34,6 +35,7 @@ const componentsByKey: Record<TypeFieldsAvalibaleKey<void>, React.ComponentType<
   service_files: ServiceFilesTdTitle,
   edc_request_info: EdcRequestInfoTdTitle,
   showCarOnMap: ShowCarOnMap,
+  files: ShowFileTdTitle,
 };
 
 const Td: React.FC<Omit<Props, 'id'>> = React.memo(

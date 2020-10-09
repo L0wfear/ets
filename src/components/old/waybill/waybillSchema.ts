@@ -1139,9 +1139,10 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [
-        (value, {equipment_refill, is_one_fuel_tank}) => {
+        (value, {equipment_refill, is_one_fuel_tank, equipment_fuel}) => {
           if(
-            !value 
+            equipment_fuel
+            && !value 
             && !equipment_refill.length
             && !is_one_fuel_tank
           ) {

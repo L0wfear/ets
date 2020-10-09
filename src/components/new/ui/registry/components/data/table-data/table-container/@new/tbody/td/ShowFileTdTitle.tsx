@@ -23,7 +23,7 @@ const ShowFileTdTitle: React.FC<Props> = React.memo(
           return rowData.files.map(
             (rowDataFile) => ({
               ...rowDataFile,
-              name: rowDataFile.filename,
+              name: rowDataFile.name,
             }),
           );
         }
@@ -54,7 +54,7 @@ const ShowFileTdTitle: React.FC<Props> = React.memo(
                 {
                   files.map((file, index) => (
                     <FileLiStyled key={file.path}>
-                      <SimpleLinkA shortTitle={true} withFileFormatLabel={true} onClick={handleClick} href={file.path} index={index} file={file} title={file.name} target="_blank">{file.filename}</SimpleLinkA>
+                      <SimpleLinkA shortTitle={true} withFileFormatLabel={true} onClick={handleClick} href={file.path} index={index} file={file} title={file.name} target="_blank">{file.name}</SimpleLinkA>
                     </FileLiStyled>
                   ))
                 }

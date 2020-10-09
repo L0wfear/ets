@@ -164,12 +164,13 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
               <ExtField
                 type="select"
                 label="Тип топлива"
-                error={errors.fuel_type}
+                error={errors.fuel_types}
                 options={filteredFuelTypeOptions}
-                value={state.fuel_type}
+                value={state.fuel_types}
+                multi
                 onChange={props.handleChange}
-                boundKeys="fuel_type"
-                disabled={!isPermitted || state.is_used_in_waybill}
+                boundKeys="fuel_types"
+                disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

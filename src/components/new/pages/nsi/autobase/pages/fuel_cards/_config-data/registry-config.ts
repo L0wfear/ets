@@ -119,6 +119,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
         uniqKey: 'id',
         fixedWidth: true,
         uniqKeyForParams,
+        uniqKeyForSelect: 'composite_id',
       },
       meta: {
         fields: [

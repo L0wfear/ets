@@ -79,6 +79,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
 
         const array: Array<any> = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
+
         const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
         const hasButtonToCreate = etsUseSelector((state) => {
@@ -211,6 +212,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
             param_uniq_value_prev,
             array,
             handleHide,
+            uniqKey,
           ],
         );
 

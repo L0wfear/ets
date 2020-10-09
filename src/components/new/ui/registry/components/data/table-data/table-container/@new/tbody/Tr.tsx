@@ -37,8 +37,9 @@ const TrHead: React.FC<Props> = React.memo(
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
 
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
+    const uniqKeyForSelect = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForSelect);
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
-
+    const key = uniqKeyForSelect || uniqKey;
     const row_double_click = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.row_double_click);
     const selected_row_in_params = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.selected_row_in_params);
     const permissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
@@ -49,11 +50,12 @@ const TrHead: React.FC<Props> = React.memo(
       etsUseIsPermitted(permissions.create)
       || etsUseIsPermitted(permissions.read)
     );
-    const checkData = checkedRows[uniqKey];
-    const isSelected = get(selectedRow, uniqKey) === rowData[uniqKey];
+    const checkData = checkedRows[key];
+    const isSelected = get(selectedRow, key) === rowData[key];
 
     const handleDoubleClick = React.useCallback(
       () => {
+
         if (isPermitted) {
           const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
           if (buttonReadData && row_double_click) {

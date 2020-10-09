@@ -16,6 +16,7 @@ export const defaultTachograph: Tachograph = {
   next_calibration_date: '',
   calibration_type: '',
   verification_reason_name: '',
+  verification_reason_id: null,
   other_reason: '',
   comment: '',
   calibration_type_name: '',

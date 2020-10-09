@@ -85,7 +85,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         );
         setTachographBrandNameList(tachographBrandNameList.data);
         const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
-          (el) => ({ value: el.name, label: el.name })
+          (el) => ({ value: el.id, label: el.name })
         ) ?? [];
         setVerificationReasonOptions(tachographVerificationReasonOptions);
       })();
@@ -188,12 +188,12 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 <ExtField
                   type="select"
                   label="Причина внеплановой калибровки"
-                  value={state.verification_reason_name}
-                  boundKeys="verification_reason_name"
+                  value={state.verification_reason_id}
+                  boundKeys="verification_reason_id"
                   emptyValue={null}
                   options={verificationReasonOptions}
                   onChange={props.handleChange}
-                  error={errors.verification_reason_name}
+                  error={errors.verification_reason_id}
                 />
               </EtsBootstrap.Col>
             )}
@@ -210,7 +210,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 disabled
               />
             </EtsBootstrap.Col>
-            {state.verification_reason_name === 'Другое' && (
+            {state.verification_reason_id === 7 && (
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"

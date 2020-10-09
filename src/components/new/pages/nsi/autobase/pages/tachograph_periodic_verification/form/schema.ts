@@ -26,12 +26,12 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
         }
       ] 
     },
-    calibration_type_name: {
+    calibration_type: {
       title: 'Тип калибровки',
       type: 'string',
       required: true,
     },
-    verification_reason_name: {
+    verification_reason_id: {
       title: 'Причина внеплановой калибровки',
       type: 'valueOfArray',
       dependencies: [
@@ -46,8 +46,8 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       title: 'Другое',
       type: 'string',
       dependencies: [
-        (value, {verification_reason_name}) => {
-          if(!value && verification_reason_name === 'Другое') {
+        (value, {verification_reason_id}) => {
+          if(!value && verification_reason_id === 7) {
             return 'Поле "Другое" обязательно для заполнения';
           }
         }

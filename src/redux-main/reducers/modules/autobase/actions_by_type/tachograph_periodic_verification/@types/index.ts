@@ -12,6 +12,7 @@ export type Tachograph = {
   next_calibration_date: string | Date;
   calibration_type: string;
   verification_reason_name: string;
+  verification_reason_id: number;
   other_reason: string;
   comment: string;
   calibration_type_name: string;

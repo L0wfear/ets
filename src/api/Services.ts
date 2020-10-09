@@ -443,10 +443,6 @@ export const TachographPeriodicVerificationService = ETS_API_FACTORY.createApiSe
   '/autobase/tachograph_periodic_verification',
 );
 
-export const TachographService = ETS_API_FACTORY.createApiServiceAdapter(
-  '/autobase/tachograph_registry',
-);
-
 export const TachographVerificationReasonService = ETS_API_FACTORY.createApiServiceAdapter(
   '/autobase/tachograph_verification_reason',
 );

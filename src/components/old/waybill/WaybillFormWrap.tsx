@@ -237,6 +237,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       canClose: false,
       canPrint: false,
       usePouring: false,
+      fuelCardsCreating: false,
       name: 'waybillFormWrap',
       isPermittedByKey: {
         update: props.currentUser.permissionsSet.has(waybillPermissions.update),
@@ -285,6 +286,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const company = this.props.companyList.find((company) => company.company_id === this.props.userCompanyId);
     this.setState({
       usePouring: company.use_pouring,
+      fuelCardsCreating: company.fuel_cards_creating,
     });
 
     if (this.props.element === null) {
@@ -1336,6 +1338,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               }}
               entity={'waybill'}
               usePouring={this.state.usePouring}
+              fuelCardsCreating={this.state.fuelCardsCreating}
               isPermittedByKey={this.state.isPermittedByKey}
               canClose={this.state.canClose}
               canSave={this.state.canSave}

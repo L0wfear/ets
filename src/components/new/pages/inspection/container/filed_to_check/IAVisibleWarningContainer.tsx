@@ -8,6 +8,8 @@ import { isBoolean, isString } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { SubHeader } from '../../pgm_base/components/vsible_warning/styled/IAVisibleWarning';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 // import { FormErrorType } from 'components/old/ui/form/new/@types/validate.h';
 
 type IAVisibleWarningProps = {
@@ -47,7 +49,7 @@ const getValueFromEvent = (key, value, filedToCheckByKey) => {
 const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
   const { data, filedToCheck } = props;
   const filedToCheckByKey: any = groupBy(filedToCheck, 'key');
-
+  const dispatch = etsUseDispatch();
   const handleChange = React.useCallback(
     (key, value) => {
       const changeObj = {
@@ -62,6 +64,19 @@ const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
     },
     [data],
   );
+
+  React.useEffect(() => {
+    (async () => {
+      const current_date = await dispatch(
+        actionLoadTimeMoscow({}, { page: '' })
+      );
+      props.onChange({
+        dataForValidation: {
+          current_date: createValidDate(current_date.date),
+        },
+      });
+    })();
+  }, []);
 
   return (
     <>

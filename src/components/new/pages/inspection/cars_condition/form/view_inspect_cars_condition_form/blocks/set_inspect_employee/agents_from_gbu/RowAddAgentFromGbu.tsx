@@ -6,6 +6,7 @@ import { RowAddRowAddAgentFromGbuWrapper, AgentsFromGbuMemberDataContainer, Agen
 import { get } from 'lodash';
 import { FooterEnd } from 'global-styled/global-styled';
 import { getNoTrimSpaceMessage, getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { isWithoutNumValue } from 'utils/functions';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -37,10 +38,12 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
 
     const handleChangeNewAgent = React.useCallback(
       (key, value) => {
-        setNewAgent({
-          ...newAgent,
-          [key]: value,
-        });
+        if (isWithoutNumValue(value)) {
+          setNewAgent({
+            ...newAgent,
+            [key]: value,
+          });
+        }
       },
       [setNewAgent, newAgent],
     );

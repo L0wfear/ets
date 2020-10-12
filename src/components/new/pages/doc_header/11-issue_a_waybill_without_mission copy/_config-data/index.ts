@@ -5,6 +5,6 @@ export default {
   path: `${config.docs}Руководство_Мониторинговая_деятельность.docx`,
   noHash: true,
   permissions: {
-    list: 'docs_dorinvest.list',
+    list: 'waybill.list',
   },
 };

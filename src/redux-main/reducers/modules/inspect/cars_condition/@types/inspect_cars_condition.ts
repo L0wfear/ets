@@ -39,6 +39,9 @@ export type PreparingCarsCheck = {
   statements_defects_not_issued_cnt: string;
   drawbacks_eliminated: string;
   drawbacks_new: string;
+  dataForValidation: {
+    current_date: Date | string;
+  };
 };
 
 export type TypesСar = {
@@ -206,6 +209,9 @@ export type CarsConditionCars = {
     own_tech_maintenance?: boolean;
   };
   files: Array<any>;
+  dataForValidation?: {
+    current_date_timestamp: number;
+  };
 };
 
 export type CarsConditionTableDefects = CarsConditionCars & CarsConditionCars['data'];

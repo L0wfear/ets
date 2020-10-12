@@ -1,9 +1,9 @@
 const inspectPgmBasePermissions = {
-  list: 'inspect.pgm_base.list',
-  create: 'inspect.pgm_base.create',
-  read: 'inspect.pgm_base.read',
-  update: 'inspect.pgm_base.update',
-  delete: 'inspect.pgm_base.delete',
+  list: 'waybill.list',
+  create: 'waybill.create',
+  read: 'waybill.read',
+  update: 'waybill.update',
+  delete: 'waybill.delete',
 
   update_closed: 'inspect.pgm_base_closed.update', // редактирование закрытой проверки
 };

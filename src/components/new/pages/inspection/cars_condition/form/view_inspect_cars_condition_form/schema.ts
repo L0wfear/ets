@@ -2,6 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
@@ -46,6 +47,17 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
       type: 'date',
       title: 'Приказ о подготовке техники к сезону издан от',
       required: true,
+      dependencies: [
+        (value, {dataForValidation}) => {
+          const date = createValidDate(value);
+          if (
+              dataForValidation?.current_date 
+              && diffDates(date, dataForValidation?.current_date) > 0
+          ) {
+            return 'Дата приказа по подготовке техники к сезону не может быть больше текущей';
+          }
+        }
+      ]
     },
     order_number: {
       validateIf: [
@@ -313,6 +325,24 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
     resolve_to: {
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+      dependencies: [
+        (value, {dataForValidation, status}) => {
+          const date = createValidDate(value);
+          if (
+              dataForValidation?.current_date 
+              && diffDates(date, dataForValidation?.current_date) < 0
+          ) {
+            return 'Дата предоставления отчета не может быть меньше текущей';
+          }
+          if (
+            dataForValidation?.props_resolve_to
+            && status === 'completed'
+            && diffDates(date, dataForValidation?.props_resolve_to) < 0
+          ) {
+            return 'Дата предоставления отчета не может быть изменена на более раннюю';
+          }
+        }
+      ]
     },
   },
 };

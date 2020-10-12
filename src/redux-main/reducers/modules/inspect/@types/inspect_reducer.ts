@@ -5,6 +5,10 @@ import { IStateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/
 export type DefaultPartInspect = {
   status: 'conducting' | 'completed';
   date_end: string;
+  dataForValidation: {
+    current_date: Date | string;
+    props_resolve_to: Date | string;
+  };
 };
 
 export type TypeOfInspect = 'autobase' | 'pgm_base' | 'container' | 'cars_condition';

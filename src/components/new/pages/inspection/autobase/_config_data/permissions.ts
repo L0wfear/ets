@@ -1,9 +1,9 @@
 const inspectAutobasePermissions = {
-  list: 'waybill.list',
-  create: 'waybill.create',
-  read: 'waybill.read',
-  update: 'waybill.update',
-  delete: 'waybill.delete',
+  list: 'inspect.autobase.list',
+  create: 'inspect.autobase.create',
+  read: 'inspect.autobase.read',
+  update: 'inspect.autobase.update',
+  delete: 'inspect.autobase.delete',
 
   update_closed: 'inspect.autobase_closed.update', // редактирование закрытой проверки
 };

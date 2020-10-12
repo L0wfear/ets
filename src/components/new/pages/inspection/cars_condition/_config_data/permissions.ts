@@ -1,11 +1,11 @@
 const inspectCarsConditionPermissions = {
-  list: 'waybill.list',
-  create: 'waybill.create',
-  read: 'waybill.read',
-  update: 'waybill.update',
-  delete: 'waybill.delete',
+  list: 'inspect.cars_condition.list',
+  create: 'inspect.cars_condition.create',
+  read: 'inspect.cars_condition.read',
+  update: 'inspect.cars_condition.update',
+  delete: 'inspect.cars_condition.delete',
 
-  update_closed: 'waybill.list', // редактирование закрытой проверки
+  update_closed: 'inspect.cars_condition_closed.update', // редактирование закрытой проверки
 };
 
 export default inspectCarsConditionPermissions;

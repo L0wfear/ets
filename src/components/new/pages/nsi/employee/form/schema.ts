@@ -97,7 +97,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       dependencies: [
         (value, formData) => {
           const maxLengthString = 10;
-          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value)) || value && value.length < maxLengthString) {
+          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value) || value && value.length < maxLengthString)) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -105,7 +105,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          if (value ? value.length > maxLengthString : false) {
+          if (value ? value.length > maxLengthString && formData.special_license_country_id === 185 : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 
@@ -131,7 +131,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       dependencies: [
         (value, formData) => {
           const maxLengthString = 10;
-          if (value && formData.drivers_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))  || value && value.length < maxLengthString) {
+          if (value && formData.drivers_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value)  || value && value.length < maxLengthString)) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -139,7 +139,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
-          if (value ? value.length > maxLengthString : false) {
+          if (value ? value.length > maxLengthString && formData.drivers_license_country_id === 185 : false) {
             return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30КЕ123456`;
           }
 

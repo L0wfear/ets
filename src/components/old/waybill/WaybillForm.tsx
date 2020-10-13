@@ -278,6 +278,7 @@ type OwnProps = {
   canClose: boolean;
   canSave: boolean;
   usePouring?: boolean;
+  fuelCardsCreating?: boolean;
 
   page: string;
   path?: string;
@@ -2094,6 +2095,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       userStructureId,
       reasonListOptions,
       usePouring,
+      fuelCardsCreating,
     } = this.props;
 
     const workModeOptions = workModeList.map(
@@ -3384,6 +3386,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               handleChange={this.handleChangeEquipmentRefill}
                               defaultHandleChange={this.handleChange}
                               use_pouring={usePouring}
+                              fuel_cards_creating={fuelCardsCreating}
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
                               fuel_type={state.equipment_fuel_type}

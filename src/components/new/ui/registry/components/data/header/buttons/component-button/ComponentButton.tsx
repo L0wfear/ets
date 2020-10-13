@@ -46,6 +46,7 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 import ButtonAddNewRowTable from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonAddNewRowTable';
 import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardToArchive';
 import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
+import ButtonFuelCardCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardCreate';
 
 type Props = CommonTypesForButton;
 
@@ -95,6 +96,7 @@ const buttonComponents: AllButtons = {
 
   [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
   [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
+  [buttonsTypes.fuel_card_create]: ButtonFuelCardCreate,
 };
 
 const ComponentButton: React.FC<Props> = (props) => {

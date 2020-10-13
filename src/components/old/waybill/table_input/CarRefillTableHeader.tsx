@@ -47,6 +47,7 @@ type CarRefillTableHeaderProps = {
   defaultHandleChange: any;
   disabled: boolean;
   fuel_card_on_cars?: Array<FuelCardOnCars>;
+  fuel_cards_creating?: boolean;
 };
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
@@ -122,7 +123,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   )
               }
               {
-                props.visibleButtons && props.fuel_type !== 'ELECTRICITY' && (
+                props.visibleButtons && props.fuel_type !== 'ELECTRICITY' && props.fuel_cards_creating && (
                   <ButtonCreateFuelCard
                     id={props.id}
                     handleUpdateFuelCard={props.handleUpdateFuelCard}

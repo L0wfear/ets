@@ -1,6 +1,7 @@
 export const fuel_cards_types = {
   fuel_card_to_archive: 'fuel_card_to_archive',
   fuel_card_from_archive: 'fuel_card_from_archive',
+  fuel_card_create: 'fuel_card_create',
 } as const;
 
 export const fuel_cards_types_reverse = Object.entries(fuel_cards_types).reduce(

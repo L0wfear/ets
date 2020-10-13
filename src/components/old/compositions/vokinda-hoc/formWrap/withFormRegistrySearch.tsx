@@ -88,6 +88,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
             buttons.some((buttonData) => (
               buttonsTypes.create === buttonData.type
               || buttonsTypes.mission_create === buttonData.type
+              || buttonsTypes.fuel_card_create === buttonData.type
             ))
           );
         });

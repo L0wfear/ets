@@ -88,6 +88,19 @@ const CompanyForm: React.FC<PropsCompany> = React.memo(
                 disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                id="fuel_cards_creating"
+                modalKey={page}
+                type="boolean"
+                label="Создание топливных карт"
+                value={state.fuel_cards_creating}
+                error={errors.fuel_cards_creating}
+                onChange={props.handleChangeBoolean}
+                boundKeys="fuel_cards_creating"
+                disabled={!isPermitted}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>

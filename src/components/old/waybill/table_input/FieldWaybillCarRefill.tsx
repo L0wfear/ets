@@ -42,6 +42,7 @@ type Props = {
   };
   is_one_fuel_tank?: boolean;
   use_pouring?: boolean;
+  fuel_cards_creating?: boolean;
   boundKey: string;
   fuelCardsList: IStateAutobase['fuelCardsList'] | IStateAutobase['equipmentFuelCardsList'] | IStateAutobase['gasFuelCardsList'] | IStateAutobase['electricalFuelCardsList'];
   is_refill: boolean;
@@ -498,6 +499,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               defaultHandleChange={props.defaultHandleChange}
               visibleButtons={!props.disabled}
               structure_id={props.structure_id}
+              fuel_cards_creating={props.fuel_cards_creating}
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions?.length}
               fuel_card_on_cars = {[defaultItem]}

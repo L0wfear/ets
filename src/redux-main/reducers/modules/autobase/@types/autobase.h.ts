@@ -2,6 +2,7 @@ import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_ca
 import { ActualBatteriesOnCar } from '../actions_by_type/actual_batteries_on_car/@types';
 import { ActualTiresOnCar } from '../actions_by_type/actual_tires_on_car/@types';
 import { Penalty } from '../actions_by_type/penalties/@types';
+import { Tachograph } from '../actions_by_type/tachograph_periodic_verification/@types';
 import { TachographList } from '../actions_by_type/tachograph_registry/@types';
 import { TachographRepairList } from '../actions_by_type/tachograph_repair/@types';
 import { TachographRepairReasonList } from '../actions_by_type/tachograph_repair_reason_list/@types';
@@ -470,6 +471,7 @@ export type IStateAutobase = {
   techMaintOrderList: Array<TechMaintOrder>;
   techMaintTypeList: Array<TechMaintType>;
   measureUnitRunList: Array<MeasureUnitRun>;
+  tachographPeriodicVerificationList: Array<Tachograph>;
   tireModelList: Array<TireModel>;
   tireManufacturerList: Array<TireManufacturer>;
   tireList: Array<Tire>;

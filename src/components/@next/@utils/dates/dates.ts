@@ -414,3 +414,6 @@ export function setDateTime0am(dateOwn) {
   date.minutes(0);
   return date.toDate();
 }
+
+export const getDatePlusSomeYears = (date: Date | string, years: number) => new Date(new Date(date).setFullYear(new Date(date).getFullYear() + years));
+ 

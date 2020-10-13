@@ -84,12 +84,13 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
     const handleSubmit = React.useCallback(
       async () => {
         const {
-          formState: { factory_number, verification_date, verification_number, comment, files },
+          formState: { id, factory_number, verification_date, verification_number, comment, files },
         } = props;
 
         const chosenTachograph = tachographListData?.find((tachograph) => tachograph.factory_number === factory_number);
 
         const data = {
+          id,
           files,
           factory_number,
           verification_date,
@@ -98,7 +99,11 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
           comment,
         };
 
-        await props.submitAction(data);
+        const result = await props.submitAction(data);
+
+        if (result) {
+          props.handleHide(true, result);
+        }
       }, [tachographListData, state]);
 
     return (
@@ -127,6 +132,8 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
                 error={errors.verification_date}
                 onChange={props.handleChange}
                 boundKeys="verification_date"
+                makeGoodFormat
+                makeGoodFormatInitial
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

@@ -97,6 +97,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   },
 
   files: [],
+  dataForValidation: null,
 };
 
 export const getDefaultCarsConditionCarElement = (element: Partial<CarsConditionCars>) => {

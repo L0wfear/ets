@@ -61,6 +61,7 @@ export const defaultInspectAutobase: InspectAutobase = {
   files: [],
   action: 'save',
   type: 'autobase',
+  dataForValidation: null,
 };
 
 export const getDefaultInspectAutobaseElement = (element: Partial<InspectAutobase>) => {

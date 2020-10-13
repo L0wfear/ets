@@ -30,6 +30,7 @@ const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars
   statements_defects_not_issued_cnt: '',
   drawbacks_eliminated: '',
   drawbacks_new: '',
+  dataForValidation: null,
 };
 const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_drivers: null,

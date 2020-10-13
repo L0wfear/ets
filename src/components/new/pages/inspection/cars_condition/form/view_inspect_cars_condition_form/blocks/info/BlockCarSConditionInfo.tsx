@@ -8,6 +8,7 @@ import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/val
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { makeDate } from 'components/@next/@utils/dates/dates';
+import { isNumValue, isWithoutNumValue } from 'utils/functions';
 
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'];
@@ -38,23 +39,33 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
     } = props;
     const handleChangeHeadOperatingBase = React.useCallback(
       (key, event) => {
-        props.onChange({
-          head_operating_base: {
-            ...props.head_operating_base,
-            [key]: get(event, 'target.value', event),
-          },
-        });
+        if (
+          (key !== 'tel' && isWithoutNumValue(event))
+            || (key === 'tel' && (!event || isNumValue(event)))
+        ) {
+          props.onChange({
+            head_operating_base: {
+              ...props.head_operating_base,
+              [key]: get(event, 'target.value', event),
+            },
+          });
+        }
       },
       [props.onChange, props.head_operating_base],
     );
     const handleChangeHeadBalanceHolderBase = React.useCallback(
       (key, event) => {
-        props.onChange({
-          head_balance_holder_base: {
-            ...props.head_balance_holder_base,
-            [key]: get(event, 'target.value', event),
-          },
-        });
+        if (
+          (key !== 'tel' && isWithoutNumValue(event))
+            || (key === 'tel' && (!event || isNumValue(event)))
+        ) {
+          props.onChange({
+            head_balance_holder_base: {
+              ...props.head_balance_holder_base,
+              [key]: get(event, 'target.value', event),
+            },
+          });
+        }
       },
       [props.onChange, props.head_balance_holder_base],
     );

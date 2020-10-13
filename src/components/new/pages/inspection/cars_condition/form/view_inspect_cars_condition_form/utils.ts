@@ -60,6 +60,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       statements_defects_not_issued_cnt: '',
       drawbacks_eliminated: '',
       drawbacks_new: '',
+      dataForValidation: null,
     },
     headcount: {
       staff_drivers: null,
@@ -78,6 +79,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   date_end: null,
   files: [],
   action: 'save',
+  dataForValidation: null,
 };
 
 export const getDefaultInspectCarsConditionElement = (element: Partial<InspectCarsCondition>) => {

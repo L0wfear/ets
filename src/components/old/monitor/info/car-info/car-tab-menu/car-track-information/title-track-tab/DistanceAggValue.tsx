@@ -14,11 +14,19 @@ export const getDistanceValue = (distance) => {
     : (distance / 1000).toFixed(2);
 };
 
-const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
-  <span>
-    <span>{getDistanceValue(distance)}</span>
-  </span>
-);
+const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => {
+  const [distanceTotal, setDistance] = React.useState(null);
+
+  React.useEffect(() => {
+    setDistance(getDistanceValue(distance));
+  }, [distance]);
+
+  return (
+    <span>
+      <span>{distanceTotal}</span>
+    </span>
+  );
+};
 
 export default compose<PropsDistanceAggValue, {}>(
   withShowByProps({

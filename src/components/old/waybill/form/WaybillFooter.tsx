@@ -75,7 +75,7 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
 
   const waybillSaveDropdownPrintToggleElement = (
     <React.Fragment>
-      <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
+      <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' || props.state.status === 'deleted' ? 'Просмотр' : 'Выдать'}
     </React.Fragment>
   );
 
@@ -184,7 +184,7 @@ const WaybillFooter: React.FC<IPropsWaybillFooter> = (props) => {
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
           <EtsBootstrap.Dropdown id="waybill-print-dropdown_save" className="pdf" dropup disabled={!props.canGiveOutRead}
-            overlayTrigger={savePrintOverlayTriggerConfig} toggleElement={waybillSaveDropdownPrintToggleElement}>
+            overlayTrigger={props.isCreating || props.isDraft ? savePrintOverlayTriggerConfig : null} toggleElement={waybillSaveDropdownPrintToggleElement}>
             <EtsBootstrap.DropdownMenu dropup pullRight>
               <EtsBootstrap.MenuItem id="save-print-plate_special"
                 onSelect={props.handlePrint.bind(

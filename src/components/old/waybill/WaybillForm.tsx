@@ -1580,7 +1580,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   };
   handlePrint = async (...arg: Parameters<WaybillProps['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
-      await this.refresh(true, false);
+      if (!this.props.formState.status || this.props.formState.status === 'draft') {
+        await this.refresh(true, false);
+      }
       this.props.handlePrint(...arg);
     }
   };

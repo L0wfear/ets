@@ -12,6 +12,7 @@ import OverlayTrackPoint from 'components/old/monitor/layers/track/points/Overla
 import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { filterValidPoints } from 'utils/track';
 
 type PropsLayerTrackPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -60,8 +61,10 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
       const { track } = this.props;
 
-      if (track.length > 1) {
-        this.drawTrackPoints(track, this.state.SHOW_TRACK_POINTS);
+      const filteredTrack = filterValidPoints(track);
+
+      if (filteredTrack.length > 1) {
+        this.drawTrackPoints(filteredTrack, this.state.SHOW_TRACK_POINTS);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
@@ -69,10 +72,13 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
   componentDidUpdate(prevProps) {
     const { SHOW_TRACK_POINTS, speed_lim, mkad_speed_lim } = this.props;
-    if (!(prevProps.track.length > 1)) {
+    const prevFilteredTrack = filterValidPoints(prevProps.track);
+
+    if (!(prevFilteredTrack.length > 1)) {
       const { track } = this.props;
-      if (track.length > 1) {
-        this.drawTrackPoints(track, SHOW_TRACK_POINTS);
+      const filteredTrack = filterValidPoints(track);
+      if (filteredTrack.length > 1) {
+        this.drawTrackPoints(filteredTrack, SHOW_TRACK_POINTS);
       }
     } else {
       const { lastPoint } = this.props;
@@ -80,10 +86,12 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
         this.drawTrackPoints([lastPoint], SHOW_TRACK_POINTS);
       } else if (SHOW_TRACK_POINTS !== prevProps.SHOW_TRACK_POINTS) {
         const { track } = this.props;
-        this.changeStyleForPoint(track, SHOW_TRACK_POINTS);
+        const filteredTrack = filterValidPoints(track);
+        this.changeStyleForPoint(filteredTrack, SHOW_TRACK_POINTS);
       } else if (speed_lim !== prevProps.speed_lim || mkad_speed_lim !== prevProps.mkad_speed_lim) {
+        const filteredTrack = filterValidPoints(this.props.track);
         this.props.removeFeaturesFromSource(null, true);
-        this.drawTrackPoints(this.props.track, SHOW_TRACK_POINTS);
+        this.drawTrackPoints(filteredTrack, SHOW_TRACK_POINTS);
       }
     }
   }
@@ -95,7 +103,8 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const trackPoint = this.props.track.find((point) => point.timestamp === timestamp);
+    const filteredTrack = filterValidPoints(this.props.track);
+    const trackPoint = filteredTrack.find((point) => point.timestamp === timestamp);
 
     if (trackPoint) {
       this.props.dispatch(carInfoSetTrackPoint(trackPoint));
@@ -148,8 +157,8 @@ export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
       SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
-      track: state.monitorPage.carInfo.trackCaching.track,
-      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+      track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
+      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null),
       mkad_speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.mkad_speed_lim,
       speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.speed_lim,
     }),

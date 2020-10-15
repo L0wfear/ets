@@ -18,6 +18,7 @@ import {
 } from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 import { isObject, isArray } from 'util';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { filterValidPoints } from 'utils/track';
 
 const makeData = (front_cars_sensors_level: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_level'], sensorRawData = false) => (
   Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
@@ -151,7 +152,7 @@ export default compose<PropsCarFuelChart, OwnPropsCarFuelChart>(
     (state) => ({
       has_cars_sensors: isObject(state.monitorPage.carInfo.trackCaching.cars_sensors) ? Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level') : false,
       front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
-      track: isArray(state.monitorPage.carInfo.trackCaching.track) ? state.monitorPage.carInfo.trackCaching.track : [],
+      track: isArray(state.monitorPage.carInfo.trackCaching.track) ? filterValidPoints(state.monitorPage.carInfo.trackCaching.track) : [],
     }),
   ),
 )(CarFuelChart);

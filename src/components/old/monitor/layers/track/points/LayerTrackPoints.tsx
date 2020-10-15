@@ -61,10 +61,8 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
       const { track } = this.props;
 
-      const filteredTrack = filterValidPoints(track);
-
-      if (filteredTrack.length > 1) {
-        this.drawTrackPoints(filteredTrack, this.state.SHOW_TRACK_POINTS);
+      if (track.length > 1) {
+        this.drawTrackPoints(track, this.state.SHOW_TRACK_POINTS);
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
@@ -72,13 +70,10 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
   componentDidUpdate(prevProps) {
     const { SHOW_TRACK_POINTS, speed_lim, mkad_speed_lim } = this.props;
-    const prevFilteredTrack = filterValidPoints(prevProps.track);
-
-    if (!(prevFilteredTrack.length > 1)) {
+    if (!(prevProps.track.length > 1)) {
       const { track } = this.props;
-      const filteredTrack = filterValidPoints(track);
-      if (filteredTrack.length > 1) {
-        this.drawTrackPoints(filteredTrack, SHOW_TRACK_POINTS);
+      if (track.length > 1) {
+        this.drawTrackPoints(track, SHOW_TRACK_POINTS);
       }
     } else {
       const { lastPoint } = this.props;
@@ -86,12 +81,10 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
         this.drawTrackPoints([lastPoint], SHOW_TRACK_POINTS);
       } else if (SHOW_TRACK_POINTS !== prevProps.SHOW_TRACK_POINTS) {
         const { track } = this.props;
-        const filteredTrack = filterValidPoints(track);
-        this.changeStyleForPoint(filteredTrack, SHOW_TRACK_POINTS);
+        this.changeStyleForPoint(track, SHOW_TRACK_POINTS);
       } else if (speed_lim !== prevProps.speed_lim || mkad_speed_lim !== prevProps.mkad_speed_lim) {
-        const filteredTrack = filterValidPoints(this.props.track);
         this.props.removeFeaturesFromSource(null, true);
-        this.drawTrackPoints(filteredTrack, SHOW_TRACK_POINTS);
+        this.drawTrackPoints(this.props.track, SHOW_TRACK_POINTS);
       }
     }
   }
@@ -103,8 +96,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const filteredTrack = filterValidPoints(this.props.track);
-    const trackPoint = filteredTrack.find((point) => point.timestamp === timestamp);
+    const trackPoint = this.props.track.find((point) => point.timestamp === timestamp);
 
     if (trackPoint) {
       this.props.dispatch(carInfoSetTrackPoint(trackPoint));

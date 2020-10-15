@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { TachographRepairList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
 import tachographRepairPermissions from './permissions';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'TachographRepair';
 
@@ -35,12 +34,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
         {
           valueKey: 'company_id',
           labelKey: 'company_name',
-          title: [
-            {
-              displayIf: displayIfContant.isKgh,
-              title: 'Подразделение',
-            },
-          ],
+          title: 'Подразделение',
           type: 'multiselect',
         },
         {
@@ -90,12 +84,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
           },
           {
             key: 'company_name',
-            title: [
-              {
-                title: 'Подразделение',
-                displayIf: displayIfContant.isKgh,
-              }
-            ],
+            title: 'Подразделение',
             width: 150,
           },
           {

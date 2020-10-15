@@ -33,7 +33,15 @@ export const getOptions = (data, state, key) => {
       ? data.filter(({ factory_number }) => factory_number === state.factory_number)
       : data;
 
-    return dataList.map(({ tachograph_brand_name }) => {
+    const unique = [];
+
+    return dataList.reduce((options, curr, i) => {
+      if(!unique[dataList[i].tachograph_brand_name]){
+        options.push(dataList[i].tachograph_brand_name);
+        unique[dataList[i].tachograph_brand_name] = 1;
+      }
+      return options;
+    }, []).map((tachograph_brand_name) => {
       return ({
         value: tachograph_brand_name,
         label: tachograph_brand_name,

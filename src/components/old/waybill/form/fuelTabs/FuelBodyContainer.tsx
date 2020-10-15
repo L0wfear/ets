@@ -42,6 +42,7 @@ type Props = {
 	IS_KAMAZ: boolean;
 	disableFieldWaybillCarRefill: boolean;
   use_pouring: boolean;
+  fuel_cards_creating?: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
   showComponent: boolean;
   isGasKind: boolean;
@@ -73,6 +74,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
       waybillFormState,
       waybillState,
       use_pouring,
+      fuel_cards_creating,
     } = props;
 
     const fuelTypesOption = React.useMemo(() => FUEL_TYPES.filter(
@@ -224,6 +226,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             )} // временно
             title="Заправка топлива"
             use_pouring={use_pouring}
+            fuel_cards_creating={fuel_cards_creating}
             handleChange={handleChangeCarReFill}
             defaultHandleChange={props.handleChange}
             fuel_given={waybillFormState.fuel_given}

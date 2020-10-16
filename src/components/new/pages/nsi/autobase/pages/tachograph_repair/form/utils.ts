@@ -1,6 +1,7 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { cloneDeep } from 'lodash';
 import { TachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
+import { uniqBy } from 'lodash';
 
 export const defaultTachographRepair: TachographRepair = {
   comment: '',
@@ -33,20 +34,14 @@ export const getOptions = (data, state, key) => {
       ? data.filter(({ factory_number }) => factory_number === state.factory_number)
       : data;
 
-    const unique = [];
-
-    return dataList.reduce((options, curr, i) => {
-      if(!unique[dataList[i].tachograph_brand_name]){
-        options.push(dataList[i].tachograph_brand_name);
-        unique[dataList[i].tachograph_brand_name] = 1;
-      }
-      return options;
-    }, []).map((tachograph_brand_name) => {
-      return ({
-        value: tachograph_brand_name,
-        label: tachograph_brand_name,
-      });
-    });
+    return uniqBy(
+      dataList.map((rowData) => ({
+        value: rowData.tachograph_brand_name,
+        label: rowData.tachograph_brand_name,
+        rowData,
+      })),
+      'value',
+    );
   }
 
   if (key === 'factoryNumbers') {

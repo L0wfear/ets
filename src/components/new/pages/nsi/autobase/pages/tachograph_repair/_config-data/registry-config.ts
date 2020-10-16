@@ -32,8 +32,8 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
     filter: {
       fields: [
         {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
+          valueKey: 'company_structure_id',
+          labelKey: 'company_structure_name',
           title: 'Подразделение',
           type: 'multiselect',
         },
@@ -83,7 +83,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
             title: '№',
           },
           {
-            key: 'company_name',
+            key: 'company_structure_name',
             title: 'Подразделение',
             width: 150,
           },

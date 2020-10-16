@@ -67,6 +67,14 @@ export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTacho
     gov_number: {
       title: 'Рег. номер ТС',
       type: 'string',
+      dependencies: [
+        (value) => {
+          if (!value) {
+            return getRequiredFieldMessage('Рег. номер ТС');
+          }
+          return false;
+        }
+      ],
     },
     comment: {
       title: 'Комментарий',

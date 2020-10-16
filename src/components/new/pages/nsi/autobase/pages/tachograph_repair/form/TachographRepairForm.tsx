@@ -172,6 +172,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 type="string"
                 label="Рег. номер ТС"
                 value={state.gov_number}
+                error={errors.gov_number}
                 disabled
                 onChange={props.handleChange}
                 boundKeys="gov_number"

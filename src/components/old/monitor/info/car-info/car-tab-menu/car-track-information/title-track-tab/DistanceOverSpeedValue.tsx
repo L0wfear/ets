@@ -6,6 +6,7 @@ import { diffDates, getDateWithMoscowTzByTimestamp, createValidDateTime } from '
 import * as Moment from 'moment';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { filterValidPoints } from 'utils/track';
 
 const moment = extendMoment(Moment);
 
@@ -16,6 +17,8 @@ export const getDistanceOverSpeedValue = (props) => {
 
   let dist;
   if (track !== -1) {
+    const filteredTrack = filterValidPoints(track);
+
     if (missions !== -1 && missions.length > 0) {
       const dateRange = missions.map((mission) => {
         return {
@@ -29,26 +32,26 @@ export const getDistanceOverSpeedValue = (props) => {
       });
 
       for (let index = 0; index < dateRange.length; index++) {
-        dist = track.reduce((acc, curr, i) => {
-          const pointTimestamp = getDateWithMoscowTzByTimestamp(track[i].timestamp * 1000);
+        dist = filteredTrack.reduce((acc, curr, i) => {
+          const pointTimestamp = getDateWithMoscowTzByTimestamp(filteredTrack[i].timestamp * 1000);
           const range = moment.range(dateRange[index].date_start, dateRange[index].date_end);
           range.contains(pointTimestamp);
-          if (missions[index].speed_limits.speed_lim < track[i].speed_avg && range.contains(pointTimestamp)) {
+          if (missions[index].speed_limits.speed_lim < filteredTrack[i].speed_avg && range.contains(pointTimestamp)) {
             // eslint-disable-next-line no-param-reassign
-            acc += track[i].distance;
+            acc += filteredTrack[i].distance;
           }
-          if (track[i].speed_avg >= 60 && !range.contains(pointTimestamp)) {
+          if (filteredTrack[i].speed_avg >= 60 && !range.contains(pointTimestamp)) {
             // eslint-disable-next-line no-param-reassign
-            acc += track[i].distance;
+            acc += filteredTrack[i].distance;
           }
           return acc;
         }, 0);
       }
     } else {
-      dist = track.reduce((acc, curr, i) => {
-        if (track[i].speed_avg >= 60) {
+      dist = filteredTrack.reduce((acc, curr, i) => {
+        if (filteredTrack[i].speed_avg >= 60) {
           // eslint-disable-next-line no-param-reassign
-          acc += track[i].distance;
+          acc += filteredTrack[i].distance;
         }
         return acc;
       }, 0);

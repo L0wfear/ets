@@ -1580,7 +1580,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   };
   handlePrint = async (...arg: Parameters<WaybillProps['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
-      await this.refresh(true, false);
+      if (!this.props.formState.status || this.props.formState.status === 'draft') {
+        await this.refresh(true, false);
+      }
       this.props.handlePrint(...arg);
     }
   };
@@ -3029,6 +3031,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         waybillState={this.state}
                         waybillFormState={state}
                         use_pouring={usePouring}
+                        fuel_cards_creating={fuelCardsCreating}
                         errors={errors}
                         waybillStatus={{
                           IS_CREATING,
@@ -3065,6 +3068,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3106,6 +3110,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,

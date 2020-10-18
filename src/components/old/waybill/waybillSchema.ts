@@ -12,6 +12,7 @@ import { RefillType } from 'redux-main/reducers/modules/refill_type/@types/refil
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
@@ -21,6 +22,8 @@ const validateFuelCardId = (
   rowData: ValuesOf<Waybill['car_refill']>,
   refillTypeList: Array<RefillType>,
   fuelCardsList: Array<FuelCard>,
+  companyList: IStateCompany['companyList'],
+  userCompanyId: InitialStateSession['userData']['company_id'],
   fuel_type: Waybill['fuel_type'],
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
   formState,
@@ -43,9 +46,14 @@ const validateFuelCardId = (
 
   if (needSelectFuelCard) {
     if (!availableFuelCard.length && rowData.type_id === 1) {
-      fuel_card_id
-        = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
-    } else if(rowData.type_id === 1 && !IS_CLOSED && !IS_DELETE) {
+      if (!companyList?.find((company) => company.company_id === userCompanyId).fuel_cards_creating) {
+        fuel_card_id
+          = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт"';
+      } else {
+        fuel_card_id
+          = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
+      }
+    } else if (rowData.type_id === 1 && !IS_CLOSED && !IS_DELETE) {
       fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
     }
   } else if (rowData.fuel_card_id) {
@@ -73,6 +81,7 @@ const checkCarRefill = memoizeOne(
     car_refill: Waybill['car_refill'] = [],
     refillTypeList: Array<RefillType>,
     fuelCardsList: Array<FuelCard>,
+    userCompanyId: InitialStateSession['userData']['company_id'],
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
@@ -90,6 +99,8 @@ const checkCarRefill = memoizeOne(
           rowData,
           refillTypeList,
           fuelCardsList,
+          companyList,
+          userCompanyId,
           fuel_type,
           notFiltredFuelCardsIndex,
           formState,
@@ -114,6 +125,7 @@ const checkEquipmentCarRefill = memoizeOne(
     car_refill: Waybill['car_refill'] = [],
     refillTypeList: Array<RefillType>,
     fuelCardsList: Array<FuelCard>,
+    userCompanyId: InitialStateSession['userData']['company_id'],
     fuel_type: Waybill['fuel_type'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
     formState,
@@ -131,6 +143,8 @@ const checkEquipmentCarRefill = memoizeOne(
           rowData,
           refillTypeList,
           fuelCardsList,
+          companyList,
+          userCompanyId,
           fuel_type,
           notFiltredFuelCardsIndex,
           formState,
@@ -587,13 +601,14 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList },
+          { refillTypeList, fuelCardsList, notFiltredFuelCardsIndex, companyList, userCompanyId },
         ) => {
           if(formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)){
             return checkCarRefill(
               car_refill,
               refillTypeList,
               fuelCardsList,
+              userCompanyId,
               formState.fuel_type,
               notFiltredFuelCardsIndex,
               formState,
@@ -610,13 +625,14 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           gas_refill,
           formState,
-          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex, companyList},
+          { refillTypeList, gasFuelCardsList, notFiltredFuelCardsIndex, companyList, userCompanyId},
         ) => {
           if(formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID)) {
             return checkCarRefill(
               gas_refill,
               refillTypeList,
               gasFuelCardsList,
+              userCompanyId,
               formState.gas_fuel_type,
               notFiltredFuelCardsIndex,
               formState,
@@ -633,12 +649,13 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           equipment_refill,
           formState,
-          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex, companyList },
+          { refillTypeList, equipmentFuelCardsList, notFiltredFuelCardsIndex, companyList, userCompanyId },
         ) => {
           return checkEquipmentCarRefill(
             equipment_refill,
             refillTypeList,
             equipmentFuelCardsList,
+            userCompanyId,
             formState.equipment_fuel_type,
             notFiltredFuelCardsIndex,
             formState,
@@ -654,13 +671,14 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (
           electrical_refill,
           formState,
-          { refillTypeList, electricalFuelCardsList, notFiltredFuelCardsIndex, companyList},
+          { refillTypeList, electricalFuelCardsList, notFiltredFuelCardsIndex, companyList, userCompanyId },
         ) => {
           if(formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID)) {
             return checkCarRefill(
               electrical_refill,
               refillTypeList,
               electricalFuelCardsList,
+              userCompanyId,
               formState.electrical_fuel_type,
               notFiltredFuelCardsIndex,
               formState,

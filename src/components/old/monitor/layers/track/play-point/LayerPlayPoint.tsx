@@ -12,6 +12,7 @@ import {
 } from 'components/old/monitor/layers/track/play-point/play-events/utils-play-event';
 
 import { PropsLayerPlayPoint } from 'components/old/monitor/layers/track/play-point/LayerPlayPoint.h';
+import { filterValidPoints } from 'utils/track';
 
 class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
@@ -46,10 +47,9 @@ class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
 }
 
 const mapStateToProps = (state) => ({
-  point:
-    state.monitorPage.carInfo.trackCaching.track[
-      state.monitorPage.carInfo.playTrack.trackPointIndex
-    ],
+  point: state.monitorPage.carInfo.trackCaching.track !== -1
+    ? filterValidPoints(state.monitorPage.carInfo.trackCaching.track)[state.monitorPage.carInfo.playTrack.trackPointIndex]
+    : false,
   playTrackStatus: state.monitorPage.carInfo.playTrack.status,
 });
 

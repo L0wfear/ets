@@ -12,6 +12,7 @@ import OverlayTrackPoint from 'components/old/monitor/layers/track/points/Overla
 import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { filterValidPoints } from 'utils/track';
 
 type PropsLayerTrackPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -148,8 +149,8 @@ export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
       SHOW_TRACK_POINTS: state.monitorPage.SHOW_TRACK_POINTS,
-      track: state.monitorPage.carInfo.trackCaching.track,
-      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+      track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
+      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null),
       mkad_speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.mkad_speed_lim,
       speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.speed_lim,
     }),

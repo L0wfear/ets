@@ -32,6 +32,7 @@ import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } f
 const StyledFilter = styled.div`
   &.active {
     max-height: 532px;
+    overflow-x: hidden;
     overflow-y: scroll;
   }
 `;
@@ -74,7 +75,15 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
+    const [outOfView, setOutOfView] = React.useState(false);
     const dispatch = etsUseDispatch();
+    const node = React.createRef<any>();
+
+    React.useEffect(() => {
+      if (node.current.getBoundingClientRect().bottom > (window.innerHeight || document.documentElement.clientHeight)) {
+        setOutOfView(true);
+      }
+    });
 
     React.useEffect(() => {
       (async () => {
@@ -253,7 +262,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
           <div className={cx('tool_bar-block', { active })}>
-            <StyledFilter className={`default_cube flex-row map-car-filter multi ${hidden ? '' : 'active'}`}>
+            <StyledFilter ref={node} className={`default_cube flex-row map-car-filter multi ${outOfView ? 'active' : ''}`}>
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
               </div>

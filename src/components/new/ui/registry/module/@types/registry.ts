@@ -218,6 +218,7 @@ export type OneRegistryData<F = any> = {
       total_count: number;
       uniqKey: Extract<keyof F, string>;
       uniqKeyForSelect?: Extract<keyof F, string>;
+      disableDoubleClick?: boolean; 
       uniqKeyForParams: string;
       selectedRow: F;
       checkedRows: Record<Extract<keyof F, string>, F>;

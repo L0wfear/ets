@@ -37,4 +37,8 @@ export type IPropsDataTable<TResultObject> = {
   highlightClassMapper?: any;
   customId?: number;
   withPerPageSelector?: boolean;
+  filterModalIsOpen?: boolean;
+  isFilterActive?: boolean;
+  toggleFilter?: () => void;
+  setisFilterActive?: (isFilterActive: boolean) => void;
 };

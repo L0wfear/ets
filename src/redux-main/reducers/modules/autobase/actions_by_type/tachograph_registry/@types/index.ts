@@ -1,3 +1,6 @@
+import { TachographDataReadingList } from '../../tachograph_data_reading/@types';
+import { TachographReplacementSkziList } from '../../tachograph_replacement_skzi/@types';
+
 export type TachographOnCarList = {
   activated_at: string;
   car_id: number;
@@ -39,3 +42,14 @@ export type TachographList = {
   verification_date: string;
   verification_date_validity: string;
 };
+
+export type TachographListOuterProps = {
+  tachograph_data_reading: Array<TachographDataReadingList>;
+  tachograph_replacement_skzi: Array<TachographReplacementSkziList>;
+};
+
+export type TachographListDataForValidation = {
+  current_date: string | Date;
+};
+
+export type TachographListWithOuterProps = TachographList & TachographListOuterProps & TachographListDataForValidation;

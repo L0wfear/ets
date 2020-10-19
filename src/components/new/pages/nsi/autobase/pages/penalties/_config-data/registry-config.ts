@@ -71,12 +71,14 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
         {
           valueKey: 'waybills_text',
           title: 'Номер путевого листа',
-          type: 'multiselect',
+          type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'missions_text',
           title: 'Номер задания',
-          type: 'multiselect',
+          type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'is_appealed',

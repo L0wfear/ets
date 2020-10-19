@@ -545,6 +545,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     // engine_kind_ids обновляется в WaybillEngineKind, в зависимости от статуса ПЛ
     const isGasKind = this.props.formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     const isElectricalKind = this.props.formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+    const isFuelKind = this.props.formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
     const {
       is_no_electrical_refill,
       is_no_gas_refill,
@@ -559,6 +560,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...electricalDefaultElement,
         ...defaultRefillObj,
         is_no_gas_refill: Boolean(is_no_gas_refill),
+        is_no_fuel_refill: isFuelKind ? Boolean(is_no_fuel_refill) : defaultRefillObj.is_no_fuel_refill,
       });
       this.handleChange('gas_fuel_type', 'GAS');
     } else if (isElectricalKind) {
@@ -568,7 +570,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         ...fuelDefaultElement,
         is_no_electrical_refill: Boolean(is_no_electrical_refill), 
       }); // чистим все поля, связанные с газом
-      this.handleEquipmentFuel(false, false); // чистим поля по спецоборудованию
       this.handleChange('electrical_fuel_type', 'ELECTRICITY',);
       this.handleChangeActiveNavTab('electrical');
     } else {
@@ -1578,7 +1579,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   };
   handlePrint = async (...arg: Parameters<WaybillProps['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
-      await this.refresh(true, false);
+      if (!this.props.formState.status || this.props.formState.status === 'draft') {
+        await this.refresh(true, false);
+      }
       this.props.handlePrint(...arg);
     }
   };
@@ -2221,13 +2224,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const electrical_tax_data = get(state, 'electrical_tax_data', []) || [];
     const isElectricalKind = state.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
 
-    if (this.state.fuelRates.length) {
+    if (this.state.fuelRates.length && state.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)) {
       taxesControl = validateTaxesControl([...tax_data, ...gas_tax_data, ...electrical_tax_data]);
     } else {
       taxesControl = true;
     }
 
-    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data];
+    const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
     const taxesTotal = allTaxes.reduce(
       (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
       0,

@@ -42,7 +42,6 @@ import { saveData } from 'utils/functions';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
 
 import {
-  getDateWithMoscowTzByTimestamp,
   diffDates,
   createValidDateTime,
 } from 'components/@next/@utils/dates/dates';
@@ -188,14 +187,14 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       ),
     );
 
-    const currentTime = getDateWithMoscowTzByTimestamp(date);
+    const currentTime = createValidDateTime(date);
 
     const { formState } = this.props;
 
     if (diffDates(currentTime, formState.plan_date_start) > 0) {
       this.props.handleChange(
         'plan_date_start',
-        createValidDateTime(currentTime),
+        currentTime,
       );
     }
   }

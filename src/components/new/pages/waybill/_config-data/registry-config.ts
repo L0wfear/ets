@@ -252,7 +252,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         step: 0.01,
       },
       {
-        valueKey: 'fuel_end',
+        valueKey: 'fact_fuel_end',
         title: 'Топливо. Возврат',
         type: 'advanced-number',
         step: 0.01,
@@ -522,7 +522,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 200,
         },
         {
-          key: 'fuel_end',
+          key: 'fact_fuel_end',
           title: 'Топливо. Возврат',
           width: 200,
         },
@@ -561,7 +561,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
         {
           key: 'sensor_leak',
-          title: 'Топливо, Слив по ДУТ, л',
+          title: 'Топливо. Слив по ДУТ, л',
           width: 250,
           sortable: false,
           format: 'toFixed3',

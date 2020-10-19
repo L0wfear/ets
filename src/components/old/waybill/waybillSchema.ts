@@ -245,7 +245,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           const isMissionListExists = mission_id_list?.length > 0;
 
           if (value && !correctTrailer && fieldNotHidden) {
-            return 'В данный момент выбранный прицеп не подходят для заполнения';
+            return 'В данный момент выбранный прицеп не подходит для заполнения';
           }
 
           if (!value && correctTrailer || !value && isTrailerRequired && isTrailerRequiredMission && isMissionListExists) {
@@ -1009,7 +1009,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, {gas_tax_data, electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number}) => {
+        (_, {gas_tax_data, electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids}) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
           let taxes = [];
           if(isArray(gas_tax_data)){
@@ -1024,6 +1024,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if (
             (!isArray(taxes) || (isArray(taxes) && !taxes.length))
               && (CAR_HAS_ODOMETER ? odometr_diff > 0 : motohours_diff > 0)
+              && engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID)
           ) {
             return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
           }
@@ -1138,9 +1139,10 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Заправок не было',
       type: 'boolean',
       dependencies: [
-        (value, {equipment_refill, is_one_fuel_tank}) => {
+        (value, {equipment_refill, is_one_fuel_tank, equipment_fuel}) => {
           if(
-            !value 
+            equipment_fuel
+            && !value 
             && !equipment_refill.length
             && !is_one_fuel_tank
           ) {

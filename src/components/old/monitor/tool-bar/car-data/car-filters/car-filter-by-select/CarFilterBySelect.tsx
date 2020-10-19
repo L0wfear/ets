@@ -80,9 +80,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const node = React.createRef<any>();
 
     React.useEffect(() => {
-      if (node.current.getBoundingClientRect().bottom > (window.innerHeight || document.documentElement.clientHeight)) {
-        setOutOfView(true);
-      }
+      setOutOfView(node.current.getBoundingClientRect().bottom > (window.innerHeight || document.documentElement.clientHeight));
     });
 
     React.useEffect(() => {

@@ -23,6 +23,7 @@ import penaltyPermissions from '../_config-data/permissions';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { FileField } from 'components/old/ui/input/fields';
 import { actionUpdatePenalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/actions';
+import { createValidDateDots, createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 
 class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
 
@@ -34,6 +35,8 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
     } = this.props;
 
     const isPermitted = this.props.isPermittedToUpdate;
+    const formatedRulingDate = createValidDateDots(state.ruling_date);
+    const formatedViolationDatetime = createValidDateTimeDots(state.violation_datetime);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-penalty" show onHide={this.props.hideWithoutChanges} bsSize="small">
@@ -73,13 +76,11 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                type="date"
+                type="string"
                 label="Дата постановления"
                 readOnly
-                disabled
-                value={state.ruling_date}
+                value={formatedRulingDate}
                 boundKeys="ruling_date"
-                makeGoodFormat
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -157,13 +158,11 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                type="date"
+                type="string"
                 label="Дата и время правонарушения"
-                disabled
                 readOnly
-                value={state.violation_datetime}
+                value={formatedViolationDatetime}
                 boundKeys="violation_datetime"
-                makeGoodFormat
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

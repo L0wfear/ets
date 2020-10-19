@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-//import ExtField from 'components/@next/@ui/renderFields/Field';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { DivNone } from 'global-styled/global-styled';
 import { compose } from 'recompose';

@@ -34,7 +34,7 @@ export const promiseUpdateTachograph = async (ownPayload) => {
     ...ownPayload,
   };
 
-  const response = await TachographService.put(payload, false, 'json');
+  const response = await TachographService.path(payload.id).put(payload, false, 'json');
 
   const data = get(response, 'result.rows.0', get(response, 'result.0', null));
 

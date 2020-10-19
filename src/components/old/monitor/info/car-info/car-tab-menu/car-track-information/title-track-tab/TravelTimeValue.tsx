@@ -3,6 +3,7 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { compose } from 'recompose';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { filterValidPoints } from 'utils/track';
 
 type PropsTravelTimeValue = {};
 
@@ -26,14 +27,15 @@ export const getTimeValue = (track) => {
   let value;
 
   if (track !== -1) {
-    value = track.reduce((acc, curr, i) => {
-      if (track[i].speed_avg > 0) {
+    const filteredTrack = filterValidPoints(track);
+    value = filteredTrack.reduce((acc, curr, i) => {
+      if (filteredTrack[i].speed_avg > 0) {
         if (i === 0) {
           // eslint-disable-next-line no-param-reassign
           return acc;
         } else {
           // eslint-disable-next-line no-param-reassign
-          acc += (curr.timestamp - track[i - 1].timestamp);
+          acc += (curr.timestamp - filteredTrack[i - 1].timestamp);
         }
       }
       return acc;

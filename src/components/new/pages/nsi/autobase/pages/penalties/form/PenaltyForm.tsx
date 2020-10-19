@@ -97,7 +97,7 @@ class PenaltyForm extends React.PureComponent<PropsPenalty, {}> {
             <EtsBootstrap.Col md={6}>
               <ExtField
                 type="string"
-                label="Номер подразделения"
+                label="Код подразделения"
                 readOnly
                 value={state.odps_code}
                 boundKeys="odps_code"

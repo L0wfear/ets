@@ -37,6 +37,7 @@ import { isEmpty } from 'lodash';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { filterValidPoints } from 'utils/track';
 // FAQ работа с сокетом
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
@@ -667,7 +668,7 @@ const mapStateToProps = (state: ReduxState) => ({
     state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
     || state.monitorPage.carInfo.trackCaching.track === -1
       ? false
-      : state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null,
+      : filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null,
   forToday: state.monitorPage.carInfo.forToday,
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,

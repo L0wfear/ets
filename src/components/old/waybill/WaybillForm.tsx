@@ -3031,6 +3031,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         waybillState={this.state}
                         waybillFormState={state}
                         use_pouring={usePouring}
+                        fuel_cards_creating={fuelCardsCreating}
                         errors={errors}
                         waybillStatus={{
                           IS_CREATING,
@@ -3067,6 +3068,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3108,6 +3110,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,

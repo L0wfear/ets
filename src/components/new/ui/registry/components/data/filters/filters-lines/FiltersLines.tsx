@@ -96,6 +96,7 @@ const FiltersLines: React.FC<Props> = React.memo(
               </EtsFilterContainer>
             );
           }
+          case 'advanced-array':
           case 'advanced-number': {
             return (
               <EtsFilterContainer key={otherFilterData.valueKey}>

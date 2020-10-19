@@ -11,8 +11,8 @@ import {
 
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { TachographListWithOuterProps } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
-import { TACHOGRAPH_REPLACEMENT_SKZI_LIST_OPTIONS } from 'constants/tachograph';
 import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const validationSchema: SchemaType<
   ValuesOf<TachographListWithOuterProps['tachograph_replacement_skzi']>,
@@ -80,7 +80,7 @@ const ReplacementDateRenderer: React.FC<IPropsDataTableInputRenderer> = ({
     },
     [index]
   );
-  
+
   return (
     <ExtField
       type="date"
@@ -109,12 +109,15 @@ const ReplacementReasonRenderer: React.FC<IPropsDataTableInputRenderer> = ({
       replacement_reason_id: valueNew,
     });
   };
+  const tachographReplacementSkziReasonListOptions = etsUseSelector(
+    (state) => state.autobase.tachographReplacementSkziReasonList
+  ).map((el) => ({ value: el.id, label: el.name }));
 
   return (
     <ExtField
       type="select"
       label={false}
-      options={TACHOGRAPH_REPLACEMENT_SKZI_LIST_OPTIONS}
+      options={tachographReplacementSkziReasonListOptions}
       value={value}
       error={get(outputListErrors[index], 'replacement_reason_id', '')}
       onChange={handleChange}

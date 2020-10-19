@@ -7,12 +7,13 @@ import {
 import { TachographListWithOuterProps } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled from 'styled-components';
-import { TACHOGRAPH_BRAND_NAME_LIST_OPTIONS } from 'constants/tachograph';
 import { getSessionStructuresOptions, getSessionUserStructureId } from 'redux-main/reducers/modules/session/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import TachographToVehicleBlockComponent from './vehicle-block/TachographToVehicleBlock';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
+import { actionGetTachographBrandList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_brand/actions';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const TachographToVehicleBlock: any = onChangeWithKeys(TachographToVehicleBlockComponent);
 
@@ -33,7 +34,17 @@ type MainInfoTab = {
 };
 
 const MainInfoTab: React.FC<MainInfoTab> = React.memo((props) => {
-  const { formErrors: errors, formState: state, onChange, isPermitted, structure_id } = props;
+  const { formErrors: errors, formState: state, onChange, isPermitted, structure_id, page } = props;
+  const dispatch = etsUseDispatch();
+  const [tachographBrandList, setTachographBrandList] = React.useState([]);
+  React.useEffect(() => {
+    (async () => {
+      const tachographBrandList = await (
+        await dispatch(actionGetTachographBrandList({ page }))
+      ).data.map((el) => ({ value: el.id, label: el.name }));
+      setTachographBrandList(tachographBrandList);
+    })();
+  }, []);
 
   React.useEffect(() => {
     if (structure_id) {
@@ -49,12 +60,12 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo((props) => {
             <ExtField
               type="select"
               label="Марка"
-              value={state.tachograph_brand_name}
-              boundKeys="tachograph_brand_name"
-              error={errors.tachograph_brand_name}
+              value={state.tachograph_brand_id}
+              boundKeys="tachograph_brand_id"
+              error={errors.tachograph_brand_id}
               onChange={onChange}
               disabled={!isPermitted}
-              options={TACHOGRAPH_BRAND_NAME_LIST_OPTIONS}
+              options={tachographBrandList}
             />
             <ExtField
               type="string"

@@ -9,6 +9,8 @@ import { TachographRepairReasonList } from '../actions_by_type/tachograph_repair
 import { TachographMetrologicalVerificationList } from '../actions_by_type/tachograph_metrological_verification/@types';
 import { TachographDataReadingList } from '../actions_by_type/tachograph_data_reading/@types';
 import { TachographReplacementSkziList } from '../actions_by_type/tachograph_replacement_skzi/@types';
+import { TachographBrand } from '../actions_by_type/tachograph_brand/@types';
+import { TachographReplacementSkziReason } from '../actions_by_type/tachograph_replacement_skzi_reason/@types';
 
 export type SparePart = {
   company_id?: number;
@@ -507,4 +509,6 @@ export type IStateAutobase = {
   tachographRepairList: Array<TachographRepairList>;
   tachographRepairReasonList: Array<TachographRepairReasonList>;
   tachographMetrologicalVerificationList: Array<TachographMetrologicalVerificationList>;
+  tachographBrandList: Array<TachographBrand>;
+  tachographReplacementSkziReasonList: Array<TachographReplacementSkziReason>;
 };

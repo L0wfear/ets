@@ -296,6 +296,8 @@ export const TachographRepairService = ETS_API_FACTORY.createApiServiceAdapter('
 export const TachographMetrologicalVerificationService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_metrological_verification');
 export const TachographDataReadingService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_data_reading');
 export const TachographReplacementSkziService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi');
+export const TachographBrandService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_brand');
+export const TachographReplacementSkziReasonService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi_reason');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(

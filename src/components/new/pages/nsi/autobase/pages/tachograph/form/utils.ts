@@ -36,6 +36,7 @@ export const defaultTachograph: TachographList = {
   repair_reason_name: '',
   replacement_date: '',
   tachograph_brand_name: '',
+  tachograph_brand_id: null,
   tachograph_on_car: [],
   uninstalled_at: '',
   verification_date: '',

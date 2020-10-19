@@ -18,10 +18,7 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 import { getDefaultTachographElement } from './utils';
 import { tachographFormSchema } from './schema';
 import tachographPermissions from '../_config-data/permissions';
-//import { FileField } from 'components/old/ui/input/fields';
 import { ReduxState } from 'redux-main/@types/state';
-//import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
-//import { isBoolean, isNull } from 'util';
 import TachographFormBodyHeader from './body_header/TachographFormBodyHeader';
 import TachographFormBodyContainer from './body_container/TachographFormBodyContainer';
 import {
@@ -46,6 +43,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_replacement_skzi/actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
+import { actionGetAndSetInStoreTachographReplacementSkziReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_replacement_skzi_reason/actions';
 
 const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
   const { formState: state, formErrors: errors, page, path } = props;
@@ -59,34 +57,50 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
     : props.isPermittedToCreate;
 
   const onSubmit = React.useCallback(async () => {
-    const data_reading = state.tachograph_data_reading;
-    const replacement_skzi = state.tachograph_replacement_skzi;
+    const dateRegExp = /\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}/;
+
+    const data_reading = state.tachograph_data_reading.map((el) => ({
+      ...el,
+      reading_fact_date: createValidDate(el.reading_fact_date),
+      reading_plan_date: createValidDate(el.reading_plan_date),
+    }));
+    const replacement_skzi = state.tachograph_replacement_skzi.map((el) => ({
+      ...el,
+      replacement_date: createValidDate(el.replacement_date),
+      next_replacement_date: createValidDate(el.next_replacement_date),
+    }));
+
     const ownState = Object.fromEntries(
-      Object.entries(defaultTachograph).map(([key, value]) => [key, state[key]])
+      Object.entries(defaultTachograph).map(([key, value]) => {
+        if (key === 'company_structure_id') {
+          return [key, Number(state[key])];
+        }
+        if (dateRegExp.test(state[key])) {
+          return [key, createValidDate(state[key])];
+        } else {
+          return [key, state[key]];
+        }
+      })
     );
-    try {
-      const changeTachographDataReadingListResult = await dispatch(
+    if(tachograph_id) {
+      dispatch(
         actionChangeTachographDataReadingList(
           { tachograph_id, data_reading },
           { page }
         )
       );
-      const changeTachographReplacementSkziListResult = await dispatch(
+      dispatch(
         actionChangeTachographReplacementSkziList(
           { tachograph_id, replacement_skzi },
           { page }
         )
       );
-      if (
-        changeTachographDataReadingListResult
-        && changeTachographReplacementSkziListResult
-      ) {
-        props.submitAction(ownState, props.meta);
-      }
-    } catch (error) {
-      //
+    } 
+    const response = await props.submitAction(ownState, props.meta);
+    if (response) {
+      props.handleHide(true, response);
     }
-  }, [state, props.submitAction]);
+  }, [state, props.submitAction, tachograph_id]);
   React.useEffect(() => {
     (async () => {
       const changeObj: TachographListOuterProps & TachographListDataForValidation = {
@@ -126,6 +140,10 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
     })();
   }, [tachograph_id]);
 
+  React.useEffect(() => {
+    dispatch(actionGetAndSetInStoreTachographReplacementSkziReasonList({page}));
+  }, []);
+
   return (
     <EtsBootstrap.ModalContainer
       id="modal-tachograph"
@@ -134,10 +152,10 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
       bsSize="large"
     >
       <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>Карточка тахографа</EtsBootstrap.ModalTitle>
+        <EtsBootstrap.ModalTitle> {`${IS_CREATING ? 'Создание карточки тахографа' : 'Карточка тахографа'}`} </EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <TachographFormBodyHeader isPermitted={isPermitted} />
+        <TachographFormBodyHeader isPermitted={isPermitted} isCreating={IS_CREATING}/>
         <TachographFormBodyContainer
           isPermitted={isPermitted}
           formState={state}

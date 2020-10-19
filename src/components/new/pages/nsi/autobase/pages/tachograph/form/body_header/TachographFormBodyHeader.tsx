@@ -8,6 +8,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 
 type OwnProps = {
   isPermitted: boolean;
+  isCreating: boolean;
 };
 type Props = (
   OwnProps
@@ -24,35 +25,36 @@ const TachographFormBodyHeader: React.FC<Props> = React.memo(
         activeKey={activeTabKey}
       >
         {
-          tachographFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
-            const isActive = activeTabKey === tabKeyScheme;
-            if ('children' in other) {
-              const isActiveChildren = other.children.find((elem) => elem.tabKey === activeTabKey);
-              const tachographFormTabKeyChildren = other.children;
+          tachographFormTabKey.filter((el) => props.isCreating ? el.tabKey === 'main' : el)
+            .map(({ tabKey: tabKeyScheme, title, ...other }) => {
+              const isActive = activeTabKey === tabKeyScheme;
+              if ('children' in other) {
+                const isActiveChildren = other.children.find((elem) => elem.tabKey === activeTabKey);
+                const tachographFormTabKeyChildren = other.children;
+                return (
+                  <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren)}>
+                    {
+                      tachographFormTabKeyChildren.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
+                        <TachographFormLinkNavDropdown
+                          isActive={isActive}
+                          tabKey={tabKeyChildScheme}
+                          title={titleChild}
+                        />
+                      ))
+                    }
+                  </EtsBootstrap.NavDropdown>
+                );
+              }
               return (
-                <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren)}>
-                  {
-                    tachographFormTabKeyChildren.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
-                      <TachographFormLinkNavDropdown
-                        isActive={isActive}
-                        tabKey={tabKeyChildScheme}
-                        title={titleChild}
-                      />
-                    ))
-                  }
-                </EtsBootstrap.NavDropdown>
+                <React.Fragment key={tabKeyScheme} >
+                  <TachographFormLink
+                    isActive={isActive}
+                    tabKey={tabKeyScheme}
+                    title={title}
+                  />
+                </React.Fragment>
               );
-            }
-            return (
-              <React.Fragment key={tabKeyScheme} >
-                <TachographFormLink
-                  isActive={isActive}
-                  tabKey={tabKeyScheme}
-                  title={title}
-                />
-              </React.Fragment>
-            );
-          })
+            })
         }
       </EtsBootstrap.Nav>
     );

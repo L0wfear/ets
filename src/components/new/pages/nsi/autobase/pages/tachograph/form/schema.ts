@@ -7,7 +7,7 @@ import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates'
 
 export const tachographFormSchema: SchemaType<TachographListWithOuterProps, PropsTachograph> = {
   properties: {
-    tachograph_brand_name: {
+    tachograph_brand_id: {
       title: 'Марка',
       type: 'valueOfArray',
       required: true,

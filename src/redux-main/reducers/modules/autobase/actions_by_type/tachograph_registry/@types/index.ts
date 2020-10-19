@@ -37,6 +37,7 @@ export type TachographList = {
   repair_reason_name: string;
   replacement_date: string;
   tachograph_brand_name: string;
+  tachograph_brand_id: number;
   tachograph_on_car: Array<TachographOnCarList>;
   uninstalled_at: string;
   verification_date: string;

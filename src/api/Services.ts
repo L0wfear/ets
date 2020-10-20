@@ -76,6 +76,9 @@ export const DriverService = ETS_API_FACTORY.createApiServiceAdapter('driver');
 export const EmployeeService = ETS_API_FACTORY.createApiServiceAdapter(
   'employee',
 );
+export const LayoffReasonService = ETS_API_FACTORY.createApiServiceAdapter(
+  'layoff_reason',
+);
 export const EmployeeBindedToCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'employee_binded_to_car',
 );

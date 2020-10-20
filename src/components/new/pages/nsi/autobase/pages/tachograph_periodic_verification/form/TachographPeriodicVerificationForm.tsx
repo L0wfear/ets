@@ -258,7 +258,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
               <ExtField
                 type="string"
                 label="Рег. номер ТС"
-                readOnly
+                disabled
                 value={state.gov_number}
                 boundKeys="gov_number"
                 error={errors.gov_number}

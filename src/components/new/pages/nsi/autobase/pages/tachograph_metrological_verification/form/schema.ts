@@ -75,5 +75,17 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
         }
       ],
     },
+    gov_number: {
+      title: 'Рег. номер ТС',
+      type: 'string',
+      dependencies: [
+        (value) => {
+          if (!value) {
+            return getRequiredFieldMessage('Рег. номер ТС');
+          }
+          return false;
+        }
+      ],
+    },
   },
 };

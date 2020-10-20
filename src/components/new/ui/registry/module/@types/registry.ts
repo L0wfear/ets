@@ -113,7 +113,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';

@@ -6,10 +6,16 @@ import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { HandleThunkActionCreator } from 'react-redux';
+import { actionGetLayoffReasonList } from 'redux-main/reducers/modules/employee/employee/actions';
 
 export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];
 };
+export type DispatchPropsEmployee = {
+  actionGetLayoffReasonList: HandleThunkActionCreator<typeof actionGetLayoffReasonList>;
+};
+
 export type OwnEmployeeProps = (
   WithFormRegistrySearchProps<Employee>
   & WithFormRegistrySearchAddProps<Employee>
@@ -19,6 +25,7 @@ export type OwnEmployeeProps = (
 export type PropsEmployeeWithForm = (
   StatePropsEmployee
   & OwnEmployeeProps
+  & DispatchPropsEmployee
 );
 
 export type PropsEmployee = OutputWithFormProps<
@@ -38,4 +45,5 @@ export type StateEmployee = {
   driverStateOptions: Array<{ value: number; label: string; }>;
   categoryDriversLicenseOptions: Array<{ value: number; label: string; }>;
   categorySpecialLicenseOptions: Array<{ value: number; label: string; }>;
+  layoffReasonListOptions: Array<{ value: number; label: string; }>;
 };

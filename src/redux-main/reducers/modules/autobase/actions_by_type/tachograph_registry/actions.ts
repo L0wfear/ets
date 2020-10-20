@@ -1,6 +1,11 @@
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { TachographList } from './@types';
-import { promiseGetTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/promise';
+import { 
+  promiseGetTachographList,
+  promiseCreateTachograph,
+  promiseDeleteTachograph,
+  promiseUpdateTachograph, 
+} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/promise';
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
@@ -29,6 +34,33 @@ export const actionGetTachographList = (payload: object, meta: LoadingMeta): Ets
     meta,
   )
 );
+
+export const actionCreateTachograph = (
+  payload: TachographList,
+  meta: LoadingMeta
+): EtsAction<EtsActionReturnType<typeof promiseCreateTachograph>> => async (
+  dispatch
+) => {
+  return etsLoadingCounter(dispatch, promiseCreateTachograph(payload), meta);
+};
+
+export const actionUpdateTachograph = (
+  payload: TachographList,
+  meta: LoadingMeta
+): EtsAction<EtsActionReturnType<typeof promiseUpdateTachograph>> => async (
+  dispatch
+) => {
+  return etsLoadingCounter(dispatch, promiseUpdateTachograph(payload), meta);
+};
+
+export const actionDeleteTachograph = (
+  id: number,
+  meta: LoadingMeta
+): EtsAction<EtsActionReturnType<typeof promiseDeleteTachograph>> => async (
+  dispatch
+) => {
+  return etsLoadingCounter(dispatch, promiseDeleteTachograph(id), meta);
+};
 
 /* --------------- запрос и установка в стор --------------- */
 export const actionGetAndSetInStoreTachographList = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetTachographList>> => async (dispatch) => {

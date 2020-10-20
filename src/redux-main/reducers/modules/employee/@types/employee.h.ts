@@ -14,6 +14,7 @@ export type Employee = {
   category_drivers_license_text: string;
   category_special_license: Array<string>;
   category_special_license_text: string;
+  comment: string;
   company_id: number;
   company_name: string;
   company_structure_id: null;
@@ -31,6 +32,8 @@ export type Employee = {
   is_brigade: boolean;
   is_common: boolean;
   is_driver?: boolean;
+  layoff_reason_id: number;
+  layoff_reason_name: string;
   last_name: string;
   medical_certificate: string;
   middle_name: string;

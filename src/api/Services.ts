@@ -76,6 +76,9 @@ export const DriverService = ETS_API_FACTORY.createApiServiceAdapter('driver');
 export const EmployeeService = ETS_API_FACTORY.createApiServiceAdapter(
   'employee',
 );
+export const LayoffReasonService = ETS_API_FACTORY.createApiServiceAdapter(
+  'layoff_reason',
+);
 export const EmployeeBindedToCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'employee_binded_to_car',
 );
@@ -294,6 +297,10 @@ export const CarPassportGtnRegistryService = ETS_API_FACTORY.createApiServiceAda
 export const TachographService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_registry');
 export const TachographRepairService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_repair');
 export const TachographMetrologicalVerificationService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_metrological_verification');
+export const TachographDataReadingService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_data_reading');
+export const TachographReplacementSkziService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi');
+export const TachographBrandService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_brand');
+export const TachographReplacementSkziReasonService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi_reason');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(

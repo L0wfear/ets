@@ -68,7 +68,7 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
       type: 'multiValueOfArray',
       dependencies: [
         (value) => {
-          if (!value) {
+          if (!value.length) {
             return getRequiredFieldMessage('Сертификат');
           }
           return false;

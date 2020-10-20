@@ -130,6 +130,11 @@ export const config: TypeConfigData<Employee> = {
         options: WORK_NOT_SELECT_OPTIONS,
       },
       {
+        valueKey: 'layoff_reason_name',
+        title: 'Основание увольнения',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'phone',
         title: 'Телефон',
         type: 'multiselect',
@@ -275,6 +280,12 @@ export const config: TypeConfigData<Employee> = {
           title: 'Текущее состояние',
           width: 150,
           format: 'workOrNot',
+        },
+        {
+          key: 'layoff_reason_name',
+          title: 'Основание увольнения',
+          width: 150,
+
         },
         {
           key: 'phone',

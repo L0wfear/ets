@@ -21,7 +21,7 @@ export type Tachograph = {
     installed_at: string | Date;
   }; // сторонние данные чтобы валдидировать через схему 
 };
-
+ 
 export type TachographListElement = {
   id: number;
   okrug_id: number;

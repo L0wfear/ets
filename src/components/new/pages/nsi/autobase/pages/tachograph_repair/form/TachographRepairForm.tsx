@@ -17,7 +17,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { TachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
-import { getDefaultTachographRepairElement, getOptions } from './utils';
+import { getDefaultTachographRepairElement, getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from './utils';
 import { tachographRepairFormSchema } from './schema';
 import tachographRepairPermissions from '../_config-data/permissions';
 import { autobaseCreateTachographRepair, autobaseUpdateTachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/actions';
@@ -53,7 +53,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
         props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page }));
         const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
         setTachographListData(tachographList.data);
-
+        setBrands(getOptions(tachographList.data, state,'brands'));
         return () => {
           props.dispatch(actionResetTachographRepairReasonList());
           props.dispatch(actionResetTachographList());
@@ -62,11 +62,15 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
     }, []);
 
     React.useEffect(() => {
-      if (tachographListData.length > 0) {
-        setBrands(getOptions(tachographListData, state,'brands'));
-        setFactoryNumbers(getOptions(tachographListData, state,'factoryNumbers'));
-      }
-    }, [tachographListData, state]);
+      setTachographBrandNameAndTachographFactoryNumberOptions(
+        {
+          tachographBrandNameList: tachographListData,
+          state,
+          tachographBrandNameOptions: brandsOptions,
+          handleChange: props.handleChange,
+          setTachographFactoryNumberOptions: setFactoryNumbers,
+        });
+    }, [tachographListData, state.tachograph_id, state.factory_number, brandsOptions]);
 
     const handleChange = React.useCallback(
       (key, value) => {
@@ -120,11 +124,11 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
               <ExtField
                 type="select"
                 label="Марка тахографа"
-                value={state.tachograph_brand_name}
-                error={errors.tachograph_brand_name}
                 options={brandsOptions}
+                value={state.tachograph_id}
+                error={errors.tachograph_id}
                 onChange={handleChange}
-                boundKeys="tachograph_brand_name"
+                boundKeys="tachograph_id"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

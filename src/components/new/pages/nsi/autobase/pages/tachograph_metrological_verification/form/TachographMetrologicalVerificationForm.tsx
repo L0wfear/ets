@@ -27,7 +27,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import { FileField } from 'components/old/ui/input/fields';
-import { getOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
+import { getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
 
 const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologicalVerification> = React.memo(
   (props) => {
@@ -49,7 +49,7 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
       (async () => {
         const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
         setTachographListData(tachographList.data);
-
+        setBrands(getOptions(tachographList.data, state,'brands'));
         return () => {
           props.dispatch(actionResetTachographList());
         };
@@ -57,11 +57,15 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
     }, []);
 
     React.useEffect(() => {
-      if (tachographListData.length > 0) {
-        setBrands(getOptions(tachographListData, state,'brands'));
-        setFactoryNumbers(getOptions(tachographListData, state,'factoryNumbers'));
-      }
-    }, [tachographListData, state]);
+      setTachographBrandNameAndTachographFactoryNumberOptions(
+        {
+          tachographBrandNameList: tachographListData,
+          state,
+          tachographBrandNameOptions: brandsOptions,
+          handleChange: props.handleChange,
+          setTachographFactoryNumberOptions: setFactoryNumbers,
+        });
+    }, [tachographListData, state.tachograph_id, state.factory_number, brandsOptions]);
 
     const handleChange = React.useCallback(
       (key, value) => {
@@ -140,14 +144,14 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
-                id="tachograph_brand_name"
+                id="tachograph_id"
                 type="select"
                 label="Марка тахографа"
                 options={brandsOptions}
-                value={state.tachograph_brand_name}
-                error={errors.tachograph_brand_name}
+                value={state.tachograph_id}
+                error={errors.tachograph_id}
                 onChange={handleChange}
-                boundKeys="tachograph_brand_name"
+                boundKeys="tachograph_id"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

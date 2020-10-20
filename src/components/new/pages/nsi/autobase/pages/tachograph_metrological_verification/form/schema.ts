@@ -51,9 +51,9 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
         }
       ],
     },
-    tachograph_brand_name: {
+    tachograph_id: {
       title: 'Марка тахографа',
-      type: 'string',
+      type: 'valueOfArray',
       dependencies: [
         (value) => {
           if (!value) {

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { Tachograph, TachographListElement } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
+import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
 import { getDefaultTachographElement } from './utils';
 import { tachographPeriodicVerificationFormSchema } from './schema';
 import tachographPermissions from '../_config-data/permissions';
@@ -28,7 +28,8 @@ import {
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
-import { uniqBy } from 'lodash';
+import { getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
+import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 
 const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo(
   (props) => {
@@ -38,7 +39,8 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       page, 
       path,
       formErrors: errors,
-      IS_CREATING, 
+      IS_CREATING,
+      handleChange,
     } = props;
     const [
       verificationReasonOptions,
@@ -55,7 +57,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     const [
       tachographBrandNameList,
       setTachographBrandNameList,
-    ] = React.useState<Array<TachographListElement>>([]);
+    ] = React.useState<Array<TachographList>>([]);
 
     const isPermitted = props.isPermittedToUpdate;
     const calibrationOptions = [
@@ -95,14 +97,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
         const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
-        const tachographBrandNameOptions = uniqBy(
-          tachographBrandNameList?.map((rowData) => ({
-            value: rowData.id,
-            label: rowData.tachograph_brand_name,
-            rowData
-          })),
-          'label',
-        ) ?? [];
+        const tachographBrandNameOptions = getOptions(tachographBrandNameList, state, 'brands');
         setTachographBrandNameOptions(tachographBrandNameOptions);
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
@@ -116,32 +111,16 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     }, [IS_CREATING, tachographBrandNameList]);
 
     React.useEffect(() => {
-      if (tachographBrandNameList.length) {
-        if (!state.tachograph_id && state.factory_number) {
-          const tachograph_id = tachographBrandNameList.find(
-            (el) => el.factory_number === state.factory_number
-          )?.id;
-          props.handleChange('tachograph_id', tachograph_id);
+      setTachographBrandNameAndTachographFactoryNumberOptions(
+        {
+          tachographBrandNameList,
+          state,
+          tachographBrandNameOptions,
+          handleChange,
+          setTachographFactoryNumberOptions,
         }
-        if (state.tachograph_id) {
-          const tachographFactoryNumberOptions = tachographBrandNameList
-            .filter((el) => el.id === state.tachograph_id)
-            ?.map((el) => ({
-              value: el.factory_number,
-              label: el.factory_number,
-            }));
-          setTachographFactoryNumberOptions(tachographFactoryNumberOptions);
-          if (!tachographFactoryNumberOptions.find((el) => el.value === state.factory_number)) {
-            props.handleChange('factory_number', null);
-          }
-        } else {
-          const tachographFactoryNumberOptions = tachographBrandNameList?.map(
-            (el) => ({ value: el.factory_number, label: el.factory_number })
-          );
-          setTachographFactoryNumberOptions(tachographFactoryNumberOptions);
-        }
-      }
-    }, [state.tachograph_id, state.factory_number, tachographBrandNameList]);
+      );
+    }, [state.tachograph_id, state.factory_number, tachographBrandNameList, tachographBrandNameOptions]);
 
     return (
       <EtsBootstrap.ModalContainer

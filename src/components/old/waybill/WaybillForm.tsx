@@ -2896,7 +2896,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="select"
                               label="Причина"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               options={reasonListOptions}
@@ -2912,7 +2913,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="odometr"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type) ) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type) )
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               value={odometrFiles}
@@ -2984,7 +2986,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               value={state.motohours_reason_id}
                               error={errors.motohours_reason_id}
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               clearable={false}
@@ -2997,7 +3000,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="motohours"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               value={motohoursFiles}
@@ -3031,6 +3035,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         waybillState={this.state}
                         waybillFormState={state}
                         use_pouring={usePouring}
+                        fuel_cards_creating={fuelCardsCreating}
                         errors={errors}
                         waybillStatus={{
                           IS_CREATING,
@@ -3067,6 +3072,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3108,6 +3114,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3219,7 +3226,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               value={state.motohours_equip_reason_id}
                               error={errors.motohours_equip_reason_id}
                               disabled={
-                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               clearable={false}
@@ -3232,7 +3239,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="motohours_equip"
                               disabled={
-                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               value={motohoursEquipFiles}

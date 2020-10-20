@@ -9,6 +9,7 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { getStyleForTrackLineBySensor } from 'components/old/monitor/layers/track/lines-by-sensor/feature-style';
 import { get } from 'lodash';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { filterValidPoints } from 'utils/track';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -148,15 +149,15 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
   }
 
   render() {
-    return <div></div>;
+    return <div/>;
   }
 }
 
 const mapStateToProps = (state) => ({
   SHOW_TRACK_LINES_BY_SENSOR: state.monitorPage.statusGeo.SHOW_TRACK_LINES_BY_SENSOR,
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
-  track: state.monitorPage.carInfo.trackCaching.track,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+  track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
+  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null),
 });
 
 export default compose<any, any>(

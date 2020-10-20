@@ -17,6 +17,7 @@ import { compose } from 'redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { filterValidPoints } from 'utils/track';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -24,7 +25,7 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
-export const makeLastPointTrack = (trackCaching) => trackCaching.track === -1 ? false : (trackCaching.track.slice(-1)[0] || null);
+export const makeLastPointTrack = (trackCaching) => trackCaching.track === -1 ? false : (filterValidPoints(trackCaching.track).slice(-1)[0] || null);
 
 export type TypeLastPoint = {
   timestamp: number;

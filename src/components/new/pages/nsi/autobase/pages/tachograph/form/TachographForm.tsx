@@ -74,6 +74,17 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
         if (key === 'company_structure_id') {
           return [key, Number(state[key])];
         }
+        if (key === 'tachograph_on_car') {
+          const newArr = state[key].map((el) => {
+            Object.keys(el).forEach((elKey) => {
+              if (dateRegExp.test(el[elKey])) {
+                el[elKey] = createValidDate(el[elKey]);
+              }
+            });
+            return el;
+          });
+          return [key, newArr];
+        }
         if (dateRegExp.test(state[key])) {
           return [key, createValidDate(state[key])];
         } else {
@@ -154,7 +165,7 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
         <EtsBootstrap.ModalTitle> {`${IS_CREATING ? 'Создание карточки тахографа' : 'Карточка тахографа'}`} </EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <TachographFormBodyHeader isPermitted={isPermitted} isCreating={IS_CREATING}/>
+        <TachographFormBodyHeader isPermitted={isPermitted} isCreating={IS_CREATING} errors={errors}/>
         <TachographFormBodyContainer
           isPermitted={isPermitted}
           formState={state}

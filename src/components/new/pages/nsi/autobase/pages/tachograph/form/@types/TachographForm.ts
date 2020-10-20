@@ -27,4 +27,5 @@ export type OneTabDataCommon = {
 
 export type DefaultOwnPropsToBodyRoute = OneTabDataCommon & {
   isActive: boolean;
+  tabHasErrors: boolean;
 };

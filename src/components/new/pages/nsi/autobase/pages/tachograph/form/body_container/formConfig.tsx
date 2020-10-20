@@ -13,6 +13,7 @@ import tachographRepairConfig from 'components/new/pages/nsi/autobase/pages/tach
 export type OneTabDataCommon = {
   tabKey: string;
   title: string;
+  errorsFieldList?: Array<string>;
 };
 
 export type OneTabDataParent = (
@@ -42,6 +43,13 @@ export const main: OneTabData = {
   component: infoTabConfig.component,
   path: infoTabConfig.id,
   isRegistry: false,
+  errorsFieldList: [
+    'tachograph_brand_id',
+    'factory_number',
+    'company_structure_id',
+    'tachograph_on_car',
+    'comment'
+  ]
 };
 
 export const tachographDataReadingInfo: OneTabData = {
@@ -50,6 +58,9 @@ export const tachographDataReadingInfo: OneTabData = {
   component: tachographDataReadingConfig.component,
   path: tachographDataReadingConfig.id,
   isRegistry: false,
+  errorsFieldList: [
+    'tachograph_data_reading',
+  ]
 };
 
 export const tachographPeriodicVerificationtInfo: OneTabData = {
@@ -74,6 +85,9 @@ export const tachographSkzi: OneTabData = {
   component: tachographSkziConfig.component,
   path: tachographSkziConfig.id,
   isRegistry: false,
+  errorsFieldList: [
+    'tachograph_replacement_skzi',
+  ]
 };
 
 export const tachographRepairInfo: OneTabData = {

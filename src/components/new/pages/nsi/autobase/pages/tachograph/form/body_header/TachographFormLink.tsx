@@ -5,7 +5,7 @@ import { DefaultOwnPropsToBodyRoute } from 'components/new/pages/nsi/autobase/pa
 import styled from 'styled-components';
 import { GlyphiconStyled } from 'components/new/ui/@bootstrap/01-glyphicon/EtsGlyphicon';
 
-const NavLinkStyled = styled(EtsBootstrap.NavItem as any)`
+const NavLinkStyled = styled(EtsBootstrap.NavItem)`
 &&&>a {
     display: inline-flex;
     align-items: center;

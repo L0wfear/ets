@@ -9,7 +9,7 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
   return {
     Service: {
       getBlobData: {
-        entity: 'autobase/tachograph_periodic_verification',
+        entity: 'autobase/tachograph_periodic_verification/export',
         payload: {
           format: 'xls',
         },

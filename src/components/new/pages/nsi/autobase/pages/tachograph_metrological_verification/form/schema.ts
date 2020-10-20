@@ -68,8 +68,20 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
       type: 'multiValueOfArray',
       dependencies: [
         (value) => {
-          if (!value) {
+          if (!value.length) {
             return getRequiredFieldMessage('Сертификат');
+          }
+          return false;
+        }
+      ],
+    },
+    gov_number: {
+      title: 'Рег. номер ТС',
+      type: 'string',
+      dependencies: [
+        (value) => {
+          if (!value) {
+            return getRequiredFieldMessage('Рег. номер ТС');
           }
           return false;
         }

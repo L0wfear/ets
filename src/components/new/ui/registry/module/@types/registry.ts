@@ -113,7 +113,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';
@@ -218,6 +218,7 @@ export type OneRegistryData<F = any> = {
       total_count: number;
       uniqKey: Extract<keyof F, string>;
       uniqKeyForSelect?: Extract<keyof F, string>;
+      disableDoubleClick?: boolean; 
       uniqKeyForParams: string;
       selectedRow: F;
       checkedRows: Record<Extract<keyof F, string>, F>;

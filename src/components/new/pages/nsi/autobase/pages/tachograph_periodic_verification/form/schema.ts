@@ -2,6 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTachograph } from 'components/new/pages/nsi/autobase/pages/tachograph_periodic_verification/form/@types/TachographPeriodicVerificationForm';
 import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
 import { diffDates, getStartOfToday, createValidDate } from 'components/@next/@utils/dates/dates';
+import {getRequiredFieldMessage} from '../../../../../../../@next/@utils/getErrorString/getErrorString';
 
 export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, PropsTachograph> = {
   properties: {
@@ -80,6 +81,14 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
     files: {
       title: 'Файл',
       type: 'multiValueOfArray',
+      dependencies: [
+        (value) => {
+          if (!value.length) {
+            return getRequiredFieldMessage('Сертификат');
+          }
+          return false;
+        }
+      ],
     },
   },
 };

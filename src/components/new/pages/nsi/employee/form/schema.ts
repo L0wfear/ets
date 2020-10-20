@@ -227,5 +227,27 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
         },
       ],
     },
+    layoff_reason_id: {
+      title: 'Основание увольнения',
+      type: 'valueOfArray',
+      dependencies: [
+        (value, {active}) => {
+          if (!value && !active) {
+            return 'Поле «Основание увольнения» должно быть заполнено';
+          }
+        }
+      ]
+    },
+    comment: {
+      title: 'Комментарий',
+      type: 'valueOfArray',
+      dependencies: [
+        (value, {layoff_reason_id}) => {
+          if (!value && layoff_reason_id === 31) {
+            return 'Поле «Комментарий» должно быть заполнено';
+          }
+        }
+      ]
+    }
   },
 };

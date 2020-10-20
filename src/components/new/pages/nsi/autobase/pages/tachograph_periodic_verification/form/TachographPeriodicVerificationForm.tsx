@@ -28,6 +28,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
+import { uniqBy } from 'lodash';
 
 const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo(
   (props) => {
@@ -94,8 +95,13 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
         const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
-        const tachographBrandNameOptions = tachographBrandNameList?.map(
-          (el) => ({ value: el.id, label: el.tachograph_brand_name })
+        const tachographBrandNameOptions = uniqBy(
+          tachographBrandNameList?.map((rowData) => ({
+            value: rowData.id,
+            label: rowData.tachograph_brand_name,
+            rowData
+          })),
+          'label',
         ) ?? [];
         setTachographBrandNameOptions(tachographBrandNameOptions);
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
@@ -252,7 +258,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
               <ExtField
                 type="string"
                 label="Рег. номер ТС"
-                readOnly
+                disabled
                 value={state.gov_number}
                 boundKeys="gov_number"
                 error={errors.gov_number}

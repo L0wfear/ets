@@ -637,7 +637,9 @@ export default class DataTable extends React.Component<Props, State> {
                   (d || '').toLowerCase() === obj[key].toString().toLowerCase()
                 );
               }
-              return Number(d) === Number(obj[key]);
+              return Number(d) > Number.MAX_SAFE_INTEGER || Number(obj[key]) > Number.MAX_SAFE_INTEGER
+                ? BigInt(d) === BigInt(obj[key])
+                : Number(d) === Number(obj[key]);
             }) === -1
           ) {
             isValid = false;

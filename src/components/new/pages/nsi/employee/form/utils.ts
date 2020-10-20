@@ -52,6 +52,9 @@ export const defaultEmployee: Employee = {
   assignment_date_start: null,
   assignment_date_end: null,
   assignment_files: [],
+  comment: '',
+  layoff_reason_id: null,
+  layoff_reason_name: '',
 };
 
 export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) => {

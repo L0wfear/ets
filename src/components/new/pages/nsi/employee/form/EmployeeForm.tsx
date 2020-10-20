@@ -34,7 +34,7 @@ import memoizeOne from 'memoize-one';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 import { getCountryOptions } from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
 import { actionLoadInspectionCountry } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
-
+import { actionGetLayoffReasonList } from 'redux-main/reducers/modules/employee/employee/actions';
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   constructor(props) {
     super(props);
@@ -78,7 +78,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       countryOptions: [],
       positionOptions: [],
       preferCarOptions: [],
-      secondaryCarOptions: []
+      secondaryCarOptions: [],
+      layoffReasonListOptions: [],
     };
   }
 
@@ -87,6 +88,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     this.loadCars();
     this.loadEmployeePosition();
     this.loadCompanyStructurePosition();
+    this.props.actionGetLayoffReasonList({page: this.props.page}).then(
+      (result) => {
+        const layoffReasonListOptions = result.data.map((el) => ({value: el.id, label: el.name}));
+        this.setState({layoffReasonListOptions});
+      }
+    );
   }
 
   public componentDidUpdate(prevProps) {
@@ -550,6 +557,37 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
+            {!state.active && <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="layoff_reason_id"
+                    type="select"
+                    modalKey={path}
+                    label="Основание увольнения"
+                    value={state.layoff_reason_id}
+                    options={this.state.layoffReasonListOptions}
+                    error={errors.layoff_reason_id}
+                    disabled={!isPermitted}
+                    onChange={this.props.handleChange}
+                    clearable={false}
+                    boundKeys="layoff_reason_id"
+                  />
+                </EtsBootstrap.Col>
+                {state.layoff_reason_id === 31 && <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="comment"
+                    type="string"
+                    label="Комментарий"
+                    value={state.comment}
+                    onChange={this.props.handleChange}
+                    boundKeys="comment"
+                    error={errors.comment}
+                    disabled={!isPermitted}
+                  />
+                </EtsBootstrap.Col>}
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>}
             <EtsBootstrap.Col md={12}>
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={6}>
@@ -754,6 +792,7 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
     (state) => ({
       category_license: state.session.appConfig.category_license,
     }),
+    {actionGetLayoffReasonList}
   ),
   withForm<PropsEmployeeWithForm, Employee>({
     uniqField: 'id',

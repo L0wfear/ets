@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { isPlainObject, cloneDeep } from 'lodash';
 import cx from 'classnames';
 
-import { diffDates } from 'components/@next/@utils/dates/dates';
+import { diffDates, createValidDate } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/old/ui/table/simple-griddle/SimpleGriddle';
 
@@ -220,6 +220,17 @@ export default class DataTable extends React.Component<Props, State> {
       this.setState({ filterValues: this.props.filterValues });
     }
     setStickyThead('.data-table .griddle', true);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const stateIsFilterActive = !!Object.keys(this.state.filterValues).length;
+    const prevStateIsFilterActive = !!Object.keys(prevState.filterValues).length;
+    if (
+      this.props.setisFilterActive 
+      && stateIsFilterActive !== prevStateIsFilterActive
+    ) {
+      this.props.setisFilterActive(stateIsFilterActive);
+    }
   }
 
   componentWillUnmount() {
@@ -546,6 +557,11 @@ export default class DataTable extends React.Component<Props, State> {
           ) {
             isValid = parseAdvancedFilter(value, key, obj[key], filter.type);
           } else if (
+            filter
+            && filter.type === 'advanced-date'
+          ) {
+            isValid = parseAdvancedFilter(value, key, createValidDate(obj[key]), filter.type);
+          } else if (
             moment(obj[key]).format(global.APP_DATE_FORMAT)
             !== moment(value).format(global.APP_DATE_FORMAT)
           ) {
@@ -621,7 +637,9 @@ export default class DataTable extends React.Component<Props, State> {
                   (d || '').toLowerCase() === obj[key].toString().toLowerCase()
                 );
               }
-              return Number(d) === Number(obj[key]);
+              return Number(d) > Number.MAX_SAFE_INTEGER || Number(obj[key]) > Number.MAX_SAFE_INTEGER
+                ? BigInt(d) === BigInt(obj[key])
+                : Number(d) === Number(obj[key]);
             }) === -1
           ) {
             isValid = false;
@@ -845,7 +863,7 @@ export default class DataTable extends React.Component<Props, State> {
               {noTitle ? '' : title}
             </DataTableHeadLineTitle>
             <div className="waybills-buttons">
-              {!noFilter && (
+              {!noFilter || this.props.useFilter && (
                 <FilterButton
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
@@ -863,9 +881,9 @@ export default class DataTable extends React.Component<Props, State> {
           </DataTableHeadLine>
           {!noFilter && (
             <Filter
-              show={this.state.filterModalIsOpen}
+              show={this.state.filterModalIsOpen || this.props.filterModalIsOpen}
               onSubmit={this.saveFilter}
-              onHide={this.closeFilter}
+              onHide={this.props.toggleFilter || this.closeFilter}
               values={this.state.filterValues}
               options={tableMetaCols.filter((el) => el.filter !== false)}
               tableData={this.props.defaulResult || this.props.results}

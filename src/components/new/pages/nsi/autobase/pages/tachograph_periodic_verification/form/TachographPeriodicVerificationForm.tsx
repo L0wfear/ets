@@ -37,7 +37,6 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       page, 
       path,
       formErrors: errors,
-      IS_CREATING, 
     } = props;
     const [
       verificationReasonOptions,
@@ -101,13 +100,6 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
     }, [tachographBrandNameList]);
-
-    React.useEffect(() => {
-      if (IS_CREATING && tachographBrandNameList.length) {
-        const last_car_gov_number = tachographBrandNameList[0].gov_number;
-        props.handleChange('gov_number', last_car_gov_number);
-      }
-    }, [IS_CREATING, tachographBrandNameList]);
 
     React.useEffect(() => {
       if (tachographBrandNameList.length) {

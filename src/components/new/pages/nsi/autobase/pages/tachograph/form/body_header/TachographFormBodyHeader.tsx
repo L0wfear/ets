@@ -5,10 +5,12 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import TachographFormLink from './TachographFormLink';
 import TachographFormLinkNavDropdown from './TachographFormLinkNavDropdown';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { checkErrorsIntoTab } from 'components/old/waybill/form/waybillFormTabConfig';
 
 type OwnProps = {
   isPermitted: boolean;
   isCreating: boolean;
+  errors: Record<string, any>;
 };
 type Props = (
   OwnProps
@@ -26,8 +28,9 @@ const TachographFormBodyHeader: React.FC<Props> = React.memo(
       >
         {
           tachographFormTabKey.filter((el) => props.isCreating ? el.tabKey === 'main' : el)
-            .map(({ tabKey: tabKeyScheme, title, ...other }) => {
+            .map(({ tabKey: tabKeyScheme, title, errorsFieldList, ...other }) => {
               const isActive = activeTabKey === tabKeyScheme;
+              const tabHasErrors = checkErrorsIntoTab(props.errors, errorsFieldList);
               if ('children' in other) {
                 const isActiveChildren = other.children.find((elem) => elem.tabKey === activeTabKey);
                 const tachographFormTabKeyChildren = other.children;
@@ -39,6 +42,7 @@ const TachographFormBodyHeader: React.FC<Props> = React.memo(
                           isActive={isActive}
                           tabKey={tabKeyChildScheme}
                           title={titleChild}
+                          tabHasErrors={tabHasErrors}
                         />
                       ))
                     }
@@ -51,6 +55,7 @@ const TachographFormBodyHeader: React.FC<Props> = React.memo(
                     isActive={isActive}
                     tabKey={tabKeyScheme}
                     title={title}
+                    tabHasErrors={tabHasErrors}
                   />
                 </React.Fragment>
               );

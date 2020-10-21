@@ -49,7 +49,7 @@ export const checkErrorsIntoTab = (errorsObj, errorsFieldList: Array<string>) =>
   const hasErrors = Object.entries(errorsObj).some(
     ([key, val]) => {
       
-      if(errorsFieldList.includes(key) && Array.isArray(val)){
+      if(errorsFieldList?.includes(key) && Array.isArray(val)){
         return val.some(
           (el) => Object.values(el).some(
             (entryVal) => Boolean(entryVal) && !isNullOrUndefined(entryVal)
@@ -57,7 +57,7 @@ export const checkErrorsIntoTab = (errorsObj, errorsFieldList: Array<string>) =>
         );
       }
 
-      if( errorsFieldList.includes(key) && !isNullOrUndefined(val) && Boolean(val)) { // hasBag
+      if( errorsFieldList?.includes(key) && !isNullOrUndefined(val) && Boolean(val)) { // hasBag
         return true;
       }
       return false;

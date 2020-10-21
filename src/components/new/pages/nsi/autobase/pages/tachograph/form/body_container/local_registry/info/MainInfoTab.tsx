@@ -97,7 +97,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo((props) => {
               onChange={onChange}
               boundKeys="company_structure_id"
               error={errors.company_structure_id}
-              disabled={!isPermitted || !!structure_id}
+              disabled
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>

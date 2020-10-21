@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { TachographMetrologicalVerificationList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/@types';
 import tachographMetrologicalVerificationPermissions from './permissions';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'TachographMetrologicalVerification';
 
@@ -33,14 +32,9 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
     filter: {
       fields: [
         {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
-          title: [
-            {
-              displayIf: displayIfContant.isKgh,
-              title: 'Подразделение',
-            },
-          ],
+          valueKey: 'company_structure_id',
+          labelKey: 'company_structure_name',
+          title: 'Подразделение',
           type: 'multiselect',
         },
         {
@@ -89,13 +83,8 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
             title: '№',
           },
           {
-            key: 'company_name',
-            title: [
-              {
-                title: 'Подразделение',
-                displayIf: displayIfContant.isKgh,
-              }
-            ],
+            key: 'company_structure_name',
+            title: 'Подразделение',
             width: 150,
           },
           {

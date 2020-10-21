@@ -4,6 +4,7 @@ export type Tachograph = {
   company_id: number;
   company_structure_id: number;
   company_structure_name: string;
+  tachograph_brand_id: number;
   tachograph_brand_name: string;
   factory_number: string;
   gov_number: string;

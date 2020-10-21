@@ -8,6 +8,7 @@ export type TachographMetrologicalVerification = {
   tachograph_id: number;
   verification_date: string;
   verification_number: string;
+  tachograph_brand_id: number;
 };
 
 export type TachographMetrologicalVerificationList = {

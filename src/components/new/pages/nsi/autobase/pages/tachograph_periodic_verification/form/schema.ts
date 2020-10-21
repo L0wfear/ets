@@ -59,7 +59,7 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       type: 'date',
       required: true,
     },
-    tachograph_id: {
+    tachograph_brand_id: {
       title: 'Марка тахографа',
       type: 'valueOfArray',
       required: true,

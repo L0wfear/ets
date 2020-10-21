@@ -6,7 +6,7 @@ import {diffDates, getDateWithMoscowTz} from 'components/@next/@utils/dates/date
 
 export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTachographRepair> = {
   properties: {
-    tachograph_id: {
+    tachograph_brand_id: {
       title: 'Марка тахографа',
       type: 'valueOfArray',
       dependencies: [

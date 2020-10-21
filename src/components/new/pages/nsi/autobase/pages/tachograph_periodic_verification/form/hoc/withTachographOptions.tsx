@@ -7,7 +7,7 @@ import { actionGetTachographList } from 'redux-main/reducers/modules/autobase/ac
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WithTachographOptionsFormState = {
-  tachograph_id: number;
+  tachograph_brand_id: number;
   factory_number: string;
 };
 export type WithTachographProps = {
@@ -68,7 +68,7 @@ const withTachographOptions = (
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
         const tachographBrandNamesIdsUniqedByName = uniqBy(tachographBrandNameList, 'tachograph_brand_name').map((el) => el.id);
-        const currentBrandName = tachographBrandNameList.find((el) => el.id === state.tachograph_id)?.tachograph_brand_name;
+        const currentBrandName = tachographBrandNameList.find((el) => el.id === state.tachograph_brand_id)?.tachograph_brand_name;
         const tachographBrandNameOptions 
           = uniqBy(
             tachographBrandNameList?.map((rowData) => ({
@@ -81,14 +81,14 @@ const withTachographOptions = (
           ) ?? [];
         setTachographBrandNameOptions(tachographBrandNameOptions);
       }
-    }, [tachographBrandNameList, state.tachograph_id]);
+    }, [tachographBrandNameList, state.tachograph_brand_id]);
 
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
         const tachograph_brand_name = tachographBrandNameList.find(
-          (el) => el.id === state.tachograph_id
+          (el) => el.id === state.tachograph_brand_id
         )?.tachograph_brand_name;
-        const dataList = state.tachograph_id
+        const dataList = state.tachograph_brand_id
           ? tachographBrandNameList.filter(
             (el) => el.tachograph_brand_name === tachograph_brand_name
           )
@@ -102,14 +102,14 @@ const withTachographOptions = (
           })
         );
         setTachographFactoryNumberOptions(tachographFactoryNumberOptions);
-        const tachograph_id = tachographBrandNameOptions.find(
+        const tachograph_brand_id = tachographBrandNameOptions.find(
           (el) => el.rowData.factory_number === state.factory_number
         )?.value;
 
-        if ((!state.tachograph_id || state.tachograph_id !== tachograph_id) && state.factory_number) {
-          handleChange('tachograph_id', tachograph_id);
+        if ((!state.tachograph_brand_id || state.tachograph_brand_id !== tachograph_brand_id) && state.factory_number) {
+          handleChange('tachograph_brand_id', tachograph_brand_id);
         }
-        if (state.tachograph_id) {
+        if (state.tachograph_brand_id) {
           if (
             !tachographFactoryNumberOptions.find(
               (el) => el.value === state.factory_number
@@ -120,7 +120,7 @@ const withTachographOptions = (
         }
       }
     }, [
-      state.tachograph_id,
+      state.tachograph_brand_id,
       state.factory_number,
       tachographBrandNameList,
       tachographBrandNameOptions,

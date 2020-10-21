@@ -182,11 +182,11 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
               <ExtField
                 type="select"
                 label="Марка тахографа"
-                value={state.tachograph_id}
-                boundKeys="tachograph_id"
+                value={state.tachograph_brand_id}
+                boundKeys="tachograph_brand_id"
                 options={tachographBrandNameOptions}
                 onChange={props.handleChange}
-                error={errors.tachograph_id}
+                error={errors.tachograph_brand_id}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

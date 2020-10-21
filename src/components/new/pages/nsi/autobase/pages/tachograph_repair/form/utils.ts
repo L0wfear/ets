@@ -12,6 +12,7 @@ export const defaultTachographRepair: TachographRepair = {
   repair_reason_name: '',
   tachograph_brand_name: '',
   tachograph_id: null,
+  tachograph_brand_id: null,
 };
 
 export const getDefaultTachographRepairElement = (element: Partial<TachographRepair>): TachographRepair => {

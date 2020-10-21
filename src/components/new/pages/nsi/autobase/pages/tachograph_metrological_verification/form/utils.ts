@@ -12,6 +12,7 @@ export const defaultTachographMetrologicalVerification: TachographMetrologicalVe
   tachograph_id: null,
   verification_date: '',
   verification_number: '',
+  tachograph_brand_id: null,
 };
 
 export const getDefaultTachographMetrologicalVerificationElement = (element: Partial<TachographMetrologicalVerification>): TachographMetrologicalVerification => {

@@ -105,10 +105,10 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 type="select"
                 label="Марка тахографа"
                 options={brandsOptions}
-                value={state.tachograph_id}
-                error={errors.tachograph_id}
+                value={state.tachograph_brand_id}
+                error={errors.tachograph_brand_id}
                 onChange={handleChange}
-                boundKeys="tachograph_id"
+                boundKeys="tachograph_brand_id"
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

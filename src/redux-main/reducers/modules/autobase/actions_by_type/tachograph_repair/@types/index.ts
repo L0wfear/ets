@@ -8,6 +8,7 @@ export type TachographRepair = {
   repair_reason_name: string;
   tachograph_brand_name: string;
   tachograph_id: number;
+  tachograph_brand_id: number;
 };
 
 export type TachographRepairList = {

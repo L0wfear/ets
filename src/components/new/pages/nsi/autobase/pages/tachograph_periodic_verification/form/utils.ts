@@ -22,6 +22,7 @@ export const defaultTachograph: Tachograph = {
   calibration_type_name: '',
   files: [],
   dataForValidation: null,
+  tachograph_brand_id: null,
 };
 
 export const getDefaultTachographElement = (element: Partial<Tachograph>): Tachograph => {

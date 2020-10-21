@@ -22,7 +22,7 @@
       "dom",
       "esnext"
     ],
-    // "skipLibCheck": true, // отрубаем проверку типов в node_modules, exclude невывозит
+    "skipLibCheck": true, // отрубаем проверку типов в node_modules, exclude невывозит
     "baseUrl": "./src",
     "typeRoots": [
       "node_modules/@types",

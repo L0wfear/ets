@@ -5,7 +5,6 @@ import {
   promiseCreateTachographPeriodicVerification,
   promiseUpdateTachographPeriodicVerification,
   promiseDeleteTachographPeriodicVerification,
-  promiseGetTachographsList,
   promiseGetTachographVerificationReasonList,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/promise';
 import {
@@ -64,13 +63,6 @@ export const actionDeleteTachographPeriodicVerification = (
 ) => {
   return etsLoadingCounter(dispatch, promiseDeleteTachographPeriodicVerification(id), meta);
 };
-
-export const actionGetTachographsList = (
-  payload: object,
-  meta: LoadingMeta
-): EtsAction<EtsActionReturnType<typeof promiseGetTachographsList>> => async (
-  dispatch
-) => etsLoadingCounter(dispatch, promiseGetTachographsList(payload), meta);
 
 export const actionGetTachographVerificationReasonList = (
   payload: object,

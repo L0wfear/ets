@@ -17,7 +17,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { TachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
-import { getDefaultTachographRepairElement, getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from './utils';
+import { getDefaultTachographRepairElement } from './utils';
 import { tachographRepairFormSchema } from './schema';
 import tachographRepairPermissions from '../_config-data/permissions';
 import { autobaseCreateTachographRepair, autobaseUpdateTachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/actions';
@@ -25,12 +25,8 @@ import {
   actionGetAndSetInStoreTachographRepairReasonList,
   actionResetTachographRepairReasonList
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/actions';
-import {
-  actionGetAndSetInStoreTachographList,
-  actionResetTachographList
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { getReasonList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair_reason_list/selectors';
-import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
+import withTachographOptions from '../../tachograph_periodic_verification/form/hoc/withTachographOptions';
 
 const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
   (props) => {
@@ -40,37 +36,21 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
       page,
       path,
       IS_CREATING,
+      tachographBrandNameOptions: brandsOptions,
+      tachographFactoryNumberOptions: factoryNumbersOptions,
+      tachographBrandNameList: tachographListData,
     } = props;
-
-    const [tachographListData, setTachographListData] = React.useState<Array<TachographList>>([]);
-    const [brandsOptions, setBrands] = React.useState<Array<{ value: string; label: string; }>>([]);
-    const [factoryNumbersOptions, setFactoryNumbers] = React.useState<Array<{ value: string; label: string; }>>([]);
 
     const isPermitted = props.isPermittedToUpdate;
 
     React.useEffect(() => {
       (async () => {
         props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page }));
-        const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
-        setTachographListData(tachographList.data);
-        setBrands(getOptions(tachographList.data, state,'brands'));
         return () => {
           props.dispatch(actionResetTachographRepairReasonList());
-          props.dispatch(actionResetTachographList());
         };
       })();
     }, []);
-
-    React.useEffect(() => {
-      setTachographBrandNameAndTachographFactoryNumberOptions(
-        {
-          tachographBrandNameList: tachographListData,
-          state,
-          tachographBrandNameOptions: brandsOptions,
-          handleChange: props.handleChange,
-          setTachographFactoryNumberOptions: setFactoryNumbers,
-        });
-    }, [tachographListData, state.tachograph_id, state.factory_number, brandsOptions]);
 
     const handleChange = React.useCallback(
       (key, value) => {
@@ -227,4 +207,5 @@ export default compose<PropsTachographRepair, OwnTachographRepairProps>(
     schema: tachographRepairFormSchema,
     permissions: tachographRepairPermissions,
   }),
+  withTachographOptions,
 )(TachographRepairForm);

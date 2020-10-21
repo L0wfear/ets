@@ -23,13 +23,11 @@ import { FileField } from 'components/old/ui/input/fields';
 import {
   actionUpdateTachographPeriodicVerification,
   actionCreateTachographPeriodicVerification,
-  actionGetTachographsList,
   actionGetTachographVerificationReasonList,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDatePlusSomeYears } from 'components/@next/@utils/dates/dates';
-import { getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
-import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
+import withTachographOptions from './hoc/withTachographOptions';
 
 const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo(
   (props) => {
@@ -40,24 +38,14 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       path,
       formErrors: errors,
       IS_CREATING,
-      handleChange,
+      tachographBrandNameOptions,
+      tachographFactoryNumberOptions,
+      tachographBrandNameList,
     } = props;
     const [
       verificationReasonOptions,
       setVerificationReasonOptions,
     ] = React.useState<Array<{ value: string | number; label: string; }>>([]);
-    const [
-      tachographBrandNameOptions,
-      setTachographBrandNameOptions,
-    ] = React.useState<Array<{ value: string | number; label: string; }>>([]);
-    const [
-      tachographFactoryNumberOptions,
-      setTachographFactoryNumberOptions,
-    ] = React.useState<Array<{ value: string | number; label: string; }>>([]);
-    const [
-      tachographBrandNameList,
-      setTachographBrandNameList,
-    ] = React.useState<Array<TachographList>>([]);
 
     const isPermitted = props.isPermittedToUpdate;
     const calibrationOptions = [
@@ -78,15 +66,10 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
 
     React.useEffect(() => {
       (async () => {
-        const tachographBrandNameList = await props.actionGetTachographsList(
-          {},
-          { page }
-        );
         const tachographVerificationReasonList = await props.actionGetTachographVerificationReasonList(
           {},
           { page }
         );
-        setTachographBrandNameList(tachographBrandNameList.data);
         const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
           (el) => ({ value: el.id, label: el.name })
         ) ?? [];
@@ -97,8 +80,6 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
         const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
-        const tachographBrandNameOptions = getOptions(tachographBrandNameList, state, 'brands');
-        setTachographBrandNameOptions(tachographBrandNameOptions);
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
     }, [tachographBrandNameList]);
@@ -109,18 +90,6 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         props.handleChange('gov_number', last_car_gov_number);
       }
     }, [IS_CREATING, tachographBrandNameList]);
-
-    React.useEffect(() => {
-      setTachographBrandNameAndTachographFactoryNumberOptions(
-        {
-          tachographBrandNameList,
-          state,
-          tachographBrandNameOptions,
-          handleChange,
-          setTachographFactoryNumberOptions,
-        }
-      );
-    }, [state.tachograph_id, state.factory_number, tachographBrandNameList, tachographBrandNameOptions]);
 
     return (
       <EtsBootstrap.ModalContainer
@@ -284,7 +253,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
 export default compose<PropsTachograph, OwnTachographProps>(
   connect<StatePropsTachograph, {}, OwnTachographProps, ReduxState>(
     null,
-    { actionGetTachographsList, actionGetTachographVerificationReasonList }
+    { actionGetTachographVerificationReasonList }
   ),
   withSearch,
   withForm<PropsTachographWithForm, Tachograph>({
@@ -296,5 +265,6 @@ export default compose<PropsTachograph, OwnTachographProps>(
     },
     schema: tachographPeriodicVerificationFormSchema,
     permissions: tachographPermissions,
-  })
+  }),
+  withTachographOptions,
 )(TachographPeriodicVerificationForm);

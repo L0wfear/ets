@@ -21,13 +21,8 @@ import { getDefaultTachographMetrologicalVerificationElement } from './utils';
 import { tachographMetrologicalVerificationFormSchema } from './schema';
 import tachographMetrologicalVerificationPermissions from '../_config-data/permissions';
 import { autobaseCreateTachographMetrologicalVerification, autobaseUpdateTachographMetrologicalVerification } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/actions';
-import {
-  actionGetAndSetInStoreTachographList,
-  actionResetTachographList
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
-import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import { FileField } from 'components/old/ui/input/fields';
-import { getOptions, setTachographBrandNameAndTachographFactoryNumberOptions } from 'components/new/pages/nsi/autobase/pages/tachograph_repair/form/utils';
+import withTachographOptions from '../../tachograph_periodic_verification/form/hoc/withTachographOptions';
 
 const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologicalVerification> = React.memo(
   (props) => {
@@ -37,35 +32,12 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
       page,
       path,
       IS_CREATING,
+      tachographBrandNameOptions: brandsOptions,
+      tachographFactoryNumberOptions: factoryNumbersOptions,
+      tachographBrandNameList: tachographListData,
     } = props;
 
-    const [tachographListData, setTachographListData] = React.useState<Array<TachographList>>([]);
-    const [brandsOptions, setBrands] = React.useState<Array<{ value: string; label: string; }>>([]);
-    const [factoryNumbersOptions, setFactoryNumbers] = React.useState<Array<{ value: string; label: string; }>>([]);
-
     const isPermitted = props.isPermittedToUpdate;
-
-    React.useEffect(() => {
-      (async () => {
-        const tachographList = await props.dispatch(actionGetAndSetInStoreTachographList({}, { page }));
-        setTachographListData(tachographList.data);
-        setBrands(getOptions(tachographList.data, state,'brands'));
-        return () => {
-          props.dispatch(actionResetTachographList());
-        };
-      })();
-    }, []);
-
-    React.useEffect(() => {
-      setTachographBrandNameAndTachographFactoryNumberOptions(
-        {
-          tachographBrandNameList: tachographListData,
-          state,
-          tachographBrandNameOptions: brandsOptions,
-          handleChange: props.handleChange,
-          setTachographFactoryNumberOptions: setFactoryNumbers,
-        });
-    }, [tachographListData, state.tachograph_id, state.factory_number, brandsOptions]);
 
     const handleChange = React.useCallback(
       (key, value) => {
@@ -238,4 +210,5 @@ export default compose<PropsTachographMetrologicalVerification, OwnTachographMet
     schema: tachographMetrologicalVerificationFormSchema,
     permissions: tachographMetrologicalVerificationPermissions,
   }),
+  withTachographOptions,
 )(TachographMetrologicalVerificationForm);

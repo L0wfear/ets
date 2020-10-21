@@ -1,10 +1,8 @@
 import {
   TachographPeriodicVerificationService,
-  TachographService,
   TachographVerificationReasonService,
 } from 'api/Services';
 import { get } from 'lodash';
-import { TachographList } from '../tachograph_registry/@types';
 import { Tachograph } from './@types';
 
 export const promiseGetTachographPeriodicVerificationList = async (payload) => {
@@ -56,21 +54,6 @@ export const promiseDeleteTachographPeriodicVerification = async (id: number) =>
   const data = get(response, 'result.rows.0', get(response, 'result.0', null));
 
   return data;
-};
-
-export const promiseGetTachographsList = async (payload) => {
-  let response = null;
-  try {
-    response = await TachographService.get(payload);
-  } catch (error) {
-    //
-  }
-
-  const data: Array<TachographList> = get(response, ['result', 'rows'], []);
-
-  return {
-    data,
-  };
 };
 
 export const promiseGetTachographVerificationReasonList = async (payload) => {

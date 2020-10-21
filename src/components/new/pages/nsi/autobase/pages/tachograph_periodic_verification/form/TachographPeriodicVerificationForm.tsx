@@ -97,7 +97,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
         const tachographBrandNameOptions = uniqBy(
           tachographBrandNameList?.map((rowData) => ({
-            value: rowData.id,
+            value: rowData.tachograph_brand_id,
             label: rowData.tachograph_brand_name,
             rowData
           })),
@@ -120,12 +120,12 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         if (!state.tachograph_id && state.factory_number) {
           const tachograph_id = tachographBrandNameList.find(
             (el) => el.factory_number === state.factory_number
-          )?.id;
+          )?.tachograph_brand_id;
           props.handleChange('tachograph_id', tachograph_id);
         }
         if (state.tachograph_id) {
           const tachographFactoryNumberOptions = tachographBrandNameList
-            .filter((el) => el.id === state.tachograph_id)
+            .filter((el) => el.tachograph_brand_id === state.tachograph_id)
             ?.map((el) => ({
               value: el.factory_number,
               label: el.factory_number,

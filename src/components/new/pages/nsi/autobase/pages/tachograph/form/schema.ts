@@ -1,7 +1,6 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTachograph } from 'components/new/pages/nsi/autobase/pages/tachograph/form/@types/TachographForm';
 import { TachographListWithOuterProps } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
-//import { diffDates, getStartOfToday, createValidDate } from 'components/@next/@utils/dates/dates';
 import memoizeOne from 'memoize-one';
 import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
@@ -20,7 +19,6 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
     company_structure_id: {
       title: 'Подразделение',
       type: 'number',
-      required: true,
     },
     tachograph_on_car: {
       title: 'Транспортное средство, на котором установлен тахограф',

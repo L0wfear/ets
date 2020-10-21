@@ -1,6 +1,7 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
-import permissions from 'components/new/pages/nsi/employee/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+
 import {
   YES_NO_SELECT_OPTIONS_BOOL,
 } from 'constants/dictionary';

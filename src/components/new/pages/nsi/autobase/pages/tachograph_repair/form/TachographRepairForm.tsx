@@ -52,24 +52,6 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
       })();
     }, []);
 
-    const handleChange = React.useCallback(
-      (key, value) => {
-        const changeObject: any = {
-          [key]: value,
-        };
-
-        if (key === 'factory_number') {
-          if (!changeObject[key]) {
-            changeObject.gov_number = null;
-          } else {
-            const chosenTachograph = tachographListData?.find(({ factory_number }) => factory_number === value);
-            changeObject.gov_number = chosenTachograph.gov_number;
-          }
-        }
-
-        props.handleChange(changeObject);
-      }, [props.handleChange, tachographListData]);
-
     const handleSubmit = React.useCallback(
       async () => {
         const {
@@ -107,7 +89,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 options={brandsOptions}
                 value={state.tachograph_brand_id}
                 error={errors.tachograph_brand_id}
-                onChange={handleChange}
+                onChange={props.handleChange}
                 boundKeys="tachograph_brand_id"
               />
             </EtsBootstrap.Col>
@@ -118,7 +100,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 value={state.factory_number}
                 error={errors.factory_number}
                 options={factoryNumbersOptions}
-                onChange={handleChange}
+                onChange={props.handleChange}
                 boundKeys="factory_number"
               />
             </EtsBootstrap.Col>

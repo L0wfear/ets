@@ -9,6 +9,7 @@ import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 type WithTachographOptionsFormState = {
   tachograph_brand_id: number;
   factory_number: string;
+  gov_number: string;
 };
 export type WithTachographProps = {
   formState: WithTachographOptionsFormState;
@@ -125,6 +126,15 @@ const withTachographOptions = (
       tachographBrandNameList,
       tachographBrandNameOptions,
     ]);
+
+    React.useEffect(() => {
+      const gov_number = !state.factory_number
+        ? null
+        : tachographBrandNameList?.find(
+          ({ factory_number }) => factory_number === state.factory_number
+        )?.gov_number;
+      handleChange('gov_number', gov_number);
+    }, [state.factory_number, tachographBrandNameList]);
 
     return (
       <Component

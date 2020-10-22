@@ -82,7 +82,6 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     const extendedRenderers: ISchemaRenderer = this.props.renderers(this.props, this.props.onItemChange);
 
     const buttonsDisable = this.buttonsDisable();
-    console.info(this.props.removeItemWithConfirm);
     return (
       <div className="date-table-input">
         <EtsHeaderContainerWrap padding={'0px'}>

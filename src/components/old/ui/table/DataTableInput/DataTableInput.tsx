@@ -115,6 +115,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
           selectField={this.props.selectField || 'rowNumber'}
           selected={this.state.selected}
           noFilter={!this.props.useFilter}
+          useFilter={!!this.props.useFilter}
           usePagination={!!this.props.usePagination}
           withPerPageSelector={!!this.props.withPerPageSelector}
           enumerated={false}

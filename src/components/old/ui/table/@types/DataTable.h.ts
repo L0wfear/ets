@@ -41,4 +41,5 @@ export type IPropsDataTable<TResultObject> = {
   isFilterActive?: boolean;
   toggleFilter?: () => void;
   setisFilterActive?: (isFilterActive: boolean) => void;
+  useFilter?: boolean;
 };

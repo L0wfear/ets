@@ -65,7 +65,7 @@ export const getToConfig = (tachograph_id = 0): TypeConfigData<TachographMetrolo
           {
             key: 'verification_date',
             title: 'Дата проведения поверки',
-            format: 'datetime',
+            format: 'date',
             width: 150,
           },
           {

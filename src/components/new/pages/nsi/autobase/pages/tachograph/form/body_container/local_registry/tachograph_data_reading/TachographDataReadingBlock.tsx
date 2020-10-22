@@ -23,6 +23,7 @@ const TachographDataReadingBlock: React.FC<IPropsTachographDataReadingBlock> = R
         useFilter
         withPerPageSelector
         usePagination
+        removeItemWithConfirm
         {...props}
       />
     );

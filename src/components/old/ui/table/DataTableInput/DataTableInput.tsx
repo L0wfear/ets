@@ -43,6 +43,22 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     });
   };
 
+  handleRemoveItemWithConfirm = async () => {
+    try {
+      await global.confirmDialog({
+        title: 'Внимание!',
+        body: 'Вы уверены, что хотите удалить запись',
+        okName: 'Удалить',
+      });
+      this.props.onItemRemove(this.state.selected.rowNumber - 1);
+      this.setState({
+        selected: null,
+      });
+    } catch (error) {
+      //
+    }
+  };
+
   toggleFilter = () => {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   };
@@ -66,7 +82,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     const extendedRenderers: ISchemaRenderer = this.props.renderers(this.props, this.props.onItemChange);
 
     const buttonsDisable = this.buttonsDisable();
-
+    console.info(this.props.removeItemWithConfirm);
     return (
       <div className="date-table-input">
         <EtsHeaderContainerWrap padding={'0px'}>
@@ -97,7 +113,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
                         || this.props.disabled
                         || !this.props.isPermitted
                       }
-                      onClick={this.handleRemoveVehicle}
+                      onClick={this.props.removeItemWithConfirm ? this.handleRemoveItemWithConfirm : this.handleRemoveVehicle}
                     >
                       {removeButtonLable}
                     </EtsBootstrap.Button>

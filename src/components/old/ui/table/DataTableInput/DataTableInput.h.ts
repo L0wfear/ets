@@ -26,6 +26,7 @@ export type ISharedPropsDataTableInput = {
   useFilter?: boolean;
   usePagination?: boolean;
   withPerPageSelector?: boolean;
+  removeItemWithConfirm?: boolean;
 };
 
 export type IStateDataTableInput = {

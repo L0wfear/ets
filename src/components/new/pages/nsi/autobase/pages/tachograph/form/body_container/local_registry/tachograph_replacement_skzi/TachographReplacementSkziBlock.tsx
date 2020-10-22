@@ -23,6 +23,7 @@ const TachographReplacementSkziBlock: React.FC<IPropsTachographReplacementSkziBl
         useFilter
         withPerPageSelector
         usePagination
+        removeItemWithConfirm
         {...props}
       />
     );

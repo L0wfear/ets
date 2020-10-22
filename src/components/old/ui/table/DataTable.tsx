@@ -863,7 +863,7 @@ export default class DataTable extends React.Component<Props, State> {
               {noTitle ? '' : title}
             </DataTableHeadLineTitle>
             <div className="waybills-buttons">
-              {!noFilter || this.props.useFilter && (
+              {!noFilter && !this.props.useFilter && (
                 <FilterButton
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}

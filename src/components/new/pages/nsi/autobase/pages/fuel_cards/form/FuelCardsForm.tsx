@@ -27,17 +27,12 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement, usefuelTypeOptions } from './utils';
-import { onChangeWithKeys } from 'components/old/compositions/hoc';
 
-import FuelCardsToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/vehicle-block/FuelCardsToVehicleBlock';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/registry-config';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-
-const FuelCardsVehicleBlock: any = onChangeWithKeys(
-  FuelCardsToVehicleBlockComponent,
-);
+import FuelCardsTabsMain from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/_FuelCardsTabsMain';
 
 export const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   gov_number: null,
@@ -188,31 +183,16 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <EtsBootstrap.Col md={12}>
-                <EtsBootstrap.Row>
-                  <FuelCardsVehicleBlock
-                    id="fuel_card_on_cars_id"
-                    onChange={props.handleChange}
-                    boundKeys="fuel_card_on_cars"
-                    inputList={state.fuel_card_on_cars || []}
-                    origin_fuel_card_on_cars={state.origin_fuel_card_on_cars || []}
-                    outerValidate
-                    errors={errors.fuel_card_on_cars}
-                    fuelCardsId={state.id}
-                    selectField="customId"
-                    modalKey={page}
-                    page={page}
-                    path={path}
-                    isPermitted={isPermitted || isPermittedToUpdateCards}
-                    isPermittedToUpdateCards={isPermittedToUpdateCards}
-                    tableTitle="Привязанные транспортные средства"
-                  />
-                </EtsBootstrap.Row>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
+          <FuelCardsTabsMain
+            formErrors={errors}
+            //
+            handleChange={props.handleChange}
+            formState={state}
+            page={page}
+            path={path}
+            isPermitted={isPermitted || isPermittedToUpdateCards}
+            isPermittedToUpdateCards={isPermittedToUpdateCards}
+          />
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {

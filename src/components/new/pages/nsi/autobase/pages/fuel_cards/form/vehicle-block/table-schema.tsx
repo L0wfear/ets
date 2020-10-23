@@ -38,6 +38,12 @@ export const meta: IDataTableSchema = {
       type: 'date',
       cssClassName: 'width150',
     },
+    {
+      name: 'decouple_reason',
+      displayName: 'Причина отвязки',
+      type: 'input',
+      cssClassName: 'width150',
+    },
   ],
 };
 
@@ -159,6 +165,48 @@ const UninstalledAtRenderer: React.FC<
   );
 };
 
+const DecoupleReasonRenderer: React.FC<
+  PropsUninstalledAtRenderer
+> = ({
+  outputListErrors = [],
+  onChange,
+  index,
+  isPermitted,
+  isPermittedToUpdateCards,
+  value,
+  inputList,
+  origin_fuel_card_on_cars,
+}) => {
+
+  const handleChange = React.useCallback(
+    (key, valueNew) => {
+      onChange(index, key, valueNew);
+    },
+    [index],
+  );
+
+  const rowValue = inputList[index];
+
+  const rowValueOrigin = origin_fuel_card_on_cars.find((elem) => elem.id === rowValue.id);
+
+  return (
+    <ExtField
+      id="decouple_reason"
+      type="string"
+      label={false}
+      error={outputListErrors[index]?.decouple_reason ?? ''}
+      value={value}
+      onChange={handleChange}
+      boundKeys={'decouple_reason'}
+      disabled={
+        !isPermitted && !isPermittedToUpdateCards
+        || !Boolean(inputList[index]?.uninstalled_at)
+        || Boolean(rowValueOrigin?.uninstalled_at) && Boolean(rowValueOrigin?.decouple_reason)
+      }
+    />
+  );
+};
+
 export const renderers: TRendererFunction = (props, onListItemChange) => {
   const inputList = props.inputList.filter((filterItem) =>
     Boolean(filterItem.gov_number),
@@ -203,6 +251,15 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
         origin_fuel_card_on_cars={props.origin_fuel_card_on_cars}
+        isPermittedToUpdateCards={isPermittedToUpdateCards}
+      />
+    ),
+    decouple_reason: (rowMeta) => (
+      <DecoupleReasonRenderer
+        {...props}
+        onChange={onListItemChange}
+        value={rowMeta.data}
+        index={rowMeta.rowData.rowNumber - 1}
         isPermittedToUpdateCards={isPermittedToUpdateCards}
       />
     ),

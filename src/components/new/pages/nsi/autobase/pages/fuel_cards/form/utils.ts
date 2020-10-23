@@ -28,6 +28,11 @@ export const defaultFuelCard: FuelCard = {
   fuel_card_on_cars: [],
   origin_fuel_card_on_cars: [],
   okrug_name: null,
+  source_type_id: null,
+  source_type_text: null,
+  status: null,
+  status_text: null,
+  comment: null,
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {

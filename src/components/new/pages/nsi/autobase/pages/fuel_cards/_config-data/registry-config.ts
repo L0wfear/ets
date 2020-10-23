@@ -75,6 +75,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'status_text',
+          title: 'Статус',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'released_at',
           type: 'advanced-date',
           title: 'Дата выпуска',
@@ -105,6 +110,12 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           title: 'Подразделение',
           type: 'multiselect',
           displayIf: displayIfContant.lenghtStructureMoreOne,
+        },
+        {
+          valueKey: 'source_type_id',
+          labelKey: 'source_type_text',
+          title: 'Способ создания',
+          type: 'multiselect',
         },
         {
           valueKey: 'company_short_name',
@@ -153,15 +164,20 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
+            key: 'status_text',
+            title: 'Статус',
+            width: 200,
+          },
+          {
             key: 'released_at',
             title: 'Дата выпуска',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
             key: 'date_end',
             title: 'Дата окончания срока действия',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
@@ -178,6 +194,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           {
             key: 'garage_number',
             title: 'Гаражный номер',
+            width: 200,
+          },
+          {
+            key: 'source_type_text',
+            title: 'Способ создания',
             width: 200,
           },
           {

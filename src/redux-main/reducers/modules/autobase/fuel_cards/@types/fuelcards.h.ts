@@ -9,6 +9,7 @@ export type FuelCardOnCars = {
   fuel_card_id: number;
   number: string;
   garage_number: string;
+  decouple_reason: string;
 
   // для таблички
   customId?: number;
@@ -41,6 +42,11 @@ export type FuelCard = {
   gov_number_text: string;
   garage_number: string;
   fuel_card_on_cars: Array<FuelCardOnCars>;
+  source_type_id: number;
+  source_type_text: string;
+  status: 'Active' | 'Locked';
+  status_text: string;
+  comment: string; // поле из синхры
   // для таблички с тачками
   origin_fuel_card_on_cars: Array<FuelCardOnCars>; // состояние таблички до редактирование
 };

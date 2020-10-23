@@ -37,12 +37,14 @@ const validateFuelCardId = (
     notFiltredFuelCardsIndex,
   );
 
-  const IS_CLOSED = formState.status === 'close';
-  const IS_DELETE = formState?.delete;
+  const IS_CLOSED = formState.status === 'closed';
+  const IS_DELETE = formState.status === 'deleted';
 
   const isValidSelectedFuelCard = availableFuelCard.some(
     (optionData) => optionData.rowData.id === rowData.fuel_card_id,
   );
+
+  const selectedFuelCard = rowData.fuel_card_id && notFiltredFuelCardsIndex[rowData.fuel_card_id];
 
   if (needSelectFuelCard) {
     if (!availableFuelCard.length && rowData.type_id === 1) {
@@ -71,6 +73,10 @@ const validateFuelCardId = (
   if (!isValidSelectedFuelCard && rowData.fuel_card_id) {
     // если выбрана топливная карта, но ее нет в списке, который приходит с бека
     return 'Укажите актуальную топливную карту';
+  }
+
+  if (selectedFuelCard.status === 'Locked' && !IS_CLOSED && !IS_DELETE) {
+    return 'Выбранная топливная карта заблокирована';
   }
 
   return fuel_card_id;

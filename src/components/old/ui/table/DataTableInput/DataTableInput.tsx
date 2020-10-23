@@ -91,10 +91,10 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
               {
                 !this.props.hideButtons
                   && <React.Fragment>
-                    <FilterButton
+                    {!!this.props.useFilter && <FilterButton
                       active={this.state.isFilterActive}
                       onClick={this.toggleFilter}
-                    />
+                    />}
                     <EtsBootstrap.Button 
                       disabled={
                         buttonsDisable.addButtonDisable

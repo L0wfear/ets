@@ -10,7 +10,7 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
   return {
     Service: {
       getBlobData: {
-        entity: 'autobase/tachograph_registry',
+        entity: 'autobase/tachograph_registry/export',
         payload: {
           format: 'xls',
         },

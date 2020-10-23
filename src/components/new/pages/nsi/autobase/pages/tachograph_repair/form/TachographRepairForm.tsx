@@ -55,14 +55,12 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
     const handleSubmit = React.useCallback(
       async () => {
         const {
-          formState: { factory_number, repair_reason_id, repair_date, comment, id },
+          formState: { repair_reason_id, repair_date, comment, id, tachograph_id },
         } = props;
-
-        const chosenTachograph = tachographListData?.find((tachograph) => tachograph.factory_number === factory_number);
 
         const data = {
           id,
-          tachograph_id: chosenTachograph?.id,
+          tachograph_id,
           repair_reason_id,
           repair_date,
           comment,
@@ -117,6 +115,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 boundKeys="repair_date"
                 makeGoodFormat
                 makeGoodFormatInitial
+                time={false}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6}>

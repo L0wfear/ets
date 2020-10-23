@@ -113,6 +113,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 boundKeys="calibration_date"
                 onChange={handleChangeCalibrationDate}
                 error={errors.calibration_date}
+                time={false}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -154,6 +155,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 boundKeys="next_calibration_date"
                 error={errors.next_calibration_date}
                 disabled
+                time={false}
               />
             </EtsBootstrap.Col>
             {state.verification_reason_id === 7 && (

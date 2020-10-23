@@ -70,7 +70,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
           { page }
         );
         const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
-          (el) => ({ value: el.id, label: el.name })
+          (el) => ({ value: el.id, label: el.name, rowData: el })
         ) ?? [];
         setVerificationReasonOptions(tachographVerificationReasonOptions);
       })();
@@ -82,6 +82,13 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
     }, [tachographBrandNameList]);
+
+    const handleChangeVerificationReasonId = React.useCallback((key, value, rowData) => {
+      props.handleChange({
+        verification_reason_id: value,
+        verification_reason_name: rowData?.label,
+      });
+    }, []);
 
     return (
       <EtsBootstrap.ModalContainer
@@ -139,7 +146,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                   boundKeys="verification_reason_id"
                   emptyValue={null}
                   options={verificationReasonOptions}
-                  onChange={props.handleChange}
+                  onChange={handleChangeVerificationReasonId}
                   error={errors.verification_reason_id}
                 />
               </EtsBootstrap.Col>

@@ -234,6 +234,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 onChange={props.handleChange}
                 boundKeys="files"
                 error={errors.files}
+                kind={'tachograph_periodic_verification'}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

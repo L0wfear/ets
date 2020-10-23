@@ -95,7 +95,7 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
           {
             key: 'verification_date',
             title: 'Дата проведения поверки',
-            format: 'datetime',
+            format: 'date',
             width: 150,
           },
           {

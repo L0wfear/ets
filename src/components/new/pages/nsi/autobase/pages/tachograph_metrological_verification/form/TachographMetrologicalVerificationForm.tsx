@@ -42,10 +42,8 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
     const handleSubmit = React.useCallback(
       async () => {
         const {
-          formState: { id, factory_number, verification_date, verification_number, comment, files },
+          formState: { id, factory_number, verification_date, verification_number, comment, files, tachograph_id },
         } = props;
-
-        const chosenTachograph = tachographListData?.find((tachograph) => tachograph.factory_number === factory_number);
 
         const data = {
           id,
@@ -53,7 +51,7 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
           factory_number,
           verification_date,
           verification_number,
-          tachograph_id: chosenTachograph?.id,
+          tachograph_id,
           comment,
         };
 

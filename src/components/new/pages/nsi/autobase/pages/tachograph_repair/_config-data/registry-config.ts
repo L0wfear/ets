@@ -100,7 +100,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
           {
             key: 'repair_date',
             title: 'Дата проведения ремонта',
-            format: 'datetime',
+            format: 'date',
             width: 150,
           },
           {

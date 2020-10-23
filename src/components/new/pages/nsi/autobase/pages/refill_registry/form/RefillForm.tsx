@@ -1,0 +1,205 @@
+import * as React from 'react';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { compose } from 'recompose';
+import {
+  OwnRefillProps,
+  PropsRefill,
+  PropsRefillWithForm,
+  StatePropsRefill
+} from 'components/new/pages/nsi/autobase/pages/refill_registry/form/@types/RefillForm';
+import {connect} from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { getDefaultPenaltyElement } from './utils';
+import { refillFormSchema } from './schema';
+import refillPermissions from '../_config-data/permissions';
+import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
+import { Refill } from 'redux-main/reducers/modules/autobase/actions_by_type/refill_registry/@types';
+
+class RefillForm extends React.PureComponent<PropsRefill, {}> {
+
+  render() {
+    const {
+      formState: state,
+      page,
+      path,
+    } = this.props;
+
+    const formatedTransactionDatetime = createValidDateTimeDots(state.transaction_at);
+
+    return (
+      <EtsBootstrap.ModalContainer id="modal-refill" show onHide={this.props.hideWithoutChanges} bsSize="small">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Заправка</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Округ"
+                readOnly
+                value={state.okrug_name || '-'}
+                boundKeys="okrug_name"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Организация"
+                readOnly
+                value={state.company_name || '-'}
+                boundKeys="company_name"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Дата и время транзакции"
+                readOnly
+                value={formatedTransactionDatetime || '-'}
+                boundKeys="transaction_at"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Номер топливной карты ГПН"
+                readOnly
+                value={state.number || '-'}
+                boundKeys="number"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Тип топлива ГПН"
+                readOnly
+                value={state.fuel_type || '-'}
+                boundKeys="fuel_type"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Выдано, л"
+                readOnly
+                value={state.given || '-'}
+                boundKeys="given"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Рег. номер ТС"
+                readOnly
+                value={state.gov_number || '-'}
+                boundKeys="gov_number"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Путевой лист"
+                readOnly
+                value={state.waybill_number || '-'}
+                boundKeys="waybill_number"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Номер топливной карты, указанной в ПЛ"
+                readOnly
+                value={state.wb_fuel_card_number || '-'}
+                boundKeys="wb_fuel_card_number"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Тип топлива, указанный в ПЛ"
+                readOnly
+                value={state.wb_fuel_type || '-'}
+                boundKeys="wb_fuel_type"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Наименование АЗС"
+                readOnly
+                value={state.station_name || '-'}
+                boundKeys="station_name"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Адрес АЗС"
+                readOnly
+                value={state.station_address || '-'}
+                boundKeys="station_address"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                type="string"
+                label="Подразделение"
+                readOnly
+                value={state.structure_name || '-'}
+                boundKeys="structure_name"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </ModalBodyPreloader>
+      </EtsBootstrap.ModalContainer>
+    );
+  }
+}
+
+export default compose<PropsRefill, OwnRefillProps>(
+  connect<StatePropsRefill, {}, OwnRefillProps, ReduxState>(
+    (state) => ({
+      refillList: getAutobaseState(state).refillList,
+    }),
+  ),
+  withSearch,
+  withForm<PropsRefillWithForm, Refill>({
+    uniqField: 'rrn_code',
+    mergeElement: (props) => {
+      return getDefaultPenaltyElement(props.element);
+    },
+    schema: refillFormSchema,
+    permissions: refillPermissions,
+  }),
+)(RefillForm);

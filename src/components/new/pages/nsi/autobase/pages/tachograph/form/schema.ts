@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTachograph } from 'components/new/pages/nsi/autobase/pages/tachograph/form/@types/TachographForm';
 import { TachographListWithOuterProps } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import memoizeOne from 'memoize-one';
-import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDate, diffDates, createValidDateDots } from 'components/@next/@utils/dates/dates';
 
 export const tachographFormSchema: SchemaType<TachographListWithOuterProps, PropsTachograph> = {
   properties: {
@@ -31,6 +31,7 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
               const activated_at_date = createValidDate(el.activated_at);
               const uninstalled_at_date = createValidDate(el.uninstalled_at);
               const IS_NEW_EL = index === 0;
+              const prevElUninstalledDate = arr[index + 1] ? createValidDate(arr[index + 1].uninstalled_at) : '';
               return ({
                 car_id: (
                   !el.car_id
@@ -47,7 +48,9 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
                     ? 'Поле "Дата монтажа" должно быть заполнено'
                     : current_date && diffDates(installed_at_date, current_date) > 0
                       ? 'Дата монтажа не может быть больше текущей'
-                      : ''
+                      : !!arr[index + 1] && diffDates(installed_at_date, prevElUninstalledDate) < 0
+                        ? `Тахограф уже установлен на транспортное средство ${arr[index + 1].gov_number || ''} на данную дату монтажа ${createValidDateDots(el.installed_at)}`
+                        : ''
                 ),
                 activated_at: (
                   !el.activated_at

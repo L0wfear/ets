@@ -24,7 +24,7 @@ export const defaultRefill: Refill = {
   structure_name: '',
 };
 
-export const getDefaultPenaltyElement = (element: Partial<Refill>): Refill => {
+export const getDefaultRefillElement = (element: Partial<Refill>): Refill => {
   const newElement = cloneDeep(defaultRefill);
   if (isObject(element)) {
     Object.keys(defaultRefill).forEach((key) => {

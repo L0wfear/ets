@@ -15,7 +15,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { getDefaultPenaltyElement } from './utils';
+import { getDefaultRefillElement } from './utils';
 import { refillFormSchema } from './schema';
 import refillPermissions from '../_config-data/permissions';
 import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
@@ -197,7 +197,7 @@ export default compose<PropsRefill, OwnRefillProps>(
   withForm<PropsRefillWithForm, Refill>({
     uniqField: 'rrn_code',
     mergeElement: (props) => {
-      return getDefaultPenaltyElement(props.element);
+      return getDefaultRefillElement(props.element);
     },
     schema: refillFormSchema,
     permissions: refillPermissions,

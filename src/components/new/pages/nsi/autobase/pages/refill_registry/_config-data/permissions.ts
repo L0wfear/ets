@@ -1,9 +1,9 @@
 const refillPermissions = {
-  list: 'penalties.list',
-  read: 'penalties.read',
-  create: 'penalties.create',
-  update: 'penalties.update',
-  delete: 'penalties.delete',
+  list: 'refill.list',
+  read: 'refill.read',
+  create: 'refill.create',
+  update: 'refill.update',
+  delete: 'refill.delete',
 };
 // исправить permissions на нужные
 export default refillPermissions;

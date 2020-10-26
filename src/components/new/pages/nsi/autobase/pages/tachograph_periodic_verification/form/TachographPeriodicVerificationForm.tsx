@@ -67,7 +67,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       (async () => {
         const tachographVerificationReasonList = await props.actionGetTachographVerificationReasonList(
           {},
-          { page }
+          { page, path }
         );
         const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
           (el) => ({ value: el.id, label: el.name, rowData: el })

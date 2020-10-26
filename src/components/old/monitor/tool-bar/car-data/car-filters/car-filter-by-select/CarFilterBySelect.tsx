@@ -31,8 +31,7 @@ import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } f
 
 const StyledFilter = styled.div`
     max-height: 532px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: auto;
     width: 100%;
     height: 100%;
 `;

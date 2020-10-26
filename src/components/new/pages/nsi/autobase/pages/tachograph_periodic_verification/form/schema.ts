@@ -17,7 +17,6 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       dependencies: [
         (value, {dataForValidation}) => {
           if (value && dataForValidation) {
-            console.info(createValidDate(value), dataForValidation);
             return diffDates(createValidDate(value), createValidDate(dataForValidation.installed_at)) < 0
               ? 'Дата калибровки не может быть раньше даты установки тахографа'
               : diffDates(createValidDate(value), getStartOfToday()) > 0

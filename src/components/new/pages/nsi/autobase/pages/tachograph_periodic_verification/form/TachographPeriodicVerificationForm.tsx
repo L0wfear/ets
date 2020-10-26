@@ -78,10 +78,10 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
 
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
-        const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
+        const last_tachograph_installation_date = tachographBrandNameList.find((el) => el.id === state.tachograph_id)?.installed_at;
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
-    }, [tachographBrandNameList]);
+    }, [tachographBrandNameList, state.tachograph_id]);
 
     const handleChangeVerificationReasonId = React.useCallback((key, value, rowData) => {
       props.handleChange({

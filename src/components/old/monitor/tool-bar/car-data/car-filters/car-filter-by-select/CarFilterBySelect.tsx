@@ -30,11 +30,11 @@ import { makeObjArrayUniqByKey } from 'utils/functions';
 import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const StyledFilter = styled.div`
-  &.active {
     max-height: 532px;
-    overflow-x: hidden;
     overflow-y: scroll;
-  }
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
 `;
 
 const placeholder = {
@@ -75,13 +75,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
-    const [outOfView, setOutOfView] = React.useState(false);
     const dispatch = etsUseDispatch();
-    const node = React.createRef<any>();
-
-    React.useEffect(() => {
-      setOutOfView(node.current.getBoundingClientRect().bottom > (window.innerHeight || document.documentElement.clientHeight));
-    });
 
     React.useEffect(() => {
       (async () => {
@@ -260,7 +254,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
           <div className={cx('tool_bar-block', { active })}>
-            <StyledFilter ref={node} className={`default_cube flex-row map-car-filter multi ${outOfView ? 'active' : ''}`}>
+            <StyledFilter className="default_cube flex-row map-car-filter multi">
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
               </div>

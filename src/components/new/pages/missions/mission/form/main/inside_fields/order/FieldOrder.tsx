@@ -3,22 +3,23 @@ import { get } from 'lodash';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import Registry from 'components/new/ui/registry/components/Registry';
+import { orderTechnicalOperationRegistryKey, getToConfig } from 'components/new/pages/missions/mission/form/main/inside_fields/order/technical_operations/_config-data/registry-config';
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { actionLoadOrderList } from 'redux-main/reducers/modules/order/action-order';
 import { makeOptionsOrderNumberForMissionList, makeFilteredTOList } from './makeOptions';
-import { Order } from 'redux-main/reducers/modules/order/@types';
+import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/order/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import DataTable from 'components/old/ui/table/DataTable';
 import { FlexContainer } from 'global-styled/global-styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import missionActions from 'redux-main/reducers/modules/missions/mission/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-
-const Table: any = DataTable;
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 type Props = {
   disabled: boolean;
@@ -33,56 +34,10 @@ type Props = {
   formDataKey: FormKeys & 'mission';
 };
 
-export const tableMeta = {
-  cols: [
-    {
-      name: 'tk_operation_name',
-      displayName: 'Операция',
-      type: 'string',
-      filter: false,
-    },
-    {
-      name: 'object_type_name',
-      displayName: 'Тип объекта',
-      type: 'string',
-      filter: false,
-    },
-    {
-      name: 'elem',
-      displayName: 'Элемент',
-      type: 'string',
-      filter: false,
-    },
-    {
-      name: 'num_exec',
-      displayName: 'Количество выполнений',
-      type: 'number',
-      filter: false,
-    },
-    {
-      name: 'date_from',
-      displayName: 'Начало действий',
-      type: 'advanced-datetime',
-      filter: false,
-    },
-    {
-      name: 'date_to',
-      displayName: 'Окончание действий',
-      type: 'advanced-datetime',
-      filter: false,
-    },
-    {
-      name: 'work_type_name',
-      displayName: 'Способ выполнения операции',
-      type: 'string',
-      filter: false,
-    },
-  ],
-};
-
 const FieldOrder: React.FC<Props> = React.memo(
   (props) => {
     const page = useForm.useFormDataMeta(props.formDataKey);
+    const selectedRow: OrderTechnicalOperation = etsUseSelector((state) => getListData(state.registry, orderTechnicalOperationRegistryKey).data.selectedRow);
     const technical_operations = useForm.useFormDataFormStatePickValue<Order, Order['technical_operations']>(props.formDataKey, 'technical_operations');
     const order_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_id']>(props.formDataKey, 'order_id');
     const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_operation_id']>(props.formDataKey, 'order_operation_id');
@@ -106,6 +61,32 @@ const FieldOrder: React.FC<Props> = React.memo(
         setOrderRaw(result.data);
       })();
     }, []);
+
+    React.useEffect(
+      () => {
+        if (filteredTO) {
+          dispatch(
+            registryAddInitialData(
+              getToConfig(
+                filteredTO,
+              ),
+            ),
+          );
+        }
+        return () => {
+          dispatch(
+            registryRemoveData(orderTechnicalOperationRegistryKey),
+          );
+        };
+      },
+      [filteredTO],
+    );
+
+    React.useEffect(() => {
+      if (selectedRow) {
+        setSelectedElement(selectedRow);
+      }
+    });
 
     React.useEffect(() => {
       if (technical_operations) {
@@ -133,11 +114,6 @@ const FieldOrder: React.FC<Props> = React.memo(
       () => {
         setShowForm(true);
       }, []);
-
-    const handleSelectedElementChange = React.useCallback((selectedRow) => {
-      const selectedRowElement = get(selectedRow, 'props.data', null);
-      setSelectedElement(selectedRowElement);
-    }, [selectedElement]);
 
     const onSelect = React.useCallback(() => {
       const changeObj = {
@@ -230,17 +206,7 @@ const FieldOrder: React.FC<Props> = React.memo(
               </EtsBootstrap.ModalHeader>
 
               <ModalBodyPreloader path={props.path} page={props.page} typePreloader="mainpage">
-                <Table
-                  noTitle={true}
-                  noFilter
-                  selectField={'order_operation_id'}
-                  results={filteredTO}
-                  enumerated
-                  tableMeta={tableMeta}
-                  className="technical-operations-table"
-                  onRowSelected={handleSelectedElementChange}
-                  selected={selectedElement}
-                />
+                <Registry registryKey={orderTechnicalOperationRegistryKey} />
               </ModalBodyPreloader>
               <EtsBootstrap.ModalFooter>
                 <EtsBootstrap.Button onClick={onSelect}>

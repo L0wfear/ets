@@ -42,7 +42,7 @@ import { isOrderSource } from 'components/new/pages/missions/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
-import FieldOrder from 'components/new/pages/missions/mission/form/main/inside_fields/order_number/FieldOrder';
+import FieldOrder from 'components/new/pages/missions/mission/form/main/inside_fields/order/FieldOrder';
 import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';

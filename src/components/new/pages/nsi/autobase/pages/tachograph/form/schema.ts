@@ -102,9 +102,10 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
       type: 'any',
       dependencies: [
         memoizeOne(
-          (tachograph_replacement_skzi, {installed_at, current_date}) => {
-            return tachograph_replacement_skzi.map((el) => {
-              const installed_at_date = createValidDate(installed_at);
+          (tachograph_replacement_skzi, {current_date, tachograph_on_car}) => {
+            return tachograph_replacement_skzi.map((el, i, arr) => {
+              const tachographIndex = tachograph_on_car.length - arr.length + i; 
+              const installed_at_date = createValidDate(tachograph_on_car[tachographIndex >= 0 ? tachographIndex : 0]?.installed_at);
               const valid_replacement_date = createValidDate(el.replacement_date);
               return ({
                 replacement_date: (

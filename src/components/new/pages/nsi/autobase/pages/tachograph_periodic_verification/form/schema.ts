@@ -82,7 +82,7 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       type: 'multiValueOfArray',
       dependencies: [
         (value) => {
-          if(!value || value.every((el) => el.action === 'delete')) {
+          if(!value.length || value.every((el) => el?.action === 'delete')) {
             return 'Поле "Сертификат" обязательно для заполнения';
           }
         }

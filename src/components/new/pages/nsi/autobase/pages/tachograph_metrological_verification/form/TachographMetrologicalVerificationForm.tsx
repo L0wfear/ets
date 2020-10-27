@@ -152,7 +152,6 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
                 error={errors.files}
                 onChange={props.handleChange}
                 boundKeys="files"
-                askBefoeRemove
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

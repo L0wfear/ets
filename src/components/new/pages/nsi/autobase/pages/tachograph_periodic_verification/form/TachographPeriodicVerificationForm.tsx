@@ -67,10 +67,10 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       (async () => {
         const tachographVerificationReasonList = await props.actionGetTachographVerificationReasonList(
           {},
-          { page }
+          { page, path }
         );
         const tachographVerificationReasonOptions = tachographVerificationReasonList?.data.map(
-          (el) => ({ value: el.id, label: el.name })
+          (el) => ({ value: el.id, label: el.name, rowData: el })
         ) ?? [];
         setVerificationReasonOptions(tachographVerificationReasonOptions);
       })();
@@ -78,10 +78,17 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
 
     React.useEffect(() => {
       if (tachographBrandNameList.length) {
-        const last_tachograph_installation_date = tachographBrandNameList[0].installed_at;
+        const last_tachograph_installation_date = tachographBrandNameList.find((el) => el.id === state.tachograph_id)?.installed_at;
         props.handleChange('dataForValidation', {installed_at: last_tachograph_installation_date});
       }
-    }, [tachographBrandNameList]);
+    }, [tachographBrandNameList, state.tachograph_id]);
+
+    const handleChangeVerificationReasonId = React.useCallback((key, value, rowData) => {
+      props.handleChange({
+        verification_reason_id: value,
+        verification_reason_name: rowData?.label,
+      });
+    }, []);
 
     return (
       <EtsBootstrap.ModalContainer
@@ -139,7 +146,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                   boundKeys="verification_reason_id"
                   emptyValue={null}
                   options={verificationReasonOptions}
-                  onChange={props.handleChange}
+                  onChange={handleChangeVerificationReasonId}
                   error={errors.verification_reason_id}
                 />
               </EtsBootstrap.Col>
@@ -227,6 +234,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
                 onChange={props.handleChange}
                 boundKeys="files"
                 error={errors.files}
+                kind={'tachograph_periodic_verification'}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

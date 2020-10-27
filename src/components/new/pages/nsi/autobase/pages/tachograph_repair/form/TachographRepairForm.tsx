@@ -45,7 +45,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
 
     React.useEffect(() => {
       (async () => {
-        props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page }));
+        props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page, path }));
         return () => {
           props.dispatch(actionResetTachographRepairReasonList());
         };

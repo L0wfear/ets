@@ -66,14 +66,7 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
     files: {
       title: 'Сертификат',
       type: 'multiValueOfArray',
-      dependencies: [
-        (value) => {
-          if (!value.length) {
-            return getRequiredFieldMessage('Сертификат');
-          }
-          return false;
-        }
-      ],
+      required: true,
     },
     gov_number: {
       title: 'Рег. номер ТС',

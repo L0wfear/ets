@@ -77,7 +77,7 @@ const selectedStroke = new Stroke({
 });
 
 const selectedFill = new Fill({
-  color: '#e67e22',
+  color: 'darkviolet',
 });
 
 const makeCacheStyle = (cacheStyleName, { selected, state } ) => {

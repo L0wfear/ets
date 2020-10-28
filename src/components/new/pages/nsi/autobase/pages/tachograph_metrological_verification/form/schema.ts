@@ -66,7 +66,13 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
     files: {
       title: 'Сертификат',
       type: 'multiValueOfArray',
-      required: true,
+      dependencies: [
+        (value) => {
+          if(!value.length || value.every((el) => el?.action === 'delete')) {
+            return 'Поле "Сертификат" обязательно для заполнения';
+          }
+        }
+      ],
     },
     gov_number: {
       title: 'Рег. номер ТС',

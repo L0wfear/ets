@@ -1,10 +1,9 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { RefillReportForm } from './@types';
 
 export const defaultRefillReportFormFunc = (): RefillReportForm => ({
-  date_start: createValidDateTime(getToday9am()),
-  date_end: createValidDateTime(getTomorrow9am()),
+  date_start: '',
+  date_end: '',
 });
 
 export const getDefaultRefillReportFormElement = (element: Partial<RefillReportForm>): RefillReportForm => {

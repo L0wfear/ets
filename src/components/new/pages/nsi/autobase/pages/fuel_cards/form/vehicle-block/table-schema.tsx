@@ -12,6 +12,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { oldestInstalledDateIndex } from '../../../battery_registry/form/schema';
 import { get } from 'lodash-es';
+import { createValidDateTime, setDateTime0am, setDateTime2359 } from 'components/@next/@utils/dates/dates';
 
 export const validationSchema: SchemaType<ValuesOf<FuelCard['fuel_card_on_cars']>, any> = {
   properties: {
@@ -103,14 +104,28 @@ const InstalledAtRenderer: React.FC<
   inputList,
   isPermittedToUpdateCards,
 }) => {
+
+  const prevVal = inputList[index]['installed_at'];
+
+  const handleChange = (_, key, valueNew) => {
+    onChange(
+      index,
+      {
+        [key]: !prevVal
+          ? createValidDateTime(setDateTime0am(valueNew))
+          : valueNew,
+      },
+    );
+  };
+
   return (
     <ExtField
       type="date"
       label={false}
       date={value}
-      time={false}
+      time={true}
       error={outputListErrors[index]?.installed_at ?? ''}
-      onChange={onChange}
+      onChange={handleChange}
       boundKeys={[index, 'installed_at']}
       disabled={
         (!isPermitted || inputList[index]?.alredy_save)
@@ -140,14 +155,26 @@ const UninstalledAtRenderer: React.FC<
   const isOldestInstaledAtRow = oldestDateIndex === index;
   const rowValueOrigin = origin_fuel_card_on_cars.find((elem) => elem.id === rowValue.id);
 
+  const prevVal = inputList[index]['uninstalled_at'];
+  const handleChange = (_, key, valueNew) => {
+    onChange(
+      index,
+      {
+        [key]: !prevVal
+          ? createValidDateTime(setDateTime2359(valueNew))
+          : valueNew,
+      },
+    );
+  };
+
   return (
     <ExtField
       type="date"
       label={false}
       date={value}
       error={outputListErrors[index]?.uninstalled_at ?? ''}
-      time={false}
-      onChange={onChange}
+      time={true}
+      onChange={handleChange}
       boundKeys={[index, 'uninstalled_at']}
       disabled={
         (

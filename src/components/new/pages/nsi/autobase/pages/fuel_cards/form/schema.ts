@@ -75,7 +75,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                     !d.installed_at
                       ? 'Поле "Дата с" должно быть заполнено'
                       : (
-                        validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)])
+                        validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)], false)
                           ? 'Поле "Дата с" не должно пересекаться с другими записями'
                           : (
                             !dateInPeriod(validDateReleasedAt, validDateEnd, d.installed_at, { excludeStart: false, excludeEnd: false, })
@@ -92,7 +92,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                       : (
                         d.uninstalled_at
                           ? (
-                            validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)])
+                            validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)], false)
                               ? 'Поле "Дата по" не должно пересекаться с другими записями'
                               : (
                                 diffDatesByDays(d.installed_at, d.uninstalled_at) > 0

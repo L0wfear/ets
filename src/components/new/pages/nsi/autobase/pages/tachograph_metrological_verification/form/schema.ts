@@ -68,10 +68,9 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
       type: 'multiValueOfArray',
       dependencies: [
         (value) => {
-          if (!value.length) {
-            return getRequiredFieldMessage('Сертификат');
+          if(!value.length || value.every((el) => el?.action === 'delete')) {
+            return 'Поле "Сертификат" обязательно для заполнения';
           }
-          return false;
         }
       ],
     },

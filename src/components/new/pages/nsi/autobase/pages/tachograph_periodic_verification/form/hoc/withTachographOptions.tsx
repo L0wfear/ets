@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import { FormWithHandleChange } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
-import { actionGetAndSetInStoreTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
+import { actionGetAndSetInStoreTachographList, actionResetTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WithTachographOptionsFormState = {
@@ -17,6 +17,7 @@ export type WithTachographProps = {
   handleChange: FormWithHandleChange<WithTachographOptionsFormState>;
   meta: {
     page: string;
+    path: string;
   };
 };
 
@@ -37,7 +38,7 @@ const withTachographOptions = (
     const {
       formState: state,
       handleChange,
-      meta: { page },
+      meta: { page, path },
     } = props;
 
     const [
@@ -61,9 +62,12 @@ const withTachographOptions = (
       (async () => {
         const tachographBrandNameList = await dispatch(await actionGetAndSetInStoreTachographList(
           {},
-          { page }
+          { page, path }
         ));
         setTachographBrandNameList(tachographBrandNameList.data);
+        return () => {
+          dispatch(actionResetTachographList());
+        };
       })();
     }, []);
 

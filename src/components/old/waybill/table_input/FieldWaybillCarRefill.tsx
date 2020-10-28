@@ -139,7 +139,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           fuelCardsList,
           props.array,
           notFiltredFuelCardsIndex,
-          props.IS_DRAFT_OR_ACTIVE,
         );
       },
       [

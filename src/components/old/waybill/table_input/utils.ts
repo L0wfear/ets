@@ -10,7 +10,6 @@ export const makeFuelCardIdOptions = memoizeOne(
     fuelCardsList: Array<FuelCard>,
     car_refill: Waybill['car_refill'],
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
-    IS_DRAFT_OR_ACTIVE: boolean,
   ) => {
     const car_refillIndex = keyBy(car_refill, 'fuel_card_id');
     const option = fuelCardsList?.reduce<Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>>(
@@ -28,20 +27,18 @@ export const makeFuelCardIdOptions = memoizeOne(
       },
       [],
     );
-    if (!IS_DRAFT_OR_ACTIVE) {
-      Object.keys(car_refillIndex).forEach(
-        (key) => {
-          if (notFiltredFuelCardsIndex[key]) {
-            option.push({
-              value: notFiltredFuelCardsIndex[key].id,
-              label: notFiltredFuelCardsIndex[key].number,
-              rowData: notFiltredFuelCardsIndex[key],
-              isNotVisible: true,
-            });
-          }
-        },
-      );
-    }
+    Object.keys(car_refillIndex).forEach(
+      (key) => {
+        if (notFiltredFuelCardsIndex[key]) {
+          option.push({
+            value: notFiltredFuelCardsIndex[key].id,
+            label: notFiltredFuelCardsIndex[key].number,
+            rowData: notFiltredFuelCardsIndex[key],
+            isNotVisible: true,
+          });
+        }
+      },
+    );
     return option;
   },
 );

@@ -30,19 +30,17 @@ const validateFuelCardId = (
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard = !rowData.fuel_card_id;
-  const IS_DRAFT_OR_ACTIVE = formState.status === 'active' || formState.status === 'draft';
   const availableFuelCard = makeFuelCardIdOptions(
     fuelCardsList,
     [rowData],
     notFiltredFuelCardsIndex,
-    IS_DRAFT_OR_ACTIVE,
   );
 
   const IS_CLOSED = formState.status === 'closed';
   const IS_DELETE = formState.status === 'deleted';
 
   const isValidSelectedFuelCard = availableFuelCard.some(
-    (optionData) => optionData.rowData.id === rowData.fuel_card_id,
+    (optionData) => optionData.rowData.id === rowData.fuel_card_id && !optionData.isNotVisible
   );
 
   const selectedFuelCard = rowData.fuel_card_id && notFiltredFuelCardsIndex[rowData.fuel_card_id];

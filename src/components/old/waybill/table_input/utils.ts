@@ -27,6 +27,7 @@ export const makeFuelCardIdOptions = memoizeOne(
       },
       [],
     );
+
     Object.keys(car_refillIndex).forEach(
       (key) => {
         if (notFiltredFuelCardsIndex[key]) {
@@ -39,6 +40,7 @@ export const makeFuelCardIdOptions = memoizeOne(
         }
       },
     );
+
     return option;
   },
 );

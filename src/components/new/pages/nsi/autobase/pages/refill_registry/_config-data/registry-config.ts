@@ -11,12 +11,8 @@ export const getToConfig = (): TypeConfigData<Refill> => {
     Service: {
       getRegistryData: {
         entity: 'refill_registry',
-        payload: {
-        },
+        userServerFilters: true,
       },
-      getBlobData: {
-        entity:  'refill_registry/export',
-      }
     },
     registryKey,
     header: {
@@ -25,7 +21,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.export_filtred_data,
+        buttonsTypes.refill_print,
       ],
     },
     filter: {

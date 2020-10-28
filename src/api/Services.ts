@@ -302,6 +302,7 @@ export const TachographReplacementSkziService = ETS_API_FACTORY.createApiService
 export const TachographBrandService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_brand');
 export const TachographReplacementSkziReasonService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi_reason');
 export const RefillService = ETS_API_FACTORY.createApiServiceAdapter('refill_registry');
+export const RefillPrintService = ETS_API_FACTORY.createApiServiceAdapter('refill_registry/export');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(

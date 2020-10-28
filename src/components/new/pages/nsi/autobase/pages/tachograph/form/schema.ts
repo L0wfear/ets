@@ -103,15 +103,22 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
       dependencies: [
         memoizeOne(
           (tachograph_replacement_skzi, {current_date, tachograph_on_car}) => {
-            return tachograph_replacement_skzi.map((el, i, arr) => {
-              const tachographIndex = tachograph_on_car.length - arr.length + i; 
-              const installed_at_date = createValidDate(tachograph_on_car[tachographIndex >= 0 ? tachographIndex : 0]?.installed_at);
+            return tachograph_replacement_skzi.map((el) => {
               const valid_replacement_date = createValidDate(el.replacement_date);
+              const isInstalledAtLowerThenReplacmentDate
+              = tachograph_on_car.length
+              && tachograph_on_car.every(
+                (el) =>
+                  diffDates(
+                    valid_replacement_date,
+                    createValidDate(el.installed_at)
+                  ) < 0
+              );
               return ({
                 replacement_date: (
                   !el.replacement_date
                     ? 'Поле "Дата замены" должно быть заполнено'
-                    : installed_at_date && diffDates(valid_replacement_date, installed_at_date) < 0
+                    : isInstalledAtLowerThenReplacmentDate
                       ? 'Дата установки блока СКЗИ не может быть раньше даты установки тахографа'
                       : current_date && diffDates(valid_replacement_date, current_date) > 0
                         ? 'Дата установки блока СКЗИ не может быть больше текущей'

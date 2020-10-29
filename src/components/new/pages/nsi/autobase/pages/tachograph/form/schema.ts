@@ -105,7 +105,7 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
           (tachograph_replacement_skzi, {current_date, tachograph_on_car}) => {
             return tachograph_replacement_skzi.map((el) => {
               const valid_replacement_date = createValidDate(el.replacement_date);
-              const isInstalledAtLowerThenReplacmentDate
+              const isReplacmentDateInInvalidPeriod
               = tachograph_on_car.length
               && tachograph_on_car.every(
                 (el) =>
@@ -113,13 +113,17 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
                     valid_replacement_date,
                     createValidDate(el.installed_at)
                   ) < 0
+                  || diffDates(
+                    valid_replacement_date,
+                    createValidDate(el.uninstalled_at)
+                  ) > 0
               );
               return ({
                 replacement_date: (
                   !el.replacement_date
                     ? 'Поле "Дата замены" должно быть заполнено'
-                    : isInstalledAtLowerThenReplacmentDate
-                      ? 'Дата установки блока СКЗИ не может быть раньше даты установки тахографа'
+                    : isReplacmentDateInInvalidPeriod
+                      ? 'Дата замены блока СКЗИ должна попадать в период установки тахографа на ТС'
                       : current_date && diffDates(valid_replacement_date, current_date) > 0
                         ? 'Дата установки блока СКЗИ не может быть больше текущей'
                         : ''

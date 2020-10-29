@@ -35,9 +35,9 @@ const ShowFileTdTitle: React.FC<Props> = React.memo(
 
     const handleClick = React.useCallback(
       (aProps) => {
-        const { pdf } = aProps;
+        const { file } = aProps;
 
-        let iframe = `<iframe width='100%' height='100%' src='${pdf.url}'></iframe>`;
+        let iframe = `<iframe width='100%' height='100%' src='${file.url}'></iframe>`;
         const w = window.open('');
         w.document.write(iframe);
         w.document.close();

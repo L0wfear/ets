@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isArray, isNumber } from 'util';
+import { isArray, isNumber, isNullOrUndefined } from 'util';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
@@ -380,5 +380,15 @@ export const getTitleByStatus = ({ status, number }) => {
       return `Удаленный ПЛ `;
     default:
       return 'Создать новый путевой лист';
+  }
+};
+
+export const moreThanTenPerc = (a, b) => {
+  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b))) {
+    const perc = 100 * Math.abs((a - b) / ((a + b)/2));
+
+    return Boolean(perc > 10);
+  } else {
+    return false;
   }
 };

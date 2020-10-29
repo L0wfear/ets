@@ -50,7 +50,7 @@ import { hasMotohours } from 'utils/functions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
-import { moreThanTenPerc } from 'components/old/waybill/utils';
+import { hasPercentageDifference } from 'components/old/waybill/utils';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -1233,28 +1233,36 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       }
       const formState = cloneDeep(this.state.formState);
 
-      const diffSensorRefill = moreThanTenPerc(formState.sensor_refill, formState.fuel_given);
-      const diffSensorConsumption = moreThanTenPerc(formState.sensor_consumption, formState.tax_consumption);
-      const diffSensorFinishValue = moreThanTenPerc(formState.sensor_finish_value, formState.fuel_end);
-      const diff = formState.fact_fuel_end - formState.fuel_end;
-      const diffFactFuelEnd = Boolean(diff !== 0);
+      const percent = 10;
+      const isDiffSensorRefill = hasPercentageDifference(formState.sensor_refill, formState.fuel_given, percent);
+      const isDiffSensorConsumption = hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption, percent);
+      const isDiffSensorFinishValue = hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end, percent);
+      const diffFuelEnd = formState.fact_fuel_end - formState.fuel_end;
+      const isDiffFactFuelEnd = Boolean(diffFuelEnd !== 0);
+      const isFuelKind = formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
+
+      const errorBlock = () => {
+        if (isFuelKind) {
+          return (
+            <div>
+              {isDiffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {percent}%.</p>)}
+              {isDiffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {percent}%.</p>)}
+              {isDiffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {percent}%.</p>)}
+              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {diffFuelEnd > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {Math.abs(diffFuelEnd)}.</p>)}
+              <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
+              <br />
+              <p>Вы уверены, что хотите закрыть ПЛ?</p>
+            </div>
+          );
+        } else {
+          return 'Вы уверены, что хотите закрыть окно?';
+        }
+      };
 
       global.confirmDialog({
         title:
           'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
-        body: () => {
-          return (
-            <div>
-              {diffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на 10%.</p>)}
-              {diffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на 10%.</p>)}
-              {diffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на 10%.</p>)}
-              {diffFactFuelEnd && (<p>"Возврат фактический, л" {diff > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {Math.abs(diff)}.</p>)}
-              <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
-              <br />
-              <p>Вы уверены, что хотите закрыть окно?</p>
-            </div>
-          );
-        },
+        body: errorBlock,
         okName: 'Да',
         cancelName: 'Нет',
       })
@@ -1273,13 +1281,15 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             });
         })
         .catch(() => {
-          this.setState({
-            formErrors: {
-              fuel_given: diffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
-              tax_consumption: diffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
-              fuel_end: diffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
-            }
-          });
+          if (isFuelKind) {
+            this.setState({
+              formErrors: {
+                fuel_given: isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
+                tax_consumption: isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
+                fuel_end: isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
+              }
+            });
+          }
         });
     };
 

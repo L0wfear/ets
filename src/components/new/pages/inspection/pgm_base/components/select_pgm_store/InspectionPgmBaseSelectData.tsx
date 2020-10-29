@@ -8,6 +8,9 @@ import SelectPgmBaseCompany from './select/company/SelectPgmBaseCompany';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import SelectPgmBaseAddress from './select/address/SelectPgmBaseAddress';
 import SelectPgmBaseTypeId from './select/pgm_store_type_id/SelectPgmBaseTypeId';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
 
 type InspectionPgmBaseSelectCarpoolStateProps = {};
 type InspectionPgmBaseSelectCarpoolDispatchProps = {
@@ -28,9 +31,12 @@ type InspectionPgmBaseSelectCarpoolProps = (
 );
 
 const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps> = (props) => {
+  const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+
   React.useEffect(
     () => {
-      props.actionGetAndSetInStoreCompany({}, { page: props.loadingPage });
+      props.actionGetAndSetInStoreCompany(showAll, { page: props.loadingPage });
       props.actionGetAndSetInStorePgmBase({}, { page: props.loadingPage });
 
       return () => {

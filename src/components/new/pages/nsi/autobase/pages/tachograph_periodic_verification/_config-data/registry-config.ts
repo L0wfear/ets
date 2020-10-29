@@ -146,6 +146,10 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
             width: 200,
           },
           {
+            key: 'files',
+            title: 'Сертификат (файл)',
+          },
+          {
             key: 'comment',
             title: 'Комментарий',
             width: 200,

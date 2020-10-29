@@ -30,7 +30,6 @@ const validateFuelCardId = (
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard = !rowData.fuel_card_id;
-
   const availableFuelCard = makeFuelCardIdOptions(
     fuelCardsList,
     [rowData],
@@ -41,7 +40,7 @@ const validateFuelCardId = (
   const IS_DELETE = formState.status === 'deleted';
 
   const isValidSelectedFuelCard = availableFuelCard.some(
-    (optionData) => optionData.rowData.id === rowData.fuel_card_id,
+    (optionData) => optionData.rowData.id === rowData.fuel_card_id && !optionData.isNotVisible
   );
 
   const selectedFuelCard = rowData.fuel_card_id && notFiltredFuelCardsIndex[rowData.fuel_card_id];

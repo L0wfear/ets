@@ -6,13 +6,19 @@ import { connect } from 'react-redux';
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import SelectCarpoolCompany from './select_carpool/company/SelectCarpoolCompany';
 import SelectCarpool from './select_carpool/carpool/SelectCarpool';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolProps> = (props) => {
+  const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+
   React.useEffect(
     () => {
       props.actionGetAndSetInStoreCompany(
-        {},
+        showAll,
         { page: props.loadingPage },
       );
       props.actionGetAndSetInStoreCarpool(

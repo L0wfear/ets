@@ -411,10 +411,10 @@ class ReportContainer extends React.Component<
     if (!moveDownIsPermitted) {
       return;
     }
-    const isPenaltiesReport = this.props.serviceName === 'PenaltiesReport';
+
     const lowerLevel = this.props.meta.levels.lower.level;
     const lowerLevelFilters = this.props.meta.levels.lower.filter;
-    const lowerLevelSelectors = isPenaltiesReport && lowerLevel === 'okrug' ? null : this.props.meta.levels.lower.filter
+    const lowerLevelSelectors = this.props.meta.levels.lower.filter
       .map((selector) => ({ [selector]: selectedRow.props.data[selector] }))
       .reduce((prev, next) => ({ ...prev, ...next }));
 

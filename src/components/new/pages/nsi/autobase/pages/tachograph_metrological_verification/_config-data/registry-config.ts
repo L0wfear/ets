@@ -86,6 +86,7 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
             key: 'company_structure_name',
             title: 'Подразделение',
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'verification_number',

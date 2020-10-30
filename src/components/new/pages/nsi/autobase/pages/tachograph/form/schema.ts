@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTachograph } from 'components/new/pages/nsi/autobase/pages/tachograph/form/@types/TachographForm';
 import { TachographListWithOuterProps } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import memoizeOne from 'memoize-one';
-import { createValidDate, diffDates, createValidDateDots } from 'components/@next/@utils/dates/dates';
+import { createValidDate, diffDates, createValidDateDots, dateInPeriod } from 'components/@next/@utils/dates/dates';
 
 export const tachographFormSchema: SchemaType<TachographListWithOuterProps, PropsTachograph> = {
   properties: {
@@ -105,24 +105,15 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
           (tachograph_replacement_skzi, {current_date, tachograph_on_car}) => {
             return tachograph_replacement_skzi.map((el) => {
               const valid_replacement_date = createValidDate(el.replacement_date);
-              const isReplacmentDateInInvalidPeriod
-              = tachograph_on_car.length
-              && tachograph_on_car.every(
-                (el) =>
-                  diffDates(
-                    valid_replacement_date,
-                    createValidDate(el.installed_at)
-                  ) < 0
-                  || diffDates(
-                    valid_replacement_date,
-                    createValidDate(el.uninstalled_at)
-                  ) > 0
-              );
+              const isReplacmentDateInValidPeriod
+              = tachograph_on_car.some(
+                (el) => dateInPeriod(el.installed_at, el.uninstalled_at || valid_replacement_date, valid_replacement_date, {excludeEnd: false, excludeStart: false})
+              ); 
               return ({
                 replacement_date: (
                   !el.replacement_date
                     ? 'Поле "Дата замены" должно быть заполнено'
-                    : isReplacmentDateInInvalidPeriod
+                    : !isReplacmentDateInValidPeriod
                       ? 'Дата замены блока СКЗИ должна попадать в период установки тахографа на ТС'
                       : current_date && diffDates(valid_replacement_date, current_date) > 0
                         ? 'Дата установки блока СКЗИ не может быть больше текущей'

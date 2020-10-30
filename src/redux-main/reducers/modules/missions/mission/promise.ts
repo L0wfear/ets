@@ -162,21 +162,18 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
 };
 
 export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promise<Partial<Mission>> => {
-  try {
-    const response = await MissionService.put(
-      {
-        
-      },
-      false,
-      'json',
-    );
-    return {
-      ...payloadOwn,
-      ...get(response, 'result.0', null),
-    };
-  } catch (error) {
-    throw error;
-  }
+  const response = await MissionService.put(
+    {
+      ...getBackMission(payloadOwn, 0),
+    },
+    false,
+    'json',
+  );
+
+  return {
+    ...payloadOwn,
+    ...get(response, 'result.0', null),
+  };
 };
 
 export const promiseSubmitMission = async (missionOwn: Mission, assign_to_waybill?: Array<string>) => {

@@ -133,11 +133,6 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
                     ? 'Поле "Причина замены" должно быть заполнено'
                     : ''
                 ),
-                next_replacement_date: (
-                  !el.next_replacement_date
-                    ? 'Поле "Дата следующей замены (план)" должно быть заполнено'
-                    : ''
-                ),
               });
             },
             );

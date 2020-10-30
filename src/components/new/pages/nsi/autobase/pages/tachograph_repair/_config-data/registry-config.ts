@@ -86,6 +86,7 @@ export const getToConfig = (): TypeConfigData<TachographRepairList> => {
             key: 'company_structure_name',
             title: 'Подразделение',
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'tachograph_brand_name',

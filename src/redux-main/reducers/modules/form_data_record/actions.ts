@@ -98,7 +98,7 @@ export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, 
   },
 });
 
-export const actionRemoveFormData = <F extends Record<string, any>>(formKey: FormKeys) => ({
+export const actionRemoveFormData = (formKey: FormKeys) => ({
   type: FORM_REMOVE_DATA,
   payload: {
     formKey,
@@ -161,8 +161,8 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
             ? global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success')
             : global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
           return res;
-        }).catch((error) => {
-          throw error;
+        }).catch(() => {
+          global.NOTIFICATION_SYSTEM.notify('Не удалось сохранить данные', 'error');
         }),
         {
           ...formData.meta,

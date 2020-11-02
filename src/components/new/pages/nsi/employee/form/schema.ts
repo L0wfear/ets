@@ -97,7 +97,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       dependencies: [
         (value, formData) => {
           const maxLengthString = 10;
-          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value)) || value && value.length < maxLengthString) {
+          if (value && formData.special_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value) || value && value.length < maxLengthString)) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {
@@ -131,7 +131,7 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       dependencies: [
         (value, formData) => {
           const maxLengthString = 10;
-          if (value && formData.drivers_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value))  || value && value.length < maxLengthString) {
+          if (value && formData.drivers_license_country_id === 185 && (isValidLicense(value) || isValidFormat(value) || isValidString(value) || value.length === 10 && !isValidValue(value)  || value && value.length < maxLengthString)) {
             return 'Недопустимое значение. Данные не будут сохранены';
           }
           if (formData.is_driver) {

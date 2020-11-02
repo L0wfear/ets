@@ -14,6 +14,10 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
+const isValidToFixed1 = (data) => {
+  return /^[ +]?[0-9]*[\\.,]?[0-9]$/.test(data);
+};
+
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
 };
@@ -489,6 +493,9 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
           if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
+          if (value && !isValidToFixed1(value)) {
+            return getRequiredFieldToFixed('Счетчик моточасов.Выезд', 1);
+          }
           return false;
         },
       ],
@@ -521,6 +528,9 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             && isEmpty(value)
           ) {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          if (value && !isValidToFixed1(value)) {
+            return getRequiredFieldToFixed('Счетчик моточасов оборудования.Выезд', 1);
           }
           return false;
         },
@@ -973,6 +983,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             if (value && value < motohours_start) {
               return '"Счетчик моточасов.Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов.Выезд"';
             }
+            if (value && !isValidToFixed1(value)) {
+              return getRequiredFieldToFixed('Счетчик моточасов.Возвращение в гараж, м/ч', 1);
+            }
           }
           return false;
         }
@@ -981,6 +994,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_equip_end: {
       title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
       type: 'number',
+      float: 1,
       integer: true,
       dependencies: [
         (value, { motohours_equip_start, equipment_fuel, status }) => {
@@ -993,6 +1007,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             }
             if (value && value < motohours_equip_start) {
               return '"Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов оборудования.Выезд"';
+            }
+            if (value && !isValidToFixed1(value)) {
+              return getRequiredFieldToFixed('Счетчик моточасов оборудования. Возвращение в гараж, м/ч', 1);
             }
           }
           return false;

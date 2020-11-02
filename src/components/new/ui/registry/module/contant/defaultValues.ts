@@ -35,6 +35,7 @@ const registryDefaultObj: OneRegistryData<any> = {
       checkedRows: {},
       fixedWidth: false,
       proxyCheckData: null,
+      uniqKeyType: 'number',
     },
     permissions: {
       list: false,

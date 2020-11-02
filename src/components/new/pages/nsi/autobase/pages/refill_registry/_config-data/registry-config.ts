@@ -27,25 +27,52 @@ export const getToConfig = (): TypeConfigData<Refill> => {
     filter: {
       fields: [
         {
-          valueKey: 'okrug_name',
-          title: 'Округ',
+          valueKey: 'okrug_id',
+          labelKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
           type: 'multiselect',
+          makeOptionsFromSessionData: {
+            groupName: 'okrugs',
+            valueKey: 'id',
+            labelKey: 'name',
+          }
         },
         {
           valueKey: 'company_id',
           labelKey: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
+          makeOptionsFromSessionData: {
+            groupName: 'companies',
+            valueKey: 'asuods_id',
+            labelKey: 'name',
+          }
         },
         {
-          valueKey: 'transaction_at',
+          valueKey: 'refill_at',
           title: 'Дата и время транзакции',
           type: 'advanced-datetime',
         },
         {
-          valueKey: 'number',
+          valueKey: 'fuel_car_id',
           title: 'Номер топливной карты ГПН',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'fuel_cards',
+            valueKey: 'id',
+            labelKey: 'number',
+            groupName: 'fuel_cards',
+          },
         },
         {
           valueKey: 'fuel_type_id',
@@ -54,14 +81,21 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'given',
+          valueKey: 'fuel_given',
           title: 'Выдано, л',
-          type: 'multiselect',
+          type: 'advanced-number',
+          step: 1,
         },
         {
-          valueKey: 'gov_number',
+          valueKey: 'car_gov_number',
           title: 'Рег. номер ТС',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'car_actual',
+            groupName: 'car_actual',
+            valueKey: 'gov_number',
+            labelKey: 'gov_number',
+          },
         },
         {
           valueKey: 'waybill_id',
@@ -70,14 +104,20 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'wb_fuel_card_number',
+          valueKey: 'wb_fuel_card_numbers',
           title: 'Номер топливной карты, указанной в ПЛ',
           type: 'multiselect',
         },
         {
-          valueKey: 'wb_fuel_type',
+          valueKey: 'wb_fuel_types',
           title: 'Тип топлива, указанный в ПЛ',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'fuel_cards',
+            valueKey: 'fuel_type',
+            labelKey: 'fuel_type_text',
+            groupName: 'fuel_cards',
+          },
         },
         {
           valueKey: 'station_name',
@@ -92,8 +132,22 @@ export const getToConfig = (): TypeConfigData<Refill> => {
         {
           valueKey: 'structure_id',
           labelKey: 'structure_name',
-          title: 'Подразделение',
           type: 'multiselect',
+          title: [
+            {
+              displayIf: displayIfContant.lenghtStructureMoreOne,
+              title: 'Подразделение',
+            },
+          ],
+          getRegistryData: {
+            entity: 'company_structure',
+            payload: {
+              linear: true,
+            },
+            typeAns: 'result',
+            valueKey: 'id',
+            labelKey: 'name',
+          },
         },
       ],
     },
@@ -103,6 +157,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
         uniqKey: 'rrn_code',
         fixedWidth: true,
         uniqKeyForParams: 'rrn_code',
+        uniqKeyType: 'string',
       },
       meta: {
         fields: [
@@ -131,13 +186,13 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'transaction_at',
+            key: 'refill_at_text',
             title: 'Дата и время транзакции',
             format: 'datetime',
             width: 150,
           },
           {
-            key: 'number',
+            key: 'fuel_card_number',
             title: 'Номер топливной карты ГПН',
             width: 150,
           },
@@ -147,12 +202,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'given',
+            key: 'fuel_given',
             title: 'Выдано, л',
             width: 150,
           },
           {
-            key: 'gov_number',
+            key: 'car_gov_number',
             title: 'Рег. номер ТС',
             width: 150,
           },
@@ -162,12 +217,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'wb_fuel_card_number',
+            key: 'wb_fuel_card_numbers',
             title: 'Номер топливной карты, указанной в ПЛ',
             width: 150,
           },
           {
-            key: 'wb_fuel_type',
+            key: 'wb_fuel_types_text',
             title: 'Тип топлива, указанный в ПЛ',
             width: 150,
           },

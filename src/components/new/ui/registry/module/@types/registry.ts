@@ -226,6 +226,7 @@ export type OneRegistryData<F = any> = {
       proxyCheckData?: (
         'mission_template'
       );
+      uniqKeyType?: 'string' | 'number';
     };
     permissions: {
       list: Parameters<typeof validatePermissions>[0];

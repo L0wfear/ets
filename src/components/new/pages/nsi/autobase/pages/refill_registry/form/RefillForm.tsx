@@ -18,7 +18,6 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 import { getDefaultRefillElement } from './utils';
 import { refillFormSchema } from './schema';
 import refillPermissions from '../_config-data/permissions';
-import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 import { Refill } from 'redux-main/reducers/modules/autobase/actions_by_type/refill_registry/@types';
 
 class RefillForm extends React.PureComponent<PropsRefill, {}> {
@@ -29,8 +28,6 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
       page,
       path,
     } = this.props;
-
-    const formatedTransactionDatetime = createValidDateTimeDots(state.transaction_at);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-refill" show onHide={this.props.hideWithoutChanges} bsSize="small">
@@ -66,8 +63,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Дата и время транзакции"
                 readOnly
-                value={formatedTransactionDatetime || '-'}
-                boundKeys="transaction_at"
+                value={state.refill_at_text || '-'}
+                boundKeys="refill_at_text"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -77,8 +74,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Номер топливной карты ГПН"
                 readOnly
-                value={state.number || '-'}
-                boundKeys="number"
+                value={state.fuel_car_id || '-'}
+                boundKeys="fuel_car_id"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -99,8 +96,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Выдано, л"
                 readOnly
-                value={state.given || '-'}
-                boundKeys="given"
+                value={state.fuel_given || '-'}
+                boundKeys="fuel_given"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -110,8 +107,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Рег. номер ТС"
                 readOnly
-                value={state.gov_number || '-'}
-                boundKeys="gov_number"
+                value={state.car_gov_number || '-'}
+                boundKeys="car_gov_number"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -132,8 +129,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Номер топливной карты, указанной в ПЛ"
                 readOnly
-                value={state.wb_fuel_card_number || '-'}
-                boundKeys="wb_fuel_card_number"
+                value={state.wb_fuel_card_numbers || '-'}
+                boundKeys="wb_fuel_card_numbers"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -143,8 +140,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Тип топлива, указанный в ПЛ"
                 readOnly
-                value={state.wb_fuel_type || '-'}
-                boundKeys="wb_fuel_type"
+                value={state.wb_fuel_types_text || '-'}
+                boundKeys="wb_fuel_types_text"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

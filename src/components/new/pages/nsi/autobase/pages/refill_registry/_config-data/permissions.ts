@@ -1,9 +1,9 @@
 const refillPermissions = {
-  list: 'refill.list',
-  read: 'refill.read',
-  create: 'refill.create',
-  update: 'refill.update',
-  delete: 'refill.delete',
+  list: 'tachograph.list',
+  read: 'tachograph.read',
+  create: 'tachograph.create',
+  update: 'tachograph.update',
+  delete: 'tachograph.delete',
 };
-// исправить permissions на нужные
+
 export default refillPermissions;

@@ -9,6 +9,7 @@ export type ExtFieldCommon<V = any> = {
   id?: any;
   label?: string | boolean;
   error?: string | boolean;
+  warning?: string | boolean;
   onChange?: (...arg: Array<any>) => void;
   onBlur?: (...arg) => void;
 

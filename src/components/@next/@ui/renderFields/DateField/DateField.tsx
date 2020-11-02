@@ -6,10 +6,11 @@ import { isNumber } from 'util';
 import { DateFieldUi } from 'components/@next/@ui/renderFields/DateField/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { ExtFieldDate } from 'components/@next/@ui/renderFields/@types';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 
 const DateField: React.FC<ExtFieldDate> = React.memo(
   (props) => {
-    const { label, error, modalKey, minHeightLabel, ...datePickerProps } = props;
+    const { label, warning, error, modalKey, minHeightLabel, ...datePickerProps } = props;
     const { date, value, className = '' } = props;
 
     const id = props.id
@@ -37,6 +38,9 @@ const DateField: React.FC<ExtFieldDate> = React.memo(
           date={date || value}
           className={dateClassName}
         />
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           hidden={!error}
           error={error}

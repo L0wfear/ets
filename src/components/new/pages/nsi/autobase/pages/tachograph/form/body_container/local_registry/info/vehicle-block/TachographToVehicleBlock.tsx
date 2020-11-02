@@ -33,6 +33,7 @@ const TachographToVehicleBlock: React.FC<IPropsTachographToVehicleBlock> = React
         stackOrder
         tachographAvailableCarList={carList}
         isLoading={isLoading}
+        removeItemWithConfirm
         {...props}
       />
     );

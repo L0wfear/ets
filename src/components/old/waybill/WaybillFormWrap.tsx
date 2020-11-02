@@ -234,6 +234,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     this.state = {
       formState: null,
       formErrors: {},
+      formWarnings: {},
       canSave: false,
       canClose: false,
       canPrint: false,
@@ -951,6 +952,18 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     });
   };
 
+  handleDiff = (percent) => {
+    const { formState } = this.state;
+
+    const hasDiff = {
+      isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given, percent),
+      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption, percent),
+      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end, percent),
+    };
+
+    return hasDiff;
+  };
+
   handleFormStateChange = (field, e, index) => {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
@@ -985,6 +998,17 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         formStateEquipmentTaxDataFirstElem.FACT_VALUE = formState.motohours_equip_diff > 0 ? formState.motohours_equip_diff : null;
         formStateEquipmentTaxDataFirstElem.RESULT = EquipmentTaxes.getResult(formStateEquipmentTaxDataFirstElem);
       }
+    }
+    if (formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID) && formState.status === 'active') {
+      const percent = 10;
+      const isDiff = this.handleDiff(percent);
+      this.setState({
+        formWarnings: {
+          fuel_given: isDiff.isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
+          tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
+          fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
+        }
+      });
     }
     this.handleFieldsChange(formState);
   };
@@ -1234,9 +1258,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const formState = cloneDeep(this.state.formState);
 
       const percent = 10;
-      const isDiffSensorRefill = hasPercentageDifference(formState.sensor_refill, formState.fuel_given, percent);
-      const isDiffSensorConsumption = hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption, percent);
-      const isDiffSensorFinishValue = hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end, percent);
+      const isDiff = this.handleDiff(percent);
       const diffFuelEnd = formState.fact_fuel_end - formState.fuel_end;
       const isDiffFactFuelEnd = Boolean(diffFuelEnd !== 0);
       const isFuelKind = formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
@@ -1245,17 +1267,17 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         if (isFuelKind) {
           return (
             <div>
-              {isDiffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {percent}%.</p>)}
-              {isDiffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {percent}%.</p>)}
-              {isDiffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {percent}%.</p>)}
-              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {diffFuelEnd > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {Math.abs(diffFuelEnd)}.</p>)}
+              {isDiff.isDiffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {percent}%.</p>)}
+              {isDiff.isDiffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {percent}%.</p>)}
+              {isDiff.isDiffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {percent}%.</p>)}
+              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {diffFuelEnd > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {diffFuelEnd.toFixed(2)}.</p>)}
               <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
               <br />
               <p>Вы уверены, что хотите закрыть ПЛ?</p>
             </div>
           );
         } else {
-          return 'Вы уверены, что хотите закрыть окно?';
+          return 'Вы уверены, что хотите закрыть ПЛ?';
         }
       };
 
@@ -1281,15 +1303,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             });
         })
         .catch(() => {
-          if (isFuelKind) {
-            this.setState({
-              formErrors: {
-                fuel_given: isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
-                tax_consumption: isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
-                fuel_end: isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
-              }
-            });
-          }
+          //
         });
     };
 
@@ -1360,6 +1374,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           {this.state.formState && (
             <WaybillForm
               formState={this.state.formState}
+              formWarnings={this.state.formWarnings}
               handleFormChange={this.handleFormStateChange}
               handleFormFileChange={this.handleFormFileChange}
               handleMultipleChange={this.handleMultipleChange}

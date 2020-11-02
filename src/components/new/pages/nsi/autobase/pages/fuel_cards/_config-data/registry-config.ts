@@ -197,13 +197,13 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'source_type_text',
-            title: 'Способ создания',
+            key: 'structure_name',
+            title: 'Подразделение',
             width: 200,
           },
           {
-            key: 'structure_name',
-            title: 'Подразделение',
+            key: 'source_type_text',
+            title: 'Способ создания',
             width: 200,
           },
         ],

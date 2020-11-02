@@ -9,6 +9,9 @@ import SelectCarsConditionChecksPeriod from './select/checks_period/SelectCarsCo
 import SelectCarsConditionChecksType from './select/checks_type/SelectCarsConditionChecksType';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
 import { DivNone } from 'global-styled/global-styled';
 
 type InspectionCarsConditionSelectCarpoolStateProps = {
@@ -30,9 +33,12 @@ type InspectionCarsConditionSelectProps = (
 ) & WithSearchProps;
 
 const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectProps> = (props) => {
+  const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+
   React.useEffect(
     () => {
-      props.actionGetAndSetInStoreCompany({}, { page: props.loadingPage });
+      props.actionGetAndSetInStoreCompany(showAll, { page: props.loadingPage });
 
       return () => {
         props.actionResetCompany();

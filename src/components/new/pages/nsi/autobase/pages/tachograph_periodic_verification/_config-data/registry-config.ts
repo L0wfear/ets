@@ -101,6 +101,7 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
             key: 'company_structure_name',
             title: 'Подразделение',
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'verification_number',
@@ -144,6 +145,10 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
             key: 'gov_number',
             title: 'Рег. номер ТС',
             width: 200,
+          },
+          {
+            key: 'files',
+            title: 'Сертификат (файл)',
           },
           {
             key: 'comment',

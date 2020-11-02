@@ -39,10 +39,10 @@ const children = {
   fuelCardsList,
   fuelCardsArchiveList,
   penaltiesList,
-  tachographPeriodicVerificationList,
-  tachographRepairList,
-  tachographMetrologicalVerificationList,
   tachographList,
+  tachographRepairList,
+  tachographPeriodicVerificationList,
+  tachographMetrologicalVerificationList,
   refillList,
 };
 

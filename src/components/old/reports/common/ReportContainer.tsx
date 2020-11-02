@@ -580,8 +580,8 @@ class ReportContainer extends React.Component<
               (elem) => ({
                 ...elem,
                 children: elem?.children?.map(
-                (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
-              )
+                  (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
+                )
               })
             )
             : null,

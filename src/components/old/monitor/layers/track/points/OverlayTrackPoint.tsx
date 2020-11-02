@@ -32,6 +32,7 @@ import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vec
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionGetCarMissionsAndWaybillsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
+import { filterValidPoints } from 'utils/track';
 
 type Props = {
   dispatch: EtsDispatch;
@@ -82,7 +83,8 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   getObjectData = async (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
-    const points = track.slice(index - 1, index + 2);
+    const filteredTrack = filterValidPoints(track);
+    const points = filteredTrack.slice(index - 1, index + 2);
 
     const vectorObject = await this.props.dispatch(actionGetVectorObject(
       {
@@ -265,7 +267,7 @@ export default compose<any, any>(
       gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
       asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
       trackPoint: state.monitorPage.carInfo.popups.trackPoint,
-      track: state.monitorPage.carInfo.trackCaching.track,
+      track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
       cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
     }),
     (dispatch) => ({

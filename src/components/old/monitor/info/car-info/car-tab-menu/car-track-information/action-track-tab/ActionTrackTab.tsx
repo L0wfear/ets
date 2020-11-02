@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
 import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
 import styled from 'styled-components';
+import { filterValidPoints } from 'utils/track';
 
 type PropsActionTrackTab = {
   gps_code: number;
@@ -227,7 +228,7 @@ class ActionTrackTab extends React.Component<
 
 const mapStateToProps = (state) => ({
   gps_code: state.monitorPage.carInfo.gps_code,
-  track: state.monitorPage.carInfo.trackCaching.track,
+  track: state.monitorPage.carInfo.trackCaching.track !== -1 ? filterValidPoints(state.monitorPage.carInfo.trackCaching.track) : [],
   status: state.monitorPage.carInfo.playTrack.status,
   trackPointIndex: state.monitorPage.carInfo.playTrack.trackPointIndex,
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,

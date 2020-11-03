@@ -5,6 +5,7 @@ import Div from 'components/old/ui/Div';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
@@ -28,6 +29,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
     const {
       error,
+      warning,
       label = '',
       modalKey,
       isLoading,
@@ -143,6 +145,9 @@ const StringField: React.FC<ExtFieldString> = React.memo(
             }
           </StringFieldWrapperStyled>
         </div>
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           showError={showError}
           hidden={!error}

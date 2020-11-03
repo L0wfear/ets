@@ -267,6 +267,7 @@ type OwnProps = {
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
   setTotalValueError?: (key: string, totalValueError: boolean) => void;
   formErrors: Record<string, any>;
+  formWarnings: Record<string, any>;
   entity: string;
   isPermittedByKey: {
     update: boolean;
@@ -2083,6 +2084,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const {
       formState: state,
       formErrors: errors,
+      formWarnings: warnings,
       entity,
       carList,
       carIndex,
@@ -3037,6 +3039,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         use_pouring={usePouring}
                         fuel_cards_creating={fuelCardsCreating}
                         errors={errors}
+                        warnings={warnings}
                         waybillStatus={{
                           IS_CREATING,
                           IS_ACTIVE,

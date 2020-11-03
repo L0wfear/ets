@@ -5,11 +5,13 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TextAreaFieldUi } from 'components/@next/@ui/renderFields/TextAreaField/styled';
 import { ExtFieldText } from 'components/@next/@ui/renderFields/@types';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 
 const TextAreaField: React.FC<ExtFieldText> = React.memo(
   (props) => {
     const {
       error,
+      warning,
       label = '',
       readOnly = false,
       disabled = false,
@@ -48,6 +50,9 @@ const TextAreaField: React.FC<ExtFieldText> = React.memo(
           onChange={props.onChange}
           value={value}
         />
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           hidden={!error}
           error={error}

@@ -22,6 +22,7 @@ const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<Ext
 };
 
 const numberToFixed = {
+  toFixed1: 1,
   toFixed2: 2,
   toFixed3: 3,
 };

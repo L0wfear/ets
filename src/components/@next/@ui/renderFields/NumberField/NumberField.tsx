@@ -7,10 +7,11 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { NumberFieldUi } from 'components/@next/@ui/renderFields/NumberField/styled';
 import { ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 
 const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {
-    const { error, modalKey, showRedBorder, addonRight, ...mainProps } = props;
+    const { error, warning, modalKey, showRedBorder, addonRight, ...mainProps } = props;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder });
     let { value } = props;
@@ -52,6 +53,9 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
             }
           </EtsBootstrap.InputGroup.Group>
         </div>
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           hidden={!error}
           error={error}

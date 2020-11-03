@@ -227,6 +227,8 @@ export type OneRegistryData<F = any> = {
         'mission_template'
       );
       uniqKeyType?: 'string' | 'number';
+      withoutWithSearch?: boolean;
+      isOpen: boolean;
     };
     permissions: {
       list: Parameters<typeof validatePermissions>[0];

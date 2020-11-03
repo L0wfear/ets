@@ -11,6 +11,7 @@ import {
   REGISTRY_CHANGE_SERVICE,
   REGISTRY_SET_LOADING_STATUS,
   REGISTRY_SET_ID_REQUEST_TIME,
+  REGISTRY_SET_ROW_IS_OPEN,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 
@@ -505,6 +506,16 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
         ...listRaw,
         processed,
       },
+    },
+  });
+};
+
+export const registrySetRowIsOpen= (registryKey: string, isOpen: OneRegistryData['list']['data']['isOpen']): EtsAction<void> => (dispatch, getState) => {
+  return dispatch({
+    type: REGISTRY_SET_ROW_IS_OPEN,
+    payload: {
+      registryKey,
+      isOpen,
     },
   });
 };

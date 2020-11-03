@@ -10,6 +10,7 @@ export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
 export const REGISTRY_CHANGE_SERVICE = REGISTRY`CHANGE_SERVICE`;
 export const REGISTRY_SET_LOADING_STATUS = REGISTRY`SET_LOADING_STATUS`;
 export const REGISTRY_SET_ID_REQUEST_TIME = REGISTRY`SET_ID_REQUEST_TIME`;
+export const REGISTRY_SET_ROW_IS_OPEN = REGISTRY`SET_ROW_IS_OPEN`;
 
 const initialState: InitialStateTypeRegistry = {
 };
@@ -82,6 +83,23 @@ export default (state = initialState, { type, payload }) => {
         [registryKey]: {
           ...state[registryKey],
           idRequestTime: payload.idRequestTime,
+        },
+      };
+    }
+    case REGISTRY_SET_ROW_IS_OPEN: {
+      const { registryKey, isOpen } = payload;
+
+      return {
+        ...state,
+        [registryKey]: {
+          ...state[registryKey],
+          list: {
+            ...state[registryKey].list,
+            data: {
+              ...state[registryKey].list.data,
+              isOpen
+            }
+          }
         },
       };
     }

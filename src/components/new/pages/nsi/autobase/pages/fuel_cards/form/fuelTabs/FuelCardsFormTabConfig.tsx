@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import fuelCardsRefillConfig from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/refill_block/_config-data';
 
 export const TabBodyContainerStyled = styled(EtsBootstrap.Row as any)<{ showComponent?: boolean; }>`
   border: 1px solid #ddd;
@@ -54,14 +55,12 @@ export const vehicleTab: OneTabData = { // Вкладка - Привязанны
   showTabIntoNavFlagKey: 'isVehicle',
 };
 
-export const refillTab: OneTabData = { // Вкладка - Заправки
+export const refillTab: OneTabData = {
   title: 'Заправки',
-  tabKey: 'refill',
+  tabKey: fuelCardsRefillConfig.item,
   component: null,
   path: '', // выпилить, мы не будем использовать URl
-  isRegistry: false,
-  errorsFieldList:[
-  ],
+  isRegistry: true,
   showTabIntoNavFlagKey: 'isRefill',
 };
 

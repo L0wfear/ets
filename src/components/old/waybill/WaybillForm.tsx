@@ -2940,6 +2940,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                                 }
+                                format="toFixed1"
                                 onChange={this.handleChange}
                                 boundKeys="motohours_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))}
@@ -2963,6 +2964,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }
+                              format="toFixed1"
                               onChange={this.handleChange}
                               boundKeys="motohours_end"
                             />
@@ -2973,6 +2975,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               label="Пробег, м/ч"
                               value={state.motohours_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              format="toFixed1"
                               disabled
                             />
                           </EtsBootstrap.Col>
@@ -3186,6 +3189,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                   || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                                 }
+                                format="toFixed1"
                                 onChange={this.handleChange}
                                 boundKeys="motohours_equip_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))}
@@ -3207,6 +3211,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               disabled={(IS_DELETE || IS_CLOSED && !this.state.canEditIfClose)
                                 || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                               onChange={this.handleChange}
+                              format="toFixed1"
                               boundKeys="motohours_equip_end"
                             />
                             <ExtField
@@ -3215,6 +3220,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               label="Пробег, м/ч"
                               value={state.motohours_equip_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              format="toFixed1"
                               disabled
                             />
                           </EtsBootstrap.Col>

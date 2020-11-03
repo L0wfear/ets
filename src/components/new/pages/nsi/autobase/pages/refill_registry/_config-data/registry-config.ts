@@ -72,13 +72,20 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             valueKey: 'id',
             labelKey: 'number',
             groupName: 'fuel_cards',
+            payload: {
+              fuel_type_id: 2
+            }
           },
         },
         {
           valueKey: 'fuel_type_id',
-          labelKey: 'fuel_type',
           title: 'Тип топлива ГПН',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'foreign_fuel_type',
+            valueKey: 'id',
+            labelKey: 'name',
+          },
         },
         {
           valueKey: 'fuel_given',
@@ -107,6 +114,15 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           valueKey: 'wb_fuel_card_numbers',
           title: 'Номер топливной карты, указанной в ПЛ',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'fuel_cards',
+            valueKey: 'id',
+            labelKey: 'number',
+            groupName: 'fuel_cards',
+            payload: {
+              fuel_type_id: 2
+            }
+          },
         },
         {
           valueKey: 'wb_fuel_types',

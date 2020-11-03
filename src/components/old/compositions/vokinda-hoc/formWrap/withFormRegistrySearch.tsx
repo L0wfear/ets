@@ -82,7 +82,7 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
 
         const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
-        const uniqKeyType = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyType);
+        const uniqKeyType = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKeyType);
         const hasButtonToCreate = etsUseSelector((state) => {
           const buttons = getHeaderData(getRegistryState(state), props.registryKey).buttons;
           return (

@@ -1219,7 +1219,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
     
     // Если ПЛ закрыт,то ничего не получаем
-    if (formState.status === 'closed' || isElectricalKind) {
+    if (formState.status !== 'active' || isElectricalKind) {
       this.setState({ tooLongFactDates: false });
       return;
     }

@@ -164,6 +164,8 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   car_has_motohours: null,
   car_has_odometr: null,
   engine_kind_ids: [],
+  rrn_codes: [],
+  refill: [],
   ...gasDefaultElement,
   ...electricalDefaultElement,
   ...defaultRefillObj,

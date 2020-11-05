@@ -92,23 +92,35 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
         }
       })
     );
-    if(tachograph_id) {
-      dispatch(
+
+    const submitTachographDataReadingList = tachograph_id
+      ? await dispatch(
         actionChangeTachographDataReadingList(
           { tachograph_id, data_reading },
           { page }
         )
-      );
-      dispatch(
+      )
+      : null;
+    const submitTachographReplacementSkziList = tachograph_id
+      ? await dispatch(
         actionChangeTachographReplacementSkziList(
           { tachograph_id, replacement_skzi },
           { page }
         )
-      );
-    } 
-    const response = await props.submitAction(ownState, props.meta);
+      )
+      : null;
+    const defaultSubmit = await props.submitAction(ownState, props.meta);
+    const response = await Promise.all([
+      submitTachographDataReadingList,
+      submitTachographReplacementSkziList,
+      defaultSubmit,
+    ]);
     if (response) {
-      props.handleHide(true, response);
+      props.handleHide(true, {
+        ...defaultSubmit,
+        ...submitTachographDataReadingList,
+        ...submitTachographReplacementSkziList,
+      });
     }
   }, [state, props.submitAction, tachograph_id]);
   React.useEffect(() => {

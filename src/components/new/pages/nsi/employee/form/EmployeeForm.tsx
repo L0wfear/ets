@@ -574,7 +574,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="layoff_reason_id"
                   />
                 </EtsBootstrap.Col>
-                {state.layoff_reason_id === 31 && <EtsBootstrap.Col md={6}>
+                {!state.active && <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="comment"
                     type="string"
@@ -584,6 +584,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="comment"
                     error={errors.comment}
                     disabled={!isPermitted}
+                    hint={'Здесь вы можете указать дополнительные комментарии по вопросу увольнения сотрудника'}
                   />
                 </EtsBootstrap.Col>}
               </EtsBootstrap.Row>

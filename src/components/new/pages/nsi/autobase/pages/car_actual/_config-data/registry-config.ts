@@ -112,6 +112,11 @@ export const config: TypeConfigData<Car> = {
         type: 'multiselect',
       },
       {
+        valueKey: 'body_number',
+        title: 'Заводский номер',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'car_group_name',
         title: 'Группа техники',
         type: 'multiselect',
@@ -275,6 +280,11 @@ export const config: TypeConfigData<Car> = {
         {
           key: 'vin',
           title: 'VIN',
+          width: 300,
+        },
+        {
+          key: 'body_number',
+          title: 'Заводский номер',
           width: 300,
         },
         {

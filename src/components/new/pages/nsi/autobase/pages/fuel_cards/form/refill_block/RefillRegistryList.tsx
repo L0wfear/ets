@@ -10,13 +10,13 @@ import {
 } from './_config-data/registry-config';
 import RefillFormLazy from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/refill_block/form';
 
-const RefillRegistryList: React.FC = React.memo(
-  () => {
+const RefillRegistryList: React.FC<{fuel_card_number: string;}> = React.memo(
+  ({fuel_card_number}) => {
     const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {
-        dispatch(registryAddInitialData(getToConfig()));
+        dispatch(registryAddInitialData(getToConfig(fuel_card_number)));
         return () => {
           dispatch(registryRemoveData(registryKey));
         };

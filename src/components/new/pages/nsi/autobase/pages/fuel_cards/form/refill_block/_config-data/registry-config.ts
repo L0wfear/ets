@@ -5,7 +5,7 @@ import refillPermissions from './permissions';
 
 export const registryKey = 'Refill';
 
-export const getToConfig = (test_patam = 0): TypeConfigData<Refill> => {
+export const getToConfig = (fuel_card_number: string): TypeConfigData<Refill> => {
   return {
     Service: {
       getRegistryData: {
@@ -22,7 +22,7 @@ export const getToConfig = (test_patam = 0): TypeConfigData<Refill> => {
 
       buttons: [
         buttonsTypes.read,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     list: {
@@ -33,6 +33,11 @@ export const getToConfig = (test_patam = 0): TypeConfigData<Refill> => {
         uniqKeyForParams: 'rrn_code',
         uniqKeyType: 'string',
         withoutWithSearch: true,
+      },
+      processed: {
+        filterValues: {
+          fuel_card_number__in: [fuel_card_number]
+        }
       },
       meta: {
         fields: [

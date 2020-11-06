@@ -63,12 +63,12 @@ export const getToConfig = (test_patam = 0): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'station_name',
+            key: 'gas_station_name',
             title: 'Наименование АЗС',
             width: 150,
           },
           {
-            key: 'station_address',
+            key: 'gas_station_address',
             title: 'Адрес АЗС',
             width: 150,
           },

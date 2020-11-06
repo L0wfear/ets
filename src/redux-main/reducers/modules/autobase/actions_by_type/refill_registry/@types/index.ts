@@ -18,8 +18,8 @@ export type Refill = {
   wb_fuel_card_numbers: string;
   wb_fuel_types: Array<string>;
   wb_fuel_types_text: string;
-  station_name: string;
-  station_address: string;
+  gas_station_name: string;
+  gas_station_address: string;
   structure_id: number;
   structure_name: string;
   tx_type_name: string;

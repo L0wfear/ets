@@ -64,12 +64,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           type: 'advanced-datetime',
         },
         {
-          valueKey: 'fuel_car_id',
+          valueKey: 'fuel_card_number',
           title: 'Номер топливной карты ГПН',
           type: 'multiselect',
           getRegistryData: {
             entity: 'fuel_cards',
-            valueKey: 'id',
+            valueKey: 'number',
             labelKey: 'number',
             groupName: 'fuel_cards',
             payload: {
@@ -111,7 +111,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'wb_fuel_card_numbers',
+          valueKey: 'wb_fuel_card_ids',
           title: 'Номер топливной карты, указанной в ПЛ',
           type: 'multiselect',
           getRegistryData: {
@@ -136,14 +136,26 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           },
         },
         {
-          valueKey: 'station_name',
+          valueKey: 'gas_station_name',
           title: 'Наименование АЗС',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'gas_station',
+            valueKey: 'id',
+            labelKey: 'name',
+            groupName: 'gas_station',
+          },
         },
         {
-          valueKey: 'station_address',
+          valueKey: 'gas_station_address',
           title: 'Адрес АЗС',
           type: 'multiselect',
+          getRegistryData: {
+            entity: 'gas_station',
+            valueKey: 'id',
+            labelKey: 'address',
+            groupName: 'gas_station',
+          },
         },
         {
           valueKey: 'structure_id',
@@ -243,12 +255,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'station_name',
+            key: 'gas_station_name',
             title: 'Наименование АЗС',
             width: 150,
           },
           {
-            key: 'station_address',
+            key: 'gas_station_address',
             title: 'Адрес АЗС',
             width: 150,
           },

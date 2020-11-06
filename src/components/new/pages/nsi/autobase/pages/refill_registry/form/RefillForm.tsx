@@ -151,8 +151,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Наименование АЗС"
                 readOnly
-                value={state.station_name || '-'}
-                boundKeys="station_name"
+                value={state.gas_station_name || '-'}
+                boundKeys="gas_station_name"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -162,8 +162,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                 type="string"
                 label="Адрес АЗС"
                 readOnly
-                value={state.station_address || '-'}
-                boundKeys="station_address"
+                value={state.gas_station_address || '-'}
+                boundKeys="gas_station_address"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

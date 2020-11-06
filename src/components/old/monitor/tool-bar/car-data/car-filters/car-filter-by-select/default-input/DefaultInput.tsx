@@ -46,6 +46,7 @@ const DefaultInput: React.FC<PropsDefaultInput> = ({
     </FlexContainer>
   ) : (
     <ExtField
+      portal={props.portal}
       multi={props.type === 'multi'}
       label={false}
       clearable={true}
@@ -55,6 +56,7 @@ const DefaultInput: React.FC<PropsDefaultInput> = ({
       placeholder={`${props.placeholder}${!length ? ' (нет данных)' : ''}`}
       options={OPTIONS}
       disabled={!length}
+      setIsClickMenu={props.setIsClickMenu}
     />
   );
 };

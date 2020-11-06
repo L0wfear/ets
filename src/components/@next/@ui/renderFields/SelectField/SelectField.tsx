@@ -16,7 +16,7 @@ export const SpaceWrapper = styled.span`
 const SelectField: React.FC<ExtFieldSelect> = React.memo(
   (props) => {
     const { label = '', ...selectProps } = props;
-    const { error, className = '', readOnly = false, modalKey } = props;
+    const { error, portal, setIsClickMenu, className = '', readOnly = false, modalKey } = props;
 
     const selectClassName = cx({ 'has-error': error });
     const id = props.id
@@ -57,6 +57,8 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
           {...selectProps}
           disabled={readOnly || props.disabled}
           className={selectClassName}
+          portal={portal}
+          setIsClickMenu={setIsClickMenu}
         />
         <ErrorsBlock
           hidden={!error}

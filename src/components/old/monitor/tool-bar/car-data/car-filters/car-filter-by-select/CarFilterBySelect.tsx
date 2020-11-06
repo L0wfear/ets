@@ -74,6 +74,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
+    const [isClickMenu, setIsClickMenu] = React.useState(false);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
@@ -241,10 +242,10 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     }, [hidden]);
 
     const handleClickOut = React.useCallback(() => {
-      if (!hidden) {
+      if (!hidden && !isClickMenu) {
         setHidden(true);
       }
-    }, [hidden]);
+    }, [hidden, isClickMenu]);
 
     if(!filterFields.length) {
       return <DivNone />;
@@ -273,6 +274,8 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
+                        portal
+                        setIsClickMenu={setIsClickMenu}
                         setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
                       />
                     ))}

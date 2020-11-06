@@ -9,8 +9,9 @@ import {
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
-import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
+import { registrySetRowIsOpen } from 'components/new/ui/registry/module/actions-registy';
 
 type OwnProps = CommonTypesForButton & {
   onClick?: (item: any) => any;
@@ -37,7 +38,9 @@ const ButtonRead: React.FC<Props> = React.memo(
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-
+    const withoutWithSearch = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.withoutWithSearch);
+    const dispatch = etsUseDispatch();
+    
     const data = React.useMemo(
       () => (
         get(props, 'data', {}) as Props['data']
@@ -46,6 +49,10 @@ const ButtonRead: React.FC<Props> = React.memo(
     );
     const handleClick = React.useCallback(
       () => {
+        if(withoutWithSearch) {
+          dispatch(registrySetRowIsOpen(props.registryKey, true));
+          return;
+        }
         if (props.onClick) {
           props.onClick(selectedRow);
           return;
@@ -60,7 +67,7 @@ const ButtonRead: React.FC<Props> = React.memo(
 
         props.setParams(changeObj);
       },
-      [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams, props.setParams, props.match.params, props.setDataInSearch, props.searchState],
+      [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams, props.setParams, props.match.params, props.setDataInSearch, props.searchState, withoutWithSearch],
     );
 
     const isPermitted = etsUseIsPermitted(

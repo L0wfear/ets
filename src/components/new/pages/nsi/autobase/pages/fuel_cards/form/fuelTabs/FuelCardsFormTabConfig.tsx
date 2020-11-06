@@ -54,14 +54,12 @@ export const vehicleTab: OneTabData = { // Вкладка - Привязанны
   showTabIntoNavFlagKey: 'isVehicle',
 };
 
-export const refillTab: OneTabData = { // Вкладка - Заправки
+export const refillTab: OneTabData = {
   title: 'Заправки',
   tabKey: 'refill',
   component: null,
   path: '', // выпилить, мы не будем использовать URl
-  isRegistry: false,
-  errorsFieldList:[
-  ],
+  isRegistry: true,
   showTabIntoNavFlagKey: 'isRefill',
 };
 

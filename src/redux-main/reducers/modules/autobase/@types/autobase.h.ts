@@ -11,6 +11,7 @@ import { TachographDataReadingList } from '../actions_by_type/tachograph_data_re
 import { TachographReplacementSkziList } from '../actions_by_type/tachograph_replacement_skzi/@types';
 import { TachographBrand } from '../actions_by_type/tachograph_brand/@types';
 import { TachographReplacementSkziReason } from '../actions_by_type/tachograph_replacement_skzi_reason/@types';
+import { Refill } from '../actions_by_type/refill_registry/@types';
 
 export type SparePart = {
   company_id?: number;
@@ -512,4 +513,5 @@ export type IStateAutobase = {
   tachographMetrologicalVerificationList: Array<TachographMetrologicalVerificationList>;
   tachographBrandList: Array<TachographBrand>;
   tachographReplacementSkziReasonList: Array<TachographReplacementSkziReason>;
+  refillList: Array<Refill>;
 };

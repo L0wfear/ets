@@ -47,7 +47,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     try {
       await global.confirmDialog({
         title: 'Внимание!',
-        body: 'Вы уверены, что хотите удалить запись',
+        body: 'Вы уверены, что хотите удалить запись?',
         okName: 'Удалить',
       });
       this.props.onItemRemove(this.state.selected.rowNumber - 1);

@@ -6,10 +6,12 @@ import { BorderDash } from 'global-styled/global-styled';
 import styled from 'styled-components';
 import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
 import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
+import { withRequirePermission, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 type Props = {
   refills: OneRefillFuelCompanyData['refills'];
-};
+} & WithRequirePermissionProps;
 
 const RefillFuelCompanyStyled = styled.div`
   ${BorderDash} {
@@ -91,4 +93,7 @@ const RefillFuelCompany: React.FC<Props> = React.memo(
   },
 );
 
-export default RefillFuelCompany;
+export default withRequirePermission<Props>({
+  permissions: waybillPermissions.view_card_refills,
+})(RefillFuelCompany);
+

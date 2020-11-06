@@ -129,6 +129,7 @@ export type Car = {
   available: boolean;
   available_to_bind: boolean;
   body_capacity: number;
+  body_number: string;
   car_group_id: number;
   car_group_name: string;
   certificate_number: string;

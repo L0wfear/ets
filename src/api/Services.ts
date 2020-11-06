@@ -455,3 +455,6 @@ export const TachographPeriodicVerificationService = ETS_API_FACTORY.createApiSe
 export const TachographVerificationReasonService = ETS_API_FACTORY.createApiServiceAdapter(
   '/autobase/tachograph_verification_reason',
 );
+export const RefillFuelCompanyService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill_refill_tx',
+);

@@ -15,7 +15,7 @@ const children = {
 };
 
 export const monitoringPermissions = {
-  all_inspaction: 'monitoring.all_inspaction', // Мониторинговая деятельность – все проверки
+  all_inspaction: 'inspect.all', // Мониторинговая деятельность – все проверки
 };
 
 export default {

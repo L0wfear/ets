@@ -13,7 +13,7 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {
     const { error, warning, modalKey, showRedBorder, addonRight, ...mainProps } = props;
 
-    const inputClassName = cx({ 'has-error': error || showRedBorder });
+    const inputClassName = cx({ 'has-error': error || showRedBorder || warning });
     let { value } = props;
 
     if (value === undefined || value === null) {

@@ -19,7 +19,7 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
     const { label = '', ...selectProps } = props;
     const { error, warning, className = '', readOnly = false, modalKey } = props;
 
-    const selectClassName = cx({ 'has-error': error });
+    const selectClassName = cx({ 'has-error': error || warning });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;

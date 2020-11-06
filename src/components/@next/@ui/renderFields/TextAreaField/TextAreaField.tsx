@@ -31,7 +31,7 @@ const TextAreaField: React.FC<ExtFieldText> = React.memo(
 
     const wrapperClassName = cx({
       'textarea-field': true,
-      'has-error': error,
+      'has-error': error || warning,
     });
 
     return (

@@ -214,7 +214,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'refill_at_text',
+            key: 'refill_at',
             title: 'Дата и время транзакции',
             format: 'datetime',
             width: 150,

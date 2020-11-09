@@ -69,7 +69,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       [props.onChange, toUpperCase, value],
     );
 
-    const inputClassName = cx({ 'has-error': error });
+    const inputClassName = cx({ 'has-error': error || warning });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;

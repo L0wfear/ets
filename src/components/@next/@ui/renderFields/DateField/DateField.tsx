@@ -17,7 +17,7 @@ const DateField: React.FC<ExtFieldDate> = React.memo(
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;
 
-    const dateClassName = cx({ 'has-error': error });
+    const dateClassName = cx({ 'has-error': error || warning });
 
     return (
       <SingleUiElementWrapper

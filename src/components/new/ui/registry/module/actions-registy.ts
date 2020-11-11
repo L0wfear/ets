@@ -242,8 +242,8 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
     const paginator = list?.paginator;
     const perPage = get(paginator, 'perPage', 0);
     const offset = get(paginator, 'currentPage', 0);
-    const filterValues = get(processed, 'filterValues') || {};
-    const sort = get(processed, 'sort') || {};
+    const filterValues = get(processed, 'filterValues') ?? {};
+    const sort = get(processed, 'sort') ?? {};
     const payloadSortBy = get(payload, 'sort_by', '');
 
     payload = {

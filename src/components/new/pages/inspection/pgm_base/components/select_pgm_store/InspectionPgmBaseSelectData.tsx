@@ -37,7 +37,7 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
   React.useEffect(
     () => {
       props.actionGetAndSetInStoreCompany(showAll, { page: props.loadingPage });
-      props.actionGetAndSetInStorePgmBase({}, { page: props.loadingPage });
+      props.actionGetAndSetInStorePgmBase(showAll, { page: props.loadingPage });
 
       return () => {
         props.actionResetCompanyAndCarpool();

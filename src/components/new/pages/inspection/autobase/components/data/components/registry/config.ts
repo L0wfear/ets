@@ -10,10 +10,9 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/registry',
+        entity: 'inspect/autobase',
         payload: {
           base_id: carpoolId,
-          type: 'autobase',
         },
       },
       getBlobData: {

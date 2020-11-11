@@ -11,10 +11,9 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/registry',
+        entity: 'inspect/pgm_base',
         payload: {
           base_id: pgmBaseId,
-          type: 'pgm_base',
         },
       },
       getBlobData: {

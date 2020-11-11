@@ -10,10 +10,9 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/registry',
+        entity: 'inspect/cars_condition',
         payload: {
           company_id: searchState.companyId,
-          type: 'cars_condition',
         },
       },
       getBlobData: {

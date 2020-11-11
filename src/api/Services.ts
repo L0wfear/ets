@@ -394,6 +394,15 @@ export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspect/registry',
 );
+export const InspectAutobaseService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspect/autobase',
+);
+export const InspectPgmBaseService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspect/pgm_base',
+);
+export const InspectCarsConditionService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspect/cars_condition',
+);
 export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/container',
 );

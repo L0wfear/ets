@@ -106,6 +106,13 @@ export function createValidDate(date: string | Date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
+export function createValidYear(date: string | Date) {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format(global.APP_YEAR_FORMAT);
+}
+
 export function createValidDateDots(date: string | Date) {
   if (!date) {
     return null;

@@ -199,12 +199,14 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const commission_members = get(inspectAutobase, 'commission_members', defaultInspectAutobase.commission_members);
   const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
   const action = get(inspectAutobase, 'action', defaultInspectAutobase.action);
+  const type = get(inspectAutobase, 'type', defaultInspectAutobase.type);
 
   const payload = {
     agents_from_gbu,
     commission_members,
     resolve_to,
     action,
+    type,
   };
 
   if (!isNullOrUndefined(data)) {

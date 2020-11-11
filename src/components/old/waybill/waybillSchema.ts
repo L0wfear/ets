@@ -486,7 +486,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_start: {
       title: 'Счетчик моточасов.Выезд',
       type: 'number',
-      integer: true,
+      float: 1,
       required: false,
       dependencies: [
         (value, formData) => {

@@ -22,7 +22,7 @@ const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolP
         { page: props.loadingPage },
       );
       props.actionGetAndSetInStoreCarpool(
-        {},
+        showAll,
         { page: props.loadingPage },
       );
 

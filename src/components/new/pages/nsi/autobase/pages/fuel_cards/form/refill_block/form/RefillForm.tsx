@@ -16,7 +16,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { getDefaultRefillElement } from './utils';
 import { refillFormSchema } from './schema';
-import refillPermissions from '../_config-data/permissions';
+import refillPermissions from 'components/new/pages/nsi/autobase/pages/refill_registry/_config-data/permissions';
 import { Refill } from 'redux-main/reducers/modules/autobase/actions_by_type/refill_registry/@types';
 
 class RefillForm extends React.PureComponent<PropsRefill, {}> {

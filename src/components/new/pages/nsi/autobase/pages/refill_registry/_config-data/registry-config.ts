@@ -2,7 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Refill } from 'redux-main/reducers/modules/autobase/actions_by_type/refill_registry/@types';
-import refillPermissions from './permissions';
+import refillPermissions from 'components/new/pages/nsi/autobase/pages/refill_registry/_config-data/permissions';
 
 export const registryKey = 'Refill';
 

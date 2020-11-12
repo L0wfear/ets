@@ -1005,7 +1005,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             ) {
               return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
             }
-            if (value && value < motohours_equip_start) {
+            if (value && +value < +motohours_equip_start) {
               return '"Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов оборудования.Выезд"';
             }
             if (value && !isValidToFixed1(value)) {

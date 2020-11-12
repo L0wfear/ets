@@ -23,6 +23,7 @@ export const promiseGetBlobRefill = async (payloadOwn: { date_start: string; dat
   let response = null;
   const payload: any = {
     ...payloadOwn,
+    format: 'xls'
   };
   if (filter) {
     payload.filter = JSON.stringify(filter);

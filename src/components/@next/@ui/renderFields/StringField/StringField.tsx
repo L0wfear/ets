@@ -34,6 +34,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       modalKey,
       isLoading,
       inline,
+      dashIfEmpty,
       ...mainProps
     } = props;
 
@@ -94,6 +95,10 @@ const StringField: React.FC<ExtFieldString> = React.memo(
 
     if (value === undefined || value === null) {
       value = '';
+    }
+
+    if (value === '' && dashIfEmpty) {
+      value = '-';
     }
     const showError = typeof error === 'boolean' ? error : true;
 

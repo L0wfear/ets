@@ -78,6 +78,7 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   maxLength?: number;
   placeholder?: string;
   addonRight?: string;
+  dashIfEmpty?: boolean;
 };
 
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
@@ -85,6 +86,7 @@ export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
   showRedBorder?: boolean;
 
   addonRight?: string;
+  dashIfEmpty?: boolean;
 };
 
 export type ExtFieldText<V = any> = ExtFieldCommon<V> & {

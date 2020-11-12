@@ -1,7 +1,7 @@
 import * as insider from 'point-in-polygon';
 import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
-import { add, flow, isNumber, max, reduce, subtract } from 'lodash';
+import { add, isNumber, reduce } from 'lodash';
 import { WsData } from './LayerCarMarker.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
@@ -78,26 +78,34 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData, ge
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number, carActualList: Array<Car>) => {
-  let countTsByStatusWithoutFilters: number = 0;
-
-  const carActualNotInMap = carActualList.reduce((carNotInMapList, car ) => {
-    return Boolean(car.gps_code === null || !carPointsDataWs[car.gps_code])
-      ? [...carNotInMapList, car]
-      : carNotInMapList;
-  }, []);
+export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number, carActualList: Array<Car>, filters, geoobjectsFilter, carsForExclude) => {
+  const carActualNotInMap = carActualList
+    .reduce((carNotInMapList, car) => {
+      return Boolean(car.gps_code === null || !carPointsDataWs[car.gps_code])
+        ? [...carNotInMapList, car]
+        : carNotInMapList;
+    }, [])
+    .filter((el) => {
+      return !Object.entries(filters).some(
+        ([key, value]) =>
+          !checkFilterByKey(
+            key,
+            value,
+            null,
+            {},
+            el,
+            geoobjectsFilter,
+            carsForExclude
+          )
+      );
+    });
 
   const not_in_map: number = carActualNotInMap.length; // кол-во всех тачек из car_actual, которых не было в данных из сокета
 
   const countTsByStatus = reduce(
     carPointsDataWs,
     (carsByStatus, carByStatus) => {
-      const { front_status, visible, visibleWithoutFilters } = carByStatus;
-
-      if (visibleWithoutFilters) {
-        countTsByStatusWithoutFilters += 1;
-      }
-  
+      const { front_status, visible } = carByStatus;
       if (visible) {
         return {
           ...carsByStatus,
@@ -111,16 +119,8 @@ export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: 
   );
 
   if (isNumber(carActualGpsCount)) {
-    const not_in_touch = flow(
-      subtract,
-      (hasNeverCarSignalCount: number): [number, number] => [hasNeverCarSignalCount, 0],
-      max,
-      (addend: number): number => add(countTsByStatus.not_in_touch, addend)
-    )(carActualGpsCount, countTsByStatusWithoutFilters);
-
     return {
       ...countTsByStatus,
-      not_in_touch,
       not_in_map,
       carActualNotInMap,
     };

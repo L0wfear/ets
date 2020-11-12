@@ -137,7 +137,7 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button disabled={!props.canSave || Boolean(datesData.error_date_start || datesData.error_date_end)} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
+          <EtsBootstrap.Button disabled={!props.isPermitted || Boolean(datesData.error_date_start || datesData.error_date_end)} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
           <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>

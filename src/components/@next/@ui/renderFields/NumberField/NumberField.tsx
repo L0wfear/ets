@@ -11,13 +11,17 @@ import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/Warning
 
 const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {
-    const { error, warning, modalKey, showRedBorder, addonRight, ...mainProps } = props;
+    const { error, warning, modalKey, showRedBorder, addonRight, dashIfEmpty, ...mainProps } = props;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder || warning });
     let { value } = props;
 
     if (value === undefined || value === null) {
       value = '';
+    }
+
+    if (value === '' && dashIfEmpty) {
+      value = '-';
     }
 
     const label_id = props.id

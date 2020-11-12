@@ -16,7 +16,7 @@ const PgmStoreList: React.FC<OwnProps> = React.memo(
   () => {
     const dispatch = etsUseDispatch();
     const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-    const all = permissions.has(monitoringPermissions.all_inspaction);
+    const all = permissions.has(monitoringPermissions.all_inspaction) ? true : null;
     
     React.useEffect(
       () => {

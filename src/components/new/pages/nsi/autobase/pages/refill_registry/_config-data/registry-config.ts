@@ -248,11 +248,13 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             key: 'wb_fuel_card_numbers',
             title: 'Номер топливной карты, указанной в ПЛ',
             width: 150,
+            sortable: false,
           },
           {
             key: 'wb_fuel_types_text',
             title: 'Тип топлива, указанный в ПЛ',
             width: 150,
+            sortable: false,
           },
           {
             key: 'gas_station_name',

@@ -60,7 +60,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
       {
         props.type === INSPECT_TYPE_FORM.list && (
           <React.Fragment>
-            <EtsBootstrap.Button disabled={!props.isPermitted || !props.isPermittedToUpdateClose} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button disabled={!props.isPermitted} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />
             <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleSaveGetAct}>Сформировать акт для подписи сторон</EtsBootstrap.Button>
             <EtsBootstrap.Button disabled={!props.canSave} onClick={handleCloseAct}>Завершить проверку</EtsBootstrap.Button>
@@ -72,7 +72,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
           <React.Fragment>
             {
               props.isPermittedToUpdateClose && (
-                <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmitClosed}>Сохранить изменения</EtsBootstrap.Button>
+                <EtsBootstrap.Button disabled={!props.canSave || !props.isPermittedToUpdateClose} onClick={handleSubmitClosed}>Сохранить изменения</EtsBootstrap.Button>
               )
             }
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />

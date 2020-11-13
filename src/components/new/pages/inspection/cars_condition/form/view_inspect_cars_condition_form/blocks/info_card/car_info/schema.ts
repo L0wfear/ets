@@ -177,7 +177,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
     },
     vin_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный VIN:',
       dependenciesDisable: [
         (_, formState) => {
@@ -214,7 +214,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
     },
     factory_number_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный заводской номер:',
       dependenciesDisable: [
         (_, formState) => {

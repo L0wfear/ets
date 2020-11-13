@@ -177,7 +177,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
     },
     vin_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный VIN:',
       dependenciesDisable: [
         (_, formState) => {
@@ -214,7 +214,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
     },
     factory_number_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный заводской номер:',
       dependenciesDisable: [
         (_, formState) => {
@@ -427,12 +427,24 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     mileage: {
       type: 'number',
       title: 'Пробег на дату проведения проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Пробег на дату проведения проверки" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     motohours: {
       type: 'number',
       title: 'Наработка м/ч на дату проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Наработка м/ч на дату проверки" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     fact_status: {
       type: 'valueOfArray',

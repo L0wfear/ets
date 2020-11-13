@@ -519,7 +519,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_equip_start: {
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
-      integer: true,
+      float: 1,
       dependencies: [
         (value, formData) => {
           if (
@@ -972,7 +972,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_end: {
       title: 'Счетчик моточасов.Возвращение в гараж, м/ч',
       type: 'number',
-      integer: true,
+      float: 1,
       dependencies: [
         (value, { motohours_start, gov_number, car_has_motohours, status }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
@@ -995,7 +995,6 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
       type: 'number',
       float: 1,
-      integer: true,
       dependencies: [
         (value, { motohours_equip_start, equipment_fuel, status }) => {
           if (equipment_fuel && status !== 'deleted') {

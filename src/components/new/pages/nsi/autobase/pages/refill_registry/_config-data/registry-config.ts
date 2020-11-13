@@ -12,6 +12,9 @@ export const getToConfig = (): TypeConfigData<Refill> => {
       getRegistryData: {
         entity: 'refill_registry',
         userServerFilters: true,
+        payload: {
+          sort_by: 'refill_at:desc'
+        }
       },
     },
     registryKey,

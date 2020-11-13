@@ -212,8 +212,6 @@ type State = {
     motohours_equip_diff: number;
     odometr_diff: number;
     motohours_diff: number;
-    equipment_tax_consumption: number;
-    equipment_fact_consumption: number;
   };
   timeId: any; // id таймера
 
@@ -1261,7 +1259,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
       const percent = 10;
       const isDiff = this.handleDiff(percent);
-      const diffFuelEnd = parseFloatWithFixed(formState.equipment_tax_consumption - formState.equipment_fact_consumption, 2);
+      const diffFuelEnd = parseFloatWithFixed(Math.abs(formState.fact_consumption), 2);
       const isDiffFactFuelEnd = Boolean(diffFuelEnd !== 0);
       const isFuelKind = formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
 
@@ -1272,7 +1270,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               {isDiff.isDiffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {percent}%.</p>)}
               {isDiff.isDiffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {percent}%.</p>)}
               {isDiff.isDiffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {percent}%.</p>)}
-              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {diffFuelEnd > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {diffFuelEnd.toString().replace('.', ',')} л.</p>)}
+              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {formState.fact_consumption > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {diffFuelEnd.toString().replace('.', ',')} л.</p>)}
               <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
               <br />
               <p>Вы уверены, что хотите закрыть ПЛ?</p>

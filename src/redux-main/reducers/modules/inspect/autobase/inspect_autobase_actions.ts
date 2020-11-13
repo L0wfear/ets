@@ -242,6 +242,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     agents_from_gbu,
     commission_members,
     resolve_to,
+    type,
   } = inspectAutobase;
 
   const payload = {
@@ -250,6 +251,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     commission_members,
     resolve_to,
     action: 'close',
+    type,
   };
 
   const result = await dispatch(

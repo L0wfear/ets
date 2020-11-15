@@ -1257,18 +1257,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const formState = cloneDeep(this.state.formState);
 
       const isDiff = this.handleDiff(PERCENT_DIFF_VALUE, formState);
-      const diffFuelEnd = parseFloatWithFixed(Math.abs(formState.fact_consumption), 2);
-      const isDiffFactFuelEnd = Boolean(diffFuelEnd !== 0);
       const isFuelKind = formState.engine_kind_ids?.includes(FUEL_ENGINE_TYPE_ID);
 
       const errorBlock = () => {
         if (isFuelKind) {
           return (
             <div>
-              {isDiff.isDiffSensorRefill && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {isDiff.isDiffSensorConsumption && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {isDiff.isDiffSensorFinishValue && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {isDiffFactFuelEnd && (<p>"Возврат фактический, л" {formState.fact_consumption > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {diffFuelEnd.toString().replace('.', ',')} л.</p>)}
+              {Boolean(isDiff.isDiffSensorRefill) && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
+              {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
+              {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
+              {Boolean(formState.diff_consumption) && (<p>"Возврат фактический, л" {formState.diff_consumption > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {formState.diff_consumption} л.</p>)}
               <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
               <br />
               <p>Вы уверены, что хотите закрыть ПЛ?</p>

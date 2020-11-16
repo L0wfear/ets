@@ -85,9 +85,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           title: 'Тип топлива ГПН',
           type: 'multiselect',
           getRegistryData: {
-            entity: 'foreign_fuel_type',
+            entity: 'fuel_type',
             valueKey: 'id',
             labelKey: 'name',
+            payload: {
+              is_fuel_card: true,
+            }
           },
         },
         {

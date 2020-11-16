@@ -208,7 +208,7 @@ export default class Taxes extends React.Component<any, any> {
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          value: parseFloat(FACT_VALUE),
+          value: +parseFloat(FACT_VALUE).toFixed(1),
           id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'

@@ -82,7 +82,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
         },
         {
           valueKey: 'fuel_type_id',
-          title: 'Тип топлива ГПН',
+          title: 'Тип топлива',
           type: 'multiselect',
           getRegistryData: {
             entity: 'fuel_type',
@@ -232,7 +232,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           },
           {
             key: 'fuel_type',
-            title: 'Тип топлива ГПН',
+            title: 'Тип топлива',
             width: 150,
           },
           {

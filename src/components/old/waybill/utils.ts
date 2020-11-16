@@ -19,6 +19,8 @@ const VALID_VEHICLES_TYPES = {
   COMPRESSOR: 15,
 } as const;
 
+export const PERCENT_DIFF_VALUE = 10;
+
 export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
   Promise.resolve(
     get(carIndex[car_id], 'fuel_correction_rate') || 1,

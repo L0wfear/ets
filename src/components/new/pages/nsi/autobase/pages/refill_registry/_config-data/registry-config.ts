@@ -12,6 +12,9 @@ export const getToConfig = (): TypeConfigData<Refill> => {
       getRegistryData: {
         entity: 'refill_registry',
         userServerFilters: true,
+        payload: {
+          sort_by: 'refill_at:desc'
+        }
       },
     },
     registryKey,
@@ -79,12 +82,15 @@ export const getToConfig = (): TypeConfigData<Refill> => {
         },
         {
           valueKey: 'fuel_type_id',
-          title: 'Тип топлива ГПН',
+          title: 'Тип топлива',
           type: 'multiselect',
           getRegistryData: {
-            entity: 'foreign_fuel_type',
+            entity: 'fuel_type',
             valueKey: 'id',
             labelKey: 'name',
+            payload: {
+              is_fuel_card: true,
+            }
           },
         },
         {
@@ -226,7 +232,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           },
           {
             key: 'fuel_type',
-            title: 'Тип топлива ГПН',
+            title: 'Тип топлива',
             width: 150,
           },
           {
@@ -248,11 +254,13 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             key: 'wb_fuel_card_numbers',
             title: 'Номер топливной карты, указанной в ПЛ',
             width: 150,
+            sortable: false,
           },
           {
             key: 'wb_fuel_types_text',
             title: 'Тип топлива, указанный в ПЛ',
             width: 150,
+            sortable: false,
           },
           {
             key: 'gas_station_name',

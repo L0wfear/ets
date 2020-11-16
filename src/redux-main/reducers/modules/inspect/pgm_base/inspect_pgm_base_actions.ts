@@ -247,6 +247,7 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     agents_from_gbu,
     commission_members,
     resolve_to,
+    type,
   } = inspectPgmBase;
 
   const payload = {
@@ -257,6 +258,7 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
     action: 'close',
+    type,
   };
 
   const result = await dispatch(

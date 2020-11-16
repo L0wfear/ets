@@ -49,7 +49,7 @@ export const getToConfig = (fuel_card_number: string): TypeConfigData<Refill> =>
           },
           {
             key: 'fuel_type',
-            title: 'Тип топлива ГПН',
+            title: 'Тип топлива',
             width: 150,
           },
           {

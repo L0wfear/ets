@@ -153,7 +153,7 @@ class SecondMenuItem extends React.Component<any, any> {
           { this.getItem() }
           {
             this.state.showChildren && (
-              <SecondMenuContainer position={this.props.position}>
+              <SecondMenuContainer position={this.props.position} maxHeight={this.props.childMaxHeight}>
                 {
                   Object.entries(data.children).map(this.renderChildrenItem)
                 }

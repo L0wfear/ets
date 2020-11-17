@@ -9,9 +9,6 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import refillPermissions from 'components/new/pages/nsi/autobase/pages/refill_registry/_config-data/permissions';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 
 type OwnProps = {
   isPermitted: boolean;
@@ -35,12 +32,9 @@ const FuelNavHeader: React.FC<Props> = React.memo(
       >
         {
           fuelCardsFormTabKey.map(({ tabKey: tabKeyScheme, title, errorsFieldList, }) => {
-            if (tabKeyScheme === 'refill' && !isPermited) {
-              return <DivNone />;
-            }
             const isActive = activeTabKey === tabKeyScheme ? true : false;
             const tabHasErrors = checkErrorsIntoTab(props.errors, errorsFieldList);
-            const showRefillTabIntoNav = Boolean(tabKeyScheme === refillTab.tabKey && props.formState.source_type_id !== 1);
+            const showRefillTabIntoNav = Boolean(tabKeyScheme === refillTab.tabKey && props.formState.source_type_id !== 1 && isPermited);
 
             return (
               <React.Fragment key={tabKeyScheme} >

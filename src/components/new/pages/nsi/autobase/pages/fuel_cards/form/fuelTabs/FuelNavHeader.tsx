@@ -26,7 +26,7 @@ const FuelNavHeader: React.FC<Props> = React.memo(
   (props) => {
     const activeTabKey = props.activeTabKey;
     const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-    const isPermited = permissions.has(refillPermissions.list);
+    const isPermited = permissions.has(refillPermissions.list) && permissions.has(refillPermissions.read);
     return (
       <EtsBootstrap.Nav
         bsStyle="tabs"

@@ -148,6 +148,8 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 error={props.error}
                 onChange={handleChange}
                 disabled={disabled || metaData.disabled || props.disabled}
+                min={metaData.min}
+                max={metaData.max}
               />
             )
         }

@@ -22,6 +22,8 @@ export type DatePickerProps = {
   makeOnlyYearFormat?: boolean;
   style?: object;
   footer?: boolean;
+  min?: Date | string;
+  max?: Date | string;
 };
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
@@ -34,6 +36,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     preventDateTime,
     views = ['month', 'year', 'decade', 'century'],
     footer = true,
+    min = new Date(1900, 0, 1),
+    max = new Date(2099, 11, 31),
   } = props;
   let { date: value } = props;
   const format = `${calendar ? `${makeOnlyYearFormat ? global.APP_YEAR_FORMAT : global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
@@ -90,6 +94,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       onChange={handleChange}
       views={views}
       footer={footer}
+      min={min}
+      max={max}
     />
   );
 };

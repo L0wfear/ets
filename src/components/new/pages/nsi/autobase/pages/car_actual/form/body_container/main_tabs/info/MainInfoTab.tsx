@@ -12,6 +12,7 @@ import FieldSelectDriverCar from './inside_fields/drivers_data/FieldSelectDriver
 import { MarginTopRow } from '../registration/styled';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import FieldSelectEngine from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 type MainInfoTab = {
   isPermitted: boolean;
@@ -59,17 +60,17 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
               }
             </CenterCol>
             <CenterCol md={6}>
-              <ExtField inline type="string" label="Рег. номер ТС" readOnly value={state.gov_number || 'Не указано'} />
-              <ExtField inline type="string" label="Модель ТС" readOnly value={state.special_model_name || 'Не указано'} />
-              <ExtField inline type="string" label="Марка шасси" readOnly value={state.model_name || 'Не указано'} />
-              <ExtField inline type="string" label="Тип техники" readOnly value={state.type_name || 'Не указано'} />
-              <ExtField inline type="string" label="Группа техники" readOnly value={state.car_group_name || 'Не указано'} />
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={6}>
+                  <ExtField inline type="string" label="Рег. номер ТС" readOnly value={state.gov_number || 'Не указано'} />
                   <ExtField inline type="string" label="VIN (АСУ ОДС)" readOnly value={state.vin || 'Не указано'} />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
-                  <ExtField inline type="string" label="Заводской номер (АСУ ОДС)" readOnly value={state.factory_number || 'Не указано'} />
+                  <ExtField inline type="string" label="Модель ТС" readOnly value={state.special_model_name || 'Не указано'} />
+                  <ExtField inline type="string" label="Марка шасси" readOnly value={state.model_name || 'Не указано'} />
+                  <ExtField inline type="string" label="Тип техники" readOnly value={state.type_name || 'Не указано'} />
+                  <ExtField inline type="string" label="Группа техники" readOnly value={state.car_group_name || 'Не указано'} />
+                  <ExtField inline type="string" label="Состояние" readOnly value={state.condition_text || 'Не указано'} />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </CenterCol>
@@ -86,6 +87,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 disabled={!isPermitted}
                 error={errors.exploitation_date_start}
                 makeGoodFormat
+                makeGoodFormatInitial
               />
               <ExtField
                 type="string"
@@ -128,7 +130,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
               />
               <ExtField
                 type="text"
-                label="Примечание"
+                label="Комментарий"
                 value={state.note}
                 onChange={props.onChange}
                 boundKeys="note"
@@ -151,13 +153,35 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 gov_number={state.gov_number}
                 type_id={state.type_id}
                 drivers_data={state.drivers_data}
+                employee_data={state.employee_data}
                 onChange={props.onChangeBoolean}
                 isPermitted={isPermitted}
-
+                formErrors={errors.drivers_data}
                 page={props.page}
                 path={props.path}
               />
             </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                type="string"
+                label="Режим работы"
+                value={state.operating_mode}
+                onChange={props.onChange}
+                boundKeys="operating_mode"
+                disabled={!isPermitted}
+                error={errors.operating_mode}
+              />
+            </EtsBootstrap.Col>
+            <FieldSelectEngine
+              onChange={props.onChangeBoolean}
+              isPermitted={isPermitted}
+              formErrors={errors}
+              page={props.page}
+              path={props.path}
+              engine_kind_ids={state.engine_kind_ids}
+              car_id={state.asuods_id}
+              is_main
+            />
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>
       </MarginTopRow>

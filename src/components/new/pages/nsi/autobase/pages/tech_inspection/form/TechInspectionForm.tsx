@@ -24,8 +24,9 @@ import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
+import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const [carListOptions, setCarListOptions] = React.useState([]);
@@ -57,26 +58,16 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       || state.company_id === props.userCompanyId
     )
   );
-
+  const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
+  const carList = carActualOptions.options;
+  const isLoading = carActualOptions.isLoading;
   React.useEffect(
     () => {
-      if (!car_id) {
-        props.dispatch(autobaseGetSetCar({}, { page, path })).then(
-          ({ data }) => (
-            setCarListOptions(
-              data.map(
-                (rowData) => ({
-                  value: rowData.asuods_id,
-                  label: rowData.gov_number,
-                  rowData,
-                }),
-              ),
-            )
-          ),
-        );
+      if (!car_id && carList.length) {
+        setCarListOptions(carList);
       }
     },
-    [IS_CREATING, car_id],
+    [IS_CREATING, car_id, carList],
   );
 
   const handleChangeIsActiveToTrue = React.useCallback(
@@ -123,6 +114,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
                 disabled={!isPermitted}
                 modalKey={path}
                 hint="Выводится рег. номер ТС, актуальный на текущий день."
+                etsIsLoading={isLoading}
               />
             )}
             <ExtField

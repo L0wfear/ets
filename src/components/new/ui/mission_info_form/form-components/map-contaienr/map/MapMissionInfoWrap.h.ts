@@ -3,11 +3,12 @@ export type PropsMapMissionInfoWrap = {
   gps_code: string | null;
   geoobjects: object;
   inputLines: any;
-
+  car_id?: number;
   speed_lim: number;
   mkad_speed_lim: number;
   track: Array<any>;
   parkings: Array<any>;
   cars_sensors: object;
   missionNumber: string | number;
+  mission_date_end: string | Date;
 };

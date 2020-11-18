@@ -17,14 +17,18 @@ export type Mission = {
   car_type_ids: Array<number>;
   car_type_name: string;
   car_type_names: Array<string>;
+  closed_by: string | null;
   column_id: number | null;
   comment: string;
+  company_id: number;
+  company_name: string;
   current_percentage: null;
   date_end: string | null;
   date_start: string | null;
   description: string;
   id: number | null;
   is_archive: boolean;
+  is_trailer_required: boolean;
   is_new: boolean;
   is_cleaning_norm?: boolean;
   is_valid_to_order_operation: boolean | null;
@@ -42,6 +46,8 @@ export type Mission = {
   number_text: string | null;
   object_type_id: number | null;
   object_type_name: string;
+  okrug_id: number;
+  okrug_name: string;
   operation_num_execution: null;
   faxogramm_id?: number; // legacy
   order_id: number | null;

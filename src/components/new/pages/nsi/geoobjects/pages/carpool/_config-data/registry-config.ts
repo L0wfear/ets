@@ -7,87 +7,100 @@ import { geoozones } from 'redux-main/reducers/modules/geoobject/constants';
 
 export const registryKey = 'CarpoolList';
 
-export const config: TypeConfigData<Carpool> = {
-  Service: {
-    getRegistryData: {
-      entity: `geozones/${geoozones.carpool}`,
+export const getToConfig = (all: Boolean = null): TypeConfigData<Carpool> => {
+  return {
+    Service: {
+      getRegistryData: {
+        entity: `geozones/${geoozones.carpool}`,
+        payload: {
+          all,
+        }
+      },
     },
-  },
-  registryKey,
-  header: {
-    title: 'Справочник Автобаз',
-    buttons: [
-      buttonsTypes.filter,
-      buttonsTypes.read,
-      buttonsTypes.export,
-    ],
-  },
-  filter: {
-    fields: [
-      {
-        valueKey: 'company_name',
-        title: [
-          {
-            displayIf: displayIfContant.isKgh,
-            title: 'Наименование ГБУ',
-          },
-          {
-            displayIf: displayIfContant.isOkrug,
-            title: 'Учреждение',
-          },
-        ],
-        type: 'multiselect',
-      },
-      {
-        valueKey: 'name',
-        title: 'Полное наименование',
-        type: 'multiselect',
-      },
-      {
-        valueKey: 'address',
-        title: 'Адрес',
-        type: 'multiselect',
-      },
-    ],
-  },
-  list: {
-    permissions,
-    data: {
-      uniqKey: 'id',
-      fixedWidth: true,
-      uniqKeyForParams: 'carpool_id',
+    registryKey,
+    header: {
+      title: 'Справочник Автобаз',
+      buttons: [buttonsTypes.filter, buttonsTypes.read, buttonsTypes.export],
     },
-    meta: {
+    filter: {
       fields: [
         {
-          key: 'enumerated',
-          title: '№',
-        },
-        {
-          key: 'company_name',
+          valueKey: 'okrug_name',
           title: [
             {
+              title: 'Округ',
               displayIf: displayIfContant.isKgh,
-              title: 'Наименование ГБУ',
-            },
-            {
-              displayIf: displayIfContant.isOkrug,
-              title: 'Учреждение',
             },
           ],
-          width: 200,
+          type: 'multiselect',
         },
         {
-          key: 'name',
+          valueKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'name',
           title: 'Полное наименование',
-          width: 200,
+          type: 'multiselect',
         },
         {
-          key: 'address',
+          valueKey: 'address',
           title: 'Адрес',
-          width: 150,
+          type: 'multiselect',
         },
       ],
     },
-  },
+    list: {
+      permissions,
+      data: {
+        uniqKey: 'id',
+        fixedWidth: true,
+        uniqKeyForParams: 'carpool_id',
+      },
+      meta: {
+        fields: [
+          {
+            key: 'enumerated',
+            title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              },
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
+                title: 'Организация',
+              },
+            ],
+            width: 200,
+          },
+          {
+            key: 'name',
+            title: 'Полное наименование',
+            width: 200,
+          },
+          {
+            key: 'address',
+            title: 'Адрес',
+            width: 150,
+          },
+        ],
+      },
+    },
+  };
 };

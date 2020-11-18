@@ -31,6 +31,23 @@ const FileListItem: React.FC<any> = React.memo(
       [props.onFileRemove, props.index, props.askBefoeRemove],
     );
 
+    const onOpenFile = React.useCallback(
+      () => {
+        if (props.url.includes('data:image')) {
+          let image = new Image();
+          image.src = props.url;
+
+          const w = window.open('');
+          w.document.write(image.outerHTML);
+          w.document.close();
+        } else if (props.url.includes('data:application')) {
+          let iframe = `<iframe width='100%' height='100%' src='${props.url}'></iframe>`;
+          const w = window.open('');
+          w.document.write(iframe);
+          w.document.close();
+        }
+      }, [props.url]);
+
     const createdAt = get(props, 'created_at', null);
     const withDateTime = get(props, 'withDateTime', false);
 
@@ -49,7 +66,7 @@ const FileListItem: React.FC<any> = React.memo(
                 />
               )
             }
-            <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
+            <a href={props.url} title={props.name} onClick={onOpenFile} target={props.url.includes('base64') ? '' : '_blank'}>{props.name}</a>
           </SingleInputFileItem>
           {
             Boolean(createdAt && withDateTime) && (

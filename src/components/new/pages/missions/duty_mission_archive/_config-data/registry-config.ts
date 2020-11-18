@@ -49,6 +49,36 @@ export const config: TypeConfigData<DutyMission> = {
         step: 1,
       },
       {
+        valueKey: 'okrug_id',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'okrugs',
+          valueKey: 'id',
+          labelKey: 'name',
+        }
+      },
+      {
+        valueKey: 'company_id',
+        title: [
+          {
+            displayIf: displayIfContant.isKgh,
+            title: 'Организация',
+          },
+        ],
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
+      },
+      {
         valueKey: 'status',
         title: 'Статус',
         type: 'multiselect',
@@ -131,6 +161,12 @@ export const config: TypeConfigData<DutyMission> = {
         },
       },
       {
+        valueKey: 'passes_count',
+        title: 'Количество циклов',
+        type: 'advanced-number',
+        step: 1,
+      },
+      {
         valueKey: 'foreman_id',
         labelKey: 'foreman_fio',
         title: 'Бригадир',
@@ -198,6 +234,26 @@ export const config: TypeConfigData<DutyMission> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          width: 150,
         },
         {
           key: 'id',
@@ -269,6 +325,11 @@ export const config: TypeConfigData<DutyMission> = {
           width: 150,
         },
         {
+          key: 'passes_count',
+          title: 'Количество выполнений',
+          width: 200,
+        },
+        {
           key: 'foreman_fio',
           title: 'Бригадир',
           width: 200,
@@ -291,6 +352,16 @@ export const config: TypeConfigData<DutyMission> = {
               displayIf: displayIfContant.lenghtStructureMoreOne,
             },
           ],
+          width: 200,
+        },
+        {
+          key: 'author',
+          title: 'Открыто, ФИО',
+          width: 200,
+        },
+        {
+          key: 'closed_by',
+          title: 'Закрыто, ФИО',
           width: 200,
         },
       ],

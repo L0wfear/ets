@@ -3,5 +3,6 @@ export type SnowStorage = {
   company_name: string;
   id: number;
   name: string;
+  okrug_name: string;
   shape: object;
 };

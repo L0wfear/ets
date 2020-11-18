@@ -10,19 +10,13 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/registry',
+        entity: 'inspect/cars_condition',
         payload: {
           company_id: searchState.companyId,
-          type: 'cars_condition',
         },
       },
       getBlobData: {
-        entity: 'inspect/registry',
-        payload: {
-          company_id: searchState.companyId,
-          type: 'cars_condition',
-          format: 'xls',
-        },
+        entity: 'inspection/cars_condition/export',
       },
     },
     registryKey,
@@ -33,7 +27,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
         buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

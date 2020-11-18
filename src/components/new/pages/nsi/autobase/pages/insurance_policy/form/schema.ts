@@ -24,6 +24,7 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
     seria: {
       title: 'Серия',
       type: 'string',
+      maxLength: 128,
     },
     number: {
       title: 'Номер',

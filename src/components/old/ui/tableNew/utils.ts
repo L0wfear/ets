@@ -216,11 +216,16 @@ export const sortData = (data, props) => {
       }
     }
   } else {
-    ansData = sortFunction(data, props);
-
+    const dataCopy = [...data];
+    const startIndex = dataCopy.findIndex( (el) => el.noIndexRow);
+    const deleteCount = startIndex !== -1 ? dataCopy.length - startIndex : 0;
+    const notSortingRows = dataCopy.splice(startIndex, deleteCount);
+    
+    ansData = sortFunction(dataCopy, props);
     if (props.sortAscending) {
       ansData.reverse();
     }
+    ansData = ansData.concat(notSortingRows);
   }
 
   return ansData;

@@ -15,6 +15,8 @@ type Props = {
   isPermitted: boolean;
   page: string;
   path: string;
+  formErrors: any;
+  employee_data: CarWrap['employee_data'];
 };
 
 const FieldSelectDriverCar: React.FC<Props> = React.memo(
@@ -22,6 +24,8 @@ const FieldSelectDriverCar: React.FC<Props> = React.memo(
     const {
       drivers_data,
       gov_number,
+      formErrors: errors,
+      employee_data,
     } = props;
 
     const {
@@ -31,6 +35,7 @@ const FieldSelectDriverCar: React.FC<Props> = React.memo(
       drivers_data,
       gov_number,
       props,
+      employee_data,
     );
 
     const onChange = React.useCallback(
@@ -59,6 +64,7 @@ const FieldSelectDriverCar: React.FC<Props> = React.memo(
             boundKeys="primary_drivers"
             disabled={!props.isPermitted}
             components={componentsToDriver}
+            error={errors.primary_drivers}
           />
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={6}>
@@ -73,6 +79,7 @@ const FieldSelectDriverCar: React.FC<Props> = React.memo(
             boundKeys="secondary_drivers"
             disabled={!props.isPermitted}
             components={componentsToDriver}
+            error={errors.secondary_drivers}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Row>

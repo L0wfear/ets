@@ -16,7 +16,7 @@ export type PropsLayerCarMarker = {
   forToday: boolean;
   STATUS_SHOW_GOV_NUMBER: boolean;
   STATUS_TC_FOLLOW_ON_CAR: boolean;
-
+  geoobjectsFilter: IStateMonitorPage['geoobjectsFilter'];
   carActualGpsNumberIndex: any;
   carActualList: Array<Car>;
   carActualGpsCount: number;
@@ -25,7 +25,7 @@ export type PropsLayerCarMarker = {
   odh_mkad: Array<any>;
   statusShow: Record<'in_move' | 'stop' | 'parking' | 'not_in_touch', boolean>;
   filters: IStateMonitorPage['filters']['data'];
-
+  carsForExclude: IStateMonitorPage['filters']['carsForExclude'];
   carInfoSetStatus: any;
   carInfoPushPointIntoTrack: any;
   monitorPageResetCarStatus: any;

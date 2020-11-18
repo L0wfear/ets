@@ -10,6 +10,7 @@ import RedirectCarFormBody from './RedirectCarFormBody';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
+  noPassport: boolean;
   formState: CarWrap;
   formErrors: any;
   onChange: FormWithHandleChange<CarWrap>;
@@ -17,6 +18,8 @@ type CarFormBodyContainerOwnProps = {
 
   page: string;
   path: string;
+  gibddPassport: CarWrap['passport_data'];
+  gtnPassport: CarWrap['passport_data'];
 };
 type CarFormBodyContainerProps = (
   CarFormBodyContainerOwnProps
@@ -34,8 +37,11 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
           {
             carFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
               if ('children' in other) {
+                const carFormTabKeyChildren = props.noPassport
+                  ? other.children.filter((el) => el.tabKey !== 'passport_info')
+                  : other.children;
                 return (
-                  other.children.map(({ tabKey: tabKeyChildScheme, path, ...childrenOther }) => (
+                  carFormTabKeyChildren.map(({ tabKey: tabKeyChildScheme, path, ...childrenOther }) => (
                     <Route
                       key={tabKeyChildScheme}
                       path={`${match.path.replace(':tabKey?', tabKeyChildScheme)}${path}`}
@@ -52,6 +58,8 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
 
                               page={props.page}
                               path={props.path}
+                              gibddPassport={props.gibddPassport}
+                              gtnPassport={props.gtnPassport}
                             />
                           </EtsBootstrap.Col>
                         )

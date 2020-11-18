@@ -4,10 +4,11 @@ import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { diffDates, createValidDate } from 'components/@next/@utils/dates/dates';
-import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
 import { isString } from 'util';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 type InspectContainerFormAddActionProps = {
   addAction: (obj: ValuesOf<InspectContainer['actions']>) => void;
@@ -18,6 +19,17 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
   const [name, setName] = React.useState('');
   const [date_start, setDateStart] = React.useState(null);
   const [date_end, setDateEnd] = React.useState(null);
+  const [current_date, setCurrentDate] = React.useState(null);
+  const dispatch = etsUseDispatch();
+  
+  React.useEffect(() => {
+    (async () => {
+      const current_date = await dispatch(
+        actionLoadTimeMoscow({}, { page: '' })
+      );
+      setCurrentDate(createValidDate(current_date.date));
+    })();
+  }, []);
 
   const errors = {
     name: (
@@ -32,22 +44,26 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
     date_start: (
       !date_start
         ? 'Поле "Дата начала" должно быть заполнено'
-        : ''
+        : diffDates(createValidDate(date_start), current_date) > 0
+          ? 'Дата начала не может быть больше текущей'
+          : ''
     ),
     date_end: (
       !date_end
         ? 'Поле "Дата окончания" должно быть заполнено'
         : (
           diffDates(date_end, date_start) <= 0
-            ? '"Дата окончания" должна быть поже "Даты начала"'
-            : ''
+            ? '"Дата окончания" должна быть позже "Даты начала"'
+            : diffDates(createValidDate(date_end), current_date) > 0
+              ? 'Дата окончания не может быть больше текущей'
+              : ''
         )
     ),
   };
 
   const setNameFromEvent = React.useCallback(
-    (event) => {
-      setName(get(event, 'target.value', ''));
+    (value) => {
+      setName(value);
     },
     [],
   );

@@ -24,6 +24,7 @@ export const defaultDt: Dt = {
   move_snow_heap_area: null,
   name: '',
   object_address: '',
+  okrug_name: '',
   passport_author: '',
   passport_num: '',
   passport_requester: '',

@@ -18,6 +18,8 @@ import deviationFromNormOfCars from 'components/old/reports/operational/cars_cou
 import carsTravelTime from 'components/old/reports/operational/cars_travel_time/config-data';
 import fuelCardsReport from 'components/old/reports/operational/fuel_cards_report/config-data';
 import сonsumableMaterialUsageReport from 'components/old/reports/operational/consumable_material_usage_report/config-data';
+import notCoveredObjectsReport from 'components/old/reports/operational/not_covered_objects_report/config-data';
+import penalties from 'components/old/reports/operational/penalties/config-data';
 
 const children: any = {
   routeOdhCoverage,
@@ -38,6 +40,8 @@ const children: any = {
   carsTravelTime,
   fuelCardsReport,
   сonsumableMaterialUsageReport,
+  notCoveredObjectsReport,
+  penalties,
 };
 
 export default {

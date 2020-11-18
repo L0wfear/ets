@@ -18,6 +18,7 @@ export type Odh = {
   manual_footway_area: number | null;
   margin_area: number | null;
   name: string;
+  okrug_name: string;
   roadway_area: number | null;
   shape: object;
   snow_area: number | null;

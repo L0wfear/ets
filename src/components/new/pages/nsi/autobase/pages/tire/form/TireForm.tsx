@@ -253,6 +253,8 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
                 selectField="customId"
                 isPermitted={isPermitted}
                 tableTitle="Транспортное средство, на котором установлена шина"
+                page={this.props.page}
+                path={this.props.path}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

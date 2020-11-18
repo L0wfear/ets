@@ -24,6 +24,7 @@ export type Dt = {
   move_snow_heap_area: number | null;
   name: string;
   object_address: string;
+  okrug_name: string;
   passport_author: string;
   passport_num: string;
   passport_requester: string;

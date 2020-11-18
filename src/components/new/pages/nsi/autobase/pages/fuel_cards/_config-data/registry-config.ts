@@ -10,7 +10,7 @@ export const registryKey = 'fuelCardsRegistry';
 export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
   let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
     buttonsTypes.filter,
-    buttonsTypes.create,
+    buttonsTypes.fuel_card_create,
     buttonsTypes.read,
     buttonsTypes.remove,
     buttonsTypes.fuel_card_to_archive,
@@ -50,8 +50,33 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_name',
+          title: [
+            {
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'number',
           title: 'Номер',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'status_text',
+          title: 'Статус',
           type: 'multiselect',
         },
         {
@@ -87,6 +112,12 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           displayIf: displayIfContant.lenghtStructureMoreOne,
         },
         {
+          valueKey: 'source_type_id',
+          labelKey: 'source_type_text',
+          title: 'Способ создания',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_short_name',
           title: 'Организация',
           type: 'multiselect',
@@ -99,6 +130,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
         uniqKey: 'id',
         fixedWidth: true,
         uniqKeyForParams,
+        uniqKeyForSelect: 'composite_id',
       },
       meta: {
         fields: [
@@ -107,20 +139,45 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                title: 'Организация',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 200,
+          },
+          {
             key: 'number',
             title: 'Номер',
             width: 200,
           },
           {
+            key: 'status_text',
+            title: 'Статус',
+            width: 200,
+          },
+          {
             key: 'released_at',
             title: 'Дата выпуска',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
             key: 'date_end',
             title: 'Дата окончания срока действия',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
@@ -132,6 +189,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             key: 'gov_number_text',
             title: 'Рег. номер ТС',
             width: 200,
+            defaultValue: 'Малая механизация',
           },
           {
             key: 'garage_number',
@@ -144,9 +202,9 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'company_short_name',
-            title: 'Организация',
-            width: 300,
+            key: 'source_type_text',
+            title: 'Способ создания',
+            width: 200,
           },
         ],
       },

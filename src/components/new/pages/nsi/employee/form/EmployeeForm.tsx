@@ -31,7 +31,10 @@ import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
 import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/employee/position/actions';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import memoizeOne from 'memoize-one';
-
+import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { getCountryOptions } from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
+import { actionLoadInspectionCountry } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
+import { actionGetLayoffReasonList } from 'redux-main/reducers/modules/employee/employee/actions';
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   constructor(props) {
     super(props);
@@ -72,16 +75,25 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       companyStructureOptions: [],
       driverStateOptions,
       isCommonOptions,
+      countryOptions: [],
       positionOptions: [],
       preferCarOptions: [],
-      secondaryCarOptions: []
+      secondaryCarOptions: [],
+      layoffReasonListOptions: [],
     };
   }
 
   public componentDidMount() {
+    this.loadCountries();
     this.loadCars();
     this.loadEmployeePosition();
     this.loadCompanyStructurePosition();
+    this.props.actionGetLayoffReasonList({page: this.props.page}).then(
+      (result) => {
+        const layoffReasonListOptions = result.data.map((el) => ({value: el.id, label: el.name}));
+        this.setState({layoffReasonListOptions});
+      }
+    );
   }
 
   public componentDidUpdate(prevProps) {
@@ -89,6 +101,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       || this.props.formState.prefer_car !== prevProps.formState.prefer_car) {
       this.updateCarOptions(this.props.formState);
     }
+  }
+
+  private async loadCountries(): Promise<void> {
+    const countries = await this.props.dispatch(
+      actionLoadInspectionCountry(this.props),
+    );
+
+    const countryOpt = getCountryOptions(countries, 'id');
+    const chosenCountries = ['РОССИЯ', 'БЕЛАРУСЬ', 'КАЗАХСТАН', 'КИРГИЗИЯ', 'ТАДЖИКИСТАН', 'АБХАЗИЯ'];
+
+    this.setState({
+      countryOptions: countryOpt.options.filter((val) => chosenCountries.includes(val.label)),
+    });
   }
 
   private async loadCars(): Promise<void> {
@@ -157,7 +182,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         filterCars(car, formState, fieldType)
       ).map((rowData) => ({
         value: rowData.asuods_id,
-        label: `${rowData.gov_number} / ${get(rowData, 'garage_number', '-') || '-'} / ${rowData.type_name}/ ${rowData.full_model_name}/ ${rowData.special_model_name || rowData.model_name}`,
+        label: carActualOptionLabelGarage(rowData),
         rowData,
         is_invalid: rowData.asuods_id === formState.prefer_car,
       }));
@@ -180,18 +205,20 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const value = get(e, ['target', 'value'], e);
     if (this.props.formState[field] !== value) {
       const changeObject: any = {
-        [field]: value,
+        [field]: (field === 'special_license' || field === 'drivers_license') ? value.trim() : value,
       };
 
       if (field === 'special_license') {
         if (!changeObject[field]) {
           changeObject.special_license_date_end = null;
+          changeObject.special_license_country_id = null;
           changeObject.category_special_license = [];
         }
       }
       if (field === 'drivers_license') {
         if (!changeObject[field]) {
           changeObject.drivers_license_date_end = null;
+          changeObject.drivers_license_country_id = null;
           changeObject.category_drivers_license = [];
         }
       }
@@ -253,7 +280,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
   // ХХХ-ХХХ-ХХХ YY
   private readonly handleChangeSnils = (fieldKey: keyof Employee, fieldValue: string): void => {
-    let value = get(fieldValue, 'target.value', null);
+    let value = get(fieldValue, 'target.value', fieldValue);
 
     if (value) {
       value = value.match(/\d+/g).join('');
@@ -389,14 +416,16 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="special_license"
-                    type="string"
-                    label="Специальное удостоверение"
-                    value={state.special_license}
-                    error={errors.special_license}
-                    disabled={!isPermitted}
-                    onChange={this.handleChangeWithValidate}
-                    boundKeys="special_license"
+                    id="special_license_country_id"
+                    type="select"
+                    modalKey={path}
+                    label="Страна, выдавшая специальное удостоверение"
+                    value={state.special_license_country_id}
+                    options={this.state.countryOptions}
+                    error={errors.special_license_country_id}
+                    disabled={!isPermitted || !state.special_license}
+                    onChange={this.props.handleChange}
+                    boundKeys="special_license_country_id"
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -414,6 +443,36 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted}
                     onChange={this.props.handleChange}
                     boundKeys="birthday"
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="special_license"
+                    type="string"
+                    label="Специальное удостоверение"
+                    value={state.special_license}
+                    error={errors.special_license}
+                    disabled={!isPermitted}
+                    onChange={this.handleChangeWithValidate}
+                    boundKeys="special_license"
+                    hint={state.special_license_country_id !== 185 ? '' : `Поле «Специальное удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х.`}
+                    toUpperCase
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="phone"
+                    type="string"
+                    label="Телефон"
+                    value={state.phone}
+                    error={errors.phone}
+                    disabled={!isPermitted}
+                    onChange={this.props.handleChange}
+                    boundKeys="phone"
                   />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
@@ -437,35 +496,6 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="phone"
-                    type="string"
-                    label="Телефон"
-                    value={state.phone}
-                    error={errors.phone}
-                    disabled={!isPermitted}
-                    onChange={this.props.handleChange}
-                    boundKeys="phone"
-                  />
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="special_license_date_end"
-                    type="date"
-                    label="Срок действия специального удостоверения"
-                    date={state.special_license_date_end}
-                    time={false}
-                    error={errors.special_license_date_end}
-                    disabled={!isPermitted || !state.special_license}
-                    onChange={this.handleChangeDateEnd}
-                    boundKeys="special_license_date_end"
-                  />
-                </EtsBootstrap.Col>
-              </EtsBootstrap.Row>
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
-              <EtsBootstrap.Row>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
                     id="position_id"
                     type="select"
                     modalKey={path}
@@ -481,14 +511,15 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="drivers_license"
-                    type="string"
-                    label="Водительское удостоверение"
-                    value={state.drivers_license}
-                    error={errors.drivers_license}
-                    disabled={!isPermitted }
-                    onChange={this.handleChangeWithValidate}
-                    boundKeys="drivers_license"
+                    id="special_license_date_end"
+                    type="date"
+                    label="Срок действия специального удостоверения"
+                    date={state.special_license_date_end}
+                    time={false}
+                    error={errors.special_license_date_end}
+                    disabled={!isPermitted || !state.special_license}
+                    onChange={this.handleChangeDateEnd}
+                    boundKeys="special_license_date_end"
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -512,21 +543,52 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="category_drivers_license"
+                    id="drivers_license_country_id"
                     type="select"
                     modalKey={path}
-                    multi
-                    label="Категория водительского удостоверения"
-                    value={state.category_drivers_license}
-                    options={this.state.categoryDriversLicenseOptions}
-                    error={errors.category_drivers_license}
+                    label="Страна, выдавшая водительское удостоверение"
+                    value={state.drivers_license_country_id}
+                    options={this.state.countryOptions}
+                    error={errors.drivers_license_country_id}
                     disabled={!isPermitted || !state.drivers_license}
                     onChange={this.props.handleChange}
-                    boundKeys="category_drivers_license"
+                    boundKeys="drivers_license_country_id"
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
+            {!state.active && <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="layoff_reason_id"
+                    type="select"
+                    modalKey={path}
+                    label="Основание увольнения"
+                    value={state.layoff_reason_id}
+                    options={this.state.layoffReasonListOptions}
+                    error={errors.layoff_reason_id}
+                    disabled={!isPermitted}
+                    onChange={this.props.handleChange}
+                    clearable={false}
+                    boundKeys="layoff_reason_id"
+                  />
+                </EtsBootstrap.Col>
+                {!state.active && <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="comment"
+                    type="string"
+                    label="Комментарий"
+                    value={state.comment}
+                    onChange={this.props.handleChange}
+                    boundKeys="comment"
+                    error={errors.comment}
+                    disabled={!isPermitted}
+                    hint={'Здесь вы можете указать дополнительные комментарии по вопросу увольнения сотрудника'}
+                  />
+                </EtsBootstrap.Col>}
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>}
             <EtsBootstrap.Col md={12}>
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={6}>
@@ -544,15 +606,16 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
-                    id="drivers_license_date_end"
-                    type="date"
-                    label="Срок действия водительского удостоверения"
-                    date={state.drivers_license_date_end}
-                    time={false}
-                    error={errors.drivers_license_date_end}
-                    disabled={!isPermitted || !state.drivers_license}
-                    onChange={this.handleChangeDateEnd}
-                    boundKeys="drivers_license_date_end"
+                    id="drivers_license"
+                    type="string"
+                    label="Водительское удостоверение"
+                    value={state.drivers_license}
+                    error={errors.drivers_license}
+                    disabled={!isPermitted }
+                    onChange={this.handleChangeWithValidate}
+                    boundKeys="drivers_license"
+                    hint={state.drivers_license_country_id !== 185 ? '' : `Поле «Водительское удостоверение» должно содержать 10 символов. В качестве символов допустимо использовать цифры (0-9) и 12 букв алфавита кириллицы в верхнем регистре: А, В, Е, К, М, Н, О, Р, С, Т, У и Х.`}
+                    toUpperCase
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -576,6 +639,25 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
+                    id="category_drivers_license"
+                    type="select"
+                    modalKey={path}
+                    multi
+                    label="Категория водительского удостоверения"
+                    value={state.category_drivers_license}
+                    options={this.state.categoryDriversLicenseOptions}
+                    error={errors.category_drivers_license}
+                    disabled={!isPermitted || !state.drivers_license}
+                    onChange={this.props.handleChange}
+                    boundKeys="category_drivers_license"
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
                     id="secondary_car"
                     type="select"
                     modalKey={path}
@@ -588,6 +670,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted }
                     onChange={this.props.handleChange}
                     boundKeys="secondary_car"
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    id="drivers_license_date_end"
+                    type="date"
+                    label="Срок действия водительского удостоверения"
+                    date={state.drivers_license_date_end}
+                    time={false}
+                    error={errors.drivers_license_date_end}
+                    disabled={!isPermitted || !state.drivers_license}
+                    onChange={this.handleChangeDateEnd}
+                    boundKeys="drivers_license_date_end"
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -698,6 +793,7 @@ export default compose<PropsEmployee, OwnEmployeeProps>(
     (state) => ({
       category_license: state.session.appConfig.category_license,
     }),
+    {actionGetLayoffReasonList}
   ),
   withForm<PropsEmployeeWithForm, Employee>({
     uniqField: 'id',

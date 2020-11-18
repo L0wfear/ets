@@ -14,6 +14,10 @@ const children = {
   // inspactionContainerList,
 };
 
+export const monitoringPermissions = {
+  all_inspaction: 'inspect.all', // Мониторинговая деятельность – все проверки
+};
+
 export default {
   title: 'Мониторинговая деятельность',
   path: '/monitoring',

@@ -1,11 +1,10 @@
 import { InspectCarsCondition, CarsConditionCars } from './@types/inspect_cars_condition';
-import {
-  promiseGetInspectRegistry,
-  promiseCreateInspection,
-  promiseGetInspectionByIdType,
-} from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService, } from 'api/Services';
+import { InspectCarsConditionService, InspectCarsService, } from 'api/Services';
+import { defaultInspectCarsCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { isNullOrUndefined } from 'util';
+import { InspectAutobase } from '../autobase/@types/inspect_autobase';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -28,6 +27,7 @@ const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars
   statements_defects_not_issued_cnt: '',
   drawbacks_eliminated: '',
   drawbacks_new: '',
+  dataForValidation: null,
 };
 const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_drivers: null,
@@ -78,15 +78,19 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
 export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
 
-  inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
-    delete rowData.customId;
-    delete rowData.disabled;
-    return rowData;
-  });
-  inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
-    delete rowData.customId;
-    return rowData;
-  });
+  inspectCarsCondition.data.types_cars = !isNullOrUndefined(inspectCarsConditionFront.data.types_cars)
+    ? inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
+      delete rowData.customId;
+      delete rowData.disabled;
+      return rowData;
+    })
+    : defaultInspectCarsCondition?.data?.types_cars;
+  inspectCarsCondition.data.types_harvesting_unit = !isNullOrUndefined(inspectCarsConditionFront.data.types_harvesting_unit)
+    ? inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
+      delete rowData.customId;
+      return rowData;
+    })
+    : defaultInspectCarsCondition?.data?.types_harvesting_unit;
 
   return inspectCarsCondition;
 };
@@ -104,13 +108,18 @@ export const makeInspectCarsConditionExtendedFront = (elem) => { // Перено
   }
 };
 
-export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number; }) => {
-  const response = await promiseGetInspectRegistry<InspectCarsCondition>({
-    base_id: payload.carsConditionId,
-    type: 'cars_condition',
-  });
+export const promiseGetInspectCarsCondition = async (payload: { company_id: number; }) => {
+  let response = null;
+  try {
+    response = await InspectCarsConditionService.get({
+      company_id: payload.company_id,
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  const data: Array<InspectCarsCondition> = response.data;
+  const data: Array<InspectCarsCondition> = get(response, ['result', 'rows'], []);
+
   return {
     data,
     dataIndex: keyBy(data, 'id'),
@@ -121,20 +130,37 @@ export const promiseGetInspectCarsCondition = async (payload: { carsConditionId:
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectCarsConditionById = async (id: number) => {
-  const inspectCarsCondition: InspectCarsCondition = await promiseGetInspectionByIdType(
-    id,
-  );
+  let response = null;
+  try {
+    response = await InspectCarsConditionService.path(id).get(
+      {},
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  return makeInspectCarsConditionFront(inspectCarsCondition);
+  let inspectCarsCondition: InspectCarsCondition = get(response, 'result.rows.0', null);
+
+  if (inspectCarsCondition) {
+    inspectCarsCondition = makeInspectCarsConditionFront(inspectCarsCondition);
+  }
+
+  return inspectCarsCondition;
 };
 
-export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number; }) => {
-  const inspectCarsCondition: InspectCarsCondition = await promiseCreateInspection({
-    base_id: payload.carsConditionId,
-    company_id: payload.companyId,
-    type: 'cars_condition',
-  });
-
+export const promiseCreateInspectionCarsCondition = async (payload: { company_id: number; }) => {
+  const response = await InspectCarsConditionService.path(payload.company_id).post(
+    { ...payload },
+    false,
+    'json',
+  );
+ 
+  let inspectCarsCondition = get(response, 'result.rows.0', null);
+ 
+  if (inspectCarsCondition) {
+    inspectCarsCondition = makeInspectCarsConditionFront(inspectCarsCondition);
+  }
+ 
   return inspectCarsCondition;
 };
 
@@ -150,19 +176,8 @@ export const promiseGetCarsConditionsCarById = async (id: CarsConditionCars['id'
   const response = await InspectCarsService.path(id).get();
 
   const result: CarsConditionCars = get(response, 'result.rows.0', []);
-  const oldData = get(result, 'data', {}) ? result.data : {}; // <<< костыль перед показом, убрать
-  const newData = {
-    ...oldData,
-    waybill_number: get(result, 'waybill_number', null),
-    mission_numbers: get(result, 'mission_numbers', null),
-  };
 
-  return {
-    ...result,
-    data: {
-      ...newData,
-    },
-  };
+  return result;
 };
 
 export const promiseCreateCarsConditionsCar = async (carsConditionsCarRaw: Partial<CarsConditionCars>) => {
@@ -183,4 +198,25 @@ export const promiseUpdateCarsConditionsCar = async (carsConditionsCarRaw: Parti
   );
 
   return response;
+};
+
+export const promiseUpdateInspectionCarsCondition = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
+  const newPayload = {
+    ...payload,
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
+  };
+
+  const response = await InspectCarsConditionService.path(id).put(
+    {
+      ...newPayload,
+      data,
+      files,
+    },
+    false,
+    'json',
+  );
+
+  const inspectCarsCondition = get(response, 'result.rows.0', null);
+
+  return inspectCarsCondition;
 };

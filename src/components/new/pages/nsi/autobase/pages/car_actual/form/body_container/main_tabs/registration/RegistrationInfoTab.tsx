@@ -9,7 +9,7 @@ import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/ol
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FileField } from 'components/old/ui/input/fields';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -33,9 +33,11 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
         registration_data: errors,
       },
     } = props;
-
+    const location = useLocation();
     const {
       registration_data,
+      is_gibdd_passport,
+      is_gtn_passport,
     } = state;
     registration_data.passport_data_type = state.passport_data.type;
     const certificateNumberLength = registration_data.passport_data_type === 'GIBDD' ? '10' : '8';
@@ -52,9 +54,12 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
       [registration_data],
     );
 
-    if(!registration_data.passport_data_type) {
+    if(
+      !registration_data.passport_data_type
+      && (is_gibdd_passport || is_gtn_passport)
+    ) {
       global.NOTIFICATION_SYSTEM.notify('Для ввода информациии о регистрации необходимо ввести данные паспорта ТС', 'info', 'tr');
-      return <Redirect to={`/nsi/autobase/car_actual/${state.asuods_id}/passport_info`} />;
+      return <Redirect to={`/nsi/autobase/car_actual/${state.asuods_id}/passport_info${location.search}`} />;
     }
 
     return (

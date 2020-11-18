@@ -94,6 +94,7 @@ const reportProps: IReportProps = {
   title: 'Отчет посещения ОДХ/ДТ уборочной техникой, оборудованной датчиками КБМ',
   serviceName,
   enumerated: true,
+  enumeratedChildren: true,
   tableProps,
   reportUrl,
   serviceUrl,

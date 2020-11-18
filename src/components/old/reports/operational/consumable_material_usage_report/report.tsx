@@ -53,6 +53,7 @@ const reportProps: IReportProps = {
   serviceUrl,
   headerComponent: ReportHeader,
   enumerated: true,
+  enumeratedChildren: true,
   notUseServerSummerTable: true,
   tableProps: {
     reportKey: serviceUrl,

@@ -14,11 +14,13 @@ export type Employee = {
   category_drivers_license_text: string;
   category_special_license: Array<string>;
   category_special_license_text: string;
+  comment: string;
   company_id: number;
   company_name: string;
   company_structure_id: null;
   company_structure_name: string;
   drivers_license: string;
+  drivers_license_country_id: number;
   drivers_license_date_end: string;
   first_name: string;
   full_name: string;
@@ -30,9 +32,13 @@ export type Employee = {
   is_brigade: boolean;
   is_common: boolean;
   is_driver?: boolean;
+  layoff_reason_id: number;
+  layoff_reason_name: string;
   last_name: string;
   medical_certificate: string;
   middle_name: string;
+  okrug_name: string;
+  okrug_id: number;
   personnel_number: string;
   phone: string;
   position_id: number;
@@ -43,6 +49,7 @@ export type Employee = {
   secondary_car_text: string;
   snils: string;
   special_license: string;
+  special_license_country_id: number;
   special_license_date_end: string;
   special_marks: string;
   assignment: string;

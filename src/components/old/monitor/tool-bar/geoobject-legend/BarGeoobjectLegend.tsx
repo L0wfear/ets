@@ -14,6 +14,18 @@ const getClassNameByType = (props, type) => (
 );
 
 class BarGeoobjectLegend extends React.Component<any, any> {
+  componentDidUpdate(prevProps) {
+    const { geoobjectsFilter } = this.props;
+    if(
+      geoobjectsFilter
+      && geoobjectsFilter !== 'cars'
+      && geoobjectsFilter !== prevProps.geoobjectsFilter
+      && !this.props.SHOW_GEOOBJECTS
+    ) {
+      this.props.toggleShowStatusString('SHOW_GEOOBJECTS');
+    }
+  }
+
   render() {
     return (
       <span>
@@ -36,10 +48,16 @@ class BarGeoobjectLegend extends React.Component<any, any> {
 
 const mapStateToProps = (state) => ({
   ...state.monitorPage.statusGeo,
+  geoobjectsFilter: state.monitorPage.geoobjectsFilter,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleShowStatus: ({ currentTarget: { dataset: { type } } }) => (
+    dispatch(
+      monitorPageToggleStatusGeo([type]),
+    )
+  ),
+  toggleShowStatusString: (type) => (
     dispatch(
       monitorPageToggleStatusGeo([type]),
     )

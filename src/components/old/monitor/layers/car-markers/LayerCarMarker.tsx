@@ -37,6 +37,7 @@ import { isEmpty } from 'lodash';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { filterValidPoints } from 'utils/track';
 // FAQ работа с сокетом
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
@@ -44,6 +45,7 @@ const MIN_ZOOM_VAL = 3;
 global.toggleUpdateCarPoints = () => (updatePoints = !updatePoints);
 
 const defaultFilters = {
+  carFilterMultyGpsCode: [],
   carFilterMultyOwner: [],
   carFilterMultyStructure: [],
   carFilterMultyType: [],
@@ -89,6 +91,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         carActualGpsNumberIndex,
         STATUS_TC_FOLLOW_ON_CAR,
         odh_mkad,
+        forToday,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
@@ -188,7 +191,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
       if (
         gps_code
         && lastPoint !== prevProps.lastPoint
-        && this.props.forToday
+        && forToday
         && !isEmpty(odh_mkad)
         && this.state.carPointsDataWs[gps_code]
       ) {
@@ -284,6 +287,8 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
               filters: defaultFilters,
               statusShow: defaultStatusShow,
               wsData: carPointsDataWs[gps_code],
+              geoobjectsFilter: this.props.geoobjectsFilter,
+              carsForExclude: this.props.carsForExclude,
             },
             gps_code,
           );
@@ -299,6 +304,8 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                 filters,
                 statusShow,
                 wsData: carPointsDataWs[gps_code],
+                geoobjectsFilter: this.props.geoobjectsFilter,
+                carsForExclude: this.props.carsForExclude,
               },
               gps_code,
             );
@@ -347,7 +354,14 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         ...newCarPointsDataWs,
       };
 
-      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(newObj, this.props.carActualGpsCount, this.props.carActualList);
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(
+        newObj,
+        this.props.carActualGpsCount,
+        this.props.carActualList,
+        filters,
+        this.props.geoobjectsFilter,
+        this.props.carsForExclude,
+      );
       this.props.monitorPageChangeCarsByStatus(countTsByStatusVal, carActualNotInMap);
 
       return {
@@ -416,6 +430,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         filters,
         carActualGpsCount,
         carActualList,
+        forToday,
       } = this.props;
 
       const zoomMore8 = zoom > 8;
@@ -438,6 +453,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
             gps_code === state_gps_code
             && lastPoint !== -1
             && lastPoint
+            && forToday
           ) {
             if (lastPoint.timestamp > point.timestamp) {
               point = {
@@ -466,7 +482,9 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   car_actualData: carActualGpsNumberIndex[gps_code],
                   filters: defaultFilters,
                   statusShow: defaultStatusShow,
-                  wsData: carPointsDataWs[gps_code]
+                  wsData: carPointsDataWs[gps_code],
+                  geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -479,7 +497,9 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   car_actualData: carActualGpsNumberIndex[gps_code],
                   filters,
                   statusShow,
-                  wsData: carPointsDataWs[gps_code]
+                  wsData: carPointsDataWs[gps_code],
+                  geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -551,6 +571,8 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   filters,
                   statusShow,
                   wsData: carPointsDataWs[gps_code],
+                  geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -562,6 +584,8 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
                   filters: defaultFilters,
                   statusShow: defaultStatusShow,
                   wsData: carPointsDataWs[gps_code],
+                  geoobjectsFilter: this.props.geoobjectsFilter,
+                  carsForExclude: this.props.carsForExclude,
                 },
                 gps_code,
               );
@@ -610,7 +634,14 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         },
       );
 
-      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(carPointsDataWs, carActualGpsCount, carActualList);
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(
+        carPointsDataWs,
+        carActualGpsCount,
+        carActualList,
+        filters,
+        this.props.geoobjectsFilter,
+        this.props.carsForExclude,
+      );
 
       this.props.monitorPageChangeCarsByStatus(
         countTsByStatusVal,
@@ -651,13 +682,14 @@ const mapStateToProps = (state: ReduxState) => ({
     state.loading.loadingTypes.includes(CAR_INFO_SET_TRACK_CACHING)
     || state.monitorPage.carInfo.trackCaching.track === -1
       ? false
-      : state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null,
+      : filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null,
   forToday: state.monitorPage.carInfo.forToday,
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,
   STATUS_TC_FOLLOW_ON_CAR: state.monitorPage.carInfo.statusTC.FOLLOW_ON_CAR,
   statusShow: state.monitorPage.status,
-
+  geoobjectsFilter: state.monitorPage.geoobjectsFilter,
   filters: state.monitorPage.filters.data,
+  carsForExclude: state.monitorPage.filters.carsForExclude,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -78,6 +78,7 @@ export const defaultInspectPgmBase: InspectPgmBase = {
   was_resaved: false,
   files: [],
   action: 'save',
+  dataForValidation: null,
 };
 
 export const getDefaultInspectPgmBaseElement = (element: Partial<InspectPgmBase>) => {

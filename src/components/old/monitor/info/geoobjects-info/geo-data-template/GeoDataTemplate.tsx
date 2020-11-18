@@ -193,7 +193,7 @@ export let dataByServerName = {
   [GEOOBJECTS_OBJ.ssp.serverName]: InfoSsp,
   [GEOOBJECTS_OBJ.msp.serverName]: InfoMsp,
   [GEOOBJECTS_OBJ.carpool.serverName]: InfoCarpool,
-  [GEOOBJECTS_OBJ.pgm.serverName]: InfoPgm,
+  [GEOOBJECTS_OBJ.pgm_store.serverName]: InfoPgm,
   [GEOOBJECTS_OBJ.snow_storage.serverName]: InfoSnowStorage,
   [GEOOBJECTS_OBJ.danger_zone.serverName]: InfoDangerZone,
   [GEOOBJECTS_OBJ.fueling_water.serverName]: InfoFuelingWater,

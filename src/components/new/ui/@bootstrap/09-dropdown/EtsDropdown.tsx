@@ -4,6 +4,12 @@ import * as ClickOutHandler from 'react-onclickout';
 import EtsButton, { EtsButtonProps } from '../00-button/EtsButton';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
+export type OverlayTriggerConfig = {
+  triger: Array<'hover' | 'focus' | 'click'>;
+  placement: string;
+  overlay: JSX.Element;
+};
+
 export type EtsDropdownProps = {
   id?: string;
   toggleElement: any;
@@ -12,7 +18,7 @@ export type EtsDropdownProps = {
   noCaret?: boolean;
   disabled?: boolean;
   dropup?: boolean;
-
+  overlayTrigger?: OverlayTriggerConfig;
   className?: string;
 };
 
@@ -27,6 +33,7 @@ const EtsDropdownCaretContainer = styled.span`
 
 const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
   (props) => {
+    const {overlayTrigger} = props;
     const [isOpen, setIsOpen] = React.useState(false);
 
     const handleClick = React.useCallback(
@@ -53,21 +60,40 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
     return (
       <EtsDropdownContainer>
         <ClickOutHandler onClickOut={handleClickClose}>
-          <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
-            {props.toggleElement}
-            {
-              !props.noCaret  && (
-                <EtsDropdownCaretContainer>
-                  <EtsBootstrap.Glyphicon
-                    glyph={
-                      glyphDirection
-                        ? 'triangle-bottom'
-                        : 'triangle-top'}
-                  />
-                </EtsDropdownCaretContainer>
-              )
-            }
-          </EtsButton>
+          {overlayTrigger
+            ? <EtsBootstrap.OverlayTrigger trigger={overlayTrigger.triger} placement={overlayTrigger.placement} overlay={overlayTrigger.overlay}>
+              <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
+                {props.toggleElement}
+                {
+                  !props.noCaret && (
+                    <EtsDropdownCaretContainer>
+                      <EtsBootstrap.Glyphicon
+                        glyph={
+                          glyphDirection
+                            ? 'triangle-bottom'
+                            : 'triangle-top'}
+                      />
+                    </EtsDropdownCaretContainer>
+                  )
+                }
+              </EtsButton>
+            </EtsBootstrap.OverlayTrigger>
+            :            <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
+              {props.toggleElement}
+              {
+                !props.noCaret && (
+                  <EtsDropdownCaretContainer>
+                    <EtsBootstrap.Glyphicon
+                      glyph={
+                        glyphDirection
+                          ? 'triangle-bottom'
+                          : 'triangle-top'}
+                    />
+                  </EtsDropdownCaretContainer>
+                )
+              }
+            </EtsButton>
+          }
         </ClickOutHandler>
         {
           isOpen

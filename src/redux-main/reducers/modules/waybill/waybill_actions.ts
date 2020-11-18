@@ -8,21 +8,13 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const actionGetWaybillById = (
   id: Waybill['id'],
   meta: LoadingMeta,
-): EtsAction<ReturnType<typeof promiseGetWaybillById>
-> => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetWaybillById(id),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
+): EtsAction<Promise<any>> => async (dispatch)  => {
+  const payload = await dispatch(actionFetchWithCount(promiseGetWaybillById(id), {...meta}));
   return payload;
 };
 

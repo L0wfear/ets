@@ -11,6 +11,7 @@ import {
   REGISTRY_CHANGE_SERVICE,
   REGISTRY_SET_LOADING_STATUS,
   REGISTRY_SET_ID_REQUEST_TIME,
+  REGISTRY_SET_ROW_IS_OPEN,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 
@@ -241,8 +242,8 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
     const paginator = list?.paginator;
     const perPage = get(paginator, 'perPage', 0);
     const offset = get(paginator, 'currentPage', 0);
-    const filterValues = get(processed, 'filterValues') || {};
-    const sort = get(processed, 'sort') || {};
+    const filterValues = get(processed, 'filterValues') ?? {};
+    const sort = get(processed, 'sort') ?? {};
     const payloadSortBy = get(payload, 'sort_by', '');
 
     payload = {
@@ -509,6 +510,16 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
   });
 };
 
+export const registrySetRowIsOpen= (registryKey: string, isOpen: OneRegistryData['list']['data']['isOpen']): EtsAction<void> => (dispatch, getState) => {
+  return dispatch({
+    type: REGISTRY_SET_ROW_IS_OPEN,
+    payload: {
+      registryKey,
+      isOpen,
+    },
+  });
+};
+
 export const registryChangeFilterData = (registryKey: string, filter: OneRegistryData<any>['filter']) => ({
   type: REGISTRY_CHANGE_FILTER,
   payload: {
@@ -517,7 +528,7 @@ export const registryChangeFilterData = (registryKey: string, filter: OneRegistr
   },
 });
 
-export const registryChangeFilterRawValues = <F extends Record<string, any>>(registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+export const registryChangeFilterRawValues = (registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
 
@@ -960,7 +971,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
   const prevRendersFields = get(list, 'rendersFields');
   const rendersFieldsValues = get(list, 'rendersFields.values');
 
-  const uniqKey = get(data, 'uniqKey');
+  const uniqKey = get(data, 'uniqKeyForSelect') || get(data, 'uniqKey');
   const prevSelectedRow = get(data, 'selectedRow');
 
   const isEqualSelectedRow = (

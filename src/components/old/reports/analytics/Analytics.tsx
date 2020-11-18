@@ -50,6 +50,7 @@ class Analytics extends React.Component<Props, any> {
     'Работники',
     'Расход топлива',
     'Наряд - задания',
+    'Топливные карты',
   ];
 
   constructor(props) {
@@ -190,7 +191,7 @@ class Analytics extends React.Component<Props, any> {
             <Div>
               <Field
                 type="select"
-                label="Учреждение"
+                label="Организация"
                 multi
                 options={COMPANY}
                 value={this.state.companies_ids}

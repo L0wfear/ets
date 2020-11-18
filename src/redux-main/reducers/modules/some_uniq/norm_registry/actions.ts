@@ -2,7 +2,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { Norm } from './@types';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { promiseUpdateNorm, promiseGetNormsByParams, promiseGetNormByIdAndDate } from './promise';
+import { promiseUpdateNorm, promiseGetNormsByParams, promiseGetNormByIdAndDate, promiseGetNorms } from './promise';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 
@@ -27,6 +27,16 @@ export const actionGetNormsByParams = (payload: Parameters<typeof promiseGetNorm
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetNormsByParams(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionGetNorms = (meta: LoadingMeta): EtsAction<Promise<Array<Norm>>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseGetNorms(),
     meta,
   );
 

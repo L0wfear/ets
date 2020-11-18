@@ -12,8 +12,9 @@ import {
   CarPassportGtnRegistryService,
   CarService,
   CarInfoService,
+  CarExcludeService
 } from 'api/Services';
-import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
+import { CarDriversData, CarRegistrationData, CarPassporntData, CarExcludeOptions } from './@types';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const getCars = autobaseLoadCars;
@@ -56,6 +57,15 @@ export const promiseUpdateCar = async (car: Car): Promise<Car> => {
 
   return car;
 };
+
+export const promiseGetCarExclude = async (options: CarExcludeOptions): Promise<Array<number>> => {
+  const response = await CarExcludeService.get(options);
+
+  const result: Array<number> = get(response, 'result.rows');
+
+  return result;
+};
+
 export const promiseUpdateCarDriversData = async (driversData: CarDriversData): Promise<CarDriversData> => {
   await CarDrivers.path(driversData.car_id).put(
     { ...driversData },
@@ -106,8 +116,10 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
       false,
       'json',
     );
+
+    return passportData;
   } else {
-    await ServiceName.post(
+    const response = await ServiceName.post(
       {
         ...passportData,
         given_at: createValidDate(passportData.given_at),
@@ -115,9 +127,11 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
       false,
       'json',
     );
-  }
 
-  return passportData;
+    const data = get(response, 'result.rows.0', {});
+
+    return data;
+  }
 };
 
 export const promiseLoadCarDrivers = (car_id: Car['asuods_id']): Promise<CarDriversData> => {
@@ -134,10 +148,11 @@ export const promiseLoadCarRegistration = async (car_id: Car['asuods_id']) => {
 
 export const promiseLoadCarPassport = async (car_id: Car['asuods_id']) => {
   const response = await CarPassportRegistryService.get({ car_id });
+  
+  const carPassporntData = response?.result?.rows.filter((el) => !el.is_deleted);
+  const car_passports = get(response, 'result.rows', []);
 
-  const carPassporntData: CarPassporntData = get(response, 'result.rows.0', null);
-
-  return carPassporntData;
+  return car_passports.length ? {...carPassporntData[0], car_passports} : null;
 };
 
 type Paylaod = (
@@ -145,7 +160,7 @@ type Paylaod = (
   | { car_id: Car['asuods_id']; date_start: string; date_end: string; }
 );
 
-export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
+export const promiseGetCarMissionsAndWaybillsByTimestamp = async (payload: Paylaod) => {
   let response = null;
 
   try {
@@ -160,7 +175,9 @@ export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
     contractor_name: string;
     customer_name: string;
     owner_name: string;
+    waybills: Array<any>;
   } = get(response, 'result');
 
   return result;
 };
+

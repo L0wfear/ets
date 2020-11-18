@@ -72,6 +72,11 @@ export const TechMaintenanceSchedule = ETS_API_FACTORY.createApiServiceAdapter(
   {},
 );
 
+export const NotCoveredObjectsReportService = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/not_covered_objects_report',
+  {},
+);
+
 export const InquiryExpiringDate = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/reports/inquiry_expiring_date',
   {},
@@ -95,5 +100,10 @@ export const FuelCardsReportService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const ConsumableMaterialUsageReport = ETS_API_FACTORY.createApiServiceAdapter(
   'consumable_material_usage_report',
+  {},
+);
+
+export const PenaltiesReport = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/penalties',
   {},
 );

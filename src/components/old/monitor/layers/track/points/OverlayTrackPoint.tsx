@@ -31,7 +31,8 @@ import LoadingContext from 'components/new/utils/context/loading/LoadingContext'
 import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vector_object/actions';
 import { ReduxState } from 'redux-main/@types/state';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { actionGetCarMissionsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionGetCarMissionsAndWaybillsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
+import { filterValidPoints } from 'utils/track';
 
 type Props = {
   dispatch: EtsDispatch;
@@ -82,7 +83,8 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   getObjectData = async (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
-    const points = track.slice(index - 1, index + 2);
+    const filteredTrack = filterValidPoints(track);
+    const points = filteredTrack.slice(index - 1, index + 2);
 
     const vectorObject = await this.props.dispatch(actionGetVectorObject(
       {
@@ -114,10 +116,10 @@ class OverlayTrackPoint extends React.Component<Props, any> {
   getMissionsData = (props) => {
     const { asuods_id } = props;
     this.props.dispatch(
-      actionGetCarMissionsByTimestamp(
+      actionGetCarMissionsAndWaybillsByTimestamp(
         {
           car_id: asuods_id,
-          point_timestamp: props.trackPoint.timestamp * 1000,
+          point_timestamp: props.trackPoint.timestamp,
         },
         {
           page: 'mainpage',
@@ -214,9 +216,10 @@ class OverlayTrackPoint extends React.Component<Props, any> {
                 <div>Работающие датчики навесного оборудования</div>
                 <SensorsListContainer>
                   {
-                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => (
-                      <div key={sensor.id}>{`Датчик №${index + 1} - ${this.props.cars_sensors[sensor.id].type_name}`}</div>
-                    ))
+                    pointSensors.filter(({ id }) => !!id).map((sensor, index) => {
+                      const carSensorTypeName = this.props.cars_sensors[sensor.id]?.type_name;
+                      return <div key={sensor.id}>{`Датчик №${index + 1} ${carSensorTypeName ? `- ${carSensorTypeName}` : ''}`}</div>;
+                    })
                   }
                 </SensorsListContainer>
               </OverlayLineInfoContainer>
@@ -264,7 +267,7 @@ export default compose<any, any>(
       gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
       asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
       trackPoint: state.monitorPage.carInfo.popups.trackPoint,
-      track: state.monitorPage.carInfo.trackCaching.track,
+      track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
       cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
     }),
     (dispatch) => ({

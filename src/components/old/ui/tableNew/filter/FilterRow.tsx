@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import * as lodash from 'lodash';
 
 import FilterInput from 'components/old/ui/input/FilterInput/FilterInput';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
@@ -71,7 +71,7 @@ export default class FilterRow extends React.Component<Props, {}> {
       if (type === 'multiselect') {
         let options
           = availableOptions
-          || _(data)
+          || lodash(data)
             .uniqBy(name)
             .map((d) => ({
               value: typeof d[name] === 'boolean' ? +d[name] : d[name],
@@ -80,7 +80,7 @@ export default class FilterRow extends React.Component<Props, {}> {
             .filter((d) => !!d.label)
             .value();
         if (value && !!value.length) {
-          value = value.filter((v) => _.find(options, (o) => o.value === v));
+          value = value.filter((v) => lodash.find(options, (o) => o.value === v));
         }
         input = (
           <Div className="filter-multiselect-container">

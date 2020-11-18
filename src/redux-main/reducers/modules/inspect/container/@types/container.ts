@@ -19,4 +19,7 @@ export type InspectContainer = {
     control_measuring_instruments_in_poor_condition: boolean;
   };
   actions: Array<InspectContainerActions>;
+  dataForValidation?: {
+    current_date: Date | string;
+  };
 };

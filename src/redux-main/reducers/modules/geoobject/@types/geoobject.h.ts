@@ -28,3 +28,8 @@ export type IStateGeoobject = {
   pedestrianTunnelsList: Array<PedestrianTunnels>;
   pedestrianTunnelExitsList: Array<PedestrianTunnelExits>;
 };
+
+export type GeoobjsFilterByElemOptions = {
+  object_type_id: number;
+  municipal_facility_id: number;
+};

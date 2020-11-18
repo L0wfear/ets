@@ -2,6 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { PropsViewInspectPgmBaseWithForm } from './@types/ViewInspectPgmBase';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectPgmBase['head_balance_holder_base'], PropsViewInspectPgmBaseWithForm> = {
   properties: {
@@ -208,6 +209,24 @@ export const inspectPgmBaseSchema: SchemaType<InspectPgmBase, PropsViewInspectPg
     resolve_to: {
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+      dependencies: [
+        (value, {dataForValidation, status}) => {
+          const date = createValidDate(value);
+          if (
+              dataForValidation?.current_date 
+              && diffDates(date, dataForValidation?.current_date) < 0
+          ) {
+            return 'Дата предоставления отчета не может быть меньше текущей';
+          }
+          if (
+            dataForValidation?.props_resolve_to
+            && status === 'completed'
+            && diffDates(date, dataForValidation?.props_resolve_to) < 0
+          ) {
+            return 'Дата предоставления отчета не может быть изменена на более раннюю';
+          }
+        }
+      ]
     },
   },
 };

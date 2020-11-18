@@ -1,11 +1,15 @@
 import { DatePickerProps } from 'components/old/ui/input/date-picker/DatePicker';
 import { IPropsFileInput } from 'components/old/ui/input/FileInput/FileInput.h';
+import { glyphMap } from '../../../../../global-styled';
 
 export type ExtFieldCommon<V = any> = {
+  showBtn?: boolean;
+  btnProps?: any;
   ref?: any;
   id?: any;
   label?: string | boolean;
   error?: string | boolean;
+  warning?: string | boolean;
   onChange?: (...arg: Array<any>) => void;
   onBlur?: (...arg) => void;
 
@@ -17,7 +21,8 @@ export type ExtFieldCommon<V = any> = {
   hidden?: boolean;
   readOnly?: boolean;
   value_string?: string | number;
-  format?: 'toFixed2'
+  format?: 'toFixed1'
+          |'toFixed2'
           | 'toFixed3' // разделяем отображение данных и значения, используя формат
           | 'number';
 
@@ -59,6 +64,7 @@ export type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {
   type: 'boolean';
   checked?: any;
   checkboxStyle?: any;
+  labelAfter?: boolean;
 };
 
 export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
@@ -67,9 +73,12 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   isLoading?: boolean;
   wrapStyle?: any;
   hint?: string;
+  toUpperCase?: boolean;
+  onChange?: any;
   maxLength?: number;
   placeholder?: string;
   addonRight?: string;
+  dashIfEmpty?: boolean;
 };
 
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
@@ -77,6 +86,7 @@ export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
   showRedBorder?: boolean;
 
   addonRight?: string;
+  dashIfEmpty?: boolean;
 };
 
 export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
@@ -100,6 +110,14 @@ export type ExtFieldTypeByKey = {
   number: ExtFieldNumber;
   text: ExtFieldText;
   file: ExtFieldFile;
+};
+
+export type ExtFieldButton = {
+  title?: string;
+  disabled?: boolean;
+  onClick?: (obj: { [key: string]: any; }) => any;
+  glyph?: keyof typeof glyphMap;
+  style?: object;
 };
 
 export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];

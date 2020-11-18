@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import sparePartPermissions from './permissions';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'sparePartRegistry';
 
@@ -30,9 +31,24 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
         },
         {
@@ -83,8 +99,23 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

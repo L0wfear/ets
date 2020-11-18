@@ -67,6 +67,7 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
 
   let disabled = false;
 
+  const selectedRow = props.selectedRow;
   const checkedRowsAsArray = Object.values(props.checkedRows);
   const checkedRowsLength = checkedRowsAsArray.length;
   if (checkedRowsLength) {
@@ -81,14 +82,14 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
       <EtsBootstrap.Button id="remove-element" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
       </EtsBootstrap.Button>
-      {Boolean(checkedRowsLength) && (
+      {(Boolean(checkedRowsLength) || Boolean(selectedRow))  && (
         <ModalYesNo
           show={isOpenModalRemove}
           handleHide={handleClickCloseForm}
           handleSubmit={handleClickRemoveSelectedRows}
 
           message={
-            checkedRowsLength === 1
+            checkedRowsLength === 1 || selectedRow
               ? 'Вы уверены, что хотите удалить выбранный элемент?'
               : `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
           }

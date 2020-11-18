@@ -134,8 +134,8 @@ export default class Filter extends React.Component<Props, State> {
 
   reset = () => this.props.onSubmit({});
 
-  checkDisabledButton = (filterValues) =>
-    Object.keys(filterValues).length === 0;
+  checkDisabledButton = (filterValues, propsFilterValues) =>
+    Object.keys(filterValues).length === 0 && Object.keys(propsFilterValues).length === 0;
 
   handleFilterMultipleValueChange(key, v) {
     const { filterValues: oldFilterValues } = this.state;
@@ -160,7 +160,7 @@ export default class Filter extends React.Component<Props, State> {
   }
 
   render() {
-    const { filterValues } = this.state;
+    const { filterValues, propsFilterValues } = this.state;
     const { tableData, options: filters } = this.props;
 
     const filterRows = filters.map((option, i) => {
@@ -211,7 +211,7 @@ export default class Filter extends React.Component<Props, State> {
                   <EtsFilterActionButton
                     id="reset-filter"
                     onClick={this.reset}
-                    disabled={this.checkDisabledButton(filterValues)}>
+                    disabled={this.checkDisabledButton(filterValues, propsFilterValues)}>
                     Сброс
                   </EtsFilterActionButton>
                 </EtsFilterActionButtonConteiner>

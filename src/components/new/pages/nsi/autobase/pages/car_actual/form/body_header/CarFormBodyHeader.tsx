@@ -8,7 +8,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 
 type OwnProps = {
   isPermitted: boolean;
-  isPassport: boolean;
+  noPassport: boolean;
 };
 type Props = (
   OwnProps
@@ -17,7 +17,7 @@ type Props = (
 const CarFormBodyHeader: React.FC<Props> = React.memo(
   (props) => {
     const activeTabKey = props.match.params.tabKey;
-    const {isPassport} = props;
+    const { noPassport } = props;
 
     return (
       <EtsBootstrap.Nav
@@ -27,14 +27,14 @@ const CarFormBodyHeader: React.FC<Props> = React.memo(
       >
         {
           carFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
-            const isActive = activeTabKey === tabKeyScheme ? true : false;
+            const isActive = activeTabKey === tabKeyScheme;
             if ('children' in other) {
               const isActiveChildren = other.children.find((elem) => elem.tabKey === activeTabKey);
-              const carFormTabKeyChildren = isPassport
-                ? other.children
-                : other.children.filter((el) => el.tabKey !== 'passport_info');
+              const carFormTabKeyChildren = noPassport
+                ? other.children.filter((el) => el.tabKey !== 'passport_info')
+                : other.children;
               return (
-                <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren) ? true : false}>
+                <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren)}>
                   {
                     carFormTabKeyChildren.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
                       <CarFormLinkNavDropdown

@@ -7,6 +7,7 @@ import EnumeratedTdTitle from 'components/new/ui/registry/components/data/table-
 import IsOpenTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/IsOpenTdTitle';
 import CloneTireTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CloneTireTdTitle';
 import ShowFileListTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowFileListTdTitle';
+import ShowFileTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowFileTdTitle';
 import ShowEdcCommentsTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowEdcCommentsTdTitle';
 import ShowMissionInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowMissionInfoTdTitle';
 import CompanyStructureActionsTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CompanyStructureActionsTdTitle';
@@ -17,6 +18,7 @@ import DefaultTdTitle from 'components/new/ui/registry/components/data/table-dat
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import ShowCarOnMap from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/ShowCarOnMap';
 
 type Props = CommontTdTiteProps;
 
@@ -32,6 +34,8 @@ const componentsByKey: Record<TypeFieldsAvalibaleKey<void>, React.ComponentType<
   services_actions_on_off: ServicesActionsOnOffTdTitle,
   service_files: ServiceFilesTdTitle,
   edc_request_info: EdcRequestInfoTdTitle,
+  showCarOnMap: ShowCarOnMap,
+  files: ShowFileTdTitle,
 };
 
 const Td: React.FC<Omit<Props, 'id'>> = React.memo(
@@ -42,7 +46,8 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
 
     const Component = componentsByKey[fieldMeta.key] || DefaultTdTitle;
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
-
+    const uniqKeyForSelect = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForSelect);
+    const key = uniqKeyForSelect || uniqKey;
     const groupOpt = get(fieldMeta, 'groupOpt', null);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const isActive = (
@@ -54,7 +59,7 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
     return (
       isActive
         && <Component
-          id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
+          id={`${props.registryKey}.${props.rowData[key]}.${props.indexRow}.${fieldMeta.key}`}
           key={props.fieldMeta.key}
           registryKey={props.registryKey}
           rowData={props.rowData}

@@ -27,6 +27,7 @@ type ViewInspectPgmBaseButtonSubmitOwnProps = {
 
   handleSubmit: any;
 
+  isPermitted: boolean;
   isPermittedToUpdateClose: boolean;
 
   id: number;
@@ -107,6 +108,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
+      isPermitted={props.isPermitted}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleSubmitClosed={handleSubmit}
       handleCloseAct={handleClosePgmBaseAct}

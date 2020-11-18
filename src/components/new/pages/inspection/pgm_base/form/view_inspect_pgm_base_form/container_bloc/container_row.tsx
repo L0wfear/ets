@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { CheckContainerRow, CheckContainerTd, ButtonBlock } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
 
 type ContainerRowProps = {
   container: any;
@@ -10,6 +11,13 @@ type ContainerRowProps = {
 
   inspectIsClosed: boolean;
 };
+
+const StyledCheckContainerTd = styled(CheckContainerTd)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline;
+`;
 
 const ContainerRow: React.FC<ContainerRowProps> = (props) => {
   const { container } = props;
@@ -30,9 +38,9 @@ const ContainerRow: React.FC<ContainerRowProps> = (props) => {
 
   return (
     <CheckContainerRow was_resaved={container.was_resaved}>
-      <CheckContainerTd>
+      <StyledCheckContainerTd>
         {container.number}
-      </CheckContainerTd>
+      </StyledCheckContainerTd>
       <CheckContainerTd>
         На {container.updated_at_date}
       </CheckContainerTd>

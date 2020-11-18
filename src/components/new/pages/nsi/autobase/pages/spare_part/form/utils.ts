@@ -12,6 +12,7 @@ export const defaultSparePart: SparePart = {
   spare_part_to_car: [],
   installed_at: null,
   count_part: null,
+  okrug_name: null,
 };
 
 export const getDefaultSparePartElement = (element: Partial<SparePart>): SparePart => {

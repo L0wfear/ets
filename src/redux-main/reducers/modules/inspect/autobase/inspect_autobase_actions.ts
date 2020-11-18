@@ -199,15 +199,14 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const commission_members = get(inspectAutobase, 'commission_members', defaultInspectAutobase.commission_members);
   const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
   const action = get(inspectAutobase, 'action', defaultInspectAutobase.action);
+  const type = get(inspectAutobase, 'type', defaultInspectAutobase.type);
 
-  if (commission_members.length && inspectAutobase.status === 'completed') { // Удаляем первого члена комиссии, бек его сам добавляет
-    commission_members.shift();
-  }
   const payload = {
     agents_from_gbu,
     commission_members,
     resolve_to,
     action,
+    type,
   };
 
   if (!isNullOrUndefined(data)) {
@@ -243,6 +242,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     agents_from_gbu,
     commission_members,
     resolve_to,
+    type,
   } = inspectAutobase;
 
   const payload = {
@@ -251,6 +251,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     commission_members,
     resolve_to,
     action: 'close',
+    type,
   };
 
   const result = await dispatch(

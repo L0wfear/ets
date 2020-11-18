@@ -47,6 +47,13 @@ export const initialState: IStateSomeUniq = {
     timestamp: null,
     date: '',
   },
+  reasonList: [],
+  engineKindList: [],
+  selectedMissionsList: [],
+  refillFuelCompany: {
+    refills: [],
+    rrn_codes: [],
+  }
 };
 
 export default (state = initialState, { type, payload }) => {

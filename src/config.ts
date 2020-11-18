@@ -15,6 +15,14 @@ export const host_dev = {
   prod: 'ets.mos.ru/',
 };
 
+export const host_tracks_caching = {
+  dev: `https://psd.mos.ru/tracks-caching-dev`,
+  gost_stage: `https://psd.mos.ru/tracks-caching-dev`,
+  ets_test: 'https://psd.mos.ru/tracks-caching-preprod',
+  ets_hotfix: `https://psd.mos.ru/tracks-caching-dev`,
+  prod: `https://psd.mos.ru/tracks-caching`,
+};
+
 const hostPathName = {
   develop: host_dev[STAND],
   origin: `${HOST}${PATHNAME}`,
@@ -32,7 +40,7 @@ const DOC_URL = `${urls[pathToConfig]}docs/`;
 const IMAGE_URL = `${urls[pathToConfig]}ets/data/images/`;
 const configApi = `${urls[pathToConfig]}services`;
 const notification_config = `wss://${hostPathName[pathToConfig]}services/notification_ws`;
-const tracksCaching = `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`;
+const tracksCaching = host_tracks_caching[STAND] ?? host_tracks_caching['prod'];
 
 const configs = {
   url: urls[pathToConfig],

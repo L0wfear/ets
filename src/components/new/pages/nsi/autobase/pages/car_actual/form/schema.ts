@@ -1,5 +1,6 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsCar, CarWrap } from './@types/CarForm';
+import { GAS_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {
   properties: {
@@ -9,16 +10,18 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
       dependencies: [
         (value, {passport_data_type}) => {
           const errorText = 'Недопустимое значение серии и номера свидетельства о регистрации. Данные не будут сохранены';
-          if (passport_data_type === 'GIBDD') { 
-            const stsRegExp = /^[АВЕКМНОРСТУХ\d]{10}$/;
-            return stsRegExp.exec(value) ? '' : errorText;
-          }
-          if(/[^\dАВЕКМНОРСТУХ]/.exec(value)) {
-            return errorText;
-          }
-          if(passport_data_type === 'GTN') {
-            const srmRegExp = /^[АВЕКМНОРСТУХ\d]{8}$/;
-            return srmRegExp.exec(value) ? '' : errorText;
+          if(value) {
+            if (passport_data_type === 'GIBDD') { 
+              const stsRegExp = /^[АВЕКМНОРСТУХ\d]{10}$/;
+              return stsRegExp.exec(value) ? '' : errorText;
+            }
+            if(/[^\dАВЕКМНОРСТУХ]/.exec(value)) {
+              return errorText;
+            }
+            if(passport_data_type === 'GTN') {
+              const srmRegExp = /^[АВЕКМНОРСТУХ\d]{8}$/;
+              return srmRegExp.exec(value) ? '' : errorText;
+            }
           }
           return '';
         },
@@ -38,6 +41,32 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
       type: 'string',
       maxLength: 4000,
     },
+  },
+};
+
+export const carDriversDataSchema: SchemaType<CarWrap['drivers_data'], PropsCar, CarWrap> = {
+  properties: {
+    primary_drivers: {
+      title: 'Основной водитель/машинист',
+      type: 'valueOfArray',
+      dependencies: [
+        (value, _, __, { employee_data, asuods_id }) => {
+          const filteredCarsList = employee_data.data.filter((el) => el.prefer_car && el.prefer_car !== asuods_id);
+          let employeeOnCar = null;
+          for (let i = 0; i <= value.length - 1; i++) {
+            employeeOnCar = filteredCarsList.find((el) => el.id === value[i]);
+            if (employeeOnCar) {
+              break;
+            }
+          }
+          const errorText = !employeeOnCar
+            ? ''
+            : `Сотрудник ${employeeOnCar.full_name} указан как основной водитель/машинист у ТС ${employeeOnCar.prefer_car_text}. Рекомендуем убрать привязку к ТС ${employeeOnCar.prefer_car_text} или указать водителя/машиниста в качестве вторичного водителя.`;
+
+          return errorText;
+        },
+      ],
+    }
   },
 };
 
@@ -92,6 +121,14 @@ const carPassportDataSchema: SchemaType<any, PropsCar> = {
       title: 'Модель двигателя',
       type: 'string',
       maxLength: 128,
+      dependencies: [
+        (value) => {
+          if (value && value.match(/[Йй]/g)) {
+            return 'Введено недоступное значение';
+          }
+          return false;
+        }
+      ],
     },
     engine_volumne: {
       validateIf: {
@@ -344,7 +381,7 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       float: 2,
     },
     note: {
-      title: 'Примечание',
+      title: 'Комментарий',
       type: 'string',
       maxLength: 4000,
     },
@@ -361,6 +398,10 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       type: 'schema',
       schema: carRegistrationDataSchema,
     },
+    drivers_data: {
+      type: 'schema',
+      schema: carDriversDataSchema,
+    },
     exploitation_date_start: {
       type: 'date',
       title: 'Дата ввода ТС в эксплуатацию',
@@ -368,6 +409,26 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
     passport_data: {
       type: 'schema',
       schema: carPassportDataSchema,
+    },
+    operating_mode: {
+      title: 'Режим работы',
+      type: 'string',
+      maxLength: 100,
+    },
+    engine_kind_ids: {
+      title: 'Тип двигателя',
+      type: 'valueOfArray',
+      dependencies: [
+        (value) => {
+          if (!value
+            || Array.isArray(value) && !value.length
+            || value.length === 1 && value.includes(GAS_ENGINE_TYPE_ID)
+          ) {
+            return 'Поле "Тип двигателя" должно быть заполнено';
+          }
+          return false;
+        }
+      ],
     },
   },
 };

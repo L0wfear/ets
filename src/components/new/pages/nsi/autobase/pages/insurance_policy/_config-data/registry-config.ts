@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import insurancePolicyPermissions from './permissions';
+import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 
 export const registryKey = 'insurancePolicyRegistry';
 
@@ -45,6 +46,27 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: [
+            {
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
         {
           valueKey: 'car_id',
           labelKey: 'gov_numbers_text',
@@ -106,6 +128,30 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+              {
+                displayIf: displayIfContant.isOkrug,
+                title: 'Учреждение',
+              },
+            ],
+            width: 200,
           },
           {
             key: 'gov_numbers_text',

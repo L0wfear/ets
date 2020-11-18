@@ -25,12 +25,14 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('fountains'));
   }
   /* docs */
-  permissions.push(...getFullAccess('docs_close_waybill'));
-  permissions.push(...getFullAccess('docs_create_mission'));
-  permissions.push(...getFullAccess('docs_close_mission'));
-  permissions.push(...getFullAccess('docs_issue_a_waybill'));
-  permissions.push(...getFullAccess('docs_create_mission_by_order'));
-  permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
+  if(!user.permissions.includes('docs_dorinvest.list')){
+    permissions.push(...getFullAccess('docs_close_waybill')); // Закрытие путевого листа
+    permissions.push(...getFullAccess('docs_create_mission')); // Создание децентрализованного задания
+    permissions.push(...getFullAccess('docs_close_mission')); // Закрытие централизованного_децентрализованного задания
+    permissions.push(...getFullAccess('docs_issue_a_waybill')); // Выдача путевого листа с заданием
+    permissions.push(...getFullAccess('docs_create_mission_by_order')); // Создание централизованного задания
+    permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
+  }
   permissions.push(...getFullAccess('userNotification'));
 
   /* end docs */
@@ -60,10 +62,10 @@ export const makeUserData = (userDataRaw) => {
   // userData.permissions = userData.permissions.filter((p) => p !== 'inspect.autobase_closed.update')
   userData.permissionsSet = new Set(userData.permissions);
 
-  userData.isOkrug = userData.okrug_id !== null;
   userData.isKgh = userData.permissionsSet.has(
-    'common.nsi_company_column_show',
+    'common.nsi_okrug_company_columns_show',
   );
+  userData.isOkrug = userData.okrug_id;
   userData.isGlavControl = userData.permissionsSet.has('role.change');
 
   const default_path = userData.default_path;

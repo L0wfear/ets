@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isNumber, isArray, isNullOrUndefined } from 'util';
+import { isNumber, isArray, isNullOrUndefined, isBoolean, isNull } from 'util';
 
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';
@@ -38,13 +38,13 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
       value = <input type="checkbox" disabled checked={!!value} />;
     }
     if (format === 'toFixed1') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(1).replace('.', ',') : '';
     }
     if (format === 'toFixed2') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2).replace('.', ',') : '';
     }
     if (format === 'toFixed3') {
-      value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
+      value = isNumber(value) ? parseFloat(value.toString()).toFixed(3).replace('.', ',') : '';
     }
     if (format === 'array') {
       value = isArray(value) ? value.join(', ') : '';
@@ -113,10 +113,29 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     if (format === 'metresToKilometeres') {
       value = metresToKilometeres(value);
     }
+    if (format === 'no_passport') {
+      const {
+        is_gibdd_passport,
+        is_gtn_passport,
+        is_gims_passport,
+        passport_number,
+      } = rowData;
+
+      const isBool = isBoolean(is_gibdd_passport) && isBoolean(is_gtn_passport) && isBoolean(is_gims_passport);
+      const noPassport= isBool ? !is_gibdd_passport && !is_gtn_passport && !is_gims_passport && isNull(passport_number) : false;
+      value = noPassport ? '-' : value;
+    }
+  }
+  if ('valueForBoolean' in fieldMeta && fieldMeta.valueForBoolean) {
+    value = value ? fieldMeta.valueForBoolean : '-';
   }
 
   if ('dashIfEmpty' in fieldMeta && fieldMeta.dashIfEmpty) {
     value = !value && value !== 0 ? '-' : value;
+  }
+
+  if ('defaultValue' in fieldMeta && fieldMeta.defaultValue) {
+    value = value === null ? fieldMeta.defaultValue : value;
   }
 
   if(value && !isNullOrUndefined(value) && isNumber(value)){

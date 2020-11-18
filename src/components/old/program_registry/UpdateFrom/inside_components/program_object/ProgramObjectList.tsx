@@ -35,9 +35,7 @@ const notifyTexts = {
   },
 };
 
-type Props = {
-  [k: string]: any;
-};
+type Props = any;
 type State = any;
 
 @connectToStores(['repair'])
@@ -338,7 +336,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList<Props, State> {
   }
 }
 
-export default connect(
+export default connect<any, any, any, ReduxState>(
   (state: ReduxState) => ({
     userData: getSessionState(state).userData,
     technicalOperationObjectsList: getSomeUniqState(state)

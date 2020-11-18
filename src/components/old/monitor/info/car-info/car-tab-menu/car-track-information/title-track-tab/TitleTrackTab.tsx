@@ -8,10 +8,12 @@ import {
   fetchTrack,
   fetchCarInfo,
   carInfoChangeDate,
+  carInfoChangeDateAndForToday,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
-import { getTrackDefaultDateEnd, getTrackDefaultDateStart } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
-import { diffDates, createValidDateTime, minusTime, addTime } from 'components/@next/@utils/dates/dates';
+import DistanceOverSpeed from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceOverSpeed';
+import TravelTime from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/TravelTime';
+import { diffDates, createValidDateTime, minusTime, addTime, getStartOfServerToday } from 'components/@next/@utils/dates/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
@@ -25,20 +27,26 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { ButtonsRowMargin } from 'components/old/monitor/info/car-info/car-tab-menu/styled';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
   carInfoToggleForToday: any;
+  carInfoChangeDateAndForToday: (for_today: boolean, date_start: string, date_end: string) => void;
   disabledForToday: boolean;
   changeDate: any;
 
+  actionLoadTimeMoscow: any;
   fetchMissionsData: any;
+  fetchWaybillsData: any;
   fetchTrack: any;
   asuods_id: number;
   gps_code: string;
 
   track: any;
   status: string;
+  state_date_end: string;
+  state_date_start: string;
   loadingTrack: boolean;
 
   map_track_days: InitialStateSession['appConfig']['map_track_days'];
@@ -60,73 +68,104 @@ class TitleTrackTab extends React.Component<
   state = {
     gps_code: this.props.gps_code,
     errorDates: '',
-    date_start: this.props.searchState.date_start || createValidDateTime(getTrackDefaultDateStart()),
-    date_end: this.props.searchState.date_end || createValidDateTime(getTrackDefaultDateEnd()),
+    date_start: this.props.state_date_start,
+    date_end: this.props.state_date_end,
   };
 
-  static getDerivedStateFromProps(nextProps: PropsTitleTrackTab, prevState: StateTitleTrackTab) {
-    const { gps_code } = nextProps;
+  componentDidMount () {
+    const {
+      date_start, 
+      date_end,
+    } = this.props.searchState;
+    const isDiffDates = diffDates(createValidDateTime(this.props.state_date_end), createValidDateTime(date_end))
+     || diffDates(createValidDateTime(this.props.state_date_start), createValidDateTime(date_start));
 
-    if (prevState.gps_code !== gps_code) {
-      return {
-        errorDates: '',
-        gps_code,
-        date_start: createValidDateTime(getTrackDefaultDateStart()),
-        date_end: createValidDateTime(getTrackDefaultDateEnd()),
-      };
+    if(date_start && date_end && isDiffDates) {
+      this.props.carInfoChangeDateAndForToday(false, date_start, date_end);
+      this.setState({
+        date_end: createValidDateTime(date_end),
+        date_start: createValidDateTime(date_start),
+      });
+    } else if (!date_start || !date_end) {
+      this.props.setDataInSearch({
+        date_start: createValidDateTime(this.props.state_date_start),
+        date_end: createValidDateTime(this.props.state_date_end),
+      });
     }
-
-    return null;
   }
 
-  componentDidMount () {
-    const datesIsMove = (
-      diffDates(getTrackDefaultDateStart(), this.state.date_start)
-      || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
-    );
-    if(datesIsMove) {
-      const partialState = {
-        date_start: createValidDateTime(getTrackDefaultDateStart()),
-        date_end: createValidDateTime(getTrackDefaultDateEnd()),
-        errorDates: '',
-      };
-      this.props.setDataInSearch({
-        date_start: createValidDateTime(partialState.date_start),
-        date_end: createValidDateTime(partialState.date_end),
+  componentDidUpdate (nextProps: PropsTitleTrackTab, prevState: StateTitleTrackTab) {
+    const {
+      state_date_end,
+      state_date_start,
+      forToday,
+      searchState: {
+        date_start, 
+        date_end,
+      }
+    } = this.props;
+
+    const { gps_code } = nextProps;
+    const isDiffDates = diffDates(createValidDateTime(state_date_end), createValidDateTime(this.state.date_end))
+       || diffDates(createValidDateTime(state_date_end), createValidDateTime(this.state.date_end));
+
+    const diffDatesNextProps = diffDates(createValidDateTime(date_start), createValidDateTime(nextProps?.searchState.date_start))
+     || diffDates(createValidDateTime(date_end), createValidDateTime(nextProps?.searchState.date_end));
+
+    if (diffDatesNextProps && !forToday) {
+      this.props.carInfoChangeDateAndForToday(false, date_start, date_end);
+      this.setState({
+        date_end,
+        date_start
       });
+    }
+
+    if (isDiffDates && forToday) {
+      this.setState({
+        date_end: createValidDateTime(state_date_end),
+        date_start: createValidDateTime(state_date_start)
+      });
+    }
+
+    if (gps_code !== this.props.gps_code) {
+      this.props.carInfoChangeDateAndForToday(nextProps.forToday, date_start, date_end);
+      this.setState({
+        date_end: date_end,
+        date_start: date_start,
+      });
+    }
+    // if (this.props.gps_code !== prevState.gps_code) {
+    //   return {
+    //     errorDates: '',
+    //     gps_code,
+    //     date_start: createValidDateTime(getTrackDefaultDateStart()),
+    //     date_end: createValidDateTime(getTrackDefaultDateEnd()),
+    //   };
+    // }
+  }
+
+  updateMoscowTime = () => {
+    this.props.actionLoadTimeMoscow().then((time) => {
+      const partialState = {
+        date_start: createValidDateTime(getStartOfServerToday(time.date)),
+        date_end: createValidDateTime(time.date),
+      };
 
       this.setState({ ...partialState });
-    }
-  }
+    });
+  };
 
   carInfoToggleForToday: any = (e) => {
-    const disbledByTrackPlayStatys = this.props.status !== 'stop';
-
-    if (
-      !(
-        (this.props.loadingTrack && this.props.disabledForToday)
-        || disbledByTrackPlayStatys
-      )
-    ) {
-      const datesIsMove = (
-        diffDates(getTrackDefaultDateStart(), this.state.date_start)
-        || diffDates(createValidDateTime(getTrackDefaultDateEnd()), this.state.date_end)
-      );
-      this.props.carInfoToggleForToday();
-      if (datesIsMove && !this.props.forToday) {
-        const partialState = {
-          date_start: createValidDateTime(getTrackDefaultDateStart()),
-          date_end: createValidDateTime(getTrackDefaultDateEnd()),
-          errorDates: '',
-        };
-        this.props.setDataInSearch({
-          date_start: createValidDateTime(partialState.date_start),
-          date_end: createValidDateTime(partialState.date_end),
-        });
-
-        this.setState({ ...partialState });
-      }
-    }
+    const {
+      actionLoadTimeMoscow,
+      carInfoChangeDateAndForToday,
+      forToday,
+    } = this.props;
+    actionLoadTimeMoscow().then((time) => {
+      const date_start = createValidDateTime(getStartOfServerToday(time.date));
+      const date_end = createValidDateTime(time.date);
+      carInfoChangeDateAndForToday(!forToday, date_start, date_end);
+    });
   };
 
   validateDates = (date_start, date_end) => {
@@ -162,7 +201,7 @@ class TitleTrackTab extends React.Component<
 
       partialState.errorDates = this.validateDates(partialState.date_start, partialState.date_end);
 
-      // this.props.changeDate(field, value);
+      this.props.changeDate(field, value);
       this.setState({ ...partialState });
     }
   };
@@ -313,6 +352,8 @@ class TitleTrackTab extends React.Component<
             error={errorDates}
           />
           <DistanceAgg />
+          <DistanceOverSpeed />
+          <TravelTime />
         </div>
       </CarInfoBlockTabDataColumn>
     );
@@ -335,10 +376,14 @@ const mapStateToProps = (state) => ({
   loadingTrack: isArray(state.loading.loadingType)
     ? state.loading.loadingType.includes(CAR_INFO_SET_TRACK_CACHING)
     : false,
+  state_date_end: state.monitorPage.carInfo.date_end,
+  state_date_start: state.monitorPage.carInfo.date_start,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  actionLoadTimeMoscow: () => dispatch(actionLoadTimeMoscow({}, { page: 'mainpage' })),
   carInfoToggleForToday: () => dispatch(carInfoToggleForToday()),
+  carInfoChangeDateAndForToday: (for_today, date_start, date_end) => dispatch(carInfoChangeDateAndForToday(for_today, date_start, date_end)),
   changeDate: (field, value) => dispatch(carInfoChangeDate(field, value)),
   fetchMissionsData: (props) => dispatch(fetchCarInfo(props, { page: 'mainpage' })),
   dispatch,

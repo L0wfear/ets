@@ -3,6 +3,7 @@ import carInfoReducer, { IStateCarInfo, initialState as carInfoInitialState } fr
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { getToday0am, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { GeoobjsFilterByElemArr } from './monitor-page.h';
 
 const MONITOR_PAGE = createPath('MONITOR_PAGE');
 
@@ -26,6 +27,7 @@ export const MONITOR_PAGE_RESER = MONITOR_PAGE`RESER`;
 export const MONITOR_PAGE_RESER_CAR_STATUS = MONITOR_PAGE`RESER_CAR_STATUS`;
 export const MONITOR_PAGE_CHANGE_FILTERS = MONITOR_PAGE`CHANGE_FILTERS`;
 export const MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST = MONITOR_PAGE`MERGE_FILTERS_GPS_CODE_LIST`;
+export const MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER = MONITOR_PAGE`CHANGE_GEOOBJECTS_FILTER`;
 export const MONITOR_PAGE_TOGGLE_DRAW_ACTIVE = MONITOR_PAGE`TOGGLE_DRAW_ACTIVE`;
 export const MONITOR_PAGE_FALSE_DRAW_ACTIVE = MONITOR_PAGE`FALSE_DRAW_ACTIVE`;
 
@@ -33,6 +35,8 @@ export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE = MONITOR_PAGE`CHANGE_FUEL_EVE
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_DATA`;
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA`;
 export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUEL_EVENTS_LEAK_SHOW`;
+export const MONITOR_PAGE_SET_CARS_FOR_EXCLUDE = MONITOR_PAGE`SET_CARS_FOR_EXCLUDE`;
+export const MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM = MONITOR_PAGE`SET_GEOOBJS_FILTER_BY_ELEM`;
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
@@ -72,15 +76,25 @@ export type IStateMonitorPage = {
   filters: {
     data: {
       carFilterText: string;
+      carFilterMultyGpsCode: Array<number>;
       carFilterMultyType: Array<number>;
       carFilterMultyTechCondition: Array<number>;
       carFilterMultyModel: Array<number>;
       carFilterMultyStructure: Array<number>;
+      carFilterMultyOkrug: Array<number>;
       carFilterMultyOwner: Array<number>;
+      levelSensors: 2 | 1;
+      carFilterMultyDrivers: Array<number>;
+      withoutMissions: boolean;
+      withoutWaybills: boolean;
+      carFilterMultyElement: Array<number>;
       featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>;}; // DITETSSUP-2007
     };
     filtredCarGpsCode: Array<number>;
+    carsForExclude: Array<number>;
+    geoobjsFilterByElem: GeoobjsFilterByElemArr;
   };
+  geoobjectsFilter: string;
   companiesIndex: -1 | object;
   drawActive: {
     all: boolean;
@@ -143,15 +157,25 @@ export const initialMonitorState: IStateMonitorPage = {
   filters: {
     data: {
       carFilterText: '',
+      carFilterMultyGpsCode: [],
       carFilterMultyType: [],
       carFilterMultyTechCondition: [],
       carFilterMultyModel: [],
       carFilterMultyStructure: [],
+      carFilterMultyOkrug: [],
       carFilterMultyOwner: [],
+      levelSensors: null,
+      carFilterMultyDrivers: [],
       featureBufferPolygon: null, // DITETSSUP-2007
+      withoutMissions: false,
+      withoutWaybills: false,
+      carFilterMultyElement: [],
     },
     filtredCarGpsCode: [],
+    carsForExclude: [],
+    geoobjsFilterByElem: [],
   },
+  geoobjectsFilter: 'cars',
   companiesIndex: -1,
   drawActive: {
     all: false,
@@ -356,6 +380,13 @@ export default (state = initialMonitorState, { type, payload }) => {
         },
       };
     }
+    case MONITOR_PAGE_CHANGE_GEOOBJECTS_FILTER: {
+      return {
+        ...state,
+        geoobjectsFilter: payload.value,
+        filters: initialMonitorState.filters,
+      };
+    }
     case MONITOR_PAGE_MERGE_FILTERS_GPS_CODE_LIST: {
       return {
         ...state,
@@ -455,6 +486,24 @@ export default (state = initialMonitorState, { type, payload }) => {
             data: show ? state.fuelEvents.leak.data : {},
           },
         },
+      };
+    }
+    case MONITOR_PAGE_SET_CARS_FOR_EXCLUDE: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          carsForExclude: payload
+        }
+      };
+    }
+    case MONITOR_PAGE_SET_GEOOBJS_FILTER_BY_ELEM: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          geoobjsFilterByElem: [...state.filters.geoobjsFilterByElem].concat(payload),
+        }
       };
     }
     default: {

@@ -76,6 +76,7 @@ export function makeUnixTime(timeOwn) {
 export function makeUnixTimeMskTimezone(timeOwn) {
   let time = timeOwn;
   if (typeof time === 'string') {
+    // eslint-disable-next-line no-param-reassign
     time = MomentTimezone.tz(time, 'Europe/Moscow' );
   }
   return Math.floor(time / 1000);
@@ -93,11 +94,23 @@ export function getStartOfToday() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
+export function getStartOfServerToday(serverDate: string) {
+  const now = new Date(serverDate);
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
 export function createValidDate(date: string | Date) {
   if (!date) {
     return null;
   }
   return moment(date).format('YYYY-MM-DD');
+}
+
+export function createValidYear(date: string | Date) {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format(global.APP_YEAR_FORMAT);
 }
 
 export function createValidDateDots(date: string | Date) {
@@ -121,7 +134,7 @@ export function createValidDateTimeDots(date: string | Date) {
   return moment(date).format('DD.MM.YYYY HH:mm');
 }
 
-export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false, inputFormat?: string,) {
+export function createValidDateTime(date: string | Date | Moment.Moment | number, withSeconds = false, inputFormat?: string,) {
   if (!date) {
     return null;
   }
@@ -275,6 +288,19 @@ export function getTomorrow9am(seconds = 0) {
   );
 }
 
+export function getTomorrow9amMoscowServerTime(serverDate: string, seconds = 0) {
+  const now = new Date(serverDate);
+
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    8,
+    59,
+    seconds,
+  );
+}
+
 export function getTomorrow2359() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 23, 59, 0);
@@ -395,3 +421,6 @@ export function setDateTime0am(dateOwn) {
   date.minutes(0);
   return date.toDate();
 }
+
+export const getDatePlusSomeYears = (date: Date | string, years: number) => new Date(new Date(date).setFullYear(new Date(date).getFullYear() + years));
+export const getDatePlusSomeMonths = (date: Date | string, months: number) => new Date(new Date(date).setMonth(new Date(date).getMonth() + months));

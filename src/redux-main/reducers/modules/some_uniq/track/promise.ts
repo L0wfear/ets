@@ -39,6 +39,7 @@ export const promiseGetTrackInfo = async (payloadOwn: { car_id: Car['asuods_id']
     return {
       distance: null,
       consumption: null,
+      sensor_leak: null,
       sensor_refill: null,
       sensor_start_value: null,
       sensor_finish_value: null,

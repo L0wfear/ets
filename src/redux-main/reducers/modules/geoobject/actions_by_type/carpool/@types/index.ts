@@ -5,5 +5,6 @@ export type Carpool = {
   id: number | null;
 //  is_main: boolean;
   name: string;
+  okrug_name: string;
   shape: object;
 };

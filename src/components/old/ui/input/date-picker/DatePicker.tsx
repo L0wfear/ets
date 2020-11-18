@@ -3,7 +3,7 @@ import * as DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import * as cx from 'classnames';
 import * as moment from 'moment';
 
-import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, createValidDate, createValidYear } from 'components/@next/@utils/dates/dates';
 
 const DTPicker: any = DateTimePicker;
 
@@ -18,8 +18,10 @@ export type DatePickerProps = {
   makeGoodFormat?: boolean;
   makeGoodFormatInitial?: boolean;
   preventDateTime?: boolean;
-
+  views?: Array<'month' | 'year' | 'decade' | 'century'>;
+  makeOnlyYearFormat?: boolean;
   style?: object;
+  footer?: boolean;
 };
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {
@@ -28,10 +30,13 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     calendar = true,
     makeGoodFormat = false,
     makeGoodFormatInitial = false,
+    makeOnlyYearFormat = false,
     preventDateTime,
+    views = ['month', 'year', 'decade', 'century'],
+    footer = true,
   } = props;
   let { date: value } = props;
-  const format = `${calendar ? `${global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
+  const format = `${calendar ? `${makeOnlyYearFormat ? global.APP_YEAR_FORMAT : global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
 
   if (typeof value === 'string' && value) {
     value = moment(value).toDate();
@@ -39,7 +44,11 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 
   const handleChange = React.useCallback(
     (valueRaw) => {
+      console.info(global);
       let valueNew = valueRaw;
+      if (valueNew && makeOnlyYearFormat) {
+        valueNew = createValidYear(valueNew);
+      }
       if (valueNew && makeGoodFormat) {
         valueNew = (
           (time || preventDateTime)
@@ -54,6 +63,9 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
   );
 
   React.useEffect(() => {
+    if (value && makeOnlyYearFormat) {
+      value = createValidYear(value);
+    }
     if (value && makeGoodFormat && makeGoodFormatInitial) {
       value = (
         (time || preventDateTime)
@@ -76,6 +88,8 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       date={calendar}
       disabled={props.disabled}
       onChange={handleChange}
+      views={views}
+      footer={footer}
     />
   );
 };

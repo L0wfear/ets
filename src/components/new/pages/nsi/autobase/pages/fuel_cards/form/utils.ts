@@ -1,14 +1,19 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionFuelTypeOptions } from 'redux-main/reducers/modules/session/selectors';
+import * as React from 'react';
 
 export const defaultFuelCard: FuelCard = {
   id: null,
   number: null,
   fuel_type: null,
+  fuel_types: [],
   company_id: null,
   company_name: null,
   company_short_name: null,
   company: null,
+  composite_id: null,
   fuel_type_text: null,
   structure_id: null,
   is_archive: false,
@@ -22,6 +27,12 @@ export const defaultFuelCard: FuelCard = {
   garage_number: null,
   fuel_card_on_cars: [],
   origin_fuel_card_on_cars: [],
+  okrug_name: null,
+  source_type_id: null,
+  source_type_text: null,
+  status: null,
+  status_text: null,
+  comment: null,
 };
 
 export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {
@@ -51,4 +62,14 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
   }
 
   return newElement;
+};
+
+export const usefuelTypeOptions = () => {
+  return etsUseSelector((state) => {
+    const fuelTypeOptions = getSessionFuelTypeOptions(state);
+    return React.useMemo(
+      () => fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICITY'),
+      [fuelTypeOptions]
+    );
+  });
 };

@@ -6,6 +6,12 @@ export type OneSessionStructure = {
 export type OneSessionCompany = {
   asuods_id: number;
   name: string;
+  use_pouring: boolean;
+};
+
+export type OneSessionOkrug = {
+  id: number;
+  name: string;
 };
 
 export type InitialStateSession = {
@@ -31,6 +37,7 @@ export type InitialStateSession = {
     last_name: string | null;
     login: string | null;
     middle_name: string | null;
+    okrugs: Array<OneSessionOkrug> | null;
     okrug_id: string | number | null;
     okrug_name: string | null;
     role: string | null;

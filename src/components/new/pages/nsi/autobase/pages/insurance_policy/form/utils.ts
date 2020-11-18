@@ -20,6 +20,7 @@ export const defaultInsurancePolicy: InsurancePolicy = {
   insurer: null,
   note: null,
   number: null,
+  okrug_name: null,
   price: null,
   seria: null,
   updated_at: null,

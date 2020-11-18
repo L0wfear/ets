@@ -39,7 +39,23 @@ class BarShowGeoobjects extends React.Component<any, any> {
     ),
   };
 
-  toggleList = (event) => {
+  componentDidUpdate(prevProps) {
+    const { geoobjectsFilter: key } = this.props;
+    if(
+      key
+      && key !== 'cars'
+      && key !== prevProps.geoobjectsFilter
+    ) {
+      if(!this.props[GEOOBJECTS_OBJ[key].serverName]) {
+        this.props.toggleShowStatus([key]);
+      }
+      if(!this.state.showGeoObjList) {
+        this.toggleList();
+      }
+    }
+  }
+
+  toggleList = () => {
     if (this.props.companiesIndex !== -1) {
       this.setState({
         showGeoObjList: !this.state.showGeoObjList,
@@ -116,13 +132,15 @@ const mapStateToProps = (state) => ({
     ...newObj,
     [serverName]: state.monitorPage.geoobjects[serverName].show,
   }), {}),
+  geoobjectsFilter: state.monitorPage.geoobjectsFilter,
 });
 
 const mergedPropd = (stateProps, { dispatch }, ownProps) => ({
   ...stateProps,
   ...ownProps,
   toggleShowStatus: (typeArr) => {
-    const company_key = Object.keys(stateProps.companiesIndex)[0];
+    const companies = Object.keys(stateProps.companiesIndex);
+    const company_key = companies.length === 1 ? companies[0] : null;
     const company_id = company_key ? stateProps.companiesIndex[company_key].company_id : null;
 
     dispatch(

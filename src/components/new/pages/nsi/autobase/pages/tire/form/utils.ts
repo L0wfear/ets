@@ -13,6 +13,7 @@ export const defaultTire: Tire = {
   installed_at: '',
   motohours_diff: null,
   odometr_diff: null,
+  okrug_name: null,
   tire_manufacturer_id: null,
   tire_manufacturer_name: '',
   tire_model_id: null,

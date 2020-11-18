@@ -25,15 +25,25 @@ export const config: TypeConfigData<Odh> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
+            displayIf: displayIfContant.isOkrug,
             title: 'Наименование ГБУ',
           },
           {
-            title: 'Учреждение',
-            displayIf: displayIfContant.isOkrug,
+            title: 'Организация',
+            displayIf: displayIfContant.isKgh,
           },
         ],
         type: 'multiselect',
@@ -140,15 +150,25 @@ export const config: TypeConfigData<Odh> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
+        },
+        {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
+              displayIf: displayIfContant.isOkrug,
               title: 'Наименование ГБУ',
             },
             {
-              title: 'Учреждение',
-              displayIf: displayIfContant.isOkrug,
+              title: 'Организация',
+              displayIf: displayIfContant.isKgh,
             },
           ],
           width: 300,

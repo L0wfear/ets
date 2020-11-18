@@ -22,6 +22,9 @@ import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
+import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { isNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -39,7 +42,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       formErrors: errors,
     } = props;
 
-    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(false);
     const [defectShow, SetDefectShow] = React.useState(false);
     const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
     const countryOptionData = useCountryOptions(props.page, props.path, 'short_name');
@@ -47,18 +49,22 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     const dispatch = etsUseDispatch();
     const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
 
+    React.useEffect(() => {
+      (async () => {
+        const current_date = await dispatch(
+          actionLoadTimeMoscow({}, { page: '' })
+        );
+        props.handleChange('dataForValidation', {
+          current_date_timestamp: current_date.timestamp * 1000,
+        });
+      })();
+    }, []);
+
     React.useEffect( () => {
       if (inspectionConfig) {
         setInspectionConfigOptions(inspectionConfig);
       }
     }, [inspectionConfig]);
-
-    const handleChangeAdditionalInfoMain = React.useCallback(
-      () => {
-        SetAdditionalInfoMainShow(!additionalInfoMainShow);
-      },
-      [SetAdditionalInfoMainShow, additionalInfoMainShow],
-    );
 
     const handleChangeDefectShow = React.useCallback(
       () => {
@@ -72,14 +78,35 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     }, []);
 
     React.useEffect(() => {
-      if (state.data.osago_not_required) {
+      if (state.data.osago_not_required || state.data.no_valid_osago) {
+        const osagoCommentList = state.data.comments?.includes('Необходимо сверить данные полиса ОСАГО')
+          ? state.data.comments
+          : 'Необходимо сверить данные полиса ОСАГО \n' + state.data.comments;
+        const comment = state.data.comments?.length ? osagoCommentList : 'Необходимо сверить данные полиса ОСАГО';
         props.handleChange({
           osago: null,
           osago_finished_at: null,
+          data: {
+            ...state.data,
+            comments: state.data.no_valid_osago ? comment : state.data.comments,
+          },
         });
+      } else {
+        const comment = state.data.comments?.length ? state.data.comments.replace('Необходимо сверить данные полиса ОСАГО', '') : null;
+        dispatch(actionGetCarsConditionsCarById(state.id, {page: props.page})).then((result) => {
+          props.handleChange({
+            osago: result.osago,
+            osago_finished_at: result.osago_finished_at,
+            data: {
+              ...state.data,
+              comments: !state.data.no_valid_osago ? comment : state.data.comments,
+            },
+          });
+        }
+        );
       }
     },
-    [state.data.osago_not_required]);
+    [state.data.osago_not_required, state.data.no_valid_osago]);
 
     const handleChangeDataForIA = React.useCallback(
       (data) => {
@@ -104,6 +131,13 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
+
+    const handleChangeNumberField = React.useCallback((key, event) => {
+      const value = event.currentTarget.value;
+      if ((!value || isNumValue(value)) && +value >= 0) {
+        props.handleChange(key, value);
+      }
+    }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -334,139 +368,132 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <AdditionalInfoWrapper>
-              <EtsBootstrap.Button onClick={handleChangeAdditionalInfoMain}>
-                {
-                  additionalInfoMainShow
-                    ? <EtsBootstrap.Glyphicon glyph="minus" />
-                    : <EtsBootstrap.Glyphicon glyph="plus" />
-                }
-                Доп. информация
-              </EtsBootstrap.Button>
-              {
-                additionalInfoMainShow
-                  && <AdditionalInfoBlock>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          type="number"
-                          label="Год выпуска:"
-                          value={state.manufactured_at}
-                          onChange={props.handleChange}
-                          error={errors.manufactured_at}
-                          boundKeys="manufactured_at"
-                          disabled={!props.isPermitted}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="environmental_class_id"
-                          type="select"
-                          label="Экологический стандарт ТС"
-                          value={state.environmental_class}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'environmental_class', [])}
-                          error={errors.environmental_class}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'environmental_class'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="engine_type_id"
-                          type="select"
-                          label="Тип двигателя"
-                          value={state.engine_type}
-                          onChange={props.handleChange}
-                          options={engineTypeOptionData.options}
-                          etsIsLoading={engineTypeOptionData.isLoading}
-                          error={errors.engine_type}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'engine_type'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          type="number"
-                          label="Разрешенная масса (кг)"
-                          value={state.max_weight}
-                          error={errors.max_weight}
-                          onChange={props.handleChange}
-                          boundKeys="max_weight"
-                          disabled={!props.isPermitted}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="origin_country_id"
-                          type="select"
-                          label="Страна изготовитель"
-                          value={state.origin_country}
-                          onChange={props.handleChange}
-                          options={ countryOptionData.options}
-                          error={errors.origin_country}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          etsIsLoading={countryOptionData.isLoading}
-                          boundKeys={'origin_country'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="classifier_id"
-                          type="select"
-                          label="Классификатор"
-                          value={state.data.classifier}
-                          onChange={handleChangeDataOptions}
-                          options={ get(inspectionConfigOptions, 'classifier', []) }
-                          error={errors.data.classifier}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'classifier'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="kind_id"
-                          type="select"
-                          label="Вид техники"
-                          value={state.kind}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'kind', []) }
-                          error={errors.kind}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'kind'}
-                        />
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={6}>
-                        <ExtField
-                          id="kind_purchase_id"
-                          type="select"
-                          label="Вид приобретения"
-                          value={state.kind_purchase}
-                          onChange={props.handleChange}
-                          options={ get(inspectionConfigOptions, 'kind_purchase', []) }
-                          error={errors.kind_purchase}
-                          clearable={false}
-                          disabled={!props.isPermitted}
-                          boundKeys={'kind_purchase'}
-                        />
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                  </AdditionalInfoBlock>
-              }
-            </AdditionalInfoWrapper>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <h4>
+                  Дополнительная информация
+                </h4>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="number"
+                  label="Год выпуска:"
+                  value={state.manufactured_at}
+                  onChange={props.handleChange}
+                  error={errors.manufactured_at}
+                  boundKeys="manufactured_at"
+                  disabled={!props.isPermitted}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="environmental_class_id"
+                  type="select"
+                  label="Экологический стандарт ТС"
+                  value={state.environmental_class}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'environmental_class', [])}
+                  error={errors.environmental_class}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'environmental_class'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="engine_type_id"
+                  type="select"
+                  label="Тип двигателя"
+                  value={state.engine_type}
+                  onChange={props.handleChange}
+                  options={engineTypeOptionData.options}
+                  etsIsLoading={engineTypeOptionData.isLoading}
+                  error={errors.engine_type}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'engine_type'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="number"
+                  label="Разрешенная масса (кг)"
+                  value={state.max_weight}
+                  error={errors.max_weight}
+                  onChange={props.handleChange}
+                  boundKeys="max_weight"
+                  disabled={!props.isPermitted}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="origin_country_id"
+                  type="select"
+                  label="Страна изготовитель"
+                  value={state.origin_country}
+                  onChange={props.handleChange}
+                  options={ countryOptionData.options}
+                  error={errors.origin_country}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  etsIsLoading={countryOptionData.isLoading}
+                  boundKeys={'origin_country'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="classifier_id"
+                  type="select"
+                  label="Классификатор"
+                  value={state.data.classifier}
+                  onChange={handleChangeDataOptions}
+                  options={ get(inspectionConfigOptions, 'classifier', []) }
+                  error={errors.data.classifier}
+                  clearable
+                  disabled={!props.isPermitted}
+                  boundKeys={'classifier'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="kind_id"
+                  type="select"
+                  label="Вид техники"
+                  value={state.kind}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'kind', []) }
+                  error={errors.kind}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'kind'}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="kind_purchase_id"
+                  type="select"
+                  label="Вид приобретения"
+                  value={state.kind_purchase}
+                  onChange={props.handleChange}
+                  options={ get(inspectionConfigOptions, 'kind_purchase', []) }
+                  error={errors.kind_purchase}
+                  clearable={false}
+                  disabled={!props.isPermitted}
+                  boundKeys={'kind_purchase'}
+                />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <HrDelimiter />
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
@@ -476,7 +503,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.osago}
               boundKeys="osago"
-              disabled={!props.isPermitted || state.data.osago_not_required}
+              disabled={!props.isPermitted || state.data.osago_not_required || state.data.no_valid_osago}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -490,7 +517,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.osago_finished_at}
               boundKeys="osago_finished_at"
-              disabled={!props.isPermitted || state.data.osago_not_required}
+              disabled={!props.isPermitted || state.data.osago_not_required || state.data.no_valid_osago}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
@@ -507,7 +534,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Номер диагностической карты:"
               value={state.diagnostic_card}
               onChange={props.handleChange}
@@ -535,18 +562,18 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника относится к ГБУ Жилищник:"
+              label="Владелец техники:"
               value={state.gby_district}
               onChange={props.handleChange}
               error={errors.gby_district}
               boundKeys="gby_district"
-              disabled={!props.isPermitted}
+              disabled={true}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника эксплуатируется жилищником:"
+              label="Подрядчик:"
               value={state.gby_operation_district}
               onChange={props.handleChange}
               error={errors.gby_operation_district}
@@ -797,7 +824,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
-                  onChange={props.handleChange}
+                  onChange={handleChangeNumberField}
                   boundKeys="mileage"
                   disabled={!props.isPermitted}
                 />
@@ -809,7 +836,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={props.handleChange}
+                  onChange={handleChangeNumberField}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />

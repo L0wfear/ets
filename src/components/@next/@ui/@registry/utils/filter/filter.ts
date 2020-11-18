@@ -1,6 +1,6 @@
 import { isArray, isString, isObject, isNullOrUndefined } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { diffDatesByDays } from 'components/@next/@utils/dates/dates';
+import { diffDates, diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 type ArrayRegisrty<F> = OneRegistryData<F>['list']['data']['array'];
 type FilterValues<F> = OneRegistryData<F>['list']['processed']['filterValues'];
@@ -58,8 +58,14 @@ const filterArrayByEq = <F extends any>(row_value: any, filter_value: any, field
   if (field_data.type === 'advanced-number') {
     return filter_value !== row_value;
   }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number !== filter_value);
+  }
   if (field_data.type === 'advanced-date') {
     return diffDatesByDays(filter_value, row_value) !== 0;
+  }
+  if (field_data.type === 'advanced-datetime') {
+    return diffDates(filter_value, row_value, 'minutes') !== 0;
   }
   throw new Error('non define filter by type');
 };
@@ -82,8 +88,14 @@ const filterArrayByGt = <F extends any>(row_value: any, filter_value: any, field
   if (field_data.type === 'advanced-number') {
     return filter_value >= row_value;
   }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number >= filter_value);
+  }
   if (field_data.type === 'advanced-date') {
     return !(diffDatesByDays(row_value, filter_value) > 0);
+  }
+  if (field_data.type === 'advanced-datetime') {
+    return (diffDates(filter_value, row_value, 'minutes') >= 0);
   }
   throw new Error('non define filter by type');
 };
@@ -101,8 +113,14 @@ const filterArrayByLt = <F extends any>(row_value: any, filter_value: any, field
   if (field_data.type === 'advanced-number') {
     return filter_value <= row_value;
   }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number <= filter_value);
+  }
   if (field_data.type === 'advanced-date') {
     return diffDatesByDays(filter_value, row_value) <= 0;
+  }
+  if (field_data.type === 'advanced-datetime') {
+    return diffDates(filter_value, row_value, 'minutes') <= 0;
   }
   throw new Error('non define filter by type');
 };

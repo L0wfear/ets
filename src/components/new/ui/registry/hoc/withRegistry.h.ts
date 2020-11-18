@@ -32,7 +32,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';
@@ -84,6 +84,7 @@ export type TypeFields<F extends any> = {
     | 'company_structure_actions'
     | 'waybill_all_missions_status'
     | 'waybill_status_name'
+    | 'no_passport'
   );
   displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   displayIfPermission?: string | Array<string>;
@@ -133,6 +134,12 @@ export type TypeFields<F extends any> = {
   key: 'show_edc_comments';
   title: string;
   displayIfPermission?: string | Array<string>;
+}| {
+  key: 'showCarOnMap';
+  title: string;
+} | {
+  key: 'files';
+  title: string;
 };
 
 export type TypeConfigData<F> = {

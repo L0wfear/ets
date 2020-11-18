@@ -8,6 +8,9 @@ import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/val
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { SelectCarConditionTitleWrapper, CarConditionTitle } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/styled';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 type BlockCarSConditionPrepareCarToInspectOwnProps = {
   onChange: any;
@@ -39,6 +42,19 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
       isPermitted,
       isActiveInspect,
     } = props;
+
+    const dispatch = etsUseDispatch();
+
+    React.useEffect(() => {
+      (async () => {
+        const current_date = await dispatch(
+          actionLoadTimeMoscow({}, { page: '' })
+        );
+        handleChange('dataForValidation', {
+          current_date: createValidDate(current_date.date),
+        });
+      })();
+    }, []);
 
     const handleChange = React.useCallback(
       (key, event) => {

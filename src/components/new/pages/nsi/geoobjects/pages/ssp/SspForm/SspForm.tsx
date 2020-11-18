@@ -56,7 +56,7 @@ const SspForm: React.FC<PropsSspForm> = React.memo(
                   value={state.company_name || '-'}
                   label={
                     props.userData.isKgh
-                      ? 'Наименование ГБУ:'
+                      ? 'Организация:'
                       : 'Учреждение:'
                   }
                   readOnly

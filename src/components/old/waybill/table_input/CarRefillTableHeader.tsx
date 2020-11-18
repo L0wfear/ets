@@ -10,11 +10,19 @@ import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled from 'styled-components';
 import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
-export const CarRefillTableHeaderStyled = styled(EtsBootstrap.Row)`
+export const CarRefillTableHeaderStyled = styled(EtsBootstrap.Row as any)`
   ${EtsHeaderContainerWrap} {
     padding: 0px 11px 0px 11px;
   }
+`;
+
+const StyledCheckBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 3px;
 `;
 
 type CarRefillTableHeaderProps = {
@@ -22,7 +30,7 @@ type CarRefillTableHeaderProps = {
   selectedRowIndex: number;
   onChange: any;
   array: Array<any>;
-
+  errors: Array<any>;
   meta: Array<any>;
   addName?: string;
   removeName?: string;
@@ -34,13 +42,27 @@ type CarRefillTableHeaderProps = {
   title: string;
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
-
+  is_refill: boolean;
+  is_refill_error: any;
+  defaultHandleChange: any;
   disabled: boolean;
   fuel_card_on_cars?: Array<FuelCardOnCars>;
+  fuel_cards_creating?: boolean;
 };
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
   (props) => {
+
+    const handleChangeIsRefill = React.useCallback(() => {
+      props.defaultHandleChange(isRefillKeys.boundKeys, !props.is_refill);
+    }, [props.is_refill]);
+
+    React.useEffect(() => {
+      if(props.array.length && props.is_refill) {
+        handleChangeIsRefill();
+      }
+    }, [props.array]);
+    
     const handleAddRow = React.useCallback(
       () => {
         props.onChange([
@@ -54,6 +76,22 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
       },
       [props.array, props.onChange],
     );
+
+    const isRefillKeys = React.useMemo(() => {
+      const boundKeys
+      = props.id === 'car_refill'
+        ? 'is_no_fuel_refill'
+        : props.id === 'gas_refill'
+          ? 'is_no_gas_refill'
+          : props.id === 'electrical_refill'
+            ? 'is_no_electrical_refill'
+            : 'is_no_equipment_refill';
+
+      return {
+        boundKeys,
+        id: boundKeys.replace('_', '-'), 
+      };
+    }, [props.is_refill]);
 
     const handleRemoveRow = React.useCallback(
       () => {
@@ -85,7 +123,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   )
               }
               {
-                props.visibleButtons && (
+                props.visibleButtons && props.fuel_type !== 'ELECTRICITY' && props.fuel_cards_creating && (
                   <ButtonCreateFuelCard
                     id={props.id}
                     handleUpdateFuelCard={props.handleUpdateFuelCard}
@@ -100,6 +138,18 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
               }
             </EtsButtonsContainer>
           </EtsHeaderContainer>
+          <StyledCheckBox>
+            <ExtField
+              id={isRefillKeys.id}
+              type='boolean'
+              label={'Заправок не было'}
+              value={props.is_refill}
+              onChange={handleChangeIsRefill}
+              disabled={Boolean(props.array.length)}
+              boundKeys={isRefillKeys.boundKeys}
+              error={props.is_refill_error}
+            />
+          </StyledCheckBox>
         </EtsHeaderContainerWrap>
       </CarRefillTableHeaderStyled>
     );

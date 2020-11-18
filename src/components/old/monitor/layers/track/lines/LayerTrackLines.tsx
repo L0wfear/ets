@@ -9,6 +9,7 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/feature-style';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 import { ReduxState } from 'redux-main/@types/state';
+import { filterValidPoints } from 'utils/track';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -21,7 +22,6 @@ type PropsLayerTrackLines = {
   track: Array<any>;
   zoom: number;
   lastPoint: any;
-  forToday: boolean;
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
@@ -178,7 +178,7 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
   }
 
   render() {
-    return <div></div>;
+    return <div/>;
   }
 }
 
@@ -191,11 +191,10 @@ export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
       SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
-      track: state.monitorPage.carInfo.trackCaching.track,
-      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-      forToday: state.monitorPage.carInfo.forToday,
-      mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-      speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+      track: state.monitorPage.carInfo.trackCaching.track === -1 ? [] : filterValidPoints(state.monitorPage.carInfo.trackCaching.track),
+      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (filterValidPoints(state.monitorPage.carInfo.trackCaching.track).slice(-1)[0] || null),
+      mkad_speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.mkad_speed_lim,
+      speed_lim: state.monitorPage.carInfo.missionsAndWaybillsData.speed_lim,
       front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
     }),
   ),

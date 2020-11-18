@@ -68,6 +68,19 @@ export const promiseGetNormsByParams = async (payload: PromiseGetNormPayload) =>
   return result;
 };
 
+export const promiseGetNorms = async () => {
+  let response = null;
+  try {
+    response = await CleaningNormRegistryService.get();
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  const result: Array<Norm> = get(response, 'result.rows', []);
+
+  return result;
+};
+
 export const promiseGetNormByIdAndDate = async (payload: { norm_id: Norm['id']; datetime: string | Date; }) => {
   let response = null;
   try {

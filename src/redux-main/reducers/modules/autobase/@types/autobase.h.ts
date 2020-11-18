@@ -1,6 +1,17 @@
 import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ActualBatteriesOnCar } from '../actions_by_type/actual_batteries_on_car/@types';
 import { ActualTiresOnCar } from '../actions_by_type/actual_tires_on_car/@types';
+import { Penalty } from '../actions_by_type/penalties/@types';
+import { Tachograph } from '../actions_by_type/tachograph_periodic_verification/@types';
+import { TachographList } from '../actions_by_type/tachograph_registry/@types';
+import { TachographRepairList } from '../actions_by_type/tachograph_repair/@types';
+import { TachographRepairReasonList } from '../actions_by_type/tachograph_repair_reason_list/@types';
+import { TachographMetrologicalVerificationList } from '../actions_by_type/tachograph_metrological_verification/@types';
+import { TachographDataReadingList } from '../actions_by_type/tachograph_data_reading/@types';
+import { TachographReplacementSkziList } from '../actions_by_type/tachograph_replacement_skzi/@types';
+import { TachographBrand } from '../actions_by_type/tachograph_brand/@types';
+import { TachographReplacementSkziReason } from '../actions_by_type/tachograph_replacement_skzi_reason/@types';
+import { Refill } from '../actions_by_type/refill_registry/@types';
 
 export type SparePart = {
   company_id?: number;
@@ -11,6 +22,7 @@ export type SparePart = {
   measure_unit_name?: string;
   name: string;
   number: string;
+  okrug_name: string;
   quantity: number;
   spare_part_group_id: number;
   supplied_at: string;
@@ -68,6 +80,7 @@ export type BatteryRegistry = {
   manufacturer_id: number;
   manufacturer_name: string;
   odometr_start: string;
+  okrug_name: string;
   released_at: string;
   serial_number: string;
   uninstalled_at: string;
@@ -99,6 +112,7 @@ export type InsurancePolicy = {
   insurer: string;
   note: string;
   number: string;
+  okrug_name: string;
   price: number;
   seria: string;
   updated_at: string;
@@ -115,6 +129,7 @@ export type Car = {
   available: boolean;
   available_to_bind: boolean;
   body_capacity: number;
+  body_number: string;
   car_group_id: number;
   car_group_name: string;
   certificate_number: string;
@@ -143,6 +158,7 @@ export type Car = {
   is_gtn_passport: boolean;
   is_gims_passport: boolean;
   is_trailer: boolean;
+  is_trailer_required: boolean;
   level_sensors_num: number;
   load_capacity: number;
   max_speed: number;
@@ -151,6 +167,7 @@ export type Car = {
   note: string;
   okrug_id: number;
   okrug_name: string;
+  operating_mode: string;
   owner_id: number;
   owner_name: string;
   parking_address: string;
@@ -164,6 +181,7 @@ export type Car = {
   type_image_name: string;
   type_name: string;
   vin: string;
+  engine_kind_ids: Array<Number>;
 };
 
 export type CarFuncTypes = {
@@ -203,6 +221,7 @@ export type RepairCompany = {
   company_id: number;
   company_name: string;
   company_short_name: string;
+  okrug_name: string;
   id: number;
   name: string;
 };
@@ -251,6 +270,7 @@ export type TechInspection = {
   id: number;
   is_allowed: boolean;
   note: string;
+  okrug_name: string;
   reg_number: string;
   tech_operator: string;
   updated_at: string;
@@ -259,6 +279,8 @@ export type TechInspection = {
 export type TechMaintOrder = {
   car_model_id: number;
   car_model_name: string;
+  company_id: number;
+  company_name: string;
   description: string;
   entity_name: string;
   id: number;
@@ -268,6 +290,7 @@ export type TechMaintOrder = {
   is_periodic: boolean;
   measure_unit_run_id: number;
   measure_unit_run_name: string;
+  okrug_name: string;
   sequence: number;
   tech_maintenance_type_id: number;
   tech_maintenance_type_name: string;
@@ -322,6 +345,7 @@ export type Tire = {
   installed_at: string;
   motohours_diff: number;
   odometr_diff: number;
+  okrug_name: string;
   tire_manufacturer_id: number;
   tire_manufacturer_name: string;
   tire_model_id: number;
@@ -345,6 +369,12 @@ export type TireAvailableCar = {
   car_id: number;
   gov_number: string;
 };
+
+export type TachographAvailableCar = {
+  car_id: number;
+  gov_number: string;
+};
+
 export type SpareAvailableCar = {
   car_id: number;
   gov_number: string;
@@ -453,6 +483,7 @@ export type IStateAutobase = {
   techMaintOrderList: Array<TechMaintOrder>;
   techMaintTypeList: Array<TechMaintType>;
   measureUnitRunList: Array<MeasureUnitRun>;
+  tachographPeriodicVerificationList: Array<Tachograph>;
   tireModelList: Array<TireModel>;
   tireManufacturerList: Array<TireManufacturer>;
   tireList: Array<Tire>;
@@ -470,5 +501,17 @@ export type IStateAutobase = {
   fuelTypeList: Array<FuelType>;
   typesAttrList: Array<TypesAttr>;
   equipmentFuelCardsList: Array<FuelCard>;
+  gasFuelCardsList: Array<FuelCard>;
+  electricalFuelCardsList: Array<FuelCard>;
   notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>;
+  penaltyList: Array<Penalty>;
+  tachographList: Array<TachographList>;
+  tachographDataReadingList: Array<TachographDataReadingList>;
+  tachographReplacementSkziList: Array<TachographReplacementSkziList>;
+  tachographRepairList: Array<TachographRepairList>;
+  tachographRepairReasonList: Array<TachographRepairReasonList>;
+  tachographMetrologicalVerificationList: Array<TachographMetrologicalVerificationList>;
+  tachographBrandList: Array<TachographBrand>;
+  tachographReplacementSkziReasonList: Array<TachographReplacementSkziReason>;
+  refillList: Array<Refill>;
 };

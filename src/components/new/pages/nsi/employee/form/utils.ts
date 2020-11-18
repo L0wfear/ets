@@ -19,6 +19,7 @@ export const defaultEmployee: Employee = {
   company_structure_id: null,
   company_structure_name: null,
   drivers_license: null,
+  drivers_license_country_id: null,
   drivers_license_date_end: null,
   driver_license_files: [],
   first_name: null,
@@ -32,6 +33,8 @@ export const defaultEmployee: Employee = {
   medical_certificate: null,
   medical_certificate_files: [],
   middle_name: null,
+  okrug_name: null,
+  okrug_id: null,
   personnel_number: null,
   phone: null,
   position_id: null,
@@ -42,12 +45,16 @@ export const defaultEmployee: Employee = {
   secondary_car: [],
   secondary_car_text: null,
   special_license: null,
+  special_license_country_id: null,
   special_license_date_end: null,
   special_marks: null,
   assignment: null,
   assignment_date_start: null,
   assignment_date_end: null,
   assignment_files: [],
+  comment: '',
+  layoff_reason_id: null,
+  layoff_reason_name: '',
 };
 
 export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) => {

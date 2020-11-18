@@ -33,6 +33,11 @@ type PropsMultiselectRegistryFilter = {
     disabled?: boolean;
     getRegistryData: any;
     format?: string;
+    makeOptionsFromSessionData?: {
+      groupName: string;
+      valueKey: string;
+      labelKey: string;
+    };
   };
   registryKey: string;
   needUpdateFiltersOptions: boolean;
@@ -41,7 +46,7 @@ type PropsMultiselectRegistryFilter = {
   array: Array<any>;
   total_count: number;
   onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
-
+  session: any;
   dispatch: EtsDispatch;
 };
 
@@ -137,15 +142,44 @@ const makeOptionsFromArray = (array: Array<any>, valueKey: string | number, labe
   }, [])
 );
 
-const makeOptions = (props: PropsMultiselectRegistryFilter) => (
-  props.filterData.options
-  || (
-    uniqBy(
-      makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey, props.filterData.format),
-      'value',
+const makeOptions = (props: PropsMultiselectRegistryFilter) => {
+  if (props.filterData.makeOptionsFromSessionData && props.session.userData) {
+    const groupName = get(
+      props.filterData.makeOptionsFromSessionData,
+      'groupName'
+    );
+    const valueKey = get(
+      props.filterData.makeOptionsFromSessionData,
+      'valueKey'
+    );
+    const labelKey = get(
+      props.filterData.makeOptionsFromSessionData,
+      'labelKey'
+    );
+
+    return uniqBy(
+      makeOptionsFromArray(
+        props.session.userData[groupName],
+        valueKey,
+        labelKey,
+        props.filterData?.format
+      ),
+      'value'
+    );
+  }
+  return (
+    props.filterData.options
+    || uniqBy(
+      makeOptionsFromArray(
+        props.array,
+        props.filterData.valueKey,
+        props.filterData.labelKey,
+        props.filterData?.format
+      ),
+      'value'
     )
-  )
-);
+  );
+};
 
 const makeObjByKey = (array: Array<any>, valueKey: string) => {
   return Object.values(array.reduce((newObj, { [valueKey]: value }) => {
@@ -275,7 +309,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
             result,
             valueKey,
             labelKey,
-            getRegistryData.format,
+            getRegistryData?.format,
           ),
           'value',
         );
@@ -352,8 +386,9 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
 export default connect<any, any, any, ReduxState>(
   (state, { registryKey, filterData }) => ({
-    total_count: getListData(state.registry, registryKey).data.total_count,
-    array: getListData(state.registry, registryKey).data.array,
+    total_count: getListData(state.registry, registryKey)?.data.total_count,
+    array: getListData(state.registry, registryKey)?.data.array,
     filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
+    session: state.session,
   }),
 )(MultiselectRegistryFilter);

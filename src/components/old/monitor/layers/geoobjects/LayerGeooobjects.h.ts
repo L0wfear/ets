@@ -1,6 +1,7 @@
 import Feature from 'ol/Feature';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { Company } from 'redux-main/reducers/modules/company/@types';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 export type PropsLayerGeooobjects = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
@@ -12,8 +13,10 @@ export type PropsLayerGeooobjects = {
   geoobjects: any;
   SHOW_GEOOBJECTS: boolean;
   companiesIndex: Record<Company['id'], Company>;
-
+  geoobjectsFilter: IStateMonitorPage['geoobjectsFilter'];
+  filters: IStateMonitorPage['filters']['data'];
   monitorPageAddToSelectedGeoobjects: any;
+  geoobjsFilterByElem: IStateMonitorPage['filters']['geoobjsFilterByElem'];
 };
 
 type TypeGeoObjectDataIndex = {
@@ -52,6 +55,7 @@ export namespace LayerGeoobjectsUtilsTypes {
     geoobjects: TypeGeoobjects,
     diffGeoobjects: TypeGeoobjects,
     thisProps: renderGeoobjectsFuncThisProps,
+    shouldBeFiltered: boolean,
   ) => void;
 
   export type checkShowTrueFunc = (

@@ -16,6 +16,12 @@ type FuelTypeProps = {
   } | {
     keyField: 'equipment_fuel_type';
     value: Waybill['equipment_fuel_type'];
+  } | {
+    keyField: 'gas_fuel_type';
+    value: Waybill['gas_fuel_type'];
+  } | {
+    keyField: 'electrical_fuel_type';
+    value: Waybill['electrical_fuel_type'];
   }
 );
 

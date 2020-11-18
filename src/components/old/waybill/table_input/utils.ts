@@ -12,7 +12,7 @@ export const makeFuelCardIdOptions = memoizeOne(
     notFiltredFuelCardsIndex: Record<FuelCard['id'], FuelCard>,
   ) => {
     const car_refillIndex = keyBy(car_refill, 'fuel_card_id');
-    const option = fuelCardsList.reduce<Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>>(
+    const option = fuelCardsList?.reduce<Array<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>>>(
       (newArr, rowData) => {
 
         delete car_refillIndex[rowData.id];

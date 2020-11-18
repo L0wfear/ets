@@ -8,10 +8,11 @@ const CAR_INFO = createPath('CAR_INFO');
 export const CAR_INFO_SET_GPS_CODE = CAR_INFO`SET_SELECTED_GPS_CODE`;
 export const CAR_INFO_SET_STATUS = CAR_INFO`SET_STATUS`;
 export const CAR_INFO_SET_TRACK_CACHING = CAR_INFO`SET_TRACK_CACHING`;
-export const CAR_INFO_SET_MISSIONS_DATA = CAR_INFO`SET_MISSIONS_DATA`;
-export const CAR_INFO_RESET_MISSIONS_DATA = CAR_INFO`RESET_MISSIONS_DATA`;
+export const CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA = CAR_INFO`SET_MISSIONS_AND_WAYBILLS_DATA`;
+export const CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA = CAR_INFO`RESET_MISSIONS_AND_WAYBILLS_DATA`;
 export const CAR_INFO_PUSH_POINT_INTO_TRACK = CAR_INFO`PUSH_POINT_INTO_TRACK`;
 export const CAR_INFO_TOGGLE_FOR_TODAY = CAR_INFO`TOGGLE_FOR_TODAY`;
+export const CAR_INFO_CHANGE_DATE_AND_FOR_TODAY = CAR_INFO`CHANGE_DATE_AND_FOR_TODAY`;
 export const CAR_INFO_RESET_TRACK_CACHING = CAR_INFO`RESET_TRACK_CACHING`;
 export const CAR_INFO_CHANGE_DATE = CAR_INFO`CHANGE_DATE`;
 export const CAR_INFO_TOGGLE_PLAY = CAR_INFO`TOGGLE_PLAY`;
@@ -28,12 +29,12 @@ export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT
 export type IStateCarInfo = {
   gps_code: string;
   gov_number: string;
-  missionsData: {
+  missionsAndWaybillsData: {
     error: boolean;
     missions: -1 | Array<any>;
     mkad_speed_lim: number;
     speed_lim: number;
-
+    waybills: -1 | Array<any>;
     carTabInfo: {
       contractor_name: string;
       customer_name: string;
@@ -114,12 +115,12 @@ export const getTrackDefaultDateEnd = () => new Date();
 export const initialState: IStateCarInfo = {
   gps_code: null,
   gov_number: null,
-  missionsData: {
+  missionsAndWaybillsData: {
     error: false,
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
     speed_lim: initialMaxSpeed,
-
+    waybills: -1,
     carTabInfo: {
       contractor_name: null,
       customer_name: null,
@@ -177,8 +178,9 @@ export default (state = initialState, { type, payload }: any) => {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
-        date_start: getTrackDefaultDateStart(),
-        date_end: getTrackDefaultDateEnd(),
+        date_start: state.gps_code === payload.gps_code ? state.date_start : getTrackDefaultDateStart(),
+        date_end: state.gps_code === payload.gps_code ? state.date_end : getTrackDefaultDateEnd(),
+        forToday: state.gps_code === payload.gps_code ? state.forToday : initialState.forToday,
         status: state.status
           ? state.status
           : initialState.status,
@@ -205,17 +207,17 @@ export default (state = initialState, { type, payload }: any) => {
       }
       return newState;
     }
-    case CAR_INFO_SET_MISSIONS_DATA: {
+    case CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA: {
       let newState = state;
       if (state.gps_code === payload.gps_code) {
         newState = {
           ...state,
-          missionsData: {
+          missionsAndWaybillsData: {
             error: Boolean(payload.error),
             missions: payload.missions,
             mkad_speed_lim: payload.mkad_speed_lim,
             speed_lim: payload.speed_lim,
-
+            waybills: payload.waybills,
             carTabInfo: payload.carTabInfo,
             isLoading: false,
           },
@@ -223,10 +225,10 @@ export default (state = initialState, { type, payload }: any) => {
       }
       return newState;
     }
-    case CAR_INFO_RESET_MISSIONS_DATA: {
+    case CAR_INFO_RESET_MISSIONS_AND_WAYBILLS_DATA: {
       return {
         ...state,
-        missionsData: { ...initialState.missionsData },
+        missionsAndWaybillsData: { ...initialState.missionsAndWaybillsData },
       };
     }
     case CAR_INFO_PUSH_POINT_INTO_TRACK: {
@@ -259,6 +261,14 @@ export default (state = initialState, { type, payload }: any) => {
         forToday: !state.forToday,
         date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
         date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
+      };
+    }
+    case CAR_INFO_CHANGE_DATE_AND_FOR_TODAY: {
+      return {
+        ...state,
+        forToday: payload.forToday,
+        date_start: payload.date_start,
+        date_end: payload.date_end,
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

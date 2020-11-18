@@ -1,4 +1,6 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
 
 type WaybillCarRefill = {
   fuel_card_id: number;
@@ -8,7 +10,24 @@ type WaybillCarRefill = {
   date: string;
 };
 
+type TaxDataCar = {
+  FACT_VALUE: number;
+  FUEL_RATE: number;
+  OPERATION: number;
+  RESULT: number;
+  comment: string;
+  fuel_correction_rate: number;
+  is_excluding_mileage: boolean;
+  measure_unit_name: string;
+  operation_name: string;
+  iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
+};
+
 type WaybillEquipmentRefill = WaybillCarRefill;
+type WaybillGasRefill = WaybillCarRefill;
+type WaybillelectricalRefill = WaybillCarRefill;
+type WaybillTaxDataGas = TaxDataCar;
+type WaybillTaxDataelectrical = TaxDataCar;
 
 export type waybillDiff = { // Поля, которые есть в ПЛ, но нет в строке реестра ПЛ, для увеличения производительности бека
   car_gps_code: string;
@@ -21,6 +40,7 @@ export type waybillDiff = { // Поля, которые есть в ПЛ, но �
   trailer_type_name: string;
   trailer_gps_code: string;
   hasEquipmentFuelRates: boolean | number;
+  engine_kind_ids: Car['engine_kind_ids'];
 };
 
 export type WaybillRegistryRow = {
@@ -36,7 +56,6 @@ export type WaybillRegistryRow = {
   car_model_name: string;
   car_type_id: number;
   car_type_name: string;
-  car_refill: Array<WaybillCarRefill>;
   car_special_model_id: number;
   car_special_model_name: string;
   closed_by_employee_id: number;
@@ -45,6 +64,7 @@ export type WaybillRegistryRow = {
   closing_date: string;
   comment: string;
   company_id: number;
+  company_name: string;
   created_by_employee_id: number;
   created_by_employee_name: string;
   date_create: string;
@@ -55,6 +75,7 @@ export type WaybillRegistryRow = {
   driver_id: number;
   driver_fio: string;
   driver_name: string;
+  driver_personnel_number: string;
   delete: boolean;
   equipment_fact_fuel_end: number;
   equipment_fuel: boolean;
@@ -67,48 +88,46 @@ export type WaybillRegistryRow = {
   equipment_tax_data: Array<any>;
   fact_arrival_date: string;
   fact_departure_date: string;
-  fact_fuel_end: number;
   failed_medical_stat_types: boolean;
+  files: Array<any>;
   fuel_card_ids: number;
-  fuel_end: number;
-  fuel_given: number;
-  fuel_start: number;
   fuel_to_give: number;
-  fuel_type: 'DT' | any;
   garage_number: string;
   gov_number: string;
   id: number;
   is_bnso_broken: boolean;
   is_one_fuel_tank: boolean;
+  is_edited_odometr: boolean;
+  is_edited_motohours: boolean;
+  is_edited_motohours_equip: boolean;
+  is_edited_start: boolean;
   mission_id_list: Array<Mission['id']>;
   motohours_end: number;
   motohours_equip_end: number;
+  motohours_equip_diff: number;
   motohours_equip_start: number;
+  motohours_equip_reason_id: number;
   motohours_start: number;
+  motohours_reason_id: number;
   number: number | string;
+  okrug_id: string;
+  okrug_name: string;
   odometr_end: number;
   odometr_start: number;
+  odometr_reason_id: number;
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
+  sensor_leak: number;
   sensor_refill: number;
+  sensor_start_value: number;
+  sensor_finish_value: number;
   status: 'draft' | any;
   status_text: string;
   structure_id: number;
   structure_name: string;
-  tax_data: Array<{
-    FACT_VALUE: number;
-    FUEL_RATE: number;
-    OPERATION: number;
-    RESULT: number;
-    comment: string;
-    fuel_correction_rate: number;
-    is_excluding_mileage: boolean;
-    measure_unit_name: string;
-    operation_name: string;
-    iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
-  }>;
   track_length: number;
+  track_length_km: number;
   trailer_id: number;
   refill_type_ids: number;
   work_mode_id: number;
@@ -117,6 +136,56 @@ export type WaybillRegistryRow = {
   season: 'winter' | 'summer';
   car_has_motohours: boolean;
   car_has_odometr: boolean;
+} & WaybillFuel;
+
+export type WaybillGas = {
+  gas_fuel_type: string;                      // + + + Тип топлива
+  gas_fuel_start: number;                     // + + + Выезд, л
+  gas_fuel_given: number;                     // + + + Выдано, л
+  gas_fuel_end: number;                       // + + + Возврат по таксировке, л
+  gas_fact_fuel_end: number;                  // + + + Возврат фактический, л
+  gas_tax_data: Array<WaybillTaxDataGas>;     // + + + Расчет по норме
+  gas_refill: Array<WaybillGasRefill>;        // + + + Заправки
+
+  // Расчетные поля (только GET), не храним в бд
+  gas_tax_consumption: number;                // + + + Расход по таксировке, л
+  gas_fact_consumption: number;               // + + + Расход фактический, л
+  gas_diff_consumption: number;               // + + + Расхождение в данных расхода, л
+};
+
+export type WaybillElectrical = {
+  electrical_fuel_type: string;                      // + + + Тип топлива
+  electrical_fuel_start: number;                     // + + + Выезд, л
+  electrical_fuel_given: number;                     // + + + Выдано, л
+  electrical_fuel_end: number;                       // + + + Возврат по таксировке, л
+  electrical_fact_fuel_end: number;                  // + + + Возврат фактический, л
+  electrical_tax_data: Array<WaybillTaxDataelectrical>;     // + + + Расчет по норме
+  electrical_refill: Array<WaybillelectricalRefill>;        // + + + Заправки
+
+  electrical_tax_consumption: number;                // + + + Расход по таксировке, л
+  electrical_fact_consumption: number;               // + + + Расход фактический, л
+  electrical_diff_consumption: number;               // + + + Расхождение в данных расхода, л
+};
+
+export type WaybillFuel = {
+  fuel_type: string;                      // + + + Тип топлива
+  fuel_start: number;                     // + + + Выезд, л
+  fuel_given: number;                     // + + + Выдано, л
+  fuel_end: number;                       // + + + Возврат по таксировке, л
+  fact_fuel_end: number;                  // + + + Возврат фактический, л
+  tax_data: Array<TaxDataCar>;            // + + + Расчет по норме
+  car_refill: Array<WaybillCarRefill>;    // + + + Заправки
+
+  tax_consumption: number;                // + + + Расход по таксировке, л
+  fact_consumption: number;               // + + + Расход фактический, л
+  diff_consumption: number;               // + + + Расхождение в данных расхода, л
+};
+
+export type WaybillRefill = {
+  is_no_fuel_refill: boolean;
+  is_no_gas_refill: boolean;
+  is_no_electrical_refill: boolean;
+  is_no_equipment_refill: boolean;
 };
 
 export type Waybill = (
@@ -125,12 +194,19 @@ export type Waybill = (
   & {
     equipment_tax_data_rows?: Array<any>; // для валидации
     tax_data_rows?: Array<any>; // для валидации
+    gas_tax_data_rows?: Array<any>; // для валидации
+    electrical_tax_data_rows?: Array<any>; // для валидации
     distance?: number; // для валидации
     hasEquipmentFuelRates?: boolean;
 
     odometr_diff?: number; // для жизни
     motohours_diff?: number; // для жизни
+    refill: OneRefillFuelCompanyData['refills'];
+    rrn_codes: OneRefillFuelCompanyData['rrn_codes'];
   }
+  & WaybillGas
+  & WaybillElectrical
+  & WaybillRefill
 );
 
 export type IStateWaybill = {

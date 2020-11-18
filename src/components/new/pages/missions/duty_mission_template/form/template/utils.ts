@@ -13,11 +13,13 @@ import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municip
 import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';
 
 export const makeDefaultDutyMissionTemplate = (): DutyMissionTemplate => ({
+  author: null,
   brigade_employee_id_list: [],
   brigade_employee_id_list_id: [],
   brigade_employee_id_list_fio: [],
   brigade_id: null,
   comment: '',
+  closed_by: null,
   date_create: createValidDateTime(
     getDateWithMoscowTz(),
   ),

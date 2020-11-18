@@ -121,6 +121,25 @@ export const changeCompanyStructureIdNotyfication = {
   uid: 'change_geoobject_company_structure_id',
 };
 
+export const changeEngineTypeIdsNotyfication = {
+  title: '',
+  message: 'При изменении типа двигателя изменятся доступные поля в путевом листе ТС',
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 0,
+  uid: 'change_engine_type_ids',
+};
+export const changeEngineGasTypeNotyfication = {
+  title: '',
+  message: 'При изменении значения изменятся доступные поля в путевом листе ТС',
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 0,
+  uid: 'change_engine_gas_type',
+};
+
 export const addParentCompanyStructureIdNotyfication = (dek, dey) => ({
   title: '',
   message: `Подразделение ${dek} добавлено автоматически, т.к. является родительским подразделением у ${dey}`,

@@ -84,6 +84,8 @@ class MapContainer extends React.PureComponent<PropsMapContainer, StateMapContai
           mkad_speed_lim={speed_limits.mkad_speed_lim}
           cars_sensors={props.cars_sensors}
           missionNumber={props.missionNumber}
+          car_id={props.car_id}
+          mission_date_end={props.mission_date_end}
         />
         <ToolBar
           SHOW_TRACK={state.SHOW_TRACK}

@@ -29,7 +29,7 @@ export const BASE_GEOOBJECTS_LIST = {
     label: 'Автобазы',
     labelSingl: 'Автобаза',
   },
-  pgm: {
+  pgm_store: {
     serverName: 'pgm_store',
     label: 'Пункты отпуска ПГМ',
     labelSingl: 'Пункт отпуска ПГМ',
@@ -80,6 +80,15 @@ export const GORMOST_GEOOBJECTS_LIST = {
 export const GEOOBJECTS_OBJ = {
   ...BASE_GEOOBJECTS_LIST,
   ...GORMOST_GEOOBJECTS_LIST,
+};
+
+export const GEOOBJECTS_LIST_WITH_CARS = {
+  ...BASE_GEOOBJECTS_LIST,
+  cars: {
+    serverName: 'cars',
+    label: 'ТС',
+    labelSingl: 'ТС',
+  },
 };
 
 export const GEOOBJECTS_OBJ_BY_SERVER_NAME = Object.entries(GEOOBJECTS_OBJ).reduce((newObj, [id, { serverName, ...other }]) => ({

@@ -218,7 +218,7 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
 };
 
 export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
-  const handleChange = useMissionFormDataHandeToUpdateConsumableMaterials<Mission>(formDataKey);
+  const handleChange = useMissionFormDataHandeToUpdateConsumableMaterials(formDataKey);
 
   return React.useCallback(
     async (partialFormState: Partial<F> | keyof F, value?: F[keyof F]) => {
@@ -235,7 +235,7 @@ export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
   );
 };
 
-export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pick<Mission, 'consumable_materials'> & Record<string, any>>(formDataKey: FormKeys) => {
+export const useMissionFormDataHandeToUpdateConsumableMaterials = (formDataKey: FormKeys) => {
   const meta = useForm.useFormDataMeta(formDataKey);
   const handleChange = useForm.useFormDataHandleChange<Partial<Mission> & Partial<DutyMission>>(formDataKey);
   const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
@@ -313,6 +313,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
           && date_start
           && newPartialFormState.route_id
           && passes_count
+          && (passes_count^0) === passes_count
           && (
             norm_id !== prev_norm_id
             || newPartialFormState.municipal_facility_id !== prev_municipal_facility_id

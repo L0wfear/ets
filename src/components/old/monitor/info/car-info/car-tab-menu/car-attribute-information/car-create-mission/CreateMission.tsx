@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FlexCenterButton } from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/styled/index';
 import memoizeOne from 'memoize-one';
 import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
@@ -8,12 +7,16 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { CardBodyContainer } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
+import { compose } from 'redux';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 type PropsCarMissions = {
   gps_code: number;
   carActualGpsNumberIndex: any;
   fetchMissionsData: any;
-};
+} & WithSearchProps;
 
 type StateCarMissions = {
   showMissionForm: boolean;
@@ -55,6 +58,10 @@ class CreateMission extends React.Component<
     });
   };
 
+  handleClickCreateWaybill = () => {
+    this.props.setParams({waybill_id: 'create'});
+  };
+
   handleHideMissionForm = () => {
     const { gps_code, carActualGpsNumberIndex } = this.props;
 
@@ -77,9 +84,12 @@ class CreateMission extends React.Component<
     const { element, showMissionForm } = this.state;
 
     return (
-      <FlexCenterButton>
-        <EtsBootstrap.Button id="monitor.create_mission" onClick={this.handleClickCreateMission} permissions={missionPermissions.create}>
+      <CardBodyContainer>
+        <EtsBootstrap.Button id="monitor.create_mission" whiteSpace="normal" onClick={this.handleClickCreateMission} permissions={missionPermissions.create}>
           Создать децентрализованное задание
+        </EtsBootstrap.Button>
+        <EtsBootstrap.Button id="monitor.create_waybill" whiteSpace="normal" onClick={this.handleClickCreateWaybill} permissions={waybillPermissions.create}>
+          Создать путевой лист
         </EtsBootstrap.Button>
         <MissionFormLazy
           handleHide={this.handleHideMissionForm}
@@ -93,7 +103,7 @@ class CreateMission extends React.Component<
           page="mainpage"
           path="mission"
         />
-      </FlexCenterButton>
+      </CardBodyContainer>
     );
   }
 }
@@ -116,7 +126,10 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose<any>(
+  withSearch,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(CreateMission);

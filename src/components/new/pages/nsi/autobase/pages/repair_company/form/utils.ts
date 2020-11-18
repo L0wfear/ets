@@ -8,6 +8,7 @@ export const defaultRepairCompany: RepairCompany = {
   company_short_name: null,
   id: null,
   name: null,
+  okrug_name: null,
 };
 
 export const getDefaultRepairCompanyElement = (element: Partial<RepairCompany>): RepairCompany => {

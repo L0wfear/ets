@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { makeDate } from 'components/@next/@utils/dates/dates';
+import { makeDate, diffDates, createValidDateHM, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import * as orderNotifiyMp3 from 'components/new/ui/modal_notification/audio/orderNotifiy.mp3';
 import * as orderNotifiyOgg from 'components/new/ui/modal_notification/audio/orderNotifiy.ogg';
 import { setMakeReadOrderNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
@@ -25,7 +25,11 @@ const NotifiactionOrders: React.FC<OwnProps> = React.memo(
       [firstOrderNotify],
     );
 
-    if (!firstOrderNotify) {
+    if (
+      !firstOrderNotify
+      || !firstOrderNotify.created_at
+      || diffDates(createValidDateHM(getDateWithMoscowTz()), createValidDateHM(firstOrderNotify.created_at)) > 24 * 60 * 60
+    ) {
       return (<DivNone />);
     }
 

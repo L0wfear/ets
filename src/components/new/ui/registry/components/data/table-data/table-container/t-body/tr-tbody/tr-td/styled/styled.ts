@@ -47,7 +47,7 @@ export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; }>`
     }
 
     ${ButtonStyled} {
-      margin: 0 1px;
+      margin: 0 1px 10px;
       min-height: 38px;
     }
     ${SingleUiElementWrapperStyled} {

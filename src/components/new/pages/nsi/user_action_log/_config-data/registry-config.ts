@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from './permissions';
 import { UserActionLog } from 'redux-main/reducers/modules/user_action_log/@types/userActionLog';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'userActionLogRegistry';
 
@@ -27,7 +28,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     registryKey,
     header: {
       title: 'Журнал действий пользователей',
-      format: 'datetime_range_picker',
+      format: 'daterange_picker_userlog',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.export,
@@ -36,8 +37,23 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_name',
-          title: 'Организация',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
           type: 'multiselect',
         },
         {
@@ -100,8 +116,23 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                title: 'Округ',
+                displayIf: displayIfContant.isKgh,
+              }
+            ],
+            width: 150,
+          },
+          {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
           },
           {
             key: 'action_at',

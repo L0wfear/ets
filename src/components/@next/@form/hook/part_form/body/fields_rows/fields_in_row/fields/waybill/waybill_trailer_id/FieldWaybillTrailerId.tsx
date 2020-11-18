@@ -11,9 +11,11 @@ type FieldWaybillTrailerIdProps = {
 const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
   (props) => {
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
+    const IS_ACTIVE = useWaybillFormData.useFormDataIsActive(props.formDataKey);
+    const trailerExists = useWaybillFormData.useFormDataGetSelectedTrailer(props.formDataKey);
 
     return (
-      IS_DRAFT
+      IS_DRAFT || IS_ACTIVE && !trailerExists
         ? (
           <FieldWaybillTrailerIdArray
             formDataKey={props.formDataKey}

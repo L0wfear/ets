@@ -4,6 +4,8 @@ import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/auto
 export const defaultTechMaintOrder: TechMaintOrder = {
   car_model_id: null,
   car_model_name: '',
+  company_id: null,
+  company_name: null,
   description: '',
   entity_name: '',
   id: null,
@@ -13,6 +15,7 @@ export const defaultTechMaintOrder: TechMaintOrder = {
   is_periodic: false,
   measure_unit_run_id: null,
   measure_unit_run_name: '',
+  okrug_name: null,
   sequence: null,
   tech_maintenance_type_id: null,
   tech_maintenance_type_name: '',

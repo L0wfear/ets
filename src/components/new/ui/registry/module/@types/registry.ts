@@ -22,6 +22,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
   sortable?: boolean;
   width?: number;
   dashIfEmpty?: boolean;
+  defaultValue?: string;
   title?: Title;
   renderParams?: ExtFieldType;
   groupOpt?: {
@@ -32,6 +33,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
 
   max_size_to_scroll?: number;
   fieldTitlePopup?: string;
+  valueForBoolean?: string;
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -47,6 +49,8 @@ export type TypeFieldsAvalibaleKey<F> = (
   | 'edc_request_info'
   | 'show_file_list'
   | 'show_edc_comments'
+  | 'showCarOnMap'
+  | 'files'
 );
 
 export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = (
@@ -78,6 +82,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_status_name'
       | 'inspectionSelect'
       | 'metresToKilometeres'
+      | 'no_passport'
     );
   } | {
     key: TypeFieldsAvalibaleKey<void>;
@@ -108,7 +113,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';
@@ -126,6 +131,11 @@ export type OneFilterType<F> = {
         'short_employee_name'
         | 'work_mode_label'
       );
+    };
+    makeOptionsFromSessionData?: {
+      groupName: string;
+      valueKey: string;
+      labelKey: string;
     };
   } | {
     type: 'advanced-select-like';
@@ -179,6 +189,7 @@ export type OneRegistryData<F = any> = {
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
       | 'order_to'
+      | 'daterange_picker_userlog'
     );
     buttons: Array<{
       type: typeof buttonsTypes[keyof typeof buttonsTypes];
@@ -206,6 +217,8 @@ export type OneRegistryData<F = any> = {
       objectExtra: Record<string, any>; // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
+      uniqKeyForSelect?: Extract<keyof F, string>;
+      disableDoubleClick?: boolean; 
       uniqKeyForParams: string;
       selectedRow: F;
       checkedRows: Record<Extract<keyof F, string>, F>;
@@ -213,6 +226,9 @@ export type OneRegistryData<F = any> = {
       proxyCheckData?: (
         'mission_template'
       );
+      uniqKeyType?: 'string' | 'number';
+      withoutWithSearch?: boolean;
+      isOpen: boolean;
     };
     permissions: {
       list: Parameters<typeof validatePermissions>[0];

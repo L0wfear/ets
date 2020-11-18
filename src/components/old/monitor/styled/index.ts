@@ -5,6 +5,7 @@ export const MonitorPageContainer = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 `;
 
 export const DataContainer = styled.div`
@@ -58,15 +59,15 @@ const tabDataCss = css`
   margin-top: 10px;
 `;
 
-export const CarInfoBlockTabData = styled(CarInfoBlock)`
+export const CarInfoBlockTabData = styled(CarInfoBlock as any)`
   ${tabDataCss};
 `;
 
-export const CarInfoBlockColumn = styled(CarInfoBlock)`
+export const CarInfoBlockColumn = styled(CarInfoBlock as any)`
   flex-direction: column;
 `;
 
-export const CarInfoBlockTabDataColumn = styled(CarInfoBlockColumn)`
+export const CarInfoBlockTabDataColumn = styled(CarInfoBlockColumn as any)`
   ${tabDataCss};
 `;
 

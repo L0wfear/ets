@@ -7,11 +7,13 @@ export const defaultCompany: Company = {
   company_id: null,
   company_name: '',
   has_remote_checkup: false,
+  fuel_cards_creating: false,
   id: null,
   okrug_name: '',
   okrug_id: null,
   rgb_color: '',
   short_name: '',
+  use_pouring: false,
 };
 
 export const getDefaultCompanyElement: GetDefaultCompanyElement = (element) => {

@@ -4,6 +4,7 @@ export type Msp = {
   id: number | null;
   is_mobile: number | boolean | null;
   name: string;
+  okrug_name: string;
   productivity: number | null;
   shape: object;
   shortname: string;

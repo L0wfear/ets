@@ -8,9 +8,14 @@ export type DefaultSelectOption<V, L, R> = {
   [k: string]: any;
 };
 
-export type DefaultSelectListMapper<R extends any> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
+export type DefaultSelectListMapper<R extends Record<string, any>> = Array<DefaultSelectOption<R['id'], R['name'], R>>;
 
-export const defaultSelectListMapper = <R extends any>(rowData: R): DefaultSelectOption<R['id'], R['name'], R> => ({ value: rowData.id, label: rowData.name, rowData });
+export const defaultSelectListMapper = <R extends Record<string, any>>
+  (rowData: R): DefaultSelectOption<
+    R['id'],
+    R['name'],
+    R
+  > => ({ value: rowData.id, label: rowData.name, rowData });
 
 export const onChangeSelectLegacy = (sValue, multi) => {
   let newValue = null;
@@ -37,6 +42,10 @@ export const onChangeSelectLegacy = (sValue, multi) => {
 export const defaultSortingFunction = (a, b) => {
   if (isNumber(a.label)) {
     return a.label - b.label;
+  }
+
+  if (isString(a.label) && !isNaN(a.label.replace(',', '.'))) {
+    return Number(a.label.replace(',', '.')) - Number(b.label.replace(',', '.'));
   }
 
   if (isString(a.label) && isString(b.label)) {

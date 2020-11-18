@@ -12,12 +12,13 @@ import {
   promiseUpdateCarRegistrationData,
   promiseUpdateCarPassportData,
   promiseLoadCarByAsuodsId,
-  promiseGetCarMissionsByTimestamp,
+  promiseGetCarMissionsAndWaybillsByTimestamp,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
+import { employeeEmployeeGetSetEmployee } from '../../employee/employee/actions';
 
 /* ---------- Car ---------- */
 export const autobaseSetCar = (carList: Array<Car>, carIndex: Record<Car['asuods_id'], Car>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
@@ -71,6 +72,9 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     dispatch(
       actionLoadCarPassport(asuods_id, meta),
     ),
+    dispatch(
+      employeeEmployeeGetSetEmployee({}, meta)
+    )
   ]);
 
   const [
@@ -78,6 +82,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     carDriversData,
     carRegistrationData,
     carPassportData,
+    employeeData
   ] = response;
 
   if (!carData) {
@@ -99,6 +104,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
       ...defaultCarWrapData.passport_data,
       car_id: asuods_id,
     },
+    employee_data: employeeData,
   };
 
   if (carRegistrationData) {
@@ -146,23 +152,59 @@ export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): Ets
     ...car
   } = carWrapOld;
 
+  const copyCar = { ...car };
+  delete copyCar.employee_data;
+
   await dispatch(
-    actionUpdateCar(car, meta),
-  ).then(() => Promise.all([
+    actionUpdateCar(copyCar, meta),
+  ).then(() => {
     dispatch(
       actionUpdateCarDrivers(drivers_data, meta),
-    ),
-    dispatch(
-      actionUpdateCarRegistration(registration_data, meta),
-    ),
-    dispatch(
-      actionUpdateCarPassport(passport_data, meta),
-    ),
-  ])).catch((e) => {
-    throw new Error(e);
+    ).catch((e) => {
+      console.error(e);
+    });
   });
 
-  return carWrapOld;
+  const carPassportData = await dispatch(
+    actionUpdateCarPassport(passport_data, meta),
+  )
+    .then((result) => result)
+    .catch((e) => {
+      console.error(e);
+    });
+
+  const registrationData = await dispatch(
+    actionUpdateCarRegistration(registration_data, meta),
+  )
+    .then((result) => result)
+    .catch((e) => {
+      console.error(e);
+    });
+
+  const fullCarData: CarWrap = {
+    ...carWrapOld,
+    registration_data: {
+      ...carWrapOld.registration_data,
+    },
+    passport_data: {
+      ...carWrapOld.passport_data,
+    },
+  };
+
+  if (registrationData) {
+    fullCarData.registration_data = {
+      ...fullCarData.registration_data,
+      ...registrationData,
+    };
+  }
+  if (carPassportData) {
+    fullCarData.passport_data = {
+      ...fullCarData.passport_data,
+      ...carPassportData,
+    };
+  }
+
+  return fullCarData;
 };
 
 export const actionUpdateCarDrivers = (driversData: CarDriversData, meta: LoadingMeta): EtsAction<Promise<CarDriversData>> => async (dispatch) => {
@@ -229,10 +271,11 @@ export const actionLoadCarPassport = (car_id: Car['asuods_id'], meta: LoadingMet
   return carDriversData;
 };
 
-export const actionGetCarMissionsByTimestamp = (payload: Parameters<typeof promiseGetCarMissionsByTimestamp>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetCarMissionsByTimestamp>> => (dispatch) => {
+export const actionGetCarMissionsAndWaybillsByTimestamp = (payload: Parameters<typeof promiseGetCarMissionsAndWaybillsByTimestamp>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetCarMissionsAndWaybillsByTimestamp>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
-    promiseGetCarMissionsByTimestamp(payload),
+    promiseGetCarMissionsAndWaybillsByTimestamp(payload),
     meta,
   );
 };
+

@@ -17,6 +17,7 @@ import {
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import FieldCompanyStructureId from './fields/company_structure_id/FieldCompanyStructureId';
 import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 const OdhForm: React.FC<PropsOdhForm> = React.memo(
   (props) => {
@@ -41,7 +42,7 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
             <EtsBootstrap.Col md={12}>
               <ExtField
                 type="string"
-                label="Учреждение"
+                label={displayIfContant.isKgh ? 'Организация' : 'Учреждение'}
                 value={state.company_name}
                 readOnly
               />

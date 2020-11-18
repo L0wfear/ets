@@ -61,7 +61,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     };
 
     this.props.onClick(
-      technical_operations_ids !== ''
+      technical_operations_ids.length !== 0
         ? requestBody
         : omit(requestBody, 'technical_operations_ids'),
     );

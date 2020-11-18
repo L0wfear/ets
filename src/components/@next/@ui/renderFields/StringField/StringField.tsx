@@ -5,12 +5,14 @@ import Div from 'components/old/ui/Div';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 import styled from 'styled-components';
+import { get } from 'lodash';
 
 const StringFieldWrapperStyled = styled.div`
   position: relative;
@@ -27,16 +29,19 @@ const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
     const {
       error,
+      warning,
       label = '',
       modalKey,
       isLoading,
       inline,
+      dashIfEmpty,
       ...mainProps
     } = props;
 
     const {
       readOnly = false,
       disabled = false,
+      toUpperCase = false,
       className = '',
       wrapStyle,
       hidden,
@@ -44,7 +49,28 @@ const StringField: React.FC<ExtFieldString> = React.memo(
     } = props;
     let { value } = props;
 
-    const inputClassName = cx({ 'has-error': error });
+    const onChange = React.useCallback(
+      (event) => {
+        const value = get(event, ['target', 'value'], event);
+        const changeVal = toUpperCase ? value.toUpperCase() : value;
+
+        props.onChange(changeVal, {
+          value: changeVal,
+          currentTarget: {
+            value: changeVal,
+            ...event.currentTarget,
+          },
+          target: {
+            value: changeVal,
+            ...event.target,
+          },
+          ...event
+        });
+      },
+      [props.onChange, toUpperCase, value],
+    );
+
+    const inputClassName = cx({ 'has-error': error || warning });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;
@@ -70,6 +96,10 @@ const StringField: React.FC<ExtFieldString> = React.memo(
     if (value === undefined || value === null) {
       value = '';
     }
+
+    if (value === '' && dashIfEmpty) {
+      value = '-';
+    }
     const showError = typeof error === 'boolean' ? error : true;
 
     return !readOnly ? (
@@ -90,6 +120,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
                 {...mainProps}
                 id={value_id}
                 value={value}
+                onChange={onChange}
               />
               {
                 addonRight && (
@@ -119,6 +150,9 @@ const StringField: React.FC<ExtFieldString> = React.memo(
             }
           </StringFieldWrapperStyled>
         </div>
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           showError={showError}
           hidden={!error}

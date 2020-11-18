@@ -10,7 +10,6 @@ import { WithFormRegistrySearchAddProps } from 'components/old/compositions/voki
 
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;
-  fuelTypeOptions: Array<any>;
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: number | null;
   permissionsSet: InitialStateSession['userData']['permissionsSet'];

@@ -162,6 +162,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               canSave={props.canSave}
               type={props.type}
               handleSubmit={handleSubmit}
+              isPermitted={props.isPermitted}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectPgmBase={state}

@@ -75,22 +75,23 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
 
                     const { columnName, cssClassName, customComponent } = field;
+                    const data = (() => {
+                      if (typeof customComponent === 'function') {
+                        return customComponent({ rowData: { ...rowData, rowNumber }, data: rowData[columnName] });
+                      }
+
+                      if (columnName === 'rowNumber') {
+                        return currentIndex + rowIndex + 1;
+                      }
+
+                      return Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-';
+
+                    })();
 
                     return (
                       <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                         {
-                          (() => {
-                            if (typeof customComponent === 'function') {
-                              return customComponent({ rowData: { ...rowData, rowNumber }, data: rowData[columnName] });
-                            }
-
-                            if (columnName === 'rowNumber') {
-                              return currentIndex + rowIndex + 1;
-                            }
-
-                            return Boolean(rowData[columnName]) || rowData[columnName] === 0 ? rowData[columnName] : '-';
-
-                          })()
+                          Number(data) ? data.toString().replace('.', ',') : data
                         }
                       </td>
                     );
@@ -135,7 +136,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                             }
 
                             return summ;
-                          }, 0)}</td>
+                          }, 0).toString().replace('.', ',')}</td>
                         );
                       }
                     }

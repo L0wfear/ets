@@ -1,6 +1,7 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
-import permissions from 'components/new/pages/nsi/employee/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+
 import {
   YES_NO_SELECT_OPTIONS_BOOL,
 } from 'constants/dictionary';
@@ -31,15 +32,21 @@ export const config: TypeConfigData<Car> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
-            displayIf: displayIfContant.isKgh,
-            title: 'Наименование ГБУ',
-          },
-          {
-            displayIf: displayIfContant.isOkrug,
-            title: 'Учреждение',
+            displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
+            title: 'Организация',
           },
         ],
         type: 'multiselect',
@@ -102,6 +109,11 @@ export const config: TypeConfigData<Car> = {
       {
         valueKey: 'vin',
         title: 'VIN',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'body_number',
+        title: 'Заводский номер',
         type: 'multiselect',
       },
       {
@@ -188,15 +200,21 @@ export const config: TypeConfigData<Car> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
+        },
+        {
           key: 'company_name',
           title: [
             {
-              displayIf: displayIfContant.isKgh,
-              title: 'Наименование ГБУ',
-            },
-            {
-              displayIf: displayIfContant.isOkrug,
-              title: 'Учреждение',
+              displayIf: displayIfContant.isKgh || displayIfContant.isOkrug,
+              title: 'Организация',
             },
           ],
           width: 200,
@@ -245,20 +263,28 @@ export const config: TypeConfigData<Car> = {
           key: 'full_model_name',
           title: 'Марка шасси ТС',
           width: 300,
+          dashIfEmpty: true,
         },
         {
           key: 'certificate_number',
           title: 'Номер СТС/СРМ',
           width: 300,
+          dashIfEmpty: true,
         },
         {
           key: 'passport_number',
           title: 'Серия и номер ПТС/ПСМ',
           width: 300,
+          format: 'no_passport',
         },
         {
           key: 'vin',
           title: 'VIN',
+          width: 300,
+        },
+        {
+          key: 'body_number',
+          title: 'Заводский номер',
           width: 300,
         },
         {

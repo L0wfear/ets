@@ -55,15 +55,17 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
   const hasSomeData = sensors_equipment.find(([, { show }]) => show);
 
   const toggleTrack = React.useCallback(() => {
+    if(SHOW_TRACK === SHOW_TRACK_POINTS) {
+      toggleShowTrack();
+    }
     toggleShowTrackPoints();
-    toggleShowTrack();
   }, [toggleShowTrackPoints, SHOW_TRACK_POINTS, toggleShowTrack, SHOW_TRACK,]);
 
   React.useEffect(() => {
-    if(!hasSomeData && !(SHOW_TRACK_POINTS && SHOW_TRACK)) {
+    if(!hasSomeData && !SHOW_TRACK_POINTS) {
       toggleTrack();
     }
-  }, [hasSomeData, SHOW_TRACK_POINTS, SHOW_TRACK]);
+  }, [hasSomeData, SHOW_TRACK_POINTS,]);
 
   return (
     <div className="sensors-list">
@@ -74,7 +76,7 @@ const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
           readOnly
           disabled={!hasSomeData}
           type="checkbox"
-          checked={SHOW_TRACK_POINTS && SHOW_TRACK}
+          checked={SHOW_TRACK_POINTS}
         />
         <span>Отображать с учетом скорости</span>
       </div>

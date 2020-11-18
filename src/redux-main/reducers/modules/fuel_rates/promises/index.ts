@@ -1,5 +1,4 @@
 import { createValidDate } from 'components/@next/@utils/dates/dates';
-import { mapKeys } from 'lodash';
 import {
   FuelConsumptionRateService,
   FuelOperationsService,
@@ -7,7 +6,6 @@ import {
 import {
   FuelRate,
 } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import { isEmpty } from 'utils/functions';
 import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
 export const getFuelRates = (payload = {}): Promise<{ fuelRatesList: Array<FuelRate>;}> => {
@@ -28,6 +26,7 @@ type IFuelRatesByCarModel = {
   car_id?: number | null;
   datetime?: string | null;
   for_equipment?: number | null;
+  company_structure_id?: number | null;
 };
 export const getFuelRatesByCarModel = (payload: IFuelRatesByCarModel = {} ) => {
   return getFuelRates(payload);
@@ -47,13 +46,6 @@ export const createFuelRate = (rate: FuelRate) => {
     ...payload
   } = rate;
   payload.order_date = createValidDate(payload.order_date);
-
-  mapKeys(payload, (v, k) => {
-    if (isEmpty(v)) {
-      payload[k] = 'null';
-    }
-    return null;
-  });
 
   return FuelConsumptionRateService.post(
     payload,

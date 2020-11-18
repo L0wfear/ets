@@ -5,7 +5,7 @@ import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionUpdateFormErrors } from 'redux-main/reducers/modules/form_data_record/actions';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import DutyMissionFormOld from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormOld';
-import {  useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   formDataKey: 'duty_mission';

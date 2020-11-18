@@ -44,6 +44,36 @@ export const config: TypeConfigData<Mission> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_id',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'okrugs',
+          valueKey: 'id',
+          labelKey: 'name',
+        }
+      },
+      {
+        valueKey: 'company_id',
+        title: [
+          {
+            displayIf: displayIfContant.isKgh,
+            title: 'Организация',
+          },
+        ],
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
+      },
+      {
         valueKey: 'status',
         title: 'Статус',
         type: 'multiselect',
@@ -218,6 +248,26 @@ export const config: TypeConfigData<Mission> = {
           title: '№',
         },
         {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          width: 150,
+        },
+        {
           key: 'status_name',
           title: 'Статус',
           width: 150,
@@ -328,6 +378,16 @@ export const config: TypeConfigData<Mission> = {
               displayIf: displayIfContant.lenghtStructureMoreOne,
             },
           ],
+          width: 200,
+        },
+        {
+          key: 'author',
+          title: 'Открыто, ФИО',
+          width: 200,
+        },
+        {
+          key: 'closed_by',
+          title: 'Закрыто, ФИО',
           width: 200,
         },
       ],

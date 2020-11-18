@@ -129,6 +129,7 @@ const makeRowsWithNoneStructure = (rows, colMeta) =>
 export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
   if (get(data, 'result.meta.summary.fields')) {
     let rows = get(data, 'result.rows', []);
+    const level = get(data, 'result.meta.level');
     const {
       result: {
         meta: {
@@ -155,6 +156,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
       || reportKey === 'car_usage_report'
       || reportKey === 'car_travel_report'
       || reportKey === 'consumable_material_usage_report'
+      || reportKey === 'fuel_consumption_new_report'
     ) {
       if (rows.length) {
         const cols_wsd = openFields(fields);
@@ -202,7 +204,29 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             _fix_bottom: true,
           }));
         }
+        if (reportKey === 'fuel_consumption_new_report' && level === 'company') { // <<< переписать в 36м, вынести в отдельную функцию, используется в 2х местах
+          const makeSumTableWithSumStrings = (data) => {
+            const groupByFuelType = Object.values(groupBy(data, 'fuel_type_name'));
+            const summaryStringsArr = groupByFuelType.map((element) => element.reduce( ( result, current ) => {
+              for(const key in current){
+                const value = key === '_uniq_field' ? Math.round(Math.random() * 10000) : current[key];
+                if(result[key] === undefined) {
+                  result[key] = value;
+                } else if( typeof result[key] === 'string') {
+                  element.every((el) => el[key] === result[key]) ? result[key] = value : result[key] = '';
+                } else {
+                  result[key] += value;
+                }
+              }
+              return result;
+            }, {className: 'bold', noIndexRow: true,} ));
+            
+            return data.concat(summaryStringsArr);
+          };
 
+          const sumTableWithSumStrings = makeSumTableWithSumStrings(children);                 
+          return sumTableWithSumStrings;
+        }
         return children;
       }
       return [

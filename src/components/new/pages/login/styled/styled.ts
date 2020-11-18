@@ -28,7 +28,7 @@ export const LoginPageFormWrap = styled.div`
 export const LoginPageFormContentInput = styled.input`
   height: 44px;
   background: #fff;
-  border: 0;
+  border: 1px solid #ccc;
   box-shadow: none!important;
 `;
 

@@ -42,49 +42,9 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
     fields: [
       {
         valueKey: 'number',
-        title: 'Номер',
+        title: 'Номер ПЛ',
         type: 'advanced-number',
         step: 1,
-      },
-      {
-        valueKey: 'status',
-        title: 'Статус ПЛ',
-        type: 'multiselect',
-        options: Object.keys(WAYBILL_STATUSES).map((key) => ({
-          label: WAYBILL_STATUSES[key],
-          value: key,
-        })),
-      },
-      {
-        valueKey: 'all_missions_status',
-        title: 'Статус заданий',
-        type: 'multiselect',
-        options: [
-          { value: 'all_completed', label: 'Все задания завершены' },
-          { value: 'not_all_completed', label: 'Есть незавершенные задания' },
-          { value: 'not_mission', label: 'Нет прикреплённых заданий' },
-        ],
-      },
-      {
-        valueKey: 'date_create',
-        title: 'Дата создания',
-        type: 'advanced-date',
-      },
-      {
-        valueKey: 'closing_date',
-        title: 'Дата закрытия',
-        type: 'advanced-date',
-      },
-      {
-        valueKey: 'driver_id',
-        title: 'Водитель',
-        type: 'multiselect',
-        getRegistryData: {
-          entity: 'driver',
-          typeAns: 'result',
-          valueKey: 'id',
-          format: 'short_employee_name',
-        },
       },
       {
         valueKey: 'car_id',
@@ -98,15 +58,55 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'car_special_model_id',
-        title: 'Модель ТС',
+        valueKey: 'date_create',
+        title: 'Дата создания',
+        type: 'advanced-date',
+      },
+      {
+        valueKey: 'closing_date',
+        title: 'Дата закрытия',
+        type: 'advanced-date',
+      },
+      {
+        valueKey: 'status',
+        title: 'Статус ПЛ',
+        type: 'multiselect',
+        options: Object.keys(WAYBILL_STATUSES).map((key) => ({
+          label: WAYBILL_STATUSES[key],
+          value: key,
+        })),
+      },
+      {
+        valueKey: 'garage_number',
+        title: 'Гаражный номер',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'car_actual',
-          groupName: 'car_actual',
-          valueKey: 'special_model_id',
-          labelKey: 'special_model_name',
+          entity: WaybillCarService._path,
+          groupName: WaybillCarService._path,
+          valueKey: 'garage_number',
+          labelKey: 'garage_number',
         },
+      },
+      {
+        valueKey: 'driver_id',
+        title: 'Водитель',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'driver',
+          typeAns: 'result',
+          valueKey: 'id',
+          format: 'short_employee_name',
+        },
+      },
+      {
+        valueKey: 'all_missions_status',
+        title: 'Статус заданий',
+        type: 'multiselect',
+        options: [
+          { value: 'all_completed', label: 'Все задания завершены' },
+          { value: 'not_all_completed', label: 'Есть незавершенные задания' },
+          { value: 'not_mission', label: 'Нет прикреплённых заданий' },
+        ],
       },
       {
         valueKey: 'car_model_id',
@@ -120,14 +120,14 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
-        valueKey: 'garage_number',
-        title: 'Гаражный номер',
+        valueKey: 'car_special_model_id',
+        title: 'Модель ТС',
         type: 'multiselect',
         getRegistryData: {
-          entity: WaybillCarService._path,
-          groupName: WaybillCarService._path,
-          valueKey: 'garage_number',
-          labelKey: 'garage_number',
+          entity: 'car_actual',
+          groupName: 'car_actual',
+          valueKey: 'special_model_id',
+          labelKey: 'special_model_name',
         },
       },
       {
@@ -194,6 +194,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         },
       },
       {
+        valueKey: 'driver_personnel_number',
+        title: 'Табельный номер',
+        type: 'multiselect',
+        getRegistryData: {
+          entity: 'employee_in_waybill',
+          typeAns: 'result',
+          valueKey: 'personnel_number',
+        },
+      },
+      {
         valueKey: 'odometr_start',
         title: 'Одометр. Выезд',
         type: 'advanced-number',
@@ -242,7 +252,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         step: 0.01,
       },
       {
-        valueKey: 'fuel_end',
+        valueKey: 'fact_fuel_end',
         title: 'Топливо. Возврат',
         type: 'advanced-number',
         step: 0.01,
@@ -252,6 +262,15 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         title: 'Топливо обор. Выдано',
         type: 'advanced-number',
         step: 0.01,
+      },
+      {
+        valueKey: 'is_edited_start',
+        title: 'Изменение показателей выезда',
+        type: 'multiselect',
+        options: [
+          { value: true, label: 'Да' },
+          { value: false, label: '-' },
+        ],
       },
       {
         valueKey: 'structure_id',
@@ -303,6 +322,28 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           labelKey: 'number',
         },
       },
+      {
+        valueKey: 'okrug_id',
+        labelKey: 'okrug_name',
+        title: 'Округ',
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'okrugs',
+          valueKey: 'id',
+          labelKey: 'name',
+        }
+      },
+      {
+        valueKey: 'company_id',
+        labelKey: 'company_name',
+        title: 'Организация',
+        type: 'multiselect',
+        makeOptionsFromSessionData: {
+          groupName: 'companies',
+          valueKey: 'asuods_id',
+          labelKey: 'name',
+        }
+      },
     ],
   },
   list: {
@@ -320,6 +361,16 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 150,
+        },
+        {
+          key: 'company_name',
+          title: 'Организация',
+          width: 200,
         },
         {
           key: 'number',
@@ -353,6 +404,11 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
         {
           key: 'driver_fio',
           title: 'Водитель',
+          width: 150,
+        },
+        {
+          key: 'driver_personnel_number',
+          title: 'Табельный номер',
           width: 150,
         },
         {
@@ -430,6 +486,12 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 175,
         },
         {
+          key: 'track_length_km',
+          title: 'Пройдено по Глонасс, км',
+          width: 200,
+          sortable: false,
+        },
+        {
           key: 'motohours_start',
           title: 'Моточасы. Выезд',
           width: 175,
@@ -460,7 +522,7 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           width: 200,
         },
         {
-          key: 'fuel_end',
+          key: 'fact_fuel_end',
           title: 'Топливо. Возврат',
           width: 200,
         },
@@ -468,6 +530,47 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           key: 'equipment_fuel_given',
           title: 'Топливо обор. Выдано',
           width: 250,
+        },
+        {
+          key: 'sensor_start_value',
+          title: 'Топливо. Выезд по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_finish_value',
+          title: 'Топливо. Возврат по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_consumption',
+          title: 'Топливо. Расход по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_refill',
+          title: 'Топливо. Заправка по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'sensor_leak',
+          title: 'Топливо. Слив по ДУТ, л',
+          width: 250,
+          sortable: false,
+          format: 'toFixed3',
+        },
+        {
+          key: 'is_edited_start',
+          title: 'Изменение показателей выезда',
+          width: 250,
+          valueForBoolean: 'Да',
         },
         {
           key: 'structure_name',
@@ -484,6 +587,10 @@ export const config: TypeConfigData<WaybillRegistryRow> = {
           key: 'comment',
           title: 'Комментарий',
           width: 150,
+        },
+        {
+          key: 'showCarOnMap',
+          title: 'Показать на карте',
         },
         {
           key: 'failed_medical_stat_types',

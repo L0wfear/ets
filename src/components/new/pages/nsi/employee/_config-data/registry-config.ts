@@ -40,6 +40,16 @@ export const config: TypeConfigData<Employee> = {
   filter: {
     fields: [
       {
+        valueKey: 'okrug_name',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
+        type: 'multiselect',
+      },
+      {
         valueKey: 'company_name',
         title: [
           {
@@ -89,6 +99,11 @@ export const config: TypeConfigData<Employee> = {
         type: 'advanced-date',
       },
       {
+        valueKey: 'category_drivers_license',
+        title: 'Категория водительского удостоверения',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'special_license',
         title: 'Специальное удостоверение',
         type: 'multiselect',
@@ -97,6 +112,11 @@ export const config: TypeConfigData<Employee> = {
         valueKey: 'special_license_date_end',
         title: 'Срок действия специального удостоверения',
         type: 'advanced-date',
+      },
+      {
+        valueKey: 'category_special_license',
+        title: 'Категория специального удостоверения',
+        type: 'multiselect',
       },
       {
         valueKey: 'company_structure_name',
@@ -108,6 +128,11 @@ export const config: TypeConfigData<Employee> = {
         title: 'Текущее состояние',
         type: 'multiselect',
         options: WORK_NOT_SELECT_OPTIONS,
+      },
+      {
+        valueKey: 'layoff_reason_name',
+        title: 'Основание увольнения',
+        type: 'multiselect',
       },
       {
         valueKey: 'phone',
@@ -151,6 +176,16 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          width: 150,
         },
         {
           key: 'company_name',
@@ -245,6 +280,12 @@ export const config: TypeConfigData<Employee> = {
           title: 'Текущее состояние',
           width: 150,
           format: 'workOrNot',
+        },
+        {
+          key: 'layoff_reason_name',
+          title: 'Основание увольнения',
+          width: 150,
+
         },
         {
           key: 'phone',

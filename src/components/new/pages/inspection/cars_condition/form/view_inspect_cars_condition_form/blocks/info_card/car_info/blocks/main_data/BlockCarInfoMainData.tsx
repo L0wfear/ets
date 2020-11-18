@@ -24,7 +24,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-import { isNumValue } from 'utils/functions';
+// import { isNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -132,12 +132,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       [state.data, props.handleChange, inspectionConfigOptions],
     );
 
-    const handleChangeNumberField = React.useCallback((key, event) => {
-      const value = event.currentTarget.value;
-      if ((!value || isNumValue(value)) && +value >= 0) {
-        props.handleChange(key, value);
-      }
-    }, []);
+    // const handleChangeNumberField = React.useCallback((key, event) => {
+    //   const value = event.currentTarget.value;
+    //   if ((!value || isNumValue(value)) && +value >= 0) {
+    //     props.handleChange(key, value);
+    //   }
+    // }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -832,11 +832,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="motohours"
-                  type="number"
+                  type="string"
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />

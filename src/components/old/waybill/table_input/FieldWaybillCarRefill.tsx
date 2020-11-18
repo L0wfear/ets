@@ -154,7 +154,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     }, [fact_departure_date, fact_arrival_date, plan_departure_date, plan_arrival_date]);
     React.useEffect(() => {
       getLastClosedWaybill();
-    }, [fact_departure_date, fact_arrival_date, plan_departure_date, plan_arrival_date]);
+    }, []);
 
     const fuelCardIdOptions = React.useMemo(
       () => {

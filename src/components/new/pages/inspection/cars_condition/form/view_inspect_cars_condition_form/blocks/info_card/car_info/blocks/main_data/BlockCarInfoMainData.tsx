@@ -24,7 +24,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-// import { isNumValue } from 'utils/functions';
+import { isPosOrNegNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -132,12 +132,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       [state.data, props.handleChange, inspectionConfigOptions],
     );
 
-    // const handleChangeNumberField = React.useCallback((key, event) => {
-    //   const value = event.currentTarget.value;
-    //   if ((!value || isNumValue(value)) && +value >= 0) {
-    //     props.handleChange(key, value);
-    //   }
-    // }, []);
+    const handleChangeNumberField = React.useCallback((key, event) => {
+      const value = event.currentTarget.value;
+      if ((!value || isPosOrNegNumValue(value))) {
+        props.handleChange(key, value);
+      }
+    }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -820,11 +820,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="mileage"
-                  type="string"
+                  type="number"
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
-                  onChange={props.handleChange}
+                  onChange={handleChangeNumberField}
                   boundKeys="mileage"
                   disabled={!props.isPermitted}
                 />
@@ -832,11 +832,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="motohours"
-                  type="string"
+                  type="number"
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={props.handleChange}
+                  onChange={handleChangeNumberField}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />
@@ -885,26 +885,24 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Пробег на дату проведения последнего ТО:"
               value={state.odometr_fact}
-              onChange={props.handleChange}
+              onChange={handleChangeNumberField}
               error={errors.odometr_fact}
               boundKeys="odometr_fact"
               disabled={!props.isPermitted}
-              inline
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Наработка м/ч на дату проведения последнего ТО:"
               value={state.motohours_fact}
-              onChange={props.handleChange}
+              onChange={handleChangeNumberField}
               error={errors.motohours_fact}
               boundKeys="motohours_fact"
               disabled={!props.isPermitted}
-              inline
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

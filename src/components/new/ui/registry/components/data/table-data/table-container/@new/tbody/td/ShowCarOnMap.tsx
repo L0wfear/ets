@@ -6,13 +6,13 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
-import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { useHistory } from 'react-router-dom';
 
 type OwnProps = CommontTdTiteProps;
 type Props = OwnProps & WithSearchProps;
 
-const TrTdButtonShowMissionInfo: React.FC<Props> = React.memo(
+const TrTdButtonShowCarOnMap: React.FC<Props> = React.memo(
   (props) => {
     const { rowData } = props;
     const isClosed = rowData.status === 'closed';
@@ -48,7 +48,7 @@ const TrTdButtonShowMissionInfo: React.FC<Props> = React.memo(
 
 export default compose<Props, OwnProps>(
   withRequirePermission({
-    permissions: missionPermissions.read,
+    permissions: waybillPermissions.read,
   }),
   withSearch,
-)(TrTdButtonShowMissionInfo);
+)(TrTdButtonShowCarOnMap);

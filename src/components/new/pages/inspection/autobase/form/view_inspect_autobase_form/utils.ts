@@ -3,15 +3,15 @@ import { cloneDeep } from 'lodash';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
 export const defaultInspectAutobase: InspectAutobase = {
-  base_address: '',
+  base_address: null,
   base_id: null,
-  close_employee_fio: '',
+  close_employee_fio: null,
   close_employee_id: null,
-  close_employee_assignment: '',
-  close_employee_assignment_date_start: '',
+  close_employee_assignment: null,
+  close_employee_assignment_date_start: null,
   company_id: null,
-  company_name: '',
-  company_short_name: '',
+  company_name: null,
+  company_short_name: null,
   data: {
     is_coating_defects: false,
     is_under_construction: false,
@@ -22,7 +22,7 @@ export const defaultInspectAutobase: InspectAutobase = {
     no_fencing: false,
     fencing_in_poor_condition: false,
     is_not_protected: false,
-    protection_is_carried: '',
+    protection_is_carried: null,
     lack_of_video_surveillance: false,
     is_hard_surface: [],
     surface_in_poor_condition: false,
@@ -44,18 +44,18 @@ export const defaultInspectAutobase: InspectAutobase = {
     lack_of_sanitation: false,
     lack_of_toilets: false,
     lack_shower_cabins: false,
-    comments: '',
+    comments: null,
   },
-  date_start: '',
+  date_start: null,
   id: null,
   inspection_company_id: null,
-  open_employee_fio: '',
+  open_employee_fio: null,
   open_employee_id: null,
-  status_text: '',
+  status_text: null,
   agents_from_gbu: [],
   commission_members: [],
-  resolve_to: '',
-  close_employee_position: '',
+  resolve_to: null,
+  close_employee_position: null,
   status: 'conducting',
   date_end: null,
   files: [],
@@ -69,7 +69,9 @@ export const getDefaultInspectAutobaseElement = (element: Partial<InspectAutobas
 
   if (isObject(element)) {
     Object.keys(defaultInspectAutobase).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultInspectAutobase[key];
+      newElement[key] = isNullOrUndefined(element[key]) || element[key] === ''
+        ? defaultInspectAutobase[key]
+        : element[key];
     });
   }
 

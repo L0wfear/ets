@@ -39,7 +39,7 @@ const buPosition = {
   `,
 };
 
-export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right'; }>`
+export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right'; maxHeight?: number;}>`
   position: relative;
   position: absolute;
   display: flex;
@@ -57,7 +57,8 @@ export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right
   border: 1px solid rgba(0,0,0, 0.15);
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
-
+  max-height: ${({maxHeight}) => typeof maxHeight === 'number' ? `${maxHeight}px` : 'none'};;
+  overflow-y: ${({maxHeight}) => typeof maxHeight === 'number' ? 'auto' : 'visible'};
   padding: 8px 0px;
 
   ${({ position }) => get(buPosition, position) || get(buPosition, 'default')};

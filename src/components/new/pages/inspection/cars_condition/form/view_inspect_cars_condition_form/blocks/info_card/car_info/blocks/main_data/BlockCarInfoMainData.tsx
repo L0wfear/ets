@@ -820,11 +820,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="mileage"
-                  type="number"
+                  type="string"
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="mileage"
                   disabled={!props.isPermitted}
                 />

@@ -772,8 +772,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const isDiff = this.handleDiff(PERCENT_DIFF_VALUE, formState);
       formWarnings = {
         fuel_given: isDiff.isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
+        equipment_fuel_given: isDiff.isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
         tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
+        equipment_tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
         fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
+        equipment_fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
       };
     }
 
@@ -963,11 +966,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   handleDiff = (percent, formState) => {
-
     const hasDiff = {
-      isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given, percent),
-      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption, percent),
-      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end, percent),
+      isDiffSensorRefill: (formState.equipment_fuel && !formState.is_one_fuel_tank)
+        ? hasPercentageDifference(formState.sensor_refill, formState.fuel_given + formState.equipment_fuel_given, percent)
+        : false,
+      isDiffSensorConsumption: (formState.equipment_fuel && !formState.is_one_fuel_tank)
+        ? hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + formState.equipment_tax_consumption, percent)
+        : false,
+      isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
+        ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
+        : false,
     };
 
     return hasDiff;

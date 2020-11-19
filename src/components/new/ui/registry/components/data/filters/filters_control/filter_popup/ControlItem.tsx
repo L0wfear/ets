@@ -2,18 +2,20 @@ import * as React from 'react';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { isString } from 'util';
+import { useLocation } from 'react-router';
 
 type ControlItemProps = {
   fieldData: ValuesOf<OneRegistryData['filter']['fields']>;
-  onChange: (fieldData: string) => void;
+  onChange: (key: string, locationSearch: string) => void;
 };
 
 const ControlItem: React.FC<ControlItemProps> = ({fieldData, onChange}) => {
+  const locationSearch = useLocation().search;
   const handleChange = React.useCallback(
     () => {
-      onChange(fieldData.valueKey);
+      onChange(fieldData.valueKey, locationSearch);
     },
-    [onChange, fieldData.valueKey],
+    [onChange, fieldData.valueKey, locationSearch],
   );
 
   const label = React.useMemo(() => {

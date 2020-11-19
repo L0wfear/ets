@@ -65,7 +65,7 @@ const FiltersLines: React.FC<Props> = React.memo(
           }, null);
         }
 
-        if (!formatedTitle) {
+        if (!formatedTitle || otherFilterData.hidden) {
           return null;
         }
 

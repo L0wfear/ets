@@ -11,6 +11,10 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { isArray } from 'util';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
+import { applyFilterFromRaw } from 'components/new/ui/registry/module/utils/filter';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 type ColumnsPopupStateProps = {
   fields: OneRegistryData['filter']['fields'];
@@ -26,20 +30,47 @@ type ColumnsPopupMergedProps = (
   & ColumnsPopupDispatchProps
   & ColumnsPopupOwnProps
 );
-type ColumnsPopupProps = ColumnsPopupMergedProps;
+type ColumnsPopupProps = ColumnsPopupMergedProps & WithSearchProps;
 
 const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   const STRUCTURES = etsUseSelector((state) => getSessionStructuresOptions(state));
   const userData = etsUseSelector((state) => getSessionState(state).userData);
-  
+  const [hiddenFilters, setHiddenFilters] = React.useState([]);
+  const [selectAllChecked, setselectAllChecked] = React.useState(true);
   const handleChange = React.useCallback(
-    (field) => {
-      props.actionChangeRegistryFilterFields(
+    async (key, locationSearch) => {
+      const filterKey = `${props.registryKey}_filters`;
+      const filterData = await props.actionChangeRegistryFilterFields(
         props.registryKey,
-        field,
+        key,
       );
+      const field = filterData.payload.filter.fields.find((el) => el.valueKey === key);
+      if (field.hidden) {
+        setHiddenFilters([...hiddenFilters].concat(key));
+      } else {
+        setHiddenFilters(hiddenFilters.filter((el) => el !== key));
+      }
+      if (locationSearch.includes(key)) {
+        props.setDataInSearch({
+          [filterKey]: encodeURIComponent(JSON.stringify(applyFilterFromRaw(filterData.payload.filter.rawFilterValues))),
+        });
+      }
     },
-    [props.registryKey, props.fields],
+    [props.registryKey, props.fields, hiddenFilters],
+  );
+
+  const handleChangeSelectAll = React.useCallback(
+    () => {
+      if (!selectAllChecked) {
+        props.actionChangeRegistryFilterFields(
+          props.registryKey,
+          'selectAll',
+        );
+        setHiddenFilters([]);
+        setselectAllChecked(true);
+      }
+    },
+    [selectAllChecked],
   );
 
   const fieldMap = React.useCallback(
@@ -75,12 +106,28 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
       );  
 
     },
-    [userData, STRUCTURES],
+    [userData, STRUCTURES, handleChange],
   );
+
+  React.useEffect(() => {
+    if(hiddenFilters.length && selectAllChecked) {
+      setselectAllChecked(false);
+    }
+    if(!hiddenFilters.length && !selectAllChecked) {
+      setselectAllChecked(true);
+    }
+  }, [hiddenFilters, selectAllChecked]);
 
   return (
     <ColumnPopupContainerWrapper>
       <ColumnPopupContainer>
+        <ExtField
+          type="boolean"
+          label={'Выделить всё'}
+          onChange={handleChangeSelectAll}
+          value={selectAllChecked}
+          className="checkbox-input flex-reverse"
+        />
         {
           props.fields.map(fieldMap)
         }
@@ -89,15 +136,18 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   );
 };
 
-export default connect<ColumnsPopupStateProps, ColumnsPopupDispatchProps, ColumnsPopupOwnProps, ReduxState>(
-  (state, { registryKey }) => ({
-    fields: getFilterData(getRegistryState(state), registryKey).fields,
-  }),
-  (dispatch: any) => ({
-    actionChangeRegistryFilterFields: (registryKey, hiddenFields) => (
-      dispatch(
-        actionChangeRegistryFilterFields(registryKey, hiddenFields),
-      )
-    ),
-  }),
+export default compose<ColumnsPopupStateProps, ColumnsPopupOwnProps>(
+  connect<ColumnsPopupStateProps, ColumnsPopupDispatchProps, ColumnsPopupOwnProps, ReduxState>(
+    (state, { registryKey }) => ({
+      fields: getFilterData(getRegistryState(state), registryKey).fields,
+    }),
+    (dispatch: any) => ({
+      actionChangeRegistryFilterFields: (registryKey, hiddenFields) => (
+        dispatch(
+          actionChangeRegistryFilterFields(registryKey, hiddenFields),
+        )
+      ),
+    }),
+  ),
+  withSearch,
 )(ColumnsPopup);

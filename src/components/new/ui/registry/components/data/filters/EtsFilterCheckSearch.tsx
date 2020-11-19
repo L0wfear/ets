@@ -63,6 +63,7 @@ class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps
   }
 
   componentDidUpdate(prevProps) {
+
     const filterKey = `${this.props.registryKey}_filters`;
     const timeKey = `${this.props.registryKey}_time`;
 

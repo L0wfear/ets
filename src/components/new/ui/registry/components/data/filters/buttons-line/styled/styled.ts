@@ -20,7 +20,9 @@ export const EtsFiltersCloseContainer = styled.div`
   }
 `;
 
-export const EtsFilterActionButtonConteiner = styled.div``;
+export const EtsFilterActionButtonConteiner = styled.div`
+  display: flex;
+`;
 
 export const EtsFilterActionButton = styled(EtsBootstrap.Button)`
   margin: 0 5px;

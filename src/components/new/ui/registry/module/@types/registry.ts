@@ -107,6 +107,7 @@ export type OneFilterType<F> = {
   displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   options?: Array<FilterOptionType<F>>;
   disabled?: boolean;
+  hidden?: boolean;
 } & (
   {
     type: 'advanced-date'

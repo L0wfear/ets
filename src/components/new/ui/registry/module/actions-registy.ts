@@ -552,6 +552,36 @@ export const registryChangeFilterRawValues = (registryKey: string, valueKey: str
   );
 };
 
+export const actionChangeRegistryFilterFields = (
+  registryKey: string, 
+  valueKey: string,
+  type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt' = 'in',
+): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const filter = get(registryData, 'filter');
+  const value = [];
+    
+  return dispatch(
+    registryChangeFilterData(
+      registryKey,
+      {
+        ...filter,
+        fields: filter.fields.map((el) => ({...el, hidden: valueKey === el.valueKey ? !el.hidden : el.hidden})),
+        rawFilterValues: {
+          ...filter.rawFilterValues,
+          [valueKey]: {
+            ...filter.rawFilterValues[valueKey],
+            [type]: {
+              ...filter.rawFilterValues[valueKey][type],
+              value,
+            },
+          },
+        },
+      }
+    )
+  );
+};
+
 export const registryResetAllTypeFilter = (registryKey: string): EtsAction<void> => (dispatch, getState) => {
   dispatch(actionUnselectSelectedRowToShow(registryKey, true));
   const registryData = get(getRegistryState(getState()), registryKey);

@@ -9,7 +9,7 @@ class TdBody extends React.Component<any, any> {
     return {
       render: ({ data, rowData, tableMeta }) => (!isNullOrUndefined(data) && !tableMeta.precision
         ? data
-        : (data || data === 0) && tableMeta.precision && isNumber(data)
+        : data && tableMeta.precision && isNumber(data)
           ? data.toFixed(tableMeta.precision).toString().replace('.', ',')
           : '-'
       )

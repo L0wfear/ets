@@ -777,7 +777,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         equipment_tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
         fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
         equipment_fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
-        diff_consumption: isDiff.isDiffFuelEnd ? `Перерасход топлива на ${formState.diff_consumption} л.` : false,
+        fact_fuel_end: isDiff.isDiffFuelEnd ? `Перерасход топлива на ${formState.diff_consumption} л.` : false,
       };
     }
 

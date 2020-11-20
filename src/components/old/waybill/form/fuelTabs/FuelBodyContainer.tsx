@@ -205,6 +205,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Расхождение в данных расхода, л"
                   error={errors.diff_consumption}
+                  warning={warnings.diff_consumption}
                   value={waybillFormState.diff_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled

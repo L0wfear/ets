@@ -110,6 +110,16 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   );
 
   React.useEffect(() => {
+    const hiddenFilters = props.fields.reduce((acc, curr) => {
+      if (curr.hidden) {
+        acc.push(curr.valueKey);
+      }
+      return acc;
+    }, []);
+    setHiddenFilters(hiddenFilters);
+  }, []);
+
+  React.useEffect(() => {
     if(hiddenFilters.length && selectAllChecked) {
       setselectAllChecked(false);
     }

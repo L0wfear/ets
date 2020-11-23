@@ -22,15 +22,9 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
       title: 'Дата проведения поверки',
       type: 'date',
       dependencies: [
-        (value, { factory_number, gov_number }, { tachographList } ) => {
+        (value, { factory_number, gov_number } ) => {
           if (!value) {
             return getRequiredFieldMessage('Дата проведения поверки');
-          }
-          if (factory_number) {
-            const chosenTachograph = tachographList?.find((tachograph) => tachograph.factory_number === factory_number);
-            if (diffDates(chosenTachograph?.installed_at, value, 'days') > 0) {
-              return 'Дата поверки не может быть раньше даты установки тахографа';
-            }
           }
           if (diffDates(value, getDateWithMoscowTz()) > 0) {
             return 'Дата поверки не может быть больше текущей';

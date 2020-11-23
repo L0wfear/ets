@@ -978,7 +978,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
         ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
         : false,
-      isDiffFuelEnd: Boolean(formState.diff_consumption > formState.fuel_end),
+      isDiffFuelEnd: Boolean(formState.diff_consumption < formState.fuel_end),
     };
 
     return hasDiff;

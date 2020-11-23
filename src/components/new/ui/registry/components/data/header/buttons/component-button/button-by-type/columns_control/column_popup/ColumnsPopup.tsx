@@ -8,6 +8,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import ControlItem from './ControlItem';
 import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
 import { get } from 'lodash';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 type ColumnsPopupStateProps = {
   fields: OneRegistryData['list']['meta']['fields'];
@@ -26,6 +27,21 @@ type ColumnsPopupMergedProps = (
 type ColumnsPopupProps = ColumnsPopupMergedProps;
 
 const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
+  const [selectAllChecked, setSelectAllChecked] = React.useState(true);
+
+  const setLocalStorageData = React.useCallback(
+    (data) => {
+      const columnContorolData = localStorage.getItem(`columnContorol`);
+      const currentRegistryData = get(columnContorolData, props.registryKey, {});
+      currentRegistryData[props.registryKey] = data.map((fieldData) => {
+        return {
+          key: fieldData.key,
+          hidden: Boolean(fieldData.hidden),
+        };
+      });
+      localStorage.setItem('columnContorol', JSON.stringify(currentRegistryData));
+    }, []);
+
   const handleChange = React.useCallback(
     (field) => {
       const newField = props.fields.map((fieldData) => {
@@ -36,15 +52,7 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
         return fieldData;
       });
 
-      const columnContorolData = localStorage.getItem(`columnContorol`);
-      const currentRegistryData = get(columnContorolData, props.registryKey, {});
-      currentRegistryData[props.registryKey] = newField.map((fieldData) => {
-        return {
-          key: fieldData.key,
-          hidden: Boolean(fieldData.hidden),
-        };
-      });
-      localStorage.setItem('columnContorol', JSON.stringify(currentRegistryData));
+      setLocalStorageData(newField);
 
       props.actionChangeRegistryMetaFields(
         props.registryKey,
@@ -60,9 +68,39 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
     [props.registryKey, props.fields],
   );
 
+  const handleChangeSelectAll = React.useCallback(
+    () => {
+      setSelectAllChecked(!selectAllChecked);
+      const fields = props.fields.map((fieldData) => ({
+        ...fieldData,
+        hidden: selectAllChecked,
+      }));
+      props.actionChangeRegistryMetaFields(
+        props.registryKey,
+        fields,
+      );
+
+      setLocalStorageData(fields);
+    },
+    [selectAllChecked, props.fields],
+  );
+
+  React.useEffect(() => {
+    if (selectAllChecked) {
+      setSelectAllChecked(props.fields.filter((el) => el.hidden === true).length === 0);
+    }
+  }, [props.fields, selectAllChecked]);
+
   return (
     <ColumnPopupContainerWrapper>
       <ColumnPopupContainer>
+        <ExtField
+          type="boolean"
+          label={'Выделить всё'}
+          onChange={handleChangeSelectAll}
+          value={selectAllChecked}
+          className="checkbox-input flex-reverse"
+        />
         {
           props.fields.reduce(
             (newArr, fieldData, index) => {

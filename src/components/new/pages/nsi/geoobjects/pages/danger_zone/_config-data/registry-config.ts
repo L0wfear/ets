@@ -17,6 +17,7 @@ export const config: TypeConfigData<DangerZone> = {
   header: {
     title: 'Справочник особо опасных мест',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

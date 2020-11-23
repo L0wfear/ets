@@ -22,6 +22,7 @@ export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
       title: 'Реестр аккумуляторов', // Реестр аккумуляторов основной
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

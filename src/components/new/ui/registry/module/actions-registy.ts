@@ -196,6 +196,29 @@ export const actionChangeRegistryMetaFields = (registryKey: string, fields: OneR
   );
 };
 
+/*export const actionChangeRegistryColumns = (registryKey: string, fields: OneRegistryData<any>['list']['meta']['fields']): EtsAction<EtsActionReturnType<typeof registryChangeListData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const list = get(registryData, 'list');
+
+  const STRUCTURES = getSessionStructuresOptions(getState());
+  const userData = getSessionState(getState()).userData;
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        meta: mergeListMeta(
+          { fields },
+          {
+            STRUCTURES,
+            userData,
+          }),
+      }
+    )
+  );
+};*/
+
 export const actionChangeGlobalPaylaodInServiceData = (registryKey: string, payload: Record<string, any>, needUpdate: boolean = true): EtsAction<any> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const ServiceData = get(registryData, 'Service', null);

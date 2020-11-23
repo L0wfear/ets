@@ -20,7 +20,12 @@ export const getToConfig = (all: Boolean = null): TypeConfigData<Carpool> => {
     registryKey,
     header: {
       title: 'Справочник Автобаз',
-      buttons: [buttonsTypes.filter, buttonsTypes.read, buttonsTypes.export],
+      buttons: [
+        buttonsTypes.columns_control,
+        buttonsTypes.filter,
+        buttonsTypes.read,
+        buttonsTypes.export
+      ],
     },
     filter: {
       fields: [

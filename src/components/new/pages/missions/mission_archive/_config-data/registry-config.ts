@@ -35,6 +35,7 @@ export const config: TypeConfigData<Mission> = {
   header: {
     title: 'Архив заданий',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.missions_export,

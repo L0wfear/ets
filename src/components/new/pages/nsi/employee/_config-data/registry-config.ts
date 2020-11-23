@@ -28,6 +28,7 @@ export const config: TypeConfigData<Employee> = {
   header: {
     title: 'Реестр сотрудников',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       {
         id: 'open-create-form',

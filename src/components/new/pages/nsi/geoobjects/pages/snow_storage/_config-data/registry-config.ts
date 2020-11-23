@@ -17,6 +17,7 @@ export const config: TypeConfigData<SnowStorage> = {
   header: {
     title: 'Справочник пунктов временного складирования снега',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

@@ -22,6 +22,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
       title: 'Реестр заправок',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.refill_print,

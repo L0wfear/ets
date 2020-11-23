@@ -65,7 +65,7 @@ class Prompt extends React.Component<any, any> {
         >
           <EtsBootstrap.ModalHeader>
             <EtsBootstrap.ModalTitle>
-              {this.state.title}
+              <div dangerouslySetInnerHTML={{__html: this.state.title }} />
             </EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
           <EtsBootstrap.ModalBody>

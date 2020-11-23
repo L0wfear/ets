@@ -3,7 +3,7 @@
  */
 import { isString, isArray } from 'util';
 import { toArray } from 'lodash';
-import { diffDates } from 'components/@next/@utils/dates/dates';
+import { diffDates, makeDataFromRaw } from 'components/@next/@utils/dates/dates';
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
 
@@ -131,6 +131,11 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
 
   if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
     return diffDates(first, second);
+  }
+  if (firstIsString && secondIsString && first.match(/(\d{2}).(\d{2}).(\d{4}) (\d{2}):(\d{2})/)) {
+    const [firstDate, firstTime] = first.split(' ');
+    const [secondDate, secondTime] = second.split(' ');
+    return diffDates(makeDataFromRaw(firstDate, firstTime), makeDataFromRaw(secondDate, secondTime));
   }
   if (firstIsNullOrUndefined && secondIsNullOrUndefined) {
     return 0;

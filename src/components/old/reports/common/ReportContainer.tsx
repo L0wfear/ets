@@ -577,12 +577,23 @@ class ReportContainer extends React.Component<
           report: report.map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
           summary: summary 
             ? summary.map(
-              (elem) => ({
-                ...elem,
-                children: elem?.children?.map(
-                  (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
-                )
-              })
+              (elem) => {
+                if(reportKey === 'fuel_consumption_new_report'){
+                  Object.keys(elem).reduce(
+                    (acc, key) => {
+                      elem[key] = elem[key] === 0
+                        ? '-'
+                        : elem[key];
+                      return acc;
+                    }, {});
+                }
+                return ({
+                  ...elem,
+                  children: elem?.children?.map(
+                    (child) => this.reportRowFormatFromMeta(child, metaFieldsSummaryByKey)
+                  )
+                });
+              }
             )
             : null,
         },

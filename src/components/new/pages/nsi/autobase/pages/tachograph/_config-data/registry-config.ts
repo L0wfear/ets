@@ -185,7 +185,7 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
           {
             key: 'plan_replacement',
             format: 'date',
-            title: 'Плановая дата замена блока СКЗИ',
+            title: 'Плановая дата замены блока СКЗИ',
             width: 200,
           },
           {

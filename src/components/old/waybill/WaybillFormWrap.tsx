@@ -51,6 +51,7 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 import { hasPercentageDifference, PERCENT_DIFF_VALUE } from 'components/old/waybill/utils';
+import { ParagraphRed } from 'global-styled/global-styled';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -777,6 +778,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         equipment_tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
         fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
         equipment_fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
+        fact_fuel_end: isDiff.isDiffFuelEnd ? `Перерасход топлива на ${formState.diff_consumption} л.` : false,
       };
     }
 
@@ -976,6 +978,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
         ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
         : false,
+      isDiffFuelEnd: Boolean(formState.diff_consumption < formState.fuel_end),
     };
 
     return hasDiff;
@@ -1274,7 +1277,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               {Boolean(isDiff.isDiffSensorRefill) && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {Boolean(formState.diff_consumption) && (<p>"Возврат фактический, л" {formState.diff_consumption > 0 ? 'превышает' : 'меньше'} "Возврат по таксировке, л" на {formState.diff_consumption.toString().replace('.', ',')} л.</p>)}
+              {Boolean(isDiff.isDiffFuelEnd) && (<ParagraphRed>Зафиксирован перерасход топлива на {formState.diff_consumption.toString().replace('.', ',')} л.</ParagraphRed>)}
               <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
               <br />
               <p>Вы уверены, что хотите закрыть ПЛ?</p>
@@ -1287,7 +1290,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
       global.confirmDialog({
         title:
-          'Внимание! После закрытия путевого листа редактирование полей будет запрещено.',
+          'Внимание! <br>После закрытия путевого листа редактирование полей будет невозможно',
         body: errorBlock,
         okName: 'Да',
         cancelName: 'Нет',

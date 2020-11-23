@@ -17,13 +17,11 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
       dependencies: [
         (value, {dataForValidation, gov_number, factory_number}) => {
           if (value && dataForValidation) {
-            return diffDates(createValidDate(value), createValidDate(dataForValidation.installed_at)) < 0
-              ? 'Дата калибровки не может быть раньше даты установки тахографа'
-              : diffDates(createValidDate(value), getStartOfToday()) > 0
-                ? 'Дата калибровки не может быть больше текущей'
-                : !gov_number && factory_number
-                  ? 'В указанную дату тахограф не был установлен ни на одно ТС'
-                  : false;
+            return diffDates(createValidDate(value), getStartOfToday()) > 0
+              ? 'Дата калибровки не может быть больше текущей'
+              : !gov_number && factory_number
+                ? 'В указанную дату тахограф не был установлен ни на одно ТС'
+                : '';
           }
         }
       ] 

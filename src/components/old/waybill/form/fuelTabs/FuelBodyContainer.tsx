@@ -156,6 +156,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Возврат фактический, л"
                   error={errors.fact_fuel_end}
+                  warning={warnings.fact_fuel_end}
                   value={waybillFormState.fact_fuel_end}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled={

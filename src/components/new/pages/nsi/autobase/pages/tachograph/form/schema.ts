@@ -114,7 +114,7 @@ export const tachographFormSchema: SchemaType<TachographListWithOuterProps, Prop
                   !el.replacement_date
                     ? 'Поле "Дата замены" должно быть заполнено'
                     : !isReplacmentDateInValidPeriod
-                      ? 'Дата замены блока СКЗИ должна попадать в период установки тахографа на ТС'
+                      ? 'В указанную дату тахограф не был установлен ни на одно ТС'
                       : current_date && diffDates(valid_replacement_date, current_date) > 0
                         ? 'Дата установки блока СКЗИ не может быть больше текущей'
                         : ''

@@ -19,6 +19,7 @@ import techInspectionListConfig from 'components/new/pages/nsi/autobase/pages/te
 export type OneTabDataCommon = {
   tabKey: string;
   title: string;
+  showTabIntoNav?: boolean;
 };
 
 export type OneTabDataParent = (

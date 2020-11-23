@@ -19,6 +19,8 @@ const VALID_VEHICLES_TYPES = {
   COMPRESSOR: 15,
 } as const;
 
+export const PERCENT_DIFF_VALUE = 10;
+
 export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
   Promise.resolve(
     get(carIndex[car_id], 'fuel_correction_rate') || 1,
@@ -384,7 +386,7 @@ export const getTitleByStatus = ({ status, number }) => {
 };
 
 export const hasPercentageDifference = (a, b, p) => {
-  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b))) {
+  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b)) && (a > b)) {
     const perc = 100 * Math.abs((a - b) / ((a + b)/2));
 
     return Boolean(perc > p);

@@ -87,7 +87,7 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
             <EtsBootstrap.Col md={12}>
               <ExtField
                 type="string"
-                label="Тип топлива ГПН"
+                label="Тип топлива"
                 readOnly
                 value={state.fuel_type}
                 boundKeys="fuel_type"

@@ -42,14 +42,14 @@ export const getToConfig = (fuel_card_number: string): TypeConfigData<Refill> =>
       meta: {
         fields: [
           {
-            key: 'refill_at_text',
+            key: 'refill_at',
             title: 'Дата и время транзакции',
             format: 'datetime',
             width: 150,
           },
           {
             key: 'fuel_type',
-            title: 'Тип топлива ГПН',
+            title: 'Тип топлива',
             width: 150,
           },
           {

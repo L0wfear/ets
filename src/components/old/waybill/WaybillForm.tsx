@@ -2909,7 +2909,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< выпилить этот костыль в 36м релизе!!!
+                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< 2 выпилить этот костыль в 36м релизе!!!
                               />
                             </FlexContainerStyled>
                             <ExtField

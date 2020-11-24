@@ -755,7 +755,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         });
       }
     } else {
-      // чистим поля с газом <<< сделать через Object
+      // 1 чистим поля с газом <<< сделать через Object
       Object.keys(gasDefaultElement).forEach((key) => {
         formState[key] = gasDefaultElement[key];
       });

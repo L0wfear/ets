@@ -978,7 +978,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
         ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
         : false,
-      isDiffFuelEnd: Boolean(formState.diff_consumption < formState.fuel_end),
+      isDiffFuelEnd: Boolean(formState.fact_fuel_end < formState.fuel_end),
     };
 
     return hasDiff;
@@ -1278,8 +1278,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffFuelEnd) && (<ParagraphRed>Зафиксирован перерасход топлива на {formState.diff_consumption.toString().replace('.', ',')} л.</ParagraphRed>)}
-              <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
-              <br />
+              {
+                Boolean(Object.values(isDiff).some(
+                  (elem) => elem === true)
+                ) && <p>Закрывая форму путевого листа, вы подтверждаете разницу.<br /></p>
+              }
               <p>Вы уверены, что хотите закрыть ПЛ?</p>
             </div>
           );

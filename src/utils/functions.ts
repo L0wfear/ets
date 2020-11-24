@@ -376,5 +376,4 @@ export const makeObjArrayUniqByKey = (arr: Array<Object>, key: string) => {
 };
 
 export const isNumValue = (value: string) => new RegExp(`[0-9]{${value.length}}`).test(value);
-export const isPosOrNegNumValue = (value: string) => new RegExp(/\d+|\-\d+/gi).test(value);
 export const isWithoutNumValue = (value: string) => !(/[0-9]/.test(value));

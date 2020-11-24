@@ -8,25 +8,25 @@ import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
-  fio: '',
-  tel: '',
+  fio: null,
+  tel: null,
 };
 // дефолтное значение для "Лицо, ответственное"
 const default_head_operating_base: InspectCarsCondition['head_operating_base'] = {
-  fio: '',
-  tel: '',
+  fio: null,
+  tel: null,
 };
 const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars_check'] = {
-  order_issued_at: '',
-  order_number: '',
-  master_plan_approved: '',
-  named_plan_approved: '',
+  order_issued_at: null,
+  order_number: null,
+  master_plan_approved: null,
+  named_plan_approved: null,
   no_order: false,
-  planned_target: '',
-  statements_defects_issued: '',
-  statements_defects_not_issued_cnt: '',
-  drawbacks_eliminated: '',
-  drawbacks_new: '',
+  planned_target: null,
+  statements_defects_issued: null,
+  statements_defects_not_issued_cnt: null,
+  drawbacks_eliminated: null,
+  drawbacks_new: null,
   dataForValidation: null,
 };
 const default_headcount: InspectCarsCondition['data']['headcount'] = {
@@ -37,10 +37,10 @@ const default_headcount: InspectCarsCondition['data']['headcount'] = {
 };
 
 const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
-  waybill_issue_log_exists: '',
-  waybill_issue_log_used: '',
-  comment: '',
-  comment_detected: '',
+  waybill_issue_log_exists: null,
+  waybill_issue_log_used: null,
+  comment: null,
+  comment_detected: null,
 };
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {

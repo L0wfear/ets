@@ -5,13 +5,12 @@ import { FormWithHandleChange } from 'components/old/compositions/vokinda-hoc/fo
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { actionGetAndSetInStoreTachographList, actionResetTachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { TachographMetrologicalVerification } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/@types';
+import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
+import { TachographRepair } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_repair/@types';
+import { createValidDate, dateInPeriod } from 'components/@next/@utils/dates/dates';
 
-type WithTachographOptionsFormState = {
-  tachograph_brand_id: number;
-  factory_number: string;
-  gov_number: string;
-  tachograph_id: number;
-};
+type WithTachographOptionsFormState = TachographMetrologicalVerification & Tachograph & TachographRepair;
 export type WithTachographProps = {
   formState: WithTachographOptionsFormState;
   handleChange: FormWithHandleChange<WithTachographOptionsFormState>;
@@ -57,6 +56,9 @@ const withTachographOptions = (
       tachographBrandNameList,
       setTachographBrandNameList,
     ] = React.useState<Array<TachographList>>([]);
+    const dateOfEvent = React.useMemo(
+      () => createValidDate(state.repair_date || state.verification_date || state.calibration_date), 
+      [state.repair_date, state.verification_date, state.calibration_date]);
     const dispatch = etsUseDispatch();
     React.useEffect(() => {
       (async () => {
@@ -134,13 +136,23 @@ const withTachographOptions = (
     ]);
 
     React.useEffect(() => {
-      const gov_number = !state.factory_number
-        ? null
-        : tachographBrandNameList?.find(
-          ({ factory_number }) => factory_number === state.factory_number
+      let gov_number = null;
+      if (state.factory_number && dateOfEvent) {
+        const tachograph_on_car
+          = tachographBrandNameList?.find(
+            ({ factory_number }) => factory_number === state.factory_number
+          )?.tachograph_on_car || [];
+        gov_number = tachograph_on_car.find((el) =>
+          dateInPeriod(
+            el.installed_at,
+            el.uninstalled_at || dateOfEvent,
+            dateOfEvent,
+            { excludeEnd: false, excludeStart: !el.uninstalled_at }
+          )
         )?.gov_number;
+      }
       handleChange('gov_number', gov_number);
-    }, [state.factory_number, tachographBrandNameList]);
+    }, [state.factory_number, dateOfEvent, tachographBrandNameList]);
 
     return (
       <Component

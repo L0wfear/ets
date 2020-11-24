@@ -22,7 +22,7 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
       title: 'Дата проведения поверки',
       type: 'date',
       dependencies: [
-        (value, { factory_number }, { tachographList } ) => {
+        (value, { factory_number, gov_number }, { tachographList } ) => {
           if (!value) {
             return getRequiredFieldMessage('Дата проведения поверки');
           }
@@ -34,6 +34,9 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
           }
           if (diffDates(value, getDateWithMoscowTz()) > 0) {
             return 'Дата поверки не может быть больше текущей';
+          }
+          if (value && !gov_number && factory_number) {
+            return 'В указанную дату тахограф не был установлен ни на одно ТС';
           }
           return false;
         }
@@ -71,18 +74,6 @@ export const tachographMetrologicalVerificationFormSchema: SchemaType<Tachograph
           if(!value.length || value.every((el) => el?.action === 'delete')) {
             return 'Поле "Сертификат" обязательно для заполнения';
           }
-        }
-      ],
-    },
-    gov_number: {
-      title: 'Рег. номер ТС',
-      type: 'string',
-      dependencies: [
-        (value) => {
-          if (!value) {
-            return getRequiredFieldMessage('Рег. номер ТС');
-          }
-          return false;
         }
       ],
     },

@@ -24,7 +24,6 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-import { isPosOrNegNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -131,13 +130,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
-
-    const handleChangeNumberField = React.useCallback((key, event) => {
-      const value = event.currentTarget.value;
-      if ((!value || isPosOrNegNumValue(value))) {
-        props.handleChange(key, value);
-      }
-    }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -824,7 +816,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="mileage"
                   disabled={!props.isPermitted}
                 />
@@ -836,7 +828,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />
@@ -888,7 +880,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="number"
               label="Пробег на дату проведения последнего ТО:"
               value={state.odometr_fact}
-              onChange={handleChangeNumberField}
+              onChange={props.handleChange}
               error={errors.odometr_fact}
               boundKeys="odometr_fact"
               disabled={!props.isPermitted}
@@ -899,7 +891,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="number"
               label="Наработка м/ч на дату проведения последнего ТО:"
               value={state.motohours_fact}
-              onChange={handleChangeNumberField}
+              onChange={props.handleChange}
               error={errors.motohours_fact}
               boundKeys="motohours_fact"
               disabled={!props.isPermitted}

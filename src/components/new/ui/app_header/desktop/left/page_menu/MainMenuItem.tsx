@@ -8,11 +8,13 @@ import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { appFooterHeight } from 'components/new/ui/app_footer/styled';
 
 class MainMenuItem extends React.Component<any, any> {
   node = React.createRef<any>();
   state = {
     showChildren: false,
+    childMaxHeight: null,
   };
 
   componentDidMount() {
@@ -36,6 +38,14 @@ class MainMenuItem extends React.Component<any, any> {
   hiddenChildren = () => {
     this.setState({ showChildren: false });
   };
+
+  handleClickSecondMenuContainer = (e) => {
+    const element = e.target.parentNode.getBoundingClientRect(),
+      innerHeight = global.innerHeight,
+      space = 5,
+      childMaxHeight = innerHeight - element.y - appFooterHeight - space;
+    this.setState({childMaxHeight});
+  }; 
 
   getItem = () => {
     const {
@@ -125,6 +135,7 @@ class MainMenuItem extends React.Component<any, any> {
         data={data}
         position="right"
         hiddenChildren={this.hiddenChildren}
+        childMaxHeight={this.state.childMaxHeight}
       />
     );
   };
@@ -153,7 +164,7 @@ class MainMenuItem extends React.Component<any, any> {
           { this.getItem() }
           {
             Boolean(this.state.showChildren) && (
-              <SecondMenuContainer position={this.props.position}>
+              <SecondMenuContainer position={this.props.position} onClick={this.handleClickSecondMenuContainer}>
                 {
                   Object.entries(data.children).map(this.renderChildrenItem)
                 }

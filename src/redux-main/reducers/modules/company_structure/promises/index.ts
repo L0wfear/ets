@@ -6,7 +6,7 @@ import {
 import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 /* ------------- COMPANY_STRUCTURE ------------- */
-export const getCompanyStructure = async <F extends any = CompanyStructure>(payload = {}) => {
+export const getCompanyStructure = async <F = CompanyStructure>(payload = {}) => {
   let response = null;
 
   try {

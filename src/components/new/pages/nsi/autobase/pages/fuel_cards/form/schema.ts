@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsFuelCards } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { getRequiredFieldMessage, getRequiredFieldDateMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldMessage, getRequiredFieldDateMoreThen, getMaxLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
 import { diffDates, createValidDate, diffDatesByDays, dateInPeriod, createValidDateDots } from 'components/@next/@utils/dates/dates';
 import memoizeOne from 'memoize-one';
 import { oldestInstalledDateIndex, validateDateInsideOther, requiredOneOfDateEnd } from '../../battery_registry/form/schema';
@@ -23,9 +23,9 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
         },
       ],
     },
-    fuel_type: {
+    fuel_types: {
       title: 'Тип топлива',
-      type: 'valueOfArray',
+      type: 'multiValueOfArray',
       required: true,
     },
     company_id: {
@@ -68,13 +68,14 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                 const date_end_date = createValidDateDots(date_end);
                 const validDateEnd = createValidDate(date_end);
                 const validDateReleasedAt = createValidDate(released_at);
+                const isOneOrOldestRow = (installed_at_oldest !== installed_at_current || requiredOneOfDateEnd(fuel_card_on_cars));
 
                 return ({
                   installed_at: (
                     !d.installed_at
                       ? 'Поле "Дата с" должно быть заполнено'
                       : (
-                        validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)])
+                        validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)], false)
                           ? 'Поле "Дата с" не должно пересекаться с другими записями'
                           : (
                             !dateInPeriod(validDateReleasedAt, validDateEnd, d.installed_at, { excludeStart: false, excludeEnd: false, })
@@ -86,12 +87,12 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                       )
                   ),
                   uninstalled_at: (
-                    (!d.uninstalled_at && (installed_at_oldest !== installed_at_current || requiredOneOfDateEnd(fuel_card_on_cars)))
+                    (!d.uninstalled_at && isOneOrOldestRow)
                       ? 'Поле "Дата по" должно быть заполнено'
                       : (
                         d.uninstalled_at
                           ? (
-                            validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)])
+                            validateDateInsideOther(d, [...fuel_card_on_cars.slice(0, index), ...fuel_card_on_cars.slice(index + 1)], false)
                               ? 'Поле "Дата по" не должно пересекаться с другими записями'
                               : (
                                 diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
@@ -107,6 +108,13 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                           )
                           : ''
                       )
+                  ),
+                  decouple_reason: (
+                    (!d.decouple_reason && isOneOrOldestRow)
+                      ? getRequiredFieldMessage('Причина отвязки')
+                      : d.decouple_reason && d.decouple_reason?.length > 150
+                        ? getMaxLengthError(150)
+                        : ''
                   ),
                 });
               },

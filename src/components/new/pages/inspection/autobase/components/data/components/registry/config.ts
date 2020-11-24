@@ -10,19 +10,13 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/registry',
+        entity: 'inspect/autobase',
         payload: {
           base_id: carpoolId,
-          type: 'autobase',
         },
       },
       getBlobData: {
-        entity: 'inspect/registry',
-        payload: {
-          base_id: carpoolId,
-          type: 'autobase',
-          format: 'xls',
-        },
+        entity: 'inspection/autobase/export',
       },
     },
     registryKey,
@@ -33,7 +27,7 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
         buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.export,
+        buttonsTypes.export_filtred_data,
       ],
     },
     filter: {

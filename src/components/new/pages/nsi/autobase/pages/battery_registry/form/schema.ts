@@ -8,12 +8,15 @@ import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { FuelCard } from '../../../../../../../../redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { isNullOrUndefined } from 'util';
 
-export const validateDateInsideOther = (dates: Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>, battery_to_car: Array<Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>>) => {
-
+export const validateDateInsideOther = (
+  dates: Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>,
+  battery_to_car: Array<Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>>,
+  excludeEnd=true,
+) => {
   if (dates.installed_at && !dates.uninstalled_at) {
     return battery_to_car.some(
       ({ installed_at, uninstalled_at }) => {
-        return dateInPeriod(installed_at, uninstalled_at, dates.installed_at, { excludeStart: false, excludeEnd: true, });
+        return dateInPeriod(installed_at, uninstalled_at, dates.installed_at, { excludeStart: false, excludeEnd, });
       },
     );
   }

@@ -56,6 +56,12 @@ export const config: TypeConfigData<Company> = {
         title: 'Использование типа заправки "Налив"',
         options: YES_NO_SELECT_OPTIONS_BOOL,
       },
+      {
+        valueKey: 'fuel_cards_creating',
+        type: 'multiselect',
+        title: 'Создание топливных карт',
+        options: YES_NO_SELECT_OPTIONS_BOOL,
+      },
     ],
   },
   list: {
@@ -100,6 +106,12 @@ export const config: TypeConfigData<Company> = {
         {
           key: 'use_pouring',
           title: 'Использование типа заправки "Налив"',
+          width: 300,
+          format: 'boolean',
+        },
+        {
+          key: 'fuel_cards_creating',
+          title: 'Создание топливных карт',
           width: 300,
           format: 'boolean',
         },

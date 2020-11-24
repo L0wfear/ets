@@ -16,6 +16,7 @@ export const makeDefaultInspectContainer = (): InspectContainer => ({
     control_measuring_instruments_in_poor_condition: false,
   },
   actions: [],
+  dataForValidation: null,
 });
 
 export const getDefaultInspectContainerElement = (

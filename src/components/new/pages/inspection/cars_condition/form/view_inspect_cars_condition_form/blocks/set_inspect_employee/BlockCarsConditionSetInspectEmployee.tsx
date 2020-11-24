@@ -10,6 +10,9 @@ import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_bas
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import BlockInspectAutobaseDataFiles from './block_data_files/BlockInspectAutobaseDataFiles';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
   type: keyof typeof INSPECT_TYPE_FORM;
@@ -34,11 +37,28 @@ type BlockCarsConditionSetInspectEmployeeProps = {
 
   page: string;
   path?: string;
+  dataForValidation?: {
+    current_date: Date | string;
+    props_resolve_to: Date | string;
+  };
 };
 
 const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspectEmployeeProps> = React.memo(
   (props) => {
     const { isPermittedChangeListParams } = props;
+    const dispatch = etsUseDispatch();
+    React.useEffect(() => {
+      (async () => {
+        const current_date = await dispatch(
+          actionLoadTimeMoscow({}, { page: '' })
+        );
+        const props_resolve_to = props.resolve_to;
+        props.handleChange('dataForValidation', {
+          current_date: createValidDate(current_date.date),
+          props_resolve_to: createValidDate(props_resolve_to),
+        });
+      })();
+    }, []);
 
     return (
       <BoxContainer>

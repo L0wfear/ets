@@ -27,17 +27,12 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardElement, usefuelTypeOptions } from './utils';
-import { onChangeWithKeys } from 'components/old/compositions/hoc';
 
-import FuelCardsToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/vehicle-block/FuelCardsToVehicleBlock';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/registry-config';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-
-const FuelCardsVehicleBlock: any = onChangeWithKeys(
-  FuelCardsToVehicleBlockComponent,
-);
+import FuelCardsTabsMain from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/_FuelCardsTabsMain';
 
 export const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   gov_number: null,
@@ -50,6 +45,7 @@ export const defaultFuelCardOnCarsItem: FuelCardOnCars = {
   fuel_card_id: null,
   number: null,
   garage_number: null,
+  decouple_reason: null,
   // для таблички
   customId: null,
   isChecked: false,
@@ -108,20 +104,21 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
     
     const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
     const filteredFuelTypeOptions = usefuelTypeOptions(); // <<< сделать через отдлеьный хук DITETS20A-134, URL: /fuel_type/, /fuel_type/<id>/ | GET
-    
+    const IS_GPN_CARD = state.source_type_id === 2;
+
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
-        bsSize={'medium'}
+        bsSize={'large'}
       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Номер"
@@ -132,49 +129,61 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 disabled={!isPermitted || state.is_used_in_waybill}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
-                type="date"
-                time={true}
-                label="Дата выпуска"
-                value={state.released_at}
-                makeGoodFormat
+                type="string"
+                label="Статус"
+                value={state.status_text}
+                error={errors.status_text}
                 onChange={props.handleChange}
-                error={errors.released_at}
-                boundKeys="released_at"
-                disabled={!props.isPermitted || state.is_used_in_waybill}
+                boundKeys="status_text"
+                disabled={true}
               />
             </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
-              <ExtField
-                type="date"
-                time={true}
-                label="Дата окончания срока действия"
-                value={state.date_end}
-                makeGoodFormat
-                onChange={props.handleChange}
-                error={errors.date_end}
-                boundKeys="date_end"
-                disabled={!props.isPermitted || state.is_used_in_waybill}
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Тип топлива"
-                error={errors.fuel_type}
+                error={errors.fuel_types}
                 options={filteredFuelTypeOptions}
-                value={state.fuel_type}
+                value={state.fuel_types}
+                multi
                 onChange={props.handleChange}
-                boundKeys="fuel_type"
-                disabled={!isPermitted || state.is_used_in_waybill}
+                boundKeys="fuel_types"
+                disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Col md={4}>
+              <ExtField
+                type="date"
+                label="Дата выпуска"
+                value={state.released_at}
+                time={false}
+                makeGoodFormat
+                makeGoodFormatInitial
+                onChange={props.handleChange}
+                error={errors.released_at}
+                boundKeys="released_at"
+                disabled={!props.isPermitted || state.is_used_in_waybill || IS_GPN_CARD}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
+              <ExtField
+                type="date"
+                label="Дата окончания срока действия"
+                value={state.date_end}
+                time={false}
+                makeGoodFormat
+                makeGoodFormatInitial
+                onChange={props.handleChange}
+                error={errors.date_end}
+                boundKeys="date_end"
+                disabled={!props.isPermitted || state.is_used_in_waybill || IS_GPN_CARD}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Организация"
@@ -188,30 +197,28 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <EtsBootstrap.Col md={12}>
-                <EtsBootstrap.Row>
-                  <FuelCardsVehicleBlock
-                    id="fuel_card_on_cars_id"
-                    onChange={props.handleChange}
-                    boundKeys="fuel_card_on_cars"
-                    inputList={state.fuel_card_on_cars || []}
-                    origin_fuel_card_on_cars={state.origin_fuel_card_on_cars || []}
-                    outerValidate
-                    errors={errors.fuel_card_on_cars}
-                    fuelCardsId={state.id}
-                    selectField="customId"
-                    modalKey={page}
-                    page={page}
-                    path={path}
-                    isPermitted={isPermitted || isPermittedToUpdateCards}
-                    isPermittedToUpdateCards={isPermittedToUpdateCards}
-                    tableTitle="Привязанные транспортные средства"
-                  />
-                </EtsBootstrap.Row>
-              </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
+              <ExtField
+                type="string"
+                label="Способ создания"
+                value={state.source_type_text}
+                error={errors.source_type_text}
+                onChange={props.handleChange}
+                boundKeys="source_type_text"
+                disabled={true}
+              />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
+          <FuelCardsTabsMain
+            formErrors={errors}
+            //
+            handleChange={props.handleChange}
+            formState={state}
+            page={page}
+            path={path}
+            isPermitted={isPermitted || isPermittedToUpdateCards}
+            isPermittedToUpdateCards={isPermittedToUpdateCards}
+          />
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {

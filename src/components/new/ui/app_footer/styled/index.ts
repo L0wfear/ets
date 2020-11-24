@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+export const appFooterHeight = 30;
+
 export const AppFooterContainer = styled.footer`
   flex-shrink: 0;
   width: 100%;
@@ -8,7 +10,7 @@ export const AppFooterContainer = styled.footer`
   color: white;
   display: flex;
   justify-content: space-between;
-  line-height: 30px;
+  line-height: ${`${appFooterHeight}px`};
   color: white;
   z-index: 100; /* футер выше загрузки */
   >div {

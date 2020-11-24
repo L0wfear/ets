@@ -10,12 +10,15 @@ import DataTableInputWrapper from 'components/old/ui/table/DataTableInputWrapper
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
+import FilterButton from 'components/old/ui/table/filter/FilterButton';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTableInput> {
   state = {
     selected: null,
+    filterModalIsOpen: false,
+    isFilterActive: false,
   };
 
   handleRowSelected = (selected: IDataTableSelectedRow, rowNumber) => {
@@ -40,6 +43,30 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     });
   };
 
+  handleRemoveItemWithConfirm = async () => {
+    try {
+      await global.confirmDialog({
+        title: 'Внимание!',
+        body: 'Вы уверены, что хотите удалить запись?',
+        okName: 'Удалить',
+      });
+      this.props.onItemRemove(this.state.selected.rowNumber - 1);
+      this.setState({
+        selected: null,
+      });
+    } catch (error) {
+      //
+    }
+  };
+
+  toggleFilter = () => {
+    this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
+  };
+
+  setisFilterActive = (isFilterActive: boolean) => {
+    this.setState({ isFilterActive });
+  };
+
   buttonsDisable = () => this.props.buttonsDisable
     ? this.props.buttonsDisable(this.state.selected)
     : {
@@ -55,7 +82,6 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     const extendedRenderers: ISchemaRenderer = this.props.renderers(this.props, this.props.onItemChange);
 
     const buttonsDisable = this.buttonsDisable();
-
     return (
       <div className="date-table-input">
         <EtsHeaderContainerWrap padding={'0px'}>
@@ -65,6 +91,10 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
               {
                 !this.props.hideButtons
                   && <React.Fragment>
+                    {!!this.props.useFilter && <FilterButton
+                      active={this.state.isFilterActive}
+                      onClick={this.toggleFilter}
+                    />}
                     <EtsBootstrap.Button 
                       disabled={
                         buttonsDisable.addButtonDisable
@@ -82,7 +112,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
                         || this.props.disabled
                         || !this.props.isPermitted
                       }
-                      onClick={this.handleRemoveVehicle}
+                      onClick={this.props.removeItemWithConfirm ? this.handleRemoveItemWithConfirm : this.handleRemoveVehicle}
                     >
                       {removeButtonLable}
                     </EtsBootstrap.Button>
@@ -99,10 +129,16 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
           renderers={extendedRenderers}
           selectField={this.props.selectField || 'rowNumber'}
           selected={this.state.selected}
-          noFilter
-          usePagination={false}
+          noFilter={!this.props.useFilter}
+          useFilter={!!this.props.useFilter}
+          usePagination={!!this.props.usePagination}
+          withPerPageSelector={!!this.props.withPerPageSelector}
           enumerated={false}
           enableSort={false}
+          filterModalIsOpen={this.state.filterModalIsOpen}
+          isFilterActive={this.state.isFilterActive}
+          toggleFilter={this.toggleFilter}
+          setisFilterActive={this.setisFilterActive}
         />
       </div>
     );

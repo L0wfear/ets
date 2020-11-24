@@ -46,6 +46,8 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 import ButtonAddNewRowTable from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonAddNewRowTable';
 import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardToArchive';
 import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
+import ButtonFuelCardCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardCreate';
+import ButtonRefillExport from './button-by-type/refill/ButtonRefillExport';
 
 type Props = CommonTypesForButton;
 
@@ -72,6 +74,7 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
   [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
   [buttonsTypes.waybill_print]: ButtonWaybillExport,
+  [buttonsTypes.refill_print]: ButtonRefillExport,
   [buttonsTypes.edc_request_create_mission]: ButtonCreateMissionByEdcRequest,
   [buttonsTypes.edc_request_create_duty_mission]: ButtonCreateDutyMissionByEdcRequest,
   [buttonsTypes.edc_request_reject]: ButtonRejectEdcRequest,
@@ -95,6 +98,7 @@ const buttonComponents: AllButtons = {
 
   [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
   [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
+  [buttonsTypes.fuel_card_create]: ButtonFuelCardCreate,
 };
 
 const ComponentButton: React.FC<Props> = (props) => {

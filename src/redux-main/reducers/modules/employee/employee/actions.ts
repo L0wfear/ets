@@ -14,6 +14,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EmployeeBindedToCar } from 'components/new/utils/context/loading/@types/by_service/employee_binded_to_car';
+import { promiseGetLayoffReasonList } from '../promises';
 
 /* ---------- Employee ---------- */
 export const employeeEmployeeSetEmployee = (employeeList: IStateEmployee['employeeList'], employeeIndex: IStateEmployee['employeeIndex']): EtsAction<EtsActionReturnType<typeof employeeSetNewData>> => (dispatch) => (
@@ -115,3 +116,11 @@ export const employeeRemoveEmployee = (id: Employee['id'], meta: LoadingMeta): E
     meta,
   );
 };
+
+export const actionGetLayoffReasonList = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetLayoffReasonList>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetLayoffReasonList(),
+    meta,
+  )
+);

@@ -32,6 +32,10 @@ export const SpanRed = styled.span`
   color: ${UiConstants.colorError};
 `;
 
+export const ParagraphRed = styled.p`
+  color: ${UiConstants.colorError};
+`;
+
 export const ColorSpan = styled.span<{ color: string; }>`
   color: ${({ color }) => color};
 `;

@@ -4,6 +4,7 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
 import { INSPECT_TYPE_FORM } from '../../global_constants';
 import { getRequiredFieldMoreEqualThen } from 'components/@next/@utils/getErrorString/getErrorString';
+import { validateResolveToField } from '../../../common/utils';
 
 const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWithForm> = {
   properties: {
@@ -220,6 +221,9 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
     resolve_to: {
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+      dependencies: [
+        (value, {dataForValidation, status}) => validateResolveToField(value, dataForValidation, status)
+      ]
     },
   },
 };

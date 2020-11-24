@@ -5,6 +5,7 @@ import Div from 'components/old/ui/Div';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
@@ -28,10 +29,12 @@ const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
     const {
       error,
+      warning,
       label = '',
       modalKey,
       isLoading,
       inline,
+      dashIfEmpty,
       ...mainProps
     } = props;
 
@@ -67,7 +70,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       [props.onChange, toUpperCase, value],
     );
 
-    const inputClassName = cx({ 'has-error': error });
+    const inputClassName = cx({ 'has-error': error || warning });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;
@@ -92,6 +95,10 @@ const StringField: React.FC<ExtFieldString> = React.memo(
 
     if (value === undefined || value === null) {
       value = '';
+    }
+
+    if (value === '' && dashIfEmpty) {
+      value = '-';
     }
     const showError = typeof error === 'boolean' ? error : true;
 
@@ -143,6 +150,9 @@ const StringField: React.FC<ExtFieldString> = React.memo(
             }
           </StringFieldWrapperStyled>
         </div>
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           showError={showError}
           hidden={!error}

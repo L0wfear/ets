@@ -10,6 +10,16 @@ import { validate } from 'components/old/ui/form/new/validate';
 const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
 
+type State = {
+  formState: any;
+  formErrors: Record<string, any>;
+  canSave: any;
+  canPrint: any;
+  saveButtonLabel: any;
+  saveButtonEnability: any;
+  [k: string]: any;
+};
+
 /**
  * UNSAFE_FormWrap базовый класс хранения и работы с состоянием формы
  * @validate валидация состояния формы в соответствии со схемой (this.schema обязателен)
@@ -18,7 +28,7 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @render дефолтный, обязательно переопределяется
  */
 @FluxContext
-class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
+class FormWrap<P extends Record<string, any>, S extends State> extends React.Component<P, S> {
   defaultElement: any;
   schema: any;
   uniqueField: string;

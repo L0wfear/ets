@@ -1,11 +1,9 @@
 import { InspectPgmBase } from './@types/inspect_pgm_base';
-import {
-  promiseGetInspectRegistry,
-  promiseCreateInspection,
-  promiseGetInspectionByIdType,
-} from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy, cloneDeep } from 'lodash';
 import { isNullOrUndefined } from 'util';
+import { InspectPgmBaseService } from 'api/Services';
+import { InspectAutobase } from '../autobase/@types/inspect_autobase';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   lack_traffic_scheme_at_entrance: false,
@@ -60,15 +58,17 @@ const makeInspectPgmBase = (inspect: any): InspectPgmBase => {
   return inspectAutobase;
 };
 
-export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number; }) => {
-  const response = await promiseGetInspectRegistry<InspectPgmBase>({
-    base_id: payload.pgmBaseId,
-    type: 'pgm_base',
-  });
+export const promiseGetInspectPgmBase = async (payload: { base_id: number; }) => {
+  let response = null;
+  try {
+    response = await InspectPgmBaseService.get({
+      base_id: payload.base_id,
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  const data: Array<InspectPgmBase> = response.data.map((inspectPgmBase: InspectPgmBase) => {
-    return makeInspectPgmBase(inspectPgmBase);
-  }).sort((a, b) => a.id - b.id);
+  const data: Array<InspectPgmBase> = get(response, ['result', 'rows'], []);
 
   return {
     data,
@@ -80,9 +80,16 @@ export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number; }) 
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectPgmBaseById = async (id: number) => {
-  let inspectPgmBase: InspectPgmBase = await promiseGetInspectionByIdType(
-    id,
-  );
+  let response = null;
+  try {
+    response = await InspectPgmBaseService.path(id).get(
+      {},
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  let inspectPgmBase: InspectPgmBase = get(response, 'result.rows.0', null);
 
   if (inspectPgmBase) {
     inspectPgmBase = makeInspectPgmBase(inspectPgmBase);
@@ -91,16 +98,38 @@ export const promiseGetInspectPgmBaseById = async (id: number) => {
   return inspectPgmBase;
 };
 
-export const promiseCreateInspectionPgmBase = async (payload: { pgmBaseId: number; companyId: number; }) => {
-  let inspectPgmBase: InspectPgmBase = await promiseCreateInspection({
-    base_id: payload.pgmBaseId,
-    company_id: payload.companyId,
-    type: 'pgm_base',
-  });
+export const promiseCreateInspectionPgmBase = async (payload: { base_id: number; companyId: number; }) => {
+  const response = await InspectPgmBaseService.path(payload.base_id).post(
+    { ...payload },
+    false,
+    'json',
+  );
+  let inspectPgmBase = get(response, 'result.rows.0', null);
 
   if (inspectPgmBase) {
     inspectPgmBase = makeInspectPgmBase(inspectPgmBase);
   }
+
+  return inspectPgmBase;
+};
+
+export const promiseUpdateInspectionPgmBase = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
+  const newPayload = {
+    ...payload,
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
+  };
+
+  const response = await InspectPgmBaseService.path(id).put(
+    {
+      ...newPayload,
+      data,
+      files,
+    },
+    false,
+    'json',
+  );
+
+  const inspectPgmBase = get(response, 'result.rows.0', null);
 
   return inspectPgmBase;
 };

@@ -11,7 +11,7 @@ import { orderTechnicaOperationRegistryKey } from 'components/new/pages/nsi/orde
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { lighten } from 'polished';
 
-export const getColorTd = <F extends any>(rowData: F, checkData: Record<string, F>, registryKey: string) => {
+export const getColorTd = <F extends Record<string, any>>(rowData: F, checkData: Record<string, F>, registryKey: string) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
     return constantColor.orange;
   }

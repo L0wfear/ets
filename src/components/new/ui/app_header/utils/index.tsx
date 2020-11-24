@@ -49,7 +49,7 @@ export const checkShow: CheckShowFunc = (data, userData) => {
   return isShow;
 };
 
-export const showHeaderMenu = <OwnProps extends any>(Component: React.ComponentType<OwnProps>) => {
+export const showHeaderMenu = <OwnProps extends Record<string, any>>(Component: React.ComponentType<OwnProps>) => {
   const ShowHeaderMenuContainer: React.FC<OwnProps> = React.memo(
     (props) => {
       const userData = etsUseSelector(

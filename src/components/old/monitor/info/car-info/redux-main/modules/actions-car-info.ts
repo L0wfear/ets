@@ -194,19 +194,23 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
   dispatch(carInfoResetMissionsAndWaybillsData());
 
   let result = null;
-  result = await dispatch(
-    actionGetCarMissionsAndWaybillsByTimestamp(
-      {
-        car_id: payloadData.asuods_id,
-        date_start: createValidDateTime(payloadData.date_start || date_start),
-        date_end: createValidDateTime(payloadData.date_end || date_end),
-      },
-      meta,
-    ),
-  );
+  try {
+    result = await dispatch(
+      actionGetCarMissionsAndWaybillsByTimestamp(
+        {
+          car_id: payloadData.asuods_id,
+          date_start: createValidDateTime(payloadData.date_start || date_start),
+          date_end: createValidDateTime(payloadData.date_end || date_end),
+        },
+        meta,
+      ),
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
   const monitorPage = getMonitorPageState(getState());
-  if (monitorPage && monitorPage.carInfo && monitorPage.carInfo.gps_code === payloadData.gps_code) {
+  if (result && monitorPage && monitorPage.carInfo && monitorPage.carInfo.gps_code === payloadData.gps_code) {
     dispatch({
       type: CAR_INFO_SET_MISSIONS_AND_WAYBILLS_DATA,
       payload: {

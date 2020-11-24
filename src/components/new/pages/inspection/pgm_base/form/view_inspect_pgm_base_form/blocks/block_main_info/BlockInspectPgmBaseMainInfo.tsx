@@ -8,6 +8,7 @@ import { ViewInspectPgmBaseProps } from '../../@types/ViewInspectPgmBase';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { makeDate } from 'components/@next/@utils/dates/dates';
+import { isNumValue,  isWithoutNumValue } from 'utils/functions';
 
 type BlockInspectPgmBaseMainInfoProps = {
   base_address: InspectPgmBase['base_address'];
@@ -37,24 +38,34 @@ const BlockInspectPgmBaseMainInfo: React.FC<BlockInspectPgmBaseMainInfoProps> = 
 
     const handleChangeHeadBalanceHolderBase = React.useCallback(
       (key, value) => {
-        props.onChange({
-          head_balance_holder_base: {
-            ...head_balance_holder_base,
-            [key]: get(value, 'target.value', value),
-          },
-        });
+        if (
+          (key !== 'tel' && isWithoutNumValue(value))
+            || (key === 'tel' && (!value || isNumValue(value)))
+        ) {
+          props.onChange({
+            head_balance_holder_base: {
+              ...head_balance_holder_base,
+              [key]: get(value, 'target.value', value),
+            },
+          });
+        }
       },
       [head_balance_holder_base, props.onChange],
     );
 
     const handleChangeHeadOperatingBase = React.useCallback(
       (key, value) => {
-        props.onChange({
-          head_operating_base: {
-            ...head_operating_base,
-            [key]: get(value, 'target.value', value),
-          },
-        });
+        if (
+          (key !== 'tel' && isWithoutNumValue(value))
+          || (key === 'tel' && (!value || isNumValue(value)))
+        ) {
+          props.onChange({
+            head_operating_base: {
+              ...head_operating_base,
+              [key]: get(value, 'target.value', value),
+            },
+          });
+        }
       },
       [head_operating_base, props.onChange],
     );

@@ -9,6 +9,7 @@ export type FuelCardOnCars = {
   fuel_card_id: number;
   number: string;
   garage_number: string;
+  decouple_reason: string;
 
   // для таблички
   customId?: number;
@@ -22,10 +23,12 @@ export type FuelCard = {
   id: number | null;
   number: string | null; // Поле "Номер"
   fuel_type: string | null; // Поле «Тип топлива»
+  fuel_types: Array<string>;
   company_id: number | null;
   company_name: string | null;
   company_short_name: string | null;
   company: string | null; // Организация
+  composite_id: string;
   is_used_in_waybill: boolean | null;
   is_archive: boolean;
   fuel_type_text: string | null;
@@ -39,6 +42,11 @@ export type FuelCard = {
   gov_number_text: string;
   garage_number: string;
   fuel_card_on_cars: Array<FuelCardOnCars>;
+  source_type_id: number;
+  source_type_text: string;
+  status: 'Active' | 'Locked';
+  status_text: string;
+  comment: string; // поле из синхры
   // для таблички с тачками
   origin_fuel_card_on_cars: Array<FuelCardOnCars>; // состояние таблички до редактирование
 };

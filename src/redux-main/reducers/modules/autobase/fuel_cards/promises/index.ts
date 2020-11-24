@@ -3,7 +3,7 @@ import {
 } from 'api/Services';
 import { get } from 'lodash';
 import { FuelCard } from '../@types/fuelcards.h';
-import { createValidDateTime, createValidDate } from '../../../../../../components/@next/@utils/dates/dates';
+import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 export const createFuelCard = async (rawFuelCard): Promise<FuelCard> => {
   const payload = {
@@ -11,10 +11,11 @@ export const createFuelCard = async (rawFuelCard): Promise<FuelCard> => {
     fuel_card_on_cars: get(rawFuelCard, 'fuel_card_on_cars', []).map((item) => ({
       ...item,
       car_id: item.car_id,
-      installed_at: createValidDate(item.installed_at),
-      uninstalled_at: createValidDate(item.uninstalled_at),
+      installed_at: createValidDateTime(item.installed_at),
+      uninstalled_at: createValidDateTime(item.uninstalled_at),
     })),
-    released_at: createValidDateTime(rawFuelCard.released_at),
+    released_at: createValidDate(rawFuelCard.released_at),
+    date_end: createValidDate(rawFuelCard.date_end),
   };
 
   const response = await FuelCardsService.post(
@@ -36,9 +37,11 @@ export const updateFuelCard = async (fuelCards): Promise<FuelCard> => {
     fuel_card_on_cars: get(fuelCards, 'fuel_card_on_cars', []).map((item) => ({
       ...item,
       car_id: item.car_id,
-      installed_at: createValidDate(item.installed_at),
-      uninstalled_at: createValidDate(item.uninstalled_at),
+      installed_at: createValidDateTime(item.installed_at),
+      uninstalled_at: createValidDateTime(item.uninstalled_at),
     })),
+    released_at: createValidDate(fuelCards?.released_at),
+    date_end: createValidDate(fuelCards?.date_end),
   };
 
   const response = await FuelCardsService.path(fuelCards.id).put(

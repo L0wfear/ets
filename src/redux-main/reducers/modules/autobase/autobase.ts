@@ -27,6 +27,7 @@ export const autobaseInitialState: IStateAutobase = {
   techMaintOrderList: [],
   techMaintTypeList: [],
   measureUnitRunList: [],
+  tachographPeriodicVerificationList: [],
   tireModelList: [],
   tireManufacturerList: [],
   tireList: [],
@@ -51,6 +52,15 @@ export const autobaseInitialState: IStateAutobase = {
   fuelTypeList: [],
   typesAttrList: [],
   penaltyList: [],
+  tachographList: [],
+  tachographRepairList: [],
+  tachographRepairReasonList: [],
+  tachographMetrologicalVerificationList: [],
+  tachographDataReadingList: [],
+  tachographReplacementSkziList: [],
+  tachographBrandList: [],
+  tachographReplacementSkziReasonList: [],
+  refillList: [],
 };
 
 export default (state = autobaseInitialState, { type, payload }) => {

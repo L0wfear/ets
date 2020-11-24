@@ -58,7 +58,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
         const partialFuelCard: Partial<FuelCard> = {};
         if (showStatus) {
           partialFuelCard.structure_id = props.structure_id;
-          partialFuelCard.fuel_type = props.fuel_type;
+          partialFuelCard.fuel_types = [props.fuel_type];
           partialFuelCard.fuel_card_on_cars = props.fuel_card_on_cars;
         }
 

@@ -968,9 +968,18 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   handleDiff = (percent, formState) => {
-    const equipmentFuelEnd = formState.equipment_fuel_end ? parseFloat(formState.equipment_fuel_end) : 0;
-    const equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
-    const equipmentTaxConsumption = formState.equipment_tax_consumption ? parseFloat(formState.equipment_tax_consumption) : 0;
+    const equipmentFuelEnd
+      = formState.equipment_fuel && formState.equipment_fuel_end
+        ? parseFloat(formState.equipment_fuel_end)
+        : 0;
+    const equipmentFuelGiven
+      = formState.equipment_fuel && formState.equipment_fuel_given
+        ? parseFloat(formState.equipment_fuel_given)
+        : 0;
+    const equipmentTaxConsumption
+      = formState.equipment_fuel && formState.equipment_tax_consumption
+        ? parseFloat(formState.equipment_tax_consumption)
+        : 0;
 
     const hasDiff = {
       isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given + equipmentFuelGiven, percent),

@@ -968,17 +968,15 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   handleDiff = (percent, formState) => {
+    const equipmentFuelEnd = formState.equipment_fuel_end ? parseFloat(formState.equipment_fuel_end) : 0;
+    const equipmentFuelGiven = formState.equipment_fuel_given ? parseFloat(formState.equipment_fuel_given) : 0;
+    const equipmentTaxConsumption = formState.equipment_tax_consumption ? parseFloat(formState.equipment_tax_consumption) : 0;
+
     const hasDiff = {
-      isDiffSensorRefill: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_refill, formState.fuel_given + formState.equipment_fuel_given, percent)
-        : false,
-      isDiffSensorConsumption: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + formState.equipment_tax_consumption, percent)
-        : false,
-      isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
-        : false,
-      isDiffFuelEnd: Boolean(formState.diff_consumption < formState.fuel_end),
+      isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given + equipmentFuelGiven, percent),
+      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + equipmentTaxConsumption, percent),
+      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + equipmentFuelEnd, percent),
+      isDiffFuelEnd: Boolean(formState.fact_fuel_end < formState.fuel_end),
     };
 
     return hasDiff;
@@ -1278,8 +1276,11 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffFuelEnd) && (<ParagraphRed>Зафиксирован перерасход топлива на {formState.diff_consumption.toString().replace('.', ',')} л.</ParagraphRed>)}
-              <p>Закрывая форму путевого листа, вы подтверждаете разницу.</p>
-              <br />
+              {
+                Boolean(Object.values(isDiff).some(
+                  (elem) => elem === true)
+                ) && <p>Закрывая форму путевого листа, вы подтверждаете разницу.<br /></p>
+              }
               <p>Вы уверены, что хотите закрыть ПЛ?</p>
             </div>
           );

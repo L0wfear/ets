@@ -69,6 +69,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                 const validDateEnd = createValidDate(date_end);
                 const validDateReleasedAt = createValidDate(released_at);
                 const isOneOrOldestRow = (installed_at_oldest !== installed_at_current || requiredOneOfDateEnd(fuel_card_on_cars));
+                const validUninstalledAt = createValidDate(d.uninstalled_at);
 
                 return ({
                   installed_at: (
@@ -98,7 +99,7 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
                                 diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                   ? 'Поле "Дата по" должна быть позже "Дата c"'
                                   : (
-                                    !dateInPeriod(validDateReleasedAt, validDateEnd, d.uninstalled_at, { excludeStart: false, excludeEnd: false, })
+                                    !dateInPeriod(validDateReleasedAt, validDateEnd, validUninstalledAt, { excludeStart: false, excludeEnd: false, })
                                       ? (!released_at_date || !date_end_date)
                                         ? '«Дата по» должна входить в период действия карты'  
                                         : `"Дата по" должна входить в период с ${released_at_date} по ${date_end_date}`

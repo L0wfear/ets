@@ -20,6 +20,7 @@ export const getToConfig = (): TypeConfigData<StateProgram> => {
     header: {
       title: 'Справочник государственных программ ремонта',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

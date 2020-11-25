@@ -33,6 +33,7 @@ export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<Cleanin
       title: 'Показатели для расчета эффективности работы бригад',
       format: 'select_odh/dt',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

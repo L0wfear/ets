@@ -24,6 +24,7 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
       title: 'Реестр тахографов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

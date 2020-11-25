@@ -23,6 +23,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
       titlePopover: 'Реестр формируется на основе данных, полученных в рамках интеграции с топливной компании.',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.refill_print,

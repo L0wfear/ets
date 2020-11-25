@@ -23,6 +23,7 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
       title: 'Реестр периодических поверок тахографов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

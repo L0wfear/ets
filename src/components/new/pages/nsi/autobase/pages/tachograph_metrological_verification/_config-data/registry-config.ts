@@ -22,6 +22,7 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
       title: 'Реестр метрологических поверок тахографов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

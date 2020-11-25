@@ -20,6 +20,7 @@ export const config: TypeConfigData<EdcRequest> = {
   header: {
     title: 'Реестр заявок',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.edc_request_create_mission,
       buttonsTypes.edc_request_create_duty_mission,

@@ -32,6 +32,7 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
     header: {
       title: 'Справочник расходных материалов',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

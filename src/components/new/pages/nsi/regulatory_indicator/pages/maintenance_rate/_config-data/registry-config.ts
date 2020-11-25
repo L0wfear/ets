@@ -31,6 +31,7 @@ export const getToConfig = (): TypeConfigData<MaintenanceRate> => {
       title: 'Нормы на содержание объектов',
       format: 'select_odh/dt(disabled)',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

@@ -285,7 +285,11 @@ export const config: TypeConfigData<Employee> = {
           key: 'layoff_reason_name',
           title: 'Основание увольнения',
           width: 150,
-
+        },
+        {
+          key: 'comment',
+          title: 'Комментарий',
+          width: 150,
         },
         {
           key: 'phone',

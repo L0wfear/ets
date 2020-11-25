@@ -242,8 +242,8 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       title: 'Комментарий',
       type: 'valueOfArray',
       dependencies: [
-        (value, {layoff_reason_id}) => {
-          if (!value && layoff_reason_id === 31) {
+        (value, { layoff_reason_id, active }) => {
+          if (!value && !active) {
             return 'Поле «Комментарий» должно быть заполнено';
           }
         }

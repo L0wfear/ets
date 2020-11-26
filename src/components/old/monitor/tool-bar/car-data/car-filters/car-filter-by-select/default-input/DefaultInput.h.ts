@@ -10,6 +10,8 @@ export type PropsDefaultInput = {
   changeFilter: any;
   OPTIONS: Array<IReactSelectOption>;
   placeholder: string;
+  portal?: boolean;
   type: DefaultInputTypes;
   setRefreshCheckBoxFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsClickMenu?: React.Dispatch<React.SetStateAction<boolean>>;
 };

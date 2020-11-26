@@ -50,6 +50,7 @@ export type TypeFieldsAvalibaleKey<F> = (
   | 'show_file_list'
   | 'show_edc_comments'
   | 'showCarOnMap'
+  | 'files'
 );
 
 export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | Array<DisplayIfTitle>> = (
@@ -112,7 +113,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';
@@ -216,6 +217,8 @@ export type OneRegistryData<F = any> = {
       objectExtra: Record<string, any>; // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
+      uniqKeyForSelect?: Extract<keyof F, string>;
+      disableDoubleClick?: boolean; 
       uniqKeyForParams: string;
       selectedRow: F;
       checkedRows: Record<Extract<keyof F, string>, F>;
@@ -223,6 +226,9 @@ export type OneRegistryData<F = any> = {
       proxyCheckData?: (
         'mission_template'
       );
+      uniqKeyType?: 'string' | 'number';
+      withoutWithSearch?: boolean;
+      isOpen: boolean;
     };
     permissions: {
       list: Parameters<typeof validatePermissions>[0];

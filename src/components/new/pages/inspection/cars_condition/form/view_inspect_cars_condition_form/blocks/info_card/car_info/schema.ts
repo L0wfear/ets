@@ -3,6 +3,7 @@ import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import { getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const isNewRow = (formState) => {
   return Boolean(get(formState, 'isNewRow', null));
@@ -176,7 +177,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
     },
     vin_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный VIN:',
       dependenciesDisable: [
         (_, formState) => {
@@ -213,7 +214,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
     },
     factory_number_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный заводской номер:',
       dependenciesDisable: [
         (_, formState) => {
@@ -253,15 +254,46 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       integer: true,
       minNotEqual: -1,
       required: true,
+      dependencies: [
+        (value, {dataForValidation}) => {
+          const current_year = new Date(dataForValidation?.current_date_timestamp).getFullYear();
+          if (
+            value
+            && current_year
+            && +value > +current_year
+          ) {
+            return 'Год выпуска не может быть больше текущего';
+          }
+        }
+      ]
     },
     registration_date: {
       type: 'date',
       title: 'Дата регистрации',
+      dependencies: [
+        (value, { manufactured_at }) => {
+          const regYear = new Date(value).getFullYear();
+          if (+regYear < +manufactured_at) {
+            return 'Год регистрации не может быть меньше года выпуска';
+          }
+        }
+      ]
     },
     exploitation_date_start: {
       type: 'date',
       title: 'Дата начала эксплуатации',
       required: true,
+      dependencies: [
+        (value, { manufactured_at, registration_date }) => {
+          const exploitStartYear = new Date(value).getFullYear();
+          if (
+            (manufactured_at && +exploitStartYear < +manufactured_at)
+            || (registration_date && diffDates(createValidDate(value), createValidDate(registration_date)) < 0)
+          ) {
+            return 'Дата начала эксплуатации не может быть меньше года выпуска или даты регистрации';
+          }
+        }
+      ]
     },
     odometr_fact: {
       type: 'number',
@@ -334,6 +366,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'string',
       title: 'Номер диагностической карты',
       required: true,
+      maxLength: 20,
     },
     diagnostic_card_finished_at: {
       type: 'date',
@@ -343,25 +376,97 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     last_tech_inspection_date: {
       type: 'date',
       title: 'Дата прохождения последнего ТО шасси',
+      dependencies: [
+        (value, {dataForValidation, manufactured_at}) => {
+          const date = createValidDate(value);
+          const year = new Date(value).getFullYear();
+          const current_date = createValidDate(new Date(dataForValidation?.current_date_timestamp));
+          if (value && current_date && diffDates(date, current_date) > 0) {
+            return 'Дата последнего ТО не может быть больше текущей';
+          }
+          if (value && +year < +manufactured_at) {
+            return 'Дата прохождения последнего ТО не может быть раньше года выпуска ТС';
+          }
+        }
+      ]
     },
     last_inspection_equipment: {
       type: 'date',
       title: 'Дата прохождения последнего ТО спецоборудования',
+      dependencies: [
+        (value, {dataForValidation, manufactured_at}) => {
+          const date = createValidDate(value);
+          const year = new Date(value).getFullYear();
+          const current_date = createValidDate(new Date(dataForValidation?.current_date_timestamp));
+          if (value && current_date && diffDates(date, current_date) > 0) {
+            return 'Дата последнего ТО не может быть больше текущей';
+          }
+          if (value && +year < +manufactured_at) {
+            return 'Дата прохождения последнего ТО не может быть раньше года выпуска ТС';
+          }
+        }
+      ]
+    },
+    last_repair_date: {
+      type: 'date',
+      title: 'Дата проведения последнего ремонта',
+      dependencies: [
+        (value, {dataForValidation, manufactured_at}) => {
+          const date = createValidDate(value);
+          const year = new Date(value).getFullYear();
+          const current_date = createValidDate(new Date(dataForValidation?.current_date_timestamp));
+          if (value && current_date && diffDates(date, current_date) > 0) {
+            return 'Дата последнего ремонта не может быть больше текущей';
+          }
+          if (value && +year < +manufactured_at) {
+            return 'Дата прохождения последнего ремонта не может быть раньше года выпуска ТС';
+          }
+        }
+      ]
     },
     mileage: {
       type: 'number',
       title: 'Пробег на дату проведения проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Пробег на дату проведения проверки" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     motohours: {
       type: 'number',
       title: 'Наработка м/ч на дату проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Наработка м/ч на дату проверки" должно быть неотрицательным числом';
+          }
+        }
+      ],
     },
     fact_status: {
       type: 'valueOfArray',
       title: 'Фактический статус ТС',
       required: true,
+    },
+    repair_from_date: {
+      type: 'date',
+      title: 'В ремонте с даты',
+      dependencies: [
+        (value, {dataForValidation, manufactured_at}) => {
+          const date = createValidDate(value);
+          const year = new Date(value).getFullYear();
+          const current_date = createValidDate(new Date(dataForValidation?.current_date_timestamp));
+          if (value && current_date && diffDates(date, current_date) > 0) {
+            return 'Дата начала ремонта не может быть больше текущей';
+          }
+          if (value && +year < +manufactured_at) {
+            return 'Дата начала ремонта не может быть раньше года выпуска';
+          }
+        }
+      ]
     },
     status_at_check: {
       type: 'valueOfArray',

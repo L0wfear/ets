@@ -16,7 +16,7 @@ import {
   getWarningNotification,
   getServerErrorNotification,
 } from 'utils/notifications';
-import { diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 
 import {
   checkDateMission,
@@ -115,6 +115,8 @@ import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement, electricalDefaultElement, defaultRefillObj, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
 import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
+import RefillFuelCompany from 'components/old/waybill/RefillFuelCompany';
+import { actionGetAndSetInStoreRefillFuelCompany, actionResetRefillFuelCompany } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/actions';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -267,6 +269,7 @@ type OwnProps = {
   setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
   setTotalValueError?: (key: string, totalValueError: boolean) => void;
   formErrors: Record<string, any>;
+  formWarnings: Record<string, any>;
   entity: string;
   isPermittedByKey: {
     update: boolean;
@@ -278,6 +281,7 @@ type OwnProps = {
   canClose: boolean;
   canSave: boolean;
   usePouring?: boolean;
+  fuelCardsCreating?: boolean;
 
   page: string;
   path?: string;
@@ -406,6 +410,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         )
       ) {
         this.getCarDistance(nextFormState);
+        this.getRefillFuelCompany(nextFormState);
         this.getMissionsByCarAndDates(
           nextFormState,
           oldFormState.car_id,
@@ -694,6 +699,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
+      this.getRefillFuelCompany(formState);
 
       const currentSeason = this.props.formState.season;
 
@@ -917,6 +923,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
   componentWillUnmount() {
     this.props.dispatch(autobaseResetSetCar());
+    this.props.dispatch(actionResetRefillFuelCompany());
   }
 
   handlePlanDepartureDates = (field, value) => {
@@ -1193,6 +1200,48 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           sensor_leak: false,
           sensor_refill: false,
         },
+      });
+    }
+  };
+
+  getRefillFuelCompany = (formState) => {
+    const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
+
+    if (
+      diffDates(
+        formState.fact_arrival_date,
+        formState.fact_departure_date,
+        'days',
+      ) > 3
+    ) {
+      this.setState({ tooLongFactDates: true });
+      return;
+    }
+    
+    // Если ПЛ закрыт,то ничего не получаем
+    if (formState.status !== 'active' || isElectricalKind) {
+      this.setState({ tooLongFactDates: false });
+      return;
+    }
+
+    const { fact_departure_date, fact_arrival_date } = formState;
+    if (
+      formState.car_id
+      && fact_departure_date
+      && fact_arrival_date
+      && diffDates(fact_arrival_date, fact_departure_date) > 0
+    ) {
+      this.props.dispatch(
+        actionGetAndSetInStoreRefillFuelCompany({
+          car_id: formState.car_id,
+          fact_departure_date: createValidDateTime(fact_departure_date),
+          fact_arrival_date: createValidDateTime(fact_arrival_date),
+        }, this.props,)
+      ).then(({ refills, rrn_codes, }) => {
+        this.props.handleMultipleChange({
+          refills,
+          rrn_codes,
+        });
       });
     }
   };
@@ -2082,6 +2131,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const {
       formState: state,
       formErrors: errors,
+      formWarnings: warnings,
       entity,
       carList,
       carIndex,
@@ -2096,6 +2146,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       userStructureId,
       reasonListOptions,
       usePouring,
+      fuelCardsCreating,
     } = this.props;
 
     const workModeOptions = workModeList.map(
@@ -2854,7 +2905,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 boundKeys="odometr_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
@@ -2894,7 +2945,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="select"
                               label="Причина"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               options={reasonListOptions}
@@ -2910,7 +2962,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="odometr"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type) ) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type) )
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_odometr && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['odometr_end']))
                               }
                               value={odometrFiles}
@@ -2934,11 +2987,12 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                                 }
+                                format="toFixed1"
                                 onChange={this.handleChange}
                                 boundKeys="motohours_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
@@ -2957,6 +3011,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 || (!isPermittedByKey.update
                                   && !isPermittedByKey.departure_and_arrival_values)
                               }
+                              format="toFixed1"
                               onChange={this.handleChange}
                               boundKeys="motohours_end"
                             />
@@ -2967,6 +3022,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               label="Пробег, м/ч"
                               value={state.motohours_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              format="toFixed1"
                               disabled
                             />
                           </EtsBootstrap.Col>
@@ -2982,7 +3038,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               value={state.motohours_reason_id}
                               error={errors.motohours_reason_id}
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               clearable={false}
@@ -2995,7 +3052,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="motohours"
                               disabled={
-                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type)) || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || (IS_ACTIVE && isNullOrUndefined(state.fuel_type) && isNullOrUndefined(state.gas_fuel_type))
+                                || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_end']))
                               }
                               value={motohoursFiles}
@@ -3029,7 +3087,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                         waybillState={this.state}
                         waybillFormState={state}
                         use_pouring={usePouring}
+                        fuel_cards_creating={fuelCardsCreating}
                         errors={errors}
+                        warnings={warnings}
                         waybillStatus={{
                           IS_CREATING,
                           IS_ACTIVE,
@@ -3065,6 +3125,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3106,6 +3167,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                           waybillState={this.state}
                           waybillFormState={state}
                           use_pouring={usePouring && !this.state.isGasKind}
+                          fuel_cards_creating={fuelCardsCreating}
                           errors={errors}
                           waybillStatus={{
                             IS_CREATING,
@@ -3174,11 +3236,12 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   IS_DELETE || IS_CLOSED || !isPermittedByKey.update
                                   || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                                 }
+                                format="toFixed1"
                                 onChange={this.handleChange}
                                 boundKeys="motohours_equip_start"
                                 showBtn={(IS_ACTIVE || IS_DRAFT || isPermittedByKey.update) && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))}
                                 btnProps={{
-                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update && !isPermittedByKey.change_departure),
+                                  disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',
@@ -3195,6 +3258,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               disabled={(IS_DELETE || IS_CLOSED && !this.state.canEditIfClose)
                                 || (!isPermittedByKey.update && !isPermittedByKey.departure_and_arrival_values)}
                               onChange={this.handleChange}
+                              format="toFixed1"
                               boundKeys="motohours_equip_end"
                             />
                             <ExtField
@@ -3203,6 +3267,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               label="Пробег, м/ч"
                               value={state.motohours_equip_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              format="toFixed1"
                               disabled
                             />
                           </EtsBootstrap.Col>
@@ -3217,7 +3282,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               value={state.motohours_equip_reason_id}
                               error={errors.motohours_equip_reason_id}
                               disabled={
-                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               clearable={false}
@@ -3230,7 +3295,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               type="file"
                               kind="motohours_equip"
                               disabled={
-                                IS_DELETE || IS_CLOSED || !isPermittedByKey.update
+                                IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure)
                                 || !state.is_edited_motohours_equip && Boolean(lastWaybill && !isNullOrUndefined(lastWaybill['motohours_equip_end']))
                               }
                               value={motohoursEquipFiles}
@@ -3386,6 +3451,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               handleChange={this.handleChangeEquipmentRefill}
                               defaultHandleChange={this.handleChange}
                               use_pouring={usePouring}
+                              fuel_cards_creating={fuelCardsCreating}
                               fuel_given={state.equipment_fuel_given}
                               structure_id={state.structure_id}
                               fuel_type={state.equipment_fuel_type}
@@ -3450,6 +3516,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 </EtsBootstrap.Row>
               </React.Fragment>
             )}
+            {/* refilll start */}
+            {
+              Boolean((IS_ACTIVE && !IS_DELETE || IS_CLOSED) && !isElectricalKind) && (
+                <RefillFuelCompany
+                  refills={state.refills || []}
+                />
+              )}
+            {/* refilll end */}
           </Div>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>

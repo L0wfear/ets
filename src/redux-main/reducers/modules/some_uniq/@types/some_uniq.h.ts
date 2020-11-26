@@ -25,6 +25,7 @@ import { CleaningRatePropertie } from 'redux-main/reducers/modules/some_uniq/pro
 import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@types';
 import { EngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/@types';
 import { SelectedMissionsList } from 'redux-main/reducers/modules/some_uniq/waybill/@types';
+import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -92,4 +93,5 @@ export type IStateSomeUniq = {
   engineKindList: Array<EngineKind>;
 
   selectedMissionsList: Array<SelectedMissionsList>;
+  refillFuelCompany: OneRefillFuelCompanyData;
 };

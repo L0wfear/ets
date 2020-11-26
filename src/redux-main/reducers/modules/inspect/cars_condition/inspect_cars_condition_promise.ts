@@ -1,35 +1,33 @@
 import { InspectCarsCondition, CarsConditionCars } from './@types/inspect_cars_condition';
-import {
-  promiseGetInspectRegistry,
-  promiseCreateInspection,
-  promiseGetInspectionByIdType,
-} from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService, } from 'api/Services';
+import { InspectCarsConditionService, InspectCarsService, } from 'api/Services';
 import { defaultInspectCarsCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 import { isNullOrUndefined } from 'util';
+import { InspectAutobase } from '../autobase/@types/inspect_autobase';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
-  fio: '',
-  tel: '',
+  fio: null,
+  tel: null,
 };
 // дефолтное значение для "Лицо, ответственное"
 const default_head_operating_base: InspectCarsCondition['head_operating_base'] = {
-  fio: '',
-  tel: '',
+  fio: null,
+  tel: null,
 };
 const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars_check'] = {
-  order_issued_at: '',
-  order_number: '',
-  master_plan_approved: '',
-  named_plan_approved: '',
+  order_issued_at: null,
+  order_number: null,
+  master_plan_approved: null,
+  named_plan_approved: null,
   no_order: false,
-  planned_target: '',
-  statements_defects_issued: '',
-  statements_defects_not_issued_cnt: '',
-  drawbacks_eliminated: '',
-  drawbacks_new: '',
+  planned_target: null,
+  statements_defects_issued: null,
+  statements_defects_not_issued_cnt: null,
+  drawbacks_eliminated: null,
+  drawbacks_new: null,
+  dataForValidation: null,
 };
 const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_drivers: null,
@@ -39,10 +37,10 @@ const default_headcount: InspectCarsCondition['data']['headcount'] = {
 };
 
 const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
-  waybill_issue_log_exists: '',
-  waybill_issue_log_used: '',
-  comment: '',
-  comment_detected: '',
+  waybill_issue_log_exists: null,
+  waybill_issue_log_used: null,
+  comment: null,
+  comment_detected: null,
 };
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
@@ -110,13 +108,18 @@ export const makeInspectCarsConditionExtendedFront = (elem) => { // Перено
   }
 };
 
-export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number; }) => {
-  const response = await promiseGetInspectRegistry<InspectCarsCondition>({
-    base_id: payload.carsConditionId,
-    type: 'cars_condition',
-  });
+export const promiseGetInspectCarsCondition = async (payload: { company_id: number; }) => {
+  let response = null;
+  try {
+    response = await InspectCarsConditionService.get({
+      company_id: payload.company_id,
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  const data: Array<InspectCarsCondition> = response.data;
+  const data: Array<InspectCarsCondition> = get(response, ['result', 'rows'], []);
+
   return {
     data,
     dataIndex: keyBy(data, 'id'),
@@ -127,20 +130,37 @@ export const promiseGetInspectCarsCondition = async (payload: { carsConditionId:
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectCarsConditionById = async (id: number) => {
-  const inspectCarsCondition: InspectCarsCondition = await promiseGetInspectionByIdType(
-    id,
-  );
+  let response = null;
+  try {
+    response = await InspectCarsConditionService.path(id).get(
+      {},
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  return makeInspectCarsConditionFront(inspectCarsCondition);
+  let inspectCarsCondition: InspectCarsCondition = get(response, 'result.rows.0', null);
+
+  if (inspectCarsCondition) {
+    inspectCarsCondition = makeInspectCarsConditionFront(inspectCarsCondition);
+  }
+
+  return inspectCarsCondition;
 };
 
-export const promiseCreateInspectionCarsCondition = async (payload: { carsConditionId: number; companyId: number; }) => {
-  const inspectCarsCondition: InspectCarsCondition = await promiseCreateInspection({
-    base_id: payload.carsConditionId,
-    company_id: payload.companyId,
-    type: 'cars_condition',
-  });
-
+export const promiseCreateInspectionCarsCondition = async (payload: { company_id: number; }) => {
+  const response = await InspectCarsConditionService.path(payload.company_id).post(
+    { ...payload },
+    false,
+    'json',
+  );
+ 
+  let inspectCarsCondition = get(response, 'result.rows.0', null);
+ 
+  if (inspectCarsCondition) {
+    inspectCarsCondition = makeInspectCarsConditionFront(inspectCarsCondition);
+  }
+ 
   return inspectCarsCondition;
 };
 
@@ -178,4 +198,25 @@ export const promiseUpdateCarsConditionsCar = async (carsConditionsCarRaw: Parti
   );
 
   return response;
+};
+
+export const promiseUpdateInspectionCarsCondition = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
+  const newPayload = {
+    ...payload,
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
+  };
+
+  const response = await InspectCarsConditionService.path(id).put(
+    {
+      ...newPayload,
+      data,
+      files,
+    },
+    false,
+    'json',
+  );
+
+  const inspectCarsCondition = get(response, 'result.rows.0', null);
+
+  return inspectCarsCondition;
 };

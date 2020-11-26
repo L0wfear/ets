@@ -168,6 +168,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
 };
 
 const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): EtsAction<any> => async (dispatch, getState) => {
+  const { type } = inspectCarsConditionOwn;
   const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
   inspectCarsCondition.action = 'close';
 
@@ -180,6 +181,7 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
     commission_members: inspectCarsCondition.commission_members,
     resolve_to: inspectCarsCondition.resolve_to,
     action: 'close',
+    type,
   };
 
   const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки

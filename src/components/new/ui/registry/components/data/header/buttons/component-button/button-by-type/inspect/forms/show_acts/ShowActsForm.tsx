@@ -23,18 +23,21 @@ import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/
 import { actionUpdateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import { actionUpdateInspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import { actionUpdateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import { InspectAutobaseService, InspectCarsConditionService, InspectPgmBaseService } from 'api/Services';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 const InspectActFileFormContext = React.lazy(() => (
   import(/* webpackChunkName: "services" */ 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/form/InspectActFileFormContext')
 ));
 
-type Props = {
+type OwnProps = {
   element: { id: number; };
   handleHide: (...arg: Array<any>) => any;
 
   page: string;
   path: string;
 };
+type Props = OwnProps & WithSearchProps;
 
 const dataRemove: ValuesOf<OneRegistryData['header']['buttons']> = {
   id: 'button_remove_file',
@@ -55,8 +58,16 @@ const ShowActsForm: React.FC<Props> = React.memo(
 
     React.useEffect(
       () => {
+        const registryService = props.match.url.includes('/autobase')
+          ? InspectAutobaseService
+          : props.match.url.includes('/pgm_base')
+            ? InspectPgmBaseService
+            : props.match.url.includes('/cars_condition')
+              ? InspectCarsConditionService
+              : null;
+
         dispatch(
-          registryAddInitialData(getConfig(props.element.id, props.path)), // не сработает из других мест ЕТС
+          registryAddInitialData(getConfig(props.element.id, props.path, registryService)), // не сработает из других мест ЕТС
         );
 
         return () => {
@@ -211,4 +222,4 @@ const ShowActsForm: React.FC<Props> = React.memo(
   },
 );
 
-export default ShowActsForm;
+export default withSearch<OwnProps>(ShowActsForm);

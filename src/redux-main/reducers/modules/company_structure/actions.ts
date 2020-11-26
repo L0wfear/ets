@@ -37,8 +37,15 @@ export const getAndSetInStoreCompanyStructure = (payload = {}, meta: LoadingMeta
     getSetCompanyStructure(payload, meta),
   );
 
+  const {
+    data
+  } = result as {
+    data: Array<CompanyStructure>;
+    [k: string]: any;
+  };
+
   dispatch(
-    setCompanyStructure(result.data),
+    setCompanyStructure(data),
   );
 
   return result;

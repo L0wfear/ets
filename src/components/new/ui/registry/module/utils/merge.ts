@@ -137,6 +137,18 @@ export const mergeListData = <F extends Record<string, any>>(data: TypeConfigDat
         if (key === 'uniqKey') {
           newObj[key] = isString(data[key]) ? data[key] : value;
         }
+        if (key === 'uniqKeyForSelect') {
+          newObj[key] = isString(data[key]) ? data[key] : value;
+        }
+        if (key === 'disableDoubleClick') {
+          newObj[key] = isBoolean(data[key]) ? data[key] : value;
+        }
+        if (key === 'withoutWithSearch') {
+          newObj[key] = isBoolean(data[key]) ? data[key] : value;
+        }
+        if (key === 'uniqKeyType') {
+          newObj[key] = isString(data[key]) ? data[key] : value;
+        }
 
         if (key === 'uniqKeyForParams') {
           if (isString(data[key])) {

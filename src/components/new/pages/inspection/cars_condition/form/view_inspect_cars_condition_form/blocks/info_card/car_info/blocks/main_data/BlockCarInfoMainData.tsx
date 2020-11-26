@@ -23,6 +23,8 @@ import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modu
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { isNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -46,6 +48,17 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     const engineTypeOptionData = useAutobaseEngineTypeOptions(props.page, props.path, 'name');
     const dispatch = etsUseDispatch();
     const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
+
+    React.useEffect(() => {
+      (async () => {
+        const current_date = await dispatch(
+          actionLoadTimeMoscow({}, { page: '' })
+        );
+        props.handleChange('dataForValidation', {
+          current_date_timestamp: current_date.timestamp * 1000,
+        });
+      })();
+    }, []);
 
     React.useEffect( () => {
       if (inspectionConfig) {
@@ -118,6 +131,13 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
+
+    const handleChangeNumberField = React.useCallback((key, event) => {
+      const value = event.currentTarget.value;
+      if ((!value || isNumValue(value)) && +value >= 0) {
+        props.handleChange(key, value);
+      }
+    }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -435,7 +455,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   onChange={handleChangeDataOptions}
                   options={ get(inspectionConfigOptions, 'classifier', []) }
                   error={errors.data.classifier}
-                  clearable={false}
+                  clearable
                   disabled={!props.isPermitted}
                   boundKeys={'classifier'}
                 />
@@ -514,7 +534,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Номер диагностической карты:"
               value={state.diagnostic_card}
               onChange={props.handleChange}
@@ -800,7 +820,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="mileage"
-                  type="number"
+                  type="string"
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
@@ -816,7 +836,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={props.handleChange}
+                  onChange={handleChangeNumberField}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />

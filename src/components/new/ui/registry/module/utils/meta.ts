@@ -38,6 +38,9 @@ const widthByKey: Record<string, { width: number; sortable?: boolean; }> = {
   showCarOnMap: {
     width: 150,
   },
+  files: {
+    width: 150,
+  }
 };
 
 export const getRowKeys = (cols) => (

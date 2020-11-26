@@ -5,7 +5,7 @@ import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseD
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
+import { registrySelectRow, registrySetRowIsOpen } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -37,8 +37,11 @@ const TrHead: React.FC<Props> = React.memo(
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
 
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
+    const uniqKeyForSelect = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForSelect);
+    const disableDoubleClick = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.disableDoubleClick);
+    const withoutWithSearch = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.withoutWithSearch);
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
-
+    const key = uniqKeyForSelect || uniqKey;
     const row_double_click = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.row_double_click);
     const selected_row_in_params = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.selected_row_in_params);
     const permissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
@@ -49,12 +52,16 @@ const TrHead: React.FC<Props> = React.memo(
       etsUseIsPermitted(permissions.create)
       || etsUseIsPermitted(permissions.read)
     );
-    const checkData = checkedRows[uniqKey];
-    const isSelected = get(selectedRow, uniqKey) === rowData[uniqKey];
+    const checkData = checkedRows[key];
+    const isSelected = get(selectedRow, key) === rowData[key];
 
     const handleDoubleClick = React.useCallback(
       () => {
-        if (isPermitted) {
+        if (isPermitted && !disableDoubleClick) {
+          if (withoutWithSearch) {
+            dispatch(registrySetRowIsOpen(props.registryKey, true));
+            return;
+          }
           const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
           if (buttonReadData && row_double_click) {
             const changeObj = makePayloadToParamsForRead(
@@ -63,7 +70,6 @@ const TrHead: React.FC<Props> = React.memo(
               uniqKeyForParams,
               uniqKey,
             );
-
             props.setParams(changeObj);
           } else if (row_double_click) {
             props.setParams({
@@ -81,6 +87,8 @@ const TrHead: React.FC<Props> = React.memo(
         uniqKeyForParams,
         uniqKey,
         rowData,
+        disableDoubleClick,
+        withoutWithSearch,
       ],
     );
 

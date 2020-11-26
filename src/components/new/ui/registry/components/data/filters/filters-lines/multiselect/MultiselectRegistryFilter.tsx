@@ -162,7 +162,7 @@ const makeOptions = (props: PropsMultiselectRegistryFilter) => {
         props.session.userData[groupName],
         valueKey,
         labelKey,
-        props.filterData.format
+        props.filterData?.format
       ),
       'value'
     );
@@ -174,7 +174,7 @@ const makeOptions = (props: PropsMultiselectRegistryFilter) => {
         props.array,
         props.filterData.valueKey,
         props.filterData.labelKey,
-        props.filterData.format
+        props.filterData?.format
       ),
       'value'
     )
@@ -309,7 +309,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
             result,
             valueKey,
             labelKey,
-            getRegistryData.format,
+            getRegistryData?.format,
           ),
           'value',
         );
@@ -386,8 +386,8 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
 export default connect<any, any, any, ReduxState>(
   (state, { registryKey, filterData }) => ({
-    total_count: getListData(state.registry, registryKey).data.total_count,
-    array: getListData(state.registry, registryKey).data.array,
+    total_count: getListData(state.registry, registryKey)?.data.total_count,
+    array: getListData(state.registry, registryKey)?.data.array,
     filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
     session: state.session,
   }),

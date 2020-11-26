@@ -52,6 +52,7 @@
     API__KEY: string;
     window: any;
     APP_DATE_FORMAT: string;
+    APP_YEAR_FORMAT: string;
     NOTIFICATION_READ_ARR: string;
     APP_TIME_FORMAT: string;
     APP_TIME_WITH_SECOND_FORMAT: string;

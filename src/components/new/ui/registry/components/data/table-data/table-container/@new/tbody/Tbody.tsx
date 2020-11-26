@@ -14,13 +14,15 @@ const Tbody: React.FC<Props> = React.memo(
   (props) => {
     const showArray = etsUseSelector((state) => selectorShowArray(state, props.registryKey));
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
+    const uniqKeyForSelect = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForSelect);
+    const key = uniqKeyForSelect || uniqKey;
     const rowFieldsLength = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.rowFields.length);
 
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
         {
           showArray.map((rowData, indexRow) => (
-            <Tr key={rowData[uniqKey]} rowData={rowData} indexRow={indexRow} registryKey={props.registryKey}/>
+            <Tr key={rowData[key]} rowData={rowData} indexRow={indexRow} registryKey={props.registryKey}/>
           ))
         }
         {

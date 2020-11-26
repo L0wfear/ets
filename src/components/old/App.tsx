@@ -11,6 +11,7 @@ const partial_key = `${location.host}${location.pathname}`;
 global.NODE_ENV = process.env.NODE_ENV;
 /* Глобальный формат даты для всех дейтпикеров и строк */
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
+global.APP_YEAR_FORMAT = 'YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = `${global.APP_TIME_FORMAT}:ss`;
 

@@ -23,10 +23,16 @@ export type ISharedPropsDataTableInput = {
     addButtonDisable: boolean;
     removeButtonDisable: boolean;
   };
+  useFilter?: boolean;
+  usePagination?: boolean;
+  withPerPageSelector?: boolean;
+  removeItemWithConfirm?: boolean;
 };
 
 export type IStateDataTableInput = {
   selected: any;
+  filterModalIsOpen: boolean;
+  isFilterActive: boolean;
 };
 
 export type IPropsDataTableInput = ISharedPropsDataTableInput & TInjectedPropsDataTableInputWrapper;

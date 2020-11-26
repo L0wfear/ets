@@ -14,6 +14,19 @@ import {
   ButtonDeleteNew,
 } from 'components/old/ui/buttons/CRUD';
 
+export type ElementsListState = {
+  mainListName: any;
+  elementsList: Array<any>;
+  showForm: any;
+  selectedElement: any;
+  readPermission: any;
+  exportFetching: any;
+  checkedElements?: any;
+  // [k: string]: any;
+};
+
+type Props = Record<string, any>;
+
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)
  * используется для наследования
@@ -21,7 +34,7 @@ import {
  */
 
 @FluxContext
-class ElementsList<P extends any, S extends any = any> extends React.Component<P, S> {
+class ElementsList<P extends Props, S extends ElementsListState> extends React.Component<P, S> {
   clicks: number;
   selectField: string;
   node: HTMLDivElement;
@@ -346,7 +359,11 @@ class ElementsList<P extends any, S extends any = any> extends React.Component<P
       data: this.props[listName],
       entity: this.entity,
     };
-    const { location: { search = '' } = {} } = this.props;
+    const {
+      location: {
+        search = ''
+      } = {}
+    } = this.props as Record<string, any>;
     const searchObject = queryString.parse(search);
 
     if (this.props.location && search && !this.preventUrlFilters) {

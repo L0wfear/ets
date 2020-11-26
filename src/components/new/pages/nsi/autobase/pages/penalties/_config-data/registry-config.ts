@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Penalty } from 'redux-main/reducers/modules/autobase/actions_by_type/penalties/@types';
 import penaltyPermissions from './permissions';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'Penalties';
@@ -33,23 +32,13 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
       fields: [
         {
           valueKey: 'okrug_name',
-          title: [
-            {
-              title: 'Округ',
-              displayIf: displayIfContant.isKgh,
-            }
-          ],
+          title: 'Округ',
           type: 'multiselect',
         },
         {
           valueKey: 'company_id',
           labelKey: 'company_name',
-          title: [
-            {
-              displayIf: displayIfContant.isKgh,
-              title: 'Организация',
-            },
-          ],
+          title: 'Организация',
           type: 'multiselect',
         },
         {
@@ -58,7 +47,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
           type: 'advanced-datetime',
         },
         {
-          valueKey: 'violation_document_number',
+          valueKey: 'ruling_number',
           title: 'Номер постановления',
           type: 'multiselect',
         },
@@ -71,13 +60,13 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
         {
           valueKey: 'waybills',
           title: 'Номер путевого листа',
-          type: 'advanced-number',
+          type: 'advanced-array',
           step: 1,
         },
         {
           valueKey: 'missions',
           title: 'Номер задания',
-          type: 'advanced-number',
+          type: 'advanced-array',
           step: 1,
         },
         {
@@ -103,22 +92,12 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
           },
           {
             key: 'okrug_name',
-            title: [
-              {
-                title: 'Округ',
-                displayIf: displayIfContant.isKgh,
-              }
-            ],
+            title: 'Округ',
             width: 150,
           },
           {
             key: 'company_name',
-            title: [
-              {
-                displayIf: displayIfContant.isKgh,
-                title: 'Организация',
-              },
-            ],
+            title: 'Организация',
             width: 150,
           },
           {
@@ -128,7 +107,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
             width: 200,
           },
           {
-            key: 'violation_document_number',
+            key: 'ruling_number',
             title: 'Номер постановления',
             width: 200,
           },

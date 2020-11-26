@@ -10,7 +10,7 @@ export const registryKey = 'fuelCardsRegistry';
 export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
   let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
     buttonsTypes.filter,
-    buttonsTypes.create,
+    buttonsTypes.fuel_card_create,
     buttonsTypes.read,
     buttonsTypes.remove,
     buttonsTypes.fuel_card_to_archive,
@@ -75,6 +75,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'status_text',
+          title: 'Статус',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'released_at',
           type: 'advanced-date',
           title: 'Дата выпуска',
@@ -107,6 +112,12 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           displayIf: displayIfContant.lenghtStructureMoreOne,
         },
         {
+          valueKey: 'source_type_id',
+          labelKey: 'source_type_text',
+          title: 'Способ создания',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_short_name',
           title: 'Организация',
           type: 'multiselect',
@@ -119,6 +130,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
         uniqKey: 'id',
         fixedWidth: true,
         uniqKeyForParams,
+        uniqKeyForSelect: 'composite_id',
       },
       meta: {
         fields: [
@@ -152,15 +164,20 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
+            key: 'status_text',
+            title: 'Статус',
+            width: 200,
+          },
+          {
             key: 'released_at',
             title: 'Дата выпуска',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
             key: 'date_end',
             title: 'Дата окончания срока действия',
-            format: 'datetime',
+            format: 'date',
             width: 200,
           },
           {
@@ -182,6 +199,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           {
             key: 'structure_name',
             title: 'Подразделение',
+            width: 200,
+          },
+          {
+            key: 'source_type_text',
+            title: 'Способ создания',
             width: 200,
           },
         ],

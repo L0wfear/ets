@@ -58,6 +58,9 @@ const filterArrayByEq = <F extends any>(row_value: any, filter_value: any, field
   if (field_data.type === 'advanced-number') {
     return filter_value !== row_value;
   }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number !== filter_value);
+  }
   if (field_data.type === 'advanced-date') {
     return diffDatesByDays(filter_value, row_value) !== 0;
   }
@@ -85,6 +88,9 @@ const filterArrayByGt = <F extends any>(row_value: any, filter_value: any, field
   if (field_data.type === 'advanced-number') {
     return filter_value >= row_value;
   }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number >= filter_value);
+  }
   if (field_data.type === 'advanced-date') {
     return !(diffDatesByDays(row_value, filter_value) > 0);
   }
@@ -106,6 +112,9 @@ const filterArrayByLt = <F extends any>(row_value: any, filter_value: any, field
 
   if (field_data.type === 'advanced-number') {
     return filter_value <= row_value;
+  }
+  if (field_data.type === 'advanced-array') {
+    return row_value.find((v) => v.number <= filter_value);
   }
   if (field_data.type === 'advanced-date') {
     return diffDatesByDays(filter_value, row_value) <= 0;

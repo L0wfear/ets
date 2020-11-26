@@ -2,6 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { PropsViewInspectPgmBaseWithForm } from './@types/ViewInspectPgmBase';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
+import { validateResolveToField } from '../../../common/utils';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectPgmBase['head_balance_holder_base'], PropsViewInspectPgmBaseWithForm> = {
   properties: {
@@ -208,6 +209,9 @@ export const inspectPgmBaseSchema: SchemaType<InspectPgmBase, PropsViewInspectPg
     resolve_to: {
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+      dependencies: [
+        (value, {dataForValidation, status}) => validateResolveToField(value, dataForValidation, status)
+      ]
     },
   },
 };

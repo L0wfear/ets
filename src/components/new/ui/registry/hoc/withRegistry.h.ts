@@ -32,7 +32,7 @@ export type OneFilterType<F> = {
     | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
-    type: 'advanced-number';
+    type: 'advanced-number' | 'advanced-array';
     step: number; // для firefox
   } | {
     type: 'multiselect';
@@ -136,6 +136,9 @@ export type TypeFields<F extends any> = {
   displayIfPermission?: string | Array<string>;
 }| {
   key: 'showCarOnMap';
+  title: string;
+} | {
+  key: 'files';
   title: string;
 };
 

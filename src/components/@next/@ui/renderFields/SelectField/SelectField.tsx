@@ -9,6 +9,7 @@ import { SelectFieldUi } from 'components/@next/@ui/renderFields/SelectField/sty
 import { ExtFieldSelect } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled from 'styled-components';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 
 export const SpaceWrapper = styled.span`
 `;
@@ -16,9 +17,9 @@ export const SpaceWrapper = styled.span`
 const SelectField: React.FC<ExtFieldSelect> = React.memo(
   (props) => {
     const { label = '', ...selectProps } = props;
-    const { error, portal, setIsClickMenu, className = '', readOnly = false, modalKey } = props;
+    const { error, warning, portal, setIsClickMenu, className = '', readOnly = false, modalKey } = props;
 
-    const selectClassName = cx({ 'has-error': error });
+    const selectClassName = cx({ 'has-error': error || warning });
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;
@@ -60,6 +61,9 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
           portal={portal}
           setIsClickMenu={setIsClickMenu}
         />
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           hidden={!error}
           error={error}

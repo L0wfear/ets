@@ -66,7 +66,10 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
 
     const dispatch = etsUseDispatch();
-    dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
+    React.useEffect(() => {
+      dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
+    }, []);
+    
     useMissionDataLoadConsumableMateriaForMission(props.formDataKey);
 
     const disabled = (

@@ -17,6 +17,7 @@ type Props = {
 	waybillFormState: WaybillProps['formState']; // state in render WaybillForm
 	waybillState: WaybillState; // waybillState in render WaybillForm
 	errors: WaybillProps['formErrors'];
+  warnings: WaybillProps['formWarnings'];
 	waybillStatus: {
 		IS_CREATING: boolean;
 		IS_ACTIVE: boolean;
@@ -42,6 +43,7 @@ type Props = {
 	IS_KAMAZ: boolean;
 	disableFieldWaybillCarRefill: boolean;
   use_pouring: boolean;
+  fuel_cards_creating?: boolean;
   handleChangeTaxes: (taxes: any, field?: string, index?: number ) => any;
   showComponent: boolean;
   isGasKind: boolean;
@@ -72,7 +74,9 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
       FUEL_TYPES,
       waybillFormState,
       waybillState,
+      warnings,
       use_pouring,
+      fuel_cards_creating,
     } = props;
 
     const fuelTypesOption = React.useMemo(() => FUEL_TYPES.filter(
@@ -107,6 +111,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                     type="number"
                     label="Возврат по таксировке, л"
                     error={errors.fuel_end}
+                    warning={warnings.fuel_end}
                     value={waybillFormState.fuel_end}
                     format="toFixed3"
                     disabled
@@ -119,6 +124,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   type="number"
                   label="Расход по таксировке, л"
                   error={errors.tax_consumption}
+                  warning={warnings.tax_consumption}
                   value={waybillFormState.tax_consumption}
                   format="toFixed3"
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
@@ -150,6 +156,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Возврат фактический, л"
                   error={errors.fact_fuel_end}
+                  warning={warnings.fact_fuel_end}
                   value={waybillFormState.fact_fuel_end}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled={
@@ -187,6 +194,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   type="number"
                   label="Выдано, л"
                   error={errors.fuel_given}
+                  warning={warnings.fuel_given}
                   value={waybillFormState.fuel_given}
                   disabled
                 />
@@ -224,6 +232,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             )} // временно
             title="Заправка топлива"
             use_pouring={use_pouring}
+            fuel_cards_creating={fuel_cards_creating}
             handleChange={handleChangeCarReFill}
             defaultHandleChange={props.handleChange}
             fuel_given={waybillFormState.fuel_given}

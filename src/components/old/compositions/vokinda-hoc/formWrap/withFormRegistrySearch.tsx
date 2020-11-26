@@ -46,7 +46,7 @@ export type WithFormRegistrySearchProps<F = any> = {
   path?: string;
 };
 
-const findRecondInDeepArray = <F extends any>(array: Array<F>, uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
+const findRecondInDeepArray = <F extends Record<string, any>>(array: Array<F>, uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
   const children = [];
 
   const selectedItem = array.find((rowData) => {
@@ -79,14 +79,17 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
 
         const array: Array<any> = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
+
         const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
+        const uniqKeyType = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKeyType);
         const hasButtonToCreate = etsUseSelector((state) => {
           const buttons = getHeaderData(getRegistryState(state), props.registryKey).buttons;
           return (
             buttons.some((buttonData) => (
               buttonsTypes.create === buttonData.type
               || buttonsTypes.mission_create === buttonData.type
+              || buttonsTypes.fuel_card_create === buttonData.type
             ))
           );
         });
@@ -174,19 +177,20 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
                       handleHide(false);
                     }
                   } else {
-                    const param_uniq_value_number = Number(param_uniq_value);
-                    const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
+                    const param_uniq_value_num_or_str = uniqKeyType === 'number' ? Number(param_uniq_value) : String(param_uniq_value);
+
+                    const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_num_or_str);
 
                     if (elementPick || config.no_find_in_arr) {
                       if (isPermittedToSee) {
                         if (elementPick) {
                           setElement({
-                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_num_or_str,
                             ...elementPick,
                           });
                         } else {
                           setElement({
-                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_num_or_str,
                           } as any);
                         }
                       } else {
@@ -211,6 +215,8 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
             param_uniq_value_prev,
             array,
             handleHide,
+            uniqKey,
+            uniqKeyType,
           ],
         );
 

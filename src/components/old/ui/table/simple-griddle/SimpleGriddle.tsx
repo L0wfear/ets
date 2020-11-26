@@ -174,6 +174,7 @@ class SimpleGriddle extends React.Component<any, any> {
       currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
       localState={this.props.localState}
+      cellColors={this.props.cellColors}
     />
   );
 

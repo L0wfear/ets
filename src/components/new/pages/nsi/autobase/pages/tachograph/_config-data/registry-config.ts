@@ -141,6 +141,16 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 100,
+          },
+          {
+            key: 'company_name',
+            title: 'Организация',
+            width: 200,
+          },
+          {
             key: 'company_structure_name',
             title: [
               {

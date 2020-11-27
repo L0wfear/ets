@@ -94,4 +94,5 @@ export type IStateSomeUniq = {
 
   selectedMissionsList: Array<SelectedMissionsList>;
   refillFuelCompany: OneRefillFuelCompanyData;
+  fuelTypesList: any;
 };

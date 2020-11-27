@@ -1,8 +1,9 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { getSessionFuelTypeOptions } from 'redux-main/reducers/modules/session/selectors';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import * as React from 'react';
+import { actionFuelTypesGetAndSetInStore, actionFuelTypesByIdGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/fuel_types/actions';
+import { FuelTypes, FuelTypesId } from 'redux-main/reducers/modules/some_uniq/fuel_types/@types';
 
 export const defaultFuelCard: FuelCard = {
   id: null,
@@ -64,12 +65,31 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
   return newElement;
 };
 
-export const usefuelTypeOptions = () => {
-  return etsUseSelector((state) => {
-    const fuelTypeOptions = getSessionFuelTypeOptions(state);
-    return React.useMemo(
-      () => fuelTypeOptions.filter((elem) => elem.value !== 'ELECTRICITY'),
-      [fuelTypeOptions]
-    );
-  });
+export const usefuelTypeOptions = (page: string, params: {id?: FuelTypesId; is_fuel_card?: boolean;}) => {
+  const dispatch = etsUseDispatch();
+  const [fuelTypes, setFuelTypes] = React.useState<Array<FuelTypes>>([]);
+  React.useEffect(() => {
+    ( async () => {
+      if (params.id) {
+        const fuelTypes = await (await dispatch(actionFuelTypesByIdGetAndSetInStore(params.id, {page})))?.data;
+        setFuelTypes(fuelTypes);
+      } else {
+        const fuelTypes = await (await dispatch(actionFuelTypesGetAndSetInStore({is_fuel_card: params.is_fuel_card }, {page})))?.data;
+        setFuelTypes(fuelTypes);
+      }
+    })();
+  }, []);
+
+  const fuelTypeOptions = React.useMemo(() => {
+    return fuelTypes.map((el) => (
+      {
+        value: el.id,
+        label: el.name,
+        rowData: {
+          ...el
+        },
+      }
+    ));
+  }, [fuelTypes]);
+  return fuelTypeOptions;
 };

@@ -1,14 +1,14 @@
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
-import { TachographList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
+import { TachographsOnCar } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_registry/@types';
 import tachographPermissions from './permissions';
 
 export const registryKey = 'tachograph';
 
-export const getToConfig = (car_id = 0): TypeConfigData<TachographList> => {
+export const getToConfig = (car_id = 0): TypeConfigData<TachographsOnCar> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'autobase/tachograph_registry',
+        entity: 'autobase/tachograph_on_car',
         payload: {
           car_id
         }

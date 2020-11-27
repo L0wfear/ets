@@ -10,11 +10,18 @@ import DashboardMenu from 'components/new/pages/dashboard/menu/DashboardMenu';
 import {
   DashboardPageContainer,
 } from 'components/new/pages/dashboard/styled/styled';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { resetAllLoadingCount } from 'redux-main/_middleware/ets-loading/module/actions-loading';
 
 const page = 'dashboard';
 
 const DashboardPage: React.FC<{}> = React.memo(
   () => {
+    const dispatch = etsUseDispatch();
+    
+    React.useEffect(() => {
+      return () => dispatch(resetAllLoadingCount());
+    });
     React.useLayoutEffect(
       () => {
         const meta = document.querySelector('meta[property="og:title"]');

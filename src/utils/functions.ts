@@ -157,7 +157,7 @@ export function printData(blob) {
       iframe.focus();
       iframe.contentWindow.print();
       window.URL.revokeObjectURL(url);
-    }, 0);
+    }, 500);
   } else {
     iframe.onload = () => {
       iframe.focus();

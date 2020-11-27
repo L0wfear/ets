@@ -26,6 +26,7 @@ import { ReasonList } from 'redux-main/reducers/modules/some_uniq/reason_list/@t
 import { EngineKind } from 'redux-main/reducers/modules/some_uniq/engine_kind/@types';
 import { SelectedMissionsList } from 'redux-main/reducers/modules/some_uniq/waybill/@types';
 import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
+import { FuelTypes } from '../fuel_types/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -94,5 +95,5 @@ export type IStateSomeUniq = {
 
   selectedMissionsList: Array<SelectedMissionsList>;
   refillFuelCompany: OneRefillFuelCompanyData;
-  fuelTypesList: any;
+  fuelTypesList: Array<FuelTypes>;
 };

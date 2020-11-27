@@ -5,6 +5,14 @@ import * as React from 'react';
 import { actionFuelTypesGetAndSetInStore, actionFuelTypesByIdGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/fuel_types/actions';
 import { FuelTypes, FuelTypesId } from 'redux-main/reducers/modules/some_uniq/fuel_types/@types';
 
+export type FuelTypeOptions = Array<{
+  value: FuelTypesId;
+  label: FuelTypes['name'];
+  rowData: {
+    [K in keyof FuelTypes]
+  };
+}>;
+
 export const defaultFuelCard: FuelCard = {
   id: null,
   number: null,
@@ -65,7 +73,7 @@ export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard 
   return newElement;
 };
 
-export const usefuelTypeOptions = (page: string, params: {id?: FuelTypesId; is_fuel_card?: boolean;}) => {
+export const usefuelTypeOptions = (page: string, params: {id?: FuelTypesId; is_fuel_card?: boolean;}): FuelTypeOptions => {
   const dispatch = etsUseDispatch();
   const [fuelTypes, setFuelTypes] = React.useState<Array<FuelTypes>>([]);
   React.useEffect(() => {

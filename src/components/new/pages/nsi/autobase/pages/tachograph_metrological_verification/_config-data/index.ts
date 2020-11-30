@@ -15,7 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
-  title: 'Реестр метрологических поверок тахографов',
+  title: 'Реестр метрологических проверок тахографов',
   isNewRegistry: false,
   entyity: 'tachograph_metrological_verification',
 

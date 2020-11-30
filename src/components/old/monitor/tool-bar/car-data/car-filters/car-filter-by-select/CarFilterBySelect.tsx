@@ -274,7 +274,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
-                        portal
+                        portal={filterFields.length <= 1}
                         setIsClickMenu={setIsClickMenu}
                         setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
                       />

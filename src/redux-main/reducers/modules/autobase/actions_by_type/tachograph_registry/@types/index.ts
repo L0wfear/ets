@@ -13,6 +13,18 @@ export type TachographOnCarList = {
   uninstalled_at: string;
 };
 
+export type TachographsOnCar = {
+  id: number;
+  car_id: number;
+  tachograph_id: number;
+  tachograph_brand_name: string;
+  factory_number: string;
+  install_company_name: string;
+  installed_at: string | Date;
+  uninstalled_at: string | Date;
+  activated_at: string | Date;
+};
+
 export type TachographList = {
   activated_at: string;
   calibration_date: string;

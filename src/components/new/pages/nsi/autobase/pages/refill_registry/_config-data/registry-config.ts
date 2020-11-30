@@ -20,7 +20,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
     registryKey,
     header: {
       title: 'Реестр заправок',
-      titlePopover: 'Реестр формируется на основе данных, полученных в рамках интеграции с топливной компании.',
+      titlePopover: 'Реестр формируется на основе данных, полученных в рамках интеграции с топливной компанией.',
 
       buttons: [
         buttonsTypes.columns_control,

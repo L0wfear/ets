@@ -17,6 +17,7 @@ export const config: TypeConfigData<Odh> = {
   header: {
     title: 'Справочник ОДХ',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

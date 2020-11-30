@@ -86,6 +86,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo((props) => {
               error={errors.factory_number}
               onChange={onChange}
               disabled={!isPermitted}
+              toUpperCase
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={4}>

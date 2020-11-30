@@ -90,7 +90,21 @@ export default class ReactSelect extends React.Component<any, any> {
     }
   };
 
-  handleChange = (objectValue) => {
+  handleOpen = () => {
+    if (this.props.setIsClickMenu) {
+      this.props.setIsClickMenu(true);
+    }
+  };
+
+  handleClose = () => {
+    setTimeout(() => {
+      if (this.props.setIsClickMenu) {
+        this.props.setIsClickMenu(false);
+      }
+    }, 0);
+  };
+
+  handleChange = (objectValue, e) => {
     const {
       emptyValue = '',
       multi,
@@ -236,6 +250,7 @@ export default class ReactSelect extends React.Component<any, any> {
       clearable,
       legacy,
       multi,
+      portal,
       etsIsLoading,
       ...props
     } = this.props;
@@ -271,6 +286,7 @@ export default class ReactSelect extends React.Component<any, any> {
             'react-select',
             className,
           )}
+          menuPortalTarget={portal ? document.querySelector('body') : null}
           classNamePrefix="react-select"
           onChange={this.handleChange}
           options={sortedOptions}
@@ -278,6 +294,8 @@ export default class ReactSelect extends React.Component<any, any> {
           noOptionsMessage={this.noOptionsMessage}
           components={this.state.components}
           isDisabled={disabled}
+          onMenuOpen={this.handleOpen}
+          onMenuClose={this.handleClose}
           menuIsOpen={get(openMenuIds, id, undefined)}
         />
         {

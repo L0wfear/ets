@@ -30,6 +30,7 @@ export const getToConfig = (date_from, date_to): TypeConfigData<MedicalStats> =>
       title: 'Статистика прохождения мед. осмотров',
       format: 'datetime_range_picker',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.export,
       ],

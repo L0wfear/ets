@@ -15,6 +15,7 @@ export const config: TypeConfigData<CarFuncTypes> = {
   header: {
     title: 'Типы техники',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

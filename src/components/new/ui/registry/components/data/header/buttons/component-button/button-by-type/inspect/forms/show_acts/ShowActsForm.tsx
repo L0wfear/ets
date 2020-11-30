@@ -58,11 +58,11 @@ const ShowActsForm: React.FC<Props> = React.memo(
 
     React.useEffect(
       () => {
-        const registryService = props.match.url.includes('/autobase/')
+        const registryService = props.match.url.includes('/autobase')
           ? InspectAutobaseService
-          : props.match.url.includes('/pgm_base/')
+          : props.match.url.includes('/pgm_base')
             ? InspectPgmBaseService
-            : props.match.url.includes('/cars_condition/')
+            : props.match.url.includes('/cars_condition')
               ? InspectCarsConditionService
               : null;
 

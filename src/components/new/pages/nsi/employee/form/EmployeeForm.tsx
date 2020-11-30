@@ -271,6 +271,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     }
   };
 
+  private readonly handleChangeActive = (field, value): void => {
+    const changeObject: any = {
+      [field]: value,
+    };
+
+    if (value !== this.props.formState.active && value) {
+      changeObject.layoff_reason_id = null;
+      changeObject.comment = '';
+    }
+
+    this.props.handleChange(changeObject);
+  };
+
   private updateCarOptions(formState: PropsEmployee['formState']): void {
     this.setState({
       preferCarOptions: this.makeCarOptions(this.state.carList, formState, 'prefer_car'),
@@ -327,6 +340,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const {
       formState: state,
       formErrors: errors,
+      originalFormState: original,
       page,
       path,
     } = this.props;
@@ -335,6 +349,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isLayoff = Boolean(!original.active && original.layoff_reason_id && original.comment);
     
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -536,7 +551,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     options={this.state.driverStateOptions}
                     error={errors.active}
                     disabled={!isPermitted}
-                    onChange={this.props.handleChange}
+                    onChange={this.handleChangeActive}
                     clearable={false}
                     boundKeys="active"
                   />
@@ -568,7 +583,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     value={state.layoff_reason_id}
                     options={this.state.layoffReasonListOptions}
                     error={errors.layoff_reason_id}
-                    disabled={!isPermitted}
+                    disabled={!isPermitted || isLayoff}
                     onChange={this.props.handleChange}
                     clearable={false}
                     boundKeys="layoff_reason_id"
@@ -583,7 +598,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="comment"
                     error={errors.comment}
-                    disabled={!isPermitted}
+                    disabled={!isPermitted || isLayoff}
                     hint={'Здесь вы можете указать дополнительные комментарии по вопросу увольнения сотрудника'}
                   />
                 </EtsBootstrap.Col>}

@@ -21,6 +21,7 @@ export type TachographMetrologicalVerificationList = {
   files: Array<any>;
   gov_number: string;
   id: number;
+  okrug_name: string;
   replacement_date: string;
   tachograph_brand_name: string;
   verification_date: string;

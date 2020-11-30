@@ -23,6 +23,7 @@ import { MonitorSearchParams } from 'components/old/monitor/monitor_search_param
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { resetAllLoadingCount } from 'redux-main/_middleware/ets-loading/module/actions-loading';
 
 type StateProps = {
   token: InitialStateSession['token'];
@@ -45,6 +46,10 @@ type PropsMonitorPage = (
 const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
   (props) => {
     const dispatch = etsUseDispatch();
+
+    React.useEffect(() => {
+      return () => dispatch(resetAllLoadingCount());
+    });
 
     React.useEffect(
       () => {

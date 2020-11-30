@@ -392,16 +392,13 @@ export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/act',
 );
 export const InspectAutobaseService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/autobase',
+  'inspection/autobase',
 );
 export const InspectPgmBaseService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/pgm_base',
+  'inspection/pgm_base',
 );
 export const InspectCarsConditionService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/cars_condition',
-);
-export const InspectCarsPreparationPlanService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/cars_preparation_plan',
+  'inspection/cars_condition',
 );
 export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/container',

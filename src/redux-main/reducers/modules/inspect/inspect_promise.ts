@@ -1,4 +1,4 @@
-import { InspectionActService, InspectCarsPreparationPlanService } from 'api/Services';
+import { InspectionActService, InspectCarsConditionService } from 'api/Services';
 import {
   get,
 } from 'lodash';
@@ -21,7 +21,7 @@ export const promiseUpdatePreparePlan = async (id: number, payload: {types_cars:
     ...payload,
   };
 
-  const response = await InspectCarsPreparationPlanService.path(id).put(
+  const response = await InspectCarsConditionService.path(`${id}/cars_preparation_plan`).put(
     {
       ...newPayload,
     },

@@ -524,7 +524,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           if (
             formData.equipment_fuel
-            && (!formData.status || formData.status === 'draft')
+            && (!formData.status || formData.status === 'draft' || formData.status === 'active')
             && isEmpty(value)
           ) {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';

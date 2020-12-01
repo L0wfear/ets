@@ -47,7 +47,8 @@ const TachographReplacementSkziTab: React.FC<TachographReplacementSkziTab> = Rea
                 inputList={state.tachograph_replacement_skzi}
                 outerValidate
                 errors={errors.tachograph_replacement_skzi}
-                disabled={!isPermitted || state.tachograph_on_car.length === 0}
+                disabled={!isPermitted}
+                disabledAddButton={!isPermitted || state.tachograph_on_car.length === 0}
                 selectField="customId"
                 isPermitted={isPermitted}
                 tableTitle="Замена блока СКЗИ"

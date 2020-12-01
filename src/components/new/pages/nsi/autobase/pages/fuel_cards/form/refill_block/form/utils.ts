@@ -14,7 +14,7 @@ export const defaultRefill: Refill = {
   fuel_type_id: null,
   fuel_type: '',
   fuel_given: null,
-  car_gov_number: '',
+  car_gov_number_text: '',
   rrn_code: null,
   waybill_id: null,
   waybill_number: null,

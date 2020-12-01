@@ -1,6 +1,7 @@
 import {
   ETS_LOADING_INC,
   ETS_LOADING_DEC,
+  ETS_LOADING_RESET,
 } from 'redux-main/_middleware/ets-loading/module/loading';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
@@ -19,3 +20,12 @@ export const decLoadingCount = ({ page, path }: LoadingMeta) => ({
     path,
   },
 });
+
+export const resetAllLoadingCount = () => ({
+  type: ETS_LOADING_RESET,
+  payload: {
+    page: 'allCount',
+    path: 'allCount',
+  },
+});
+

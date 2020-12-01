@@ -20,7 +20,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
     registryKey,
     header: {
       title: 'Реестр заправок',
-      titlePopover: 'Реестр формируется на основе данных, полученных в рамках интеграции с топливной компании.',
+      titlePopover: 'Реестр формируется на основе данных, полученных в рамках интеграции с топливной компанией.',
 
       buttons: [
         buttonsTypes.columns_control,
@@ -102,12 +102,12 @@ export const getToConfig = (): TypeConfigData<Refill> => {
           step: 1,
         },
         {
-          valueKey: 'car_gov_number',
+          valueKey: 'car_gov_number_text',
           title: 'Рег. номер ТС',
           type: 'multiselect',
           getRegistryData: {
-            entity: 'car_actual',
-            groupName: 'car_actual',
+            entity: 'filters/refill_registry/cars',
+            groupName: 'filters/refill_registry/cars',
             valueKey: 'gov_number',
             labelKey: 'gov_number',
           },
@@ -243,7 +243,7 @@ export const getToConfig = (): TypeConfigData<Refill> => {
             width: 150,
           },
           {
-            key: 'car_gov_number',
+            key: 'car_gov_number_text',
             title: 'Рег. номер ТС',
             width: 150,
             fieldTitlePopup: 'Рег.номер указан в соответствии с ТС, указанным в топливной карте в блоке "Привязка ТС" на дату проведения транзакции.',

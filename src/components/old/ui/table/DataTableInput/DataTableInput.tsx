@@ -100,6 +100,7 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
                         buttonsDisable.addButtonDisable
                         || this.props.disabled
                         || !this.props.isPermitted
+                        || this.props.disabledAddButton
                       }
                       onClick={this.handleAddVehicle}
                     >

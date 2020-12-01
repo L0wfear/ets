@@ -92,7 +92,7 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
         }
       })
     );
-
+    const defaultSubmit = await props.submitAction(ownState, props.meta); // submitAction возвращает null из catch, возможно это стоит переделать
     const submitTachographDataReadingList = tachograph_id
       ? await dispatch(
         actionChangeTachographDataReadingList(
@@ -109,7 +109,6 @@ const TachographForm: React.FC<PropsTachograph> = React.memo((props) => {
         )
       )
       : null;
-    const defaultSubmit = await props.submitAction(ownState, props.meta); // submitAction возвращает null из catch, возможно это стоит переделать
     const response = await Promise.all([
       submitTachographDataReadingList,
       submitTachographReplacementSkziList,

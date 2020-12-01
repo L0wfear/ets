@@ -968,16 +968,23 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
   };
 
   handleDiff = (percent, formState) => {
+    const equipmentFuelEnd
+      = formState.equipment_fuel && formState.equipment_fuel_end
+        ? parseFloat(formState.equipment_fuel_end)
+        : 0;
+    const equipmentFuelGiven
+      = formState.equipment_fuel && formState.equipment_fuel_given
+        ? parseFloat(formState.equipment_fuel_given)
+        : 0;
+    const equipmentTaxConsumption
+      = formState.equipment_fuel && formState.equipment_tax_consumption
+        ? parseFloat(formState.equipment_tax_consumption)
+        : 0;
+
     const hasDiff = {
-      isDiffSensorRefill: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_refill, formState.fuel_given + formState.equipment_fuel_given, percent)
-        : false,
-      isDiffSensorConsumption: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + formState.equipment_tax_consumption, percent)
-        : false,
-      isDiffSensorFinishValue: (formState.equipment_fuel && !formState.is_one_fuel_tank)
-        ? hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + formState.equipment_fuel_end, percent)
-        : false,
+      isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given + equipmentFuelGiven, percent),
+      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + equipmentTaxConsumption, percent),
+      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + equipmentFuelEnd, percent),
       isDiffFuelEnd: Boolean(formState.fact_fuel_end < formState.fuel_end),
     };
 

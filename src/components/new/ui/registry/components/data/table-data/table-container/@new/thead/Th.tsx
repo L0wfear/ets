@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { get, isEmpty, } from 'lodash';
-
+import { get } from 'lodash';
 import {
   registryTriggerOnChangeSelectedField,
 } from 'components/new/ui/registry/module/actions-registy';
@@ -14,6 +13,8 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
   registryKey: string;
+  tableScrollXPos: number; 
+  isHorizontalStickyTh?: boolean;
 };
 
 const componentsByKey: Record<string, React.ComponentType<Props>> = {
@@ -44,11 +45,11 @@ const Th: React.FC<Props> = React.memo(
 
     const Component = componentsByKey[metaField.key] || ThDefault;
     const groupOpt = get(metaField, 'groupOpt', null);
+    const isHorizontalStickyTh = get(metaField, 'isHorizontalSticky', false);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const isActive = groupOpt
       ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
       : true;
-    const isStickyTh = isEmpty(groupColumn);
 
     return (
       isActive
@@ -56,9 +57,9 @@ const Th: React.FC<Props> = React.memo(
           width={width}
           canClick={sortable}
           onClick={handleClick}
-          isStickyTh={isStickyTh}
+          isHorizontalStickyTh={isHorizontalStickyTh}
         >
-          <Component metaField={metaField} registryKey={props.registryKey}/>
+          <Component metaField={metaField} registryKey={props.registryKey} tableScrollXPos={props.tableScrollXPos} isHorizontalStickyTh={isHorizontalStickyTh} />
         </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
   },

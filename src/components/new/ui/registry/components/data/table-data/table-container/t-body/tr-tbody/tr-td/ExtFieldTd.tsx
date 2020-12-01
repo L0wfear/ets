@@ -115,7 +115,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     const isDisabled = !isPermittedToUpdate || disabled;
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td isHorizontalSticky={props.tdContainerProps.isHorizontalSticky}>
         {
           !isDisabled && isPermittedToUpdate && isPermittedToUpdateClose
             ? (

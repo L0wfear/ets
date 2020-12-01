@@ -58,7 +58,7 @@ export const getToConfig = (fuel_card_number: string): TypeConfigData<Refill> =>
             width: 150,
           },
           {
-            key: 'car_gov_number',
+            key: 'car_gov_number_text',
             title: 'Рег. номер ТС',
             width: 150,
           },

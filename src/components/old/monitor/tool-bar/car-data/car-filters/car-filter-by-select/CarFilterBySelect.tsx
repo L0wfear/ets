@@ -74,20 +74,28 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
+    const [isClickMenu, setIsClickMenu] = React.useState(false);
+    const [isOptinsLoading, setIsOptinsLoading] = React.useState({
+      carFilterMultyDrivers: false,
+    });
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
       (async () => {
-        const employeeData = await (
-          await dispatch(employeeEmployeeGetSetEmployee({}, { page: '' }))
-        ).data;
-        const moscowTime = await dispatch(
-          actionLoadTimeMoscow({}, { page: 'mainpage' })
-        );
-        setEmployeeData(employeeData);
-        setMoscowTime(moscowTime);
+        if (!hidden && !employeeData.length) {
+          setIsOptinsLoading({...isOptinsLoading, carFilterMultyDrivers: true});
+          const employeeData = await (
+            await dispatch(employeeEmployeeGetSetEmployee({}, { page: '' }))
+          ).data;
+          const moscowTime = await dispatch(
+            actionLoadTimeMoscow({}, { page: 'mainpage' })
+          );
+          setEmployeeData(employeeData);
+          setMoscowTime(moscowTime);
+          setIsOptinsLoading({...isOptinsLoading, carFilterMultyDrivers: false});
+        }
       })();
-    }, []);
+    }, [hidden, employeeData]);
 
     React.useEffect(() => {
       (async () => {
@@ -241,10 +249,10 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     }, [hidden]);
 
     const handleClickOut = React.useCallback(() => {
-      if (!hidden) {
+      if (!hidden && !isClickMenu) {
         setHidden(true);
       }
-    }, [hidden]);
+    }, [hidden, isClickMenu]);
 
     if(!filterFields.length) {
       return <DivNone />;
@@ -262,8 +270,11 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
               ) : (
                 <div className='car_text_filter-container multi'>
                   <div>
-                    {filterFields.map((keyField) => (
-                      <DefaultInput
+                    {filterFields.map((keyField) => {
+                      const isLoading = keyField.key in isOptinsLoading
+                        ? isOptinsLoading[keyField.key]
+                        : false;
+                      return <DefaultInput
                         key={keyField.key}
                         keyField={keyField.key}
                         OPTIONS={
@@ -273,9 +284,12 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
+                        portal={filterFields.length <= 1}
+                        setIsClickMenu={setIsClickMenu}
                         setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
-                      />
-                    ))}
+                        isLoading={isLoading}
+                      />;
+                    })}
                   </div>
                 </div>
               )}

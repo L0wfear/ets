@@ -8,6 +8,8 @@ export type Tachograph = {
   tachograph_brand_name: string;
   factory_number: string;
   gov_number: string;
+  okrug_name: string;
+  company_name: string;
   verification_number: string;
   calibration_date: string | Date;
   next_calibration_date: string | Date;

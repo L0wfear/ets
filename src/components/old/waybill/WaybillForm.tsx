@@ -2909,7 +2909,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< 2 выпилить этот костыль в 36м релизе!!!
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2995,8 +2995,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
-                                  glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'},}}
+                                  glyph: !state.is_edited_motohours ? 'pencil' : 'lock'
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -3244,8 +3244,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
-                                  glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'}, }}
+                                  glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock'
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField

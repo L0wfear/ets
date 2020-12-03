@@ -1,5 +1,6 @@
 import { get, groupBy } from 'lodash';
 import { isNullOrUndefined, isArray } from 'util';
+import { generateRandomKey } from 'utils/functions';
 
 export const summRowWithAll = (rowValue, summValue) => {
   const value = get(rowValue, 'count') || rowValue;
@@ -126,6 +127,38 @@ export const makeSummer = (
 const makeRowsWithNoneStructure = (rows, colMeta) =>
   rows.map(({ ...row }) => ({ ...row, [colMeta.keyName]: '-' }));
 
+export const makeSumTableWithSumStrings = (data) => {
+  const fuel_types: Array<string> = [];
+
+  const summaryStringsArr = data.reduce((acc, curr) => {
+    const index = fuel_types.findIndex((el) => el === curr.fuel_type_name);
+    const defaultFields = {
+      className: 'bold',
+      noIndexRow: true,
+      _uniq_field: generateRandomKey(),
+    };
+    if (!!~index) {
+      for (const key in acc[index]) {
+        if (typeof curr[key] === 'number' && acc[index][key] !== undefined) {
+          acc[index][key] += curr[key];
+        } else if (
+          acc[index][key] !== ''
+          && acc[index][key] !== curr[key]
+          && !(key in defaultFields)
+        ) {
+          acc[index][key] = '';
+        }
+      }
+    } else {
+      fuel_types.push(curr.fuel_type_name);
+      acc.push({ ...curr, ...defaultFields });
+    }
+    return acc;
+  }, []);
+
+  return data.concat(summaryStringsArr);
+};
+
 export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
   if (get(data, 'result.meta.summary.fields')) {
     let rows = get(data, 'result.rows', []);
@@ -205,27 +238,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
           }));
         }
         if (reportKey === 'fuel_consumption_new_report' && level === 'company') { // <<< 1 переписать в 36м, вынести в отдельную функцию, используется в 2х местах
-          const makeSumTableWithSumStrings = (data) => {
-            const groupByFuelType = Object.values(groupBy(data, 'fuel_type_name'));
-            const summaryStringsArr = groupByFuelType.map((element) => element.reduce( ( result, current ) => {
-              for(const key in current){
-                const value = key === '_uniq_field' ? Math.round(Math.random() * 10000) : current[key];
-                if(result[key] === undefined) {
-                  result[key] = value;
-                } else if( typeof result[key] === 'string') {
-                  element.every((el) => el[key] === result[key]) ? result[key] = value : result[key] = '';
-                } else {
-                  result[key] += value;
-                }
-              }
-              return result;
-            }, {className: 'bold', noIndexRow: true,} ));
-            
-            return data.concat(summaryStringsArr);
-          };
-
-          const sumTableWithSumStrings = makeSumTableWithSumStrings(children);                 
-          return sumTableWithSumStrings;
+          return makeSumTableWithSumStrings(children);
         }
         return children;
       }

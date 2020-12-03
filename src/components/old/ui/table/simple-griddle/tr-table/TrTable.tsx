@@ -76,7 +76,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
         {
           this.props.columns.map((columnNameOuter, colIndex) => {
             const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
-            const isColored = (columnNameOuter in cellColors) && rowData[cellColors[columnNameOuter].trigger_key];
+            const isColored = (columnNameOuter in cellColors) && rowData[cellColors[columnNameOuter]?.trigger_key];
             const backgroundColor = isColored ? cellColors[columnNameOuter].color_hex : '#fff';
             const { columnName, customComponent, cssClassName } = field;
             

@@ -23,7 +23,7 @@ export const getToConfig = (tachograph_id = 0): TypeConfigData<TachographMetrolo
     },
     registryKey,
     header: {
-      title: 'Реестр метрологических проверок данного тахографа',
+      title: 'Реестр метрологических поверок данного тахографа',
 
       buttons: [
         buttonsTypes.filter,

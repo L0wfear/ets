@@ -15,7 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
-  title: 'Реестр периодических проверок данного тахографа',
+  title: 'Реестр периодических поверок данного тахографа',
   isNewRegistry: false,
   entyity: 'tachograph_periodic_verification',
 

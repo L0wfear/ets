@@ -24,7 +24,7 @@ export const getToConfig = (tachograph_id = 0): TypeConfigData<Tachograph> => {
     },
     registryKey,
     header: {
-      title: 'Реестр периодических проверок тахографов',
+      title: 'Реестр периодических поверок тахографов',
 
       buttons: [
         buttonsTypes.filter,

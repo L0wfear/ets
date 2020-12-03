@@ -19,7 +19,7 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
     },
     registryKey,
     header: {
-      title: 'Реестр метрологических проверок тахографов',
+      title: 'Реестр метрологических поверок тахографов',
 
       buttons: [
         buttonsTypes.filter,

@@ -700,7 +700,7 @@ class ReportContainer extends React.Component<
     } = this.props;
 
     const reportKey = get(this.props, 'tableProps.reportKey', null);
-
+    const cellColors = get(this.props, 'meta.cell_colors', {});
     const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props
       .headerComponent;
 
@@ -808,6 +808,7 @@ class ReportContainer extends React.Component<
           localState={this.state.localState}
           aggrFields={this.state.aggrFields}
           saveFilterValues={this.saveFilterValues}
+          cellColors={cellColors}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"

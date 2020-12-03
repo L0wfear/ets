@@ -19,6 +19,13 @@ type PropsTrTable = {
 
   checked: any;
   localState: Record<string, any>;
+  cellColors: {
+    [k: string]: {
+      color_hex: string;
+      trigger_key: string;
+      type: 'cell' | 'row';
+    };
+  };
 };
 
 class TrTable extends React.Component<PropsTrTable, any> {
@@ -49,6 +56,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
     const {
       rowData,
       index,
+      cellColors,
     } = this.props;
 
     const rowNumber = (this.props.rowNumberOffset || (this.props.currentPage || 0) * this.props.resultsPerPage) + index + 1;
@@ -68,11 +76,12 @@ class TrTable extends React.Component<PropsTrTable, any> {
         {
           this.props.columns.map((columnNameOuter, colIndex) => {
             const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
-
+            const isColored = (columnNameOuter in cellColors) && rowData[cellColors[columnNameOuter]?.trigger_key];
+            const backgroundColor = isColored ? cellColors[columnNameOuter].color_hex : '#fff';
             const { columnName, customComponent, cssClassName } = field;
             
             return (
-              <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+              <td key={columnName} style={{backgroundColor}} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                 {
                   rowData._isParent && colIndex === 0
                     ? (

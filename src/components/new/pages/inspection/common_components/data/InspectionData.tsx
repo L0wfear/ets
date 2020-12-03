@@ -10,6 +10,7 @@ import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } fro
 import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean; }> {
   state = {
@@ -44,11 +45,17 @@ class InspectionData extends React.Component<InspectionDataProps, { isLoaded: bo
   }
 
   componentDidUpdate(prevProps) {
-    const { triggerKey } = this.props;
-
-    const triggerKeyValue = getNumberValueFromSerch(this.props.searchState[triggerKey]);
-    const triggerKeyValueOld = getNumberValueFromSerch(prevProps.searchState[triggerKey]);
-    if (triggerKeyValue !== triggerKeyValueOld) {
+    const date_start = this.props.searchState.date_start,
+      date_end = this.props.searchState.date_end,
+      date_start_old = prevProps.searchState.date_start,
+      date_end_old = prevProps.searchState.date_end,
+      { triggerKey } = this.props,
+      triggerKeyValue = getNumberValueFromSerch(this.props.searchState[triggerKey]),
+      triggerKeyValueOld = getNumberValueFromSerch(prevProps.searchState[triggerKey]);
+    if (
+      triggerKeyValue !== triggerKeyValueOld
+      || (diffDates(date_start, date_start_old) || diffDates(date_end, date_end_old))
+    ) {
       if (triggerKeyValue) {
         this.props.registryAddInitialData(
           this.props.getRegistryFunc(

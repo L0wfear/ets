@@ -5,7 +5,7 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 
 export const registryKey = 'inspectAutobase';
 
-export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): TypeConfigData<InspectAutobase> => {
+export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId, date_start, date_end }): TypeConfigData<InspectAutobase> => {
   return {
     noInitialLoad: true,
     Service: {
@@ -13,6 +13,8 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
         entity: 'inspect/autobase',
         payload: {
           base_id: carpoolId,
+          date_start,
+          date_end,
         },
       },
       getBlobData: {

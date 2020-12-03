@@ -11,6 +11,7 @@ import SelectPgmBaseTypeId from './select/pgm_store_type_id/SelectPgmBaseTypeId'
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
+import DatePickerRange from 'components/new/pages/inspection/common_components/InspectionDatePickerRange';
 
 type InspectionPgmBaseSelectCarpoolStateProps = {};
 type InspectionPgmBaseSelectCarpoolDispatchProps = {
@@ -52,6 +53,7 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
       <SelectPgmBaseCompany />
       <SelectPgmBaseAddress />
       <SelectPgmBaseTypeId />
+      <DatePickerRange />
     </>
   );
 };

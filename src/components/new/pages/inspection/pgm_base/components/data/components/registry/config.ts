@@ -6,14 +6,16 @@ import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
 
 export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, pgmBaseId: base_id }: any): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspect/pgm_base',
         payload: {
-          base_id: pgmBaseId,
+          base_id,
+          date_start,
+          date_end,
         },
       },
       getBlobData: {

@@ -5,14 +5,16 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 
 export const registryKey = 'inspectionCarsCondition';
 
-export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): TypeConfigData<InspectCarsCondition> => {
+export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_end, companyId: company_id}): TypeConfigData<InspectCarsCondition> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspect/cars_condition',
         payload: {
-          company_id: searchState.companyId,
+          company_id,
+          date_start,
+          date_end, 
         },
       },
       getBlobData: {

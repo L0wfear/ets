@@ -3,7 +3,7 @@ import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_ba
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { promiseCreateInspection, promiseGetBlobActInspection, promiseUpdateInspection, promiseUpdatePreparePlan } from './inspect_promise';
+import { promiseGetBlobActInspection, promiseUpdatePreparePlan } from './inspect_promise';
 import { TypeOfInspect } from './@types/inspect_reducer';
 import inspectContainerActions from './container/container_actions';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
@@ -33,9 +33,7 @@ export const actionCreateInspect = (payload: any, company_id: number, type: Type
     ? promiseCreateInspectionAutobase
     : type === 'pgm_base'
       ? promiseCreateInspectionPgmBase
-      : type === 'cars_condition'
-        ? promiseCreateInspectionCarsCondition
-        : promiseCreateInspection;
+      : promiseCreateInspectionCarsCondition;
   const result = await etsLoadingCounter(
     dispatch,
     createPromise({
@@ -55,9 +53,7 @@ export const actionUpdateInspect = (id: number, data: any, files: Array<any>, me
     ? promiseUpdateInspectionAutobase
     : type === 'pgm_base'
       ? promiseUpdateInspectionPgmBase
-      : type === 'cars_condition'
-        ? promiseUpdateInspectionCarsCondition
-        : promiseUpdateInspection;
+      : promiseUpdateInspectionCarsCondition;
   const result = await etsLoadingCounter(
     dispatch,
     updatePromise(

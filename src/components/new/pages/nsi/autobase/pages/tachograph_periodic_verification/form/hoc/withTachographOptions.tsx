@@ -147,7 +147,7 @@ const withTachographOptions = (
             el.installed_at,
             el.uninstalled_at || dateOfEvent,
             dateOfEvent,
-            { excludeEnd: false, excludeStart: !el.uninstalled_at }
+            { excludeEnd: false, excludeStart: false }
           )
         )?.gov_number;
       }

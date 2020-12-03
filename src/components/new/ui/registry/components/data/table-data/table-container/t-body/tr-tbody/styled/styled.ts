@@ -7,7 +7,7 @@ import { getColorTd } from 'components/new/ui/@bootstrap/grid_bootstrap/tbody/ut
 import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 
-export const EtsTrTbody = styled.tr<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: any; registryKey: string; borderedTd?: boolean; }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: any; registryKey: string; borderedTd?: boolean;}>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};
@@ -39,7 +39,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean; isSelected?: boolean; ro
     ${EtsTbodyTrTd} {
       transition: color 0.1s, background-color 0.1s;
       color: ${({ isSelected }) => isSelected ? 'white' : 'initial'};
-      background-color: ${({ isSelected }) => isSelected ? constantColor.colorGreen : 'initial'};
+      background-color: ${({ isSelected }) => isSelected ? constantColor.colorGreen : 'white'};
       border: ${ ({ borderedTd }) => borderedTd ? '1px solid #c1c1c1' : 'none' }
     }
 

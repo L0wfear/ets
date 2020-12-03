@@ -10,7 +10,7 @@ export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_e
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/cars_condition',
+        entity: 'inspection/cars_condition',
         payload: {
           company_id,
           date_start,

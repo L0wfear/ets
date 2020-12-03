@@ -32,6 +32,8 @@ export const ThOverlayTrigger = styled.div`
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
   registryKey: string;
+  tableScrollXPos: number;
+  isHorizontalStickyTh: boolean;
 };
 
 const ThDefault: React.FC<Props> = React.memo(
@@ -52,6 +54,8 @@ const ThDefault: React.FC<Props> = React.memo(
           && (<ThGroupSpoiler
             metaField={metaField}
             registryKey={props.registryKey}
+            tableScrollXPos={props.tableScrollXPos}
+            isHorizontalStickyTh={props.isHorizontalStickyTh}
           />)
         }
         {metaField.title}

@@ -11,7 +11,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, p
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/pgm_base',
+        entity: 'inspection/pgm_base',
         payload: {
           base_id,
           date_start,

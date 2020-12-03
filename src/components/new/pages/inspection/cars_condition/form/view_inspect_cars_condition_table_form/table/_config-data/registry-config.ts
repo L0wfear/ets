@@ -44,6 +44,16 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         type: 'multiselect',
         title: 'Гос.номер',
       },
+      {
+        valueKey: 'osago_finished_at',
+        type: 'advanced-date',
+        title: 'ОСАГО. Действует до',
+      },
+      {
+        valueKey: 'diagnostic_card_finished_at',
+        type: 'advanced-date',
+        title: 'Диагностическая карта. Действует до',
+      },
     ],
   },
   list: {
@@ -98,6 +108,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             key: 'district',
             firstElem: true, // В группку не входит
           },
+          isHorizontalSticky: true,
         },
         {
           key: 'enumerated',

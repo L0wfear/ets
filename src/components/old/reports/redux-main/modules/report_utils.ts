@@ -139,8 +139,12 @@ export const makeSumTableWithSumStrings = (data) => {
     };
     if (!!~index) {
       for (const key in acc[index]) {
-        if (typeof curr[key] === 'number' && acc[index][key] !== undefined) {
-          acc[index][key] += curr[key];
+        if (
+          (typeof curr[key] === 'number' || typeof acc[index][key] === 'number') 
+          && key !== '_uniq_field'
+        ) {
+          acc[index][key] = isNaN(Number(acc[index][key])) ? 0 : Number(acc[index][key]);
+          acc[index][key] += isNaN(Number(curr[key])) ? 0 : Number(curr[key]);
         } else if (
           acc[index][key] !== ''
           && acc[index][key] !== curr[key]

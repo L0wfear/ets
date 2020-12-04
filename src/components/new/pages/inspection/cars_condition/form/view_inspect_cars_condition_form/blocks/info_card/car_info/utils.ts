@@ -92,6 +92,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     logo: '',
     tech_condition: '',
     repair_reason: '',
+    repair_time: '',
     not_maintenance_and_repair: false,
     own_tech_maintenance: false,
   },

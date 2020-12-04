@@ -205,6 +205,7 @@ export type CarsConditionCars = {
     logo: string;
     tech_condition: string;
     repair_reason: string;
+    repair_time: string;
     not_maintenance_and_repair?: boolean;
     own_tech_maintenance?: boolean;
   };

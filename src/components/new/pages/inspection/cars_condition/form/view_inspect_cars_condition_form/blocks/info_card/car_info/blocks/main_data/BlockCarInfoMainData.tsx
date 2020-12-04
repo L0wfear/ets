@@ -1017,6 +1017,21 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="select"
+              label="Длительность ремонта"
+              value={state.data.repair_time}
+              onChange={handleChangeDataOptions}
+              options={ get(inspectionConfigOptions, 'repair_time', [])}
+              error={errors.data.repair_time}
+              clearable={false}
+              disabled={!props.isPermitted}
+              boundKeys={'repair_time'}
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         {/* { DITETS-6089 попросили просто скрыть
           !IS_CREATING && state.updated_at
             ? (

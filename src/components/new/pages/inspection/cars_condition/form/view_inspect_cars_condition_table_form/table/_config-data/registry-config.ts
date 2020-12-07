@@ -719,6 +719,20 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
+          key: 'repair_time',
+          title: 'Длительность ремонта',
+          width: 200,
+          format: 'inspectionSelect',
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
+          groupOpt: {
+            key: 'repair_info',
+          },
+        },
+        {
           key: 'not_maintenance_and_repair',
           title: 'Тех. обслуживание, ремонт не произведены',
           width: 200,

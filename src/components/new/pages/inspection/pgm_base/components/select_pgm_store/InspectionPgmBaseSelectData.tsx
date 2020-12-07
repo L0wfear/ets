@@ -21,6 +21,7 @@ type InspectionPgmBaseSelectCarpoolDispatchProps = {
 };
 type InspectionPgmBaseSelectCarpoolOwnProps = {
   loadingPage: string;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type InspectionPgmBaseSelectCarpoolMergedProps = (
   InspectionPgmBaseSelectCarpoolStateProps
@@ -53,7 +54,7 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
       <SelectPgmBaseCompany />
       <SelectPgmBaseAddress />
       <SelectPgmBaseTypeId />
-      <DatePickerRange />
+      <DatePickerRange setRefresh={props.setRefresh} />
     </>
   );
 };

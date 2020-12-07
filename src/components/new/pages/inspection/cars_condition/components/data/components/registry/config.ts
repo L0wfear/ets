@@ -5,16 +5,14 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 
 export const registryKey = 'inspectionCarsCondition';
 
-export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_end, companyId: company_id}): TypeConfigData<InspectCarsCondition> => {
+export const getInspectionCarsConditionDataRegistryConfig = (payload): TypeConfigData<InspectCarsCondition> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspection/cars_condition',
         payload: {
-          company_id,
-          date_start,
-          date_end, 
+          ...payload
         },
       },
       getBlobData: {
@@ -35,6 +33,12 @@ export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_e
     filter: {
       fields: [
         {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          type: 'multiselect',
+          title: 'Организация',
+        },
+        {
           valueKey: 'date_start',
           type: 'advanced-date',
           title: 'Дата начала проверки',
@@ -43,6 +47,12 @@ export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_e
           valueKey: 'date_end',
           type: 'advanced-date',
           title: 'Дата окончания проверки',
+        },
+        {
+          valueKey: 'status',
+          labelKey: 'status_text',
+          type: 'multiselect',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'monitoring_kind',
@@ -102,6 +112,11 @@ export const getInspectionCarsConditionDataRegistryConfig = ({date_start, date_e
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
+            width: 200,
           },
           {
             key: 'date_start',

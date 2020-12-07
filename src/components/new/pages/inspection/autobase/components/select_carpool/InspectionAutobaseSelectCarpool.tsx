@@ -40,7 +40,7 @@ const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolP
       <SelectAutobaseOkrug />
       <SelectCarpoolCompany />
       <SelectCarpool />
-      <DatePickerRange />
+      <DatePickerRange setRefresh={props.setRefresh} />
     </>
   );
 };

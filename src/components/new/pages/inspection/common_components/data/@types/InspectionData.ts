@@ -16,6 +16,8 @@ export type InspectionDataOwnProps = {
   getRegistryFunc: (searchState: object) => TypeConfigData<any>;
   makePayloadToCreateInspect?: (searchState: object) => object;
   LineDataCarsLast?: React.ReactNode;
+  refresh: boolean;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type InspectionDataWrapProps = (

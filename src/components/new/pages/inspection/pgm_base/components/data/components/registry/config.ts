@@ -6,16 +6,14 @@ import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
 
 export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, pgmBaseId: base_id }: any): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = (payload): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspection/pgm_base',
         payload: {
-          base_id,
-          date_start,
-          date_end,
+          ...payload
         },
       },
       getBlobData: {
@@ -36,6 +34,18 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, p
     filter: {
       fields: [
         {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          type: 'multiselect',
+          title: 'Организация',
+        },
+        {
+          valueKey: 'base_id',
+          labelKey: 'base_address',
+          type: 'multiselect',
+          title: 'Адрес базы',
+        },
+        {
           valueKey: 'date_start',
           type: 'advanced-date',
           title: 'Дата начала проверки',
@@ -44,6 +54,12 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, p
           valueKey: 'date_end',
           type: 'advanced-date',
           title: 'Дата окончания проверки',
+        },
+        {
+          valueKey: 'status',
+          labelKey: 'status_text',
+          type: 'multiselect',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'base_type',
@@ -101,6 +117,16 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ date_start, date_end, p
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
+            width: 200,
+          },
+          {
+            key: 'base_address',
+            title: 'Адрес базы',
+            width: 200,
           },
           {
             key: 'date_start',

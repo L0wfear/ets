@@ -24,6 +24,7 @@ type InspectionCarsConditionSelectCarpoolDispatchProps = {
 };
 type InspectionCarsConditionSelectCarpoolOwnProps = {
   loadingPage: string;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type InspectionCarsConditionSelectCarpoolMergedProps = (
   InspectionCarsConditionSelectCarpoolStateProps
@@ -58,7 +59,6 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
     <React.Fragment>
       <SelectCarsConditionOkrug />
       <SelectCarsConditionCompany />
-      <DatePickerRange />
       {
         companyId
           ? (
@@ -72,6 +72,7 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
             <DivNone />
           )
       }
+      <DatePickerRange setRefresh={props.setRefresh} />
     </React.Fragment>
   );
 };

@@ -13,8 +13,12 @@ const StyledButtonContainer = styled.div`
   align-items: center;
 `;
 
-const InspectionDatePickerRange: React.FC<WithSearchProps> = React.memo(
-  ({ setDataInSearch, searchState }) => {
+type OwnProps = {
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const InspectionDatePickerRange: React.FC<WithSearchProps & OwnProps> = React.memo(
+  ({ setDataInSearch, searchState, setRefresh }) => {
     const [datesData, setDatesData] = React.useState({
       date_start: '',
       date_end: '',
@@ -106,6 +110,7 @@ const InspectionDatePickerRange: React.FC<WithSearchProps> = React.memo(
         ...searchState,
         ...objChange,
       });
+      setRefresh(true);
     }, [datesData, defaultDates, searchState]);
 
     return (
@@ -137,4 +142,4 @@ const InspectionDatePickerRange: React.FC<WithSearchProps> = React.memo(
   }
 );
 
-export default withSearch<{}>(InspectionDatePickerRange);
+export default withSearch<OwnProps>(InspectionDatePickerRange);

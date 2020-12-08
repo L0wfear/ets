@@ -10,6 +10,7 @@ import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
 import { ExtFieldButton, ExtFieldType, ExtFieldTypeByKey } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
 
 const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<ExtFieldTypeByKey[K]> } = {
   string: StringField,
@@ -27,12 +28,16 @@ const numberToFixed = {
   toFixed3: 3,
 };
 
+const StyledButton = styled(EtsBootstrap.Button)`
+  margin-bottom: 10px;
+`;
+
 const ExtButton: React.FC<ExtFieldButton> = React.memo(
   (props) => {
     return (
-      <EtsBootstrap.Button disabled={props.disabled} onClick={props.onClick} title={props.title} style={props.style}>
+      <StyledButton disabled={props.disabled} onClick={props.onClick} title={props.title} bsSize="input">
         <EtsBootstrap.Glyphicon glyph={props.glyph} />
-      </EtsBootstrap.Button>
+      </StyledButton>
     );
   },
 );

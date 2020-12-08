@@ -35,7 +35,7 @@ const FileListItem: React.FC<any> = React.memo(
       () => {
         if (props.url.includes('data:image')) {
           let image = new Image();
-          image.src = props.url;
+          image.src = encodeURI(props.url);
 
           const w = window.open('');
           w.document.write(image.outerHTML);
@@ -66,7 +66,7 @@ const FileListItem: React.FC<any> = React.memo(
                 />
               )
             }
-            <a href={props.url} title={props.name} onClick={onOpenFile} target={props.url.includes('base64') ? '' : '_blank'}>{props.name}</a>
+            <a href={encodeURI(props.url)} title={props.name} onClick={onOpenFile} target={props.url.includes('base64') ? '' : '_blank'}>{props.name}</a>
           </SingleInputFileItem>
           {
             Boolean(createdAt && withDateTime) && (

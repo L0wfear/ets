@@ -24,6 +24,7 @@ export const getToConfig = (all: Boolean = null): TypeConfigData<PgmStore> => {
     header: {
       title: 'Справочник пунктов отпуска ПГМ',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export_filtred_data,

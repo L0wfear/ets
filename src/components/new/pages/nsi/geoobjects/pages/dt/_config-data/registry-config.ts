@@ -17,6 +17,7 @@ export const config: TypeConfigData<Dt> = {
   header: {
     title: 'Справочник ДТ',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

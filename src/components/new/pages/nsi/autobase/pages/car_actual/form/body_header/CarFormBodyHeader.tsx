@@ -5,6 +5,9 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import CarFormLink from './CarFormLink';
 import CarFormLinkNavDropdown from './CarFormLinkNavDropdown';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import tachographPermissions from 'components/new/pages/nsi/autobase/pages/tachograph/_config-data/permissions';
 
 type OwnProps = {
   isPermitted: boolean;
@@ -18,7 +21,9 @@ const CarFormBodyHeader: React.FC<Props> = React.memo(
   (props) => {
     const activeTabKey = props.match.params.tabKey;
     const { noPassport } = props;
-
+    const isPermittedListTachographs = etsUseSelector(
+      (state) => getSessionState(state).userData.permissionsSet.has(tachographPermissions.list),
+    );
     return (
       <EtsBootstrap.Nav
         bsStyle="tabs"
@@ -53,6 +58,7 @@ const CarFormBodyHeader: React.FC<Props> = React.memo(
                   isActive={isActive}
                   tabKey={tabKeyScheme}
                   title={title}
+                  showTabIntoNav={tabKeyScheme === 'tachograph' ? isPermittedListTachographs : true}
                 />
               </React.Fragment>
             );

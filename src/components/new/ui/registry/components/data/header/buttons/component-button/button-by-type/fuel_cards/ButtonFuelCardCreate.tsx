@@ -76,13 +76,15 @@ const ButtonFuelCardCreate: React.FC<ButtonFuelCardCreateProps> = (props) => {
     ],
   );
 
-  return (
-    canCreate && (
-      <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
-        <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'plus') : null} />{data.title || 'Создать'}
-      </EtsBootstrap.Button>
-    )
-  );
+  return <React.Fragment>
+    {
+      canCreate && (
+        <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
+          <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'plus') : null} />{data.title || 'Создать'}
+        </EtsBootstrap.Button>
+      )
+    }
+  </React.Fragment>;
 };
 
 export default compose<ButtonFuelCardCreateProps, ButtonFuelCardCreateOwnProps>(

@@ -34,6 +34,7 @@ export const config: TypeConfigData<DutyMission> = {
   header: {
     title: 'Журнал наряд-заданий',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.create,
       buttonsTypes.read,

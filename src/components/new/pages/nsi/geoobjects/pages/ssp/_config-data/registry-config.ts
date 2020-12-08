@@ -18,6 +18,7 @@ export const config: TypeConfigData<Ssp> = {
   header: {
     title: 'Справочник ССП',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

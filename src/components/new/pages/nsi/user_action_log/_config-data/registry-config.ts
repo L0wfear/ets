@@ -30,6 +30,7 @@ export const getToConfig = (date_start: string, date_end: string): TypeConfigDat
       title: 'Журнал действий пользователей',
       format: 'daterange_picker_userlog',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.export,
       ],

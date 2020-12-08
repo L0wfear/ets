@@ -48,7 +48,6 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
 
   const handleChange = React.useCallback(
     (valueRaw) => {
-      console.info(global);
       let valueNew = valueRaw;
       if (valueNew && makeOnlyYearFormat) {
         valueNew = createValidYear(valueNew);

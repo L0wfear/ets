@@ -17,6 +17,7 @@ export const config: TypeConfigData<Msp> = {
   header: {
     title: 'Справочник МСП',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

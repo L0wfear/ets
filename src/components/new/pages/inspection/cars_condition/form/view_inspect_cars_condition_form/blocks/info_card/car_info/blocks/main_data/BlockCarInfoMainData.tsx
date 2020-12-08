@@ -24,7 +24,6 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
-import { isNumValue } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -131,13 +130,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
-
-    const handleChangeNumberField = React.useCallback((key, event) => {
-      const value = event.currentTarget.value;
-      if ((!value || isNumValue(value)) && +value >= 0) {
-        props.handleChange(key, value);
-      }
-    }, []);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -824,7 +816,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Пробег на дату проведения проверки:"
                   value={state.mileage}
                   error={errors.mileage}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="mileage"
                   disabled={!props.isPermitted}
                 />
@@ -836,7 +828,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   label="Наработка м/ч на дату проведения проверки:"
                   value={state.motohours}
                   error={errors.motohours}
-                  onChange={handleChangeNumberField}
+                  onChange={props.handleChange}
                   boundKeys="motohours"
                   disabled={!props.isPermitted}
                 />
@@ -885,26 +877,24 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Пробег на дату проведения последнего ТО:"
               value={state.odometr_fact}
               onChange={props.handleChange}
               error={errors.odometr_fact}
               boundKeys="odometr_fact"
               disabled={!props.isPermitted}
-              inline
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="string"
+              type="number"
               label="Наработка м/ч на дату проведения последнего ТО:"
               value={state.motohours_fact}
               onChange={props.handleChange}
               error={errors.motohours_fact}
               boundKeys="motohours_fact"
               disabled={!props.isPermitted}
-              inline
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -1024,6 +1014,21 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="not_maintenance_and_repair"
               disabled={!props.isPermitted}
               className={'checkbox-input flex-reverse'}
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="select"
+              label="Длительность ремонта"
+              value={state.data.repair_time}
+              onChange={handleChangeDataOptions}
+              options={ get(inspectionConfigOptions, 'repair_time', [])}
+              error={errors.data.repair_time}
+              clearable={false}
+              disabled={!props.isPermitted}
+              boundKeys={'repair_time'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

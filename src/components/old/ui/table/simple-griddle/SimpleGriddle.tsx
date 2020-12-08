@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as cx from 'classnames';
-import { isNullOrUndefined, isArray } from 'util';
+import { isArray } from 'util';
 
 import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ThOverlayTrigger } from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
+import { generateRandomKey } from 'utils/functions';
 
 require('components/old/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -127,14 +128,14 @@ class SimpleGriddle extends React.Component<any, any> {
     if (columnName === 'isChecked') {
       const isCheckedAll = this.getGlobalCheckboxState(shortResult);
       return (
-        <EtsBootstrap.Grid.GridBootstrapThead.Th key={columnName} data-title={columnName} canClick={field.sortable} className={cx(field.cssClassName, { sortable: field.sortable })}>
+        <EtsBootstrap.Grid.GridBootstrapThead.Th key={generateRandomKey()} data-title={columnName} canClick={field.sortable} className={cx(field.cssClassName, { sortable: field.sortable })}>
           <input id="checkedColumn" type="checkbox" onChange={this.globalCheckHandler} checked={isCheckedAll} />
         </EtsBootstrap.Grid.GridBootstrapThead.Th>
       );
     }
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapThead.Th key={columnName} canClick={field.sortable} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
+      <EtsBootstrap.Grid.GridBootstrapThead.Th key={generateRandomKey()} canClick={field.sortable} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
           this.state.initialSort === sortByName
@@ -159,7 +160,7 @@ class SimpleGriddle extends React.Component<any, any> {
 
   mapTbodyTr = (rowData, index) => (
     <TrTable
-      key={isNullOrUndefined(rowData[this.props.selectField]) ? index : rowData[this.props.selectField]}
+      key={generateRandomKey()}
       columns={this.props.columns}
       checked={this.props.checked}
       rowData={rowData}
@@ -174,13 +175,14 @@ class SimpleGriddle extends React.Component<any, any> {
       currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
       localState={this.props.localState}
+      cellColors={this.props.cellColors}
     />
   );
-
+ 
   reduceTbodyTrFuelCardsReport = (objData: { array: Array<any>; index: number; }, rowData, indexArr) => {
     objData.array.push(
       <TrTableFuelCardsReport
-        key={rowData._uniq_field}
+        key={generateRandomKey()}
         columns={this.props.columns}
         rowData={rowData}
         index={objData.index}

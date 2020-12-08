@@ -48,6 +48,8 @@ type PropsMultiselectRegistryFilter = {
   onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
   session: any;
   dispatch: EtsDispatch;
+  cache: Record<string, any>;
+  setCache: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 };
 
 type StateMultiselectRegistryFilter = {
@@ -201,6 +203,50 @@ const checkOnNewValuewInArray = (array: Array<any>, filterData: StateMultiselect
   return options.length !== objArray.length;
 };
 
+const getOptions = (
+  response, 
+  getRegistryData: PropsMultiselectRegistryFilter['filterData']['getRegistryData'], 
+  registryKey: PropsMultiselectRegistryFilter['registryKey'], 
+  filterData: PropsMultiselectRegistryFilter['filterData'], 
+  array: PropsMultiselectRegistryFilter['array']
+): Array<any> => {
+  const result = get(
+    response,
+    get(getRegistryData, 'typeAns', 'result.rows'),
+    [],
+  );
+  const valueKey = get(getRegistryData, 'valueKey', null);
+  const labelKey = get(getRegistryData, 'labelKey', valueKey);
+
+  if (!valueKey) {
+    throw new Error(`опередели valueKey в ${registryKey}/${filterData.valueKey}`);
+  }
+
+  let options = uniqBy(
+    makeOptionsFromArray(
+      result,
+      valueKey,
+      labelKey,
+      getRegistryData?.format,
+    ),
+    'value',
+  );
+
+  if (getRegistryData.mergeWithArray) {
+    const dataInArray = array.reduce((newObj, { [filterData.valueKey]: uniqKeyArray }) => {
+      uniqKeyArray.forEach((uniqValue) => {
+        if (uniqValue) {
+          newObj[uniqValue] = true;
+        }
+      });
+
+      return newObj;
+    }, {});
+    options = options.filter(({ value }) => value in dataInArray);
+  }
+  return options;
+};
+
 class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegistryFilter, StateMultiselectRegistryFilter> {
   state = {
     total_count: this.props.total_count,
@@ -239,18 +285,42 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
     return null;
   }
 
+  componentDidMount() {
+    const {
+      filterData,
+      array,
+      registryKey,
+      cache,
+    } = this.props;
+    const getRegistryData = get(filterData, 'getRegistryData', null);
+    const valueKey = get(filterData, 'valueKey', null);
+    if (valueKey && valueKey in cache) {
+      const options = getOptions(cache[valueKey], getRegistryData, registryKey, filterData, array);
+      this.setState({
+        options,
+        isLoading: false,
+        disabled: false,
+      });
+    }
+  }
+
   async componentDidUpdate(prevProps, prevState) {
+    const {
+      registryKey,
+      filterData,
+      array,
+    } = this.props;
     const triggerToUpdate = (
       (this.props.needUpdateFiltersOptions && !prevProps.needUpdateFiltersOptions)
       || (
         this.props.needUpdateFiltersOptions
         && prevProps.total_count !== this.props.total_count
-        && checkOnNewValuewInArray(this.props.array, this.state.filterData, this.state.options)
+        && checkOnNewValuewInArray(array, this.state.filterData, this.state.options)
       )
     );
 
     if (triggerToUpdate) {
-      const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
+      const getRegistryData = get(filterData, 'getRegistryData', null);
 
       if (getRegistryData) {
         let response = null;
@@ -259,6 +329,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
 
         try {
           let promise = null;
+          const valueKey = get(filterData, 'valueKey', null);
           if (groupName && groupName in cache) {
             promise = cache[groupName];
           } else {
@@ -282,6 +353,9 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
           }
 
           response = await promise;
+          if (valueKey && !(valueKey in this.props.cache)) {
+            this.props.setCache((prevCache) => ({...prevCache, [valueKey]: response}));
+          }
         } catch (error) {
           console.error(error); // eslint-disable-line
 
@@ -291,42 +365,7 @@ class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegi
           return;
         }
 
-        const result = get(
-          response,
-          get(getRegistryData, 'typeAns', 'result.rows'),
-          [],
-        );
-
-        const valueKey = get(getRegistryData, 'valueKey', null);
-        const labelKey = get(getRegistryData, 'labelKey', valueKey);
-
-        if (!valueKey) {
-          throw new Error(`опередели valueKey в ${this.props.registryKey}/${this.props.filterData.valueKey}`);
-        }
-
-        let options = uniqBy(
-          makeOptionsFromArray(
-            result,
-            valueKey,
-            labelKey,
-            getRegistryData?.format,
-          ),
-          'value',
-        );
-
-        if (getRegistryData.mergeWithArray) {
-          const dataInArray = this.props.array.reduce((newObj, { [this.props.filterData.valueKey]: uniqKeyArray }) => {
-            uniqKeyArray.forEach((uniqValue) => {
-              if (uniqValue) {
-                newObj[uniqValue] = true;
-              }
-            });
-
-            return newObj;
-          }, {});
-          options = options.filter(({ value }) => value in dataInArray);
-        }
-
+        const options = getOptions(response, getRegistryData, registryKey, filterData, array);
         this.setState({
           options,
           isLoading: false,

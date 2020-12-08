@@ -21,6 +21,7 @@ export const config: TypeConfigData<MissionTemplate> = {
   header: {
     title: 'Шаблоны заданий',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.create,
       buttonsTypes.read,

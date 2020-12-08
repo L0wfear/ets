@@ -20,6 +20,7 @@ export const config: TypeConfigData<CompanyStructure> = {
   header: {
     title: 'Структура предприятия',
     buttons: [
+      buttonsTypes.columns_control,
       {
         id: 'open-create-form',
         type: buttonsTypes.create,

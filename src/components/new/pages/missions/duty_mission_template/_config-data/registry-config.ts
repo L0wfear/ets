@@ -22,6 +22,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
   header: {
     title: 'Шаблоны наряд-заданий',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.create,
       buttonsTypes.read,

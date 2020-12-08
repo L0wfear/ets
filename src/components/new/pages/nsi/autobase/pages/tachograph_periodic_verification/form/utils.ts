@@ -6,6 +6,8 @@ export const defaultTachograph: Tachograph = {
   id: null,
   tachograph_id: null,
   company_id: null,
+  company_name: '',
+  okrug_name: '',
   company_structure_id: null,
   company_structure_name: '',
   tachograph_brand_name: '',

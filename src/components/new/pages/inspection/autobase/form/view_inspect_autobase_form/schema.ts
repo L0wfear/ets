@@ -4,7 +4,7 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
 import { INSPECT_TYPE_FORM } from '../../global_constants';
 import { getRequiredFieldMoreEqualThen } from 'components/@next/@utils/getErrorString/getErrorString';
-import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
+import { validateResolveToField } from '../../../common/utils';
 
 const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWithForm> = {
   properties: {
@@ -222,22 +222,7 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
       dependencies: [
-        (value, {dataForValidation, status}) => {
-          const date = createValidDate(value);
-          if (
-              dataForValidation?.current_date 
-              && diffDates(date, dataForValidation?.current_date) < 0
-          ) {
-            return 'Дата предоставления отчета не может быть меньше текущей';
-          }
-          if (
-            dataForValidation?.props_resolve_to
-            && status === 'completed'
-            && diffDates(date, dataForValidation?.props_resolve_to) < 0
-          ) {
-            return 'Дата предоставления отчета не может быть изменена на более раннюю';
-          }
-        }
+        (value, {dataForValidation, status}) => validateResolveToField(value, dataForValidation, status)
       ]
     },
   },

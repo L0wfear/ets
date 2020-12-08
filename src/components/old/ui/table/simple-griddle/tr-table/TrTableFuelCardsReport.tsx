@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import { TrFuelCardReportTitle, TrFuelCardReportFooter } from '../styled';
-import { generateRandomKey } from 'utils/functions';
 
 type PropsTrTableFuelCardsReport = {
   rowData: any;
@@ -70,7 +69,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
         {
           rows.map((rowData, rowIndex) => {
             return (
-              <tr key={generateRandomKey()} className={cx(this.props.rowMetadata.bodyCssClassName(rowData))}>
+              <tr key={rowNumber + rowIndex} className={cx(this.props.rowMetadata.bodyCssClassName(rowData))}>
                 {
                   this.props.columns.map((columnNameOuter, colIndex) => {
                     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
@@ -90,7 +89,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                     })();
 
                     return (
-                      <td key={generateRandomKey()} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+                      <td key={columnName} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                         {
                           Number(data) ? data.toString().replace('.', ',') : data
                         }
@@ -106,14 +105,14 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
           __footer_rows.map((footerRow, indexFooter) => {
             if (footerRow.title) {
               return (
-                <TrFuelCardReportFooter key={generateRandomKey()}>
+                <TrFuelCardReportFooter key={footerRow.title}>
                   <td></td>
                   <td colSpan={999}>{footerRow.title || ''}</td>
                 </TrFuelCardReportFooter>
               );
             }
             return (
-              <TrFuelCardReportFooter key={generateRandomKey()}>
+              <TrFuelCardReportFooter key={indexFooter + 1}>
                 {
                   this.props.columns.map((columnNameOuter, indexFooterColumn) => {
                     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
@@ -124,13 +123,13 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                     if (footerRowData) {
                       if (footerRowData.type === 'value') {
                         return (
-                          <td key={generateRandomKey()}>{footerRowData.value}</td>
+                          <td key={columnName}>{footerRowData.value}</td>
                         );
                       }
 
                       if (footerRowData.type === 'agg') {
                         return (
-                          <td key={generateRandomKey()}>{rows.reduce((summ, rowData) => {
+                          <td key={columnName}>{rows.reduce((summ, rowData) => {
                             const fieldInRowData = rowData[columnName];
                             if ((+fieldInRowData || +fieldInRowData === 0) && !isNaN(+fieldInRowData)) {
                               return summ + fieldInRowData;
@@ -143,7 +142,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                     }
 
                     return (
-                      <td key={generateRandomKey()}>{''}</td>
+                      <td key={indexFooterColumn + 1}>{''}</td>
                     );
                   })
                 }

@@ -35,10 +35,11 @@ export const EtsTdInnerWrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; isHorizontalSticky?: boolean;}>`
+export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; isHorizontalSticky?: boolean; isSelected?: boolean;}>`
   position: ${({ isHorizontalSticky }) => isHorizontalSticky ? 'sticky' : 'relative'};
   left: ${({ isHorizontalSticky }) => isHorizontalSticky ? 0 : 'unset'};
-  z-index: ${({ isHorizontalSticky }) => isHorizontalSticky ? 2 : 1};
+  z-index: ${({ isHorizontalSticky }) => isHorizontalSticky ? 1 : 0};
+  background-color: ${({ isHorizontalSticky, isSelected }) => `${'white'} ${isHorizontalSticky && !isSelected ? '!important' : ''}`};
   &&& {
     padding: 8px;
     border: 1px solid white;

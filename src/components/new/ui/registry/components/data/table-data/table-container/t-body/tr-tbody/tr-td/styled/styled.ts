@@ -38,7 +38,7 @@ export const EtsTdInnerWrapper = styled.div`
 export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean; isHorizontalSticky?: boolean; isSelected?: boolean;}>`
   position: ${({ isHorizontalSticky }) => isHorizontalSticky ? 'sticky' : 'relative'};
   left: ${({ isHorizontalSticky }) => isHorizontalSticky ? 0 : 'unset'};
-  z-index: ${({ isHorizontalSticky }) => isHorizontalSticky ? 1 : 0};
+  z-index: ${({ isHorizontalSticky }) => isHorizontalSticky ? 1 : 'unset'};
   background-color: ${({ isHorizontalSticky, isSelected }) => `${'white'} ${isHorizontalSticky && !isSelected ? '!important' : ''}`};
   &&& {
     padding: 8px;

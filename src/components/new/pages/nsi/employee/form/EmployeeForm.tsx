@@ -349,7 +349,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-    const isLayoff = Boolean(!original.active && original.layoff_reason_id && original.comment);
+    const isLayoff = Boolean(!original.active
+      && (original.layoff_reason_id === state.layoff_reason_id)
+      && (original.comment === state.comment));
     
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">

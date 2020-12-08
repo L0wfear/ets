@@ -28,6 +28,8 @@ export const defaultFuelCard: FuelCard = {
   fuel_card_on_cars: [],
   origin_fuel_card_on_cars: [],
   okrug_name: null,
+  refill_sum: null,
+  refill_sum_text: null,
   source_type_id: null,
   source_type_text: null,
   status: null,

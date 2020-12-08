@@ -42,6 +42,8 @@ export type FuelCard = {
   gov_number_text: string;
   garage_number: string;
   fuel_card_on_cars: Array<FuelCardOnCars>;
+  refill_sum: number;
+  refill_sum_text: string;
   source_type_id: number;
   source_type_text: string;
   status: 'Active' | 'Locked';

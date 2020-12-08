@@ -12,7 +12,7 @@ import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
-import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDate, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -133,7 +133,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const fuelCardsList = !isNullOrUndefined(props.boundKey)
       ? etsUseSelector((state) => getAutobaseState(state)[storeFuelCardsKey[props.boundKey]])
       : [];
-
+    const [needUpdateRefillDate, setNeedUpdateRefillDate] = React.useState(false);
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList); // <<< gas
     const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
     const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
@@ -200,8 +200,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           },
           {
             ...metaCarRefillDate,
-            min: validPeriod.date_start,
-            max: validPeriod.date_end,
+            min: new Date(validPeriod.date_start), 
+            max: new Date(validPeriod.date_end),
           },
           {
             ...metaValue,
@@ -428,20 +428,35 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     React.useEffect(() => {
       if (
         props.array.length
-        && props.array.some((el) => !el.date)
-        && fact_departure_date
-        && fact_arrival_date
-        && diffDates(fact_departure_date, fact_arrival_date) === 0
+        && validPeriod.date_start
+        && validPeriod.date_end
       ) {
+        const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
         const newArr = props.array.map((el) => {
-          if (!el.date) {
-            return { ...el, date: fact_departure_date };
+          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, el.date, {
+            excludeEnd: false,
+            excludeStart: false,
+          });
+          if (!el.date && !isDiffDates) {
+            if (!needUpdateRefillDate) {
+              setNeedUpdateRefillDate(true);
+            }
+            return { ...el, date: validPeriod.date_start };
+          }
+          if (el.date && !isDateInPeriod) {
+            if (!needUpdateRefillDate) {
+              setNeedUpdateRefillDate(true);
+            }
+            return { ...el, date: null };
           }
           return el;
         });
-        props.handleChange(newArr);
+        if (needUpdateRefillDate) {
+          props.handleChange(newArr);
+          setNeedUpdateRefillDate(false);
+        }
       }
-    }, [fact_arrival_date, fact_departure_date, props.array, props.handleChange]);
+    }, [validPeriod.date_start, validPeriod.date_end, props.array, props.handleChange, needUpdateRefillDate]);
 
     const previousFuelType = usePrevious(props.fuel_type);
     React.useEffect(

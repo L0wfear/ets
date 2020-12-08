@@ -45,8 +45,8 @@ export type TableMeta<F> = {
   } | {
     format: 'date';
     time?: boolean;
-    min?: Date | string;
-    max?: Date | string;
+    min?: Date;
+    max?: Date;
   } | {
     format: 'string';
   } | {

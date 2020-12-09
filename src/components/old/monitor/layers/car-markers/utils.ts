@@ -27,10 +27,6 @@ export const checkOnIncludesCar = (filterData, { garage_number = '', gov_number 
   || garage_number && garage_number.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
 );
 
-export const checkOnIncludesTechCondition = (filterData, { condition = '' } = {}) => (
-  condition && condition.toString().toLocaleLowerCase().includes(filterData.toString().toLocaleLowerCase())
-);
-
 export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
 
   const newFeature: any = new Feature({
@@ -51,7 +47,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, g
     case 'carFilterText': return !value || checkOnIncludesCar(value, car_actualData); 
     case 'carFilterMultyGpsCode': return !value.length || value.includes(Number(car_actualData.gps_code));
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
-    case 'carFilterMultyTechCondition': return !value || checkOnIncludesTechCondition(value, car_actualData);
+    case 'carFilterMultyTechCondition': return !value || value === car_actualData.condition;
     case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);

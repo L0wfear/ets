@@ -36,7 +36,7 @@ export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTacho
       dependencies: [
         (value, { factory_number, gov_number } ) => {
           if (!value) {
-            return getRequiredFieldMessage('Заводской номер тахографа');
+            return getRequiredFieldMessage('Дата проведения ремонта');
           }
           if (diffDates(value, getDateWithMoscowTz()) > 0) {
             return 'Дата ремонта не может быть больше текущей';

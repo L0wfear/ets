@@ -113,8 +113,8 @@ class RefillForm extends React.PureComponent<PropsRefill, {}> {
                   type="string"
                   label="Рег. номер ТС"
                   readOnly
-                  value={state.car_gov_number}
-                  boundKeys="car_gov_number"
+                  value={state.car_gov_number_text}
+                  boundKeys="car_gov_number_text"
                   dashIfEmpty
                 />
               </EtsBootstrap.Col>

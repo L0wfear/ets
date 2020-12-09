@@ -9,8 +9,8 @@ export const EtsTheadTh = styled.th<{ canClick?: boolean; width?: number; widthU
     border-bottom: 1px solid #c1c1c1 !important;
     position: sticky;
     top: 0;
-    left: ${ ({ isHorizontalStickyTh }) => isHorizontalStickyTh  && 0 };
-    z-index: ${ ({ isHorizontalStickyTh }) => isHorizontalStickyTh  ? 4 : 3 };
+    left: ${ ({ isHorizontalStickyTh }) => isHorizontalStickyTh  ? 0 : 'unset' };
+    z-index: ${ ({ isHorizontalStickyTh }) => isHorizontalStickyTh  ? 3 : 2 };
 
     cursor: ${({ canClick }) => canClick ? 'pointer' : 'default'};
     width: ${({ width, widthUnits }) => width ? `${width}${widthUnits ? widthUnits : 'px'} ` : 'auto'};

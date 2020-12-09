@@ -79,7 +79,7 @@ const TdContainer: React.FC<TdContainerProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id} isHorizontalSticky={props.isHorizontalSticky}>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id} isHorizontalSticky={props.isHorizontalSticky} isSelected={isSelected}>
         <EtsTdInnerWrapper>
           {value}
         </EtsTdInnerWrapper>

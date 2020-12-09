@@ -39,7 +39,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean; isSelected?: boolean; ro
     ${EtsTbodyTrTd} {
       transition: color 0.1s, background-color 0.1s;
       color: ${({ isSelected }) => isSelected ? 'white' : 'initial'};
-      background-color: ${({ isSelected }) => isSelected ? constantColor.colorGreen : 'white'};
+      background-color: ${({ isSelected }) => isSelected ? constantColor.colorGreen : 'initial'};
       border: ${ ({ borderedTd }) => borderedTd ? '1px solid #c1c1c1' : 'none' }
     }
 

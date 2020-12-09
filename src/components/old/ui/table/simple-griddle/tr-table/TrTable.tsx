@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isNullOrUndefined } from 'util';
-import { generateRandomKey } from 'utils/functions';
 
 type PropsTrTable = {
   rowData: any;
@@ -82,7 +81,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
             const { columnName, customComponent, cssClassName } = field;
             
             return (
-              <td key={generateRandomKey()} style={{backgroundColor}} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
+              <td key={columnName} style={{backgroundColor}} className={cx(cssClassName, this.props.rowMetadata.tdCssClassName([columnName, rowData[columnName]]))}>
                 {
                   rowData._isParent && colIndex === 0
                     ? (

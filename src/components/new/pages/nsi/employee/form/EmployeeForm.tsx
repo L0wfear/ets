@@ -272,13 +272,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   };
 
   private readonly handleChangeActive = (field, value): void => {
+    const { formState: state, originalFormState: original } = this.props;
+
     const changeObject: any = {
       [field]: value,
     };
 
-    if (value !== this.props.formState.active && value) {
+    if (value !== +state.active) {
       changeObject.layoff_reason_id = null;
       changeObject.comment = '';
+    }
+    if (value === +original.active) {
+      changeObject.layoff_reason_id = original.layoff_reason_id;
+      changeObject.comment = original.comment;
     }
 
     this.props.handleChange(changeObject);

@@ -2467,7 +2467,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
-                  min={state.plan_departure_date}
+                  min={new Date(state.plan_departure_date)}
                   onChange={this.handlePlanDepartureDates}
                   boundKeys="plan_arrival_date"
                   disabled={ IS_DELETE || !isPermittedByKey.update}

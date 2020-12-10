@@ -39,7 +39,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     min = new Date(1900, 0, 1),
     max = new Date(2099, 11, 31),
   } = props;
-  const currentDate = React.useMemo(() => props.min, [props.min]);
+  const defaultCurrentDate = React.useMemo(() => props.min, [props.min]);
   let { date: value } = props;
   const format = `${calendar ? `${makeOnlyYearFormat ? global.APP_YEAR_FORMAT : global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
 
@@ -96,7 +96,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       footer={footer}
       min={min}
       max={max}
-      currentDate={currentDate}
+      defaultCurrentDate={defaultCurrentDate}
     />
   );
 };

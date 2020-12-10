@@ -151,6 +151,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 min={metaData.min}
                 max={metaData.max}
                 footer={false}
+                makeGoodFormat
               />
             )
         }

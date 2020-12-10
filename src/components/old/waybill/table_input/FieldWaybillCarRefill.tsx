@@ -433,7 +433,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ) {
         const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
         const newArr = props.array.map((el) => {
-          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, el.date, {
+          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, createValidDate(el.date), {
             excludeEnd: false,
             excludeStart: false,
           });

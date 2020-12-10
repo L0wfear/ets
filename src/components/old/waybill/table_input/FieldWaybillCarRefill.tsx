@@ -200,8 +200,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           },
           {
             ...metaCarRefillDate,
-            min: new Date(validPeriod.date_start), 
-            max: new Date(validPeriod.date_end),
+            min: validPeriod.date_start ? new Date(validPeriod.date_start) : null, 
+            max: validPeriod.date_end ? new Date(validPeriod.date_end) : null,
           },
           {
             ...metaValue,

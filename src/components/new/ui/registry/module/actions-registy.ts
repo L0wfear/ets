@@ -98,6 +98,7 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
   };
 
   const columnContorolData = localStorage.getItem(`columnContorol`);
+  const monitoringKindData = localStorage.getItem(`monitoringKind`);
   let meta = config.list.meta;
 
   if (columnContorolData) {
@@ -120,6 +121,21 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
         }),
       };
     }
+  }
+
+  if (monitoringKindData) {
+    const carUse
+      = ['staff_drivers', 'staff_mechanics', 'list_drivers', 'list_mechanics', 'staffing_drivers', 'staffing_mechanics', 'maintenance', 'repair', 'storage', 'not_used'];
+    meta = {
+      fields: meta.fields.map((data) => {
+        if ('key' in data) {
+          return ({
+            ...data,
+            hidden: carUse.includes(data.key) && monitoringKindData !== 'car_use',
+          });
+        }
+      })
+    };
   }
 
   mergeConfig.list = mergeList(
@@ -173,7 +189,7 @@ export const actionSetRequestTime = (registryKey: string, idRequestTime: number)
   },
 });
 
-export const actionChangeRegistryMetaFields = (registryKey: string, fields: OneRegistryData<any>['list']['meta']['fields']): EtsAction<void> => (dispatch, getState) => {
+export const actionChangeRegistryMetaFields = (registryKey: string, fields: OneRegistryData<any>['list']['meta']['fields'], monitoring_kind?: string): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const list = get(registryData, 'list');
 

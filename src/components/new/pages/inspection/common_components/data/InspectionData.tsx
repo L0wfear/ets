@@ -77,9 +77,16 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
           ),
         );
         this.loadRegistryData();
-        if (triggerKey === searchStateKey) {
+        if (
+          triggerKey === searchStateKey
+          && searchStateKeyValue !== this.state.currentInspectionTriggerKeyValue
+        ) {
           this.setState({
             currentInspectionTriggerKeyValue: searchStateKeyValue
+          });
+        } else if (this.state.currentInspectionTriggerKeyValue !== null) {
+          this.setState({
+            currentInspectionTriggerKeyValue: null
           });
         }
       } else {

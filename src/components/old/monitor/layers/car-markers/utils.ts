@@ -35,7 +35,7 @@ export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
   const polygonCoordinates = newFeature.getGeometry().getCoordinates();
 
   return polygonCoordinates.some((polygon) => {
-    return insider(coords_msk, polygonCoordinates.length > 1 ? polygon[0] : polygon);
+    return !coords_msk || insider(coords_msk, polygonCoordinates.length > 1 ? polygon[0] : polygon); // !coords_msk для ТС, которых нет на карте
   });
 };
 

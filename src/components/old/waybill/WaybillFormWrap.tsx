@@ -774,11 +774,14 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       formWarnings = {
         fuel_given: isDiff.isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
         equipment_fuel_given: isDiff.isDiffSensorRefill ? 'Расхождение с показаниями ДУТ' : false,
-        tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
+        fact_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
         equipment_tax_consumption: isDiff.isDiffSensorConsumption ? 'Расхождение с показаниями ДУТ' : false,
-        fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
         equipment_fuel_end: isDiff.isDiffSensorFinishValue ? 'Расхождение с показаниями ДУТ' : false,
-        fact_fuel_end: isDiff.isDiffFuelEnd ? `Перерасход топлива на ${formState.diff_consumption} л.` : false,
+        fact_fuel_end: isDiff.isDiffFuelEnd || (isDiff.isDiffFuelEnd && isDiff.isDiffSensorFinishValue)
+          ? `Перерасход топлива на ${formState.diff_consumption} л.`
+          :  (isDiff.isDiffSensorFinishValue && !isDiff.isDiffFuelEnd)
+            ? 'Расхождение с показаниями ДУТ'
+            : false,
       };
     }
 
@@ -983,8 +986,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
     const hasDiff = {
       isDiffSensorRefill: hasPercentageDifference(formState.sensor_refill, formState.fuel_given + equipmentFuelGiven, percent),
-      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.tax_consumption + equipmentTaxConsumption, percent),
-      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fuel_end + equipmentFuelEnd, percent),
+      isDiffSensorConsumption: hasPercentageDifference(formState.sensor_consumption, formState.fact_consumption + equipmentTaxConsumption, percent),
+      isDiffSensorFinishValue: hasPercentageDifference(formState.sensor_finish_value, formState.fact_fuel_end + equipmentFuelEnd, percent),
       isDiffFuelEnd: Boolean(formState.fact_fuel_end < formState.fuel_end),
     };
 
@@ -1282,8 +1285,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           return (
             <div>
               {Boolean(isDiff.isDiffSensorRefill) && (<p>"Заправка по ДУТ, л" превышает "Выдано, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
-              {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат по таксировке, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
+              {Boolean(isDiff.isDiffSensorConsumption) && (<p>"Расход по ДУТ, л" превышает "Расход фактический, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
+              {Boolean(isDiff.isDiffSensorFinishValue) && (<p>"Возврат по ДУТ, л" превышает "Возврат фактический, л" более чем на {PERCENT_DIFF_VALUE}%.</p>)}
               {Boolean(isDiff.isDiffFuelEnd) && (<ParagraphRed>Зафиксирован перерасход топлива на {formState.diff_consumption.toString().replace('.', ',')} л.</ParagraphRed>)}
               {
                 Boolean(Object.values(isDiff).some(

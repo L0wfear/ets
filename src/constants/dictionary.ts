@@ -96,3 +96,8 @@ export const SEASON_OPTION = [
   { value: 1, label: 'Зима' },
   { value: 2, label: 'Лето' },
 ];
+
+export const SWITCH_REPORT_TYPE_OPTIONS = [
+  { value: 'fuel_cards', label: 'Топливные карты'}, 
+  { value: 'cars', label: 'Транспортные средтсва'},
+];

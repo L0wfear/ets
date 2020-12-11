@@ -272,13 +272,19 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   };
 
   private readonly handleChangeActive = (field, value): void => {
+    const { formState: state, originalFormState: original } = this.props;
+
     const changeObject: any = {
       [field]: value,
     };
 
-    if (value !== this.props.formState.active && value) {
+    if (value !== +state.active) {
       changeObject.layoff_reason_id = null;
       changeObject.comment = '';
+    }
+    if (value === +original.active) {
+      changeObject.layoff_reason_id = original.layoff_reason_id;
+      changeObject.comment = original.comment;
     }
 
     this.props.handleChange(changeObject);
@@ -349,7 +355,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-    const isLayoff = Boolean(!original.active && original.layoff_reason_id && original.comment);
+    const isLayoff = Boolean(!original.active
+      && (original.layoff_reason_id === state.layoff_reason_id)
+      && (original.comment === state.comment));
     
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">

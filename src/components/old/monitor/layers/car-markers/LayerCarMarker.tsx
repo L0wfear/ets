@@ -49,7 +49,7 @@ const defaultFilters = {
   carFilterMultyOwner: [],
   carFilterMultyStructure: [],
   carFilterMultyType: [],
-  carFilterMultyTechCondition: [],
+  carFilterMultyTechCondition: null,
   carFilterMultyModel: [],
   carFilterText: '',
   featureBufferPolygon: null,

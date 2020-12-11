@@ -17,10 +17,13 @@ import { compose } from 'recompose';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { SWITCH_REPORT_TYPE_OPTIONS } from 'constants/dictionary';
 
 type IPropsReportHeader = {
   date_start: string;
   date_end: string;
+  switch_report_type: string;
   actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>;
   appConfig: InitialStateSession['appConfig'];
 } & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
@@ -53,11 +56,27 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end = this.props.appConfig.shift.shift_end,
     } = this.props;
 
+    const {
+      switch_report_type
+    } = this.getState();
+
     this.props.onClick({
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
+      switch_report_type,
     });
   };
+
+  getState() {
+    const {
+      switch_report_type = 'fuel_cards'
+    } = this.props;
+
+    return {
+      switch_report_type
+    };
+  }
+
   render() {
     const {
       date_start = this.props.appConfig.shift.shift_start,
@@ -65,18 +84,34 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       readOnly,
     } = this.props;
 
+    const {
+      switch_report_type
+    } = this.getState();
+
     return (
       <EtsBootstrap.Row className="report-page__header">
-        <EtsBootstrap.Col md={12}>
+        <EtsBootstrap.Col md={3}>
+          <ExtField
+            type="select"
+            options={SWITCH_REPORT_TYPE_OPTIONS}
+            value={switch_report_type}
+            onChange={this.props.handleChange}
+            boundKeys={'switch_report_type'}
+            clearable={false}
+            label={'Группировка'}
+            disabled={readOnly}
+          />
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={9}>
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col mdOffset={3} md={6}>
+            <EtsBootstrap.Col md={6}>
               <FieldLabel>
                 Период формирования
               </FieldLabel>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </EtsBootstrap.Col>
-        <EtsBootstrap.Col mdOffset={3} md={6}>
+        <EtsBootstrap.Col md={6}>
           <DatePickerRange
             date_start_id="date_start"
             date_start_value={date_start}
@@ -102,7 +137,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 }
 
 export default compose<any, any>(
-  connect<any, { actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>;}, any, ReduxState>(
+  connect<any, { actionLoadAppConfig: HandleThunkActionCreator<typeof actionLoadAppConfig>; }, any, ReduxState>(
     (state) => ({
       appConfig: getSessionState(state).appConfig,
     }),

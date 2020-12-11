@@ -13,12 +13,18 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
 import { DivNone } from 'global-styled/global-styled';
+import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 
 type InspectionCarsConditionSelectCarpoolStateProps = {
+  fields: OneRegistryData['list']['meta']['fields'];
 };
 type InspectionCarsConditionSelectCarpoolDispatchProps = {
   actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionGetAndSetInStoreCompany>;
   actionResetCompany: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionResetCompany>;
+  actionChangeRegistryMetaFields: HandleThunkActionCreator<typeof actionChangeRegistryMetaFields>;
 };
 type InspectionCarsConditionSelectCarpoolOwnProps = {
   loadingPage: string;
@@ -47,6 +53,37 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
     [],
   );
 
+  const setLocalStorageData = React.useCallback(
+    (data) => {
+      localStorage.getItem(`monitoringKind`);
+      localStorage.setItem('monitoringKind', data);
+    }, [props.searchState.monitoringKind]);
+
+  const filteredFields = React.useMemo(() => {
+
+    const carUse
+      = ['staff_drivers', 'staff_mechanics', 'list_drivers', 'list_mechanics', 'staffing_drivers', 'staffing_mechanics', 'maintenance', 'repair', 'storage', 'not_used'];
+    return props.fields.map((data) => {
+      if ('key' in data) {
+        return ({
+          ...data,
+          hidden: carUse.includes(data.key) && props.searchState.monitoringKind !== 'car_use',
+        });
+      }
+    });
+  }, [props.searchState.monitoringKind]);
+
+  React.useEffect(() => {
+    if (props.searchState.monitoringKind && props.fields.length > 0) {
+      setLocalStorageData(props.searchState.monitoringKind);
+      props.actionChangeRegistryMetaFields(
+        props.loadingPage,
+        filteredFields,
+        props.searchState.monitoringKind
+      );
+    }
+  }, [props.searchState.monitoringKind, filteredFields]);
+
   const {
     searchState,
   } = props;
@@ -74,8 +111,15 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
 
 export default compose<InspectionCarsConditionSelectProps, InspectionCarsConditionSelectCarpoolOwnProps>(
   connect<InspectionCarsConditionSelectCarpoolStateProps, InspectionCarsConditionSelectCarpoolDispatchProps, InspectionCarsConditionSelectCarpoolOwnProps, ReduxState>(
-    null,
+    (state, { loadingPage }) => ({
+      fields: getListData(getRegistryState(state), loadingPage).meta.fields,
+    }),
     (dispatch: any) => ({
+      actionChangeRegistryMetaFields: (...arg) => (
+        dispatch(
+          actionChangeRegistryMetaFields(...arg),
+        )
+      ),
       actionGetAndSetInStoreCompany: (...arg) => (
         dispatch(
           inspectionCarsConditionActions.actionGetAndSetInStoreCompany(...arg),

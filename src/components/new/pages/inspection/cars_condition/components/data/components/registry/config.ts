@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'inspectionCarsCondition';
 
@@ -64,6 +65,116 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'cars_cnt',
           type: 'advanced-number',
           title: 'Количество ТС на балансе',
+          step: 1,
+        },
+        {
+          valueKey: 'staff_drivers',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Кол-во водителей по штатному расписанию, чел.',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'staff_mechanics',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Кол-во механизаторов по штатному расписанию, чел.',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'list_drivers',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Списочное кол-во водителей , чел.',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'list_mechanics',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Списочное кол-во механизаторов , чел.',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'staffing_drivers',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Укомплектованность водителей, %',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'staffing_mechanics',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Укомплектованность механизаторов, %',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'maintenance',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Кол-во ТС на техническом обслуживании',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'repair',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Кол-во ТС на ремонте/в ожидании ремонта',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'storage',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Кол-во ТС на консервации (хранении)',
+            },
+          ],
+          step: 1,
+        },
+        {
+          valueKey: 'not_used',
+          type: 'advanced-number',
+          title: [
+            {
+              displayIf: displayIfContant.carUse,
+              title: 'Не используется ТС',
+            },
+          ],
           step: 1,
         },
         {
@@ -138,6 +249,46 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
             key: 'cars_cnt',
             title: 'Количество ТС на балансе',
             width: 250,
+          },
+          {
+            key: 'staff_drivers',
+            title: 'Кол-во водителей по штатному расписанию, чел.',
+          },
+          {
+            key: 'staff_mechanics',
+            title: 'Кол-во механизаторов по штатному расписанию, чел.',
+          },
+          {
+            key: 'list_drivers',
+            title: 'Списочное кол-во водителей , чел.',
+          },
+          {
+            key: 'list_mechanics',
+            title: 'Списочное кол-во механизаторов , чел.',
+          },
+          {
+            key: 'staffing_drivers',
+            title: 'Укомплектованность водителей, %',
+          },
+          {
+            key: 'staffing_mechanics',
+            title: 'Укомплектованность механизаторов, %',
+          },
+          {
+            key: 'maintenance',
+            title: 'Кол-во ТС на техническом обслуживании',
+          },
+          {
+            key: 'repair',
+            title: 'Кол-во ТС на ремонте/в ожидании ремонта',
+          },
+          {
+            key: 'storage',
+            title: 'Кол-во ТС на консервации (хранении)',
+          },
+          {
+            key: 'not_used',
+            title: 'Не используется ТС',
           },
           {
             key: 'open_employee_fio',

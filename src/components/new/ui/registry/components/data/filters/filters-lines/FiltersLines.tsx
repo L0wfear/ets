@@ -35,12 +35,17 @@ const FiltersLines: React.FC<Props> = React.memo(
     const userData = etsUseSelector((state) => getSessionState(state).userData);
     const fileds = etsUseSelector((state) => getFilterData(state.registry, props.registryKey).fields);
     const [cache, setCache] = React.useState<Record<string, any>>({});
+    const [carUse, setCarUse] = React.useState(false);
     const handleChange = React.useCallback(
       (valueKey, type, value) => {
         dispatch(registryChangeFilterRawValues(props.registryKey, valueKey, type, value));
       },
       [],
     );
+
+    React.useEffect(() => {
+      setCarUse(props.searchState?.monitoringKind === 'car_use');
+    }, [props.searchState]);
 
     const fieldMap = React.useCallback(
       ({ type, ...otherFilterData }) => {
@@ -58,6 +63,10 @@ const FiltersLines: React.FC<Props> = React.memo(
             }
 
             if (displayIf === displayIfContant.lenghtStructureMoreOne && STRUCTURES.length) {
+              return titleSomeValue.title;
+            }
+
+            if (displayIf === displayIfContant.carUse && carUse) {
               return titleSomeValue.title;
             }
 
@@ -145,7 +154,7 @@ const FiltersLines: React.FC<Props> = React.memo(
           );
         }
       },
-      [userData, STRUCTURES, props.needUpdateFiltersOptions, cache],
+      [userData, STRUCTURES, props.needUpdateFiltersOptions, cache, carUse],
     );
 
     return (

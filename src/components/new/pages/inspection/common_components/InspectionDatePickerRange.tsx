@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 const StyledButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 

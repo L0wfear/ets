@@ -2,10 +2,11 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { InspectionPayload } from 'components/new/pages/inspection/common_components/data/@types/InspectionData';
 
 export const registryKey = 'inspectAutobase';
 
-export const getInspectionAutobaseDataRegistryConfig = (payload): TypeConfigData<InspectAutobase> => {
+export const getInspectionAutobaseDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectAutobase> => {
   return {
     noInitialLoad: true,
     Service: {

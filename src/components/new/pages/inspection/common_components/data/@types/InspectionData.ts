@@ -9,11 +9,19 @@ export type InspectionDataDispatchProps = {
   registryLoadDataByKey: any;
   registryRemoveData: any;
 };
+
+export type InspectionPayload = {
+  okrug_id?: number;
+  base_id?: number;
+  company_id?: number;
+  date_start: string | Date;
+  date_end: string | Date;
+};
 export type InspectionDataOwnProps = {
   loadingPage: string;
   triggerKey: string;
   type: TypeOfInspect;
-  getRegistryFunc: (searchState: object) => TypeConfigData<any>;
+  getRegistryFunc: (payload: InspectionPayload, searchState: object) => TypeConfigData<any>;
   makePayloadToCreateInspect?: (searchState: object) => object;
   LineDataCarsLast?: React.ReactNode;
   refresh: boolean;

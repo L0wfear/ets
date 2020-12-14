@@ -11,24 +11,27 @@ import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const keysObj = {
+const INSPECTION_PAYLOAD_OBJ = {
   okrugId: 'okrug_id',
   companyId: 'company_id',
   pgmBaseId: 'base_id',
   carpoolId: 'base_id',
-};
+} as const;
+
+type InspectionPayloadKeys = keyof typeof INSPECTION_PAYLOAD_OBJ;
+type InspectionPayloadValues = typeof INSPECTION_PAYLOAD_OBJ[InspectionPayloadKeys];
 
 type StateProps = {
   isLoaded: boolean; 
-  keyForSearch: string; 
-  searchStateKey: string;
+  keyForSearch: InspectionPayloadValues;
+  searchStateKey: InspectionPayloadKeys;
   currentInspectionTriggerKeyValue: number;
 };
 class InspectionData extends React.Component<InspectionDataProps, StateProps> {
   state = {
     isLoaded: false,
-    keyForSearch: '',
-    searchStateKey: '',
+    keyForSearch: null,
+    searchStateKey: null,
     currentInspectionTriggerKeyValue: null,
   };
 
@@ -46,7 +49,8 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
             [keyForSearch]: searchState[searchStateKey],
             date_start: searchState.date_start,
             date_end: searchState.date_end,
-          }
+          },
+          searchState
         ),
       );
       if (triggerKey === searchStateKey) {
@@ -73,7 +77,8 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
               [keyForSearch]: searchState[searchStateKey],
               date_start: searchState.date_start,
               date_end: searchState.date_end,
-            }
+            },
+            searchState
           ),
         );
         this.loadRegistryData();
@@ -115,17 +120,17 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
   getAndSetSearchStateKey = () => {
     const { searchState } = this.props;
     const { searchStateKey } = this.state;
-    const key = Object.keys(keysObj).reduce((acc, current) => {
+    const key = (Object.keys(INSPECTION_PAYLOAD_OBJ) as Array<keyof typeof INSPECTION_PAYLOAD_OBJ>).reduce((acc: InspectionPayloadKeys, current) => {
       let result = acc; // чтобы eslint не ругался
       if (current in searchState) {
         result = current;
       }
       return result;
-    }, '');
+    });
     if (key !== searchStateKey) {
       this.setState({
         searchStateKey: key,
-        keyForSearch: keysObj[key] || '',
+        keyForSearch: INSPECTION_PAYLOAD_OBJ[key],
       });
     }
   };

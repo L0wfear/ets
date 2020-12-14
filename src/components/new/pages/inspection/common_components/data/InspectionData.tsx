@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { InspectionDataProps, InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps } from './@types/InspectionData';
+import { InspectionDataProps, InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps, InspectionPayload } from './@types/InspectionData';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { DivNone } from 'global-styled/global-styled';
@@ -11,7 +11,9 @@ import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const INSPECTION_PAYLOAD_OBJ = {
+const INSPECTION_PAYLOAD_OBJ: {
+  [key: string]: keyof Omit<InspectionPayload, 'date_start' | 'date_end'>;
+} = {
   okrugId: 'okrug_id',
   companyId: 'company_id',
   pgmBaseId: 'base_id',
@@ -19,11 +21,10 @@ const INSPECTION_PAYLOAD_OBJ = {
 } as const;
 
 type InspectionPayloadKeys = keyof typeof INSPECTION_PAYLOAD_OBJ;
-type InspectionPayloadValues = typeof INSPECTION_PAYLOAD_OBJ[InspectionPayloadKeys];
 
 type StateProps = {
   isLoaded: boolean; 
-  keyForSearch: InspectionPayloadValues;
+  keyForSearch: keyof Omit<InspectionPayload, 'date_start' | 'date_end'>;
   searchStateKey: InspectionPayloadKeys;
   currentInspectionTriggerKeyValue: number;
 };

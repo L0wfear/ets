@@ -13,6 +13,8 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { monitoringPermissions } from 'components/new/pages/inspection/_config_data/index';
 import { DivNone } from 'global-styled/global-styled';
+import SelectCarsConditionOkrug from './select/okrug/SelectCarsConditionOkrug';
+import DatePickerRange from 'components/new/pages/inspection/common_components/InspectionDatePickerRange';
 
 type InspectionCarsConditionSelectCarpoolStateProps = {
 };
@@ -22,6 +24,7 @@ type InspectionCarsConditionSelectCarpoolDispatchProps = {
 };
 type InspectionCarsConditionSelectCarpoolOwnProps = {
   loadingPage: string;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type InspectionCarsConditionSelectCarpoolMergedProps = (
   InspectionCarsConditionSelectCarpoolStateProps
@@ -54,6 +57,7 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
 
   return (
     <React.Fragment>
+      <SelectCarsConditionOkrug />
       <SelectCarsConditionCompany />
       {
         companyId
@@ -68,6 +72,7 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
             <DivNone />
           )
       }
+      <DatePickerRange setRefresh={props.setRefresh} />
     </React.Fragment>
   );
 };

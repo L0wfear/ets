@@ -162,7 +162,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.released_at}
                 time={false}
                 makeGoodFormat
-                makeGoodFormatInitial
                 onChange={props.handleChange}
                 error={errors.released_at}
                 boundKeys="released_at"
@@ -176,7 +175,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.date_end}
                 time={false}
                 makeGoodFormat
-                makeGoodFormatInitial
                 onChange={props.handleChange}
                 error={errors.date_end}
                 boundKeys="date_end"

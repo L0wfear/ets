@@ -12,13 +12,16 @@ import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const INSPECTION_PAYLOAD_OBJ: {
-  [key: string]: keyof Omit<InspectionPayload, 'date_start' | 'date_end'>;
+  okrugId: keyof Pick<InspectionPayload, 'okrug_id'>;
+  companyId: keyof Pick<InspectionPayload, 'company_id'>;
+  pgmBaseId: keyof Pick<InspectionPayload, 'base_id'>;
+  carpoolId: keyof Pick<InspectionPayload, 'base_id'>;
 } = {
   okrugId: 'okrug_id',
   companyId: 'company_id',
   pgmBaseId: 'base_id',
   carpoolId: 'base_id',
-} as const;
+};
 
 type InspectionPayloadKeys = keyof typeof INSPECTION_PAYLOAD_OBJ;
 

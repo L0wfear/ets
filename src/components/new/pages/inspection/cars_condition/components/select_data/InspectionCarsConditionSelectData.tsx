@@ -56,12 +56,6 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
     [],
   );
 
-  const setLocalStorageData = React.useCallback(
-    (data) => {
-      localStorage.getItem(`monitoringKind`);
-      localStorage.setItem('monitoringKind', data);
-    }, [props.searchState.monitoringKind]);
-
   const filteredFields = React.useMemo(() => {
     const carUse
       = ['staff_drivers', 'staff_mechanics', 'list_drivers', 'list_mechanics', 'staffing_drivers', 'staffing_mechanics', 'maintenance', 'repair', 'storage', 'not_used'];
@@ -77,11 +71,9 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
 
   React.useEffect(() => {
     if (props.searchState.monitoringKind && props.fields.length > 0) {
-      setLocalStorageData(props.searchState.monitoringKind);
       props.actionChangeRegistryMetaFields(
         props.loadingPage,
-        filteredFields,
-        props.searchState.monitoringKind
+        filteredFields
       );
     }
   }, [props.searchState.monitoringKind, filteredFields]);

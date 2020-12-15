@@ -7,7 +7,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 
 export const registryKey = 'inspectionCarsCondition';
 
-export const getInspectionCarsConditionDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectCarsCondition> => {
+export const getInspectionCarsConditionDataRegistryConfig = (payload: InspectionPayload, searchState: any): TypeConfigData<InspectCarsCondition> => {
   return {
     noInitialLoad: true,
     Service: {
@@ -271,42 +271,52 @@ export const getInspectionCarsConditionDataRegistryConfig = (payload: Inspection
           {
             key: 'staff_drivers',
             title: 'Кол-во водителей по штатному расписанию, чел.',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'staff_mechanics',
             title: 'Кол-во механизаторов по штатному расписанию, чел.',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'list_drivers',
             title: 'Списочное кол-во водителей , чел.',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'list_mechanics',
             title: 'Списочное кол-во механизаторов , чел.',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'staffing_drivers',
             title: 'Укомплектованность водителей, %',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'staffing_mechanics',
             title: 'Укомплектованность механизаторов, %',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'maintenance',
             title: 'Кол-во ТС на техническом обслуживании',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'repair',
             title: 'Кол-во ТС на ремонте/в ожидании ремонта',
+            hidden:  searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'storage',
             title: 'Кол-во ТС на консервации (хранении)',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'not_used',
             title: 'Не используется ТС',
+            hidden: searchState.monitoringKind !== 'car_use',
           },
           {
             key: 'open_employee_fio',

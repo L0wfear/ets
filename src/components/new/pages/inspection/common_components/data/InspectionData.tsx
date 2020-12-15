@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { InspectionDataProps, InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps } from './@types/InspectionData';
+import { InspectionDataProps, InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps, InspectionPayload } from './@types/InspectionData';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { DivNone } from 'global-styled/global-styled';
@@ -11,24 +11,31 @@ import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const keysObj = {
+const INSPECTION_PAYLOAD_OBJ: {
+  okrugId: keyof Pick<InspectionPayload, 'okrug_id'>;
+  companyId: keyof Pick<InspectionPayload, 'company_id'>;
+  pgmBaseId: keyof Pick<InspectionPayload, 'base_id'>;
+  carpoolId: keyof Pick<InspectionPayload, 'base_id'>;
+} = {
   okrugId: 'okrug_id',
   companyId: 'company_id',
   pgmBaseId: 'base_id',
   carpoolId: 'base_id',
 };
 
+type InspectionPayloadKeys = keyof typeof INSPECTION_PAYLOAD_OBJ;
+
 type StateProps = {
   isLoaded: boolean; 
-  keyForSearch: string; 
-  searchStateKey: string;
+  keyForSearch: keyof Omit<InspectionPayload, 'date_start' | 'date_end'>;
+  searchStateKey: InspectionPayloadKeys;
   currentInspectionTriggerKeyValue: number;
 };
 class InspectionData extends React.Component<InspectionDataProps, StateProps> {
   state = {
     isLoaded: false,
-    keyForSearch: '',
-    searchStateKey: '',
+    keyForSearch: null,
+    searchStateKey: null,
     currentInspectionTriggerKeyValue: null,
   };
 
@@ -46,7 +53,8 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
             [keyForSearch]: searchState[searchStateKey],
             date_start: searchState.date_start,
             date_end: searchState.date_end,
-          }
+          },
+          searchState
         ),
       );
       if (triggerKey === searchStateKey) {
@@ -73,7 +81,8 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
               [keyForSearch]: searchState[searchStateKey],
               date_start: searchState.date_start,
               date_end: searchState.date_end,
-            }
+            },
+            searchState
           ),
         );
         this.loadRegistryData();
@@ -115,17 +124,17 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
   getAndSetSearchStateKey = () => {
     const { searchState } = this.props;
     const { searchStateKey } = this.state;
-    const key = Object.keys(keysObj).reduce((acc, current) => {
+    const key = (Object.keys(INSPECTION_PAYLOAD_OBJ) as Array<keyof typeof INSPECTION_PAYLOAD_OBJ>).reduce((acc: InspectionPayloadKeys, current) => {
       let result = acc; // чтобы eslint не ругался
       if (current in searchState) {
         result = current;
       }
       return result;
-    }, '');
+    });
     if (key !== searchStateKey) {
       this.setState({
         searchStateKey: key,
-        keyForSearch: keysObj[key] || '',
+        keyForSearch: INSPECTION_PAYLOAD_OBJ[key],
       });
     }
   };

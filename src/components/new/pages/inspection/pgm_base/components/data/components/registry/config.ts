@@ -3,10 +3,11 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
+import { InspectionPayload } from 'components/new/pages/inspection/common_components/data/@types/InspectionData';
 
 export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = (payload): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {

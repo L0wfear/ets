@@ -2,11 +2,12 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { InspectionPayload } from 'components/new/pages/inspection/common_components/data/@types/InspectionData';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'inspectionCarsCondition';
 
-export const getInspectionCarsConditionDataRegistryConfig = (payload): TypeConfigData<InspectCarsCondition> => {
+export const getInspectionCarsConditionDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectCarsCondition> => {
   return {
     noInitialLoad: true,
     Service: {

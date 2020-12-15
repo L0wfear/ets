@@ -454,6 +454,10 @@ export const EngineKindService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/engine_kind',
 );
 
+export const CarMileageOptionsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'car_mileage',
+);
+
 export const TachographPeriodicVerificationService = ETS_API_FACTORY.createApiServiceAdapter(
   '/autobase/tachograph_periodic_verification',
 );

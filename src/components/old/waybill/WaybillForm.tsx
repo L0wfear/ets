@@ -773,7 +773,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               },
               [],
             );
-
+            console.info(this.props, this.state);
             const gasOperations = fuelRates.reduce(
               (
                 newArr,
@@ -1270,6 +1270,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             { ...formState, driver_id },
             this.props.employeeIndex,
             this.props.waybillDriverList,
+            this.props.carList,
           );
 
           if (DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1525,6 +1526,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         { ...this.props.formState, structure_id },
         this.props.employeeIndex,
         this.props.waybillDriverList,
+        this.props.carList,
       );
 
       if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
@@ -2254,8 +2256,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
       .includes('камаз');
-    const CAR_HAS_ODOMETER = state.gov_number
-      ? !hasMotohours(state.gov_number)
+    const CAR_HAS_ODOMETER = state.car_id
+      ? !hasMotohours(this.props.carList, state.car_id)
       : null;
     const DRIVERS
       = IS_CREATING || IS_DRAFT
@@ -2265,6 +2267,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           uniqEmployeesBindedOnCarList[0]
             ? uniqEmployeesBindedOnCarList
             : waybillDriverList,
+          this.props.carList,
         )
         : [];
 

@@ -13,7 +13,7 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { hasMotohours } from 'utils/functions';
+import { isMotoHoursMileageType } from 'utils/functions';
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -40,7 +40,7 @@ const TechMaintenanceList: React.FC<Props> = (props) => {
     [car_id],
   );
 
-  const selectedCarHasMotohours = hasMotohours((get(selectedCarData, 'gov_number', '') || '').toString());
+  const selectedCarHasMotohours = isMotoHoursMileageType(selectedCarData);
 
   return (
     <>

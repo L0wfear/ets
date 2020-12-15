@@ -3,7 +3,9 @@
  * @module utils/functions
  */
 
+import { MOTOHOURS_MILEAGE_TYPE_ID } from 'constants/dictionary';
 import { isPlainObject, every, includes } from 'lodash';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { InspectionConfig } from 'redux-main/reducers/modules/some_uniq/inspection_config/@types';
 import { isNumber } from 'util';
 
@@ -174,9 +176,19 @@ export function printData(blob) {
  * @param {string} carStateNumber - гос.номер
  * @return {boolean} hasMotohours - есть ли "Счетчик моточасов"
  */
-export function hasMotohours(carStateNumber) {
-  if (carStateNumber) {
-    return isFourDigitGovNumberRegexp.test(carStateNumber);
+export function hasMotohours(carList: Array<Car>, carId: number) {
+  const car_data = carList.find((el) => el.asuods_id === carId);
+  if (!!car_data) {
+    return isMotoHoursMileageType(car_data);
+  }
+  return null;
+}
+
+export function isMotoHoursMileageType(carData: Car | number) {
+  if (carData && typeof carData === 'number') {
+    return carData === MOTOHOURS_MILEAGE_TYPE_ID;
+  } else if (carData && typeof carData === 'object' && !!carData.mileage_type_id){
+    return carData.mileage_type_id === MOTOHOURS_MILEAGE_TYPE_ID;
   }
   return null;
 }

@@ -162,6 +162,7 @@ export type Car = {
   level_sensors_num: number;
   load_capacity: number;
   max_speed: number;
+  mileage_type_id: number;
   model_id: number;
   model_name: string;
   note: string;

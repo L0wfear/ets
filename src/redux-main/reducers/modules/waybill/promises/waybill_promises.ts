@@ -69,7 +69,7 @@ export const promiseLoadPFWaybill = async (payloadOwn) => {
   throw new Error('Define promiseLoadPFWaybill');
 };
 
-export const promiseCreateWaybill = async (waybill: Waybill) => {
+export const promiseCreateWaybill = async (waybill: Waybill, carList: Array<Car>) => {
   // const payload = cloneDeep(waybill);
   const payload = cloneDeep(waybill) as any;
   payload.plan_departure_date = createValidDateTime(
@@ -92,10 +92,10 @@ export const promiseCreateWaybill = async (waybill: Waybill) => {
     },
   );
 
-  if (hasMotohours(payload.gov_number) && !payload.car_has_odometr ) {
+  if (hasMotohours(carList, waybill.car_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(payload.gov_number) && !payload.car_has_motohours ) {
+  if (!hasMotohours(carList, waybill.car_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 
@@ -113,7 +113,7 @@ export const promiseCreateWaybill = async (waybill: Waybill) => {
   return WaybillService.post(payload, false, 'json');
 };
 
-export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
+export const promiseUpdateWaybill = async (waybill: Partial<Waybill>, carList: Array<Car>) => {
   // const payload = cloneDeep(waybill);
   const payload = cloneDeep(waybill) as any;
   payload.plan_departure_date = createValidDateTime(
@@ -171,10 +171,10 @@ export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
   delete payload.garage_number;
   delete payload.hasEquipmentFuelRates;
 
-  if (hasMotohours(payload.gov_number) && !payload.car_has_odometr ) {
+  if (hasMotohours(carList, payload.car_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(payload.gov_number) && !payload.car_has_motohours ) {
+  if (!hasMotohours(carList, payload.car_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 

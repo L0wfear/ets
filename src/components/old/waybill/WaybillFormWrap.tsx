@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
 import { getWarningNotification } from 'utils/notifications';
-import { saveData, printData, parseFloatWithFixed } from 'utils/functions';
+import { saveData, printData, parseFloatWithFixed, hasMotohours } from 'utils/functions';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
@@ -46,7 +46,6 @@ import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/wayb
 import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
-import { hasMotohours } from 'utils/functions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
@@ -890,7 +889,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
     const motohoursMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/моточас`;
     const odometrMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/км`;
-    const motohoursMain = hasMotohours(formState.gov_number);
+    const motohoursMain = hasMotohours(this.props.carList, formState.car_id);
     const elemMeasureUnitName = motohoursMain ? motohoursMeasureUnitName : odometrMeasureUnitName;
     const firstElemIndex = tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);

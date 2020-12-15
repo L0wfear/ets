@@ -16,7 +16,7 @@ import useCountryOptions from 'components/new/utils/hooks/services/useOptions/us
 import { get } from 'lodash';
 import { stateExploitationOptions, factStatusOptions, statusAtCheckOptions } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/options';
 import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
-import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, filedToCheckDefectDataDocs, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
+import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, filedToCheckDefectDataDocs, DEFECTS_LIST, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import FieldCarsConditionsCarSelectFactStatus from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/fact_status_and_other/FieldCarsConditionsCarSelectFactStatus';
 import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
@@ -24,6 +24,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { makeDefectsText } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/table/form/CarsConditionTableDefectsForm';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -109,10 +110,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
 
     const handleChangeDataForIA = React.useCallback(
       (data) => {
+        const rowData = {...props.formState.data, ...data};
+        const defects_text = makeDefectsText(DEFECTS_LIST, rowData);
         props.handleChange({
           data: {
-            ...props.formState.data,
-            ...data,
+            ...rowData,
+            defects_text,
           },
         });
       },
@@ -911,7 +914,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="boolean"
-              label="ТО проведено собственными силами:"
+              label="ТО проведено собственными силами"
               value={state.data.own_tech_maintenance}
               onChange={handleChangeDataBoolean}
               boundKeys="own_tech_maintenance"

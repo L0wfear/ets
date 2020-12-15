@@ -169,6 +169,7 @@ export type CarsConditionCars = {
     defects_body: boolean;
     defects_chassis: boolean;
     defects_attachments: boolean;
+    defects_text: string;
     incomplete_equipment: boolean;
     liquids_leak: boolean;
 

@@ -15,6 +15,7 @@ type OwnProps = {};
 type Props = OwnProps & {};
 
 const InspectionPgmBaseList: React.FC<Props> = (props) => {
+  const [refresh, setRefresh] = React.useState(false);
   return (
     <>
       <EtsGreyPageWrap>
@@ -25,9 +26,9 @@ const InspectionPgmBaseList: React.FC<Props> = (props) => {
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={4}>
-            <InspectionPgmBaseSelectData loadingPage={loadingPage} />
+            <InspectionPgmBaseSelectData loadingPage={loadingPage} setRefresh={setRefresh} />
           </EtsBootstrap.Col>
-          <InspectionPgmBaseData loadingPage={loadingPage} />
+          <InspectionPgmBaseData loadingPage={loadingPage} refresh={refresh} setRefresh={setRefresh} />
         </EtsBootstrap.Row>
       </EtsGreyPageWrap>
       <InspectionPgmBaseFormLazy loadingPage={loadingPage} {...props}/>

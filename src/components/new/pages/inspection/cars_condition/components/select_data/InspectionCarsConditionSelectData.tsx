@@ -17,6 +17,8 @@ import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/modul
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
+import SelectCarsConditionOkrug from './select/okrug/SelectCarsConditionOkrug';
+import DatePickerRange from 'components/new/pages/inspection/common_components/InspectionDatePickerRange';
 
 type InspectionCarsConditionSelectCarpoolStateProps = {
   fields: OneRegistryData['list']['meta']['fields'];
@@ -28,6 +30,7 @@ type InspectionCarsConditionSelectCarpoolDispatchProps = {
 };
 type InspectionCarsConditionSelectCarpoolOwnProps = {
   loadingPage: string;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type InspectionCarsConditionSelectCarpoolMergedProps = (
   InspectionCarsConditionSelectCarpoolStateProps
@@ -60,7 +63,6 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
     }, [props.searchState.monitoringKind]);
 
   const filteredFields = React.useMemo(() => {
-
     const carUse
       = ['staff_drivers', 'staff_mechanics', 'list_drivers', 'list_mechanics', 'staffing_drivers', 'staffing_mechanics', 'maintenance', 'repair', 'storage', 'not_used'];
     return props.fields.map((data) => {
@@ -91,6 +93,7 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
 
   return (
     <React.Fragment>
+      <SelectCarsConditionOkrug />
       <SelectCarsConditionCompany />
       {
         companyId
@@ -105,6 +108,7 @@ const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectP
             <DivNone />
           )
       }
+      <DatePickerRange setRefresh={props.setRefresh} />
     </React.Fragment>
   );
 };

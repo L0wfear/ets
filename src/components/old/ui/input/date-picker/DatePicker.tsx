@@ -16,7 +16,6 @@ export type DatePickerProps = {
   calendar?: boolean;
   disabled?: boolean;
   makeGoodFormat?: boolean;
-  makeGoodFormatInitial?: boolean;
   preventDateTime?: boolean;
   views?: Array<'month' | 'year' | 'decade' | 'century'>;
   makeOnlyYearFormat?: boolean;
@@ -31,7 +30,6 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     time = true,
     calendar = true,
     makeGoodFormat = false,
-    makeGoodFormatInitial = false,
     makeOnlyYearFormat = false,
     preventDateTime,
     views = ['month', 'year', 'decade', 'century'],
@@ -39,13 +37,15 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     min = new Date(1900, 0, 1),
     max = new Date(2099, 11, 31),
   } = props;
-  const currentDate = React.useMemo(() => props.min, [props.min]);
-  let { date: value } = props;
   const format = `${calendar ? `${makeOnlyYearFormat ? global.APP_YEAR_FORMAT : global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;
-
-  if (typeof value === 'string' && value) {
-    value = moment(value).toDate();
-  }
+  const value = React.useMemo(() => {
+    return (
+      props.date && typeof props.date === 'string'
+        ? moment(props.date).toDate()
+        : props.date
+    );
+  }, [props.date]);
+  const defaultCurrentDate = React.useMemo(() => value || props.min, [props.min, value]);
 
   const handleChange = React.useCallback(
     (valueRaw) => {
@@ -67,18 +67,20 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
   );
 
   React.useEffect(() => {
-    if (value && makeOnlyYearFormat) {
-      value = createValidYear(value);
-    }
-    if (value && makeGoodFormat && makeGoodFormatInitial) {
-      value = (
-        (time || preventDateTime)
-          ? createValidDateTime(value)
-          : createValidDate(value)
+    const {
+      date
+    } = props;
+    const needUpdate 
+      = date && (
+        (makeOnlyYearFormat && date !== createValidYear(value))
+        || (makeGoodFormat && date !== ((time || preventDateTime) ? createValidDateTime(value) : createValidDate(value)))
       );
-      props.onChange(value);
+      
+    if (needUpdate) {
+      handleChange(date);
     }
-  }, []);
+  
+  }, [props.date, value, handleChange]);
 
   return (
     <DTPicker
@@ -96,7 +98,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
       footer={footer}
       min={min}
       max={max}
-      currentDate={currentDate}
+      defaultCurrentDate={defaultCurrentDate}
     />
   );
 };

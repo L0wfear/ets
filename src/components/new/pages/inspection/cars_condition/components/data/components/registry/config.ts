@@ -6,14 +6,14 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 
 export const registryKey = 'inspectionCarsCondition';
 
-export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): TypeConfigData<InspectCarsCondition> => {
+export const getInspectionCarsConditionDataRegistryConfig = (payload): TypeConfigData<InspectCarsCondition> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspection/cars_condition',
         payload: {
-          company_id: searchState.companyId,
+          ...payload
         },
       },
       getBlobData: {
@@ -34,6 +34,12 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
     filter: {
       fields: [
         {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          type: 'multiselect',
+          title: 'Организация',
+        },
+        {
           valueKey: 'date_start',
           type: 'advanced-date',
           title: 'Дата начала проверки',
@@ -42,6 +48,12 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'date_end',
           type: 'advanced-date',
           title: 'Дата окончания проверки',
+        },
+        {
+          valueKey: 'status',
+          labelKey: 'status_text',
+          type: 'multiselect',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'monitoring_kind',
@@ -211,6 +223,11 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
+            width: 200,
           },
           {
             key: 'date_start',

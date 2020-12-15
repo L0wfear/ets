@@ -89,7 +89,6 @@ const TachographMetrologicalVerificationForm: React.FC<PropsTachographMetrologic
                 onChange={props.handleChange}
                 boundKeys="verification_date"
                 makeGoodFormat
-                makeGoodFormatInitial
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

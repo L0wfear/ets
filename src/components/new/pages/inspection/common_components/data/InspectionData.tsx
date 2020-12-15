@@ -11,57 +11,92 @@ import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean; }> {
+const keysObj = {
+  okrugId: 'okrug_id',
+  companyId: 'company_id',
+  pgmBaseId: 'base_id',
+  carpoolId: 'base_id',
+};
+
+type StateProps = {
+  isLoaded: boolean; 
+  keyForSearch: string; 
+  searchStateKey: string;
+  currentInspectionTriggerKeyValue: number;
+};
+class InspectionData extends React.Component<InspectionDataProps, StateProps> {
   state = {
     isLoaded: false,
+    keyForSearch: '',
+    searchStateKey: '',
+    currentInspectionTriggerKeyValue: null,
   };
 
-  static getDerivedStateFromProps(nextProps: InspectionDataProps, prevState) {
-    const { triggerKey } = nextProps;
-    const triggerKeyValue = getNumberValueFromSerch(nextProps.searchState[triggerKey]);
-    if (!triggerKeyValue) {
-      return {
-        isLoaded: false,
-      };
-    }
+  async componentDidMount () {
+    await this.getAndSetSearchStateKey();
+    const { searchStateKey, keyForSearch } = this.state;
+    const { searchState, triggerKey } = this.props;
 
-    return null;
-  }
+    const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
 
-  componentDidMount() {
-    const { triggerKey } = this.props;
-
-    const triggerKeyValue = getNumberValueFromSerch(this.props.searchState[triggerKey]);
-
-    if (triggerKeyValue) {
+    if (searchStateKeyValue) {
       this.props.registryAddInitialData(
         this.props.getRegistryFunc(
-          this.props.searchState,
+          {
+            [keyForSearch]: searchState[searchStateKey],
+            date_start: searchState.date_start,
+            date_end: searchState.date_end,
+          }
         ),
       );
+      if (triggerKey === searchStateKey) {
+        this.setState({
+          currentInspectionTriggerKeyValue: searchStateKeyValue
+        });
+      }
       this.loadRegistryData();
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { triggerKey } = this.props;
-
-    const triggerKeyValue = getNumberValueFromSerch(this.props.searchState[triggerKey]);
-    const triggerKeyValueOld = getNumberValueFromSerch(prevProps.searchState[triggerKey]);
-    if (triggerKeyValue !== triggerKeyValueOld) {
-      if (triggerKeyValue) {
+  async componentDidUpdate() {
+    await this.getAndSetSearchStateKey();
+    const { searchState, setRefresh, triggerKey } = this.props;
+    const { keyForSearch, searchStateKey } = this.state;
+    if (
+      this.props.refresh
+    ) {
+      const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
+      if (searchStateKeyValue) {
         this.props.registryAddInitialData(
           this.props.getRegistryFunc(
-            this.props.searchState,
+            {
+              [keyForSearch]: searchState[searchStateKey],
+              date_start: searchState.date_start,
+              date_end: searchState.date_end,
+            }
           ),
         );
         this.loadRegistryData();
+        if (
+          triggerKey === searchStateKey
+          && searchStateKeyValue !== this.state.currentInspectionTriggerKeyValue
+        ) {
+          this.setState({
+            currentInspectionTriggerKeyValue: searchStateKeyValue
+          });
+        } else if (this.state.currentInspectionTriggerKeyValue !== null) {
+          this.setState({
+            currentInspectionTriggerKeyValue: null
+          });
+        }
       } else {
         this.setState({
           isLoaded: false,
+          currentInspectionTriggerKeyValue: null,
         });
         this.props.registryRemoveData(this.props.loadingPage);
       }
+      setRefresh(false);
     }
   }
   loadRegistryData = async () => {
@@ -77,21 +112,52 @@ class InspectionData extends React.Component<InspectionDataProps, { isLoaded: bo
     this.setState({ isLoaded: true });
   };
 
+  getAndSetSearchStateKey = () => {
+    const { searchState } = this.props;
+    const { searchStateKey } = this.state;
+    const key = Object.keys(keysObj).reduce((acc, current) => {
+      let result = acc; // чтобы eslint не ругался
+      if (current in searchState) {
+        result = current;
+      }
+      return result;
+    }, '');
+    if (key !== searchStateKey) {
+      this.setState({
+        searchStateKey: key,
+        keyForSearch: keysObj[key] || '',
+      });
+    }
+  };
+
   render() {
+    const {
+      triggerKey,
+      searchState,
+    } = this.props;
+    const {
+      searchStateKey,
+      currentInspectionTriggerKeyValue,
+    } = this.state;
+    const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
+    const showInspectionActionMenu = triggerKey === searchStateKey && currentInspectionTriggerKeyValue === searchStateKeyValue;
     return (
       this.state.isLoaded
         ? (
           <>
-            <EtsBootstrap.Col md={8}>
-              <InspectionActionMenu
-                loadingPage={this.props.loadingPage}
-                loadRegistryData={this.loadRegistryData}
-                type={this.props.type}
-                triggerKey={this.props.triggerKey}
-                makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
-                LineDataCarsLast={this.props.LineDataCarsLast}
-              />
-            </EtsBootstrap.Col>
+            {showInspectionActionMenu
+              ? <EtsBootstrap.Col md={8}>
+                <InspectionActionMenu
+                  loadingPage={this.props.loadingPage}
+                  loadRegistryData={this.loadRegistryData}
+                  type={this.props.type}
+                  triggerKey={this.props.triggerKey}
+                  makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
+                  LineDataCarsLast={this.props.LineDataCarsLast}
+                />
+              </EtsBootstrap.Col>
+              : <DivNone />
+            }
             <EtsBootstrap.Col md={12}>
               <InspectionRegistry registryKey={this.props.loadingPage}/>
             </EtsBootstrap.Col>

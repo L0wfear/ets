@@ -1337,13 +1337,14 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
   );
 };
 
-export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }, extraPayload: Object = {}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
 
   const newVal = {
     ...list.rendersFields.values,
     [payload.key]: payload.value,
+    ...extraPayload,
   };
 
   dispatch(

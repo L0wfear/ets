@@ -56,7 +56,6 @@ export const tachographPeriodicVerificationFormSchema: SchemaType<Tachograph, Pr
     next_calibration_date: {
       title: 'Дата следующей калибровки (план)',
       type: 'date',
-      required: true,
     },
     tachograph_brand_id: {
       title: 'Марка тахографа',

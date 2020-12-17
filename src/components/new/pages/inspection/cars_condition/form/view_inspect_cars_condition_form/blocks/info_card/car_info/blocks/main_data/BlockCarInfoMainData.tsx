@@ -528,7 +528,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="number"
+              type="string"
               label="Номер диагностической карты:"
               value={state.diagnostic_card}
               onChange={props.handleChange}

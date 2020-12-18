@@ -11,11 +11,12 @@ import { promiseCreateInspectionAutobase, promiseUpdateInspectionAutobase } from
 import { promiseCreateInspectionPgmBase, promiseUpdateInspectionPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import { promiseCreateInspectionCarsCondition, promiseUpdateInspectionCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 
-export const actionGetBlobActInspect = (id: number, meta: LoadingMeta): EtsAction<any> => async (dispatch, getState) => {
+export const actionGetBlobActInspect = (id: number, meta: LoadingMeta, format?: string): EtsAction<any> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobActInspection(
       id,
+      format
     ),
     meta,
   );

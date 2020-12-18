@@ -63,7 +63,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
           <React.Fragment>
             <EtsBootstrap.Button disabled={!props.isPermitted} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />
-            {props.registryPage === 'inspectionCarsCondition' && props.searchState?.monitoringKind === 'car_use' ? (
+            {props.searchState?.monitoringKind === 'car_use' ? (
               <EtsBootstrap.Dropdown
                 id="dropdown-print"
 

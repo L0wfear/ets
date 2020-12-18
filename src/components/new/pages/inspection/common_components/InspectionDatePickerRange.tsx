@@ -11,6 +11,7 @@ const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 50px;
 `;
 
 type OwnProps = {

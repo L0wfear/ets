@@ -2,8 +2,8 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 export type RefillReportForm = {
-  date_start: string;
-  date_end: string;
+  date_from: string;
+  date_to: string;
 };
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

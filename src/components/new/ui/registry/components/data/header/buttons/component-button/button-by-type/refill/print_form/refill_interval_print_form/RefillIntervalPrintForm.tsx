@@ -29,10 +29,10 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
     } = props;
 
     const [datesData, setDatesData] = React.useState({
-      date_start: state.date_start,
-      date_end: state.date_end,
-      error_date_start: '',
-      error_date_end: '',
+      date_from: state.date_from,
+      date_to: state.date_to,
+      error_date_from: '',
+      error_date_to: '',
     });
     const dispatch = etsUseDispatch();
     React.useEffect(() => {
@@ -40,12 +40,12 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
         const current_date = await dispatch(
           actionLoadTimeMoscow({}, { page, path })
         );
-        const date_start = createValidDateTime(setDateTime0am(current_date.date));
-        const date_end = createValidDateTime(setDateTime2359(current_date.date));
+        const date_from = createValidDateTime(setDateTime0am(current_date.date));
+        const date_to = createValidDateTime(setDateTime2359(current_date.date));
         setDatesData({
           ...datesData,
-          date_start,
-          date_end,
+          date_from,
+          date_to,
         });
       })();
     }, []);
@@ -54,7 +54,7 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
 
     const handleSubmit = React.useCallback(
       async () => {
-        const { date_start, date_end } = datesData;
+        const { date_from, date_to } = datesData;
 
         global.NOTIFICATION_SYSTEM.notifyWithObject({
           title: 'Загрузка печатной формы',
@@ -67,8 +67,8 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
         });
 
         const payload: Partial<RefillReportForm> = {
-          date_start: createValidDateTime(date_start),
-          date_end: createValidDateTime(date_end),
+          date_from: createValidDateTime(date_from),
+          date_to: createValidDateTime(date_to),
         };
 
         const result = await props.submitAction(
@@ -97,13 +97,13 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
               [field]: value,
             };
 
-            newState.error_date_start = (
-              (!newState.date_start ? 'Дата должна быть заполнена' : '')
+            newState.error_date_from = (
+              (!newState.date_from ? 'Дата должна быть заполнена' : '')
             );
 
-            newState.error_date_end = (
-              (diffDates(newState.date_start, newState.date_end) >= 0 ? '"Дата по" должна быть позже "Даты с"' : '')
-              || (!newState.date_end ? 'Дата должна быть заполнена' : '')
+            newState.error_date_to = (
+              (diffDates(newState.date_from, newState.date_to) >= 0 ? '"Дата по" должна быть позже "Даты с"' : '')
+              || (!newState.date_to ? 'Дата должна быть заполнена' : '')
             );
 
             return newState;
@@ -124,12 +124,12 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
               <DatePickerRange
                 allWidth={false}
                 label="Период формирования"
-                date_start_id="date_start"
-                date_start_value={datesData.date_start}
-                date_start_error={datesData.error_date_start}
-                date_end_id="date_end"
-                date_end_value={datesData.date_end}
-                date_end_error={datesData.error_date_end}
+                date_start_id="date_from"
+                date_start_value={datesData.date_from}
+                date_start_error={datesData.error_date_from}
+                date_end_id="date_to"
+                date_end_value={datesData.date_to}
+                date_end_error={datesData.error_date_to}
 
                 onChange={handleChange}
               />
@@ -137,7 +137,7 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button disabled={!props.isPermitted || Boolean(datesData.error_date_start || datesData.error_date_end)} onClick={handleSubmit}>Выгрузить</EtsBootstrap.Button>
+          <EtsBootstrap.Button disabled={!props.isPermitted || Boolean(datesData.error_date_from || datesData.error_date_to)} onClick={handleSubmit}>Выгрузить</EtsBootstrap.Button>
           <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>

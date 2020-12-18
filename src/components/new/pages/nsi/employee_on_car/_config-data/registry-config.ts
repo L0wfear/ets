@@ -26,6 +26,7 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
     header: {
       title: 'Матрица распределения ТС и водителей',
       buttons: [
+        buttonsTypes.columns_control,
         {
           id: 'open-update_car-form',
           type: buttonsTypes.read,

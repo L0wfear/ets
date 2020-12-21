@@ -9,7 +9,6 @@ export const EtsTheadTh = styled.th<{ canClick?: boolean; width?: number; widthU
     border-bottom: 1px solid #c1c1c1 !important;
     position: ${ ({isStickyTh}) => isStickyTh ? 'sticky' : 'relative' };
     top: 0;
-    z-index: 1;
 
     cursor: ${({ canClick }) => canClick ? 'pointer' : 'default'};
     width: ${({ width, widthUnits }) => width ? `${width}${widthUnits ? widthUnits : 'px'} ` : 'auto'};

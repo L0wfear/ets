@@ -43,6 +43,17 @@ export const getInitialDataForReduce = (rowCol) => {
     );
 };
 
+const calculateAbsDifOrReturnDash = (a: number | string, b: number | string) => {
+  if (
+    (isNaN(Number(a)) || isNaN(Number(b)))
+    || (Number(a) === 0 || Number(b) === 0)
+  ) {
+    return '-';
+  } else {
+    return Math.abs(Number(a) - Number(b));
+  }
+};
+
 export const makeSummer = (
   [...newArr],
   [...data],
@@ -226,6 +237,15 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
             };
           }
 
+          if (reportKey === 'fuel_consumption_new_report') {
+            const sensor_diff = calculateAbsDifOrReturnDash(child.total_fuel_given, child.refill_sum);
+            const fuel_company_diff = calculateAbsDifOrReturnDash(child.total_fuel_given, child.fuel_company_refill_sum);
+            return {
+              ...child,
+              sensor_diff,
+              fuel_company_diff
+            };
+          }
           return child;
         });
 

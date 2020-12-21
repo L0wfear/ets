@@ -271,6 +271,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               selectedInspectCarsCondition={state}
               canSave={props.canSave && preparePlanCanSave}
               loadingPage={props.loadingPage}
+              searchState={props.searchState}
 
               id={state.id}
               registryPage={props.page}

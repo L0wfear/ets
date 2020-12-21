@@ -6,6 +6,7 @@ export type TypeOneDisplayIf = (
   'isKgh'
   | 'isOkrug'
   | 'lenghtStructureMoreOne'
+  | 'carUse'
   | false
 );
 

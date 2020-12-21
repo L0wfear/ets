@@ -57,7 +57,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
         <h4>Штатная и списочная численность</h4>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <h5>По штатному расписанию.</h5>
+            <h5>По штатному расписанию</h5>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
@@ -86,7 +86,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <h5>Списочное количество.</h5>
+            <h5>Списочное количество</h5>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField

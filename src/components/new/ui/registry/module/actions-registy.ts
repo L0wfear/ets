@@ -734,7 +734,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
         },
         {},
       ),
-      format: 'xls',
+      format: getBlobData?.payload?.format || 'xls',
     };
 
     if (useFiltredData && !userServerFilters) {

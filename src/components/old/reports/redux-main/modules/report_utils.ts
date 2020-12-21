@@ -49,9 +49,8 @@ const calculateAbsDifOrReturnDash = (a: number | string, b: number | string) => 
     || (Number(a) === 0 || Number(b) === 0)
   ) {
     return '-';
-  } else {
-    return Math.abs(Number(a) - Number(b));
-  }
+  } 
+  return Math.abs(Number(a) - Number(b));
 };
 
 export const makeSummer = (

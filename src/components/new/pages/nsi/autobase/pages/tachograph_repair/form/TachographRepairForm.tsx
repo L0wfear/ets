@@ -114,7 +114,6 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 onChange={props.handleChange}
                 boundKeys="repair_date"
                 makeGoodFormat
-                makeGoodFormatInitial
                 time={false}
               />
             </EtsBootstrap.Col>

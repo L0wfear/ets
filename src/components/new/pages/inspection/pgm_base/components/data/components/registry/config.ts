@@ -3,17 +3,18 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
+import { InspectionPayload } from 'components/new/pages/inspection/common_components/data/@types/InspectionData';
 
 export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspection/pgm_base',
         payload: {
-          base_id: pgmBaseId,
+          ...payload
         },
       },
       getBlobData: {
@@ -34,6 +35,18 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
     filter: {
       fields: [
         {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          type: 'multiselect',
+          title: 'Организация',
+        },
+        {
+          valueKey: 'base_id',
+          labelKey: 'base_address',
+          type: 'multiselect',
+          title: 'Адрес базы',
+        },
+        {
           valueKey: 'date_start',
           type: 'advanced-date',
           title: 'Дата начала проверки',
@@ -42,6 +55,12 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           valueKey: 'date_end',
           type: 'advanced-date',
           title: 'Дата окончания проверки',
+        },
+        {
+          valueKey: 'status',
+          labelKey: 'status_text',
+          type: 'multiselect',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'base_type',
@@ -99,6 +118,16 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
+            width: 200,
+          },
+          {
+            key: 'base_address',
+            title: 'Адрес базы',
+            width: 200,
           },
           {
             key: 'date_start',

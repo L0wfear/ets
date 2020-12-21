@@ -10,10 +10,11 @@ type ViewInspectButtonSubmitProps = {
   isPermittedToUpdateClose: boolean;
   handleSubmitClosed: () => any;
   handleCloseAct: () => any;
-  handleGetAct: () => any;
-  handleSaveGetAct: () => any;
+  handleGetAct: (format?: string) => any;
+  handleSaveGetAct: (format?: string) => any;
   canSave: boolean;
 
+  searchState?: any;
   id: number;
   registryPage: string;
 };
@@ -62,7 +63,26 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
           <React.Fragment>
             <EtsBootstrap.Button disabled={!props.isPermitted} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleSaveGetAct}>Сформировать акт для подписи сторон</EtsBootstrap.Button>
+            {props.searchState?.monitoringKind === 'car_use' ? (
+              <EtsBootstrap.Dropdown
+                id="dropdown-print"
+
+                disabled={!props.canSave}
+                toggleElement={'Сформировать акт для подписи сторон'}
+                toggleElementSize="small"
+              >
+                <EtsBootstrap.DropdownMenu dropup>
+                  <EtsBootstrap.MenuItem eventKey="pdf" onSelect={props.handleSaveGetAct}>
+                    Акт с приложением в формате PDF
+                  </EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem eventKey="xlsx" onSelect={props.handleSaveGetAct}>
+                    Приложение к акту в формате Excel
+                  </EtsBootstrap.MenuItem>
+                </EtsBootstrap.DropdownMenu>
+              </EtsBootstrap.Dropdown>
+            ) : (
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleSaveGetAct}>Сформировать акт для подписи сторон</EtsBootstrap.Button>
+            )}
             <EtsBootstrap.Button disabled={!props.canSave} onClick={handleCloseAct}>Завершить проверку</EtsBootstrap.Button>
           </React.Fragment>
         )

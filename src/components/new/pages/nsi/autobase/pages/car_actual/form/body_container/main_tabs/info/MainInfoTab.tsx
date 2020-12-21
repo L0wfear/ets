@@ -87,7 +87,6 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 disabled={!isPermitted}
                 error={errors.exploitation_date_start}
                 makeGoodFormat
-                makeGoodFormatInitial
               />
               <ExtField
                 type="string"

@@ -4,6 +4,12 @@ import InspectionData from '../../../common_components/data/InspectionData';
 import { get } from 'lodash';
 import LineDataCarsConditionConditionLast from './add_to_render_data/LineDataCarsConditionConditionLast';
 
+type OwnProps = {
+  loadingPage: string;
+  refresh: boolean;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 const makePayloadToCreateInspect = (searchState: object) => {
   const monitoring_kind = get(searchState, 'monitoringKind', null);
   const checks_period = get(searchState, 'checksPeriod', null);
@@ -24,7 +30,7 @@ const makePayloadToCreateInspect = (searchState: object) => {
   return payload;
 };
 
-const InspectionCarsConditionData: React.FC<{ loadingPage: string; }> = (props) => {
+const InspectionCarsConditionData: React.FC<OwnProps> = (props) => {
   return (
     <InspectionData
       loadingPage={props.loadingPage}
@@ -33,6 +39,8 @@ const InspectionCarsConditionData: React.FC<{ loadingPage: string; }> = (props) 
       makePayloadToCreateInspect={makePayloadToCreateInspect}
       getRegistryFunc={getInspectionCarsConditionDataRegistryConfig}
       LineDataCarsLast={<LineDataCarsConditionConditionLast loadingPage={props.loadingPage} />}
+      setRefresh={props.setRefresh}
+      refresh={props.refresh}
     />
   );
 };

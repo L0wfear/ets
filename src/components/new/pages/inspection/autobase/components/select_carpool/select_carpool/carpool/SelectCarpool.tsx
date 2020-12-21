@@ -41,7 +41,7 @@ const SelectCarpool: React.FC<SelectCarpoolProps> = (props) => {
 
   React.useEffect(
     () => {
-      if (carpoolId && companyId && props.carpoolList.length) {
+      if (carpoolId && props.carpoolList.length) {
         const currentCarpoolInCompany = filterPgmBaseByCompany(
           props.carpoolList,
           companyId,

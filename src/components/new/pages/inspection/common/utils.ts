@@ -1,7 +1,14 @@
 import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
-export const validateResolveToField = (value, dataForValidation, status) => {
+export const validateResolveToField = (value, dataForValidation, status, date_start) => {
   const date = createValidDate(value);
+  const dateStart = createValidDate(date_start);
+  if (
+    value
+    && diffDates(date, dateStart) < 0
+  ) {
+    return 'Дата предоставления отчета не может быть меньше даты открытия проверки';
+  }
   if (
     status === 'completed'
       && dataForValidation?.props_resolve_to

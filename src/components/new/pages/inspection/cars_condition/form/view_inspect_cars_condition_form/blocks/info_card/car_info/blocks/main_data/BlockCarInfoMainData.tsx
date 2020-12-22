@@ -158,6 +158,16 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       [state.data, props.handleChange, inspectionConfigOptions],
     );
 
+    const repairReasonOptions = React.useMemo(() => {
+      return get(inspectionConfigOptions, 'repair_reason', []);
+    }, [inspectionConfigOptions]);
+
+    React.useEffect(() => {
+      if (repairReasonOptions.length > 0) {
+        repairReasonOptions.push(repairReasonOptions.shift());
+      }
+    }, [repairReasonOptions]);
+
     return (
       <React.Fragment>
         <EtsBootstrap.Row>
@@ -993,7 +1003,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Причина ремонта"
               value={state.data.repair_reason}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfigOptions, 'repair_reason', [])}
+              options={repairReasonOptions}
               error={errors.data.repair_reason}
               clearable={false}
               disabled={!props.isPermitted}

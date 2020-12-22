@@ -29,10 +29,13 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
 
     const handleChange = React.useCallback(
       (key, event) => {
+        const defaultValue = get(event, 'target.value', event);
+        const type = get(event, 'target.type', null);
+        const value = (type === 'number' && !isNaN(Number(defaultValue))) ? Number(defaultValue) : defaultValue;
         props.onChange({
           headcount: {
             ...props.headcount,
-            [key]: get(event, 'target.value', event),
+            [key]: value,
           },
         });
       },

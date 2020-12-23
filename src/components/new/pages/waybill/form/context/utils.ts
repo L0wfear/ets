@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-import { WaybillGas, WaybillElectrical, WaybillRefill, WaybillFuel } from 'redux-main/reducers/modules/waybill/@types/index';
+import { WaybillGas, WaybillElectrical, WaybillRefill, WaybillFuel, WaybillMotoHours, WaybillOdometr } from 'redux-main/reducers/modules/waybill/@types/index';
 
 export const gasDefaultElement: WaybillGas = {
   // gas
@@ -60,6 +60,24 @@ export const defaultRefillObj: WaybillRefill = {
   is_no_equipment_refill: null,
 };
 
+export const defaultMotoHoursData: WaybillMotoHours = {
+  car_has_motohours: null,
+  is_edited_motohours: false,
+  motohours_end: null,
+  motohours_reason_id: null,
+  motohours_start: null,
+  motohours_diff: null,
+};
+
+export const defaultOdometrData: WaybillOdometr = {
+  car_has_odometr: null,
+  is_edited_odometr: false,
+  odometr_end: null,
+  odometr_reason_id: null,
+  odometr_start: null,
+  odometr_diff: null,
+};
+
 export const getDefaultWaybill = (company_id): Waybill => ({
   accompanying_person_id: null,
   accompanying_person_name: '',
@@ -114,22 +132,15 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   id: null,
   is_bnso_broken: null,
   is_one_fuel_tank: true,
-  is_edited_odometr: false,
-  is_edited_motohours: false,
   is_edited_motohours_equip: false,
   is_edited_start: false,
+  mileage_type_id: null,
   mission_id_list: [],
-  motohours_end: null,
   motohours_equip_diff: null,
   motohours_equip_end: null,
   motohours_equip_start: null,
   motohours_equip_reason_id: null,
-  motohours_start: null,
-  motohours_reason_id: null,
   number: null,
-  odometr_end: null,
-  odometr_start: null,
-  odometr_reason_id: null,
   okrug_id: null,
   okrug_name: null,
   plan_arrival_date: createValidDateTime(getTomorrow9am()),
@@ -161,8 +172,6 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   hasEquipmentFuelRates: null,
   fuel_card_ids: null,
   refill_type_ids: null,
-  car_has_motohours: null,
-  car_has_odometr: null,
   engine_kind_ids: [],
   rrn_codes: [],
   refill: [],
@@ -170,6 +179,8 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   ...electricalDefaultElement,
   ...defaultRefillObj,
   ...fuelDefaultElement,
+  ...defaultMotoHoursData,
+  ...defaultOdometrData,
 });
 
 export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {

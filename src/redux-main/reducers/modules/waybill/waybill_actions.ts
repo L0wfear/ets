@@ -9,7 +9,6 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { Car } from '../autobase/@types/autobase.h';
 
 export const actionGetWaybillById = (
   id: Waybill['id'],
@@ -63,10 +62,10 @@ export const actionPrintWaybill = (payload: Parameters<typeof promisePrintWaybil
   )
 );
 
-export const actionCreateWaybill = (payload: Parameters<typeof promiseCreateWaybill>[0], meta: LoadingMeta & {carList: Array<Car>;}): EtsAction<ReturnType<typeof promiseCreateWaybill>> => (dispatch) => (
+export const actionCreateWaybill = (payload: Parameters<typeof promiseCreateWaybill>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateWaybill>> => (dispatch) => (
   etsLoadingCounter(
     dispatch,
-    promiseCreateWaybill(payload, meta.carList),
+    promiseCreateWaybill(payload),
     {
       ...meta,
       noTimeout: true,
@@ -74,10 +73,10 @@ export const actionCreateWaybill = (payload: Parameters<typeof promiseCreateWayb
   )
 );
 
-export const actionUpdateWaybill = (payload: Parameters<typeof promiseUpdateWaybill>[0], meta: LoadingMeta & {carList: Array<Car>;}): EtsAction<ReturnType<typeof promiseUpdateWaybill>> => (dispatch) => (
+export const actionUpdateWaybill = (payload: Parameters<typeof promiseUpdateWaybill>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateWaybill>> => (dispatch) => (
   etsLoadingCounter(
     dispatch,
-    promiseUpdateWaybill(payload, meta.carList),
+    promiseUpdateWaybill(payload),
     {
       ...meta,
       noTimeout: true,

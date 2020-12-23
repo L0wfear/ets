@@ -4,7 +4,7 @@ import { WaybillFormWrapProps } from 'components/old/waybill/WaybillFormWrap';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { getRequiredFieldToFixed, getMinLengthError } from 'components/@next/@utils/getErrorString/getErrorString';
-import { hasMotohours, isEmpty } from 'utils/functions';
+import { isMotoHoursMileageType, isEmpty } from 'utils/functions';
 import { isNumber, isArray, isString, isNullOrUndefined } from 'util';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 import memoizeOne from 'memoize-one';
@@ -465,8 +465,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       integer: true,
       required: false,
       dependencies: [
-        (value, formData, {carList}) => {
-          if ((!hasMotohours(carList, formData.car_id) || formData.car_has_odometr) && isEmpty(value)) {
+        (value, formData,) => {
+          if ((!isMotoHoursMileageType(formData.mileage_type_id) || formData.car_has_odometr) && isEmpty(value)) {
             return 'Поле "Одометр.Выезд" должно быть заполнено';
           }
           return false;
@@ -495,8 +495,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       float: 1,
       required: false,
       dependencies: [
-        (value, formData, {carList}) => {
-          if ((hasMotohours(carList, formData.car_id) || formData.car_has_motohours) && isEmpty(value)) {
+        (value, formData,) => {
+          if ((isMotoHoursMileageType(formData.mileage_type_id) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
           }
           if (value && !isValidToFixed1(value)) {
@@ -713,8 +713,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'На ТС установлен счетчик моточасов',
       type: 'boolean',
       dependencies: [
-        (_, { gov_number, status, car_has_motohours, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (_, { status, car_has_motohours, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           const IS_DRAFT = status === 'draft';
           const IS_ACTIVE = status === 'active';
           if ((!status || IS_DRAFT || IS_ACTIVE) && CAR_HAS_ODOMETER && isNullOrUndefined(car_has_motohours)) {
@@ -728,8 +728,8 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'На ТС установлен одометр',
       type: 'boolean',
       dependencies: [
-        (_, { gov_number, status, car_has_odometr, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (_, { status, car_has_odometr, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           const IS_DRAFT = status === 'draft';
           const IS_ACTIVE = status === 'active';
           if ((!status || IS_DRAFT || IS_ACTIVE) && !CAR_HAS_ODOMETER && isNullOrUndefined(car_has_odometr)) {
@@ -961,8 +961,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       integer: true,
       dependencies: [
-        (value, { odometr_start, gov_number, car_has_odometr, status, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (value, { odometr_start, car_has_odometr, status, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           if (status !== 'deleted' && (CAR_HAS_ODOMETER || car_has_odometr)) {
             if ((odometr_start || isNumber(odometr_start)) && (!value && value !== 0)) { // Поправить это в ЧТЗ, поля невсегда обязательны
               return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
@@ -980,8 +980,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       type: 'number',
       float: 1,
       dependencies: [
-        (value, { motohours_start, gov_number, car_has_motohours, status, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (value, { motohours_start, car_has_motohours, status, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           if (status !== 'deleted' && (!CAR_HAS_ODOMETER || car_has_motohours)) {
             if ((motohours_start || isNumber(motohours_start)) && (!value && value !== 0)) {
               return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
@@ -1054,8 +1054,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет топлива по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, {gas_tax_data, electrical_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (_, {gas_tax_data, electrical_tax_data, tax_data, odometr_diff, motohours_diff, engine_kind_ids, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           let taxes = [];
           if(isArray(gas_tax_data)){
             taxes = [...taxes, ...gas_tax_data];
@@ -1080,8 +1080,8 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
       title: 'Расчет газа по норме',
       type: 'multiValueOfArray',
       dependencies: [
-        (_, {gas_tax_data, tax_data, odometr_diff, motohours_diff, gov_number, engine_kind_ids, car_id }, {carList}) => {
-          const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(carList, car_id) : null;
+        (_, {gas_tax_data, tax_data, odometr_diff, motohours_diff, engine_kind_ids, mileage_type_id }) => {
+          const CAR_HAS_ODOMETER = mileage_type_id ? !isMotoHoursMileageType(mileage_type_id) : null;
           let taxes = [];
           if(isArray(gas_tax_data)){
             taxes = [...taxes, ...gas_tax_data];

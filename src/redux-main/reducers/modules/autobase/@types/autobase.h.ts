@@ -12,6 +12,7 @@ import { TachographReplacementSkziList } from '../actions_by_type/tachograph_rep
 import { TachographBrand } from '../actions_by_type/tachograph_brand/@types';
 import { TachographReplacementSkziReason } from '../actions_by_type/tachograph_replacement_skzi_reason/@types';
 import { Refill } from '../actions_by_type/refill_registry/@types';
+import { MOTOHOURS_MILEAGE_TYPE_ID, ODOMETR_MILEAGE_TYPE_ID } from 'constants/dictionary';
 
 export type SparePart = {
   company_id?: number;
@@ -162,7 +163,7 @@ export type Car = {
   level_sensors_num: number;
   load_capacity: number;
   max_speed: number;
-  mileage_type_id: number;
+  mileage_type_id: typeof MOTOHOURS_MILEAGE_TYPE_ID | typeof ODOMETR_MILEAGE_TYPE_ID;
   model_id: number;
   model_name: string;
   note: string;

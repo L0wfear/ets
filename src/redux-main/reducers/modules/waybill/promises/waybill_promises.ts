@@ -10,7 +10,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { monthOptions, makeDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { hasMotohours, isEmpty } from 'utils/functions';
+import { isMotoHoursMileageType, isEmpty } from 'utils/functions';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
@@ -69,7 +69,7 @@ export const promiseLoadPFWaybill = async (payloadOwn) => {
   throw new Error('Define promiseLoadPFWaybill');
 };
 
-export const promiseCreateWaybill = async (waybill: Waybill, carList: Array<Car>) => {
+export const promiseCreateWaybill = async (waybill: Waybill) => {
   // const payload = cloneDeep(waybill);
   const payload = cloneDeep(waybill) as any;
   payload.plan_departure_date = createValidDateTime(
@@ -92,10 +92,10 @@ export const promiseCreateWaybill = async (waybill: Waybill, carList: Array<Car>
     },
   );
 
-  if (hasMotohours(carList, waybill.car_id) && !payload.car_has_odometr ) {
+  if (isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(carList, waybill.car_id) && !payload.car_has_motohours ) {
+  if (!isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 
@@ -113,7 +113,7 @@ export const promiseCreateWaybill = async (waybill: Waybill, carList: Array<Car>
   return WaybillService.post(payload, false, 'json');
 };
 
-export const promiseUpdateWaybill = async (waybill: Partial<Waybill>, carList: Array<Car>) => {
+export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
   // const payload = cloneDeep(waybill);
   const payload = cloneDeep(waybill) as any;
   payload.plan_departure_date = createValidDateTime(
@@ -171,10 +171,10 @@ export const promiseUpdateWaybill = async (waybill: Partial<Waybill>, carList: A
   delete payload.garage_number;
   delete payload.hasEquipmentFuelRates;
 
-  if (hasMotohours(carList, payload.car_id) && !payload.car_has_odometr ) {
+  if (isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(carList, payload.car_id) && !payload.car_has_motohours ) {
+  if (!isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 

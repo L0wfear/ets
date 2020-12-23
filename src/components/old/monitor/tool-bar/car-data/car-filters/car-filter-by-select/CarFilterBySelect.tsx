@@ -305,5 +305,6 @@ export default connect<any, any, any, ReduxState>((state) => ({
     (el) =>
       state.monitorPage.filters.data[el.key]?.length
       || state.monitorPage.filters.data[el.key] > 0
+      || el.key === 'carFilterMultyDrivers' && state.monitorPage.filters.data[el.key] !== null
   ),
 }), {getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem})(CarFilterByText);

@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { TachographMetrologicalVerificationList } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_metrological_verification/@types';
 import tachographMetrologicalVerificationPermissions from './permissions';
+import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'TachographMetrologicalVerification';
 
@@ -85,12 +86,22 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
           },
           {
             key: 'okrug_name',
-            title: 'Округ',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Округ',
+              },
+            ],
             width: 100,
           },
           {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

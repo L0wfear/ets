@@ -142,12 +142,22 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
           },
           {
             key: 'okrug_name',
-            title: 'Округ',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Округ',
+              },
+            ],
             width: 100,
           },
           {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

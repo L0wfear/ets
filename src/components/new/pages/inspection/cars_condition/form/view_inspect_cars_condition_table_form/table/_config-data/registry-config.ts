@@ -29,8 +29,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
     getBlobData: {
       entity: 'inspection/cars/export',
       payload: {
-        inspection_id,
-        format: 'xls',
+        format: 'xlsx',
       }
     }
   },

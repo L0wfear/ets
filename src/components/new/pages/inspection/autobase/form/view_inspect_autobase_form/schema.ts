@@ -222,7 +222,7 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
       type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
       dependencies: [
-        (value, {dataForValidation, status}) => validateResolveToField(value, dataForValidation, status)
+        (value, {dataForValidation, status, date_start}) => validateResolveToField(value, dataForValidation, status, date_start)
       ]
     },
   },

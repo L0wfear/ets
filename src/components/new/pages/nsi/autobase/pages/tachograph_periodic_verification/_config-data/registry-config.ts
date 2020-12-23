@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
 import tachographPermissions from './permissions';
+import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 
 export const registryKey = 'tachographPeriodicVerification';
 
@@ -100,12 +101,22 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
           },
           {
             key: 'okrug_name',
-            title: 'Округ',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Округ',
+              },
+            ],
             width: 100,
           },
           {
             key: 'company_name',
-            title: 'Организация',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
             width: 200,
           },
           {

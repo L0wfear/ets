@@ -266,7 +266,9 @@ export default class ReactSelect extends React.Component<any, any> {
           ? sortedOptions.filter(({ value: op_value }) => isArray(value)
             ? value.includes(op_value)
             : value === op_value )
-          : sortedOptions.find(({ value: op_value }) => String(op_value) === String(value))
+          : sortedOptions.find(({ value: op_value }) => isObject(op_value)
+            ? op_value === value
+            : String(op_value) === String(value))
         : null;
     }
 

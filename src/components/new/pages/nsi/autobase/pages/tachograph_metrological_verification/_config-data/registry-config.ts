@@ -34,6 +34,27 @@ export const getToConfig = (): TypeConfigData<TachographMetrologicalVerification
     filter: {
       fields: [
         {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
+        {
           valueKey: 'company_structure_id',
           labelKey: 'company_structure_name',
           title: 'Подразделение',

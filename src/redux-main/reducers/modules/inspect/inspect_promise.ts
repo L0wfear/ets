@@ -7,8 +7,10 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 
 export const promiseGetBlobActInspection = async (inspection_id: number, format?: string) => {
   let response = { blob: null };
+  const payload = format ? { inspection_id, format } : { inspection_id };
+  
   try {
-    response = await InspectionActService.getBlob({ inspection_id, format });
+    response = await InspectionActService.getBlob(payload);
   } catch (error) {
     console.error(error); // tslint:disable-line
   }

@@ -15,6 +15,7 @@ type Props = OwnProps & {};
 const loadingPage = 'inspectionCarsCondition';
 
 const InspectionCarsConditionList: React.FC<Props> = (props) => {
+  const [refresh, setRefresh] = React.useState(false);
   return (
     <>
       <EtsGreyPageWrap>
@@ -25,9 +26,9 @@ const InspectionCarsConditionList: React.FC<Props> = (props) => {
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={4}>
-            <InspectionCarsConditionSelectData loadingPage={loadingPage} />
+            <InspectionCarsConditionSelectData loadingPage={loadingPage} setRefresh={setRefresh} />
           </EtsBootstrap.Col>
-          <InspectionCarsConditionData loadingPage={loadingPage} />
+          <InspectionCarsConditionData loadingPage={loadingPage} setRefresh={setRefresh} refresh={refresh} />
         </EtsBootstrap.Row>
       </EtsGreyPageWrap>
       <InspectionCarsConditionFormLazy loadingPage={loadingPage} {...props}/>

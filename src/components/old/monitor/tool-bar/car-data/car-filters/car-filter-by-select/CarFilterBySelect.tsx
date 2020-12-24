@@ -30,11 +30,14 @@ import { makeObjArrayUniqByKey } from 'utils/functions';
 import { getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const StyledFilter = styled.div`
-  &.active {
     max-height: 532px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-  }
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+`;
+
+const StyledToolbar = styled.div`
+    max-width: 410px !important;
 `;
 
 const placeholder = {
@@ -55,12 +58,12 @@ const placeholder = {
 const initialFilterFields: StateCarFilterByText['filterFields'] = [
   { key: 'carFilterMultyGpsCode', type: 'multi' },
   { key: 'carFilterMultyType', type: 'multi' },
-  { key: 'carFilterMultyTechCondition', type: 'multi' },
+  { key: 'carFilterMultyTechCondition', type: 'select' },
   { key: 'carFilterMultyModel', type: 'multi' },
   { key: 'carFilterMultyStructure', type: 'multi' },
   { key: 'carFilterMultyOkrug', type: 'multi' },
   { key: 'carFilterMultyOwner', type: 'multi' },
-  { key: 'carFilterMultyDrivers', type: 'multi' },
+  { key: 'carFilterMultyDrivers', type: 'select' },
   { key: 'levelSensors', type: 'select' },
   { key: 'withoutMissions', type: 'checkbox' },
   { key: 'withoutWaybills', type: 'checkbox' },
@@ -75,26 +78,28 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
-    const [outOfView, setOutOfView] = React.useState(false);
-    const dispatch = etsUseDispatch();
-    const node = React.createRef<any>();
-
-    React.useEffect(() => {
-      setOutOfView(node.current.getBoundingClientRect().bottom > (window.innerHeight || document.documentElement.clientHeight));
+    const [isClickMenu, setIsClickMenu] = React.useState(false);
+    const [isOptinsLoading, setIsOptinsLoading] = React.useState({
+      carFilterMultyDrivers: false,
     });
+    const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
       (async () => {
-        const employeeData = await (
-          await dispatch(employeeEmployeeGetSetEmployee({}, { page: '' }))
-        ).data;
-        const moscowTime = await dispatch(
-          actionLoadTimeMoscow({}, { page: 'mainpage' })
-        );
-        setEmployeeData(employeeData);
-        setMoscowTime(moscowTime);
+        if (!hidden && !employeeData.length) {
+          setIsOptinsLoading({...isOptinsLoading, carFilterMultyDrivers: true});
+          const employeeData = await (
+            await dispatch(employeeEmployeeGetSetEmployee({}, { page: '' }))
+          ).data;
+          const moscowTime = await dispatch(
+            actionLoadTimeMoscow({}, { page: 'mainpage' })
+          );
+          setEmployeeData(employeeData);
+          setMoscowTime(moscowTime);
+          setIsOptinsLoading({...isOptinsLoading, carFilterMultyDrivers: false});
+        }
       })();
-    }, []);
+    }, [hidden, employeeData]);
 
     React.useEffect(() => {
       (async () => {
@@ -248,10 +253,10 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     }, [hidden]);
 
     const handleClickOut = React.useCallback(() => {
-      if (!hidden) {
+      if (!hidden && !isClickMenu) {
         setHidden(true);
       }
-    }, [hidden]);
+    }, [hidden, isClickMenu]);
 
     if(!filterFields.length) {
       return <DivNone />;
@@ -259,8 +264,8 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     return (
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
-          <div className={cx('tool_bar-block', { active })}>
-            <StyledFilter ref={node} className={`default_cube flex-row map-car-filter multi ${outOfView ? 'active' : ''}`}>
+          <StyledToolbar className={cx('tool_bar-block', { active })}>
+            <StyledFilter className="default_cube flex-row map-car-filter multi">
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
               </div>
@@ -269,8 +274,11 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
               ) : (
                 <div className='car_text_filter-container multi'>
                   <div>
-                    {filterFields.map((keyField) => (
-                      <DefaultInput
+                    {filterFields.map((keyField) => {
+                      const isLoading = keyField.key in isOptinsLoading
+                        ? isOptinsLoading[keyField.key]
+                        : false;
+                      return <DefaultInput
                         key={keyField.key}
                         keyField={keyField.key}
                         OPTIONS={
@@ -280,14 +288,17 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
+                        portal={filterFields.length <= 1}
+                        setIsClickMenu={setIsClickMenu}
                         setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
-                      />
-                    ))}
+                        isLoading={isLoading}
+                      />;
+                    })}
                   </div>
                 </div>
               )}
             </StyledFilter>
-          </div>
+          </StyledToolbar>
         </ClickOutHandler>
       </span>
     );

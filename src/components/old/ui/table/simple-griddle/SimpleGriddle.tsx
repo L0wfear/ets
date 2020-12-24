@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as cx from 'classnames';
-import { isNullOrUndefined, isArray } from 'util';
+import { isArray, isNullOrUndefined } from 'util';
 
 import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
@@ -174,9 +174,10 @@ class SimpleGriddle extends React.Component<any, any> {
       currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
       localState={this.props.localState}
+      cellColors={this.props.cellColors}
     />
   );
-
+ 
   reduceTbodyTrFuelCardsReport = (objData: { array: Array<any>; index: number; }, rowData, indexArr) => {
     objData.array.push(
       <TrTableFuelCardsReport

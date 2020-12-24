@@ -1,7 +1,7 @@
 import * as insider from 'point-in-polygon';
 import Feature from 'ol/Feature';
 import { geoJSON } from 'utils/ol';
-import { add, flow, isNumber, max, reduce, subtract } from 'lodash';
+import { add, isNumber, reduce } from 'lodash';
 import { WsData } from './LayerCarMarker.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
@@ -35,7 +35,7 @@ export const checkOnBuffer = (bufferFeature: any, { coords_msk }) => {
   const polygonCoordinates = newFeature.getGeometry().getCoordinates();
 
   return polygonCoordinates.some((polygon) => {
-    return insider(coords_msk, polygonCoordinates.length > 1 ? polygon[0] : polygon);
+    return !coords_msk || insider(coords_msk, polygonCoordinates.length > 1 ? polygon[0] : polygon); // !coords_msk для ТС, которых нет на карте
   });
 };
 
@@ -47,7 +47,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, g
     case 'carFilterText': return !value || checkOnIncludesCar(value, car_actualData); 
     case 'carFilterMultyGpsCode': return !value.length || value.includes(Number(car_actualData.gps_code));
     case 'carFilterMultyType': return !value.length || value.includes(car_actualData.type_id);
-    case 'carFilterMultyTechCondition': return !value.length || value.includes(car_actualData.condition);
+    case 'carFilterMultyTechCondition': return !value || value === car_actualData.condition;
     case 'carFilterMultyModel': return !value.length || value.includes(car_actualData.model_id);
     case 'carFilterMultyStructure': return !value.length || value.includes(car_actualData.company_structure_id);
     case 'carFilterMultyOkrug': return !value.length || value.includes(car_actualData.okrug_id);
@@ -55,7 +55,7 @@ export const checkFilterByKey = (key, value, gps_code, wsData, car_actualData, g
     case 'carFilterMultyElement': return true;
     case 'withoutMissions': return !value || !carsForExclude.includes(car_actualData.asuods_id);
     case 'withoutWaybills': return !value || !carsForExclude.includes(car_actualData.asuods_id);
-    case 'carFilterMultyDrivers': return !value.length || value.some((el) => el.cars.includes(car_actualData.asuods_id));
+    case 'carFilterMultyDrivers': return !value || value.cars?.includes(car_actualData.asuods_id);
     case 'carFilterMultyOwner': return !value.length || value.includes(car_actualData.owner_id);
     case 'featureBufferPolygon': return !value || checkOnBuffer(value, wsData); // скорее всего, сюда добавить функцию, которая определяет входит ли тачка в буфер
     default: return false;
@@ -78,26 +78,34 @@ export const checkOnVisible = ({ filters, statusShow, wsData, car_actualData, ge
   ))
 );
 
-export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number, carActualList: Array<Car>) => {
-  let countTsByStatusWithoutFilters: number = 0;
-
-  const carActualNotInMap = carActualList.reduce((carNotInMapList, car ) => {
-    return Boolean(car.gps_code === null || !carPointsDataWs[car.gps_code])
-      ? [...carNotInMapList, car]
-      : carNotInMapList;
-  }, []);
+export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: number, carActualList: Array<Car>, filters, geoobjectsFilter, carsForExclude) => {
+  const carActualNotInMap = carActualList
+    .reduce((carNotInMapList, car) => {
+      return Boolean(car.gps_code === null || !carPointsDataWs[car.gps_code])
+        ? [...carNotInMapList, car]
+        : carNotInMapList;
+    }, [])
+    .filter((el) => {
+      return !Object.entries(filters).some(
+        ([key, value]) =>
+          !checkFilterByKey(
+            key,
+            value,
+            null,
+            {},
+            el,
+            geoobjectsFilter,
+            carsForExclude
+          )
+      );
+    });
 
   const not_in_map: number = carActualNotInMap.length; // кол-во всех тачек из car_actual, которых не было в данных из сокета
 
   const countTsByStatus = reduce(
     carPointsDataWs,
     (carsByStatus, carByStatus) => {
-      const { front_status, visible, visibleWithoutFilters } = carByStatus;
-
-      if (visibleWithoutFilters) {
-        countTsByStatusWithoutFilters += 1;
-      }
-  
+      const { front_status, visible } = carByStatus;
       if (visible) {
         return {
           ...carsByStatus,
@@ -111,16 +119,8 @@ export const calcCountTsByStatus = (carPointsDataWs: WsData, carActualGpsCount: 
   );
 
   if (isNumber(carActualGpsCount)) {
-    const not_in_touch = flow(
-      subtract,
-      (hasNeverCarSignalCount: number): [number, number] => [hasNeverCarSignalCount, 0],
-      max,
-      (addend: number): number => add(countTsByStatus.not_in_touch, addend)
-    )(carActualGpsCount, countTsByStatusWithoutFilters);
-
     return {
       ...countTsByStatus,
-      not_in_touch,
       not_in_map,
       carActualNotInMap,
     };

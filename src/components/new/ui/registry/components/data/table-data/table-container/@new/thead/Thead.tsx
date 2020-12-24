@@ -7,6 +7,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type Props = {
   registryKey: string;
+  tableScrollXPos: number;
 };
 
 const Thead: React.FC<Props> = React.memo(
@@ -18,7 +19,7 @@ const Thead: React.FC<Props> = React.memo(
         {
           fieldsInDeepArr.map(
             (_, index) => (
-              <Tr key={index} indexRow={index} registryKey={props.registryKey} />
+              <Tr key={index} indexRow={index} registryKey={props.registryKey} tableScrollXPos={props.tableScrollXPos} />
             ),
           )
         }

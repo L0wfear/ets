@@ -17,6 +17,7 @@ type Props = {
 	waybillFormState: WaybillProps['formState']; // state in render WaybillForm
 	waybillState: WaybillState; // waybillState in render WaybillForm
 	errors: WaybillProps['formErrors'];
+  warnings: WaybillProps['formWarnings'];
 	waybillStatus: {
 		IS_CREATING: boolean;
 		IS_ACTIVE: boolean;
@@ -73,6 +74,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
       FUEL_TYPES,
       waybillFormState,
       waybillState,
+      warnings,
       use_pouring,
       fuel_cards_creating,
     } = props;
@@ -109,6 +111,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                     type="number"
                     label="Возврат по таксировке, л"
                     error={errors.fuel_end}
+                    warning={warnings.fuel_end}
                     value={waybillFormState.fuel_end}
                     format="toFixed3"
                     disabled
@@ -121,6 +124,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   type="number"
                   label="Расход по таксировке, л"
                   error={errors.tax_consumption}
+                  warning={warnings.tax_consumption}
                   value={waybillFormState.tax_consumption}
                   format="toFixed3"
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
@@ -152,6 +156,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Возврат фактический, л"
                   error={errors.fact_fuel_end}
+                  warning={warnings.fact_fuel_end}
                   value={waybillFormState.fact_fuel_end}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled={
@@ -173,6 +178,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Расход фактический, л"
                   error={errors.fact_consumption}
+                  warning={warnings.fact_consumption}
                   value={waybillFormState.fact_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled
@@ -189,6 +195,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   type="number"
                   label="Выдано, л"
                   error={errors.fuel_given}
+                  warning={warnings.fuel_given}
                   value={waybillFormState.fuel_given}
                   disabled
                 />
@@ -254,7 +261,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={1}>
+      <EtsBootstrap.Col md={12} zIndex={2}>
         <EtsBootstrap.Col md={12}>
           <Taxes
             modalKey={modalKey}

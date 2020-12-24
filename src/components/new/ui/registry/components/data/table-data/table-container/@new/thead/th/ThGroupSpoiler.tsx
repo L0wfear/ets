@@ -8,11 +8,12 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { GlyphiconStyled } from 'components/new/ui/@bootstrap/01-glyphicon/EtsGlyphicon';
 import { registryChangeGroupActiveColumn } from 'components/new/ui/registry/module/actions-registy';
 
-export const ThGroupSpoilerFirstStyled = styled.div`
+export const ThGroupSpoilerFirstStyled = styled.div<{isHidden: boolean;}>`
   background: #fff;
   position: absolute;
   top: -15px;
   right: 10px;
+  visibility: ${({ isHidden }) => isHidden ? 'hidden' : 'visible'};
   transform: translate(100%, -100%);
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -61,6 +62,8 @@ export const ThGroupDelimeter = styled.div`
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
   registryKey: string;
+  tableScrollXPos: number;
+  isHorizontalStickyTh: boolean;
 };
 
 const ThGroupSpoiler: React.FC<Props> = React.memo(
@@ -68,11 +71,33 @@ const ThGroupSpoiler: React.FC<Props> = React.memo(
     const {
       metaField,
       registryKey,
+      tableScrollXPos,
+      isHorizontalStickyTh,
     } = props;
 
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const dispatch = etsUseDispatch();
     const isActive = !get(groupColumn, `${metaField.groupOpt.key}.isActive`, true);
+    const [initPosition, setInitPosition] = React.useState<number>(null);
+    const [isHidden, setIsHidden] = React.useState(false);
+    const ref = React.useRef(null);
+
+    React.useEffect(() => {
+      if (isHorizontalStickyTh && ref) {
+        const boundingClientRect = ref.current.getBoundingClientRect();       
+        if (!initPosition) {
+          setInitPosition(boundingClientRect.x + boundingClientRect.width);
+        } else {
+          const changeHiddenPointX = initPosition - metaField.width / 2;
+          if (!isHidden && tableScrollXPos > changeHiddenPointX) {
+            setIsHidden(true);
+          }
+          if (isHidden && tableScrollXPos < changeHiddenPointX) {
+            setIsHidden(false);
+          }
+        }
+      }
+    }, [tableScrollXPos, isHorizontalStickyTh]);
 
     const changeGroupActiveColumn = React.useCallback((eventClick) => {
       eventClick.stopPropagation();
@@ -98,7 +123,7 @@ const ThGroupSpoiler: React.FC<Props> = React.memo(
         {
           groupColumn && metaField.groupOpt.firstElem
             && (
-              <ThGroupSpoilerFirstStyled  onClick={changeGroupActiveColumn}>
+              <ThGroupSpoilerFirstStyled ref={ref} onClick={changeGroupActiveColumn} isHidden={isHidden} >
                 {
                   isActive
                     ? (

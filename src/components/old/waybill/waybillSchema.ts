@@ -14,6 +14,10 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
+const isValidToFixed1 = (data) => {
+  return /^[ +]?[0-9]*[\\.,]?[0-9]$/.test(data);
+};
+
 const isValidToFixed3 = (data) => {
   return /^[ +]?[0-9]*[\\.,]?[0-9]{1,3}$/.test(data);
 };
@@ -30,7 +34,6 @@ const validateFuelCardId = (
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard = !rowData.fuel_card_id;
-
   const availableFuelCard = makeFuelCardIdOptions(
     fuelCardsList,
     [rowData],
@@ -41,7 +44,7 @@ const validateFuelCardId = (
   const IS_DELETE = formState.status === 'deleted';
 
   const isValidSelectedFuelCard = availableFuelCard.some(
-    (optionData) => optionData.rowData.id === rowData.fuel_card_id,
+    (optionData) => optionData.rowData.id === rowData.fuel_card_id && !optionData.isNotVisible
   );
 
   const selectedFuelCard = rowData.fuel_card_id && notFiltredFuelCardsIndex[rowData.fuel_card_id];
@@ -111,6 +114,9 @@ const checkCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
+          : '',
         value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
           ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
@@ -145,6 +151,9 @@ const checkEquipmentCarRefill = memoizeOne(
           && (formState.status !== 'closed' && formState.status !== 'deleted')
             ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
             : '',
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
+          : '',
         fuel_card_id: validateFuelCardId(
           rowData,
           refillTypeList,
@@ -483,12 +492,15 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_start: {
       title: 'Счетчик моточасов.Выезд',
       type: 'number',
-      integer: true,
+      float: 1,
       required: false,
       dependencies: [
         (value, formData) => {
           if ((hasMotohours(formData.gov_number) || formData.car_has_motohours) && isEmpty(value)) {
             return 'Поле "Счетчик моточасов.Выезд" должно быть заполнено';
+          }
+          if (value && !isValidToFixed1(value)) {
+            return getRequiredFieldToFixed('Счетчик моточасов.Выезд', 1);
           }
           return false;
         },
@@ -513,15 +525,18 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_equip_start: {
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
-      integer: true,
+      float: 1,
       dependencies: [
         (value, formData) => {
           if (
             formData.equipment_fuel
-            && (!formData.status || formData.status === 'draft')
+            && (!formData.status || formData.status === 'draft' || formData.status === 'active')
             && isEmpty(value)
           ) {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          if (value && !isValidToFixed1(value)) {
+            return getRequiredFieldToFixed('Счетчик моточасов оборудования.Выезд', 1);
           }
           return false;
         },
@@ -963,7 +978,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_end: {
       title: 'Счетчик моточасов.Возвращение в гараж, м/ч',
       type: 'number',
-      integer: true,
+      float: 1,
       dependencies: [
         (value, { motohours_start, gov_number, car_has_motohours, status }) => {
           const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
@@ -974,6 +989,9 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             if (value && value < motohours_start) {
               return '"Счетчик моточасов.Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов.Выезд"';
             }
+            if (value && !isValidToFixed1(value)) {
+              return getRequiredFieldToFixed('Счетчик моточасов.Возвращение в гараж, м/ч', 1);
+            }
           }
           return false;
         }
@@ -982,7 +1000,7 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
     motohours_equip_end: {
       title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
       type: 'number',
-      integer: true,
+      float: 1,
       dependencies: [
         (value, { motohours_equip_start, equipment_fuel, status }) => {
           if (equipment_fuel && status !== 'deleted') {
@@ -992,8 +1010,11 @@ export const waybillClosingSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
             ) {
               return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
             }
-            if (value && value < motohours_equip_start) {
+            if (value && +value < +motohours_equip_start) {
               return '"Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов оборудования.Выезд"';
+            }
+            if (value && !isValidToFixed1(value)) {
+              return getRequiredFieldToFixed('Счетчик моточасов оборудования. Возвращение в гараж, м/ч', 1);
             }
           }
           return false;

@@ -200,7 +200,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
   const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
   const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
   const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
-
+  const type = get(inspectPgmBase, 'type', defaultInspectPgmBase.type);
   if (!isNullOrUndefined(data)) {
     data = {
       ...data,
@@ -217,6 +217,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
     action,
+    type,
   };
 
   const inspectionPgmBase = await dispatch(
@@ -246,6 +247,7 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     agents_from_gbu,
     commission_members,
     resolve_to,
+    type,
   } = inspectPgmBase;
 
   const payload = {
@@ -256,6 +258,7 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
     action: 'close',
+    type,
   };
 
   const result = await dispatch(

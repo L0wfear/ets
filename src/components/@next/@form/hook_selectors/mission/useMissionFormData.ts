@@ -237,8 +237,8 @@ export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
 
 export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pick<Mission, 'consumable_materials'> & Record<string, any>>(formDataKey: FormKeys) => {
   const meta = useForm.useFormDataMeta(formDataKey);
-  const handleChange = useForm.useFormDataHandleChange<Partial<Mission> & Partial<DutyMission>>(formDataKey);
-  const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
+  const handleChange = useForm.useFormDataHandleChange<Partial<F> & Partial<DutyMission>>(formDataKey);
+  const formState = useForm.useFormDataFormState<Partial<F> & Partial<DutyMission>>(formDataKey);
   const dispatch = etsUseDispatch();
   const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
   const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(formDataKey, 'is_mission_progress_countable');

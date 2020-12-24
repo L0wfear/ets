@@ -20,6 +20,7 @@ import tachographPeriodicVerificationList from 'components/new/pages/nsi/autobas
 import tachographList from 'components/new/pages/nsi/autobase/pages/tachograph/_config-data';
 import tachographRepairList from 'components/new/pages/nsi/autobase/pages/tachograph_repair/_config-data';
 import tachographMetrologicalVerificationList from 'components/new/pages/nsi/autobase/pages/tachograph_metrological_verification/_config-data';
+import refillList from 'components/new/pages/nsi/autobase/pages/refill_registry/_config-data';
 
 const children = {
   carActualList,
@@ -38,10 +39,11 @@ const children = {
   fuelCardsList,
   fuelCardsArchiveList,
   penaltiesList,
-  tachographPeriodicVerificationList,
-  tachographRepairList,
-  tachographMetrologicalVerificationList,
   tachographList,
+  tachographRepairList,
+  tachographPeriodicVerificationList,
+  tachographMetrologicalVerificationList,
+  refillList,
 };
 
 export default {

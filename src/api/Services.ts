@@ -301,6 +301,8 @@ export const TachographDataReadingService = ETS_API_FACTORY.createApiServiceAdap
 export const TachographReplacementSkziService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi');
 export const TachographBrandService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_brand');
 export const TachographReplacementSkziReasonService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_replacement_skzi_reason');
+export const RefillService = ETS_API_FACTORY.createApiServiceAdapter('refill_registry');
+export const RefillPrintService = ETS_API_FACTORY.createApiServiceAdapter('refill_registry/export');
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(
@@ -389,8 +391,14 @@ export const InspectionService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/act',
 );
-export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/registry',
+export const InspectAutobaseService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/autobase',
+);
+export const InspectPgmBaseService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/pgm_base',
+);
+export const InspectCarsConditionService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/cars_condition',
 );
 export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/container',
@@ -452,4 +460,7 @@ export const TachographPeriodicVerificationService = ETS_API_FACTORY.createApiSe
 
 export const TachographVerificationReasonService = ETS_API_FACTORY.createApiServiceAdapter(
   '/autobase/tachograph_verification_reason',
+);
+export const RefillFuelCompanyService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill_refill_tx',
 );

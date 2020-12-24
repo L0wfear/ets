@@ -21,6 +21,7 @@ export const getToConfig = (): TypeConfigData<MaintenanceWork> => {
     header: {
       title: 'Показатели регламентных работ',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

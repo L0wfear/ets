@@ -2,7 +2,7 @@ import { InspectAuditorsApi } from 'components/new/utils/context/loading/@types/
 import useLoadListData from './common/useLoadListData';
 
 const useInspectAuditorsList = (page: string, path: string) => {
-  return useLoadListData<InspectAuditorsApi>('inspect/auditors', '', null, page, path);
+  return useLoadListData<InspectAuditorsApi>('inspection/auditors', '', null, page, path);
 };
 
 export default useInspectAuditorsList;

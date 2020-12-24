@@ -1,11 +1,8 @@
 import { InspectAutobase } from './@types/inspect_autobase';
-import {
-  promiseGetInspectRegistry,
-  promiseCreateInspection,
-  promiseGetInspectionByIdType,
-} from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy, cloneDeep } from 'lodash';
 import { isNullOrUndefined } from 'util';
+import { InspectAutobaseService } from 'api/Services';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   is_coating_defects: false,
@@ -61,15 +58,17 @@ const makeInspectAutobase = (inspect: any): InspectAutobase => {
   return inspectAutobase;
 };
 
-export const promiseGetInspectAutobase = async (payload: { carpoolId: number; }) => {
-  const response = await promiseGetInspectRegistry<InspectAutobase>({
-    base_id: payload.carpoolId,
-    type: 'autobase',
-  });
+export const promiseGetInspectAutobase = async (payload: { base_id: number; }) => {
+  let response = null;
+  try {
+    response = await InspectAutobaseService.get({
+      base_id: payload.base_id,
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
 
-  const data: Array<InspectAutobase> = response.data.map((inspectAutobase: InspectAutobase) => {
-    return makeInspectAutobase(inspectAutobase);
-  }).sort((a, b) => a.id - b.id);
+  const data: Array<InspectAutobase> = get(response, ['result', 'rows'], []);
 
   return {
     data,
@@ -81,9 +80,16 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number; })
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectAutobaseById = async (id: number) => {
-  let inspectAutobase: InspectAutobase = await promiseGetInspectionByIdType(
-    id,
-  );
+  let response = null;
+  try {
+    response = await InspectAutobaseService.path(id).get(
+      {},
+    );
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  let inspectAutobase: InspectAutobase = get(response, 'result.rows.0', null);
 
   if (inspectAutobase) {
     inspectAutobase = makeInspectAutobase(inspectAutobase);
@@ -92,16 +98,39 @@ export const promiseGetInspectAutobaseById = async (id: number) => {
   return inspectAutobase;
 };
 
-export const promiseCreateInspectionAutobase = async (payload: { carpoolId: number; companyId: number; }) => {
-  let inspectAutobase: InspectAutobase = await promiseCreateInspection({
-    base_id: payload.carpoolId,
-    company_id: payload.companyId,
-    type: 'autobase',
-  });
+export const promiseCreateInspectionAutobase = async (payload: { base_id: number; companyId: number; }) => {
+  const response = await InspectAutobaseService.path(payload.base_id).post(
+    { ...payload },
+    false,
+    'json',
+  );
+
+  let inspectAutobase = get(response, 'result.rows.0', null);
 
   if (inspectAutobase) {
     inspectAutobase = makeInspectAutobase(inspectAutobase);
   }
+
+  return inspectAutobase;
+};
+
+export const promiseUpdateInspectionAutobase = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
+  const newPayload = {
+    ...payload,
+    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
+  };
+
+  const response = await InspectAutobaseService.path(id).put(
+    {
+      ...newPayload,
+      data,
+      files,
+    },
+    false,
+    'json',
+  );
+
+  const inspectAutobase = get(response, 'result.rows.0', null);
 
   return inspectAutobase;
 };

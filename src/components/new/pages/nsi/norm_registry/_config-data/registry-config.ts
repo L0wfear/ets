@@ -20,6 +20,7 @@ export const config: TypeConfigData<Norm> = {
   header: {
     title: 'Реестр технологических операций',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export_filtred_data,

@@ -31,6 +31,9 @@ const TableContainer: React.FC<Props> = React.memo(
     const fixedWidth = etsUseSelector((state) => getListData(state.registry, registryKey).data.fixedWidth);
     const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
+    const [scrollYPos, setscrollYPos] = React.useState(0);
+    const [scrollXPos, setscrollXPos] = React.useState(0);
+    const elPadding = 50;
 
     const isGroupColumn = Object.keys(groupColumn).length ? true : false;
     React.useEffect(
@@ -41,12 +44,27 @@ const TableContainer: React.FC<Props> = React.memo(
       [],
     );
 
+    const onTableScroll = (e: React.UIEvent<HTMLElement>) => {
+      const scrollY = e.currentTarget.scrollTop;
+      const scrollX = e.currentTarget.scrollLeft;
+      if (scrollX !== scrollXPos) {
+        setscrollXPos(scrollX);
+      }
+      if (
+        (scrollY > 0 && scrollYPos < elPadding)
+        || scrollYPos > scrollY
+      ) {
+        setscrollYPos(scrollY >= elPadding ? elPadding : scrollY);
+      }
+    };
+
     return (
       <EtsBootstrap.Row margin={10}>
         <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
-          <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} isGroupColumn={ isGroupColumn } id={`${props.registryKey}_column_config_table`}>
+          <EtsTableWrap scrollYPos={scrollYPos} onScroll={onTableScroll}  className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} 
+            isGroupColumn={ isGroupColumn } id={`${props.registryKey}_column_config_table`}>
             <EtsBootstrap.Grid.GridTable fixedWidth={fixedWidth} id={`${props.registryKey}_table`}>
-              <Thead registryKey={registryKey}/>
+              <Thead registryKey={registryKey} tableScrollXPos={scrollXPos}/>
               <Tbody registryKey={registryKey}/>
             </EtsBootstrap.Grid.GridTable>
             <EtsTableSearchParams registryKey={registryKey} />

@@ -22,11 +22,11 @@ type EtsFilterCheckSearchProps = (
 ) & WithSearchProps;
 
 class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps, {}> {
-  componentDidMount() {
+  async componentDidMount() {
     const filterKey = `${this.props.registryKey}_filters`;
     const timeKey = `${this.props.registryKey}_time`;
 
-    const filters = this.props.searchState[filterKey];
+    const filters = await this.props.searchState[filterKey];
 
     let filterValue = this.props.searchState[filterKey];
 

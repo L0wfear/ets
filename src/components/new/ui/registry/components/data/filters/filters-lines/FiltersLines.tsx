@@ -34,13 +34,18 @@ const FiltersLines: React.FC<Props> = React.memo(
     const STRUCTURES = etsUseSelector((state) => getSessionStructuresOptions(state));
     const userData = etsUseSelector((state) => getSessionState(state).userData);
     const fileds = etsUseSelector((state) => getFilterData(state.registry, props.registryKey).fields);
-
+    const [cache, setCache] = React.useState<Record<string, any>>({});
+    const [carUse, setCarUse] = React.useState(false);
     const handleChange = React.useCallback(
       (valueKey, type, value) => {
         dispatch(registryChangeFilterRawValues(props.registryKey, valueKey, type, value));
       },
       [],
     );
+
+    React.useEffect(() => {
+      setCarUse(props.searchState?.monitoringKind === 'car_use');
+    }, [props.searchState]);
 
     const fieldMap = React.useCallback(
       ({ type, ...otherFilterData }) => {
@@ -61,11 +66,15 @@ const FiltersLines: React.FC<Props> = React.memo(
               return titleSomeValue.title;
             }
 
+            if (displayIf === displayIfContant.carUse && carUse) {
+              return titleSomeValue.title;
+            }
+
             return filtredTitle;
           }, null);
         }
 
-        if (!formatedTitle) {
+        if (!formatedTitle || otherFilterData.hidden) {
           return null;
         }
 
@@ -79,6 +88,8 @@ const FiltersLines: React.FC<Props> = React.memo(
                   needUpdateFiltersOptions={props.needUpdateFiltersOptions}
                   registryKey={props.registryKey}
                   onChange={handleChange}
+                  cache={cache}
+                  setCache={setCache}
                 />
               </EtsFilterContainer>
             );
@@ -143,7 +154,7 @@ const FiltersLines: React.FC<Props> = React.memo(
           );
         }
       },
-      [userData, STRUCTURES, props.needUpdateFiltersOptions],
+      [userData, STRUCTURES, props.needUpdateFiltersOptions, cache, carUse],
     );
 
     return (

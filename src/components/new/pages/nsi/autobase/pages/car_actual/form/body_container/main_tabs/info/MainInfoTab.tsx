@@ -64,7 +64,6 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 <EtsBootstrap.Col md={6}>
                   <ExtField inline type="string" label="Рег. номер ТС" readOnly value={state.gov_number || 'Не указано'} />
                   <ExtField inline type="string" label="VIN (АСУ ОДС)" readOnly value={state.vin || 'Не указано'} />
-                  <ExtField inline type="string" label="Заводской номер (АСУ ОДС)" readOnly value={state.factory_number || 'Не указано'} />
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={6}>
                   <ExtField inline type="string" label="Модель ТС" readOnly value={state.special_model_name || 'Не указано'} />
@@ -88,7 +87,6 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 disabled={!isPermitted}
                 error={errors.exploitation_date_start}
                 makeGoodFormat
-                makeGoodFormatInitial
               />
               <ExtField
                 type="string"

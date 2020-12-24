@@ -17,6 +17,7 @@ export const config: TypeConfigData<FuelingWater> = {
   header: {
     title: 'Справочник баз гидрантов',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export,

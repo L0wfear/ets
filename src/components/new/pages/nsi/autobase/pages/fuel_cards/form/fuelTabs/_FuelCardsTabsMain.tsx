@@ -35,6 +35,7 @@ const FuelCardsTabsMain: React.FC<FuelCardsTabsMainProps> = React.memo(
             activeTabKey={fuelActiveTabKey}
             handleTabChange={handleChangeActiveNavTab}
             errors={props.formErrors}
+            formState={props.formState}
           />
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={12}>
@@ -52,6 +53,7 @@ const FuelCardsTabsMain: React.FC<FuelCardsTabsMainProps> = React.memo(
         <EtsBootstrap.Col md={12}>
           <FuelCardsRefillContainer
             showComponent={fuelActiveTabKey === 'refill'}
+            fuel_card_number={props.formState.number}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Row>

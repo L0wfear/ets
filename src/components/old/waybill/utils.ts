@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isArray, isNumber } from 'util';
+import { isArray, isNumber, isNullOrUndefined } from 'util';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
@@ -18,6 +18,8 @@ const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
   COMPRESSOR: 15,
 } as const;
+
+export const PERCENT_DIFF_VALUE = 10;
 
 export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
   Promise.resolve(
@@ -380,5 +382,15 @@ export const getTitleByStatus = ({ status, number }) => {
       return `Удаленный ПЛ `;
     default:
       return 'Создать новый путевой лист';
+  }
+};
+
+export const hasPercentageDifference = (a, b, p) => {
+  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b)) && (a > b)) {
+    const perc = 100 * Math.abs((a - b) / a);
+
+    return Boolean(perc > p);
+  } else {
+    return false;
   }
 };

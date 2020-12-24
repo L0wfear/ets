@@ -78,13 +78,13 @@ export type IStateMonitorPage = {
       carFilterText: string;
       carFilterMultyGpsCode: Array<number>;
       carFilterMultyType: Array<number>;
-      carFilterMultyTechCondition: Array<number>;
+      carFilterMultyTechCondition: number;
       carFilterMultyModel: Array<number>;
       carFilterMultyStructure: Array<number>;
       carFilterMultyOkrug: Array<number>;
       carFilterMultyOwner: Array<number>;
       levelSensors: 2 | 1;
-      carFilterMultyDrivers: Array<number>;
+      carFilterMultyDrivers: number;
       withoutMissions: boolean;
       withoutWaybills: boolean;
       carFilterMultyElement: Array<number>;
@@ -159,13 +159,13 @@ export const initialMonitorState: IStateMonitorPage = {
       carFilterText: '',
       carFilterMultyGpsCode: [],
       carFilterMultyType: [],
-      carFilterMultyTechCondition: [],
+      carFilterMultyTechCondition: null,
       carFilterMultyModel: [],
       carFilterMultyStructure: [],
       carFilterMultyOkrug: [],
       carFilterMultyOwner: [],
       levelSensors: null,
-      carFilterMultyDrivers: [],
+      carFilterMultyDrivers: null,
       featureBufferPolygon: null, // DITETSSUP-2007
       withoutMissions: false,
       withoutWaybills: false,

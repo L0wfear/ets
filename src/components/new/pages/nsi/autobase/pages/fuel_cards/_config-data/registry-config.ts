@@ -9,6 +9,7 @@ export const registryKey = 'fuelCardsRegistry';
 
 export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
   let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
+    buttonsTypes.columns_control,
     buttonsTypes.filter,
     buttonsTypes.fuel_card_create,
     buttonsTypes.read,
@@ -19,6 +20,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
 
   if (is_archive) {
     buttons = [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.fuel_card_from_archive,
@@ -105,17 +107,23 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'source_type_id',
+          labelKey: 'source_type_text',
+          title: 'Способ создания',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'refill_sum',
+          title: 'Сумма заправок',
+          type: 'advanced-number',
+          step: 1,
+        },
+        {
           valueKey: 'structure_id',
           labelKey: 'structure_name',
           title: 'Подразделение',
           type: 'multiselect',
           displayIf: displayIfContant.lenghtStructureMoreOne,
-        },
-        {
-          valueKey: 'source_type_id',
-          labelKey: 'source_type_text',
-          title: 'Способ создания',
-          type: 'multiselect',
         },
         {
           valueKey: 'company_short_name',
@@ -199,6 +207,11 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           {
             key: 'source_type_text',
             title: 'Способ создания',
+            width: 200,
+          },
+          {
+            key: 'refill_sum_text',
+            title: 'Сумма заправок',
             width: 200,
           },
           {

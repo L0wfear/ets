@@ -24,6 +24,7 @@ export const config: TypeConfigData<Car> = {
   header: {
     title: 'Реестр транспортных средств',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export_filtred_data,
@@ -109,6 +110,11 @@ export const config: TypeConfigData<Car> = {
       {
         valueKey: 'vin',
         title: 'VIN',
+        type: 'multiselect',
+      },
+      {
+        valueKey: 'body_number',
+        title: 'Заводский номер',
         type: 'multiselect',
       },
       {
@@ -275,6 +281,11 @@ export const config: TypeConfigData<Car> = {
         {
           key: 'vin',
           title: 'VIN',
+          width: 300,
+        },
+        {
+          key: 'body_number',
+          title: 'Заводский номер',
           width: 300,
         },
         {

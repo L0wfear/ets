@@ -1,11 +1,13 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
 
 type WaybillCarRefill = {
   fuel_card_id: number;
   type_id: number;
   value: number;
   number: string;
+  date: string;
 };
 
 type TaxDataCar = {
@@ -171,12 +173,12 @@ export type WaybillFuel = {
   fuel_given: number;                     // + + + Выдано, л
   fuel_end: number;                       // + + + Возврат по таксировке, л
   fact_fuel_end: number;                  // + + + Возврат фактический, л
-  tax_data: Array<TaxDataCar>;     // + + + Расчет по норме
-  car_refill: Array<WaybillCarRefill>;        // + + + Заправки
+  tax_data: Array<TaxDataCar>;            // + + + Расчет по норме
+  car_refill: Array<WaybillCarRefill>;    // + + + Заправки
 
   tax_consumption: number;                // + + + Расход по таксировке, л
   fact_consumption: number;               // + + + Расход фактический, л
-  diff_consumption: number;              // + + + Расхождение в данных расхода, л
+  diff_consumption: number;               // + + + Расхождение в данных расхода, л
 };
 
 export type WaybillRefill = {
@@ -199,6 +201,8 @@ export type Waybill = (
 
     odometr_diff?: number; // для жизни
     motohours_diff?: number; // для жизни
+    refill: OneRefillFuelCompanyData['refills'];
+    rrn_codes: OneRefillFuelCompanyData['rrn_codes'];
   }
   & WaybillGas
   & WaybillElectrical

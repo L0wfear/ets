@@ -45,7 +45,7 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
 
     React.useEffect(() => {
       (async () => {
-        props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page }));
+        props.dispatch(actionGetAndSetInStoreTachographRepairReasonList({}, { page, path }));
         return () => {
           props.dispatch(actionResetTachographRepairReasonList());
         };
@@ -114,7 +114,6 @@ const TachographRepairForm: React.FC<PropsTachographRepair> = React.memo(
                 onChange={props.handleChange}
                 boundKeys="repair_date"
                 makeGoodFormat
-                makeGoodFormatInitial
                 time={false}
               />
             </EtsBootstrap.Col>

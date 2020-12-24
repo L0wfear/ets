@@ -34,7 +34,7 @@ const ButtonCreateMission: React.FC<ButtonCreateMissionProps> = (props) => {
         [props.uniqKeyForParams]: buttonsTypes.create,
       });
     },
-    [],
+    [props.setParams, props.match.params, props.setDataInSearch, props.searchState],
   );
 
   return (

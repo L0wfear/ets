@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Tachograph } from 'redux-main/reducers/modules/autobase/actions_by_type/tachograph_periodic_verification/@types';
 import tachographPermissions from './permissions';
+import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 
 export const registryKey = 'tachographPeriodicVerification';
 
@@ -23,6 +24,7 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
       title: 'Реестр периодических поверок тахографов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,
@@ -98,9 +100,30 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
             title: '№',
           },
           {
+            key: 'okrug_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Округ',
+              },
+            ],
+            width: 100,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
+            width: 200,
+          },
+          {
             key: 'company_structure_name',
             title: 'Подразделение',
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'verification_number',
@@ -144,6 +167,10 @@ export const getToConfig = (): TypeConfigData<Tachograph> => {
             key: 'gov_number',
             title: 'Рег. номер ТС',
             width: 200,
+          },
+          {
+            key: 'files',
+            title: 'Сертификат (файл)',
           },
           {
             key: 'comment',

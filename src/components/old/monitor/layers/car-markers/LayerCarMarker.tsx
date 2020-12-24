@@ -49,7 +49,7 @@ const defaultFilters = {
   carFilterMultyOwner: [],
   carFilterMultyStructure: [],
   carFilterMultyType: [],
-  carFilterMultyTechCondition: [],
+  carFilterMultyTechCondition: null,
   carFilterMultyModel: [],
   carFilterText: '',
   featureBufferPolygon: null,
@@ -354,7 +354,14 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         ...newCarPointsDataWs,
       };
 
-      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(newObj, this.props.carActualGpsCount, this.props.carActualList);
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(
+        newObj,
+        this.props.carActualGpsCount,
+        this.props.carActualList,
+        filters,
+        this.props.geoobjectsFilter,
+        this.props.carsForExclude,
+      );
       this.props.monitorPageChangeCarsByStatus(countTsByStatusVal, carActualNotInMap);
 
       return {
@@ -627,7 +634,14 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
         },
       );
 
-      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(carPointsDataWs, carActualGpsCount, carActualList);
+      const { carActualNotInMap, ...countTsByStatusVal } = calcCountTsByStatus(
+        carPointsDataWs,
+        carActualGpsCount,
+        carActualList,
+        filters,
+        this.props.geoobjectsFilter,
+        this.props.carsForExclude,
+      );
 
       this.props.monitorPageChangeCarsByStatus(
         countTsByStatusVal,

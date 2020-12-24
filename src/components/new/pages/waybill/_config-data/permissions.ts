@@ -11,6 +11,7 @@ const waybillPermissions = {
   refill: 'waybill.refill', // Путевой лист - Заправки
   delete_unless_closed: 'waybill.delete_unless_closed', // Путевой лист - Удалить (черновик и активный)
   change_departure: 'waybill.change_departure', // Путевой лист – Изменить показатели выезда
+  view_card_refills: 'waybill.view_card_refills', // Путевой лист - Просмотр заправок ТК
 };
 
 export default waybillPermissions;

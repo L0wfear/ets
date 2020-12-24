@@ -11,6 +11,7 @@ export const getDefaultCar = (): CarWrap => ({
   available: null,
   available_to_bind: null,
   body_capacity: null,
+  body_number: '',
   car_group_id: null,
   car_group_name: '',
   certificate_number: '',

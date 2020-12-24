@@ -106,6 +106,13 @@ export function createValidDate(date: string | Date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
+export function createValidYear(date: string | Date) {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format(global.APP_YEAR_FORMAT);
+}
+
 export function createValidDateDots(date: string | Date) {
   if (!date) {
     return null;
@@ -416,4 +423,10 @@ export function setDateTime0am(dateOwn) {
 }
 
 export const getDatePlusSomeYears = (date: Date | string, years: number) => new Date(new Date(date).setFullYear(new Date(date).getFullYear() + years));
+
 export const getDatePlusSomeMonths = (date: Date | string, months: number) => new Date(new Date(date).setMonth(new Date(date).getMonth() + months));
+
+export const getStartOfWeek = (date: Date | string) => 
+  moment(date)
+    .startOf('week')
+    .format();

@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
-import { getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldNumberMoreThenZero, getRequiredFieldNumberMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const isNewRow = (formState) => {
@@ -177,7 +177,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
     },
     vin_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный VIN:',
       dependenciesDisable: [
         (_, formState) => {
@@ -214,7 +214,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       ],
     },
     factory_number_incorrect: {
-      type: 'string',
+      type: 'boolean',
       title: 'Некорректный заводской номер:',
       dependenciesDisable: [
         (_, formState) => {
@@ -303,6 +303,9 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         (value) => {
           if (value < 0) {
             return 'Поле "Пробег на дату проведения последнего ТО" должно быть неотрицательным числом';
+          }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Пробег на дату проведения последнего ТО');
           }
         }
       ],
@@ -427,12 +430,30 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     mileage: {
       type: 'number',
       title: 'Пробег на дату проведения проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Пробег на дату проведения проверки" должно быть неотрицательным числом';
+          }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Пробег на дату проведения проверки');
+          }
+        }
+      ],
     },
     motohours: {
       type: 'number',
       title: 'Наработка м/ч на дату проверки',
-      minNotEqual: 0,
+      dependencies: [
+        (value) => {
+          if (value < 0) {
+            return 'Поле "Наработка м/ч на дату проверки" должно быть неотрицательным числом';
+          }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Наработка м/ч на дату проверки');
+          }
+        }
+      ],
     },
     fact_status: {
       type: 'valueOfArray',

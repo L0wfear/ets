@@ -8,10 +8,7 @@ export const getToConfig = (id: number): TypeConfigData<FuelCardLog> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'fuel_card_logs',
-        payload: {
-          id
-        }
+        entity: `fuel_cards/${id}/logs`,
       },
     },
     registryKey,

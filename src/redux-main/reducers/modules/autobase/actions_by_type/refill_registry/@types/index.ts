@@ -10,7 +10,7 @@ export type Refill = {
   fuel_type_id: number;
   fuel_type: string;
   fuel_given: number;
-  car_gov_number: string;
+  car_gov_number_text: string;
   rrn_code: number;
   waybill_id: number;
   waybill_number: number;

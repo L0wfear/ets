@@ -251,7 +251,7 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={1}>
+      <EtsBootstrap.Col md={12} zIndex={3}>
         <EtsBootstrap.Col md={12}>
           <Taxes
             modalKey={modalKey}

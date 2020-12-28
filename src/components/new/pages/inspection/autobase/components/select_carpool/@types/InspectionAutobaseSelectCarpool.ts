@@ -10,6 +10,7 @@ export type InspectionAutobaseSelectCarpoolDispatchProps = {
 };
 export type InspectionAutobaseSelectCarpoolOwnProps = {
   loadingPage: string;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export type InspectionAutobaseSelectMergedProps = (
   InspectionAutobaseSelectCarpoolStateProps

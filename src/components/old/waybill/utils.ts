@@ -386,8 +386,8 @@ export const getTitleByStatus = ({ status, number }) => {
 };
 
 export const hasPercentageDifference = (a, b, p) => {
-  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b))) {
-    const perc = 100 * Math.abs((a - b) / ((a + b)/2));
+  if (!(isNullOrUndefined(a)) && !(isNullOrUndefined(b)) && (a > b)) {
+    const perc = 100 * Math.abs((a - b) / a);
 
     return Boolean(perc > p);
   } else {

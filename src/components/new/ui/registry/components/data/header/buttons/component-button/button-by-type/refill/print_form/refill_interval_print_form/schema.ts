@@ -3,12 +3,12 @@ import { RefillReportForm } from './@types';
 
 export const refillReportFormSchema: SchemaType<RefillReportForm, any> = {
   properties: {
-    date_start: {
+    date_from: {
       type: 'datetime',
       title: 'Время.C',
       required: true,
     },
-    date_end: {
+    date_to: {
       type: 'datetime',
       title: 'Время.По',
       required: true,

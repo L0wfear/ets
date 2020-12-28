@@ -13,13 +13,31 @@ import carsConditionTableDefectsPermissions from 'components/new/pages/inspectio
 import { PropsCarsConditionTableDefects, PropsCarsConditionTableDefectsWithForm } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/table/form/@types/CarsConditionTableDefectsForm';
 import { CarsConditionTableDefects } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
-import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
+import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs, DEFECTS_LIST } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { get } from 'lodash';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import BlockCarsConditionCarSelectPhotoDefect from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/photo_defect/BlockCarsConditionCarSelectPhotoDefect';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+
+type Entries<T> = Array<{
+  [K in keyof T]: [K, T[K]];
+}[keyof T]>;
+
+export const makeDefectsText = (
+  defects_list: typeof DEFECTS_LIST,
+  data: Object
+) => {
+  return (Object.entries(defects_list) as Entries<typeof defects_list>)
+    .reduce((acc: Array<string>, [key, value]) => {
+      if (!!data[key]) {
+        acc.push(value);
+      }
+      return acc;
+    }, [])
+    .join(', ');
+};
 
 const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
   const dispatch = etsUseDispatch();
@@ -29,18 +47,22 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
 
   const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryKey);
   const isPermitted = isPermittedUpdateInsp.isPermittedToUpdate && isPermittedUpdateInsp.isPermittedToUpdateClose;
-
   const handleChange = React.useCallback(
     (fieldValue) => {
       const [valField] = Object.entries(fieldValue);
       const fieldKey = valField[0];
       const fieldVal = valField[1];
+      const rowData = {...valuesRenderRow, [fieldKey]: fieldVal};
+      const defects_text = makeDefectsText(DEFECTS_LIST, rowData);
       dispatch(
         registryChangeRenderSelectedRow(
           props.registryKey,
           {
             key: fieldKey,
             value: fieldVal,
+          },
+          {
+            defects_text
           },
         ),
       );
@@ -108,7 +130,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
 // export default compose<PropsCarsConditionTableDefects, PropsCarsConditionTableDefectsWithForm>(
 //   withForm<PropsCarsConditionTableDefectsWithForm, CarsConditionTableDefects>({
 export default compose<PropsCarsConditionTableDefects, PropsCarsConditionTableDefectsWithForm>(
-  withForm<PropsCarsConditionTableDefectsWithForm, CarsConditionTableDefects>({ // <<< замена any
+  withForm<PropsCarsConditionTableDefectsWithForm, CarsConditionTableDefects>({
     uniqField: 'id',
     schema: carsConditionTableDefectsFormSchema,
     permissions: carsConditionTableDefectsPermissions,

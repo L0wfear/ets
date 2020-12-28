@@ -16,6 +16,7 @@ export const config: TypeConfigData<TypesAttr> = {
   header: {
     title: 'Таблица нормативных скоростей и ширин',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.export,
     ],

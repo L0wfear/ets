@@ -114,6 +114,9 @@ const checkCarRefill = memoizeOne(
           notFiltredFuelCardsIndex,
           formState,
         ),
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
+          : '',
         value: rowData.type_id === 2 || (rowData.type_id === 1 && rowData.fuel_card_id)
           ? !rowData.value && rowData.value !== 0
             ? 'Поле "Выдано, л" должно быть заполнено'
@@ -148,6 +151,9 @@ const checkEquipmentCarRefill = memoizeOne(
           && (formState.status !== 'closed' && formState.status !== 'deleted')
             ? 'Выбранный способ заправки больше недоступен для вашей организации. Пожалуйста, выберите другой способ заправки'
             : '',
+        date: !rowData.date
+          ? 'Поле "Дата заправки" должно быть заполнено'
+          : '',
         fuel_card_id: validateFuelCardId(
           rowData,
           refillTypeList,
@@ -524,7 +530,7 @@ export const waybillSchema: SchemaType<Waybill, WaybillFormWrapProps> = {
         (value, formData) => {
           if (
             formData.equipment_fuel
-            && (!formData.status || formData.status === 'draft')
+            && (!formData.status || formData.status === 'draft' || formData.status === 'active')
             && isEmpty(value)
           ) {
             return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';

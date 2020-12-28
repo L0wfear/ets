@@ -13,6 +13,7 @@ import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
+import { registryKey } from 'components/new/pages/nsi/autobase/pages/tachograph/_config-data/registry-config';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -136,6 +137,24 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
       disableBtnWaybill,
     ]);
 
+  const tachographRegistry = React.useMemo(
+    () => props.registryKey === registryKey,
+    [
+      props.registryKey
+    ]);
+
+  const buttonOK = React.useMemo(
+    () => tachographRegistry ? 'Удалить' : 'Да',
+    [
+      tachographRegistry
+    ]);
+
+  const buttonNo = React.useMemo(
+    () => tachographRegistry ? 'Отмена' : 'Нет',
+    [
+      tachographRegistry
+    ]);
+
   return (
     <>
       <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled}>
@@ -153,8 +172,8 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
             : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
         }
 
-        titleOk={data.format === 'yesno' ? 'Да' : null}
-        titleCancel={data.format === 'yesno' ? 'Нет' : null}
+        titleOk={(data.format === 'yesno' || tachographRegistry) ? buttonOK : null}
+        titleCancel={(data.format === 'yesno' || tachographRegistry) ? buttonNo : null}
       />
     </>
   );

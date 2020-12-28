@@ -25,6 +25,7 @@ type ViewInspectCarsConditionButtonSubmitOwnProps = {
   canSave: boolean;
   loadingPage: string;
 
+  searchState: any;
   isPermitted: boolean;
   isPermittedToUpdateClose: boolean;
   id: number;
@@ -68,11 +69,11 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
   );
 
   const handleSaveGetAct = React.useCallback(
-    async () => {
+    async (format) => {
       if (canSave) {
         try {
           await props.handleSubmit('signing');
-          await handleGetCarsConditionAct();
+          await handleGetCarsConditionAct(format);
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
@@ -82,11 +83,12 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
   );
 
   const handleGetCarsConditionAct = React.useCallback(
-    async () => {
+    async (format) => {
       if (canSave) {
         const response = await props.actionGetBlobActInspect(
           selectedInspectCarsCondition.id,
           { page: props.loadingPage },
+          format,
         );
 
         const blob = get(response, 'blob', null);
@@ -129,6 +131,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
       canSave={props.canSave}
       handleSaveGetAct={handleSaveGetAct}
 
+      searchState={props.searchState}
       id={props.id}
       registryPage={props.registryPage}
     />

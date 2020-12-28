@@ -26,6 +26,12 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       },
       format: 'cars_condition_extended',
     },
+    getBlobData: {
+      entity: 'inspection/cars/export',
+      payload: {
+        format: 'xls',
+      }
+    }
   },
   registryKey,
   header: {
@@ -35,6 +41,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       buttonsTypes.filter,
       buttonsTypes.show_сars_condition_table_defects,
       // buttonsTypes.ButtonAddNewRowTable,
+      buttonsTypes.export_filtred_data,
     ],
   },
   filter: {
@@ -43,6 +50,16 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         valueKey: 'gov_number',
         type: 'multiselect',
         title: 'Гос.номер',
+      },
+      {
+        valueKey: 'osago_finished_at',
+        type: 'advanced-date',
+        title: 'ОСАГО. Действует до',
+      },
+      {
+        valueKey: 'diagnostic_card_finished_at',
+        type: 'advanced-date',
+        title: 'Диагностическая карта. Действует до',
       },
     ],
   },
@@ -74,11 +91,11 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           isActive: false,
         },
         ts_data: {
-          label: 'Данные о ТС',
+          label: 'Доп. информация о ТС',
           isActive: false,
         },
         add_info: {
-          label: 'Доп. информация',
+          label: 'Общая информация о ТС',
           isActive: false,
         },
         repair_info: {
@@ -98,6 +115,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             key: 'district',
             firstElem: true, // В группку не входит
           },
+          isHorizontalSticky: true,
         },
         {
           key: 'enumerated',
@@ -349,6 +367,20 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
+          key: 'kind_purchase',
+          title: 'Вид приобретения',
+          width: 200,
+          format: 'inspectionSelect',
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
+          groupOpt: {
+            key: 'ts_data',
+          },
+        },
+        {
           key: 'osago',
           title: 'Номер ОСАГО',
           width: 200,
@@ -375,7 +407,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
         },
         {
@@ -396,7 +427,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -412,7 +442,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -427,7 +456,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -586,7 +614,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
         },
         {
@@ -598,7 +625,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
         },
         {
@@ -633,24 +659,19 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           renderParams: {
             type: 'string',
           },
+        },
+        {
+          key: 'own_tech_maintenance',
+          title: 'ТО проведено собственными силами',
+          width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
           groupOpt: {
             key: 'repair_info',
             firstElem: true, // В группку не входит
           },
-        },
-        {
-          key: 'kind_purchase',
-          title: 'Вид приобретения',
-          width: 200,
-          format: 'inspectionSelect',
-          renderParams: {
-            type: 'select',
-            label: false,
-            options: [],
-          },
-          groupOpt: {
-            key: 'repair_info',
-          },
+          format: 'boolean',
         },
         {
           key: 'last_repair_company',
@@ -672,7 +693,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'repair_info',
@@ -687,7 +707,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
-            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'repair_info',
@@ -696,6 +715,20 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         {
           key: 'repair_reason',
           title: 'Причина ремонта',
+          width: 200,
+          format: 'inspectionSelect',
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
+          groupOpt: {
+            key: 'repair_info',
+          },
+        },
+        {
+          key: 'repair_time',
+          title: 'Длительность ремонта',
           width: 200,
           format: 'inspectionSelect',
           renderParams: {
@@ -732,6 +765,15 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           groupOpt: {
             key: 'repair_info',
           },
+        },
+        {
+          key: 'defects_text',
+          title: 'Дефекты',
+          width: 200,
+          renderParams: {
+            type: 'text',
+            readOnly: true,
+          }
         },
         {
           key: 'comments',

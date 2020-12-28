@@ -34,18 +34,15 @@ export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTacho
       title: 'Дата проведения ремонта',
       type: 'date',
       dependencies: [
-        (value, { factory_number }, { tachographList } ) => {
+        (value, { factory_number, gov_number } ) => {
           if (!value) {
-            return getRequiredFieldMessage('Заводской номер тахографа');
-          }
-          if (factory_number) {
-            const chosenTachograph = tachographList?.find((tachograph) => tachograph.factory_number === factory_number);
-            if (diffDates(chosenTachograph?.installed_at, value, 'days') > 0) {
-              return 'Дата ремонта не может быть раньше даты установки тахографа';
-            }
+            return getRequiredFieldMessage('Дата проведения ремонта');
           }
           if (diffDates(value, getDateWithMoscowTz()) > 0) {
             return 'Дата ремонта не может быть больше текущей';
+          }
+          if (value && !gov_number && factory_number) {
+            return 'В указанную дату тахограф не был установлен ни на одно ТС';
           }
           return false;
         }
@@ -59,18 +56,6 @@ export const tachographRepairFormSchema: SchemaType<TachographRepair, PropsTacho
         (value) => {
           if (!value) {
             return getRequiredFieldMessage('Причина ремонта');
-          }
-          return false;
-        }
-      ],
-    },
-    gov_number: {
-      title: 'Рег. номер ТС',
-      type: 'string',
-      dependencies: [
-        (value) => {
-          if (!value) {
-            return getRequiredFieldMessage('Рег. номер ТС');
           }
           return false;
         }

@@ -34,6 +34,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
   max_size_to_scroll?: number;
   fieldTitlePopup?: string;
   valueForBoolean?: string;
+  isHorizontalSticky?: boolean;
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -107,6 +108,7 @@ export type OneFilterType<F> = {
   displayIf?: TypeOneDisplayIf | Array<TypeOneDisplayIf>;
   options?: Array<FilterOptionType<F>>;
   disabled?: boolean;
+  hidden?: boolean;
 } & (
   {
     type: 'advanced-date'

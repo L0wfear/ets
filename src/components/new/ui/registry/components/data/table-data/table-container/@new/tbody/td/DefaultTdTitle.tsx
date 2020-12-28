@@ -163,13 +163,14 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     const isPermittedToUpdate = etsUseIsPermitted(registryPermissions.update);
 
     const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected && isPermittedToUpdate);
-
+    const isHorizontalSticky = get(props.fieldMeta, 'isHorizontalSticky', false);
     const tdContainerProps: TdContainerProps = {
       id: props.id,
       registryKey: props.registryKey,
       value: title,
       isSelected,
       max_size_to_scroll: props.fieldMeta.max_size_to_scroll || 300,
+      isHorizontalSticky,
     };
 
     return extFieldIsRender

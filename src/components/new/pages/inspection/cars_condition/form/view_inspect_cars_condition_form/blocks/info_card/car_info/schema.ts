@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
-import { getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldNumberMoreThenZero, getRequiredFieldNumberMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const isNewRow = (formState) => {
@@ -304,6 +304,9 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
           if (value < 0) {
             return 'Поле "Пробег на дату проведения последнего ТО" должно быть неотрицательным числом';
           }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Пробег на дату проведения последнего ТО');
+          }
         }
       ],
     },
@@ -432,6 +435,9 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
           if (value < 0) {
             return 'Поле "Пробег на дату проведения проверки" должно быть неотрицательным числом';
           }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Пробег на дату проведения проверки');
+          }
         }
       ],
     },
@@ -442,6 +448,9 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         (value) => {
           if (value < 0) {
             return 'Поле "Наработка м/ч на дату проверки" должно быть неотрицательным числом';
+          }
+          if (value && isNaN(value)) {
+            return getRequiredFieldNumberMessage('Наработка м/ч на дату проверки');
           }
         }
       ],

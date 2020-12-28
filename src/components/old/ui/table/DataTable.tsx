@@ -90,6 +90,7 @@ export default class DataTable extends React.Component<Props, State> {
       normInitialData: PropTypes.bool,
       currentPage: PropTypes.any,
       perPageLocal: PropTypes.number,
+      cellColors: PropTypes.object,
     };
   }
 
@@ -140,6 +141,7 @@ export default class DataTable extends React.Component<Props, State> {
       normInitialData: false,
       currentPage: 0,
       perPageLocal: 15,
+      cellColors: {},
     };
   }
 
@@ -919,6 +921,7 @@ export default class DataTable extends React.Component<Props, State> {
           globalCheckHandler={this.globalCheckHandler}
           reportKey={this.props.reportKey}
           localState={this.props.localState}
+          cellColors={this.props.cellColors}
         />
         {serverPagination ? (
           <div />

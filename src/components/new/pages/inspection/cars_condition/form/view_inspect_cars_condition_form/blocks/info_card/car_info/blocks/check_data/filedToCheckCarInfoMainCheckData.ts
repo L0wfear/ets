@@ -168,3 +168,13 @@ export const filedToCheckDefectDataOtherSecond: FiledToCheck<CarsConditionCars['
   //   className: 'checkbox-input flex-reverse',
   // },
 ];
+
+export const DEFECTS_LIST = [
+  ...filedToCheckDefectDataOuter,
+  ...filedToCheckDefectDataFirstStart,
+  ...filedToCheckDefectDataDocs,
+  ...filedToCheckDefectDataOtherFirst,
+].reduce((acc: { [K in keyof CarsConditionCars['data']]?: string }, curr) => {
+  acc[curr.key] = curr.title;
+  return acc;
+}, {});

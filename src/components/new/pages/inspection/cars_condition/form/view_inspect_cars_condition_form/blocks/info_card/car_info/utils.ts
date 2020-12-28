@@ -56,6 +56,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     defects_body: false,
     defects_chassis: false,
     defects_attachments: false,
+    defects_text: '',
     incomplete_equipment: false,
     liquids_leak: false,
 
@@ -92,6 +93,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     logo: '',
     tech_condition: '',
     repair_reason: '',
+    repair_time: '',
     not_maintenance_and_repair: false,
     own_tech_maintenance: false,
   },

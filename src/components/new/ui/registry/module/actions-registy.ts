@@ -242,8 +242,8 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
     const paginator = list?.paginator;
     const perPage = get(paginator, 'perPage', 0);
     const offset = get(paginator, 'currentPage', 0);
-    const filterValues = get(processed, 'filterValues') ?? {};
-    const sort = get(processed, 'sort') ?? {};
+    const filterValues = get(processed, 'filterValues');
+    const sort = get(processed, 'sort');
     const payloadSortBy = get(payload, 'sort_by', '');
 
     payload = {
@@ -552,6 +552,47 @@ export const registryChangeFilterRawValues = (registryKey: string, valueKey: str
   );
 };
 
+export const actionChangeRegistryFilterFields = (
+  registryKey: string, 
+  valueKey: string,
+): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const filter = get(registryData, 'filter');
+  const defaultRawFilterValues = {
+    eq: {value: ''},
+    gt: {value: ''},
+    in: {value: []},
+    like: {value: ''},
+    lt: {value: ''},
+    neq: {value: ''},
+  };
+  if(valueKey === 'selectAll') {
+    return dispatch(
+      registryChangeFilterData(
+        registryKey,
+        {
+          ...filter,
+          fields: filter.fields.map((el) => ({...el, hidden: false})),
+        }
+      )
+    );
+  }
+
+  return dispatch(
+    registryChangeFilterData(
+      registryKey,
+      {
+        ...filter,
+        fields: filter.fields.map((el) => ({...el, hidden: valueKey === el.valueKey ? !el.hidden : el.hidden})),
+        rawFilterValues: {
+          ...filter.rawFilterValues,
+          [valueKey]: defaultRawFilterValues,
+        },
+      }
+    )
+  );
+};
+
 export const registryResetAllTypeFilter = (registryKey: string): EtsAction<void> => (dispatch, getState) => {
   dispatch(actionUnselectSelectedRowToShow(registryKey, true));
   const registryData = get(getRegistryState(getState()), registryKey);
@@ -693,7 +734,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
         },
         {},
       ),
-      format: 'xls',
+      format: getBlobData?.payload?.format || 'xls',
     };
 
     if (useFiltredData && !userServerFilters) {
@@ -1301,13 +1342,14 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
   );
 };
 
-export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }, extraPayload: Object = {}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
 
   const newVal = {
     ...list.rendersFields.values,
     [payload.key]: payload.value,
+    ...extraPayload,
   };
 
   dispatch(

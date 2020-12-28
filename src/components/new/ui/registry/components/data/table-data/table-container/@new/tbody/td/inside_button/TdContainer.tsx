@@ -9,7 +9,7 @@ export type TdContainerProps = {
   value: string | number | React.ReactNode;
   isSelected: boolean;
   id: string;
-
+  isHorizontalSticky: boolean;
   max_size_to_scroll: number;
 };
 
@@ -79,7 +79,7 @@ const TdContainer: React.FC<TdContainerProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id}>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id} isHorizontalSticky={props.isHorizontalSticky} isSelected={isSelected}>
         <EtsTdInnerWrapper>
           {value}
         </EtsTdInnerWrapper>

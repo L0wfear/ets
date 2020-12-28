@@ -96,7 +96,26 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
               )
             }
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleGetAct}>Cформировать акт</EtsBootstrap.Button>
+            {props.searchState?.monitoringKind === 'car_use' ? (
+              <EtsBootstrap.Dropdown
+                id="dropdown-print"
+
+                disabled={!props.canSave}
+                toggleElement={'Сформировать акт для подписи сторон'}
+                toggleElementSize="small"
+              >
+                <EtsBootstrap.DropdownMenu dropup>
+                  <EtsBootstrap.MenuItem eventKey="pdf" onSelect={props.handleSaveGetAct}>
+                      Акт с приложением в формате PDF
+                  </EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem eventKey="xlsx" onSelect={props.handleSaveGetAct}>
+                      Приложение к акту в формате Excel
+                  </EtsBootstrap.MenuItem>
+                </EtsBootstrap.DropdownMenu>
+              </EtsBootstrap.Dropdown>
+            ) : (
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleGetAct}>Cформировать акт</EtsBootstrap.Button>
+            )}
           </React.Fragment>
         )
       }

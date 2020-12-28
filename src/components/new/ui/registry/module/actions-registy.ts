@@ -1020,6 +1020,11 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, 1)
   );
 
+  const isFirstRow = (
+    uniqKey
+    && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, undefined)
+  );
+
   const list_new: OneRegistryData['list'] = {
     ...list,
     data: {
@@ -1037,7 +1042,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && registryIsPermitedFuctionResult.isPermittedToUpdate
     && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
 
-  if (!isEqualSelectedRow) {
+  if (!isEqualSelectedRow || !isFirstRow) {
     if (sendPutPostRequest) {
       await dispatch(
         registrySelectRowWithPutRequest(

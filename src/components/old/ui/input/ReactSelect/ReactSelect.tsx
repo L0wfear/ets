@@ -90,7 +90,21 @@ export default class ReactSelect extends React.Component<any, any> {
     }
   };
 
-  handleChange = (objectValue) => {
+  handleOpen = () => {
+    if (this.props.setIsClickMenu) {
+      this.props.setIsClickMenu(true);
+    }
+  };
+
+  handleClose = () => {
+    setTimeout(() => {
+      if (this.props.setIsClickMenu) {
+        this.props.setIsClickMenu(false);
+      }
+    }, 0);
+  };
+
+  handleChange = (objectValue, e) => {
     const {
       emptyValue = '',
       multi,
@@ -236,6 +250,7 @@ export default class ReactSelect extends React.Component<any, any> {
       clearable,
       legacy,
       multi,
+      portal,
       etsIsLoading,
       ...props
     } = this.props;
@@ -251,7 +266,9 @@ export default class ReactSelect extends React.Component<any, any> {
           ? sortedOptions.filter(({ value: op_value }) => isArray(value)
             ? value.includes(op_value)
             : value === op_value )
-          : sortedOptions.find(({ value: op_value }) => String(op_value) === String(value))
+          : sortedOptions.find(({ value: op_value }) => isObject(op_value)
+            ? op_value === value
+            : String(op_value) === String(value))
         : null;
     }
 
@@ -271,6 +288,7 @@ export default class ReactSelect extends React.Component<any, any> {
             'react-select',
             className,
           )}
+          menuPortalTarget={portal ? document.querySelector('body') : null}
           classNamePrefix="react-select"
           onChange={this.handleChange}
           options={sortedOptions}
@@ -278,6 +296,8 @@ export default class ReactSelect extends React.Component<any, any> {
           noOptionsMessage={this.noOptionsMessage}
           components={this.state.components}
           isDisabled={disabled}
+          onMenuOpen={this.handleOpen}
+          onMenuClose={this.handleClose}
           menuIsOpen={get(openMenuIds, id, undefined)}
         />
         {

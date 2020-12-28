@@ -178,6 +178,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
                   modalKey={modalKey}
                   label="Расход фактический, л"
                   error={errors.fact_consumption}
+                  warning={warnings.fact_consumption}
                   value={waybillFormState.fact_consumption}
                   hidden={!(IS_ACTIVE || IS_CLOSED)}
                   disabled

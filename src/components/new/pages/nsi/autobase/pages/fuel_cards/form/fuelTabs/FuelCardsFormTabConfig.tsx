@@ -18,7 +18,7 @@ export type OneTabDataCommon = {
   tabKey: string;
   title: string;
   errorsFieldList?: Array<string>;
-  showTabIntoNavFlagKey?: 'isVehicle' | 'isRefill';
+  showTabIntoNavFlagKey?: 'isVehicle' | 'isRefill' | 'isfuelCardLogs';
 };
 
 export type OneTabDataParent = (
@@ -63,9 +63,19 @@ export const refillTab: OneTabData = {
   showTabIntoNavFlagKey: 'isRefill',
 };
 
+export const fuelCardLogsTab: OneTabData = {
+  title: 'История изменения',
+  tabKey: 'fuelCardLogs',
+  component: null,
+  path: '',
+  isRegistry: true,
+  showTabIntoNavFlagKey: 'isfuelCardLogs',
+};
+
 export const fuelCardsFormTabKey: Array<OneTabData> = [
   vehicleTab,
   refillTab,
+  fuelCardLogsTab,
 ];
 
 export default fuelCardsFormTabKey;

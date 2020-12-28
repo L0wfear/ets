@@ -7,6 +7,7 @@ import { PropsFuelCards } from 'components/new/pages/nsi/autobase/pages/fuel_car
 import { vehicleTab } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/FuelCardsFormTabConfig';
 import FuelCardsRefillContainer from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/FuelCardsRefillContainer';
 import FuelCardsVehicleContainer from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/FuelCardsVehicleContainer';
+import FuelCardsLogsContainer from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/fuelTabs/FuelCardsLogsContainer';
 
 const FuelCardsTabsMainStyled = styled.div`
 `;
@@ -54,6 +55,12 @@ const FuelCardsTabsMain: React.FC<FuelCardsTabsMainProps> = React.memo(
           <FuelCardsRefillContainer
             showComponent={fuelActiveTabKey === 'refill'}
             fuel_card_number={props.formState.number}
+          />
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
+          <FuelCardsLogsContainer
+            showComponent={fuelActiveTabKey === 'fuelCardLogs'}
+            id={props.formState.id}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Row>

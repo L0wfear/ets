@@ -383,23 +383,21 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       carList,
       element,
     } = this.props;
-    const {
-      lastWaybill,
-    } = this.state;
     const oldFormState = prevProps.formState;
     const nextFormState = this.props.formState;
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
       this.getLatestWaybillDriver(nextFormState);
     }
-    if (carList.length && lastWaybill && lastWaybill.car_id !== prevState.car_id) {
-      const carMileageTypeId = getCarMileageTypeId(carList, lastWaybill.car_id);
+    if (carList.length && nextFormState && nextFormState?.car_id !== prevState.car_id) {
+      const carMileageTypeId = getCarMileageTypeId(carList, nextFormState?.car_id);
       const mileage_type_id = getCarMileageTypeIdByStatus(
-        lastWaybill.mileage_type_id,
+        nextFormState.mileage_type_id,
         nextFormState.status,
         carMileageTypeId
       );
       if (nextFormState.car_id !== oldFormState.car_id || mileage_type_id !== nextFormState.mileage_type_id) {
-        this.updateMileageTypeBasedFields(lastWaybill, mileage_type_id, element);
+        const data = element && nextFormState.car_id === element.car_id ? element : nextFormState;
+        this.updateMileageTypeBasedFields(data, mileage_type_id);
       }
     }
 
@@ -653,52 +651,30 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   updateMileageTypeBasedFields = (
     waybillData: Partial<Waybill>,
     mileage_type_id: Waybill['mileage_type_id'],
-    element?: Partial<Waybill>,
   ) => {
-    const isWaybillOriginCar = element?.car_id === waybillData.car_id;
-    const waybill = isWaybillOriginCar ? element : waybillData;
     const isMotohoursMain = isMotoHoursMileageType(mileage_type_id);
-    const isMotohoursMainInOriginalState = isMotoHoursMileageType(waybill.mileage_type_id);
-    const hasCarExtraTaximetr = waybill.car_has_motohours || waybill.car_has_odometr;
-    const files = isWaybillOriginCar ? waybill.files : [];
-    let motohoursData = defaultMotoHoursData;
-    let odometrData = defaultOdometrData;
-    const makeTaximetrData = (taximetrData, extraTaximetrKey) => {
-      const data = {...taximetrData};
-      if (hasCarExtraTaximetr) {
-        Object.keys(taximetrData).forEach((key) => {
-          if (key === extraTaximetrKey) {
-            data[key] = true;
-          } else {
-            data[key] = waybill[key];
-          }
-        });
-      } else {
-        data[extraTaximetrKey] = false;
-      }
-      return data;
-    };
-    if (isMotohoursMain !== isMotohoursMainInOriginalState) {
-      if (isMotohoursMain) {
-        odometrData = makeTaximetrData(odometrData, 'car_has_odometr');
-        motohoursData.car_has_motohours = null;
-      } else {
-        motohoursData = makeTaximetrData(motohoursData, 'car_has_motohours');
-        odometrData.car_has_odometr = null;
-      }
-    } else if (isWaybillOriginCar) {
-      Object.keys({...motohoursData, ...odometrData}).forEach((key) => {
-        if (key in motohoursData) {
-          motohoursData[key] = waybill[key];
-        }
-        if (key in odometrData) {
-          odometrData[key] = waybill[key];
+    const hasCarExtraTaximetr = waybillData.car_has_motohours || waybillData.car_has_odometr;
+    const files = waybillData.files?.length ? waybillData.files : [];
+    const makeTaximetrData = () => {
+      const data = {...defaultMotoHoursData, ...defaultOdometrData};
+      const mainTaximetrKey = isMotohoursMain ? 'car_has_motohours' : 'car_has_odometr';
+      const extraTaximetrKey = !isMotohoursMain ? 'car_has_motohours' : 'car_has_odometr';
+      const defaultExtraTaximetrdata = extraTaximetrKey === 'car_has_motohours' ? defaultMotoHoursData : defaultOdometrData;
+
+      Object.keys(data).forEach((key) => {
+        if (!(key in defaultExtraTaximetrdata) || hasCarExtraTaximetr) {
+          data[key] = waybillData[key];
+        } else if (key === mainTaximetrKey) {
+          data[key] = null;
         }
       });
-    }
+      
+      return data;
+    };
+    const taximetrsData = makeTaximetrData();
+
     this.handleMultipleChange({
-      ...motohoursData,
-      ...odometrData,
+      ...taximetrsData,
       mileage_type_id,
       files,
     });
@@ -1454,16 +1430,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       if (isNotNull(lastCarUsedWaybill.electrical_fact_fuel_end)) {
         fieldsToChange.electrical_fuel_start = lastCarUsedWaybill.electrical_fact_fuel_end;
       }
-      if (
-        isNotNull(lastCarUsedWaybill.odometr_end)
-        && this.props?.formState?.car_has_odometr !== false
-      ) {
+      if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
       }
-      if (
-        isNotNull(lastCarUsedWaybill.motohours_end) 
-        && this.props?.formState?.car_has_motohours !== false
-      ) {
+      if (isNotNull(lastCarUsedWaybill.motohours_end) ) {
         fieldsToChange.motohours_start = lastCarUsedWaybill.motohours_end;
       }
       if (isNotNull(lastCarUsedWaybill.fuel_type)) {
@@ -1537,7 +1507,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         const odometr_start = is_edited_odometr || !isNotNull(lastWaybill.odometr_end) || state.car_has_odometr === false
           ? state.odometr_start
           : lastWaybill.odometr_end;
-        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end)|| state.car_has_motohours === false
+        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end) || state.car_has_motohours === false
           ? state.motohours_start
           : lastWaybill.motohours_end;
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)
@@ -1924,6 +1894,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             motohours_end: null,
             motohours_diff: null,
             motohours_reason_id: null,
+            is_edited_motohours: false,
             files: [],
             [key]: value,
           }
@@ -1932,6 +1903,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             odometr_end: null,
             odometr_diff: null,
             odometr_reason_id: null,
+            is_edited_odometr: false,
             files: [],
             [key]: value,
           });

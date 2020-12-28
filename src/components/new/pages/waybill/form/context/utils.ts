@@ -61,7 +61,7 @@ export const defaultRefillObj: WaybillRefill = {
 };
 
 export const defaultMotoHoursData: WaybillMotoHours = {
-  car_has_motohours: null,
+  car_has_motohours: false,
   is_edited_motohours: false,
   motohours_end: null,
   motohours_reason_id: null,
@@ -70,7 +70,7 @@ export const defaultMotoHoursData: WaybillMotoHours = {
 };
 
 export const defaultOdometrData: WaybillOdometr = {
-  car_has_odometr: null,
+  car_has_odometr: false,
   is_edited_odometr: false,
   odometr_end: null,
   odometr_reason_id: null,

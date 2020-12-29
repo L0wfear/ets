@@ -61,14 +61,13 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
 
   const handleChangeSelectAll = React.useCallback(
     () => {
-      if (!selectAllChecked) {
-        props.actionChangeRegistryFilterFields(
-          props.registryKey,
-          'selectAll',
-        );
-        setHiddenFilters([]);
-        setselectAllChecked(true);
-      }
+      setselectAllChecked(!selectAllChecked);
+      props.actionChangeRegistryFilterFields(
+        props.registryKey,
+        'selectAll',
+        selectAllChecked
+      );
+      setHiddenFilters([]);
     },
     [selectAllChecked],
   );
@@ -120,11 +119,8 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   }, []);
 
   React.useEffect(() => {
-    if(hiddenFilters.length && selectAllChecked) {
-      setselectAllChecked(false);
-    }
-    if(!hiddenFilters.length && !selectAllChecked) {
-      setselectAllChecked(true);
+    if (selectAllChecked) {
+      setselectAllChecked(hiddenFilters.length === 0);
     }
   }, [hiddenFilters, selectAllChecked]);
 
@@ -152,9 +148,9 @@ export default compose<ColumnsPopupStateProps, ColumnsPopupOwnProps>(
       fields: getFilterData(getRegistryState(state), registryKey).fields,
     }),
     (dispatch: any) => ({
-      actionChangeRegistryFilterFields: (registryKey, hiddenFields) => (
+      actionChangeRegistryFilterFields: (registryKey, hiddenFields, selectAll) => (
         dispatch(
-          actionChangeRegistryFilterFields(registryKey, hiddenFields),
+          actionChangeRegistryFilterFields(registryKey, hiddenFields, selectAll),
         )
       ),
     }),

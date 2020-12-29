@@ -27,7 +27,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { hasMotohours } from 'utils/functions';
+import { isMotoHoursMileageType } from 'utils/functions';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { getDefaultTechMaintenanceElement } from './utils';
@@ -93,8 +93,6 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     ),
     [techMaintOrderList],
   );
-
-  const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
 
   return (
     <EtsBootstrap.ModalContainer
@@ -197,7 +195,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
-            {!hasMotohours(gov_number) ? (
+            {!isMotoHoursMileageType(selectedCarData) ? (
               <ExtField
                 type="number"
                 label="Пробег на момент ТО, км"
@@ -212,7 +210,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             )}
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
-            {hasMotohours(gov_number) ? (
+            {isMotoHoursMileageType(selectedCarData) ? (
               <ExtField
                 type="number"
                 label="Счетчик м/ч на момент ТО, м/ч"

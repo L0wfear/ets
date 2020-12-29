@@ -555,6 +555,7 @@ export const registryChangeFilterRawValues = (registryKey: string, valueKey: str
 export const actionChangeRegistryFilterFields = (
   registryKey: string, 
   valueKey: string,
+  selectAll?: boolean,
 ): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
@@ -566,13 +567,13 @@ export const actionChangeRegistryFilterFields = (
     lt: {value: ''},
     neq: {value: ''},
   };
-  if(valueKey === 'selectAll') {
+  if (valueKey === 'selectAll') {
     return dispatch(
       registryChangeFilterData(
         registryKey,
         {
           ...filter,
-          fields: filter.fields.map((el) => ({...el, hidden: false})),
+          fields: filter.fields.map((el) => ({...el, hidden: selectAll})),
         }
       )
     );

@@ -35,12 +35,12 @@ export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
     },
     released_at: {
       title: 'Дата выпуска',
-      type: 'datetime',
+      type: 'date',
       required: true,
     },
     date_end: {
       title: 'Дата окончания срока действия',
-      type: 'datetime',
+      type: 'date',
       dependencies: [
         (value, { date_end, released_at, }) => {
           if (!value) {

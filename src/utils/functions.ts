@@ -359,7 +359,7 @@ export const metresToKilometeres = (metresVal: number) =>
     ? ( metresVal / 1000 ).toFixed(2)
     : '';
 
-export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
+//export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
 
 export const isEmptyObj = (obj: Object) => obj === null || typeof obj !== 'object' || !Object.keys(obj).length;
 
@@ -373,6 +373,14 @@ export const makeObjArrayUniqByKey = (arr: Array<Object>, key: string) => {
     }
   }
   return result;
+};
+
+export const parseFloatWithFixed = (value, fixedSize: number) => {
+  if (isNaN(+value)) {
+    return null;
+  }
+  const validfixedSize = isNaN(+fixedSize) || fixedSize < 0 ? 0 : fixedSize;
+  return parseFloat((Math.round(+value * Math.pow(10, validfixedSize)) / Math.pow(10, validfixedSize)).toFixed(validfixedSize));
 };
 
 export const isNumValue = (value: string) => new RegExp(`[0-9]{${value.length}}`).test(value);

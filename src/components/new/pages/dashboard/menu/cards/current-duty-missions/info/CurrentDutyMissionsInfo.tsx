@@ -88,7 +88,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       // надо уйти от этого
       // react 16 Portal
       return global.confirmDialog({
-        title: <b>{`Введите причину для наряд-задания №${duty_mission.number}`}</b>,
+        title: `Введите причину для наряд-задания №${duty_mission.number}`,
         body: (self) => (
           <ExtField
             type="string"

@@ -2,8 +2,8 @@ import { isObject, isNullOrUndefined } from 'util';
 import { RefillReportForm } from './@types';
 
 export const defaultRefillReportFormFunc = (): RefillReportForm => ({
-  date_start: '',
-  date_end: '',
+  date_from: '',
+  date_to: '',
 });
 
 export const getDefaultRefillReportFormElement = (element: Partial<RefillReportForm>): RefillReportForm => {

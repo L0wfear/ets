@@ -36,6 +36,10 @@ const StyledFilter = styled.div`
     height: 100%;
 `;
 
+const StyledToolbar = styled.div`
+    max-width: 410px !important;
+`;
+
 const placeholder = {
   carFilterMultyGpsCode: 'БНСО',
   carFilterMultyType: 'Тип техники',
@@ -54,12 +58,12 @@ const placeholder = {
 const initialFilterFields: StateCarFilterByText['filterFields'] = [
   { key: 'carFilterMultyGpsCode', type: 'multi' },
   { key: 'carFilterMultyType', type: 'multi' },
-  { key: 'carFilterMultyTechCondition', type: 'multi' },
+  { key: 'carFilterMultyTechCondition', type: 'select' },
   { key: 'carFilterMultyModel', type: 'multi' },
   { key: 'carFilterMultyStructure', type: 'multi' },
   { key: 'carFilterMultyOkrug', type: 'multi' },
   { key: 'carFilterMultyOwner', type: 'multi' },
-  { key: 'carFilterMultyDrivers', type: 'multi' },
+  { key: 'carFilterMultyDrivers', type: 'select' },
   { key: 'levelSensors', type: 'select' },
   { key: 'withoutMissions', type: 'checkbox' },
   { key: 'withoutWaybills', type: 'checkbox' },
@@ -74,6 +78,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     const [elements, setElements] = React.useState<Array<Norm>>([]);
     const [refreshCheckBoxFilter, setRefreshCheckBoxFilter] = React.useState(true);
     const [geoobjsFilteredByElemArrLength, setGeoobjsFilteredByElemArrLength] = React.useState(0);
+    const [isClickMenu, setIsClickMenu] = React.useState(false);
     const dispatch = etsUseDispatch();
 
     React.useEffect(() => {
@@ -241,10 +246,10 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     }, [hidden]);
 
     const handleClickOut = React.useCallback(() => {
-      if (!hidden) {
+      if (!hidden && !isClickMenu) {
         setHidden(true);
       }
-    }, [hidden]);
+    }, [hidden, isClickMenu]);
 
     if(!filterFields.length) {
       return <DivNone />;
@@ -252,7 +257,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
     return (
       <span>
         <ClickOutHandler onClickOut={handleClickOut}>
-          <div className={cx('tool_bar-block', { active })}>
+          <StyledToolbar className={cx('tool_bar-block', { active })}>
             <StyledFilter className="default_cube flex-row map-car-filter multi">
               <div className='button-toggle' onClick={toggleHidden}>
                 <EtsBootstrap.Glyphicon glyph='filter' />
@@ -273,6 +278,8 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                         }
                         placeholder={placeholder[keyField.key]}
                         type={keyField.type}
+                        portal={filterFields.length <= 1}
+                        setIsClickMenu={setIsClickMenu}
                         setRefreshCheckBoxFilter={setRefreshCheckBoxFilter}
                       />
                     ))}
@@ -280,7 +287,7 @@ const CarFilterByText: React.FC<PropsCarFilterByText> = React.memo(
                 </div>
               )}
             </StyledFilter>
-          </div>
+          </StyledToolbar>
         </ClickOutHandler>
       </span>
     );
@@ -298,5 +305,6 @@ export default connect<any, any, any, ReduxState>((state) => ({
     (el) =>
       state.monitorPage.filters.data[el.key]?.length
       || state.monitorPage.filters.data[el.key] > 0
+      || el.key === 'carFilterMultyDrivers' && state.monitorPage.filters.data[el.key] !== null
   ),
 }), {getAndSetInStoreCarsForExclude, getAndSetInStoreGeoobjsFilterByElem})(CarFilterByText);

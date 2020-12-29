@@ -105,17 +105,23 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
           type: 'multiselect',
         },
         {
+          valueKey: 'source_type_id',
+          labelKey: 'source_type_text',
+          title: 'Способ создания',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'refill_sum',
+          title: 'Сумма заправок',
+          type: 'advanced-number',
+          step: 1,
+        },
+        {
           valueKey: 'structure_id',
           labelKey: 'structure_name',
           title: 'Подразделение',
           type: 'multiselect',
           displayIf: displayIfContant.lenghtStructureMoreOne,
-        },
-        {
-          valueKey: 'source_type_id',
-          labelKey: 'source_type_text',
-          title: 'Способ создания',
-          type: 'multiselect',
         },
         {
           valueKey: 'company_short_name',
@@ -197,13 +203,18 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'structure_name',
-            title: 'Подразделение',
+            key: 'source_type_text',
+            title: 'Способ создания',
             width: 200,
           },
           {
-            key: 'source_type_text',
-            title: 'Способ создания',
+            key: 'refill_sum_text',
+            title: 'Сумма заправок',
+            width: 200,
+          },
+          {
+            key: 'structure_name',
+            title: 'Подразделение',
             width: 200,
           },
         ],

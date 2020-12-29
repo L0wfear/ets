@@ -32,6 +32,8 @@ export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   type: 'select';
   clearable?: boolean;
   multi?: boolean;
+  portal?: boolean;
+  setIsClickMenu?: React.Dispatch<React.SetStateAction<boolean>>;
   options: Array<any>; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
 

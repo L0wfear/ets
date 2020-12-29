@@ -101,3 +101,7 @@ export const SWITCH_REPORT_TYPE_OPTIONS = [
   { value: 'fuel_cards', label: 'Топливные карты'}, 
   { value: 'cars', label: 'Транспортные средтсва'},
 ];
+
+export const MOTOHOURS_MILEAGE_TYPE_ID = 2;
+
+export const ODOMETR_MILEAGE_TYPE_ID = 1;

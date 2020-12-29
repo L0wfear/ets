@@ -8,6 +8,8 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useMedicalStatsAllowedDriverList from 'components/new/utils/hooks/services/useList/useMedicalStatsAllowedDriverList';
 import waybillFilterDrivers from './waybill_filter_driver';
 import useEmployeeBindedToCarApiList from 'components/new/utils/hooks/services/useList/useEmployeeBindedToCarList';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
 
 export const useWaybillDrivers = (formDataKey: any) => {
   const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(formDataKey, 'car_id');
@@ -18,6 +20,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
   const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(formDataKey, 'structure_id');
   const driver_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_id']>(formDataKey, 'driver_id');
   const driver_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_name']>(formDataKey, 'driver_name');
+  const carList = etsUseSelector((state) => getAutobaseState(state).carList);
 
   const employeeBindedToCarListData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'employeeBindedToCar'>(
     formDataKey,
@@ -53,7 +56,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
             uniqBy(employeeBindedToCarListData.list, 'employee_id'),
             medicalStatsAllowedDriversListData.list,
             employeeListData.listIndex,
-            gov_number,
+            carList,
             car_id,
             structure_id,
             driver_id,

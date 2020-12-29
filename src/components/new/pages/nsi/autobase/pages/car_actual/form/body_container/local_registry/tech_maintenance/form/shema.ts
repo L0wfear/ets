@@ -1,11 +1,9 @@
-import { get } from 'lodash';
-
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTechMaintenance } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
-import { hasMotohours } from 'utils/functions';
+import { isMotoHoursMileageType } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenance> = {
@@ -88,12 +86,10 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
       integer: true,
       dependencies: [
         (value = null, { fact_date_start = null, fact_date_end = null, ...state }, { selectedCarData }) => {
-          const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
-
           if (
             (fact_date_start || fact_date_end)
             && !value
-            && !hasMotohours(gov_number)
+            && !isMotoHoursMileageType(selectedCarData)
           ) {
             return getRequiredFieldMessage('Пробег на момент ТО, км');
           }
@@ -109,12 +105,10 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
       integer: true,
       dependencies: [
         (value = null, { fact_date_start = null, fact_date_end = null, ...state }, { selectedCarData }) => {
-          const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
-
           if (
             (fact_date_start || fact_date_end)
             && !value
-            && hasMotohours(gov_number)
+            && isMotoHoursMileageType(selectedCarData)
           ) {
             return getRequiredFieldMessage('Счетчик м/ч на момент ТО, м/ч');
           }

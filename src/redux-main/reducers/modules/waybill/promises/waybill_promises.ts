@@ -10,7 +10,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { monthOptions, makeDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { hasMotohours, isEmpty } from 'utils/functions';
+import { isMotoHoursMileageType, isEmpty } from 'utils/functions';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
@@ -92,10 +92,10 @@ export const promiseCreateWaybill = async (waybill: Waybill) => {
     },
   );
 
-  if (hasMotohours(payload.gov_number) && !payload.car_has_odometr ) {
+  if (isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(payload.gov_number) && !payload.car_has_motohours ) {
+  if (!isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 
@@ -171,10 +171,10 @@ export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
   delete payload.garage_number;
   delete payload.hasEquipmentFuelRates;
 
-  if (hasMotohours(payload.gov_number) && !payload.car_has_odometr ) {
+  if (isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_odometr ) {
     delete payload.odometr_start;
   }
-  if (!hasMotohours(payload.gov_number) && !payload.car_has_motohours ) {
+  if (!isMotoHoursMileageType(payload.mileage_type_id) && !payload.car_has_motohours ) {
     delete payload.motohours_start;
   }
 

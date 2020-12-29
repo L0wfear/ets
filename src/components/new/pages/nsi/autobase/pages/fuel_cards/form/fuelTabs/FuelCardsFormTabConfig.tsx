@@ -64,7 +64,7 @@ export const refillTab: OneTabData = {
 };
 
 export const fuelCardLogsTab: OneTabData = {
-  title: 'История изменения',
+  title: 'История изменений',
   tabKey: 'fuelCardLogs',
   component: null,
   path: '',

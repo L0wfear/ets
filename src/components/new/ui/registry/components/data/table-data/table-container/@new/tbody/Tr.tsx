@@ -12,6 +12,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import Td from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Td';
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { isNullOrUndefined } from 'util';
 
 export const registryIsPermitedByKey: Record<string, (registryKey: string) => Record<'isPermittedToUpdate' | 'isPermittedToUpdateClose', boolean> & { actionType: string; }> = {
   InspectCarsConditionsCarsExtendedRegistry: isPermittedUpdateCarContidion,
@@ -53,7 +54,7 @@ const TrHead: React.FC<Props> = React.memo(
       || etsUseIsPermitted(permissions.read)
     );
     const checkData = checkedRows[key];
-    const isSelected = get(selectedRow, key) === rowData[key];
+    const isSelected = get(selectedRow, key) === rowData[key] && !isNullOrUndefined(get(selectedRow, key) && !isNullOrUndefined(rowData[key]));
 
     const handleDoubleClick = React.useCallback(
       () => {

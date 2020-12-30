@@ -111,6 +111,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       dependeceTechnicalOperation,
       IS_CREATING,
     } = this.props;
+    const { CARS_OPTIONS } = this.state;
 
     const car_type_names = get(this.props, 'car_type_names', []) || [];
     const car_special_model_names = get(this.props, 'car_special_model_names', []) || [];
@@ -118,6 +119,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
     if (isPermitted) {
       if (MISSION_IS_ORDER_SOURCE && dependeceTechnicalOperation && !prevProps.dependeceTechnicalOperation) {
         this.getCars();
+      }
+
+      if (value && !structure_id && !for_column) {
+        const car = CARS_OPTIONS.find((car) => car.value === value[0]);
+        const structureId = get(car, 'rowData.company_structure_id', '');
+        if (structureId) {
+          let partialChange: Partial<any> = {
+            structure_id: structureId,
+          };
+          this.props.onChange(partialChange);
+        }
       }
 
       if ((for_column !== prevProps.for_column)) {

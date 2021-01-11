@@ -75,7 +75,6 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
       metaData.format,
       props.value,
       metaData.default_value,
-      metaData.default_value,
       handleChange,
     ]);
 

@@ -555,6 +555,7 @@ export const registryChangeFilterRawValues = (registryKey: string, valueKey: str
 export const actionChangeRegistryFilterFields = (
   registryKey: string, 
   valueKey: string,
+  selectAll?: boolean,
 ): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
@@ -566,13 +567,13 @@ export const actionChangeRegistryFilterFields = (
     lt: {value: ''},
     neq: {value: ''},
   };
-  if(valueKey === 'selectAll') {
+  if (valueKey === 'selectAll') {
     return dispatch(
       registryChangeFilterData(
         registryKey,
         {
           ...filter,
-          fields: filter.fields.map((el) => ({...el, hidden: false})),
+          fields: filter.fields.map((el) => ({...el, hidden: selectAll})),
         }
       )
     );
@@ -1020,6 +1021,11 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, 1)
   );
 
+  const isFirstRow = (
+    uniqKey
+    && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, undefined)
+  );
+
   const list_new: OneRegistryData['list'] = {
     ...list,
     data: {
@@ -1037,7 +1043,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && registryIsPermitedFuctionResult.isPermittedToUpdate
     && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
 
-  if (!isEqualSelectedRow) {
+  if (!isEqualSelectedRow || !isFirstRow) {
     if (sendPutPostRequest) {
       await dispatch(
         registrySelectRowWithPutRequest(

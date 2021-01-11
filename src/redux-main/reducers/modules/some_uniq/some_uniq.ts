@@ -55,6 +55,7 @@ export const initialState: IStateSomeUniq = {
     rrn_codes: [],
   },
   fuelTypesList: [],
+  mileageTypesList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

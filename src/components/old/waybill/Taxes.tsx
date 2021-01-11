@@ -7,7 +7,7 @@ import Table from 'components/old/waybill/Table';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/old/ui/Div';
-import { isEmpty } from 'utils/functions';
+import { parseFloatWithFixed, isEmpty } from 'utils/functions';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import {
   EtsHeaderContainer,
@@ -200,7 +200,7 @@ export default class Taxes extends React.Component<any, any> {
         ? parseFloat(FUEL_RATE).toFixed(3)?.replace('.', ',')
         : '',
       RESULT: (RESULT) => {
-        const resultView = RESULT ? parseFloat(RESULT).toFixed(3)?.replace('.', ',') : '';
+        const resultView = RESULT ? parseFloatWithFixed(RESULT, 3)?.toString().replace('.', ',') : '';
         return `${resultView ? `${resultView} ${props.isElectricalKind ? 'кВт' : 'л'}` : ''}`;
       },
       fuel_correction_rate: (fuel_correction_rate) =>
@@ -538,7 +538,7 @@ export default class Taxes extends React.Component<any, any> {
                 </div>
               </div>
               <div>
-                <b>{finalResult.toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
+                <b>{parseFloatWithFixed(finalResult, 3).toString().replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
               </div>
             </FooterEnd>
           </>

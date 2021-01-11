@@ -3,8 +3,11 @@
  * @module utils/functions
  */
 
+import { MOTOHOURS_MILEAGE_TYPE_ID } from 'constants/dictionary';
 import { isPlainObject, every, includes } from 'lodash';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { InspectionConfig } from 'redux-main/reducers/modules/some_uniq/inspection_config/@types';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { isNumber } from 'util';
 
 /**
@@ -174,9 +177,25 @@ export function printData(blob) {
  * @param {string} carStateNumber - гос.номер
  * @return {boolean} hasMotohours - есть ли "Счетчик моточасов"
  */
-export function hasMotohours(carStateNumber) {
-  if (carStateNumber) {
-    return isFourDigitGovNumberRegexp.test(carStateNumber);
+
+export const getCarMileageTypeId = (carList: Array<Car>, carId: number): Waybill['mileage_type_id'] => {
+  const car_data = carList.find((el) => el.asuods_id === carId);
+  return car_data?.mileage_type_id;
+};
+
+export function hasMotohours(carList: Array<Car>, carId: number) {
+  const carMileageTypeId = getCarMileageTypeId(carList, carId);
+  if (!!carMileageTypeId) {
+    return isMotoHoursMileageType(carMileageTypeId);
+  }
+  return null;
+}
+
+export function isMotoHoursMileageType(carDataOrMileageTypeId: Car | number) {
+  if (carDataOrMileageTypeId && typeof carDataOrMileageTypeId === 'number') {
+    return carDataOrMileageTypeId === MOTOHOURS_MILEAGE_TYPE_ID;
+  } else if (carDataOrMileageTypeId && typeof carDataOrMileageTypeId === 'object' && !!carDataOrMileageTypeId.mileage_type_id){
+    return carDataOrMileageTypeId.mileage_type_id === MOTOHOURS_MILEAGE_TYPE_ID;
   }
   return null;
 }
@@ -359,7 +378,7 @@ export const metresToKilometeres = (metresVal: number) =>
     ? ( metresVal / 1000 ).toFixed(2)
     : '';
 
-export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
+//export const parseFloatWithFixed = (val, fixedSize: number) => parseFloat(val.toFixed(fixedSize));
 
 export const isEmptyObj = (obj: Object) => obj === null || typeof obj !== 'object' || !Object.keys(obj).length;
 
@@ -373,6 +392,14 @@ export const makeObjArrayUniqByKey = (arr: Array<Object>, key: string) => {
     }
   }
   return result;
+};
+
+export const parseFloatWithFixed = (value, fixedSize: number) => {
+  if (isNaN(+value)) {
+    return null;
+  }
+  const validfixedSize = isNaN(+fixedSize) || fixedSize < 0 ? 0 : fixedSize;
+  return parseFloat((Math.round(+value * Math.pow(10, validfixedSize)) / Math.pow(10, validfixedSize)).toFixed(validfixedSize));
 };
 
 export const isNumValue = (value: string) => new RegExp(`[0-9]{${value.length}}`).test(value);

@@ -42,7 +42,7 @@ const validateFuelCardId = (
 
   const IS_CLOSED = formState.status === 'closed';
   const IS_DELETE = formState.status === 'deleted';
-  
+
   const isValidSelectedFuelCard = availableFuelCard.some(
     (optionData) => optionData.rowData.id === rowData.fuel_card_id && !optionData.isNotVisible
   );

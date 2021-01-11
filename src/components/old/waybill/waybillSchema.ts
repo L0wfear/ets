@@ -42,7 +42,7 @@ const validateFuelCardId = (
 
   const IS_CLOSED = formState.status === 'closed';
   const IS_DELETE = formState.status === 'deleted';
-
+  
   const isValidSelectedFuelCard = availableFuelCard.some(
     (optionData) => optionData.rowData.id === rowData.fuel_card_id && !optionData.isNotVisible
   );
@@ -73,7 +73,7 @@ const validateFuelCardId = (
     }
   }
 
-  if (!isValidSelectedFuelCard && rowData.fuel_card_id) {
+  if (!IS_CLOSED || formState.closed_editable && !isValidSelectedFuelCard && rowData.fuel_card_id) {
     // если выбрана топливная карта, но ее нет в списке, который приходит с бека
     return 'Укажите актуальную топливную карту';
   }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { clone, cloneDeep, get, eq } from 'lodash';
 import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
+import { isNotNull } from 'utils/functions';
 
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData, parseFloatWithFixed } from 'utils/functions';
@@ -130,13 +131,13 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end' || field === 'motohours_start') {
       waybill.motohours_diff = value && waybill.motohours_end
-        ? waybill.motohours_end - waybill.motohours_start
+        ? (waybill.motohours_end - waybill.motohours_start).toFixed(1)
         : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
     if (field === 'motohours_equip_end' || field === 'motohours_equip_start') {
       waybill.motohours_equip_diff = value && waybill.motohours_equip_end
-        ? waybill.motohours_equip_end - waybill.motohours_equip_start
+        ? (waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(1)
         : null;
     }
   }
@@ -894,9 +895,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const elemMeasureUnitName = motohoursMain ? motohoursMeasureUnitName : odometrMeasureUnitName;
     const firstElemIndex = tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
-
-    tax_data.forEach((currElem) => {
+    tax_data.forEach((currElem, i) => {
       const isFirstElemTaxOperationField = (field === 'taxes_operation' || field === 'gas_taxes_operation' || field === 'electrical_taxes_operation') && index === firstElemIndex;
+      const firstEl = i === 0;
       
       if (
         (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
@@ -910,9 +911,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             : currElem.iem_FACT_VALUE;
         } else {
           if(!isGasKind){
-            currElem.FACT_VALUE = formState.odometr_diff > 0
+            currElem.FACT_VALUE = !isNotNull(currElem.FACT_VALUE) && formState.odometr_diff > 0 && firstEl
               ? formState.odometr_diff
-              : null;
+              : currElem.FACT_VALUE;
           }
           currElem.RESULT = Taxes.getResult(currElem);
         }
@@ -929,7 +930,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           }
         } else {
           if(!isGasKind){
-            currElem.FACT_VALUE = formState.motohours_diff > 0 ? formState.motohours_diff : null;
+            currElem.FACT_VALUE = !isNotNull(currElem.FACT_VALUE) && formState.motohours_diff > 0 && firstEl
+              ? formState.motohours_diff
+              : currElem.FACT_VALUE;
           }
           currElem.RESULT = Taxes.getResult(currElem);
         }

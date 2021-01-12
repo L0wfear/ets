@@ -73,7 +73,7 @@ const validateFuelCardId = (
     }
   }
 
-  if (!IS_CLOSED || formState.closed_editable && !isValidSelectedFuelCard && rowData.fuel_card_id) {
+  if ((!IS_CLOSED || formState.closed_editable) && !isValidSelectedFuelCard && rowData.fuel_card_id) {
     // если выбрана топливная карта, но ее нет в списке, который приходит с бека
     return 'Укажите актуальную топливную карту';
   }

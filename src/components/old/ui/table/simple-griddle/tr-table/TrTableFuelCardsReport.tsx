@@ -136,7 +136,7 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
                             }
 
                             return summ;
-                          }, 0).toString().replace('.', ',')}</td>
+                          }, 0).toFixed(2).toString().replace('.', ',')}</td>
                         );
                       }
                     }

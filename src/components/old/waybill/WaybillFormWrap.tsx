@@ -2,7 +2,6 @@ import * as React from 'react';
 import { clone, cloneDeep, get, eq } from 'lodash';
 import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
-import { isNotNull } from 'utils/functions';
 
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData, parseFloatWithFixed } from 'utils/functions';
@@ -911,7 +910,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             : currElem.iem_FACT_VALUE;
         } else {
           if(!isGasKind){
-            currElem.FACT_VALUE = !isNotNull(currElem.FACT_VALUE) && formState.odometr_diff > 0 && firstEl
+            currElem.FACT_VALUE = isNullOrUndefined(currElem.FACT_VALUE) && formState.odometr_diff > 0 && firstEl
               ? formState.odometr_diff
               : currElem.FACT_VALUE;
           }
@@ -930,7 +929,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
           }
         } else {
           if(!isGasKind){
-            currElem.FACT_VALUE = !isNotNull(currElem.FACT_VALUE) && formState.motohours_diff > 0 && firstEl
+            currElem.FACT_VALUE = isNullOrUndefined(currElem.FACT_VALUE) && formState.motohours_diff > 0 && firstEl
               ? formState.motohours_diff
               : currElem.FACT_VALUE;
           }

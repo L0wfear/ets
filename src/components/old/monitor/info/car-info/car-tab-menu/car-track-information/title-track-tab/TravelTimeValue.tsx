@@ -7,7 +7,7 @@ import { filterValidPoints } from 'utils/track';
 
 type PropsTravelTimeValue = {};
 
-const convertUnix = (timestamp: number) => {
+const convertSeconds = (timestamp: number) => { // timestamp - секунды, не unixtime
   let days, hours, minutes, seconds;
   seconds = timestamp;
   minutes = Math.floor(seconds / 60);
@@ -24,25 +24,43 @@ const convertUnix = (timestamp: number) => {
 };
 
 export const getTimeValue = (track) => {
-  let value;
-
+  let moveTimeInSeconds = null;
   if (track !== -1) {
     const filteredTrack = filterValidPoints(track);
-    value = filteredTrack.reduce((acc, curr, i) => {
-      if (filteredTrack[i].speed_avg > 0) {
-        if (i === 0) {
-          // eslint-disable-next-line no-param-reassign
-          return acc;
-        } else {
-          // eslint-disable-next-line no-param-reassign
-          acc += (curr.timestamp - filteredTrack[i - 1].timestamp);
+    let speedIntervalList = []; // массив групп
+    let speedGroup = []; // одна группа
+    // Группируем точки трека, одна группа - это непрерывное движение ТС
+    // т.е. когда speed_avg > 0
+    // в одной группе должно быть 2 и более точек
+    filteredTrack.forEach((elem) => {
+      if (elem.speed_avg > 0) {
+        speedGroup.push(elem);
+      } else {
+        if(speedGroup.length >= 2) {
+          speedIntervalList.push(speedGroup);
         }
+        speedGroup = [];
       }
-      return acc;
+    });
+
+    moveTimeInSeconds = speedIntervalList.reduce((summator, current) => {
+      const valueByGroup = current.reduce((acc, byGroupElem, i) => { // суммируем значения внутри одной группы
+        if (byGroupElem.speed_avg > 0) {
+          if (i === 0) {
+            return acc;
+          } else {
+            return acc + (byGroupElem.timestamp - current[i - 1].timestamp); // timestamp в секундах
+          }
+        }
+        return acc;
+      }, 0);
+      return summator + valueByGroup;
     }, 0);
   }
 
-  return value === null ? '---' : convertUnix(value);
+  return moveTimeInSeconds === null
+    ? '---'
+    : convertSeconds(moveTimeInSeconds);
 };
 
 const TravelTimeValue: React.FC<PropsTravelTimeValue> = () => {

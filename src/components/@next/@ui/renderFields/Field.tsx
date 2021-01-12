@@ -29,7 +29,8 @@ const numberToFixed = {
 };
 
 const StyledButton = styled(EtsBootstrap.Button)`
-  margin-bottom: 10px;
+  align-self: start;
+  margin-top: 25px;
 `;
 
 const ExtButton: React.FC<ExtFieldButton> = React.memo(

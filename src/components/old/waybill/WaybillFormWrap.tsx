@@ -1170,7 +1170,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
      * @return {undefined}
      */
     handleFormSubmit = async (state = this.state.formState, callback) => {
-      const formState = cloneDeep(state);
+      const carRefillWithFormatedDate = state.car_refill.length 
+        ? state.car_refill.map((el) => {
+          return {...el, date: createValidDateTime(el.date)};
+        })
+        : [];
+      const formState = cloneDeep({...state, car_refill: carRefillWithFormatedDate});
       const waybillStatus = formState.status;
 
       if (!waybillStatus) {

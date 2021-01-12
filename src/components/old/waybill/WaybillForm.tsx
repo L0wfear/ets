@@ -341,6 +341,7 @@ export type WaybillState = {
   isGasKind: boolean;
   isFuelKind: boolean;
   isElectricalKind: boolean;
+  isUpdatedMileageTypeId: boolean; 
 };
 
 class WaybillForm extends React.Component<WaybillProps, WaybillState> {
@@ -375,6 +376,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       isGasKind: false,
       isFuelKind: true,
       isElectricalKind: false,
+      isUpdatedMileageTypeId: false,
     };
   }
 
@@ -388,7 +390,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
       this.getLatestWaybillDriver(nextFormState);
     }
-    if (carList.length && nextFormState && nextFormState?.car_id !== prevState.car_id) {
+    if (carList.length && nextFormState && nextFormState?.car_id !== prevState.origFormState.car_id) {
       const carMileageTypeId = getCarMileageTypeId(carList, nextFormState?.car_id);
       const mileage_type_id = getCarMileageTypeIdByStatus(
         nextFormState.mileage_type_id,
@@ -396,8 +398,12 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         carMileageTypeId
       );
       if (nextFormState.car_id !== oldFormState.car_id || mileage_type_id !== nextFormState.mileage_type_id) {
+        this.setState({isUpdatedMileageTypeId: false});
+      }
+      if (!this.state.isUpdatedMileageTypeId) {
         const data = element && nextFormState.car_id === element.car_id ? element : nextFormState;
         this.updateMileageTypeBasedFields(data, mileage_type_id);
+        this.setState({isUpdatedMileageTypeId: true});
       }
     }
 
@@ -662,13 +668,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       const defaultExtraTaximetrdata = extraTaximetrKey === 'car_has_motohours' ? defaultMotoHoursData : defaultOdometrData;
 
       Object.keys(data).forEach((key) => {
-        if (!(key in defaultExtraTaximetrdata) || hasCarExtraTaximetr) {
-          data[key] = waybillData[key];
-        } else if (key === mainTaximetrKey) {
+        if (key === mainTaximetrKey) {
           data[key] = null;
+        } else if (key === extraTaximetrKey) {
+          data[key] = Boolean(hasCarExtraTaximetr);
+        } else if (!(key in defaultExtraTaximetrdata) || hasCarExtraTaximetr) {
+          data[key] = waybillData[key];
         }
       });
-      
       return data;
     };
     const taximetrsData = makeTaximetrData();
@@ -1504,10 +1511,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           ? state.is_one_fuel_tank
           : lastWaybill.is_one_fuel_tank;
         const equipment_fuel = state.equipment_fuel ?? lastWaybill.equipment_fuel;
-        const odometr_start = is_edited_odometr || !isNotNull(lastWaybill.odometr_end) || state.car_has_odometr === false
+        const odometr_start = is_edited_odometr || !isNotNull(lastWaybill.odometr_end)
           ? state.odometr_start
           : lastWaybill.odometr_end;
-        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end) || state.car_has_motohours === false
+        const motohours_start = is_edited_motohours  || !isNotNull(lastWaybill.motohours_end)
           ? state.motohours_start
           : lastWaybill.motohours_end;
         const motohours_equip_start = is_edited_motohours_equip || !isNotNull(lastWaybill.motohours_equip_end)

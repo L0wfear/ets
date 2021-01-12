@@ -6,6 +6,7 @@ import { diffDates, createValidDate, getStartOfWeek } from 'components/@next/@ut
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import styled from 'styled-components';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 const StyledButtonContainer = styled.div`
   display: flex;
@@ -118,9 +119,9 @@ const InspectionDatePickerRange: React.FC<WithSearchProps & OwnProps> = React.me
       <>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
+            <FieldLabel>Показать журнал проверок за период:</FieldLabel>
             <DatePickerRange
               allWidth={false}
-              label={'Показать журнал проверок за период: '}
               date_start_id='date_start'
               date_start_value={datesData.date_start}
               date_start_error={datesData.error_date_start}

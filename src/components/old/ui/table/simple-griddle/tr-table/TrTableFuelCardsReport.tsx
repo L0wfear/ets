@@ -129,14 +129,13 @@ class TrTableFuelCardsReport extends React.Component<PropsTrTableFuelCardsReport
 
                       if (footerRowData.type === 'agg') {
                         return (
-                          <td key={columnName}>{rows.reduce((summ, rowData) => {
+                          <td key={columnName}>{parseFloat(rows.reduce((summ, rowData) => {
                             const fieldInRowData = rowData[columnName];
                             if ((+fieldInRowData || +fieldInRowData === 0) && !isNaN(+fieldInRowData)) {
                               return summ + fieldInRowData;
                             }
-
                             return summ;
-                          }, 0).toFixed(2).toString().replace('.', ',')}</td>
+                          }, 0).toFixed(6)).toString().replace('.', ',')}</td>
                         );
                       }
                     }

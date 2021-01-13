@@ -130,13 +130,13 @@ function calculateWaybillMetersDiff(waybill, field, value) {
     // Если изменилось поле "Моточасы.Возврат" то считаем "Моточасы.Пробег"
     if (field === 'motohours_end' || field === 'motohours_start') {
       waybill.motohours_diff = value && waybill.motohours_end
-        ? (waybill.motohours_end - waybill.motohours_start).toFixed(1)
+        ? parseFloat((waybill.motohours_end - waybill.motohours_start).toFixed(1))
         : null;
     }
     // Если изменилось поле "Моточасы.Оборудование.Возврат" то считаем "Моточасы.Оборудование.пробег"
     if (field === 'motohours_equip_end' || field === 'motohours_equip_start') {
       waybill.motohours_equip_diff = value && waybill.motohours_equip_end
-        ? (waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(1)
+        ? parseFloat((waybill.motohours_equip_end - waybill.motohours_equip_start).toFixed(1))
         : null;
     }
   }

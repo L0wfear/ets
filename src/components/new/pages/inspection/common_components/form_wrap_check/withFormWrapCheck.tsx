@@ -82,7 +82,6 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
   const checkSearchState = (searchState, setDataInSearch, selectedInspect) => {
     if (!searchState.carpoolId || !searchState.companyId) {
       setDataInSearch({
-        carpoolId: selectedInspect.base_id,
         companyId: selectedInspect.company_id,
       });
     }

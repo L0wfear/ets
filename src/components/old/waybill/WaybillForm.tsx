@@ -3535,6 +3535,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               is_refill_error={errors.is_no_equipment_refill}
                               boundKey={'equipment_refill'}
                               fuelCardsList={this.props.equipmentFuelCardsList}
+                              waybill_status={state.status}
+                              closed_editable={state.closed_editable}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>

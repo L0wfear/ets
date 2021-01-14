@@ -248,6 +248,8 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
             is_refill_error={errors.is_no_electrical_refill}
             boundKey={'electrical_refill'}
             fuelCardsList={props.electricalFuelCardsList}
+            waybill_status={waybillFormState.status}
+            closed_editable={waybillFormState.closed_editable}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>

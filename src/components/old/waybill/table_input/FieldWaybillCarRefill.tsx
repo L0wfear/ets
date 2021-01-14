@@ -39,6 +39,8 @@ type Props = {
     plan_departure_date: Waybill['plan_departure_date'];
     plan_arrival_date: Waybill['plan_arrival_date'];
     fact_arrival_date: Waybill['fact_arrival_date'];
+    waybill_status: Waybill['status'];
+    closed_editable: Waybill['closed_editable'];
   };
   is_one_fuel_tank?: boolean;
   use_pouring?: boolean;
@@ -430,6 +432,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         props.array.length
         && validPeriod.date_start
         && validPeriod.date_end
+        && (props.date_for_valid.waybill_status !== 'closed' || props.date_for_valid.closed_editable)
       ) {
         const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
         const newArr = props.array.map((el) => {

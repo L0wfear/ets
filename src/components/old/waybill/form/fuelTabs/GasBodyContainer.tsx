@@ -236,6 +236,8 @@ const GasBodyContainer: React.FC<Props> = React.memo(
               plan_departure_date: waybillFormState.plan_departure_date,
               plan_arrival_date: waybillFormState.plan_arrival_date,
               fact_arrival_date: waybillFormState.fact_arrival_date,
+              waybill_status: waybillFormState.status,
+              closed_editable: waybillFormState.closed_editable,
             }}
             IS_DRAFT_OR_ACTIVE={
               IS_CREATING || IS_DRAFT || IS_ACTIVE

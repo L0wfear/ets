@@ -3522,6 +3522,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                 plan_departure_date: state.plan_departure_date,
                                 plan_arrival_date: state.plan_arrival_date,
                                 fact_arrival_date: state.fact_arrival_date,
+                                waybill_status: state.status,
+                                closed_editable: state.closed_editable,
                               }}
                               IS_DRAFT_OR_ACTIVE={
                                 IS_CREATING || IS_DRAFT || IS_ACTIVE

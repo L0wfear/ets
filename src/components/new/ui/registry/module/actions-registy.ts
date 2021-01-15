@@ -88,12 +88,19 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
 export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
+  const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
+  const filterFields = localStorageFilterFields.length 
+    ? config.filter.fields.map((el) => {
+      const localStorageEl = localStorageFilterFields.find((elem) => el.valueKey === elem.valueKey);
+      return {...el, hidden: Boolean(localStorageEl.hidden)};
+    }) 
+    : config.filter.fields;
 
   const mergeConfig: Partial<OneRegistryData<any>> = {
     isLoading: !config.noInitialLoad,
     Service: config.Service,
     path: config.path || null,
-    filter: mergeFilter<F>(config.filter),
+    filter: mergeFilter<F>({fields: filterFields}),
     header: mergeHeader<F>(config.header),
   };
 

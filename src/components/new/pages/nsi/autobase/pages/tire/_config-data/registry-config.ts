@@ -24,6 +24,7 @@ export const getToConfig = (): TypeConfigData<Tire> => {
       title: 'Реестр шин', // Реестр шин основной
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

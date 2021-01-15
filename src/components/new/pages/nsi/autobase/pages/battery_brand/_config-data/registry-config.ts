@@ -20,6 +20,7 @@ export const getToConfig = (): TypeConfigData<BatteryBrand> => {
     header: {
       title: 'Марки аккумуляторов',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

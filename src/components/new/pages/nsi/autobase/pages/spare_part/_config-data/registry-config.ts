@@ -21,6 +21,7 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
     header: {
       title: 'Реестр запчастей',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

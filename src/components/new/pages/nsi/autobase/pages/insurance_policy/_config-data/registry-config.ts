@@ -37,6 +37,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
     header: {
       title: 'Реестр страховок',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

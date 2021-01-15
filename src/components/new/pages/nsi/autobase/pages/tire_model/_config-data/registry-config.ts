@@ -20,6 +20,7 @@ export const getToConfig = (): TypeConfigData<TireModel> => {
     header: {
       title: 'Модели шин',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

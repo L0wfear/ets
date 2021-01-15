@@ -39,6 +39,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
     header: {
       title: 'Реестр техосмотров',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

@@ -21,6 +21,7 @@ export const getToConfig = (): TypeConfigData<RepairCompany> => {
     header: {
       title: 'Реестр ремонтных организаций',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

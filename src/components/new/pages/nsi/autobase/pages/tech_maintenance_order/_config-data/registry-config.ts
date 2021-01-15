@@ -24,6 +24,7 @@ export const getToConfig = (): TypeConfigData<TechMaintOrder> => {
     header: {
       title: 'Реестр регламентов ТО',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

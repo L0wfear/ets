@@ -12,7 +12,7 @@ import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
-import { createValidDate, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -138,11 +138,11 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const [needUpdateRefillDate, setNeedUpdateRefillDate] = React.useState(false);
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList); // <<< gas
     const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
-    const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
-    const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
+    const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
+    const fact_arrival_date = createValidDateTime(get(props, 'date_for_valid.fact_arrival_date'));
 
-    const plan_departure_date = createValidDate(get(props, 'date_for_valid.plan_departure_date'));
-    const plan_arrival_date = createValidDate(get(props, 'date_for_valid.plan_arrival_date'));
+    const plan_departure_date = createValidDateTime(get(props, 'date_for_valid.plan_departure_date'));
+    const plan_arrival_date = createValidDateTime(get(props, 'date_for_valid.plan_arrival_date'));
     const validPeriod = React.useMemo(() => {
       return fact_departure_date && fact_arrival_date
         ? {
@@ -436,7 +436,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ) {
         const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
         const newArr = props.array.map((el) => {
-          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, createValidDate(el.date), {
+          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, createValidDateTime(el.date), {
             excludeEnd: false,
             excludeStart: false,
           });

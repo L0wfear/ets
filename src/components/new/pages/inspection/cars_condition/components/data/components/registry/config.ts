@@ -35,6 +35,12 @@ export const getInspectionCarsConditionDataRegistryConfig = (payload: Inspection
     filter: {
       fields: [
         {
+          valueKey: 'okrug_id',
+          labelKey: 'okrug_name',
+          type: 'multiselect',
+          title: 'Округ',
+        },
+        {
           valueKey: 'company_id',
           labelKey: 'company_short_name',
           type: 'multiselect',
@@ -224,6 +230,11 @@ export const getInspectionCarsConditionDataRegistryConfig = (payload: Inspection
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 200,
           },
           {
             key: 'company_short_name',

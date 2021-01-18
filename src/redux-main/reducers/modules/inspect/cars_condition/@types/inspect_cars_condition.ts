@@ -95,6 +95,8 @@ export type InspectCarsCondition = {
   monitoring_kind: string | null;
   monitoring_kind_text: string;
   not_used: string;
+  okrug_id: number;
+  okrug_name: string;
   open_employee_fio: string;
   open_employee_id: number;
   repair: string;

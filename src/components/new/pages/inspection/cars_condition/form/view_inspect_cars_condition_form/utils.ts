@@ -45,6 +45,8 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   maintenance: null,
   monitoring_kind_text: null,
   not_used: null,
+  okrug_id: null,
+  okrug_name: null,
   open_employee_fio: null,
   open_employee_id: null,
   repair: null,

@@ -37,6 +37,13 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   const userData = etsUseSelector((state) => getSessionState(state).userData);
   const [hiddenFilters, setHiddenFilters] = React.useState([]);
   const [selectAllChecked, setselectAllChecked] = React.useState(true);
+
+  const setLocalStorageData = React.useCallback(
+    (data) => {
+      const filterFields = JSON.parse(localStorage.getItem(`filterFields`));
+      localStorage.setItem('filterFields', JSON.stringify({...filterFields, [props.registryKey]: data}));
+    }, [props.registryKey]);
+
   const handleChange = React.useCallback(
     async (key, locationSearch) => {
       const filterKey = `${props.registryKey}_filters`;
@@ -123,6 +130,10 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
       setselectAllChecked(hiddenFilters.length === 0);
     }
   }, [hiddenFilters, selectAllChecked]);
+
+  React.useEffect(() => {
+    setLocalStorageData(props.fields);
+  }, [props.fields]);
 
   return (
     <ColumnPopupContainerWrapper>

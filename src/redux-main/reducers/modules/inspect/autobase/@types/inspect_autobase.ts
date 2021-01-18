@@ -49,6 +49,8 @@ export type InspectAutobase = {
   date_start: string | null;
   id: number;
   inspection_company_id: number;
+  okrug_id: number;
+  okrug_name: string;
   open_employee_fio: string;
   open_employee_id: number | null;
   status_text: string;

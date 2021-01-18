@@ -99,7 +99,7 @@ const canSaveTestWrap = (formError) => {
     {},
   );
 
-  console.info('[INFO] filredFormErrors -> ', filredFormErrors); // eslint-disable-line
+  console.info('[INFO] formError -> ', formError); // eslint-disable-line
 
   return canSaveTest(filredFormErrors);
 };

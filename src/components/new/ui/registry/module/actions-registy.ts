@@ -94,7 +94,7 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
       const localStorageEl = localStorageFilterFields.find((elem) => el.valueKey === elem.valueKey);
       return {...el, hidden: Boolean(localStorageEl.hidden)};
     }) 
-    : config.filter.fields;
+    : config.filter?.fields ?? [];
 
   const mergeConfig: Partial<OneRegistryData<any>> = {
     isLoading: !config.noInitialLoad,

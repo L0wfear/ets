@@ -99,6 +99,8 @@ const canSaveTestWrap = (formError) => {
     {},
   );
 
+  console.info('[INFO] formError -> ', formError); // eslint-disable-line
+
   return canSaveTest(filredFormErrors);
 };
 
@@ -999,7 +1001,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
-    console.info(field, value); // eslint-disable-line
+    console.info('[INFO] Change field -> ', {field, value}); // eslint-disable-line
     formState = calculateWaybillMetersDiff(formState, field, value);
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
@@ -1077,11 +1079,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     handleMultipleChange = (fields) => {
       let formState = cloneDeep(this.state.formState);
       Object.entries(fields).forEach(([field, value]) => {
-        console.info(field, value); // eslint-disable-line
-
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);
       });
+      console.info('[INFO] WaybillValues -> ', formState); // eslint-disable-line
       if (formState) {
         this.handleFieldsChange(formState);
       }

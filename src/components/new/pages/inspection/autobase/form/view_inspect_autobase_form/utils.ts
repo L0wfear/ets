@@ -49,6 +49,8 @@ export const defaultInspectAutobase: InspectAutobase = {
   date_start: null,
   id: null,
   inspection_company_id: null,
+  okrug_id: null,
+  okrug_name: null,
   open_employee_fio: null,
   open_employee_id: null,
   status_text: null,

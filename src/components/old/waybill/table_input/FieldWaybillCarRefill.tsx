@@ -12,7 +12,7 @@ import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
-import { createValidDateTime, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDate, createValidDateTime, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -436,7 +436,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ) {
         const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
         const newArr = props.array.map((el) => {
-          const isDateInPeriod = dateInPeriod(validPeriod.date_start, validPeriod.date_end, createValidDateTime(el.date), {
+          const isDateInPeriod = dateInPeriod(createValidDate(validPeriod.date_start), createValidDate(validPeriod.date_end), createValidDate(el.date), {
             excludeEnd: false,
             excludeStart: false,
           });

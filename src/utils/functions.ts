@@ -376,11 +376,12 @@ export const makeObjArrayUniqByKey = (arr: Array<Object>, key: string) => {
 };
 
 export const parseFloatWithFixed = (value, fixedSize: number) => {
-  if (isNaN(+value)) {
+  if (isNaN(+value) || value === null) {
     return null;
   }
+  const validVal = +(value.toFixed(6));
   const validfixedSize = isNaN(+fixedSize) || fixedSize < 0 ? 0 : fixedSize;
-  return parseFloat((Math.round(+value * Math.pow(10, validfixedSize)) / Math.pow(10, validfixedSize)).toFixed(validfixedSize));
+  return parseFloat((Math.round(+validVal * Math.pow(10, validfixedSize)) / Math.pow(10, validfixedSize)).toFixed(validfixedSize));
 };
 
 export const isNumValue = (value: string) => new RegExp(`[0-9]{${value.length}}`).test(value);

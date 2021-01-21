@@ -8,7 +8,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FileField } from 'components/old/ui/input/fields';
 
 import Div from 'components/old/ui/Div';
-import { isNotNull, isEmpty, isMotoHoursMileageType, getCarMileageTypeId } from 'utils/functions';
+import { isNotNull, isEmpty, isMotoHoursMileageType, getCarMileageTypeId, parseFloatWithFixed } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import {
@@ -2343,10 +2343,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
 
     const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
-    const taxesTotal = allTaxes.reduce(
-      (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
+    const taxesTotal = parseFloatWithFixed(allTaxes.reduce(
+      (summ, { FUEL_RATE, FACT_VALUE }) => summ + parseFloatWithFixed(FUEL_RATE * FACT_VALUE, 3),
       0,
-    );
+    ), 3);
     const taxeTotalHidden = allTaxes.length === 0;
 
     const employeeByIndex = get(

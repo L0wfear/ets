@@ -178,7 +178,9 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          value: +parseFloat(FACT_VALUE).toFixed(1),
+          value: FACT_VALUE || FACT_VALUE === 0
+            ? parseFloat(FACT_VALUE)
+            : FACT_VALUE,
           id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
@@ -284,9 +286,9 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     const oldCurrVal = current.FACT_VALUE;
     current.FACT_VALUE = e.target.value === '' || e.target.value <= 0 ? '' : Math.abs(e.target.value);
 
-    const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
+    const stopInputRegexp = /^([0-9]{1,})\.([0-9]{2,})$/.test(
       current.FACT_VALUE,
-    ); // есть 3 знака после запятой
+    ); // есть 2 знака после запятой
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'
@@ -294,8 +296,8 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
-    // если пользак уже ввел 3 знака после запятой, то он больше ничего не может ввести
-    if (current.measure_unit_name === 'л/час' && threeSybolsAfterComma) {
+    // если пользак уже ввел 2 знака после запятой, то он больше ничего не может ввести
+    if (stopInputRegexp && current.FACT_VALUE && current.FACT_VALUE !== 0 ) {
       current.FACT_VALUE = oldCurrVal;
     }
 
@@ -469,7 +471,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
               </div>
             </div>
             <div>
-              <b>{parseFloatWithFixed(finalResult, 3).toString().replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
+              <b>{parseFloatWithFixed(finalResult, 3).toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
             </div>
           </FooterEnd>
         )}

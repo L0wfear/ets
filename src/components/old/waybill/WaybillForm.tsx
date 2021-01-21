@@ -2992,6 +2992,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               id="odometr-diff"
                               type="number"
                               label="Пробег, км"
+                              format="toFixed2"
                               value={state.odometr_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
                               disabled

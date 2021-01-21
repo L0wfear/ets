@@ -57,7 +57,7 @@ export default class Taxes extends React.Component<any, any> {
     ) {
       return 0;
     }
-    return FUEL_RATE * fuel_correction_rate * FACT_VALUE;
+    return parseFloatWithFixed(FUEL_RATE * fuel_correction_rate * FACT_VALUE, 3);
   }
 
   static calculateFinalResult(data) {
@@ -73,7 +73,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result);
+    return parseFloatWithFixed(result, 3);
   }
 
   static calculateFinalFactValue(data, type):

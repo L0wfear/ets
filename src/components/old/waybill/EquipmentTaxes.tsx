@@ -46,7 +46,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     if (isEmpty(FACT_VALUE) || isEmpty(FUEL_RATE)) {
       return 0;
     }
-    return FUEL_RATE * FACT_VALUE;
+    return parseFloatWithFixed(FUEL_RATE * FACT_VALUE, 3);
   }
 
   static calculateFinalResult(data) {
@@ -62,7 +62,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
       },
       0,
     );    
-    return parseFloat(result);
+    return parseFloatWithFixed(result, 3);
   }
 
   static calculateFinalFactValue(data, type) {

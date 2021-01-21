@@ -2344,7 +2344,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
     const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
     const taxesTotal = parseFloatWithFixed(allTaxes.reduce(
-      (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
+      (summ, { FUEL_RATE, FACT_VALUE }) => summ + parseFloatWithFixed(FUEL_RATE * FACT_VALUE, 3),
       0,
     ), 3);
     const taxeTotalHidden = allTaxes.length === 0;

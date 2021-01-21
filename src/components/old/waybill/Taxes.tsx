@@ -346,7 +346,7 @@ export default class Taxes extends React.Component<any, any> {
 
     const stopInputRegexp = /^([0-9]{1,})\.([0-9]{2,})$/.test(
       current.FACT_VALUE,
-    ); // есть 2 знака после запятой
+    ); // есть 1 знак после запятой
 
     if (
       current.is_excluding_mileage

@@ -288,7 +288,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
 
     const stopInputRegexp = /^([0-9]{1,})\.([0-9]{2,})$/.test(
       current.FACT_VALUE,
-    ); // есть 2 знака после запятой
+    ); // есть 1 знак после запятой
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'
@@ -296,7 +296,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
-    // если пользак уже ввел 2 знака после запятой, то он больше ничего не может ввести
+    // если пользак уже ввел 1 знак после запятой, то он больше ничего не может ввести
     if (stopInputRegexp && current.FACT_VALUE && current.FACT_VALUE !== 0 ) {
       current.FACT_VALUE = oldCurrVal;
     }

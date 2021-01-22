@@ -192,7 +192,10 @@ function httpMethod<F = any>(
     credentials: 'include',
   };
   if (url.indexOf('tracks-caching') > -1) {
-    delete options.headers;
+    options.headers = {
+      Authorization: `Token ${token}`,
+      Accept: 'application/json' ,
+    };
   }
 
   if (typeof type === 'string') {

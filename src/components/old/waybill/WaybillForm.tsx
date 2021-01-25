@@ -687,6 +687,22 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     });
   };
 
+  handleWaybillAfterMount = (waybill: Partial<Waybill>) => {
+    const {
+      formState,
+    } = this.props;
+    
+    this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
+    waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
+    this.setState({
+      canEditIfClose: waybill.closed_editable
+        ? this.props.userPermissionsSet.has('waybill.update_closed')
+        : false,
+      origFormState: formState,
+    });
+    this.setEngineKindIds();
+  };
+
   async componentDidMount() {
     const {
       formState,
@@ -743,26 +759,22 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
 
     if (!IS_CREATING) {
-      await this.props
-        .dispatch(actionGetWaybillById(formState.id, this.props))
-        .then((waybill) => {
-          this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
-          waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
-          this.setState({
-            canEditIfClose: waybill.closed_editable
-              ? this.props.userPermissionsSet.has('waybill.update_closed')
-              : false,
-            origFormState: formState,
+      if(this.props.element){
+        this.handleWaybillAfterMount(this.props.element);
+      } else {
+        await this.props
+          .dispatch(actionGetWaybillById(formState.id, this.props))
+          .then((waybill) => {
+            this.handleWaybillAfterMount(waybill);
+          })
+          .catch((e) => {
+            console.error(e);  // eslint-disable-line
+            this.setState({
+              canEditIfClose: false,
+              origFormState: formState,
+            });
           });
-          this.setEngineKindIds();
-        })
-        .catch((e) => {
-          console.error(e);  // eslint-disable-line
-          this.setState({
-            canEditIfClose: false,
-            origFormState: formState,
-          });
-        });
+      }
     }
       
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {

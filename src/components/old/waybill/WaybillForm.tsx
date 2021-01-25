@@ -995,7 +995,9 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
-        this.updateEngineKindsFields();
+        if(IS_ACTIVE) {
+          this.updateEngineKindsFields();
+        }
       });
     }
   }

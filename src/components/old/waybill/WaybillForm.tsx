@@ -627,7 +627,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
   };
 
-  setEngineKindIds = () => { // определение  engine_kind_ids в ПЛ, в зависимости от статуса ПЛ
+  setEngineKindIds = (isDidMount = false) => { // определение  engine_kind_ids в ПЛ, в зависимости от статуса ПЛ
     const {
       formState,
       formState: { status, car_id, },
@@ -649,7 +649,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
-    if(!IS_CLOSED) {
+    if(!IS_CLOSED && !isDidMount) {
       this.refresh(true, false);
     }
   };
@@ -700,7 +700,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         : false,
       origFormState: formState,
     });
-    this.setEngineKindIds();
+    this.setEngineKindIds(true);
   };
 
   async componentDidMount() {
@@ -986,11 +986,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         });
     }
     
-    if(car_id && (IS_CREATING || IS_DRAFT)) {
+    if(car_id && !IS_CLOSED) {
       await this.refresh(true, false);
     }
 
-    if(car_id && IS_ACTIVE) {
+    if(car_id && (IS_ACTIVE || IS_CLOSED)) {
       await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
@@ -3550,6 +3550,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               fuelCardsList={this.props.equipmentFuelCardsList}
                               waybill_status={state.status}
                               closed_editable={state.closed_editable}
+                              lastWaybill={lastWaybill}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>

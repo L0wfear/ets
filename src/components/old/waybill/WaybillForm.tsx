@@ -987,17 +987,18 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
     
     if(car_id && !IS_CLOSED) {
-      await this.refresh(true, false);
+      await this.refresh(true, false).then(() => {
+        if(IS_ACTIVE) {
+          this.updateEngineKindsFields();
+        }
+      });
     }
 
-    if(car_id && (IS_ACTIVE || IS_CLOSED)) {
+    if(car_id && IS_CLOSED) {
       await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
-        if(IS_ACTIVE) {
-          this.updateEngineKindsFields();
-        }
       });
     }
   }

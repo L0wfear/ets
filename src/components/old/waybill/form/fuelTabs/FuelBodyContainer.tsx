@@ -260,6 +260,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             fuelCardsList={props.fuelCardsList}
             waybill_status={waybillFormState.status}
             closed_editable={waybillFormState.closed_editable}
+            lastWaybill={lastWaybill}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>

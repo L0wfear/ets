@@ -14,6 +14,9 @@ import { createValidDate, createValidDateTime } from 'components/@next/@utils/da
 import TdContainer, { TdContainerProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
+import {handleChangeBooleanWithSavedFields} from 'utils/functions';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -42,6 +45,9 @@ const getValueFromEvent = (valueEvent, renderParams) => {
   }
 };
 
+const inspectionFields: Array<keyof CarsConditionCars> = ['diagnostic_card', 'diagnostic_card_finished_at'];
+const osagoFields: Array<keyof CarsConditionCars> = ['osago', 'osago_finished_at'];
+
 const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
     const [error, setError] = React.useState(null);
@@ -56,7 +62,8 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     let isPermittedToUpdateClose = false;
     const value = get(valuesRenderRow, props.metaKey, null);
     const dispatch = etsUseDispatch();
-
+    const [techInpectionSavedFields, setTechInpectionSavedFields] = React.useState<Partial<CarsConditionCars>>(null);
+    const [osagoSavedFields, setOsagoSavedFields] = React.useState<Partial<CarsConditionCars>>(null);
     React.useEffect(
       () => {
         if (valuesRenderRow) {
@@ -68,21 +75,46 @@ const ExtFieldTd: React.FC<Props> = React.memo(
       }, [valuesRenderRow],
     );
 
+    const handleChangeTechInpectionOrOsagoFields = React.useCallback(
+      (changeObj: Partial<CarsConditionCars>): void => {
+        for (const key in changeObj) {
+          dispatch(
+            registryChangeRenderSelectedRow(
+              props.registryKey,
+              {
+                key,
+                value: changeObj[key],
+              },
+            ),
+          );
+        }
+      }, []);
+
     const handleChange = React.useCallback(
       (fieldValue) => {
         // OMG
+        const value = getValueFromEvent(fieldValue, props.renderParams);
         if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry' && props.metaKey === 'osago_not_required') {
-          ['osago', 'osago_finished_at'].forEach((elem) => {
-            dispatch(
-              registryChangeRenderSelectedRow(
-                props.registryKey,
-                {
-                  key: elem,
-                  value: null,
-                },
-              ),
-            );
-          });
+          handleChangeBooleanWithSavedFields<CarsConditionCars>(
+            !value, 
+            osagoFields, 
+            valuesRenderRow, 
+            defaultCarsConditionCar,
+            osagoSavedFields, 
+            setOsagoSavedFields,
+            handleChangeTechInpectionOrOsagoFields
+          );
+        }
+        if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry' && props.metaKey === 'tech_inspection_not_required') {
+          handleChangeBooleanWithSavedFields<CarsConditionCars>(
+            !value, 
+            inspectionFields, 
+            valuesRenderRow, 
+            defaultCarsConditionCar,
+            techInpectionSavedFields, 
+            setTechInpectionSavedFields,
+            handleChangeTechInpectionOrOsagoFields
+          );
         }
 
         dispatch(
@@ -90,12 +122,12 @@ const ExtFieldTd: React.FC<Props> = React.memo(
             props.registryKey,
             {
               key: props.metaKey,
-              value: getValueFromEvent(fieldValue, props.renderParams),
+              value,
             },
           ),
         );
       },
-      [props.metaKey, props.renderParams, props.registryKey],
+      [props.metaKey, props.renderParams, props.registryKey, valuesRenderRow],
     );
 
     if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {

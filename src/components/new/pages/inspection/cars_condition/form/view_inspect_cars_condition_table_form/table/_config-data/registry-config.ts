@@ -419,6 +419,15 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
+          key: 'tech_inspection_not_required',
+          title: 'Прохождение ТО/ГТО не требуется',
+          width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
+          format: 'boolean',
+        },
+        {
           key: 'diagnostic_card_finished_at',
           title: 'действует до',
           width: 200,

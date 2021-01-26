@@ -408,3 +408,28 @@ export const isNumValue = (value: string) => new RegExp(`[0-9]{${value.length}}`
 export const isWithoutNumValue = (value: string) => !(/[0-9]/.test(value));
 
 export const generateRandomKey = () => ((Math.random()*1e17)).toString(16);
+
+export const handleChangeBooleanWithSavedFields = <T>(
+  checkBoxValue: boolean, 
+  changeFields: Array<keyof T>, 
+  data: T,
+  defaultData: T,
+  savedFields: Partial<T>,
+  setSavedFields: React.Dispatch<React.SetStateAction<Partial<T>>>,
+  handleChange: (changeObj: Partial<T>) => void
+): void => {
+  if (!checkBoxValue) {
+    const savedFields: Partial<T> = changeFields.reduce((acc: Partial<T>, curr) => {
+      acc[curr] = data[curr];
+      return acc;
+    }, {});
+    setSavedFields(savedFields);
+    const changeObj: Partial<T> = changeFields.reduce((acc: Partial<T>, curr) => {
+      acc[curr] = defaultData[curr];
+      return acc;
+    }, {});
+    handleChange(changeObj);
+  } else if (savedFields) {
+    handleChange(savedFields);
+  }
+};

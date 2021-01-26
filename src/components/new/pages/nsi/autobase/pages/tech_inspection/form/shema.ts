@@ -4,6 +4,12 @@ import { PropsTechInspection } from 'components/new/pages/nsi/autobase/pages/tec
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
+const validateIf = {
+  type: 'equal_to_value',
+  path: 'is_not_inspectionable',
+  value: false,
+} as const;
+
 export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspection> = {
   properties: {
     car_id: {
@@ -16,11 +22,13 @@ export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspe
       type: 'string',
       required: true,
       maxLength: 21,
+      validateIf,
     },
     date_start: {
       title: 'Дата прохождения',
       type: 'date',
       required: true,
+      validateIf,
     },
     date_end: {
       title: 'Срок действия до',
@@ -37,11 +45,13 @@ export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspe
           return '';
         },
       ],
+      validateIf,
     },
     tech_operator: {
       title: 'Оператор технического осмотра / пункт технического осмотра',
       type: 'string',
       maxLength: 256,
+      validateIf,
     },
     is_allowed: {
       title: 'Заключение о возможности/невозможности эксплуатации ТС',

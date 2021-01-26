@@ -25,6 +25,8 @@ import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/us
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import { makeDefectsText } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/table/form/CarsConditionTableDefectsForm';
+import { defaultCarsConditionCar } from '../../utils';
+import { handleChangeBooleanWithSavedFields } from 'utils/functions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -32,6 +34,11 @@ type BlockCarInfoMainDataProps = (
     handleChangeBoolean: FormWithHandleChangeBoolean<CarsConditionCars>;
   }
 ) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange' | 'page' | 'path' | 'isCustomUserCard'>;
+
+const inspectionFields: Array<keyof CarsConditionCars> = [
+  'diagnostic_card',
+  'diagnostic_card_finished_at',
+];
 
 const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
   (props) => {
@@ -48,6 +55,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     const engineTypeOptionData = useAutobaseEngineTypeOptions(props.page, props.path, 'name');
     const dispatch = etsUseDispatch();
     const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
+    const [savedFields, setSavedFields] = React.useState<Partial<CarsConditionCars>>(null);
 
     React.useEffect(() => {
       (async () => {
@@ -133,6 +141,19 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
+
+    const handleChangeIsNotInspectionable = React.useCallback((key) => {
+      handleChangeBooleanWithSavedFields<CarsConditionCars>(
+        state.data.tech_inspection_not_required, 
+        inspectionFields, 
+        state, 
+        defaultCarsConditionCar,
+        savedFields, 
+        setSavedFields,
+        props.handleChange
+      );
+      handleChangeDataBoolean(key);
+    }, [handleChangeDataBoolean, state, props.handleChange, savedFields]);
 
     // const handleChangeData = React.useCallback(
     //   (key, event) => {
@@ -544,7 +565,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.diagnostic_card}
               boundKeys="diagnostic_card"
-              disabled={!props.isPermitted}
+              disabled={!props.isPermitted || state.data.tech_inspection_not_required}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -557,6 +578,16 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChange}
               error={errors.diagnostic_card_finished_at}
               boundKeys="diagnostic_card_finished_at"
+              disabled={!props.isPermitted || state.data.tech_inspection_not_required}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
+            <ExtField
+              type="boolean"
+              label="Прохождение ТО/ГТО не требуется:"
+              value={state.data.tech_inspection_not_required}
+              onChange={handleChangeIsNotInspectionable}
+              boundKeys="tech_inspection_not_required"
               disabled={!props.isPermitted}
             />
           </EtsBootstrap.Col>

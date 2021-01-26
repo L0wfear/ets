@@ -4,6 +4,7 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import { CheckBoxFieldUi } from 'components/@next/@ui/renderFields/CheckBoxField/styled';
 import { ExtFieldBoolean } from 'components/@next/@ui/renderFields/@types';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import WarningBlock from 'components/@next/@ui/renderFields/WarningBlock/WarningBlock';
 
 const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
   (props) => {
@@ -12,6 +13,7 @@ const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
       className = 'default-boolean-input',
       modalKey,
       error,
+      warning,
     } = props;
     const checkboxStyle = { fontSize: '20px', margin: '5px' };
     const id = props.id
@@ -35,6 +37,9 @@ const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
             {props.labelAfter && label}
           </FieldLabel>
         </SingleUiElementWrapper>
+        {(warning && !error) && (
+          <WarningBlock warning={warning} />
+        )}
         <ErrorsBlock
           showError={showError}
           hidden={!error}

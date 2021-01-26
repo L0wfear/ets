@@ -3,6 +3,7 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import insurancePolicyPermissions from './permissions';
 import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'insurancePolicyRegistry';
 
@@ -73,6 +74,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
           labelKey: 'gov_numbers_text',
           title: 'Рег. номер ТС',
           type: 'multiselect',
+        },
+        {
+          valueKey: 'is_not_insurable',
+          title: 'Не подлежит страхованию',
+          type: 'multiselect',
+          options: YES_NO_SELECT_OPTIONS_BOOL,
         },
         {
           valueKey: 'insurer',
@@ -159,6 +166,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
             title: 'Рег. номер ТС',
             width: 200,
             fieldTitlePopup: 'В скобках указывается номер ТС на дату начала действия страховки',
+          },
+          {
+            key: 'is_not_insurable',
+            title: 'Не подлежит страхованию',
+            width: 200,
+            valueForBoolean: 'Не подлежит',
           },
           {
             key: 'insurer',

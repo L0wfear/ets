@@ -111,6 +111,7 @@ export type InsurancePolicy = {
   insurance_type_id: number;
   insurance_type_name: string;
   insurer: string;
+  is_not_insurable: boolean; 
   note: string;
   number: string;
   okrug_name: string;
@@ -271,6 +272,7 @@ export type TechInspection = {
   gov_numbers: Array<any>;
   id: number;
   is_allowed: boolean;
+  is_not_inspectionable: boolean;
   note: string;
   okrug_name: string;
   reg_number: string;

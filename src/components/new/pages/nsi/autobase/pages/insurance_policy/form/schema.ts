@@ -3,6 +3,12 @@ import { PropsInsurancePolicy } from 'components/new/pages/nsi/autobase/pages/in
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
+const validateIf = {
+  type: 'equal_to_value',
+  path: 'is_not_insurable',
+  value: false,
+} as const;
+
 export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsurancePolicy> = {
   properties: {
     car_id: {
@@ -15,27 +21,32 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       type: 'string',
       required: true,
       maxLength: 256,
+      validateIf,
     },
     insurance_type_id: {
       title: 'Тип страхования',
       type: 'valueOfArray',
       required: true,
+      validateIf,
     },
     seria: {
       title: 'Серия',
       type: 'string',
       maxLength: 128,
+      validateIf,
     },
     number: {
       title: 'Номер',
       type: 'string',
       maxLength: 128,
       required: true,
+      validateIf,
     },
     date_start: {
       title: 'Дата начала действия',
       type: 'date',
       required: true,
+      validateIf,
     },
     date_end: {
       title: 'Дата окончания действия',
@@ -52,6 +63,7 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
           return '';
         },
       ],
+      validateIf,
     },
     price: {
       title: 'Стоимость, руб.',
@@ -60,6 +72,7 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       min: 0,
       integer: false,
       float: 2,
+      validateIf,
     },
     note: {
       title: 'Примечание',

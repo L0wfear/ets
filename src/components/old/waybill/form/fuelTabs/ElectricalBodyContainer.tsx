@@ -210,7 +210,7 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
         </EtsBootstrap.Row>
         {/* <-- end  Электричество-fields */}
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={2}>
+      <EtsBootstrap.Col md={12} zIndex={4}>
         <EtsBootstrap.Col md={12}>
           <FieldWaybillCarRefill // <<< electrical
             id="electrical_refill"

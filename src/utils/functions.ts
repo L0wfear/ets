@@ -398,7 +398,7 @@ export const parseFloatWithFixed = (value, fixedSize: number) => {
   if (isNaN(+value) || value === null) {
     return null;
   }
-  const validVal = +(value.toFixed(6));
+  const validVal = +(parseFloat(value).toFixed(6));
   const validfixedSize = isNaN(+fixedSize) || fixedSize < 0 ? 0 : fixedSize;
   return parseFloat((Math.round(+validVal * Math.pow(10, validfixedSize)) / Math.pow(10, validfixedSize)).toFixed(validfixedSize));
 };

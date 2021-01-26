@@ -15,10 +15,10 @@ import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
 import { createValidDate, createValidDateTime, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
-import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
 import { isNullOrUndefined } from 'util';
+import { WaybillState } from 'components/old/waybill/WaybillForm';
 
 type Props = {
   id: string;
@@ -51,6 +51,7 @@ type Props = {
   is_refill_error: any;
   canEditIfClose: boolean;
   gov_number?: Waybill['gov_number'];
+  lastWaybill: WaybillState['lastWaybill'];
 } & (
   {
     array: Waybill['car_refill'];
@@ -137,7 +138,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       : [];
     const [needUpdateRefillDate, setNeedUpdateRefillDate] = React.useState(false);
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList); // <<< gas
-    const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
     const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
     const fact_arrival_date = createValidDateTime(get(props, 'date_for_valid.fact_arrival_date'));
 
@@ -154,9 +154,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           date_end: plan_arrival_date,
         };
     }, [fact_departure_date, fact_arrival_date, plan_departure_date, plan_arrival_date]);
-    React.useEffect(() => {
-      getLastClosedWaybill();
-    }, []);
 
     const fuelCardIdOptions = React.useMemo(
       () => {
@@ -294,18 +291,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       ],
     );
 
-    const getLastClosedWaybill = React.useCallback(
-      async () => {
-        return await dispatch(actionGetLastClosedWaybill({
-          car_id: props.car_id
-        }, {
-          page: props.page,
-          path: props.path,
-        })).then((res) => {
-          setLastClosedWaybill(res);
-        });
-      }, [props.car_id, props.page, props.path]);
-
     const fuelCardValue = React.useMemo(
       () => props.array.map(
         ( data ) => data.fuel_card_id,
@@ -320,7 +305,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         let newArr = array;
         const filteredFuelCardIdOptions = fuelCardIdOptions.filter(({ isNotVisible }) => !isNotVisible);
 
-        const lastWaybillRefillList = lastClosedWaybill && lastClosedWaybill[props.boundKey];
+        const lastWaybillRefillList = props.lastWaybill && props.lastWaybill[props.boundKey];
         const lastWaybillRefill = lastWaybillRefillList && lastWaybillRefillList.length && lastWaybillRefillList[lastWaybillRefillList.length - 1];
 
         // автозаполнение топливной картой, если она требуется
@@ -341,9 +326,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             }
           }
         }
-        // http://localhost:3000/#/waybills/8491089?Waybills_filters=%257B%2522car_id__in%2522%253A%255B19707%255D%257D
-        // http://localhost:3000/#/waybills/8491050?Waybills_filters=%257B%2522status__in%2522%253A%255B%2522active%2522%255D%257D
-        // http://localhost:3000/#/nsi/autobase/car_actual/19707/main_info?CarActual_filters=%257B%2522gov_number__in%2522%253A%255B%25220302%25D0%259D%25D0%259277%2522%255D%257D
 
         // DITETS20A-25 Добавление возможности отключения способа заправки Налив для некоторых организаций
         if (!props.use_pouring) { /// gas учтен при передаче use_pouring параметра в компонент выше
@@ -424,6 +406,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         props.use_pouring,
         previousfuelCardValue,
         isElectricalRefilBlock,
+        props.lastWaybill,
       ],
     );
 

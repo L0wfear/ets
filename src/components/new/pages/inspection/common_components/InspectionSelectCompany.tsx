@@ -46,6 +46,7 @@ const InspectionSelectCompany: React.FC<InspectionSelectCompanyProps> = (props) 
           const newPartialSearch: any = {
             ...searchState,
             companyId: null,
+            monitoringKind: null,
           };
 
           setDataInSearch(newPartialSearch);

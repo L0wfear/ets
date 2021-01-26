@@ -627,7 +627,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
   };
 
-  setEngineKindIds = () => { // определение  engine_kind_ids в ПЛ, в зависимости от статуса ПЛ
+  setEngineKindIds = (isDidMount = false) => { // определение  engine_kind_ids в ПЛ, в зависимости от статуса ПЛ
     const {
       formState,
       formState: { status, car_id, },
@@ -649,7 +649,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
-    if(!IS_CLOSED) {
+    if(!IS_CLOSED && !isDidMount) {
       this.refresh(true, false);
     }
   };
@@ -685,6 +685,22 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       mileage_type_id,
       files,
     });
+  };
+
+  handleWaybillAfterMount = (waybill: Partial<Waybill>) => {
+    const {
+      formState,
+    } = this.props;
+    
+    this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
+    waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
+    this.setState({
+      canEditIfClose: waybill.closed_editable
+        ? this.props.userPermissionsSet.has('waybill.update_closed')
+        : false,
+      origFormState: formState,
+    });
+    this.setEngineKindIds(true);
   };
 
   async componentDidMount() {
@@ -743,26 +759,22 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
 
     if (!IS_CREATING) {
-      await this.props
-        .dispatch(actionGetWaybillById(formState.id, this.props))
-        .then((waybill) => {
-          this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
-          waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
-          this.setState({
-            canEditIfClose: waybill.closed_editable
-              ? this.props.userPermissionsSet.has('waybill.update_closed')
-              : false,
-            origFormState: formState,
+      if(this.props.element){
+        this.handleWaybillAfterMount(this.props.element);
+      } else {
+        await this.props
+          .dispatch(actionGetWaybillById(formState.id, this.props))
+          .then((waybill) => {
+            this.handleWaybillAfterMount(waybill);
+          })
+          .catch((e) => {
+            console.error(e);  // eslint-disable-line
+            this.setState({
+              canEditIfClose: false,
+              origFormState: formState,
+            });
           });
-          this.setEngineKindIds();
-        })
-        .catch((e) => {
-          console.error(e);  // eslint-disable-line
-          this.setState({
-            canEditIfClose: false,
-            origFormState: formState,
-          });
-        });
+      }
     }
       
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
@@ -974,16 +986,19 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         });
     }
     
-    if(car_id && (IS_CREATING || IS_DRAFT)) {
-      await this.refresh(true, false);
+    if(car_id && !IS_CLOSED) {
+      await this.refresh(true, false).then(() => {
+        if(IS_ACTIVE) {
+          this.updateEngineKindsFields();
+        }
+      });
     }
 
-    if(car_id && IS_ACTIVE) {
+    if(car_id && IS_CLOSED) {
       await this.props.dispatch(
         actionGetLastClosedWaybill({ car_id }, this.props),
       ).then((lastWaybill) => {
         this.setState({ lastWaybill, });
-        this.updateEngineKindsFields();
       });
     }
   }
@@ -3538,6 +3553,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               fuelCardsList={this.props.equipmentFuelCardsList}
                               waybill_status={state.status}
                               closed_editable={state.closed_editable}
+                              lastWaybill={lastWaybill}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>

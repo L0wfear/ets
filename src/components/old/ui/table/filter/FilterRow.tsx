@@ -20,6 +20,7 @@ class FilterRow extends React.Component<Props, {}> {
       type: PropTypes.string,
       labelFunction: PropTypes.func,
       availableOptions: PropTypes.array,
+      defaultResult: PropTypes.array,
       tableData: PropTypes.array,
       name: PropTypes.string,
       byLabel: PropTypes.string,
@@ -41,10 +42,12 @@ class FilterRow extends React.Component<Props, {}> {
   render() {
     const {
       availableOptions,
+      defaultResult,
       byLabel = '',
       displayName,
       labelFunction,
       name,
+      reportKey,
       tableData,
       onChange,
       onMultiChange,
@@ -74,7 +77,7 @@ class FilterRow extends React.Component<Props, {}> {
     if (type) {
       if (type === 'multiselect') {
         let options = availableOptions;
-        let tableDataForOption = tableData || [];
+        let tableDataForOption = reportKey === 'fuel_cards_report' ? defaultResult || [] : tableData || [];
 
         if (!options || !options.length) {
           const deepArr = tableDataForOption.some(({ rows }) => isArray(rows));

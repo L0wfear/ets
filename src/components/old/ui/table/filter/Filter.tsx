@@ -28,6 +28,7 @@ export default class Filter extends React.Component<Props, State> {
       values: PropTypes.object,
       show: PropTypes.bool,
       tableData: PropTypes.array,
+      defaultResult: PropTypes.array,
       onHide: PropTypes.func,
       onSubmit: PropTypes.func.isRequired,
       options: PropTypes.array,
@@ -161,7 +162,7 @@ export default class Filter extends React.Component<Props, State> {
 
   render() {
     const { filterValues, propsFilterValues } = this.state;
-    const { tableData, options: filters } = this.props;
+    const { tableData, defaultResult, options: filters } = this.props;
 
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
@@ -180,6 +181,7 @@ export default class Filter extends React.Component<Props, State> {
           serverFieldName={filter.serverFieldName}
           labelFunction={labelFunction}
           availableOptions={options}
+          defaultResult={defaultResult}
           displayName={displayName}
           onChange={(event) =>
             this.handleFilterValueChange(

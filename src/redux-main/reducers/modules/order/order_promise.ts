@@ -8,6 +8,20 @@ import { TypeDownload } from 'components/new/ui/registry/components/data/header/
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { MissionTemplateCarService } from 'api/missions';
 
+export const promiseLoadOrderList = async (payload) => {
+  let response = null;
+  try {
+    response = await OrderService.get(payload);
+  } catch (error) {
+    //
+  }
+
+  const data: Array<Order> = get(response, 'result', []);
+  return {
+    data,
+  };
+};
+
 export const promiseLoadOrderById = async (id: Order['id']) => {
   const responce = await OrderService.get({ id });
   const order: Order = get(responce, 'result.0', null);

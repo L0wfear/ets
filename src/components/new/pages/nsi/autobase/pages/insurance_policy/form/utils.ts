@@ -18,6 +18,7 @@ export const defaultInsurancePolicy: InsurancePolicy = {
   insurance_type_id: null,
   insurance_type_name: null,
   insurer: null,
+  is_not_insurable: false,
   note: null,
   number: null,
   okrug_name: null,

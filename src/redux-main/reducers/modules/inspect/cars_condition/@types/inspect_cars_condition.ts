@@ -217,6 +217,7 @@ export type CarsConditionCars = {
     glonass_registered: string;
     logo: string;
     tech_condition: string;
+    tech_inspection_not_required: boolean;
     repair_reason: string;
     repair_time: string;
     not_maintenance_and_repair?: boolean;

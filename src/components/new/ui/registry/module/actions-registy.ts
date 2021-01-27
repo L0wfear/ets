@@ -1353,6 +1353,10 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
 export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }, extraPayload: Object = {}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
+  const array = get(list, 'data.array', []);
+  const selectedRowIndex = array.findIndex((el) => el.car_id === list.rendersFields.values.car_id);
+  const newArray = [...array];
+  newArray.splice(selectedRowIndex, 1, list.rendersFields.values);
 
   const newVal = {
     ...list.rendersFields.values,
@@ -1369,6 +1373,10 @@ export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(r
           ...list.rendersFields,
           values: newVal,
         },
+        data: {
+          ...list.data,
+          array: newArray
+        }
       },
     ),
   );

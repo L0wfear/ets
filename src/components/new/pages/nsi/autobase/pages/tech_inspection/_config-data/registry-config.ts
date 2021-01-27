@@ -77,6 +77,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
           type: 'multiselect',
         },
         {
+          valueKey: 'is_not_inspectionable',
+          title: 'Не подлежит прохождению ТО/ГТО',
+          type: 'multiselect',
+          options: YES_NO_SELECT_OPTIONS_BOOL,
+        },
+        {
           valueKey: 'reg_number',
           title: 'Номер диагностической карты/ Талона ГТО',
           type: 'multiselect',
@@ -147,6 +153,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             title: 'Рег. номер ТС',
             width: 200,
             fieldTitlePopup: 'В скобках указывается номер ТС на дату прохождения техосмотра',
+          },
+          {
+            key: 'is_not_inspectionable',
+            title: 'Не подлежит прохождению ТО/ГТО',
+            width: 200,
+            valueForBoolean: 'Не подлежит',
           },
           {
             key: 'reg_number',

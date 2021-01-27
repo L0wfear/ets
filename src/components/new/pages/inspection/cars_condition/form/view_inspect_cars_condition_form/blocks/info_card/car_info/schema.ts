@@ -368,13 +368,41 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     diagnostic_card: {
       type: 'string',
       title: 'Номер диагностической карты',
-      required: true,
       maxLength: 20,
+      dependencies: [
+        (value, formState) => {
+          const techInspectionNotRequired = !get(formState, 'data.tech_inspection_not_required', null) && !get(formState, 'tech_inspection_not_required', null);
+          if (techInspectionNotRequired && !value) {
+            return 'Поле "Номер диагностической карты" должно быть заполнено';
+          }
+        },
+      ],
+      dependenciesDisable: [
+        (_, formState) => {
+          if (get(formState, 'tech_inspection_not_required', null)) {
+            return true;
+          }
+        },
+      ],
     },
     diagnostic_card_finished_at: {
       type: 'date',
       title: 'Действует до',
-      required: true,
+      dependencies: [
+        (value, formState) => {
+          const techInspectionNotRequired = !get(formState, 'data.tech_inspection_not_required', null) && !get(formState, 'tech_inspection_not_required', null);
+          if (techInspectionNotRequired && !value) {
+            return 'Поле "Действует до" должно быть заполнено';
+          }
+        },
+      ],
+      dependenciesDisable: [
+        (_, formState) => {
+          if (get(formState, 'tech_inspection_not_required', null)) {
+            return true;
+          }
+        },
+      ],
     },
     last_tech_inspection_date: {
       type: 'date',

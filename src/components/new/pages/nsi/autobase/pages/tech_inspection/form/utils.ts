@@ -16,6 +16,7 @@ export const defaultTechInspection: TechInspection = {
   gov_numbers: [],
   is_allowed: false,
   id: null,
+  is_not_inspectionable: false,
   note: '',
   okrug_name: null,
   reg_number: '',

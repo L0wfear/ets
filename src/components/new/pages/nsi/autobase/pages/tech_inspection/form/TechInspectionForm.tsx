@@ -10,7 +10,7 @@ import techInspectionPermissions from 'components/new/pages/nsi/autobase/pages/t
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/shema';
 
-import { getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
+import { defaultTechInspection, getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -27,10 +27,18 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { handleChangeBooleanWithSavedFields } from 'utils/functions';
+
+const inspectionFields: Array<keyof TechInspection> = [
+  'reg_number',
+  'date_end',
+  'tech_operator',
+  'date_start',
+];
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const [carListOptions, setCarListOptions] = React.useState([]);
-
+  const [savedFields, setSavedFields] = React.useState<Partial<TechInspection>>(null);
   const {
     formState: state,
     formErrors: errors,
@@ -61,6 +69,17 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
   const isLoading = carActualOptions.isLoading;
+  const isAvailableForChangeIsNotInspectionable = React.useMemo(() => {
+    const isFilledSomeOfInsuranceField = inspectionFields.some((key) => Boolean(state[key]));
+    return !isFilledSomeOfInsuranceField || IS_CREATING;
+  }, [IS_CREATING]);
+
+  const warningText = React.useMemo(() => {
+    return !IS_CREATING && !isAvailableForChangeIsNotInspectionable 
+      ? 'Невозможно изменить признак необходимости прохождения ТО/ГТО в существующей записи с информацией о диагностической карте'
+      : '';
+  }, [IS_CREATING, isAvailableForChangeIsNotInspectionable]);
+
   React.useEffect(
     () => {
       if (!car_id && carList.length) {
@@ -86,6 +105,18 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
     },
     [],
   );
+  const handleChangeIsNotInspectionable = React.useCallback((field, event) => {
+    handleChangeBooleanWithSavedFields<TechInspection>(
+      state.is_not_inspectionable, 
+      inspectionFields, 
+      state, 
+      defaultTechInspection,
+      savedFields, 
+      setSavedFields,
+      props.handleChange
+    );
+    props.handleChangeBoolean(field, event);
+  }, [props.handleChangeBoolean, state, props.handleChange, savedFields]);
 
   return (
     <EtsBootstrap.ModalContainer
@@ -118,51 +149,67 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               />
             )}
             <ExtField
-              id="reg_number"
-              type="string"
-              label="Номер диагностической карты/Талона ГТО"
-              value={state.reg_number}
-              error={errors.reg_number}
-              onChange={props.handleChange}
-              boundKeys="reg_number"
-              disabled={!isPermitted}
+              id="is_not_inspectionable"
+              type="boolean"
+              label="Не подлежит прохождению ТО/ГТО"
+              value={state.is_not_inspectionable}
+              error={errors.is_not_inspectionable}
+              onChange={handleChangeIsNotInspectionable}
+              boundKeys="is_not_inspectionable"
+              disabled={!isPermitted || !isAvailableForChangeIsNotInspectionable}
               modalKey={path}
+              warning={warningText}
             />
-            <ExtField
-              id="date_end"
-              type="date"
-              label="Срок действия до"
-              date={state.date_end}
-              time={false}
-              error={errors.date_end}
-              onChange={props.handleChange}
-              boundKeys="date_end"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="tech_operator"
-              type="string"
-              label="Место выдачи"
-              value={state.tech_operator}
-              error={errors.tech_operator}
-              onChange={props.handleChange}
-              boundKeys="tech_operator"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="date_start"
-              type="date"
-              label="Дата прохождения"
-              date={state.date_start}
-              time={false}
-              error={errors.date_start}
-              onChange={props.handleChange}
-              boundKeys="date_start"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
+            {!Boolean(state.is_not_inspectionable) &&(
+              <>
+                <ExtField
+                  id="reg_number"
+                  type="string"
+                  label="Номер диагностической карты/Талона ГТО"
+                  value={state.reg_number}
+                  error={errors.reg_number}
+                  onChange={props.handleChange}
+                  boundKeys="reg_number"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="date_end"
+                  type="date"
+                  label="Срок действия до"
+                  date={state.date_end}
+                  time={false}
+                  error={errors.date_end}
+                  onChange={props.handleChange}
+                  boundKeys="date_end"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="tech_operator"
+                  type="string"
+                  label="Место выдачи"
+                  value={state.tech_operator}
+                  error={errors.tech_operator}
+                  onChange={props.handleChange}
+                  boundKeys="tech_operator"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="date_start"
+                  type="date"
+                  label="Дата прохождения"
+                  date={state.date_start}
+                  time={false}
+                  error={errors.date_start}
+                  onChange={props.handleChange}
+                  boundKeys="date_start"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+              </>
+            )}
             <ExtField
               id="true_is_allowed"
               type="boolean"

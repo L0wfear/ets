@@ -88,6 +88,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     repair_application: '',
     classifier: '',
     tech_inspection_passed: '',
+    tech_inspection_not_required: false,
     glonass_stationary: '',
     glonass_registered: '',
     logo: '',

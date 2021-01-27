@@ -8,7 +8,7 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 import { insurancePolicyFormSchema } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/schema';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
-import { getDefaultInsurancePolicyElement } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/utils';
+import { defaultInsurancePolicy, getDefaultInsurancePolicyElement } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
   PropsInsurancePolicy,
@@ -23,10 +23,22 @@ import { autobaseCreateInsurancePolicy, autobaseUpdateInsurancePolicy } from 're
 import { autobaseGetInsuranceType } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/actions';
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
+import { handleChangeBooleanWithSavedFields } from 'utils/functions';
+
+const insuranceFields: Array<keyof InsurancePolicy> = [
+  'insurer',
+  'insurance_type_id',
+  'seria',
+  'number',
+  'date_start',
+  'date_end',
+  'price'
+];
 
 const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const [insuranceTypeOptions, setInsuranceTypeOptions] = React.useState([]);
   const [carListOptions, setCarListOptions] = React.useState([]);
+  const [savedFields, setSavedFields] = React.useState<Partial<InsurancePolicy>>(null);
   const {
     formState: state,
     formErrors: errors,
@@ -47,6 +59,15 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
   const isLoading = carActualOptions.isLoading;
+  const isAvailableForChangeIsNotInsurable = React.useMemo(() => {
+    const isFilledSomeOfInsuranceField = insuranceFields.some((key) => Boolean(state[key]));
+    return !isFilledSomeOfInsuranceField || IS_CREATING;
+  }, [IS_CREATING, insuranceFields, state,]);
+  const warningText = React.useMemo(() => {
+    return !IS_CREATING && !isAvailableForChangeIsNotInsurable 
+      ? 'Невозможно изменить признак необходимости страхования в существующей записи с информацией о полисе'
+      : '';
+  }, [IS_CREATING, isAvailableForChangeIsNotInsurable]);
 
   React.useEffect(
     () => {
@@ -85,6 +106,19 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
     [carList, state.car_id, state.gov_number],
   );
 
+  const handleChangeIsNotInsurable = React.useCallback((field, event) => {
+    handleChangeBooleanWithSavedFields<InsurancePolicy>(
+      state.is_not_insurable, 
+      insuranceFields, 
+      state, 
+      defaultInsurancePolicy,
+      savedFields, 
+      setSavedFields,
+      props.handleChange
+    );
+    props.handleChangeBoolean(field, event);
+  }, [props.handleChangeBoolean, state, props.handleChange, savedFields, insuranceFields]);
+
   return (
     <EtsBootstrap.ModalContainer
       id="modal-insurance-policy"
@@ -117,87 +151,103 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
               />
             )}
             <ExtField
-              id="insurer"
-              type="string"
-              label="Страховая организация"
-              value={state.insurer}
-              error={errors.insurer}
-              onChange={props.handleChange}
-              boundKeys="insurer"
-              disabled={!isPermitted}
+              id="is_not_insurable"
+              type="boolean"
+              label="Не подлежит страхованию"
+              value={state.is_not_insurable}
+              error={errors.is_not_insurable}
+              onChange={handleChangeIsNotInsurable}
+              boundKeys="is_not_insurable"
+              disabled={!isPermitted || !isAvailableForChangeIsNotInsurable}
               modalKey={path}
+              warning={warningText}
             />
-            <ExtField
-              id="insurance_type_id"
-              type="select"
-              label="Тип страхования"
-              value={state.insurance_type_id}
-              error={errors.insurance_type_id}
-              options={insuranceTypeOptions}
-              emptyValue={null}
-              onChange={props.handleChange}
-              boundKeys="insurance_type_id"
-              clearable={false}
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="seria"
-              type="string"
-              label="Серия"
-              value={state.seria}
-              error={errors.seria}
-              onChange={props.handleChange}
-              boundKeys="seria"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="number"
-              type="string"
-              label="Номер"
-              value={state.number}
-              error={errors.number}
-              onChange={props.handleChange}
-              boundKeys="number"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="date_start"
-              type="date"
-              label="Дата начала действия"
-              date={state.date_start}
-              time={false}
-              error={errors.date_start}
-              onChange={props.handleChange}
-              boundKeys="date_start"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="date_end"
-              type="date"
-              label="Дата окончания действия"
-              date={state.date_end}
-              time={false}
-              error={errors.date_end}
-              onChange={props.handleChange}
-              boundKeys="date_end"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
-            <ExtField
-              id="price"
-              type="string"
-              label="Стоимость, руб."
-              value={state.price}
-              error={errors.price}
-              onChange={props.handleChange}
-              boundKeys="price"
-              disabled={!isPermitted}
-              modalKey={path}
-            />
+            {!state.is_not_insurable && (
+              <>
+                <ExtField
+                  id="insurer"
+                  type="string"
+                  label="Страховая организация"
+                  value={state.insurer}
+                  error={errors.insurer}
+                  onChange={props.handleChange}
+                  boundKeys="insurer"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="insurance_type_id"
+                  type="select"
+                  label="Тип страхования"
+                  value={state.insurance_type_id}
+                  error={errors.insurance_type_id}
+                  options={insuranceTypeOptions}
+                  emptyValue={null}
+                  onChange={props.handleChange}
+                  boundKeys="insurance_type_id"
+                  clearable={false}
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="seria"
+                  type="string"
+                  label="Серия"
+                  value={state.seria}
+                  error={errors.seria}
+                  onChange={props.handleChange}
+                  boundKeys="seria"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="number"
+                  type="string"
+                  label="Номер"
+                  value={state.number}
+                  error={errors.number}
+                  onChange={props.handleChange}
+                  boundKeys="number"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="date_start"
+                  type="date"
+                  label="Дата начала действия"
+                  date={state.date_start}
+                  time={false}
+                  error={errors.date_start}
+                  onChange={props.handleChange}
+                  boundKeys="date_start"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="date_end"
+                  type="date"
+                  label="Дата окончания действия"
+                  date={state.date_end}
+                  time={false}
+                  error={errors.date_end}
+                  onChange={props.handleChange}
+                  boundKeys="date_end"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+                <ExtField
+                  id="price"
+                  type="string"
+                  label="Стоимость, руб."
+                  value={state.price}
+                  error={errors.price}
+                  onChange={props.handleChange}
+                  boundKeys="price"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+              </>
+            )}
             <ExtField
               id="note"
               type="text"

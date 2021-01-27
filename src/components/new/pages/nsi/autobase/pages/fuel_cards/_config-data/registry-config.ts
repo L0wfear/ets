@@ -9,6 +9,7 @@ export const registryKey = 'fuelCardsRegistry';
 
 export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
   let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
+    buttonsTypes.columns_control,
     buttonsTypes.filter,
     buttonsTypes.fuel_card_create,
     buttonsTypes.read,
@@ -19,6 +20,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
 
   if (is_archive) {
     buttons = [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.fuel_card_from_archive,

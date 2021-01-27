@@ -23,6 +23,7 @@ export const getToConfig = (): TypeConfigData<Penalty> => {
       title: 'Реестр штрафов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export_filtred_data,

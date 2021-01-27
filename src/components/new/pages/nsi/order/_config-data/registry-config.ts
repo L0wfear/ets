@@ -23,6 +23,7 @@ export const getToConfig = (): TypeConfigData<Order> => {
       title: 'Реестр централизованных заданий (факсограмм)',
       format: 'datetime_range_picker',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.order_create_mission_by_templates,
         buttonsTypes.order_create_duty_mission_by_templates,

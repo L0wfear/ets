@@ -24,6 +24,7 @@ export const config: TypeConfigData<Car> = {
   header: {
     title: 'Реестр транспортных средств',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.export_filtred_data,

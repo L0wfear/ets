@@ -8,6 +8,7 @@ import Th from 'components/new/ui/registry/components/data/table-data/table-cont
 type Props = {
   registryKey: string;
   indexRow: number;
+  tableScrollXPos: number;
 };
 
 const TrHead: React.FC<Props> = React.memo(
@@ -21,7 +22,7 @@ const TrHead: React.FC<Props> = React.memo(
           fieldsRow.map(
             (metaField) => {
               return (
-                <Th key={metaField.key} metaField={metaField} registryKey={props.registryKey} />
+                <Th key={metaField.key} metaField={metaField} registryKey={props.registryKey} tableScrollXPos={props.tableScrollXPos} />
               );
             },
           )

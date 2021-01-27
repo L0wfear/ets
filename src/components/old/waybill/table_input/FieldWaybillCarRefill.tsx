@@ -12,7 +12,7 @@ import { makeFuelCardIdOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { HrLineWaybill } from 'components/new/pages/login/styled/styled';
-import { createValidDate } from 'components/@next/@utils/dates/dates';
+import { createValidDate, createValidDateTime, dateInPeriod, diffDates } from 'components/@next/@utils/dates/dates';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { isObject } from 'util';
 import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -40,6 +40,8 @@ type Props = {
     plan_arrival_date: Waybill['plan_arrival_date'];
     fact_arrival_date: Waybill['fact_arrival_date'];
   };
+  waybill_status: Waybill['status'];
+  closed_editable: Waybill['closed_editable'];
   is_one_fuel_tank?: boolean;
   use_pouring?: boolean;
   fuel_cards_creating?: boolean;
@@ -97,6 +99,14 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   options: [],
 };
 
+const metaCarRefillDate: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
+  key: 'date',
+  title: 'Дата заправки',
+  format: 'date',
+  width: 70,
+  time: false,
+};
+
 const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill'] | Waybill['electrical_refill']>> = {
   key: 'value',
   title: 'Выдано, л',
@@ -125,10 +135,25 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
     const fuelCardsList = !isNullOrUndefined(props.boundKey)
       ? etsUseSelector((state) => getAutobaseState(state)[storeFuelCardsKey[props.boundKey]])
       : [];
-
+    const [needUpdateRefillDate, setNeedUpdateRefillDate] = React.useState(false);
     const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList); // <<< gas
     const [lastClosedWaybill, setLastClosedWaybill] = React.useState(null);
+    const fact_departure_date = createValidDateTime(get(props, 'date_for_valid.fact_departure_date'));
+    const fact_arrival_date = createValidDateTime(get(props, 'date_for_valid.fact_arrival_date'));
 
+    const plan_departure_date = createValidDateTime(get(props, 'date_for_valid.plan_departure_date'));
+    const plan_arrival_date = createValidDateTime(get(props, 'date_for_valid.plan_arrival_date'));
+    const validPeriod = React.useMemo(() => {
+      return fact_departure_date && fact_arrival_date
+        ? {
+          date_start: fact_departure_date,
+          date_end: fact_arrival_date,
+        }
+        : {
+          date_start: plan_departure_date,
+          date_end: plan_arrival_date,
+        };
+    }, [fact_departure_date, fact_arrival_date, plan_departure_date, plan_arrival_date]);
     React.useEffect(() => {
       getLastClosedWaybill();
     }, []);
@@ -176,6 +201,11 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             disabled: isElectricalRefilBlock,
           },
           {
+            ...metaCarRefillDate,
+            min: validPeriod.date_start ? new Date(validPeriod.date_start) : null, 
+            max: validPeriod.date_end ? new Date(validPeriod.date_end) : null,
+          },
+          {
             ...metaValue,
             title: props.fuel_type !== 'ELECTRICITY' ? metaValue.title : 'Выдано, кВт',
             disabled: !props.array[selectedRowIndex]?.type_id
@@ -188,13 +218,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
 
         return meta;
       },
-      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex, isGasRefilBlock, isElectricalRefilBlock],
+      [fuelCardIdOptions, typeIdOptions, props.array, selectedRowIndex, isGasRefilBlock, isElectricalRefilBlock, validPeriod],
     );
-    const fact_departure_date = createValidDate(get(props, 'date_for_valid.fact_departure_date'));
-    const fact_arrival_date = createValidDate(get(props, 'date_for_valid.fact_arrival_date'));
-
-    const plan_departure_date = createValidDate(get(props, 'date_for_valid.plan_departure_date'));
-    const plan_arrival_date = createValidDate(get(props, 'date_for_valid.plan_arrival_date'));
 
     const handleUpdateFuelCard = React.useCallback(
       async () => {
@@ -207,15 +232,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           payload.fuel_type = props.fuel_type;
         }
 
-        const validPeriod = fact_departure_date && fact_arrival_date
-          ? {
-            date_start: fact_departure_date,
-            date_end: fact_arrival_date,
-          }
-          : {
-            date_start: plan_departure_date,
-            date_end: plan_arrival_date,
-          };
         payload.date_start = validPeriod.date_start;
         payload.date_end = validPeriod.date_end;
         payload.is_archive = false;
@@ -265,7 +281,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         isCarRefilBlock,
         isEquipmentRefilBlock,
         isGasRefilBlock,
-        isElectricalRefilBlock
+        isElectricalRefilBlock,
+        validPeriod,
       ],
     );
 
@@ -339,9 +356,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
                   {
                     ...element,
                     type_id: refillTypeData.value,
-                    fuel_card_id: filteredFuelCardIdOptions.length
+                    fuel_card_id: filteredFuelCardIdOptions.length === 1
                       ? filteredFuelCardIdOptions[0].value
-                      : null,
+                      : element.fuel_card_id,
                   },
                 ];
                 props.handleChange(newArr);
@@ -350,9 +367,9 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
               for (const i in newArr) {
                 if (refillTypeData && (isNullOrUndefined(fuelCardValue?.[i]) === isNullOrUndefined(previousfuelCardValue?.[i]))) {
                   newArr[i].type_id = refillTypeData.value;
-                  newArr[i].fuel_card_id = filteredFuelCardIdOptions.length
+                  newArr[i].fuel_card_id = filteredFuelCardIdOptions.length === 1
                     ? filteredFuelCardIdOptions[0].value
-                    : null;
+                    : newArr[i].fuel_card_id;
                 }
               }
             }
@@ -397,7 +414,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
           newArr[rowIndex].type_id = 1;
           newArr[rowIndex].number = newArr[0].number;
         }
-
         props.handleChange(newArr);
       },
       [
@@ -410,6 +426,40 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
         isElectricalRefilBlock,
       ],
     );
+
+    React.useEffect(() => {
+      if (
+        props.array.length
+        && validPeriod.date_start
+        && validPeriod.date_end
+        && (props.waybill_status !== 'closed' || props.closed_editable)
+      ) {
+        const isDiffDates = diffDates(validPeriod.date_start, validPeriod.date_end) !== 0;
+        const newArr = props.array.map((el) => {
+          const isDateInPeriod = dateInPeriod(createValidDate(validPeriod.date_start), createValidDate(validPeriod.date_end), createValidDate(el.date), {
+            excludeEnd: false,
+            excludeStart: false,
+          });
+          if (!el.date && !isDiffDates) {
+            if (!needUpdateRefillDate) {
+              setNeedUpdateRefillDate(true);
+            }
+            return { ...el, date: validPeriod.date_start };
+          }
+          if (el.date && !isDateInPeriod) {
+            if (!needUpdateRefillDate) {
+              setNeedUpdateRefillDate(true);
+            }
+            return { ...el, date: null };
+          }
+          return el;
+        });
+        if (needUpdateRefillDate) {
+          props.handleChange(newArr);
+          setNeedUpdateRefillDate(false);
+        }
+      }
+    }, [validPeriod.date_start, validPeriod.date_end, props.array, props.handleChange, needUpdateRefillDate]);
 
     const previousFuelType = usePrevious(props.fuel_type);
     React.useEffect(

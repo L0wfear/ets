@@ -89,12 +89,24 @@ export type InspectCarsCondition = {
     fio: string;
     tel: string;
   };
+  list_drivers: string;
+  list_mechanics: string;
+  maintenance: string;
   monitoring_kind: string | null;
   monitoring_kind_text: string;
+  not_used: string;
+  okrug_id: number;
+  okrug_name: string;
   open_employee_fio: string;
   open_employee_id: number;
+  repair: string;
   resolve_to: string;
+  staff_drivers: string;
+  staff_mechanics: string;
+  staffing_drivers: string;
+  staffing_mechanics: string;
   status_text: string;
+  storage: string;
   type: 'cars_condition';
   data?: {
     types_cars: Array<TypesСar>;
@@ -169,6 +181,7 @@ export type CarsConditionCars = {
     defects_body: boolean;
     defects_chassis: boolean;
     defects_attachments: boolean;
+    defects_text: string;
     incomplete_equipment: boolean;
     liquids_leak: boolean;
 
@@ -205,6 +218,7 @@ export type CarsConditionCars = {
     logo: string;
     tech_condition: string;
     repair_reason: string;
+    repair_time: string;
     not_maintenance_and_repair?: boolean;
     own_tech_maintenance?: boolean;
   };

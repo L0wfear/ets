@@ -32,6 +32,7 @@ export const getToConfig = (): TypeConfigData<FuelOperationActive> => {
     header: {
       title: 'Операции для расчета топлива',
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,

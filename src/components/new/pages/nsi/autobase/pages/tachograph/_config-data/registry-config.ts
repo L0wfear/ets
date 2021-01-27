@@ -24,6 +24,7 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
       title: 'Реестр тахографов',
 
       buttons: [
+        buttonsTypes.columns_control,
         buttonsTypes.filter,
         buttonsTypes.create,
         buttonsTypes.read,
@@ -33,6 +34,27 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
     },
     filter: {
       fields: [
+        {
+          valueKey: 'okrug_name',
+          title: [
+            {
+              title: 'Округ',
+              displayIf: displayIfContant.isKgh,
+            }
+          ],
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_name',
+          title: [
+            {
+              displayIf: displayIfContant.isKgh,
+              title: 'Организация',
+            },
+          ],
+          type: 'multiselect',
+        },
         {
           valueKey: 'company_structure_id',
           labelKey: 'company_structure_name',
@@ -138,6 +160,26 @@ export const getToConfig = (): TypeConfigData<TachographListWithOuterProps> => {
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Округ',
+              },
+            ],
+            width: 100,
+          },
+          {
+            key: 'company_name',
+            title: [
+              {
+                displayIf: displayIfContant.isKgh,
+                title: 'Организация',
+              },
+            ],
+            width: 200,
           },
           {
             key: 'company_structure_name',

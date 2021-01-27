@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 
 import { getWarningNotification } from 'utils/notifications';
-import { saveData, printData, parseFloatWithFixed } from 'utils/functions';
+import { saveData, printData, parseFloatWithFixed, isMotoHoursMileageType } from 'utils/functions';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
@@ -46,10 +46,9 @@ import { waybillSchema, waybillClosingSchema } from 'components/old/waybill/wayb
 import { validate } from 'components/old/ui/form/new/validate';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createValidDateTime, getTomorrow9amMoscowServerTime } from 'components/@next/@utils/dates/dates';
-import { hasMotohours } from 'utils/functions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { ELECTRICAL_ENGINE_TYPE_ID, GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { gasDefaultElement, electricalDefaultElement, fuelDefaultElement, defaultMotoHoursData, defaultOdometrData } from 'components/new/pages/waybill/form/context/utils';
 import { hasPercentageDifference, PERCENT_DIFF_VALUE } from 'components/old/waybill/utils';
 import { ParagraphRed } from 'global-styled/global-styled';
 
@@ -99,6 +98,8 @@ const canSaveTestWrap = (formError) => {
     },
     {},
   );
+
+  console.info('[INFO] formError -> ', formError); // eslint-disable-line
 
   return canSaveTest(filredFormErrors);
 };
@@ -208,7 +209,7 @@ export type WaybillFormWrapProps = (
   & OwnProps
 );
 
-type State = {
+export type State = {
   formState: Partial<Waybill> & {
     motohours_equip_diff: number;
     odometr_diff: number;
@@ -664,8 +665,8 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       formState.fuel_end = parseFloatWithFixed((
         fuelStart
         + fuelGiven
-        - fuelTaxes
-        - equipmentFuelTaxes
+        - parseFloatWithFixed(fuelTaxes, 3)
+        - parseFloatWithFixed(equipmentFuelTaxes, 3)
       ), 3);
       formState.gas_fuel_end = parseFloatWithFixed((
         gasFuelStart
@@ -755,7 +756,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         });
       }
     } else {
-      // чистим поля с газом <<< сделать через Object
+      // 1 чистим поля с газом <<< сделать через Object
       Object.keys(gasDefaultElement).forEach((key) => {
         formState[key] = gasDefaultElement[key];
       });
@@ -883,14 +884,14 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
 
   calcTaxDataFieldForChange = (
     tax_data: Waybill['gas_tax_data'] | Waybill['tax_data'] | Waybill['electrical_tax_data'],
-    formState,
+    formState: State['formState'],
     field,
     index,
   ) => {
     const isElectricalKind = formState.engine_kind_ids?.includes(ELECTRICAL_ENGINE_TYPE_ID);
     const motohoursMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/моточас`;
     const odometrMeasureUnitName = `${isElectricalKind ? 'кВт' : 'л'}/км`;
-    const motohoursMain = hasMotohours(formState.gov_number);
+    const motohoursMain = isMotoHoursMileageType(formState.mileage_type_id);
     const elemMeasureUnitName = motohoursMain ? motohoursMeasureUnitName : odometrMeasureUnitName;
     const firstElemIndex = tax_data.findIndex((el) => el.measure_unit_name === elemMeasureUnitName);
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
@@ -1000,7 +1001,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const value = get(e, ['target', 'value'], e);
     let formState = cloneDeep(this.state.formState);
     formState[field] = value;
-    console.info(field, value); // eslint-disable-line
+    console.info('[INFO] Change field -> ', {field, value}); // eslint-disable-line
     formState = calculateWaybillMetersDiff(formState, field, value);
     // TODO при формировании FACT_VALUE считать diff - finalFactValue
     if (formState.tax_data && formState.tax_data.length) {
@@ -1043,9 +1044,9 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       delete formState.gas_fuel_start;
       delete formState.electrical_fuel_start;
       delete formState.motohours_equip_start;
-
-      formState.car_has_motohours = null;
-      formState.car_has_odometr = null;
+      Object.entries({...defaultMotoHoursData, ...defaultOdometrData}).forEach(([key, value]) => {
+        formState[key] = value;
+      });
 
       // prettier-ignore
       console.info( // eslint-disable-line
@@ -1060,6 +1061,16 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
         '----->',
         'car_has_motohours',
         'car_has_odometr',
+        'is_edited_odometr',
+        'odometr_end',
+        'odometr_start',
+        'odometr_reason_id',
+        'odometr_diff',
+        'is_edited_motohours',
+        'motohours_end',
+        'motohours_start',
+        'motohours_reason_id',
+        'motohours_diff',
       );
 
       this.handleMultipleChange(formState);
@@ -1068,11 +1079,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     handleMultipleChange = (fields) => {
       let formState = cloneDeep(this.state.formState);
       Object.entries(fields).forEach(([field, value]) => {
-        console.info(field, value); // eslint-disable-line
-
         formState[field] = value;
         formState = calculateWaybillMetersDiff(formState, field, value);
       });
+      console.info('[INFO] WaybillValues -> ', formState); // eslint-disable-line
       if (formState) {
         this.handleFieldsChange(formState);
       }
@@ -1163,7 +1173,17 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
      * @return {undefined}
      */
     handleFormSubmit = async (state = this.state.formState, callback) => {
-      const formState = cloneDeep(state);
+      const carRefillWithFormatedDate = state.car_refill.length 
+        ? state.car_refill.map((el) => {
+          return {...el, date: createValidDateTime(el.date)};
+        })
+        : [];
+      const equipmentRefillWithFormatedDate = state.equipment_refill.length 
+        ? state.equipment_refill.map((el) => {
+          return {...el, date: createValidDateTime(el.date)};
+        })
+        : [];
+      const formState = cloneDeep({...state, car_refill: carRefillWithFormatedDate, equipment_refill: equipmentRefillWithFormatedDate});
       const waybillStatus = formState.status;
 
       if (!waybillStatus) {
@@ -1425,6 +1445,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
               page={this.props.page}
               path={this.props.path}
               defaultCarData={this.props.defaultCarData}
+              element={this.props.element}
             />
           )}
           {this.state.edcRequestIds

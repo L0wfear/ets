@@ -103,7 +103,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
       = IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
     
     const isPermittedToUpdateCards = validatePermissions(fuelCardsPermissions.update_cars, props.permissionsSet);
-    const filteredFuelTypeOptions = usefuelTypeOptions(); // <<< сделать через отдлеьный хук DITETS20A-134, URL: /fuel_type/, /fuel_type/<id>/ | GET
+    const filteredFuelTypeOptions = usefuelTypeOptions(props.page, {is_fuel_card: true});
     const IS_GPN_CARD = state.source_type_id === 2;
 
     return (
@@ -162,7 +162,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.released_at}
                 time={false}
                 makeGoodFormat
-                makeGoodFormatInitial
                 onChange={props.handleChange}
                 error={errors.released_at}
                 boundKeys="released_at"
@@ -176,7 +175,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.date_end}
                 time={false}
                 makeGoodFormat
-                makeGoodFormatInitial
                 onChange={props.handleChange}
                 error={errors.date_end}
                 boundKeys="date_end"

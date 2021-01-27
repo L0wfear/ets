@@ -47,8 +47,8 @@ export const driverHasSpecialLicenseWithActiveDate = (
   )
 );
 
-const validateEmployeeByLicense = (gov_number: Car['gov_number'], employeeData: Pick<Employee, 'special_license' | 'special_license_date_end' | 'drivers_license' | 'drivers_license_date_end'>) => {
-  if (!hasMotohours(gov_number)) {
+const validateEmployeeByLicense = (carList: Array<Car>, carId: number, employeeData: Pick<Employee, 'special_license' | 'special_license_date_end' | 'drivers_license' | 'drivers_license_date_end'>) => {
+  if (!hasMotohours(carList, carId)) {
     return driverHasLicenseWithActiveDate(employeeData.drivers_license, employeeData.drivers_license_date_end);
   }
   return driverHasSpecialLicenseWithActiveDate(employeeData.special_license, employeeData.special_license_date_end);
@@ -59,7 +59,7 @@ const waybillFilterDrivers = memoizeOne(
     employeeBindedToCarList: Array<EmployeeBindedToCar>,
     medicalStatsAllowedDriversListData: Array<MedicalStatsAllowedDriver>,
     employeeIndexData: Record<Employee['id'], Employee>,
-    gov_number: string,
+    carList: Array<Car>,
     car_id: number,
     structure_id: number,
     driver_id?: number,
@@ -95,7 +95,7 @@ const waybillFilterDrivers = memoizeOne(
     ).reduce(
       (newArr, employeeData) => {
         const validateByStructure = validateEmployeeByStructureId(structure_id, employeeData);
-        const validateByLicense = validateEmployeeByLicense(gov_number, employeeData);
+        const validateByLicense = validateEmployeeByLicense(carList, car_id, employeeData);
 
         if (validateByStructure && validateByLicense) {
           const personnel_number = (

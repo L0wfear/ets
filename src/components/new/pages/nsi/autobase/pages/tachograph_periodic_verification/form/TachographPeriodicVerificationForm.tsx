@@ -37,6 +37,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
       page, 
       path,
       formErrors: errors,
+      IS_CREATING,
       tachographBrandNameOptions,
       tachographFactoryNumberOptions,
       tachographBrandNameList,
@@ -98,7 +99,7 @@ const TachographPeriodicVerificationForm: React.FC<PropsTachograph> = React.memo
         bsSize="small"
       >
         <EtsBootstrap.ModalHeader closeButton>
-          <EtsBootstrap.ModalTitle>Изменение записи</EtsBootstrap.ModalTitle>
+          <EtsBootstrap.ModalTitle>{IS_CREATING ? 'Создание записи' : 'Изменение записи'}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>

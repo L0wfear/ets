@@ -7,7 +7,7 @@ import Table from 'components/old/waybill/Table';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/old/ui/Div';
-import { isEmpty } from 'utils/functions';
+import { parseFloatWithFixed, isEmpty } from 'utils/functions';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import {
   EtsHeaderContainer,
@@ -57,7 +57,7 @@ export default class Taxes extends React.Component<any, any> {
     ) {
       return 0;
     }
-    return FUEL_RATE * fuel_correction_rate * FACT_VALUE;
+    return parseFloatWithFixed(FUEL_RATE * fuel_correction_rate * FACT_VALUE, 3);
   }
 
   static calculateFinalResult(data) {
@@ -73,7 +73,7 @@ export default class Taxes extends React.Component<any, any> {
       },
       0,
     );
-    return parseFloat(result);
+    return parseFloatWithFixed(result, 3);
   }
 
   static calculateFinalFactValue(data, type):
@@ -200,7 +200,7 @@ export default class Taxes extends React.Component<any, any> {
         ? parseFloat(FUEL_RATE).toFixed(3)?.replace('.', ',')
         : '',
       RESULT: (RESULT) => {
-        const resultView = RESULT ? parseFloat(RESULT).toFixed(3)?.replace('.', ',') : '';
+        const resultView = RESULT ? parseFloatWithFixed(RESULT, 3)?.toString().replace('.', ',') : '';
         return `${resultView ? `${resultView} ${props.isElectricalKind ? 'кВт' : 'л'}` : ''}`;
       },
       fuel_correction_rate: (fuel_correction_rate) =>
@@ -208,7 +208,9 @@ export default class Taxes extends React.Component<any, any> {
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
-          value: +parseFloat(FACT_VALUE).toFixed(1),
+          value: FACT_VALUE || FACT_VALUE === 0
+            ? parseFloat(FACT_VALUE)
+            : FACT_VALUE,
           id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
@@ -341,17 +343,21 @@ export default class Taxes extends React.Component<any, any> {
     const current = tableData[index];
     const oldCurrVal = current.FACT_VALUE;
     current.FACT_VALUE = e.target.value === '' || e.target.value <= 0 ? '' : Math.abs(e.target.value);
-    const threeSybolsAfterComma = /^([0-9]{1,})\.([0-9]{4,})$/.test(
+
+    const stopInputRegexp = /^([0-9]{1,})\.([0-9]{2,})$/.test(
       current.FACT_VALUE,
-    ); // есть 3 знака после запятой
+    ); // есть 1 знак после запятой
+
     if (
       current.is_excluding_mileage
       && current.measure_unit_name === 'л/подъем'
+      && current.FACT_VALUE !== ''
     ) {
       current.FACT_VALUE = Math.ceil(current.FACT_VALUE);
     }
-    // если пользак уже ввел 3 знака после запятой, то он больше ничего не может ввести
-    if (current.measure_unit_name === 'л/час' && threeSybolsAfterComma) {
+
+    // если пользак уже ввел 1 знак после запятой, то он больше ничего не может ввести
+    if (stopInputRegexp && current.FACT_VALUE && current.FACT_VALUE !== 0 ) {
       current.FACT_VALUE = oldCurrVal;
     }
 
@@ -538,7 +544,7 @@ export default class Taxes extends React.Component<any, any> {
                 </div>
               </div>
               <div>
-                <b>{finalResult.toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
+                <b>{parseFloatWithFixed(finalResult, 3).toFixed(3).replace('.', ',')} {this.props.isElectricalKind ? 'кВт' : 'л'}</b>
               </div>
             </FooterEnd>
           </>

@@ -391,17 +391,14 @@ export const InspectionService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/act',
 );
-export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/registry',
-);
 export const InspectAutobaseService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/autobase',
+  'inspection/autobase',
 );
 export const InspectPgmBaseService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/pgm_base',
+  'inspection/pgm_base',
 );
 export const InspectCarsConditionService = ETS_API_FACTORY.createApiServiceAdapter(
-  'inspect/cars_condition',
+  'inspection/cars_condition',
 );
 export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/container',
@@ -455,6 +452,10 @@ export const EngineTypeService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const EngineKindService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/engine_kind',
+);
+
+export const CarMileageOptionsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'car_mileage',
 );
 
 export const TachographPeriodicVerificationService = ETS_API_FACTORY.createApiServiceAdapter(

@@ -14,4 +14,5 @@ export type PropsDefaultInput = {
   type: DefaultInputTypes;
   setRefreshCheckBoxFilter: React.Dispatch<React.SetStateAction<boolean>>;
   setIsClickMenu?: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 };

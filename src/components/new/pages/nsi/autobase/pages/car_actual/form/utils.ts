@@ -1,10 +1,14 @@
 import { isObject, isNullOrUndefined } from 'util';
 import memoizeOne from 'memoize-one';
-import { CarWrap } from './@types/CarForm';
+import { CarWrap, MileageTypesArray } from './@types/CarForm';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isFourDigitGovNumber } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
+import * as React from 'react';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetAndSetInStoreMileageOptions } from 'redux-main/reducers/modules/some_uniq/car_mileage_options/actions';
+import { MileageType } from 'redux-main/reducers/modules/some_uniq/car_mileage_options/@types';
 
 export const getDefaultCar = (): CarWrap => ({
   asuods_id: null,
@@ -44,6 +48,7 @@ export const getDefaultCar = (): CarWrap => ({
   level_sensors_num: null,
   load_capacity: null,
   max_speed: null,
+  mileage_type_id: null,
   model_id: null,
   model_name: '',
   note: '',
@@ -241,4 +246,25 @@ export const filterDriverAccident = (employeeData: any, gov_number: CarWrap['gov
   }
 
   return false;
+};
+
+export const useMileageOptions = (meta: {page: string; path?: string;}): MileageTypesArray => {
+  const dispatch = etsUseDispatch();
+  const [mileageTypesList, setMileageTypesList] = React.useState<Array<MileageType>>([]);
+  React.useEffect(() => {
+    ( async () => {
+      const mileageTypesList = await (await dispatch(actionGetAndSetInStoreMileageOptions({}, meta)))?.data;
+      setMileageTypesList(mileageTypesList);
+    })();
+  }, []);
+
+  const mileageTypeOptions = React.useMemo(() => {
+    return mileageTypesList.map((el) => (
+      {
+        value: el.id,
+        label: el.name,
+      }
+    ));
+  }, [mileageTypesList]);
+  return mileageTypeOptions;
 };

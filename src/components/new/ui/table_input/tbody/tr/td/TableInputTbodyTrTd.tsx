@@ -75,7 +75,6 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
       metaData.format,
       props.value,
       metaData.default_value,
-      metaData.default_value,
       handleChange,
     ]);
 
@@ -111,7 +110,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 <ExtField
                   type="number"
                   id={props.metaData.key}
-                  label={false}
+                  label={null}
                   value={props.value}
                   error={props.error}
                   onChange={handleChange}
@@ -126,7 +125,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
               <ExtField
                 type="select"
                 id={props.metaData.key}
-                label={false}
+                label={null}
                 value={props.value}
                 error={props.error}
                 options={metaData.options}
@@ -143,11 +142,15 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
                 type="date"
                 time={metaData.time}
                 id={props.metaData.key}
-                label={false}
+                label={null}
                 value={props.value}
                 error={props.error}
                 onChange={handleChange}
                 disabled={disabled || metaData.disabled || props.disabled}
+                min={metaData.min}
+                max={metaData.max}
+                footer={false}
+                makeGoodFormat
               />
             )
         }

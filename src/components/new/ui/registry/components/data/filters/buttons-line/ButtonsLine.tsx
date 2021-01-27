@@ -21,6 +21,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { compose } from 'recompose';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import ButtonFiltersControl from 'components/new/ui/registry/components/data/filters/filters_control/ButtonFiltersControl';
 
 type PropsButtonsLIne = {
   registryKey: string;
@@ -57,6 +58,7 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
       <EtsFiltersButtonsLine>
         <div />
         <EtsFilterActionButtonConteiner>
+          <ButtonFiltersControl registryKey={props.registryKey}/>
           <EtsFilterActionButton id="submit" type="submit">Применить</EtsFilterActionButton>
           <EtsFilterActionButton
             onClick={resetAllTypeFilter}

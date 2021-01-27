@@ -210,7 +210,7 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
         </EtsBootstrap.Row>
         {/* <-- end  Электричество-fields */}
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={2}>
+      <EtsBootstrap.Col md={12} zIndex={4}>
         <EtsBootstrap.Col md={12}>
           <FieldWaybillCarRefill // <<< electrical
             id="electrical_refill"
@@ -248,6 +248,8 @@ const ElectricalBodyContainer: React.FC<Props> = React.memo(
             is_refill_error={errors.is_no_electrical_refill}
             boundKey={'electrical_refill'}
             fuelCardsList={props.electricalFuelCardsList}
+            waybill_status={waybillFormState.status}
+            closed_editable={waybillFormState.closed_editable}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>

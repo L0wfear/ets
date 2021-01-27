@@ -1,12 +1,17 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
+import {
+  MOTOHOURS_MILEAGE_TYPE_ID,
+  ODOMETR_MILEAGE_TYPE_ID,
+} from 'constants/dictionary';
 
 type WaybillCarRefill = {
   fuel_card_id: number;
   type_id: number;
   value: number;
   number: string;
+  date: string;
 };
 
 type TaxDataCar = {
@@ -96,24 +101,17 @@ export type WaybillRegistryRow = {
   id: number;
   is_bnso_broken: boolean;
   is_one_fuel_tank: boolean;
-  is_edited_odometr: boolean;
-  is_edited_motohours: boolean;
   is_edited_motohours_equip: boolean;
   is_edited_start: boolean;
+  mileage_type_id: typeof MOTOHOURS_MILEAGE_TYPE_ID | typeof ODOMETR_MILEAGE_TYPE_ID;
   mission_id_list: Array<Mission['id']>;
-  motohours_end: number;
   motohours_equip_end: number;
   motohours_equip_diff: number;
   motohours_equip_start: number;
   motohours_equip_reason_id: number;
-  motohours_start: number;
-  motohours_reason_id: number;
   number: number | string;
   okrug_id: string;
   okrug_name: string;
-  odometr_end: number;
-  odometr_start: number;
-  odometr_reason_id: number;
   plan_arrival_date: string;
   plan_departure_date: string;
   sensor_consumption: number;
@@ -133,9 +131,7 @@ export type WaybillRegistryRow = {
   work_mode_name: string;
   work_mode_text: string;
   season: 'winter' | 'summer';
-  car_has_motohours: boolean;
-  car_has_odometr: boolean;
-} & WaybillFuel;
+} & WaybillFuel & WaybillOdometr & WaybillMotoHours;
 
 export type WaybillGas = {
   gas_fuel_type: string;                      // + + + Тип топлива
@@ -187,6 +183,24 @@ export type WaybillRefill = {
   is_no_equipment_refill: boolean;
 };
 
+export type WaybillOdometr = {
+  is_edited_odometr: boolean;
+  odometr_end: number;
+  odometr_start: number;
+  odometr_reason_id: number;
+  car_has_odometr: boolean;
+  odometr_diff?: number; // для жизни
+};
+
+export type WaybillMotoHours = {
+  is_edited_motohours: boolean;
+  motohours_end: number;
+  motohours_start: number;
+  motohours_reason_id: number;
+  car_has_motohours: boolean;
+  motohours_diff?: number; // для жизни
+};
+
 export type Waybill = (
   WaybillRegistryRow
   & waybillDiff
@@ -198,14 +212,14 @@ export type Waybill = (
     distance?: number; // для валидации
     hasEquipmentFuelRates?: boolean;
 
-    odometr_diff?: number; // для жизни
-    motohours_diff?: number; // для жизни
     refill: OneRefillFuelCompanyData['refills'];
     rrn_codes: OneRefillFuelCompanyData['rrn_codes'];
   }
   & WaybillGas
   & WaybillElectrical
   & WaybillRefill
+  & WaybillOdometr
+  & WaybillMotoHours
 );
 
 export type IStateWaybill = {

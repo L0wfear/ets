@@ -220,7 +220,7 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
         </EtsBootstrap.Row>
         {/* <-- end  Топливо-fields */}
       </EtsBootstrap.Col>
-      <EtsBootstrap.Col md={12} zIndex={2}>
+      <EtsBootstrap.Col md={12} zIndex={4}>
         <EtsBootstrap.Col md={12}>
           <FieldWaybillCarRefill
             id="car_refill"
@@ -258,6 +258,8 @@ const FuelBodyContainer: React.FC<Props> = React.memo(
             path={props.path}
             boundKey={'car_refill'}
             fuelCardsList={props.fuelCardsList}
+            waybill_status={waybillFormState.status}
+            closed_editable={waybillFormState.closed_editable}
           />
         </EtsBootstrap.Col>
       </EtsBootstrap.Col>

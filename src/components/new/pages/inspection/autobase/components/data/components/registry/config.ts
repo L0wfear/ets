@@ -2,17 +2,18 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { InspectionPayload } from 'components/new/pages/inspection/common_components/data/@types/InspectionData';
 
 export const registryKey = 'inspectAutobase';
 
-export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): TypeConfigData<InspectAutobase> => {
+export const getInspectionAutobaseDataRegistryConfig = (payload: InspectionPayload, searchState: object): TypeConfigData<InspectAutobase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'inspect/autobase',
+        entity: 'inspection/autobase',
         payload: {
-          base_id: carpoolId,
+          ...payload
         },
       },
       getBlobData: {
@@ -33,6 +34,24 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
     filter: {
       fields: [
         {
+          valueKey: 'okrug_id',
+          labelKey: 'okrug_name',
+          type: 'multiselect',
+          title: 'Округ',
+        },
+        {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          type: 'multiselect',
+          title: 'Организация',
+        },
+        {
+          valueKey: 'base_id',
+          labelKey: 'base_address',
+          type: 'multiselect',
+          title: 'Автобаза',
+        },
+        {
           valueKey: 'date_start',
           type: 'advanced-date',
           title: 'Дата начала проверки',
@@ -41,6 +60,12 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
           valueKey: 'date_end',
           type: 'advanced-date',
           title: 'Дата окончания проверки',
+        },
+        {
+          valueKey: 'status',
+          labelKey: 'status_text',
+          type: 'multiselect',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'open_employee_fio',
@@ -76,6 +101,21 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
           {
             key: 'enumerated',
             title: '№',
+          },
+          {
+            key: 'okrug_name',
+            title: 'Округ',
+            width: 200,
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
+            width: 200,
+          },
+          {
+            key: 'base_address',
+            title: 'Автобаза',
+            width: 200,
           },
           {
             key: 'date_start',

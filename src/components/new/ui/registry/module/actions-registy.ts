@@ -88,12 +88,19 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
 export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
+  const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
+  const filterFields = localStorageFilterFields.length 
+    ? config.filter.fields.map((el) => {
+      const localStorageEl = localStorageFilterFields.find((elem) => el.valueKey === elem.valueKey);
+      return {...el, hidden: Boolean(localStorageEl.hidden)};
+    }) 
+    : config.filter?.fields ?? [];
 
   const mergeConfig: Partial<OneRegistryData<any>> = {
     isLoading: !config.noInitialLoad,
     Service: config.Service,
     path: config.path || null,
-    filter: mergeFilter<F>(config.filter),
+    filter: mergeFilter<F>({fields: filterFields}),
     header: mergeHeader<F>(config.header),
   };
 
@@ -552,6 +559,48 @@ export const registryChangeFilterRawValues = (registryKey: string, valueKey: str
   );
 };
 
+export const actionChangeRegistryFilterFields = (
+  registryKey: string, 
+  valueKey: string,
+  selectAll?: boolean,
+): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+  const registryData = get(getRegistryState(getState()), registryKey);
+  const filter = get(registryData, 'filter');
+  const defaultRawFilterValues = {
+    eq: {value: ''},
+    gt: {value: ''},
+    in: {value: []},
+    like: {value: ''},
+    lt: {value: ''},
+    neq: {value: ''},
+  };
+  if (valueKey === 'selectAll') {
+    return dispatch(
+      registryChangeFilterData(
+        registryKey,
+        {
+          ...filter,
+          fields: filter.fields.map((el) => ({...el, hidden: selectAll})),
+        }
+      )
+    );
+  }
+
+  return dispatch(
+    registryChangeFilterData(
+      registryKey,
+      {
+        ...filter,
+        fields: filter.fields.map((el) => ({...el, hidden: valueKey === el.valueKey ? !el.hidden : el.hidden})),
+        rawFilterValues: {
+          ...filter.rawFilterValues,
+          [valueKey]: defaultRawFilterValues,
+        },
+      }
+    )
+  );
+};
+
 export const registryResetAllTypeFilter = (registryKey: string): EtsAction<void> => (dispatch, getState) => {
   dispatch(actionUnselectSelectedRowToShow(registryKey, true));
   const registryData = get(getRegistryState(getState()), registryKey);
@@ -693,7 +742,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
         },
         {},
       ),
-      format: 'xls',
+      format: getBlobData?.payload?.format || 'xls',
     };
 
     if (useFiltredData && !userServerFilters) {
@@ -979,6 +1028,11 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, 1)
   );
 
+  const isFirstRow = (
+    uniqKey
+    && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, undefined)
+  );
+
   const list_new: OneRegistryData['list'] = {
     ...list,
     data: {
@@ -996,7 +1050,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && registryIsPermitedFuctionResult.isPermittedToUpdate
     && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
 
-  if (!isEqualSelectedRow) {
+  if (!isEqualSelectedRow || !isFirstRow) {
     if (sendPutPostRequest) {
       await dispatch(
         registrySelectRowWithPutRequest(
@@ -1296,13 +1350,14 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
   );
 };
 
-export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }): EtsAction<void> => (dispatch, getState) => {
+export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(registryKey: string, payload: { key: string; value: any; }, extraPayload: Object = {}): EtsAction<void> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey) as OneRegistryData<F>;
   const list = get(registryData, 'list');
 
   const newVal = {
     ...list.rendersFields.values,
     [payload.key]: payload.value,
+    ...extraPayload,
   };
 
   dispatch(

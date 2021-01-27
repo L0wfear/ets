@@ -57,6 +57,7 @@ const DefaultInput: React.FC<PropsDefaultInput> = ({
       options={OPTIONS}
       disabled={!length}
       setIsClickMenu={props.setIsClickMenu}
+      etsIsLoading={props.isLoading}
     />
   );
 };

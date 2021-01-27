@@ -18,6 +18,7 @@ export const config: TypeConfigData<Company> = {
   header: {
     title: 'Реестр организаций',
     buttons: [
+      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
     ],

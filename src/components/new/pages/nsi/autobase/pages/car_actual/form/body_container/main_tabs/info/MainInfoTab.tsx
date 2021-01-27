@@ -13,6 +13,10 @@ import { MarginTopRow } from '../registration/styled';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FieldSelectEngine from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
+import { useMileageOptions } from '../../../utils';
+import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 type MainInfoTab = {
   isPermitted: boolean;
@@ -43,6 +47,10 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
       },
       [props.onChange],
     );
+
+    const mileageTypeOptions = useMileageOptions({page: props.page, path: props.path});
+    const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+    const canUpdateMileageType = permissions.has(carActualPermissions.updateMileage);
 
     return (
       <MarginTopRow>
@@ -87,7 +95,6 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 disabled={!isPermitted}
                 error={errors.exploitation_date_start}
                 makeGoodFormat
-                makeGoodFormatInitial
               />
               <ExtField
                 type="string"
@@ -170,6 +177,17 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 boundKeys="operating_mode"
                 disabled={!isPermitted}
                 error={errors.operating_mode}
+              />
+              <ExtField
+                type="select"
+                label="Расчет пробега"
+                options={mileageTypeOptions}
+                value={state.mileage_type_id}
+                onChange={props.onChange}
+                boundKeys="mileage_type_id"
+                error={errors.mileage_type_id}
+                disabled={!isPermitted || !canUpdateMileageType}
+                clearable={false}
               />
             </EtsBootstrap.Col>
             <FieldSelectEngine

@@ -26,3 +26,8 @@ export type PropsCar = OutputWithFormProps<
 export type DefaultOwnPropsToBodyRoute = OneTabDataCommon & {
   isActive: boolean;
 };
+
+export type MileageTypesArray = Array<{
+  value: number;
+  label: string;
+}>;

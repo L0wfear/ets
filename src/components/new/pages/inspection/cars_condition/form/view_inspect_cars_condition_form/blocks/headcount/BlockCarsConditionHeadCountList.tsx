@@ -29,10 +29,13 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
 
     const handleChange = React.useCallback(
       (key, event) => {
+        const defaultValue = get(event, 'target.value', event);
+        const type = get(event, 'target.type', null);
+        const value = (type === 'number' && !isNaN(Number(defaultValue))) ? Number(defaultValue) : defaultValue;
         props.onChange({
           headcount: {
             ...props.headcount,
-            [key]: get(event, 'target.value', event),
+            [key]: value,
           },
         });
       },
@@ -57,7 +60,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
         <h4>Штатная и списочная численность</h4>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <h5>По штатному расписанию.</h5>
+            <h5>По штатному расписанию</h5>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField
@@ -86,7 +89,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <h5>Списочное количество.</h5>
+            <h5>Списочное количество</h5>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
             <ExtField

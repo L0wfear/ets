@@ -53,7 +53,9 @@ export const initialState: IStateSomeUniq = {
   refillFuelCompany: {
     refills: [],
     rrn_codes: [],
-  }
+  },
+  fuelTypesList: [],
+  mileageTypesList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

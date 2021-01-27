@@ -16,7 +16,7 @@ import useCountryOptions from 'components/new/utils/hooks/services/useOptions/us
 import { get } from 'lodash';
 import { stateExploitationOptions, factStatusOptions, statusAtCheckOptions } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/options';
 import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
-import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, filedToCheckDefectDataDocs, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
+import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, filedToCheckDefectDataDocs, DEFECTS_LIST, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import FieldCarsConditionsCarSelectFactStatus from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/fact_status_and_other/FieldCarsConditionsCarSelectFactStatus';
 import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
@@ -24,6 +24,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 import { actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { makeDefectsText } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/table/form/CarsConditionTableDefectsForm';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -109,10 +110,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
 
     const handleChangeDataForIA = React.useCallback(
       (data) => {
+        const rowData = {...props.formState.data, ...data};
+        const defects_text = makeDefectsText(DEFECTS_LIST, rowData);
         props.handleChange({
           data: {
-            ...props.formState.data,
-            ...data,
+            ...rowData,
+            defects_text,
           },
         });
       },
@@ -154,6 +157,16 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       },
       [state.data, props.handleChange, inspectionConfigOptions],
     );
+
+    const repairReasonOptions = React.useMemo(() => {
+      return get(inspectionConfigOptions, 'repair_reason', []);
+    }, [inspectionConfigOptions]);
+
+    React.useEffect(() => {
+      if (repairReasonOptions.length > 0) {
+        repairReasonOptions.push(repairReasonOptions.shift());
+      }
+    }, [repairReasonOptions]);
 
     return (
       <React.Fragment>
@@ -505,7 +518,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Действует до:"
               value={state.osago_finished_at}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.osago_finished_at}
               boundKeys="osago_finished_at"
@@ -526,7 +538,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField
-              type="number"
+              type="string"
               label="Номер диагностической карты:"
               value={state.diagnostic_card}
               onChange={props.handleChange}
@@ -542,7 +554,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Действует до:"
               value={state.diagnostic_card_finished_at}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.diagnostic_card_finished_at}
               boundKeys="diagnostic_card_finished_at"
@@ -590,7 +601,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата регистрации:"
               value={state.registration_date}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.registration_date}
               boundKeys="registration_date"
@@ -604,7 +614,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата начала эксплуатации:"
               value={state.exploitation_date_start}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.exploitation_date_start}
               boundKeys="exploitation_date_start"
@@ -852,7 +861,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата прохождения последнего ТО шасси:"
               value={state.last_tech_inspection_date}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_tech_inspection_date}
               boundKeys="last_tech_inspection_date"
@@ -866,7 +874,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата прохождения последнего ТО спецоборудования:"
               value={state.last_inspection_equipment}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_inspection_equipment}
               boundKeys="last_inspection_equipment"
@@ -911,7 +918,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="boolean"
-              label="ТО проведено собственными силами:"
+              label="ТО проведено собственными силами"
               value={state.data.own_tech_maintenance}
               onChange={handleChangeDataBoolean}
               boundKeys="own_tech_maintenance"
@@ -940,7 +947,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата проведения последнего ремонта:"
               value={state.last_repair_date}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_repair_date}
               boundKeys="last_repair_date"
@@ -984,7 +990,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="В ремонте с даты:"
               value={state.repair_from_date}
               makeGoodFormat
-              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.repair_from_date}
               boundKeys="repair_from_date"
@@ -998,7 +1003,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Причина ремонта"
               value={state.data.repair_reason}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfigOptions, 'repair_reason', [])}
+              options={repairReasonOptions}
               error={errors.data.repair_reason}
               clearable={false}
               disabled={!props.isPermitted}
@@ -1014,6 +1019,21 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="not_maintenance_and_repair"
               disabled={!props.isPermitted}
               className={'checkbox-input flex-reverse'}
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="select"
+              label="Длительность ремонта"
+              value={state.data.repair_time}
+              onChange={handleChangeDataOptions}
+              options={ get(inspectionConfigOptions, 'repair_time', [])}
+              error={errors.data.repair_time}
+              clearable={false}
+              disabled={!props.isPermitted}
+              boundKeys={'repair_time'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

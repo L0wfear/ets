@@ -8,7 +8,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FileField } from 'components/old/ui/input/fields';
 
 import Div from 'components/old/ui/Div';
-import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';
+import { isNotNull, isEmpty, isMotoHoursMileageType, getCarMileageTypeId, parseFloatWithFixed } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import {
@@ -113,7 +113,7 @@ import GasBodyContainer from 'components/old/waybill/form/fuelTabs/GasBodyContai
 import fuelKindFormTabKey from 'components/old/waybill/form/waybillFormTabConfig';
 import WaybillEngineKind from 'components/old/waybill/form/WaybillEngineKind';
 import { GAS_ENGINE_TYPE_ID, FUEL_ENGINE_TYPE_ID, ELECTRICAL_ENGINE_TYPE_ID } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/inside_fields/engine_data/FieldSelectEngine';
-import { gasDefaultElement, electricalDefaultElement, defaultRefillObj, fuelDefaultElement } from 'components/new/pages/waybill/form/context/utils';
+import { gasDefaultElement, electricalDefaultElement, defaultRefillObj, fuelDefaultElement, defaultMotoHoursData, defaultOdometrData } from 'components/new/pages/waybill/form/context/utils';
 import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
 import RefillFuelCompany from 'components/old/waybill/RefillFuelCompany';
 import { actionGetAndSetInStoreRefillFuelCompany, actionResetRefillFuelCompany } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/actions';
@@ -193,6 +193,18 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
   }
 
   return fieldsToChange;
+};
+
+const getCarMileageTypeIdByStatus = (stateMileageTypeId: Waybill['mileage_type_id'], status: Waybill['status'], carMileageTypeId: Waybill['mileage_type_id']) => {
+  if (
+    (status === 'active'
+    || status === 'deleted'
+    || status === 'closed')
+    && stateMileageTypeId
+  ) {
+    return stateMileageTypeId;
+  }
+  return carMileageTypeId;
 };
 
 const hasWaybillEquipmentData = (waybill, shema) => {
@@ -288,6 +300,7 @@ type OwnProps = {
   defaultCarData?: {car_id: number; model_id: number; gov_number: string;};
   show: boolean;
   onHide: any;
+  element: Partial<Waybill>;
 };
 
 export type WaybillProps = (
@@ -328,6 +341,7 @@ export type WaybillState = {
   isGasKind: boolean;
   isFuelKind: boolean;
   isElectricalKind: boolean;
+  isUpdatedMileageTypeId: boolean; 
 };
 
 class WaybillForm extends React.Component<WaybillProps, WaybillState> {
@@ -362,14 +376,35 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       isGasKind: false,
       isFuelKind: true,
       isElectricalKind: false,
+      isUpdatedMileageTypeId: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      carList,
+      element,
+    } = this.props;
     const oldFormState = prevProps.formState;
     const nextFormState = this.props.formState;
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
       this.getLatestWaybillDriver(nextFormState);
+    }
+    if (carList.length && nextFormState && nextFormState?.car_id !== prevState.origFormState.car_id) {
+      const carMileageTypeId = getCarMileageTypeId(carList, nextFormState?.car_id);
+      const mileage_type_id = getCarMileageTypeIdByStatus(
+        nextFormState.mileage_type_id,
+        nextFormState.status,
+        carMileageTypeId
+      );
+      if (nextFormState.car_id !== oldFormState.car_id || mileage_type_id !== nextFormState.mileage_type_id) {
+        this.setState({isUpdatedMileageTypeId: false});
+      }
+      if (!this.state.isUpdatedMileageTypeId) {
+        const data = element && nextFormState.car_id === element.car_id ? element : nextFormState;
+        this.updateMileageTypeBasedFields(data, mileage_type_id);
+        this.setState({isUpdatedMileageTypeId: true});
+      }
     }
 
     // при смене планируемых дат или ТС запрашиваются новые доступные задания
@@ -619,6 +654,55 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
   };
 
+  updateMileageTypeBasedFields = (
+    waybillData: Partial<Waybill>,
+    mileage_type_id: Waybill['mileage_type_id'],
+  ) => {
+    const isMotohoursMain = isMotoHoursMileageType(mileage_type_id);
+    const hasCarExtraTaximetr = waybillData.car_has_motohours || waybillData.car_has_odometr;
+    const files = waybillData.files?.length ? waybillData.files : [];
+    const makeTaximetrData = () => {
+      const data = {...defaultMotoHoursData, ...defaultOdometrData};
+      const mainTaximetrKey = isMotohoursMain ? 'car_has_motohours' : 'car_has_odometr';
+      const extraTaximetrKey = !isMotohoursMain ? 'car_has_motohours' : 'car_has_odometr';
+      const defaultExtraTaximetrdata = extraTaximetrKey === 'car_has_motohours' ? defaultMotoHoursData : defaultOdometrData;
+
+      Object.keys(data).forEach((key) => {
+        if (key === mainTaximetrKey) {
+          data[key] = null;
+        } else if (key === extraTaximetrKey) {
+          data[key] = Boolean(hasCarExtraTaximetr);
+        } else if (!(key in defaultExtraTaximetrdata) || hasCarExtraTaximetr) {
+          data[key] = waybillData[key];
+        }
+      });
+      return data;
+    };
+    const taximetrsData = makeTaximetrData();
+
+    this.handleMultipleChange({
+      ...taximetrsData,
+      mileage_type_id,
+      files,
+    });
+  };
+
+  handleWaybillAfterMount = (waybill: Partial<Waybill>) => {
+    const {
+      formState,
+    } = this.props;
+    
+    this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
+    waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
+    this.setState({
+      canEditIfClose: waybill.closed_editable
+        ? this.props.userPermissionsSet.has('waybill.update_closed')
+        : false,
+      origFormState: formState,
+    });
+    this.setEngineKindIds();
+  };
+
   async componentDidMount() {
     const {
       formState,
@@ -675,28 +759,24 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
 
     if (!IS_CREATING) {
-      await this.props
-        .dispatch(actionGetWaybillById(formState.id, this.props))
-        .then((waybill) => {
-          this.handleMultipleChange(waybill); // Тут происходило перетирание полей, которые пересчитывались при рендере дочерних компонеетов
-          waybill.engine_kind_ids = formState.engine_kind_ids; // <<< ??? 
-          this.setState({
-            canEditIfClose: waybill.closed_editable
-              ? this.props.userPermissionsSet.has('waybill.update_closed')
-              : false,
-            origFormState: formState,
+      if(this.props.element){
+        this.handleWaybillAfterMount(this.props.element);
+      } else {
+        await this.props
+          .dispatch(actionGetWaybillById(formState.id, this.props))
+          .then((waybill) => {
+            this.handleWaybillAfterMount(waybill);
+          })
+          .catch((e) => {
+            console.error(e);  // eslint-disable-line
+            this.setState({
+              canEditIfClose: false,
+              origFormState: formState,
+            });
           });
-          this.setEngineKindIds();
-        })
-        .catch((e) => {
-          console.error(e);  // eslint-disable-line
-          this.setState({
-            canEditIfClose: false,
-            origFormState: formState,
-          });
-        });
+      }
     }
-
+      
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
       this.getRefillFuelCompany(formState);
@@ -773,7 +853,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               },
               [],
             );
-
             const gasOperations = fuelRates.reduce(
               (
                 newArr,
@@ -1270,6 +1349,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             { ...formState, driver_id },
             this.props.employeeIndex,
             this.props.waybillDriverList,
+            this.props.carList,
           );
 
           if (DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1372,7 +1452,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       if (isNotNull(lastCarUsedWaybill.odometr_end)) {
         fieldsToChange.odometr_start = lastCarUsedWaybill.odometr_end;
       }
-      if (isNotNull(lastCarUsedWaybill.motohours_end)) {
+      if (isNotNull(lastCarUsedWaybill.motohours_end) ) {
         fieldsToChange.motohours_start = lastCarUsedWaybill.motohours_end;
       }
       if (isNotNull(lastCarUsedWaybill.fuel_type)) {
@@ -1395,21 +1475,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
         }
       }
-
-      if(!isNotNull(this.props?.formState?.car_has_motohours)) {
-        fieldsToChange.car_has_motohours = lastCarUsedWaybill.car_has_motohours;
-        if(lastCarUsedWaybill.car_has_motohours){
-          fieldsToChange.motohours_start = lastCarUsedWaybill?.motohours_end;
-        }
-      }
-
-      if(!isNotNull(this.props?.formState?.car_has_odometr)) {
-        fieldsToChange.car_has_odometr = lastCarUsedWaybill.car_has_odometr;
-        if(lastCarUsedWaybill.car_has_odometr){
-          fieldsToChange.odometr_start = lastCarUsedWaybill?.odometr_end;
-        }
-      }
-      
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
@@ -1525,6 +1590,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         { ...this.props.formState, structure_id },
         this.props.employeeIndex,
         this.props.waybillDriverList,
+        this.props.carList,
       );
 
       if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1846,12 +1912,18 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             motohours_start: null,
             motohours_end: null,
             motohours_diff: null,
+            motohours_reason_id: null,
+            is_edited_motohours: false,
+            files: [],
             [key]: value,
           }
           : { // key === 'car_has_odometer'
             odometr_start: null,
             odometr_end: null,
             odometr_diff: null,
+            odometr_reason_id: null,
+            is_edited_odometr: false,
+            files: [],
             [key]: value,
           });
       } catch (e) {
@@ -2254,8 +2326,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
       .includes('камаз');
-    const CAR_HAS_ODOMETER = state.gov_number
-      ? !hasMotohours(state.gov_number)
+    const CAR_HAS_ODOMETER = state?.mileage_type_id
+      ? !isMotoHoursMileageType(state.mileage_type_id)
       : null;
     const DRIVERS
       = IS_CREATING || IS_DRAFT
@@ -2265,6 +2337,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           uniqEmployeesBindedOnCarList[0]
             ? uniqEmployeesBindedOnCarList
             : waybillDriverList,
+          this.props.carList,
         )
         : [];
 
@@ -2282,10 +2355,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     }
 
     const allTaxes = [...tax_data, ...equipment_tax_data, ...gas_tax_data, ...electrical_tax_data];
-    const taxesTotal = allTaxes.reduce(
-      (summ, { FUEL_RATE, FACT_VALUE }) => summ + FUEL_RATE * FACT_VALUE,
+    const taxesTotal = parseFloatWithFixed(allTaxes.reduce(
+      (summ, { FUEL_RATE, FACT_VALUE }) => summ + parseFloatWithFixed(FUEL_RATE * FACT_VALUE, 3),
       0,
-    );
+    ), 3);
     const taxeTotalHidden = allTaxes.length === 0;
 
     const employeeByIndex = get(
@@ -2467,7 +2540,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   label="Возвращение план."
                   error={errors.plan_arrival_date}
                   date={state.plan_arrival_date}
-                  min={state.plan_departure_date}
+                  min={state.plan_departure_date ? new Date(state.plan_departure_date) : null}
                   onChange={this.handlePlanDepartureDates}
                   boundKeys="plan_arrival_date"
                   disabled={ IS_DELETE || !isPermittedByKey.update}
@@ -2909,7 +2982,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   onClick: this.handleChangeOdometr,
                                   title: !state.is_edited_odometr ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
                                   glyph: !state.is_edited_odometr ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'}, }} // <<< выпилить этот костыль в 36м релизе!!!
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -2931,6 +3004,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               id="odometr-diff"
                               type="number"
                               label="Пробег, км"
+                              format="toFixed2"
                               value={state.odometr_diff}
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
                               disabled
@@ -2995,8 +3069,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeMotohours,
                                   title: !state.is_edited_motohours ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
-                                  glyph: !state.is_edited_motohours ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'},}}
+                                  glyph: !state.is_edited_motohours ? 'pencil' : 'lock'
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -3244,8 +3318,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                                   disabled: IS_DELETE || IS_CLOSED || (!isPermittedByKey.update || !isPermittedByKey.change_departure),
                                   onClick: this.handleChangeEquip,
                                   title: !state.is_edited_motohours_equip ? 'Открыть ручной ввод' : 'Закрыть ручной ввод',
-                                  glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock',
-                                  style: { marginBottom: '10px', minHeight: '38px'}, }}
+                                  glyph: !state.is_edited_motohours_equip ? 'pencil' : 'lock'
+                                }}
                               />
                             </FlexContainerStyled>
                             <ExtField
@@ -3474,6 +3548,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                               is_refill_error={errors.is_no_equipment_refill}
                               boundKey={'equipment_refill'}
                               fuelCardsList={this.props.equipmentFuelCardsList}
+                              waybill_status={state.status}
+                              closed_editable={state.closed_editable}
                             />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>

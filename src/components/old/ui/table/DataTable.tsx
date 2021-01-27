@@ -888,7 +888,8 @@ export default class DataTable extends React.Component<Props, State> {
               onHide={this.props.toggleFilter || this.closeFilter}
               values={this.state.filterValues}
               options={tableMetaCols.filter((el) => el.filter !== false)}
-              tableData={this.props.defaulResult || this.props.results}
+              tableData={this.props.results}
+              defaultResult={this.props.defaulResult}
               entity={this.props.entity}
               reportKey={this.props.reportKey}
               loadDependecyData={this.props.loadDependecyData}

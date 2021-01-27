@@ -8,6 +8,7 @@ export type IFilterValues = {
 
 export type IPropsDataTable<TResultObject> = {
   results: Array<TResultObject>;
+  defaulResult?: Array<TResultObject>;
   title?: string;
   tableMeta?: IDataTableSchema;
   renderers?: ISchemaRenderer;

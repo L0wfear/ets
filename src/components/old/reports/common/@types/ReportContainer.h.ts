@@ -29,6 +29,7 @@ export type IStateReportContainer = {
   exportFetching: boolean;
   filterValues: any;
   uniqName: string;
+  defaultResults?: any;
   aggrFields: Array<string>;
   savedFilterValues: any;
   localState: Record<string, any>;

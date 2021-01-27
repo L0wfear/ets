@@ -66,6 +66,7 @@ class ReportContainer extends React.Component<
       localState: {},
       aggrFields: [],
       savedFilterValues: {},
+      defaultResults: [],
     };
   }
 
@@ -193,6 +194,7 @@ class ReportContainer extends React.Component<
       if (this.props.notUseServerSummerTable) {
         const { data: old_data } = this.props;
         let rows = get(old_data, ['result', 'rows'], null);
+        const reportKey = get(this.props, 'tableProps.reportKey', null);
         const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
         if (deepArr) {
           rows = rows && rows.reduce((newArr: Array<any>, blockData) => {
@@ -214,11 +216,14 @@ class ReportContainer extends React.Component<
               ...blockData,
               rows: filterFunction(blockData.rows, { filterValues: this.state.filterValues }),
             })).filter((blockData) => blockData.rows.length);
+            if (reportKey === 'fuel_cards_report') {
+              this.setState({
+                defaultResults: old_data.result.rows,
+              });
+            }
           } else {
             data.result.rows = filterFunction(rows, { filterValues: this.state.filterValues });
           }
-
-          const reportKey = get(this.props, 'tableProps.reportKey', null);
 
           this.props.setReportDataWithSummerData({
             data,
@@ -795,6 +800,7 @@ class ReportContainer extends React.Component<
           title={title}
           tableMeta={tableMeta}
           results={this.props.list}
+          defaulResult={this.state.defaultResults}
           renderers={this.props.renderers || {}}
           onRowSelected={this.handleMoveDown}
           enumerated={enumerated}

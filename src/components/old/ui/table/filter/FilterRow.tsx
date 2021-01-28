@@ -93,20 +93,18 @@ class FilterRow extends React.Component<Props, {}> {
           }
 
           if (tableDataForOption[0] && isArray(tableDataForOption[0][name])) {
-            const reducedTableDataOptions = tableDataForOption
-              .reduce((newArr, currentArr) => {
-                newArr.push(currentArr[name]);
-                return newArr;
-              }, [])
-              .flat();
-            options = _(reducedTableDataOptions)
-              .uniqBy('id')
-              .map((d) => ({
-                value: d.id,
-                label: labelFunction(d.name),
-              }))
-              .filter((d) => d.label && d.label !== '0')
-              .value();
+            options = tableDataForOption
+              .reduce((acc: Array<{value: string | number; label: string;}>, curr) => {
+                curr[name].forEach((el) => {
+                  if(!acc.find((elem) => elem.value === el) && String(el) !== '0') {
+                    acc.push({
+                      value: el,
+                      label: labelFunction(el)
+                    });
+                  }
+                });
+                return acc;
+              }, []);
           } else {
             options = _(tableDataForOption)
               .uniqBy(name)

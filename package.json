@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.39.127",
+    "version": "2.39.128",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -35,7 +35,7 @@
         "react-router-dom": "^5.2.0",
         "react-select": "^3.1.0",
         "react-virtualized": "^9.22.2",
-        "react-widgets": "^4.6.0",
+        "react-widgets": "^4.6.1",
         "recompose": "^0.30.0",
         "redux": "^4.0.5",
         "redux-promise": "^0.6.0",

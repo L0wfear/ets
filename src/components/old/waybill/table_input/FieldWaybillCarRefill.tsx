@@ -19,6 +19,7 @@ import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/
 import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
 import { isNullOrUndefined } from 'util';
+import { parseFloatWithFixed } from 'utils/functions';
 
 type Props = {
   id: string;
@@ -530,6 +531,8 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       car_id: props.car_id,
     };
 
+    const finalResult = props.array?.reduce((acc, curr) => acc + curr.value, 0);
+
     return showBlock && (
       <div>
         <HrLineWaybill />
@@ -573,7 +576,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             Boolean(props.array && props.array[0]) && (
               <FooterEnd margin={30}>
                 <div><b>{'Итого '}</b></div>
-                <div><b>{props.fuel_given.toFixed(3).replace('.', ',')}</b></div>
+                <div><b>{parseFloatWithFixed(finalResult, 3).toFixed(3).replace('.', ',')}</b></div>
               </FooterEnd>
             )
           }

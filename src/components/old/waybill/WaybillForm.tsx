@@ -390,7 +390,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
       this.getLatestWaybillDriver(nextFormState);
     }
-    if (carList.length && nextFormState && nextFormState?.car_id !== prevState.origFormState.car_id) {
+    if (carList.length && nextFormState && nextFormState.car_id && nextFormState.car_id !== prevState.origFormState.car_id) {
       const carMileageTypeId = getCarMileageTypeId(carList, nextFormState?.car_id);
       const mileage_type_id = getCarMileageTypeIdByStatus(
         nextFormState.mileage_type_id,
@@ -401,7 +401,11 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         this.setState({isUpdatedMileageTypeId: false});
       }
       if (!this.state.isUpdatedMileageTypeId) {
-        const data = element && nextFormState.car_id === element.car_id ? element : nextFormState;
+        const data = !nextFormState.status && this.state.lastWaybill
+          ? this.state.lastWaybill
+          : element && nextFormState.car_id === element.car_id
+            ? element
+            : nextFormState;
         this.updateMileageTypeBasedFields(data, mileage_type_id);
         this.setState({isUpdatedMileageTypeId: true});
       }

@@ -29,6 +29,7 @@ export const getMap: MapUtils.getMapFunc = (center, zoom) => (
     view: getMapView(center, zoom),
     controls: [],
     layers: [getArcGisLayer()],
+    pixelRatio: 1,
   })
 );
 

@@ -401,7 +401,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         this.setState({isUpdatedMileageTypeId: false});
       }
       if (!this.state.isUpdatedMileageTypeId) {
-        const data = !nextFormState.status
+        const data = !nextFormState.status && this.state.lastWaybill
           ? this.state.lastWaybill
           : element && nextFormState.car_id === element.car_id
             ? element

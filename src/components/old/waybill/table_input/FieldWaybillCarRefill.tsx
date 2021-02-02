@@ -531,8 +531,6 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
       car_id: props.car_id,
     };
 
-    const finalResult = props.array?.reduce((acc, curr) => acc + curr.value, 0);
-
     return showBlock && (
       <div>
         <HrLineWaybill />
@@ -576,7 +574,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             Boolean(props.array && props.array[0]) && (
               <FooterEnd margin={30}>
                 <div><b>{'Итого '}</b></div>
-                <div><b>{parseFloatWithFixed(finalResult, 3).toFixed(3).replace('.', ',')}</b></div>
+                <div><b>{parseFloatWithFixed(props.fuel_given, 3).toFixed(3).replace('.', ',')}</b></div>
               </FooterEnd>
             )
           }

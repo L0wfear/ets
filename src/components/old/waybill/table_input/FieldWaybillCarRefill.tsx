@@ -19,6 +19,7 @@ import { FuelCardOnCars } from 'redux-main/reducers/modules/autobase/fuel_cards/
 import { defaultFuelCardOnCarsItem } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm';
 import { isNullOrUndefined } from 'util';
 import { WaybillState } from 'components/old/waybill/WaybillForm';
+import { parseFloatWithFixed } from 'utils/functions';
 
 type Props = {
   id: string;
@@ -556,7 +557,7 @@ const FieldWaybillCarRefill: React.FC<Props> = React.memo(
             Boolean(props.array && props.array[0]) && (
               <FooterEnd margin={30}>
                 <div><b>{'Итого '}</b></div>
-                <div><b>{props.fuel_given.toFixed(3).replace('.', ',')}</b></div>
+                <div><b>{parseFloatWithFixed(props.fuel_given, 3).toFixed(3).replace('.', ',')}</b></div>
               </FooterEnd>
             )
           }

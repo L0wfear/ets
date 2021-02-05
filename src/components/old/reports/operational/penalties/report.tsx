@@ -21,7 +21,7 @@ const renderers = {
 };
 
 const reportProps: IReportProps = {
-  title: 'Штрафы',
+  title: 'Отчет по штрафам',
   serviceName,
   reportUrl,
   serviceUrl,

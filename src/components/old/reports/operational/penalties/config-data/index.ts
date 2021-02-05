@@ -3,7 +3,7 @@ import component from 'components/old/reports/operational/penalties/config-data/
 
 export default {
   path: '/penalties',
-  title: 'Штрафы',
+  title: 'Отчет по штрафам',
   entyity: 'penalties_report',
 
   component,

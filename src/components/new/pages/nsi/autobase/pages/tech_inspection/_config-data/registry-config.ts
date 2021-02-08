@@ -137,6 +137,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
               }
             ],
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'company_name',
@@ -147,12 +148,14 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
               },
             ],
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'gov_numbers_text',
             title: 'Рег. номер ТС',
             width: 200,
             fieldTitlePopup: 'В скобках указывается номер ТС на дату прохождения техосмотра',
+            dashIfEmpty: true,
           },
           {
             key: 'is_not_inspectionable',
@@ -164,6 +167,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             key: 'reg_number',
             title: 'Номер диагностической карты/ Талона ГТО',
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'date_end',
@@ -175,6 +179,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             key: 'tech_operator',
             title: 'Место выдачи',
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'date_start',
@@ -192,6 +197,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             key: 'note',
             title: 'Примечание',
             width: 200,
+            dashIfEmpty: true,
           },
         ],
       },

@@ -146,6 +146,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
               }
             ],
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'company_name',
@@ -160,12 +161,14 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
               },
             ],
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'gov_numbers_text',
             title: 'Рег. номер ТС',
             width: 200,
             fieldTitlePopup: 'В скобках указывается номер ТС на дату начала действия страховки',
+            dashIfEmpty: true,
           },
           {
             key: 'is_not_insurable',
@@ -177,21 +180,25 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
             key: 'insurer',
             title: 'Страховая организация',
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'insurance_type_name',
             title: 'Тип страхования',
             width: 200,
+            dashIfEmpty: true,
           },
           {
             key: 'seria',
             title: 'Серия',
             width: 100,
+            dashIfEmpty: true,
           },
           {
             key: 'number',
             title: 'Номер',
             width: 100,
+            dashIfEmpty: true,
           },
           {
             key: 'date_start',
@@ -209,11 +216,13 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
             key: 'price',
             title: 'Стоимость, руб.',
             width: 150,
+            dashIfEmpty: true,
           },
           {
             key: 'note',
             title: 'Примечание',
             width: 200,
+            dashIfEmpty: true,
           },
         ],
       },

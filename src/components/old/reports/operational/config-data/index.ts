@@ -20,6 +20,7 @@ import fuelCardsReport from 'components/old/reports/operational/fuel_cards_repor
 import сonsumableMaterialUsageReport from 'components/old/reports/operational/consumable_material_usage_report/config-data';
 import notCoveredObjectsReport from 'components/old/reports/operational/not_covered_objects_report/config-data';
 import penalties from 'components/old/reports/operational/penalties/config-data';
+import tachograph from 'components/old/reports/operational/tachograph/config-data';
 
 const children: any = {
   routeOdhCoverage,
@@ -42,6 +43,7 @@ const children: any = {
   сonsumableMaterialUsageReport,
   notCoveredObjectsReport,
   penalties,
+  tachograph,
 };
 
 export default {

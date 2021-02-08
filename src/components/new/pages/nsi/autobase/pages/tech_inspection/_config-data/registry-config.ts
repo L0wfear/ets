@@ -81,6 +81,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
           title: 'Не подлежит прохождению ТО/ГТО',
           type: 'multiselect',
           options: YES_NO_SELECT_OPTIONS_BOOL,
+          nullAsFalse: true,
         },
         {
           valueKey: 'reg_number',

@@ -2,26 +2,22 @@ import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 import { ISchemaMaker } from 'components/old/ui/table/@types/schema.h';
-import * as React from 'react';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
-import ReportHeader from 'components/old/reports/operational/penalties/ReportHeader';
-import PhotoLink from 'components/old/reports/operational/penalties/PhotoLink/PhotoLink';
+import ReportHeader from 'components/old/reports/operational/tachograph/ReportHeader';
 
-const serviceUrl = 'report/penalties';
-const reportUrl = 'penalties';
-const serviceName = 'PenaltiesReport';
+const serviceUrl = 'autobase/report/tachograph';
+const reportUrl = 'tachograph';
+const serviceName = 'TachographReport';
 
 const schemaMakers: ISchemaMaker = {
 
 };
 
-const renderers = {
-  photo_url: ({ data }) => data ? <PhotoLink data={data} /> : '-',
-};
+const renderers = {};
 
 const reportProps: IReportProps = {
-  title: 'Отчет по штрафам',
+  title: 'Отчет по тахографам',
   serviceName,
   reportUrl,
   serviceUrl,

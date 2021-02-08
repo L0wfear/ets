@@ -287,11 +287,13 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       (60 - currentDate.getSeconds()) * 1000,
     );
 
-    const company = this.props.companyList.find((company) => company.company_id === this.props.userCompanyId);
-    this.setState({
-      usePouring: company.use_pouring,
-      fuelCardsCreating: company.fuel_cards_creating,
-    });
+    if (this.props.userCompanyId !== null) {
+      const company = this.props.companyList.find((company) => company.company_id === this.props.userCompanyId);
+      this.setState({
+        usePouring: company.use_pouring,
+        fuelCardsCreating: company.fuel_cards_creating,
+      });
+    }
 
     if (this.props.element === null) {
       const defaultBill: any = getDefaultBill({

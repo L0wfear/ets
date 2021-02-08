@@ -109,6 +109,7 @@ export type OneFilterType<F> = {
   options?: Array<FilterOptionType<F>>;
   disabled?: boolean;
   hidden?: boolean;
+  nullAsFalse?: boolean;
 } & (
   {
     type: 'advanced-date'

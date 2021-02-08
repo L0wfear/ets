@@ -107,3 +107,8 @@ export const PenaltiesReport = ETS_API_FACTORY.createApiServiceAdapter(
   'report/penalties',
   {},
 );
+
+export const TachographReport = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/reports/tachograph',
+  {},
+);

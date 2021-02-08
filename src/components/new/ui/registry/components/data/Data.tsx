@@ -21,7 +21,7 @@ const Data: React.FC<Props> = React.memo(
     const {
       registryKey,
     } = props;
-    const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
+    const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey)?.format);
     const title = etsUseSelector((state) => getHeaderData(getRegistryState(state), props.registryKey).title);
 
     React.useLayoutEffect(

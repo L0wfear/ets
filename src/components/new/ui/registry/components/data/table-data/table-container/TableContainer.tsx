@@ -29,7 +29,7 @@ const TableContainer: React.FC<Props> = React.memo(
   (props) => {
     const { registryKey } = props;
     const fixedWidth = etsUseSelector((state) => getListData(state.registry, registryKey).data.fixedWidth);
-    const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
+    const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey)?.format);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const [scrollYPos, setscrollYPos] = React.useState(0);
     const [scrollXPos, setscrollXPos] = React.useState(0);

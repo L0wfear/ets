@@ -27,7 +27,8 @@ const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field
 
       });
     }
-    return !filter_value.includes(row_value);
+    const rowValue = row_value === null && field_data?.nullAsFalse ? false : row_value;
+    return !filter_value.includes(rowValue);
   }
   throw new Error('non define filter by type');
 };

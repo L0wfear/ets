@@ -80,6 +80,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
           title: 'Не подлежит страхованию',
           type: 'multiselect',
           options: YES_NO_SELECT_OPTIONS_BOOL,
+          nullAsFalse: true,
         },
         {
           valueKey: 'insurer',

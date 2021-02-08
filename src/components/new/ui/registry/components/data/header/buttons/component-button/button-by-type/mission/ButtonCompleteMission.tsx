@@ -125,9 +125,9 @@ export default compose<ButtonCompleteMissionProps, ButtonCompleteMissionOwnProps
   withRequirePermission(),
   connect<ButtonCompleteMissionStateProps, ButtonCompleteMissionDispatchProps, ButtonCompleteMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
-      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
-      checkedRows: getListData(state.registry, registryKey).data.checkedRows,
+      uniqKey: getListData(state.registry, registryKey)?.data.uniqKey,
+      selectedRow: getListData(state.registry, registryKey)?.data.selectedRow,
+      checkedRows: getListData(state.registry, registryKey)?.data.checkedRows,
     }),
     (dispatch: any) => ({
       registryLoadDataByKey: (...arg) => (

@@ -35,17 +35,17 @@ const getPermissionsReadUpdate = (permission) => {
 const ButtonRead: React.FC<Props> = React.memo(
   (props) => {
     const permissions = etsUseSelector((state) => getPermissionsReadUpdate(getListData(state.registry, props.registryKey).permissions));
-    const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
-    const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
-    const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-    const withoutWithSearch = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.withoutWithSearch);
+    const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey)?.data.uniqKeyForParams);
+    const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey)?.data.uniqKey);
+    const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey)?.data.selectedRow);
+    const withoutWithSearch = etsUseSelector((state) => getListData(state.registry, props.registryKey)?.data.withoutWithSearch);
     const dispatch = etsUseDispatch();
     
     const data = React.useMemo(
       () => (
         get(props, 'data', {}) as Props['data']
       ),
-      [props.data],
+      [props?.data],
     );
     const handleClick = React.useCallback(
       () => {

@@ -45,7 +45,7 @@ const ButtonRead: React.FC<Props> = React.memo(
       () => (
         get(props, 'data', {}) as Props['data']
       ),
-      [props?.data],
+      [props.data],
     );
     const handleClick = React.useCallback(
       () => {

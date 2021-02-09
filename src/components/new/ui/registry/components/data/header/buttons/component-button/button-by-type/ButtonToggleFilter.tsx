@@ -35,7 +35,7 @@ const ButtonToggleFilter: React.FC<Props> = React.memo(
       () => (
         data && data.glyph
       ),
-      [props?.data],
+      [props.data],
     );
 
     return (

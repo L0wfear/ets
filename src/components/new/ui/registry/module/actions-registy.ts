@@ -467,7 +467,7 @@ export const registryChangeData = <F extends Record<string, any>>(registryKey: s
         {
           ...list,
           data: {
-            ...list?.data,
+            ...list.data,
             total_count,
             array,
             objectExtra,
@@ -887,7 +887,7 @@ export const registryCheckLine = <F extends Record<string, any>>(registryKey: st
       {
         ...list,
         data: {
-          ...list?.data,
+          ...list.data,
           checkedRows: checkedRowsNew,
         },
       },
@@ -940,7 +940,7 @@ export const registryGlobalCheck = (registryKey: string): EtsAction<void> => (di
       {
         ...list,
         data: {
-          ...list?.data,
+          ...list.data,
           checkedRows: checkedRowsNew,
         },
       },
@@ -992,12 +992,12 @@ export const registryAddNewRow = (registryKey: string, payload: { defaultRowValu
       {
         ...list,
         data: {
-          ...list?.data,
+          ...list.data,
           array: [
             {
               ...newRowVal,
             },
-            ...list?.data.array,
+            ...list.data.array,
           ],
         },
       },
@@ -1036,7 +1036,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
   const list_new: OneRegistryData['list'] = {
     ...list,
     data: {
-      ...list?.data,
+      ...list.data,
       selectedRow,
     },
     rendersFields: {
@@ -1115,7 +1115,7 @@ export const actionUnselectSelectedRowToShow = <F extends Record<string, any>>(r
         {
           ...list,
           data: {
-            ...list?.data,
+            ...list.data,
             selectedRow: !allReset ? list?.data.selectedRow : null,
             checkedRows: !allReset ? list?.data.checkedRows : {},
           },
@@ -1231,9 +1231,9 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
       {
         ...list,
         data: {
-          ...list?.data,
+          ...list.data,
           objectExtra: {
-            ...list?.data.objectExtra,
+            ...list.data.objectExtra,
             ...partialObjectExtra,
           },
         },
@@ -1374,7 +1374,7 @@ export const registryChangeRenderSelectedRow = <F extends Record<string, any>>(r
           values: newVal,
         },
         data: {
-          ...list?.data,
+          ...list.data,
           array: newArray
         }
       },

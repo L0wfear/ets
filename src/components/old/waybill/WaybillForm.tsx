@@ -117,6 +117,7 @@ import { gasDefaultElement, electricalDefaultElement, defaultRefillObj, fuelDefa
 import ElectricalBodyContainer from './form/fuelTabs/ElectricalBodyContainer';
 import RefillFuelCompany from 'components/old/waybill/RefillFuelCompany';
 import { actionGetAndSetInStoreRefillFuelCompany, actionResetRefillFuelCompany } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/actions';
+import { actionGetTrackSensor } from 'redux-main/reducers/modules/some_uniq/sensor_dut/actions';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -452,6 +453,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           nextFormState.fact_departure_date,
         )
       ) {
+        this.getDutSensors(nextFormState);
         this.getCarDistance(nextFormState);
         this.getRefillFuelCompany(nextFormState);
         this.getMissionsByCarAndDates(
@@ -740,6 +742,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     ]);
 
     if (IS_CREATING || IS_DRAFT) {
+      this.getDutSensors(formState);
       this.props
         .dispatch(fuelRatesGet({}, this.props))
         .then(({ fuelRatesList }) => 
@@ -787,6 +790,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
+      this.getDutSensors(formState);
       this.getRefillFuelCompany(formState);
 
       const currentSeason = this.props.formState.season;
@@ -1168,6 +1172,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           origMissionsList: missionsList,
         });
       });
+  };
+
+  getDutSensors = (formState) => {
+    if (formState.car_id) {
+      this.props
+        .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, this.props))
+        .then((res) => console.log('dut', res)); // eslint-disable-line
+    }
   };
 
   getCarDistance = (formState) => {
@@ -2694,56 +2706,92 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 </EtsBootstrap.Col>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            
-            <EtsBootstrap.Col md={6}>
-              <WaybillEngineKind
-                carIndex={carIndex}
-                car_id={state.car_id}
-                waybillStatus={{
-                  IS_CREATING,
-                  IS_ACTIVE,
-                  IS_DRAFT,
-                  IS_CLOSED,
-                  IS_DELETE,
-                }}
-                engine_kind_ids={state.engine_kind_ids}
-                handleChange={this.handleChange}
-                handleMultipleChange={this.handleMultipleChange}
-                setFuelKinds={this.setFuelKinds}
-                origFormState={this.state.origFormState}
-                waybillFormState={state}
-                updateEngineKindsFields={this.updateEngineKindsFields}
-              />
-            </EtsBootstrap.Col>
-            
-            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 3 : 6}>
-              <BsnoStatus
-                okStatus={IS_CREATING || IS_DRAFT}
-                is_bnso_broken={state.is_bnso_broken}
-                gps_code={gps_code}
-                handleChange={this.handleChange}
-                page={this.props.page}
-                path={this.props.path}
-              />
-            </EtsBootstrap.Col>
-            <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-              <EtsBootstrap.Col md={3}>
-                <ExtField
-                  id="distance-by-glonass"
-                  type="number"
-                  label="Пройдено по Глонасс, км"
-                  error={errors.distance}
-                  value={
-                    this.state.tooLongFactDates
-                      ? 'Слишком большой период действия ПЛ'
-                      : distanceOrTrackOrNodata
-                  }
-                  isLoading={loadingFields.distance}
-                  format="toFixed2"
-                  disabled
-                />
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Col md={6}>
+                  <WaybillEngineKind
+                    carIndex={carIndex}
+                    car_id={state.car_id}
+                    waybillStatus={{
+                      IS_CREATING,
+                      IS_ACTIVE,
+                      IS_DRAFT,
+                      IS_CLOSED,
+                      IS_DELETE,
+                    }}
+                    engine_kind_ids={state.engine_kind_ids}
+                    handleChange={this.handleChange}
+                    handleMultipleChange={this.handleMultipleChange}
+                    setFuelKinds={this.setFuelKinds}
+                    origFormState={this.state.origFormState}
+                    waybillFormState={state}
+                    updateEngineKindsFields={this.updateEngineKindsFields}
+                  />
+                </EtsBootstrap.Col>
               </EtsBootstrap.Col>
-            </Div>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Col md={12}>
+                  <h3 style={{ marginBottom: '20px' }} >Датчики</h3>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 3 : 6}>
+                  <BsnoStatus
+                    okStatus={IS_CREATING || IS_DRAFT}
+                    is_bnso_broken={state.is_bnso_broken}
+                    gps_code={gps_code}
+                    handleChange={this.handleChange}
+                    page={this.props.page}
+                    path={this.props.path}
+                  />
+                </EtsBootstrap.Col>
+                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+                  <EtsBootstrap.Col md={3}>
+                    <ExtField
+                      id="distance-by-glonass"
+                      type="number"
+                      label="Пройдено по Глонасс, км"
+                      error={errors.distance}
+                      value={
+                        this.state.tooLongFactDates
+                          ? 'Слишком большой период действия ПЛ'
+                          : distanceOrTrackOrNodata
+                      }
+                      isLoading={loadingFields.distance}
+                      format="toFixed2"
+                      disabled
+                    />
+                  </EtsBootstrap.Col>
+                </Div>
+                <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
+                  <EtsBootstrap.Col md={3}>
+                    <span>ДУТ </span>
+                    <EtsBootstrap.OverlayTrigger
+                      trigger={['hover', 'focus']}
+                      overlay={(
+                        <EtsBootstrap.Popover>
+                        Таблица
+                        </EtsBootstrap.Popover>
+                      )}
+                      placement="top"
+                    >
+                      <EtsBootstrap.Glyphicon glyph="info-sign" />
+                    </EtsBootstrap.OverlayTrigger>
+                    <div className="button_refresh">
+                      <EtsBootstrap.Button>
+                        <EtsBootstrap.Glyphicon
+                          glyph="refresh"
+                        />
+                      </EtsBootstrap.Button>
+                    </div>
+                  </EtsBootstrap.Col>
+                </Div>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
             <EtsBootstrap.Col md={IS_CREATING || IS_DRAFT ? 12 : 4}>
               <ExtField
                 id="driver-id"

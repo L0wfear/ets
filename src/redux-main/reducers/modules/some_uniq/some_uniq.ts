@@ -36,6 +36,7 @@ export const initialState: IStateSomeUniq = {
   refillTypeList: [],
   carsTravelTimeList: [],
   tracksCaching: null,
+  sensorDut: null,
 
   edcRequestInfoList: [],
   workModeList: [],

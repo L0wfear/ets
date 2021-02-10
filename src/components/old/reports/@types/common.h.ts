@@ -21,4 +21,5 @@ export type IReportProps = {
   notUseServerSummerTable?: boolean;
   headerStateMaker?(state: any): any;
   onRowDoubleClick?: any;
+  notUseServerSummerTableForPrint?: boolean;
 };

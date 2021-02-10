@@ -6,7 +6,7 @@ import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/tachograph/ReportHeader';
 
-const serviceUrl = 'autobase/report/tachograph';
+const serviceUrl = 'autobase/reports/tachograph';
 const reportUrl = 'tachograph';
 const serviceName = 'TachographReport';
 
@@ -23,8 +23,12 @@ const reportProps: IReportProps = {
   serviceUrl,
   headerComponent: ReportHeader,
   renderers,
+  tableProps: {
+    reportKey: reportUrl,
+  },
   enumerated: true,
   schemaMakers,
+  notUseServerSummerTableForPrint: true,
 };
 
 const ExportableReportContainer = exportable({

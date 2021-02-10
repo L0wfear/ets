@@ -528,7 +528,7 @@ class ReportContainer extends React.Component<
       rows: [...this.props.list].map((elem) => this.reportRowFormatFromMeta(elem, metaFieldsByKey)),
     };
 
-    if (this.props.notUseServerSummerTable) {
+    if (this.props.notUseServerSummerTable || this.props.notUseServerSummerTableForPrint) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
       const isSummaryEnable
       =  reportKey === 'fuel_cards_report' 

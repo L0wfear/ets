@@ -146,7 +146,7 @@ export function createValidDateTime(date: string | Date | Moment.Moment | number
   const newData = !withSeconds
     ? moment(newDataByFormat).seconds(0)
     : moment(newDataByFormat);
-  return newData.format('YYYY-MM-DDTHH:mm:ss');
+  return newData?.format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function formatDate(date: string | Date, format: string) {
@@ -161,7 +161,7 @@ export function getFormattedDateTime(date: string | number | Date | Moment.Momen
   if (!date) {
     return '';
   }
-  return moment(date).format(
+  return moment(date)?.format(
     `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
   );
 }

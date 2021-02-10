@@ -54,7 +54,7 @@ export default compose<ButtonCreateMissionProps, ButtonCreateMissionOwnProps>(
   withRequirePermission(),
   connect<ButtonCreateMissionStateProps, ButtonCreateMissionDispatchProps, ButtonCreateMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
-      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+      uniqKeyForParams: getListData(state.registry, registryKey)?.data.uniqKeyForParams,
     }),
   ),
 )(ButtonCreateMission);

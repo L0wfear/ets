@@ -31,7 +31,7 @@ const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) =>
 const Header: React.FC<HeaderProps> = React.memo(
   (props) => {
     const format = etsUseSelector(
-      (state) => getHeaderData(getRegistryState(state), props.registryKey).format,
+      (state) => getHeaderData(getRegistryState(state), props.registryKey)?.format,
     );
 
     if (format === 'select_for_technical_operation_relations') {

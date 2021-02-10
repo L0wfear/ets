@@ -489,7 +489,7 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
   let processed = listRaw.processed;
 
   const triggerOnUpdate = (
-    listRaw.data.array !== listOld.data.array
+    listRaw?.data.array !== listOld?.data.array
     || processed.sort !== listOld.processed.sort
     || processed.filterValues !== listOld.processed.filterValues
   );
@@ -497,11 +497,11 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
   if (triggerOnUpdate) {
     processed = { ...listRaw.processed };
     if (!getRegistryData || !userServerFilters) {
-      processed.processedArray = makeProcessedArray(listRaw.data.array, processed, filter.fields);
+      processed.processedArray = makeProcessedArray(listRaw?.data.array, processed, filter.fields);
       processed.total_count = processed.processedArray.length;
     } else {
-      processed.processedArray = listRaw.data.array;
-      processed.total_count = listRaw.data.total_count;
+      processed.processedArray = listRaw?.data.array;
+      processed.total_count = listRaw?.data.total_count;
     }
   }
 
@@ -875,8 +875,8 @@ export const registryCheckLine = <F extends Record<string, any>>(registryKey: st
     delete checkedRowsNew[rowData[uniqKey]];
   }
 
-  if (list.data.proxyCheckData) {
-    if (list.data.proxyCheckData === 'mission_template') {
+  if (list?.data.proxyCheckData) {
+    if (list?.data.proxyCheckData === 'mission_template') {
       checkedRowsNew = validateMissionsByCheckedElements(checkedRowsNew, true);
     }
   }
@@ -928,8 +928,8 @@ export const registryGlobalCheck = (registryKey: string): EtsAction<void> => (di
     }, {});
   }
 
-  if (list.data.proxyCheckData) {
-    if (list.data.proxyCheckData === 'mission_template') {
+  if (list?.data.proxyCheckData) {
+    if (list?.data.proxyCheckData === 'mission_template') {
       checkedRowsNew = validateMissionsByCheckedElements(checkedRowsNew, true);
     }
   }
@@ -982,7 +982,7 @@ export const registryAddNewRow = (registryKey: string, payload: { defaultRowValu
 
   newRowVal = {
     ...newRowVal,
-    id: list.data.array.length + 1,
+    id: list?.data.array.length + 1,
     isNewRow: true,
   };
 
@@ -1116,8 +1116,8 @@ export const actionUnselectSelectedRowToShow = <F extends Record<string, any>>(r
           ...list,
           data: {
             ...list.data,
-            selectedRow: !allReset ? list.data.selectedRow : null,
-            checkedRows: !allReset ? list.data.checkedRows : {},
+            selectedRow: !allReset ? list?.data.selectedRow : null,
+            checkedRows: !allReset ? list?.data.checkedRows : {},
           },
         },
       ),

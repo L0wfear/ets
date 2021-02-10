@@ -204,8 +204,8 @@ export default class ReactSelect extends React.Component<any, any> {
       id,
     };
 
-    if (isString(props.data.label)) {
-      newInnerProps.title = props.data.label;
+    if (isString(props?.data.label)) {
+      newInnerProps.title = props?.data.label;
     }
 
     if (isObject(propsComponents) && propsComponents.SingleValue) {

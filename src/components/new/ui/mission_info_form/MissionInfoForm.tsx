@@ -23,6 +23,8 @@ import { DivNone } from 'global-styled/global-styled';
 import MapContainer from 'components/new/ui/mission_info_form/form-components/map-contaienr/MapContainer';
 import InfoTableData from 'components/new/ui/mission_info_form/form-components/info-table-data/InfoTableData';
 import MissionInfoTableContainer from 'components/new/ui/mission_info_form/form-components/table-continer/MissionInfoTableContainer';
+import { isArray } from 'util';
+import { filterValidPoints } from 'utils/track';
 
 import {
   DispatchPropsMissionInfoForm,
@@ -244,6 +246,7 @@ class MissionInfoForm extends React.Component<
     const { missionReport } = this.state;
 
     const title = makeTitle(element);
+    const track = isArray(this.props.tracksCaching?.track) ? filterValidPoints(this.props.tracksCaching?.track) : [];
 
     return (
       <EtsBootstrap.ModalContainer
@@ -264,7 +267,7 @@ class MissionInfoForm extends React.Component<
               <MapContainer
                 gov_number={car_data.gov_number}
                 gps_code={car_data.gps_code}
-                track={this.props.tracksCaching?.track || []}
+                track={track}
                 geoobjects={this.state.polys}
                 inputLines={this.state.inputLines}
                 front_parkings={this.state.front_parkings}

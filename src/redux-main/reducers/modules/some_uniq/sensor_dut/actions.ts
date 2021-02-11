@@ -4,7 +4,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* --------------- запрос --------------- */
-export const actionGetTrackSensor = (payload: Parameters<typeof promiseGetTrackSensor>[0],  meta: LoadingMeta): EtsAction<Promise<ReturnType<typeof promiseGetTrackSensor>>> => async (dispatch) => {
+export const actionGetTrackSensor = (payload: Parameters<typeof promiseGetTrackSensor>[0],  meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTrackSensor>> => async (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseGetTrackSensor(payload),

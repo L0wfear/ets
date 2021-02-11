@@ -55,7 +55,6 @@ const NoDataParagraph = styled.p`
 
 type Props = {
   dutData: Array<SensorDut>;
-  okStatus: boolean;
   refresh(): void;
 };
 
@@ -71,7 +70,7 @@ const DutSensor: React.FC<Props> = React.memo(
     });
 
     return <>
-      {props.dutData.length && props.okStatus ? (
+      {props.dutData.length ? (
         <>
           <DutBlock>
             <label>ДУТ </label>

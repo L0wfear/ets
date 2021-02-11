@@ -119,6 +119,7 @@ import RefillFuelCompany from 'components/old/waybill/RefillFuelCompany';
 import { actionGetAndSetInStoreRefillFuelCompany, actionResetRefillFuelCompany } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/actions';
 import { actionGetTrackSensor } from 'redux-main/reducers/modules/some_uniq/sensor_dut/actions';
 import DutSensor from 'components/old/waybill/form/DutSensor';
+import { SensorDut } from 'redux-main/reducers/modules/some_uniq/sensor_dut/@types';
 
 export const FlexContainerStyled = styled(FlexContainer as any)`
   ${SingleUiElementWrapperStyled} {
@@ -343,7 +344,8 @@ export type WaybillState = {
   isGasKind: boolean;
   isFuelKind: boolean;
   isElectricalKind: boolean;
-  isUpdatedMileageTypeId: boolean; 
+  isUpdatedMileageTypeId: boolean;
+  trackCashingDut: Array<SensorDut>;
 };
 
 class WaybillForm extends React.Component<WaybillProps, WaybillState> {
@@ -379,6 +381,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       isFuelKind: true,
       isElectricalKind: false,
       isUpdatedMileageTypeId: false,
+      trackCashingDut: [],
     };
   }
 
@@ -391,7 +394,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const nextFormState = this.props.formState;
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
       this.getLatestWaybillDriver(nextFormState);
-      this.getDutSensors(nextFormState, true);
+      this.getDutSensors(nextFormState, false);
     }
     if (
       carList.length 
@@ -787,6 +790,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           });
       }
     }
+
+    if (IS_DRAFT || IS_ACTIVE) {
+      this.getDutSensors(this.props.formState, false);
+    }
       
     if (IS_ACTIVE || IS_CLOSED || IS_DELETE) {
       this.getCarDistance(formState);
@@ -1174,21 +1181,28 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   };
 
   updateDut = () => {
-    const { formState, moscowTimeServer: { date } } = this.props;
+    const { formState } = this.props;
     this.props
-      .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: makeUnixTimeMskTimezone(date) }, this.props))
+      .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, this.props))
       .then((res) => {
-        this.handleChange('dut_data', res);
+        this.setState({
+          trackCashingDut: res,
+        });
       });
   };
 
-  getDutSensors = async (formState, withTs: boolean) => {
-    const { moscowTimeServer: { date } } = this.props;
+  getDutSensors = (formState, withTs: boolean) => {
     if (formState.car_id) {
-      await this.props
-        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(date) : '' }, this.props))
+      this.props
+        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, this.props))
         .then((res) => {
-          this.handleChange('dut_data', res);
+          if (withTs) {
+            this.handleChange('dut_data', res);
+          } else {
+            this.setState({
+              trackCashingDut: res,
+            });
+          }
         });
     }
   };
@@ -1711,7 +1725,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               this.setState({
                 missionsList: newMissionsList,
               });
-              this.getDutSensors(this.props.formState, false);
+              this.getDutSensors(this.props.formState, true);
               if (!res.rejectMissionSubmitError) {
                 this.props.handleClose(taxesControl);
               }
@@ -1730,7 +1744,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
   handlePrint = async (...arg: Parameters<WaybillProps['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
       if (!this.props.formState.status || this.props.formState.status === 'draft') {
-        this.getDutSensors(this.props.formState, true);
         await this.refresh(true, false);
       }
       this.props.handlePrint(...arg);
@@ -2234,6 +2247,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       notAvailableMissions = [],
       missionsList = [],
       lastWaybill,
+      trackCashingDut,
     } = this.state;
 
     const {
@@ -2784,8 +2798,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   <EtsBootstrap.Col md={6}>
                     <DutSensor
                       refresh={this.updateDut}
-                      dutData={isArray(state.dut_data) ? state.dut_data : []}
-                      okStatus={!IS_CLOSED}
+                      dutData={IS_CLOSED ? state.dut_data : trackCashingDut}
                     />
                   </EtsBootstrap.Col>
                 </Div>

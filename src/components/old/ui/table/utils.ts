@@ -132,6 +132,9 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
   if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
     return diffDates(first, second);
   }
+  if (firstIsString && secondIsString && /\d{2}.\d{2}.\d{4}/.test(first)) {
+    return diffDates(first, second);
+  }
   if (firstIsString && secondIsString && first.match(/(\d{2}).(\d{2}).(\d{4}) (\d{2}):(\d{2})/)) {
     const [firstDate, firstTime] = first.split(' ');
     const [secondDate, secondTime] = second.split(' ');
@@ -176,7 +179,7 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
       const typeOfSecond = Object.keys(typesRegExps).find((key) => typesRegExps[key].test(secondString[i]));
 
       if (typeOfFirst === 'space' || typeOfSecond === 'space') {
-        if(first !== second) {
+        if(firstString[i] !== secondString[i]) {
           return typeOfFirst === 'space' ? -1 : 1;
         }
       }

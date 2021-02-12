@@ -28,7 +28,7 @@ import {
   mergeList,
   mergeListMeta,
 } from 'components/new/ui/registry/module/utils/merge';
-import { getJSON, deleteJSON } from 'api/adapter';
+import { getJSON, deleteJSON, patchJSON } from 'api/adapter';
 import configStand from 'config';
 import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
@@ -85,14 +85,25 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
  * #ДаПростятМеняБоги
  * @todo сделать нормально
  */
-export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => (dispatch, getState) => {
+export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
+  let serverUserFilterFields = null;
+  try {
+    const data = await dispatch(getUserFiltersSettingsThunk(registryKey, config.Service.getRegistryData.entity));
+    serverUserFilterFields = data.result[registryKey];
+  } catch (error) {
+    global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей фильтров с сервера', 'error', 'tr');
+  }
   const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
-  const filterFields = localStorageFilterFields.length 
+  const filterFieldsData = serverUserFilterFields && serverUserFilterFields.length
+    ? serverUserFilterFields
+    : localStorageFilterFields;
+
+  const filterFields = filterFieldsData.length 
     ? config.filter.fields.map((el) => {
-      const localStorageEl = localStorageFilterFields.find((elem) => el.valueKey === elem.valueKey);
-      return {...el, hidden: Boolean(localStorageEl.hidden)};
+      const filterFieldsDataEl = filterFieldsData.find((elem) => el.valueKey === elem.valueKey);
+      return {...el, hidden: Boolean(filterFieldsDataEl.hidden)};
     }) 
     : config.filter?.fields ?? [];
 
@@ -295,6 +306,53 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
   processResponse(result);
 
   return result;
+};
+
+const userFiltersSettingsThunk = (
+  registryKey: string,
+  entity: string,
+  type: 'get' | 'set', 
+): EtsAction<Promise<any>> => async (dispatch, getState) => {
+  const registryHandlerUrl = entity.split('/').join('_');
+  const userID = getSessionState(getState()).userData.user_id;
+  const key = `${registryKey}__${registryHandlerUrl}`;
+  const URI = `${configStand.backend}/user/${userID}/settings/${key}`;
+  let result = null;
+  try {
+    if (type === 'get') {
+      result = await etsLoadingCounter(
+        dispatch,
+        getJSON(
+          URI,
+        ),
+        { page: registryKey, noTimeout: false, },
+      );
+    } else {
+      const filterFields: {[key: string]: Array<{valueKey: string; hidden: boolean;}>;} = JSON.parse(localStorage.getItem(`filterFields`));
+        
+      const thisRegitryFilterFields = {[registryKey]: filterFields?.hasOwnProperty(registryKey) ? filterFields[registryKey] : []};
+      const payload = {
+        type: 'fields',
+        [key]: thisRegitryFilterFields
+      };
+      result = await patchJSON(
+        URI,
+        payload,
+        'json'
+      );
+    }
+  } catch (error) {
+    throw new Error('Не удалось изменить данные полей фильтров');
+  }
+  return result;
+};
+
+export const getUserFiltersSettingsThunk = (registryKey: string, entity: string,): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userFiltersSettingsThunk(registryKey, entity, 'get'));
+};
+
+export const setUserFiltersSettingsThunk = (registryKey: string, entity: string,): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userFiltersSettingsThunk(registryKey, entity, 'set'));
 };
 
 export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {
@@ -574,29 +632,33 @@ export const actionChangeRegistryFilterFields = (
     lt: {value: ''},
     neq: {value: ''},
   };
+  let payload = {...filter};
   if (valueKey === 'selectAll') {
-    return dispatch(
-      registryChangeFilterData(
-        registryKey,
-        {
-          ...filter,
-          fields: filter.fields.map((el) => ({...el, hidden: selectAll})),
-        }
-      )
-    );
+    payload = {
+      ...filter,
+      fields: filter.fields.map((el) => ({...el, hidden: selectAll})),
+    };
+  } else if (valueKey === 'getFromLocalStorage') {
+    const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
+    payload = {
+      ...filter,
+      fields: filter.fields.map((el, i) => ({...el, hidden: localStorageFilterFields.length ? localStorageFilterFields[i].hidden : false})),
+    };
+  } else {
+    payload = {
+      ...filter,
+      fields: filter.fields.map((el) => ({...el, hidden: valueKey === el.valueKey ? !el.hidden : el.hidden})),
+      rawFilterValues: {
+        ...filter.rawFilterValues,
+        [valueKey]: defaultRawFilterValues,
+      },
+    };
   }
 
   return dispatch(
     registryChangeFilterData(
       registryKey,
-      {
-        ...filter,
-        fields: filter.fields.map((el) => ({...el, hidden: valueKey === el.valueKey ? !el.hidden : el.hidden})),
-        rawFilterValues: {
-          ...filter.rawFilterValues,
-          [valueKey]: defaultRawFilterValues,
-        },
-      }
+      payload,
     )
   );
 };

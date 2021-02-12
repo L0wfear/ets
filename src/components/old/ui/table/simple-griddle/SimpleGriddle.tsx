@@ -76,10 +76,11 @@ class SimpleGriddle extends React.Component<any, any> {
       shortResult: makeShortResults(results, currentPage, resultsPerPage, this.props.selectField),
       initialSort: this.props.initialSort,
       initialSortAscending: this.props.initialSortAscending,
+      useIndexAsKey: false,
     };
   }
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { results, resultsPerPage } = nextProps;
+    const { results, resultsPerPage, selectField } = nextProps;
     if (results !== prevState.results || resultsPerPage !== prevState.resultsPerPage) {
       const currentPage = nextProps.serverPagination
         ? 0
@@ -97,12 +98,15 @@ class SimpleGriddle extends React.Component<any, any> {
         results,
         currentPage,
         resultsPerPage,
-        nextProps.selectField,
+        selectField,
       );
+      const useIndexAsKey = (shortResult as Array<any>)
+        .some((el, i, arr) => !isNullOrUndefined(el[selectField]) && arr.findIndex( (elem) => elem[selectField] === el[selectField]) !== i);
       return {
         results,
         resultsPerPage,
         shortResult,
+        useIndexAsKey,
       };
     }
 
@@ -159,7 +163,7 @@ class SimpleGriddle extends React.Component<any, any> {
 
   mapTbodyTr = (rowData, index) => (
     <TrTable
-      key={isNullOrUndefined(rowData[this.props.selectField]) ? index : rowData[this.props.selectField]}
+      key={isNullOrUndefined(rowData[this.props.selectField]) || this.state.useIndexAsKey ? index : rowData[this.props.selectField]}
       columns={this.props.columns}
       checked={this.props.checked}
       rowData={rowData}

@@ -1270,6 +1270,10 @@ div.car-movement-time-report {
 }
 .popover {
   z-index: 1000001;
+
+  &#popover-dut {
+    max-width: none;
+  }
 }
 
 .rw-select-bordered {

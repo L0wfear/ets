@@ -405,7 +405,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       this.setState({isUpdatedMileageTypeId: false});
     }
 
-    if (!this.state.isUpdatedMileageTypeId) {
+    if (!this.state.isUpdatedMileageTypeId && carList.length) {
       const carMileageTypeId = getCarMileageTypeId(carList, nextFormState?.car_id);
       const mileage_type_id = getCarMileageTypeIdByStatus(
         nextFormState.mileage_type_id,
@@ -715,6 +715,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       origFormState: formState,
     });
     this.setEngineKindIds(true);
+    this.setState({isUpdatedMileageTypeId: false});
   };
 
   async componentDidMount() {

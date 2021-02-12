@@ -47,7 +47,7 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
     const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
 
     if (searchStateKeyValue) {
-      this.props.registryAddInitialData(
+      await this.props.registryAddInitialData(
         this.props.getRegistryFunc(
           {
             [keyForSearch]: searchState[searchStateKey],
@@ -75,7 +75,7 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
     ) {
       const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
       if (searchStateKeyValue) {
-        this.props.registryAddInitialData(
+        await this.props.registryAddInitialData(
           this.props.getRegistryFunc(
             {
               [keyForSearch]: searchState[searchStateKey],

@@ -90,7 +90,7 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
   const userData = getSessionState(getState()).userData;
   let serverUserFilterFields = null;
   try {
-    const data = await dispatch(getUserFiltersSettingsThunk(registryKey, config.Service.getRegistryData.entity));
+    const data = await dispatch(getUserFiltersSettingsThunk(registryKey));
     serverUserFilterFields = data.result[registryKey];
   } catch (error) {
     global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей фильтров с сервера', 'error', 'tr');
@@ -310,13 +310,10 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
 
 const userFiltersSettingsThunk = (
   registryKey: string,
-  entity: string,
   type: 'get' | 'set', 
 ): EtsAction<Promise<any>> => async (dispatch, getState) => {
-  const registryHandlerUrl = entity.split('/').join('_');
   const userID = getSessionState(getState()).userData.user_id;
-  const key = `${registryKey}__${registryHandlerUrl}`;
-  const URI = `${configStand.backend}/user/${userID}/settings/${key}`;
+  const URI = `${configStand.backend}/user/${userID}/settings/${registryKey}`;
   let result = null;
   try {
     if (type === 'get') {
@@ -333,7 +330,7 @@ const userFiltersSettingsThunk = (
       const thisRegitryFilterFields = {[registryKey]: filterFields?.hasOwnProperty(registryKey) ? filterFields[registryKey] : []};
       const payload = {
         type: 'fields',
-        [key]: thisRegitryFilterFields
+        [registryKey]: thisRegitryFilterFields
       };
       result = await patchJSON(
         URI,
@@ -347,12 +344,12 @@ const userFiltersSettingsThunk = (
   return result;
 };
 
-export const getUserFiltersSettingsThunk = (registryKey: string, entity: string,): EtsAction<Promise<any>> => (dispatch) => {
-  return dispatch(userFiltersSettingsThunk(registryKey, entity, 'get'));
+export const getUserFiltersSettingsThunk = (registryKey: string): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userFiltersSettingsThunk(registryKey, 'get'));
 };
 
-export const setUserFiltersSettingsThunk = (registryKey: string, entity: string,): EtsAction<Promise<any>> => (dispatch) => {
-  return dispatch(userFiltersSettingsThunk(registryKey, entity, 'set'));
+export const setUserFiltersSettingsThunk = (registryKey: string): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userFiltersSettingsThunk(registryKey, 'set'));
 };
 
 export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {

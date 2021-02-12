@@ -3,7 +3,7 @@ import * as ClickOutHandler from 'react-onclickout';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FiltersPopup from './filter_popup/FiltersPopup';
-import { getFilterData, getListData, getServiceData } from 'components/new/ui/registry/module/selectors-registry';
+import { getFilterData, getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionChangeRegistryFilterFields, setUserFiltersSettingsThunk } from 'components/new/ui/registry/module/actions-registy';
@@ -15,7 +15,6 @@ const ButtonFiltersControl: React.FC<Props> = React.memo(
   (props) => {
     const [showConfigPopup, setShowConfigPopup] = React.useState(false);
     const hasHiddenField = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).meta.fields.some(({ hidden }) => hidden));
-    const entity = etsUseSelector((state) => getServiceData(state, props.registryKey)?.getRegistryData?.entity);
     const fields = etsUseSelector((state) => getFilterData(getRegistryState(state), props.registryKey).fields);
     const [needUpdateLocalStorageFilters, setNeedUpdateLocalStorageFilters] = React.useState(false);
     const dispatch = etsUseDispatch();
@@ -44,8 +43,8 @@ const ButtonFiltersControl: React.FC<Props> = React.memo(
       (async () => {
         if (needUpdateLocalStorageFilters) {
           try {
-            await dispatch(setUserFiltersSettingsThunk(props.registryKey, entity));
             setLocalStorageData(fields);
+            await dispatch(setUserFiltersSettingsThunk(props.registryKey));
           } catch (error) {
             dispatch(actionChangeRegistryFilterFields(
               props.registryKey,

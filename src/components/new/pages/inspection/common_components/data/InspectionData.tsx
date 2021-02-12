@@ -73,6 +73,7 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
     if (
       this.props.refresh
     ) {
+      setRefresh(false);
       const searchStateKeyValue = getNumberValueFromSerch(searchState[searchStateKey]);
       if (searchStateKeyValue) {
         await this.props.registryAddInitialData(
@@ -108,7 +109,6 @@ class InspectionData extends React.Component<InspectionDataProps, StateProps> {
         });
         this.props.registryRemoveData(this.props.loadingPage);
       }
-      setRefresh(false);
     }
   }
   loadRegistryData = async () => {

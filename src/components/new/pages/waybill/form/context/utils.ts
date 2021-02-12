@@ -66,7 +66,6 @@ export const defaultMotoHoursData: WaybillMotoHours = {
   motohours_end: null,
   motohours_reason_id: null,
   motohours_start: null,
-  motohours_diff: null,
 };
 
 export const defaultOdometrData: WaybillOdometr = {
@@ -75,7 +74,6 @@ export const defaultOdometrData: WaybillOdometr = {
   odometr_end: null,
   odometr_reason_id: null,
   odometr_start: null,
-  odometr_diff: null,
 };
 
 export const getDefaultWaybill = (company_id): Waybill => ({

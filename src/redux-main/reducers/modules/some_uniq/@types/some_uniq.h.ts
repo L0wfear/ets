@@ -18,6 +18,7 @@ import { RefillType } from '../../refill_type/@types/refillType';
 import { CarsTravelTime } from '../cars_travel_time/@types';
 import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
+import { SensorDut } from '../sensor_dut/@types';
 import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
@@ -78,6 +79,7 @@ export type IStateSomeUniq = {
   carsTravelTimeList: Array<CarsTravelTime>;
   edcRequestInfoList: Array<EdcRequestInfo>;
   tracksCaching: TracksCaching;
+  sensorDut: SensorDut;
 
   workModeList: Array<WorkMode>;
   normList: Array<Norm>;

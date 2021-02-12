@@ -18,6 +18,9 @@ export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
 export const ConfigTrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
   'config',
 );
+export const TrackSensor = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
+  'car',
+);
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('');
 export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config');

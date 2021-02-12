@@ -1,7 +1,7 @@
 import { cloneDeep, get, keyBy } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
 
-import { OneRegistryData, TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
+import { OneFilterType, OneRegistryData, TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 
 import {
   REGISTRY_ADD_INITIAL_DATA,
@@ -310,7 +310,8 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
 
 const userFiltersSettingsThunk = (
   registryKey: string,
-  type: 'get' | 'set', 
+  type: 'get' | 'set',
+  fields: Array<OneFilterType<any>> = [],
 ): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const userID = getSessionState(getState()).userData.user_id;
   const URI = `${configStand.backend}/user/${userID}/settings/${registryKey}`;
@@ -325,12 +326,10 @@ const userFiltersSettingsThunk = (
         { page: registryKey, noTimeout: false, },
       );
     } else {
-      const filterFields: {[key: string]: Array<{valueKey: string; hidden: boolean;}>;} = JSON.parse(localStorage.getItem(`filterFields`));
-        
-      const thisRegitryFilterFields = {[registryKey]: filterFields?.hasOwnProperty(registryKey) ? filterFields[registryKey] : []};
+      const filterFields = fields.map((el) => ({valueKey: el.valueKey, hidden: !!el.hidden}));
       const payload = {
         type: 'fields',
-        [registryKey]: thisRegitryFilterFields
+        [registryKey]: filterFields,
       };
       result = await patchJSON(
         URI,
@@ -348,8 +347,8 @@ export const getUserFiltersSettingsThunk = (registryKey: string): EtsAction<Prom
   return dispatch(userFiltersSettingsThunk(registryKey, 'get'));
 };
 
-export const setUserFiltersSettingsThunk = (registryKey: string): EtsAction<Promise<any>> => (dispatch) => {
-  return dispatch(userFiltersSettingsThunk(registryKey, 'set'));
+export const setUserFiltersSettingsThunk = (registryKey: string, fields: Array<OneFilterType<any>>): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userFiltersSettingsThunk(registryKey, 'set', fields));
 };
 
 export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {

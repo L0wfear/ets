@@ -43,8 +43,8 @@ const ButtonFiltersControl: React.FC<Props> = React.memo(
       (async () => {
         if (needUpdateLocalStorageFilters) {
           try {
+            await dispatch(setUserFiltersSettingsThunk(props.registryKey, fields));
             setLocalStorageData(fields);
-            await dispatch(setUserFiltersSettingsThunk(props.registryKey));
           } catch (error) {
             dispatch(actionChangeRegistryFilterFields(
               props.registryKey,

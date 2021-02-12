@@ -31,7 +31,6 @@ const validDateRange = (date_start, date_end, {company_id, isOkrug}: {company_id
   const isCompany = !isNullOrUndefined(company_id);
   const isGlobalUser = !isOkrug && !isCompany;
   const diffDatesDays = diffDates(date_end, date_start, 'days');
-  console.info(isCompany);
   const date_start_error = isGlobalUser && diffDatesMonths > 3
     ? 'Период формирования отчета не должен превышать 3 месяца'
     : isOkrug && diffDatesMonths > 6

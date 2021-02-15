@@ -207,7 +207,6 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
   } catch (error) {
     console.error(error); // tslint:disable-line
   } finally {
-    console.info(1);
     dispatch(carInfoResetMissionsAndWaybillsData());
   }
 

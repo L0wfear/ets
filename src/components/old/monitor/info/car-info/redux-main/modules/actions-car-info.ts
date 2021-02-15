@@ -146,7 +146,6 @@ export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAct
     version = test_version;
   }
 
-  dispatch(carInfoResetTrackCahing());
   let trackData = null;
   try {
     trackData = await dispatch(
@@ -167,6 +166,8 @@ export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAct
       ...initialState.trackCaching,
       error: true,
     };
+  } finally {
+    dispatch(carInfoResetTrackCahing());
   }
 
   const monitorPage = getMonitorPageState(getState());
@@ -191,8 +192,6 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
     },
   } = getState();
 
-  dispatch(carInfoResetMissionsAndWaybillsData());
-
   let result = null;
   try {
     result = await dispatch(
@@ -207,6 +206,9 @@ export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> =>
     );
   } catch (error) {
     console.error(error); // tslint:disable-line
+  } finally {
+    console.info(1);
+    dispatch(carInfoResetMissionsAndWaybillsData());
   }
 
   const monitorPage = getMonitorPageState(getState());

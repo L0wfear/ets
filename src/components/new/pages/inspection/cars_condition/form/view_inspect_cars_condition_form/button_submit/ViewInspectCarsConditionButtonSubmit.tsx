@@ -6,6 +6,7 @@ import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actio
 import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
+import { isString } from 'util';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
@@ -84,11 +85,12 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
 
   const handleGetCarsConditionAct = React.useCallback(
     async (format) => {
+      const fileFormat = isString(format) ? format : 'pdf';
       if (canSave) {
         const response = await props.actionGetBlobActInspect(
           selectedInspectCarsCondition.id,
           { page: props.loadingPage },
-          format,
+          fileFormat,
         );
 
         const blob = get(response, 'blob', null);

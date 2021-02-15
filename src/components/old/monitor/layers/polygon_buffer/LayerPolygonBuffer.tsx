@@ -54,6 +54,7 @@ type PropsLayerPolygonBuffer = {
   drawActiveAll: boolean;
 
   featureBufferPolygon: Feature | null;
+  measureActive: boolean;
 };
 
 type StateLayerPolygonBuffer = {
@@ -148,7 +149,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     return (
       <>
         <ButtonContainer>
-          <ButtonDraw disabled={this.state.activeDraw } onClick={this.toggleMeasureActive} />
+          <ButtonDraw disabled={this.state.activeDraw || this.props.measureActive} onClick={this.toggleMeasureActive} />
           <EtsBootstrap.Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
             <EtsBootstrap.Glyphicon glyph="remove" />
           </EtsBootstrap.Button>
@@ -170,6 +171,7 @@ const mapStateToProps = (state: ReduxState) => ({
   drawActiveAll: Object.values(omit({...state.monitorPage.drawActive}, ['all', 'polygonBuffer'])).some((value: boolean) => value),
   drawActivePolygonBuffer: state.monitorPage.drawActive.polygonBuffer,
   featureBufferPolygon: getMonitorPageState(state).filters.data.featureBufferPolygon,
+  measureActive: state.monitorPage.drawActive.measureActive,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -544,23 +544,20 @@ export default class DataTable extends React.Component<Props, State> {
         }
 
         const IS_ARRAY = Array.isArray(value);
-
-        if (/(timestamp|date|birthday)/.test(key) && !IS_ARRAY) {
-          const { filter } = cols.find(({ name }) => name === key);
+        const { filter } = cols.find(({ name }) => name === key);
+        const isDateFilterType = filter && (filter.type === 'advanced-datetime' || filter.type === 'advanced-date' || filter.type === 'datetime');
+        if ((/(timestamp|date|birthday)/.test(key) || isDateFilterType) && !IS_ARRAY) {
           if (
-            filter
-            && filter.type === 'datetime'
+            filter.type === 'datetime'
             && diffDates(obj[key], value) !== 0
           ) {
             isValid = false;
           }  else if (
-            filter
-            && filter.type === 'advanced-datetime'
+            filter.type === 'advanced-datetime'
           ) {
             isValid = parseAdvancedFilter(value, key, obj[key], filter.type);
           } else if (
-            filter
-            && filter.type === 'advanced-date'
+            filter.type === 'advanced-date'
           ) {
             isValid = parseAdvancedFilter(value, key, createValidDate(obj[key]), filter.type);
           } else if (

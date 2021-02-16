@@ -68,7 +68,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
                 id="dropdown-print"
 
                 disabled={!props.canSave}
-                toggleElement={'Сформировать акт для подписи сторон'}
+                toggleElement={'Сформировать акт для ознакомления'}
                 toggleElementSize="small"
               >
                 <EtsBootstrap.DropdownMenu dropup>
@@ -81,7 +81,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
                 </EtsBootstrap.DropdownMenu>
               </EtsBootstrap.Dropdown>
             ) : (
-              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleSaveGetAct}>Сформировать акт для подписи сторон</EtsBootstrap.Button>
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.handleSaveGetAct}>Сформировать акт для ознакомления</EtsBootstrap.Button>
             )}
             <EtsBootstrap.Button disabled={!props.canSave} onClick={handleCloseAct}>Завершить проверку</EtsBootstrap.Button>
           </React.Fragment>
@@ -101,7 +101,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
                 id="dropdown-print"
 
                 disabled={!props.canSave}
-                toggleElement={'Сформировать акт для подписи сторон'}
+                toggleElement={'Сформировать акт для ознакомления'}
                 toggleElementSize="small"
               >
                 <EtsBootstrap.DropdownMenu dropup>

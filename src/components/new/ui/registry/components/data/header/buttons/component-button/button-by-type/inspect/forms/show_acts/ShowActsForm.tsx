@@ -82,7 +82,10 @@ const ShowActsForm: React.FC<Props> = React.memo(
     const isPermittedUpdate = etsUseSelector(
       (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.update),
     );
-
+    const isPermittedDelete = etsUseSelector(
+      (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.delete),
+    );
+    console.info(isPermittedDelete);
     const handleOpenForm = React.useCallback(
       () => {
         changeElement({
@@ -191,7 +194,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                   </EtsBootstrap.Button>
                   <EtsButtonsContainer>
                     <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
-                    <ButtonRemove registryKey={registryKey} disabled={!isPermittedUpdate} data={dataRemove} onClick={handleClickRemoveFile} />
+                    <ButtonRemove registryKey={registryKey} disabled={!isPermittedDelete} data={dataRemove} onClick={handleClickRemoveFile} />
                   </EtsButtonsContainer>
                 </EtsHeaderContainer>
               </EtsHeaderContainerWrap>

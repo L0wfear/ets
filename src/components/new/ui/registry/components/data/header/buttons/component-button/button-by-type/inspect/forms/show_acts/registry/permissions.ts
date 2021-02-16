@@ -3,7 +3,7 @@ const inspectActScanPermissions = {
   create: 'inspect.act_scan.update',
   read: 'inspect.act_scan.read',
   update: 'inspect.act_scan.update',
-  delete: 'inspect.act_scan.update',
+  delete: 'inspect.act_scan.delete',
 };
 
 export default inspectActScanPermissions;

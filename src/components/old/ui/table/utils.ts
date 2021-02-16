@@ -133,7 +133,7 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
     return diffDates(first, second);
   }
   if (firstIsString && secondIsString && /\d{2}.\d{2}.\d{4}/.test(first)) {
-    return diffDates(first, second);
+    return diffDates(makeDataFromRaw(first), makeDataFromRaw(second));
   }
   if (firstIsString && secondIsString && first.match(/(\d{2}).(\d{2}).(\d{4}) (\d{2}):(\d{2})/)) {
     const [firstDate, firstTime] = first.split(' ');

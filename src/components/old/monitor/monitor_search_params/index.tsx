@@ -25,6 +25,8 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     const gov_number_old = usePrevious(gov_number);
 
     const carActualGpsNumberIndex = etsUseSelector((state) => getMonitorPageState(state).carActualGpsNumberIndex);
+    const stateGovNumber = etsUseSelector((state) => getMonitorPageState(state)?.carInfo.gov_number);
+    const stateGpsCode = etsUseSelector((state) => getMonitorPageState(state)?.carInfo.gps_code);
     const carData = React.useMemo(
       () => {
         const carList = Object.values(carActualGpsNumberIndex);
@@ -41,8 +43,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         if (gov_number) {
-          if (carData.dataIsLoaded) {
-
+          if (carData.dataIsLoaded && (gov_number !== stateGovNumber || stateGpsCode !== carData.data.gps_code)) {
             if (carData.data) {
               dispatch(carInfoSetGpsNumber(gov_number, carData.data.gps_code));
             } else {

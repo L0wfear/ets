@@ -211,10 +211,10 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
           } else if (
             lastPoint.timestamp < this.state.carPointsDataWs[gps_code].timestamp
           ) {
-            this.props.carInfoPushPointIntoTrack(carPointData, odh_mkad);
+            this.props.carInfoPushPointIntoTrack({...carPointData, is_valid: true}, odh_mkad);
           }
         } else {
-          this.props.carInfoPushPointIntoTrack(carPointData, odh_mkad);
+          this.props.carInfoPushPointIntoTrack({...carPointData, is_valid: true}, odh_mkad);
         }
       }
 
@@ -464,7 +464,7 @@ class LayerCarMarker extends React.PureComponent<PropsLayerCarMarker, StateLayer
               lastPoint.timestamp < point.timestamp
               && !isEmpty(odh_mkad)
             ) {
-              this.props.carInfoPushPointIntoTrack(point, odh_mkad);
+              this.props.carInfoPushPointIntoTrack({...point, is_valid: true}, odh_mkad);
             }
           }
 

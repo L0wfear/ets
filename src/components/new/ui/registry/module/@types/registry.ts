@@ -30,7 +30,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Arra
     firstElem?: boolean;
   };
   sortBy?: Extract<keyof F, string>;
-
+  key?: string;
   max_size_to_scroll?: number;
   fieldTitlePopup?: string;
   valueForBoolean?: string;

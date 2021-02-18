@@ -64,11 +64,9 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
 
       React.useEffect(
         () => {
-          setTimeout(() => {
-            dispatch(
-              config.loadData(),
-            );
-          }, props.timeDelay * 150  || 0);
+          dispatch(
+            config.loadData(),
+          );
           const timer_id = setTimeout(
             async () => {
               await loadData();

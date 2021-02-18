@@ -40,25 +40,25 @@ const DashboardMenuCards: React.FC<Props> = React.memo(
     return (
       <DashboardMenuCardsContainer>
         {/* на хуках */}
-        <CurrentMissions timeDelay={1} timeInterval={60} page={props.page} />
-        <FutureMissions timeDelay={2} />
+        <CurrentMissions timeDelay={0} timeInterval={60} page={props.page} />
+        <FutureMissions timeDelay={1} />
         {/* НЕ на хуках */}
-        <OdhNotCoveredByMissionsOfCurrentShift timeDelay={3} />
-        <OdhNotCoveredByRoutes timeDelay={4} />
-        <OdhCoveredByRoutes timeDelay={5}/>
-        <CarInWorkOverall timeDelay={6}/>
-        <Faxogramms timeDelay={7} />
-        <CurrentDutyMissions timeDelay={8} />
-        <WaybillDraft timeDelay={9} />
+        <OdhNotCoveredByMissionsOfCurrentShift timeDelay={2} />
+        <OdhNotCoveredByRoutes timeDelay={3} />
+        <OdhCoveredByRoutes timeDelay={4}/>
+        <CarInWorkOverall timeDelay={5}/>
+        <Faxogramms timeDelay={6} />
+        <CurrentDutyMissions timeDelay={7} />
+        <WaybillDraft timeDelay={8} />
 
         {/* на хуках */}
-        <WaybillInProgress timeDelay={10} />
+        <WaybillInProgress timeDelay={9} />
 
         {/* НЕ на хуках */}
-        <WaybillCompleted timeDelay={11} />
+        <WaybillCompleted timeDelay={10} />
 
         {/* на хуках */}
-        <WaybillClosed timeDelay={12} />
+        <WaybillClosed timeDelay={11} />
       </DashboardMenuCardsContainer>
     );
   },

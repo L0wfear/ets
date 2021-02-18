@@ -130,6 +130,7 @@ const FieldOrder: React.FC<Props> = React.memo(
         order_operation_id: get(selectedElement, 'order_operation_id'),
         order_number: get(selectedOrderRow, 'order_number'),
         order_status: get(selectedOrderRow, 'status'),
+        passes_count: get(selectedElement, 'num_exec'),
       };
       props.onChange({
         ...changeObj,

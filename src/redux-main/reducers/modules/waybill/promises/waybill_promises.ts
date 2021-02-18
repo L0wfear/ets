@@ -19,9 +19,9 @@ export const getOneWaybillFront = (waybillRaw) => {
 
   if (waybill) {
     if (isArray(waybill.tax_data)) {
-      waybill.tax_data = waybill.tax_data.map((tax: any) => {
+      waybill.tax_data = waybill.tax_data.map((tax: any, index) => {
         tax.originOperation = true;
-        tax.uniqKey = `originOperation_${tax.OPERATION}`;
+        tax.uniqKey = `originOperation_${tax.OPERATION}_${index}`;
         tax.operation_name = `${tax.operation_name}, ${
           tax.measure_unit_name
         }`;
@@ -38,9 +38,9 @@ export const getOneWaybillFront = (waybillRaw) => {
     }
 
     if (isArray(waybill.equipment_tax_data)) {
-      waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax: any) => {
+      waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax: any, index) => {
         tax.originOperation = true;
-        tax.uniqKey = `originOperation_${tax.OPERATION}`;
+        tax.uniqKey = `originOperation_${tax.OPERATION}_${index}`;
         tax.operation_name = `${tax.operation_name}, ${
           tax.measure_unit_name
         }`;

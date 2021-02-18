@@ -89,23 +89,41 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
   let serverUserFilterFields = null;
+  let serverUserColumnFields = null;
   try {
-    const data = await dispatch(getUserFiltersSettingsThunk(registryKey));
-    serverUserFilterFields = data.result[registryKey];
+    const filtersData = await dispatch(getUserSettingsThunk(registryKey, 'filters'));
+    serverUserFilterFields = filtersData;
   } catch (error) {
     global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей фильтров с сервера', 'error', 'tr');
   }
+  try {
+    const fieldsData = await dispatch(getUserSettingsThunk(registryKey, 'fields'));
+    serverUserColumnFields = fieldsData;
+  } catch (error) {
+    global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей колонок с сервера', 'error', 'tr');
+  }
   const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
+  const localStorageColumnFields = get(JSON.parse(localStorage.getItem(`columnContorol`)), registryKey, []);
+
   const filterFieldsData = serverUserFilterFields && serverUserFilterFields.length
     ? serverUserFilterFields
     : localStorageFilterFields;
+  const columnFieldsData = serverUserColumnFields && serverUserColumnFields.length
+    ? serverUserColumnFields
+    : localStorageColumnFields;
 
   const filterFields = filterFieldsData.length 
     ? config.filter.fields.map((el) => {
       const filterFieldsDataEl = filterFieldsData.find((elem) => el.valueKey === elem.valueKey);
-      return {...el, hidden: Boolean(filterFieldsDataEl.hidden)};
+      return {...el, hidden: Boolean(filterFieldsDataEl?.hidden)};
     }) 
     : config.filter?.fields ?? [];
+  const columnFields = columnFieldsData.length 
+    ? config.list.meta.fields.map((el) => {
+      const columnFieldsDataEl = columnFieldsData.find((elem) => el.key === elem.key);
+      return {...el, hidden: Boolean(columnFieldsDataEl?.hidden)};
+    }) 
+    : config.list.meta.fields ?? [];
 
   const mergeConfig: Partial<OneRegistryData<any>> = {
     isLoading: !config.noInitialLoad,
@@ -115,35 +133,13 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
     header: mergeHeader<F>(config.header),
   };
 
-  const columnContorolData = localStorage.getItem(`columnContorol`);
-  let meta = config.list.meta;
-
-  if (columnContorolData) {
-    const currentRegistryData = get(JSON.parse(columnContorolData), registryKey, null);
-
-    if (currentRegistryData) {
-      meta = {
-        ...config.list.meta,
-        fields: meta.fields.map((fieldData) => {
-          const filedFormLocalStorage = currentRegistryData.find(({ key }) => {
-            if ('key' in fieldData) {
-              return fieldData.key === key;
-            }
-            return true;
-          });
-          return {
-            ...fieldData,
-            ...(filedFormLocalStorage || {}),
-          };
-        }),
-      };
-    }
-  }
-
   mergeConfig.list = mergeList(
     {
       ...config.list,
-      meta,
+      meta: {
+        ...config.list.meta,
+        fields: columnFields
+      },
     },
     mergeConfig.filter.fields,
     {
@@ -308,16 +304,18 @@ export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<an
   return result;
 };
 
-const userFiltersSettingsThunk = (
+const userSettingsThunk = (
   registryKey: string,
-  type: 'get' | 'set',
-  fields: Array<OneFilterType<any>> = [],
+  kind: 'get' | 'set',
+  type: 'filters' | 'fields',
+  fields: Array<{hidden?: boolean; valueKey?: string; key?: string;}> = [],
 ): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const userID = getSessionState(getState()).userData.user_id;
-  const URI = `${configStand.backend}/user/${userID}/settings/${registryKey}`;
+  const key = `${registryKey}__${type}`;
+  const URI = `${configStand.backend}/user/${userID}/settings/${key}`;
   let result = null;
   try {
-    if (type === 'get') {
+    if (kind === 'get') {
       result = await etsLoadingCounter(
         dispatch,
         getJSON(
@@ -326,10 +324,11 @@ const userFiltersSettingsThunk = (
         { page: registryKey, noTimeout: false, },
       );
     } else {
-      const filterFields = fields.map((el) => ({valueKey: el.valueKey, hidden: !!el.hidden}));
+      const objKey = type === 'filters' ? 'valueKey' : 'key';
+      const registryFields = fields.map((el) => ({[objKey]: el[objKey], hidden: !!el.hidden}));
       const payload = {
-        type: 'fields',
-        [registryKey]: filterFields,
+        type,
+        [key]: registryFields,
       };
       result = await patchJSON(
         URI,
@@ -343,12 +342,17 @@ const userFiltersSettingsThunk = (
   return result;
 };
 
-export const getUserFiltersSettingsThunk = (registryKey: string): EtsAction<Promise<any>> => (dispatch) => {
-  return dispatch(userFiltersSettingsThunk(registryKey, 'get'));
+export const getUserSettingsThunk = (registryKey: string, type: 'filters' | 'fields'): EtsAction<Promise<any>> => async (dispatch) => {
+  const data = await dispatch(userSettingsThunk(registryKey, 'get', type));
+  return data && data.result ? data.result : [];
 };
 
 export const setUserFiltersSettingsThunk = (registryKey: string, fields: Array<OneFilterType<any>>): EtsAction<Promise<any>> => (dispatch) => {
-  return dispatch(userFiltersSettingsThunk(registryKey, 'set', fields));
+  return dispatch(userSettingsThunk(registryKey, 'set', 'filters', fields));
+};
+
+export const setUserColumnsSettingsThunk = (registryKey: string, fields: OneRegistryData['list']['meta']['fields']): EtsAction<Promise<any>> => (dispatch) => {
+  return dispatch(userSettingsThunk(registryKey, 'set', 'fields', fields));
 };
 
 export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey: string, responseDataList: Array<F> = []): EtsAction<Promise<void>> => async (dispatch, getState) => {

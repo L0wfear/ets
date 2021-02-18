@@ -59,7 +59,7 @@ class LayerCarMarker extends React.Component<
       && createValidDateTime(lastPoint?.timestamp * 1000) <= createValidDateTime(this.props.mission_date_end)
     ) {
       const trackArrCopy = [...track];
-      trackArrCopy.push({...lastPoint, speed_avg: lastPoint.speed_max, checkCoordsMsk: { onMkad: checkOnMkad(lastPoint, odh_mkad)},});
+      trackArrCopy.push({...lastPoint, is_valid: true, speed_avg: lastPoint.speed_max, checkCoordsMsk: { onMkad: checkOnMkad(lastPoint, odh_mkad)},});
       actionSetTracksCaching({...tracksCaching, track: trackArrCopy});
       this.updateStyleForAllPoints();
     }

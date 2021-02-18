@@ -7,7 +7,6 @@ import { getRegistryState } from 'redux-main/reducers/selectors';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ControlItem from './ControlItem';
 import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
-import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 type ColumnsPopupStateProps = {
@@ -18,6 +17,7 @@ type ColumnsPopupDispatchProps = {
 };
 type ColumnsPopupOwnProps = {
   registryKey: string;
+  setNeedUpdateLocalStorageFilters: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type ColumnsPopupMergedProps = (
   ColumnsPopupStateProps
@@ -29,31 +29,8 @@ type ColumnsPopupProps = ColumnsPopupMergedProps;
 const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   const [selectAllChecked, setSelectAllChecked] = React.useState(true);
 
-  const setLocalStorageData = React.useCallback(
-    (data) => {
-      const columnContorolData = localStorage.getItem(`columnContorol`);
-      const currentRegistryData = get(columnContorolData, props.registryKey, {});
-      currentRegistryData[props.registryKey] = data.map((fieldData) => {
-        return {
-          key: fieldData.key,
-          hidden: Boolean(fieldData.hidden),
-        };
-      });
-      localStorage.setItem('columnContorol', JSON.stringify(currentRegistryData));
-    }, []);
-
   const handleChange = React.useCallback(
     (field) => {
-      const newField = props.fields.map((fieldData) => {
-        if ('key' in fieldData && fieldData.key === field.key) {
-          return field;
-        }
-
-        return fieldData;
-      });
-
-      setLocalStorageData(newField);
-
       props.actionChangeRegistryMetaFields(
         props.registryKey,
         props.fields.map((fieldData) => {
@@ -79,8 +56,6 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
         props.registryKey,
         fields,
       );
-
-      setLocalStorageData(fields);
     },
     [selectAllChecked, props.fields],
   );
@@ -90,6 +65,10 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
       setSelectAllChecked(props.fields.filter((el) => el.hidden === true).length === 0);
     }
   }, [props.fields, selectAllChecked]);
+
+  React.useEffect(() => {
+    return () => props.setNeedUpdateLocalStorageFilters(true);
+  }, []);
 
   return (
     <ColumnPopupContainerWrapper>

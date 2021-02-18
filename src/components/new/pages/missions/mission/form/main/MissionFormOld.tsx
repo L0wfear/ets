@@ -552,7 +552,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                           date_start={state.date_start}
                           date_end={state.date_end}
                           disabled={!isPermitted}
-                          onHide={this.props.hideWithoutChanges}
                           onChange={this.props.handleChange}
                           formDataKey={this.props.formDataKey}
                           path={path}

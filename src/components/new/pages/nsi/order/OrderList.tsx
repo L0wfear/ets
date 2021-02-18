@@ -30,7 +30,7 @@ const OrderList: React.FC<Props> = React.memo(
 
     const date_start: string = props.searchState.date_from;
     const date_end: string = props.searchState.date_to;
-
+    const [isLoadedData, setIsLoadedData] = React.useState(false);
     const dispatch = etsUseDispatch();
 
     React.useEffect(
@@ -39,7 +39,7 @@ const OrderList: React.FC<Props> = React.memo(
           registryAddInitialData(
             getToConfig(),
           ),
-        );
+        ).then(() => setIsLoadedData(true));
         return () => {
           dispatch(
             registryRemoveData(orderRegistryKey),
@@ -63,7 +63,7 @@ const OrderList: React.FC<Props> = React.memo(
 
     React.useEffect(
       () => {
-        if (date_start && date_end) {
+        if (date_start && date_end && isLoadedData) {
           const payload = {
             getRegistryData: {
               date_start,
@@ -77,7 +77,7 @@ const OrderList: React.FC<Props> = React.memo(
         }
 
       },
-      [date_start, date_end],
+      [date_start, date_end, isLoadedData],
     );
 
     return (

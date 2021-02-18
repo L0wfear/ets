@@ -28,7 +28,6 @@ type Props = {
   value: number;
   error: string;
   onChange: (obj: Partial<Mission>) => void;
-  onHide: (obj: Partial<Mission>) => void;
   date_start: string;
   date_end: string;
   formDataKey: FormKeys & 'mission';
@@ -168,6 +167,10 @@ const FieldOrder: React.FC<Props> = React.memo(
       [selectedOrderRow, selectedOrderTORowBYParams],
     );
 
+    const onHide = React.useCallback(() => {
+      setShowForm(false);
+    }, [showForm]);
+
     return (
       <>
         <EtsBootstrap.Col md={4}>
@@ -197,7 +200,7 @@ const FieldOrder: React.FC<Props> = React.memo(
             <EtsBootstrap.ModalContainer
               id="modal-technical-operations"
               show
-              onHide={props.onHide}
+              onHide={onHide}
               bsSize="large"
             >
               <EtsBootstrap.ModalHeader closeButton>

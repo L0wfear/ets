@@ -191,7 +191,7 @@ class ReportContainer extends React.Component<
 
     // фильтруем список
     if (this.state.filterValues !== prevState.filterValues || this.props.data !== prevProps.data) {
-      if (this.props.notUseServerSummerTable) {
+      if (this.props.notUseServerSummerTable || this.props.notUseServerSummerTableForPrint) {
         const { data: old_data } = this.props;
         let rows = get(old_data, ['result', 'rows'], null);
         const reportKey = get(this.props, 'tableProps.reportKey', null);
@@ -227,7 +227,13 @@ class ReportContainer extends React.Component<
 
           this.props.setReportDataWithSummerData({
             data,
-            props: { ...this.state, notUseServerSummerTable: this.props.notUseServerSummerTable, reportKey },
+            props: { 
+              ...this.state, 
+              notUseServerSummerTable: this.props.notUseServerSummerTable, 
+              notUseServerSummerTableForPrint: this.props.notUseServerSummerTableForPrint, 
+              reportKey,
+              summaryList: this.props.summaryList,
+            },
           });
         }
       }
@@ -247,14 +253,14 @@ class ReportContainer extends React.Component<
 
     return new Promise(async (resolve, reject) => {
       try {
-        const { notUseServerSummerTable } = this.props;
+        const { notUseServerSummerTable, notUseServerSummerTableForPrint } = this.props;
         const reportKey = get(this.props, 'tableProps.reportKey', null);
 
         const data = await this.props.getReportData(
           this.props.serviceName,
           payload,
           '',
-          { ...this.state, notUseServerSummerTable, reportKey },
+          { ...this.state, notUseServerSummerTable, notUseServerSummerTableForPrint, reportKey },
         );
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 

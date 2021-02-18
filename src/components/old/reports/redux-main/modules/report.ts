@@ -149,8 +149,8 @@ const getReportDataReducer = (state: IStateReport, { payload }) => {
 
   const newState = reportType !== 'summary'
     ? {
-      data,
       ...state,
+      data,
       tableMetaInfo: {
         ...state.tableMetaInfo,
         fields: data.result.meta.fields,
@@ -213,7 +213,7 @@ export const setReportDataWithSummerData: any = ({ data, props }) => ({
   type: SET_REPORT_DATA_WITH_SUMMER_DATA,
   payload: {
     list: data.result.rows.map((row, index) => ({ _uniq_field: index + 1, ...row })),
-    summaryList: makeDataForSummerTable(data, props),
+    summaryList: props.notUseServerSummerTableForPrint ? props.summaryList : makeDataForSummerTable(data, props),
   },
 });
 

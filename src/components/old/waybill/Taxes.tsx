@@ -281,7 +281,8 @@ export default class Taxes extends React.Component<any, any> {
           label: data.operation_name,
           measure_unit_name: data.measure_unit_name,
           is_excluding_mileage: data.is_excluding_mileage,
-          isDisabled: true,
+          // isDisabled: true,
+          isNotVisible: true,
         });
       }
     });

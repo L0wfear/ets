@@ -36,7 +36,6 @@ const reportProps: IReportProps = {
   schemaMakers,
   notUseServerSummerTableForPrint: true,
   summaryRenderes,
-
 };
 
 const ExportableReportContainer = exportable({

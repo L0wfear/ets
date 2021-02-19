@@ -345,7 +345,10 @@ export type WaybillState = {
   isFuelKind: boolean;
   isElectricalKind: boolean;
   isUpdatedMileageTypeId: boolean;
-  trackCashingDut: Array<SensorDut>;
+  trackCashingDut: {
+    data: Array<SensorDut>;
+    loading: boolean;
+  };
 };
 
 class WaybillForm extends React.Component<WaybillProps, WaybillState> {
@@ -381,7 +384,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       isFuelKind: true,
       isElectricalKind: false,
       isUpdatedMileageTypeId: false,
-      trackCashingDut: [],
+      trackCashingDut: {
+        data: [],
+        loading: null,
+      },
     };
   }
 
@@ -393,8 +399,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const oldFormState = prevProps.formState;
     const nextFormState = this.props.formState;
     if (nextFormState.car_id !== oldFormState.car_id && nextFormState.car_id) {
-      this.getLatestWaybillDriver(nextFormState);
       this.getDutSensors(nextFormState, false);
+      this.getLatestWaybillDriver(nextFormState);
     }
     if (
       carList.length 
@@ -1183,17 +1189,34 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
   updateDut = () => {
     const { formState } = this.props;
+    const { trackCashingDut } = this.state;
+    this.setState({
+      trackCashingDut: {
+        ...trackCashingDut,
+        loading: true,
+      },
+    });
     this.props
       .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, this.props))
       .then((res) => {
         this.setState({
-          trackCashingDut: res,
+          trackCashingDut: {
+            data: res,
+            loading: false,
+          },
         });
       });
   };
 
   getDutSensors = (formState, withTs: boolean) => {
+    const { trackCashingDut } = this.state;
     if (formState.car_id) {
+      this.setState({
+        trackCashingDut: {
+          ...trackCashingDut,
+          loading: true,
+        },
+      });
       this.props
         .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, this.props))
         .then((res) => {
@@ -1201,7 +1224,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             this.handleChange('dut_data', res);
           } else {
             this.setState({
-              trackCashingDut: res,
+              trackCashingDut: {
+                data: res,
+                loading: false,
+              },
             });
           }
         });
@@ -2799,7 +2825,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                   <EtsBootstrap.Col md={6}>
                     <DutSensor
                       refresh={this.updateDut}
-                      dutData={IS_CLOSED ? state.dut_data : trackCashingDut}
+                      dutData={IS_CLOSED ? state.dut_data : trackCashingDut.data}
+                      isLoading={trackCashingDut.loading}
                     />
                   </EtsBootstrap.Col>
                 </Div>

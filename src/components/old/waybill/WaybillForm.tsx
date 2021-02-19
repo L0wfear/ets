@@ -1197,7 +1197,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       },
     });
     this.props
-      .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, this.props))
+      .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, {page: 'none'}))
       .then((res) => {
         this.setState({
           trackCashingDut: {
@@ -1218,7 +1218,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         },
       });
       this.props
-        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, this.props))
+        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, {page: 'none'}))
         .then((res) => {
           if (withTs) {
             this.handleChange('dut_data', res);

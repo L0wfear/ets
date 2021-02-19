@@ -7,7 +7,7 @@ import Table from 'components/old/waybill/Table';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/old/ui/Div';
-import { parseFloatWithFixed, isEmpty } from 'utils/functions';
+import { parseFloatWithFixed, isEmpty, generateRandomKey } from 'utils/functions';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import {
   EtsHeaderContainer,
@@ -425,6 +425,7 @@ export default class Taxes extends React.Component<any, any> {
       fuel_correction_rate: correctionRate,
       FACT_VALUE: null,
       OPERATION: null,
+      key: generateRandomKey(),
     });
     this.setState({ tableData, errorsAll });
     this.props.onChange(tableData);

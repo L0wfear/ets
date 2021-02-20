@@ -5,9 +5,10 @@ export type ETSLoading<A, M = { promise: true; page?: string; path?: string; }, 
 }>;
 
 export type LoadingMeta = {
-  page: string;
+  page?: string;
   path?: string;
   noTimeout?: boolean;
+  withoutPreloader?: boolean;
 
   [k: string]: any;
 };

@@ -1189,23 +1189,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
   updateDut = () => {
     const { formState } = this.props;
-    const { trackCashingDut } = this.state;
-    this.setState({
-      trackCashingDut: {
-        ...trackCashingDut,
-        loading: true,
-      },
-    });
-    this.props
-      .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, {page: 'none'}))
-      .then((res) => {
-        this.setState({
-          trackCashingDut: {
-            data: res,
-            loading: false,
-          },
-        });
-      });
+    this.getDutSensors(formState, false);
   };
 
   getDutSensors = (formState, withTs: boolean) => {
@@ -1218,7 +1202,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         },
       });
       this.props
-        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, {page: 'none'}))
+        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, { withoutPreloader: true }))
         .then((res) => {
           if (withTs) {
             this.handleChange('dut_data', res);
@@ -1230,6 +1214,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               },
             });
           }
+        }).catch(() => {
+          this.setState({
+            trackCashingDut: {
+              data: [],
+              loading: false,
+            }
+          });
         });
     }
   };

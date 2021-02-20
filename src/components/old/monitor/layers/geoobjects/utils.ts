@@ -258,9 +258,9 @@ const checkShowTrueHasNotOldFeature: LayerGeoobjectsUtilsTypes.checkShowTrueHasN
     feature.setId(id);
     feature.set('serverName', serverName);
     if (selected) {
-      feature.setStyle(getCasheStyleForGeoobject(true));
+      feature.setStyle(getCasheStyleForGeoobject(true, color, serverName));
     } else {
-      feature.setStyle(getCasheStyleForGeoobject(false, color));
+      feature.setStyle(getCasheStyleForGeoobject(false, color, serverName));
     }
 
     thisProps.addFeaturesToSource(feature);
@@ -377,7 +377,7 @@ export const renderGeoobjects: LayerGeoobjectsUtilsTypes.renderGeoobjectsFunc = 
             });
             feature.setId(id);
             feature.set('serverName', serverName);
-            feature.setStyle(getCasheStyleForGeoobject(false, color));
+            feature.setStyle(getCasheStyleForGeoobject(false, color, serverName));
             thisProps.addFeaturesToSource(feature);
           }
         }

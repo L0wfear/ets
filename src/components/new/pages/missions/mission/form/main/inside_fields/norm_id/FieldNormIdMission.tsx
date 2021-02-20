@@ -11,6 +11,7 @@ import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/miss
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
+import { isNullOrUndefined } from 'util';
 
 type StateProps = {
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
@@ -70,7 +71,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
       this.updateNormId(); // в том числе, нужен в для определения is_cleaning_norm, используется в валидации
     }
 
-    if (MISSION_IS_ORDER_SOURCE && !disabled && type_ids !== prevProps.type_ids) {
+    if (MISSION_IS_ORDER_SOURCE && !disabled && !isNullOrUndefined(this.props.dependeceTechnicalOperation) && type_ids !== prevProps.type_ids) {
       this.props.onChange({
         norm_ids: type_ids.map(() => this.props.dependeceTechnicalOperation.norm_id),
         norm_text: '',

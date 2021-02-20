@@ -1415,7 +1415,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             { ...formState, driver_id },
             this.props.employeeIndex,
             this.props.waybillDriverList,
-            this.props.carList,
           );
 
           if (DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1656,7 +1655,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         { ...this.props.formState, structure_id },
         this.props.employeeIndex,
         this.props.waybillDriverList,
-        this.props.carList,
       );
 
       if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
@@ -2405,7 +2403,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           uniqEmployeesBindedOnCarList[0]
             ? uniqEmployeesBindedOnCarList
             : waybillDriverList,
-          this.props.carList,
         )
         : [];
 

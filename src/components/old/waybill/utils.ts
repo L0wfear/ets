@@ -5,7 +5,7 @@ import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { checkErrorDate } from 'components/old/waybill/utils_react';
 
-import { isNotEqualAnd, hasMotohours } from 'utils/functions';
+import { isNotEqualAnd, hasMotohoursByGovNumber } from 'utils/functions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { actionLoadFuelRatesByCarModel, actionLoadEquipmentFuelRatesByCarModel } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
@@ -104,25 +104,25 @@ export const driverHasOneOfLicenseWithActiveDate = (
   element
 ) => driverHasLicenseWithActiveDate(element) || driverHasSpecialLicenseWithActiveDate(element);
 
-const hasOdometr = (carList: Array<Car>, carId: number) => !hasMotohours(carList, carId);
+const hasOdometrByGovNumber = (gov_number: string) => !hasMotohoursByGovNumber(gov_number);
 
-const licenceSwitcher = (carList: Array<Car>, carId: number, isValidOneOfLicense) => {
+const licenceSwitcher = (gov_number: string, isValidOneOfLicense) => {
   if(isValidOneOfLicense) { // компрессор - 
     return driverHasOneOfLicenseWithActiveDate;
   }
-  if (hasOdometr(carList, carId)) { // не 4 знака
+  if (hasOdometrByGovNumber(gov_number)) { // не 4 знака
     return driverHasLicenseWithActiveDate;
   }
-  if (hasMotohours(carList, carId)) { // 4 знака
+  if (hasMotohoursByGovNumber(gov_number)) { // 4 знака
     return driverHasSpecialLicenseWithActiveDate;
   }
 
   return (d) => d;
 };
 
-export const getDrivers = (state, employeeIndex, driversList, carList: Array<Car>) => { // for waybill
+export const getDrivers = (state, employeeIndex, driversList) => { // for waybill
   const isValidOneOfLicense = state.car_type_id === 15;
-  const driverFilter = licenceSwitcher(carList, state.car_id, isValidOneOfLicense);
+  const driverFilter = licenceSwitcher(state.gov_number, isValidOneOfLicense);
   const driverAfterCheckOnCarEmpl = driversList.filter(
     ({ id, employee_id }) => {
       const key = id || employee_id;

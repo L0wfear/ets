@@ -177,6 +177,12 @@ export function printData(blob) {
  * @param {string} carStateNumber - гос.номер
  * @return {boolean} hasMotohours - есть ли "Счетчик моточасов"
  */
+export function hasMotohoursByGovNumber(carStateNumber) {
+  if (carStateNumber) {
+    return isFourDigitGovNumberRegexp.test(carStateNumber);
+  }
+  return null;
+}
 
 export const getCarMileageTypeId = (carList: Array<Car>, carId: number): Waybill['mileage_type_id'] => {
   const car_data = carList.find((el) => el.asuods_id === carId);

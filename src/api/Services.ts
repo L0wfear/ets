@@ -69,7 +69,9 @@ export const FuelCardsService = ETS_API_FACTORY.createApiServiceAdapter(
 export const FuelCardsArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_cards_archive',
 );
-
+export const InsurancePolicyArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/insurance_policy_archive_registry',
+);
 export const PenaltiesService = ETS_API_FACTORY.createApiServiceAdapter('penalties');
 export const CarExcludeService = ETS_API_FACTORY.createApiServiceAdapter('car/exclude_filter');
 

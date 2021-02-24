@@ -24,7 +24,7 @@ const makeCacheStyle = (cacheStyleName, { selected, color, geoobj } ) => {
       image: new Icon({
         anchor: [0.5, 0.5],
         src: ICONS[geoobj] ? ICONS[geoobj] : ICONS.carpool,
-        scale: 1.5,
+        scale: 1.6,
       }),
     }
     : {
@@ -56,6 +56,5 @@ export const getCasheStyleForGeoobject = (selected, color = '', geoobj: string) 
       { selected, color, geoobj },
     );
   }
-  console.info(icon);
   return icon;
 };

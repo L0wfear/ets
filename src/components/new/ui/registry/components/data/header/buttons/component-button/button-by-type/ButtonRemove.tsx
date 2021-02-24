@@ -17,6 +17,9 @@ import { registryKey } from 'components/new/pages/nsi/autobase/pages/tachograph/
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { registryKey as inpectCarsConditionRegistryKey} from 'components/new/pages/inspection/cars_condition/components/data/components/registry/config';
+import { registryKey as inpectPgmBaseRegistryKey} from 'components/new/pages/inspection/pgm_base/components/data/components/registry/config';
+import { registryKey as inpectAutobaseRegistryKey} from 'components/new/pages/inspection/autobase/components/data/components/registry/config';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -155,9 +158,21 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
       tachographRegistry
     ]);
 
+  const isInspection = React.useMemo(() => {
+    const { registryKey } = props;
+    return registryKey === inpectCarsConditionRegistryKey
+           || registryKey === inpectPgmBaseRegistryKey
+           || registryKey === inpectAutobaseRegistryKey;
+  }, [props.registryKey]);
+
+  const isDisabledForInspection = React.useMemo(() => isInspection && props.selectedRow?.status === 'deleted', [isInspection, props.selectedRow]);
   return (
     <>
-      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled}>
+      <EtsBootstrap.Button 
+        id={`${props.registryKey}.open-remove-form`} 
+        bsSize="small" onClick={handleClickOpenForm} 
+        disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled || isDisabledForInspection}>
+
         <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>
@@ -168,8 +183,8 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
         message={
           checkedRowsLength === 1 || checkedRowsLength === 0
-            ? data.message_multi || 'Вы уверены, что хотите удалить выбранный элемент?'
-            : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
+            ? data.message_multi || `Вы уверены, что хотите удалить ${isInspection ? 'выбранную проверку' : 'выбранный элемент'}?`
+            : data.message_single || `Вы уверены, что хотите удалить выбранные ${isInspection ? 'проверки' : 'элементы'} (${checkedRowsLength} шт)?`
         }
 
         titleOk={(data.format === 'yesno' || tachographRegistry) ? buttonOK : null}

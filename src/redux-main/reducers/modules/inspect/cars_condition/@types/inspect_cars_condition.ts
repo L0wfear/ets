@@ -78,6 +78,8 @@ export type InspectCarsCondition = {
   company_name: string;
   company_short_name: string;
   date_start: string;
+  delete_employee_id: number;
+  delete_employee_fio: string;
   id: number;
   inspection_company_id: number;
   inspection_company_name: string;

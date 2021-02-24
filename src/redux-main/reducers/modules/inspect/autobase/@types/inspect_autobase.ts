@@ -60,6 +60,8 @@ export type InspectAutobase = {
   close_employee_position: string | null;
   close_employee_assignment: string;
   close_employee_assignment_date_start: string;
+  delete_employee_id: number;
+  delete_employee_fio: string;
   action: string;
   files: Array<any>;
   type: 'autobase';

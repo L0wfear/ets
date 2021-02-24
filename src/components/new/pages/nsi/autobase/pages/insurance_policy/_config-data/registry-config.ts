@@ -4,7 +4,7 @@ import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/aut
 import insurancePolicyPermissions from './permissions';
 import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
-import { insurancePolicyArchivePermissions } from '../../insurance_policy_archive/_config-data/permissions';
+import { insurancePolicyArchivePermissions } from 'components/new/pages/nsi/autobase/pages/insurance_policy_archive/_config-data/permissions';
 
 export const registryKey = 'insurancePolicyRegistry';
 

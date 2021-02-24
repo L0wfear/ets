@@ -6,11 +6,19 @@ import {
 } from 'components/new/ui/registry/module/selectors-registry';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-
+import { 
+  withRequirePermission, 
+  WithRequirePermissionAddProps, 
+  WithRequirePermissionProps 
+} from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { actionInsurancePolicyFromArchive } from 'redux-main/reducers/modules/autobase/insurance_policy/actions-insurance_policy';
+import { insurancePolicyArchivePermissions } from 'components/new/pages/nsi/autobase/pages/insurance_policy_archive/_config-data/permissions';
 
-const ButtonInsurancePolicyFromArchive: React.FC<CommonTypesForButton> = React.memo(
+type OwpProps = CommonTypesForButton & WithRequirePermissionProps & {};
+type Props = OwpProps & WithRequirePermissionAddProps & {};
+
+const ButtonInsurancePolicyFromArchive: React.FC<Props> = React.memo(
   (props) => {
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
@@ -48,4 +56,6 @@ const ButtonInsurancePolicyFromArchive: React.FC<CommonTypesForButton> = React.m
   },
 );
 
-export default ButtonInsurancePolicyFromArchive;
+export default withRequirePermission<OwpProps>({
+  permissions: insurancePolicyArchivePermissions.update,
+})(ButtonInsurancePolicyFromArchive);

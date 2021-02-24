@@ -21,6 +21,7 @@ import tachographList from 'components/new/pages/nsi/autobase/pages/tachograph/_
 import tachographRepairList from 'components/new/pages/nsi/autobase/pages/tachograph_repair/_config-data';
 import tachographMetrologicalVerificationList from 'components/new/pages/nsi/autobase/pages/tachograph_metrological_verification/_config-data';
 import refillList from 'components/new/pages/nsi/autobase/pages/refill_registry/_config-data';
+import techInspectionArchiveList from 'components/new/pages/nsi/autobase/pages/tech_inspection_archive/_config-data';
 
 const children = {
   carActualList,
@@ -34,6 +35,7 @@ const children = {
   sparePartList,
   techMaintenanceOrderList,
   techInspectionList,
+  techInspectionArchiveList,
   insurancePolicyList,
   repairCompanyList,
   fuelCardsList,

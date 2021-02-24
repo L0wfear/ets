@@ -4,20 +4,48 @@ import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/auto
 import techInspectionPermissions from './permissions';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { techInspectionArchivePermissions } from 'components/new/pages/nsi/autobase/pages/tech_inspection_archive/_config-data/permissions';
 
 export const registryKey = 'techInspectionRegistry';
 
-export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => {
+export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр техосмотров', regKey = registryKey): TypeConfigData<TechInspection> => {
 
-  const Service: any = {
+  const Service: TypeConfigData<TechInspection>['Service'] = {
     getRegistryData: {
       entity: 'autobase/tech_inspection_registry',
+      payload: {
+        is_archive,
+      },
+    },
+    getBlobData: {
+      entity: 'autobase/tech_inspection_registry',
+      payload: {
+        is_archive,
+      },
     },
     removeOneData: {
       entity: 'autobase/tech_inspection_registry',
       uniqKeyLikeQueryString: false,
     },
   };
+  const buttons: TypeConfigData<TechInspection>['header']['buttons'] = !is_archive
+    ? [
+      buttonsTypes.columns_control,
+      buttonsTypes.filter,
+      buttonsTypes.create,
+      buttonsTypes.read,
+      buttonsTypes.remove,
+      buttonsTypes.tech_inspection_to_archive,
+      buttonsTypes.export,
+    ]
+    : [
+      buttonsTypes.columns_control,
+      buttonsTypes.filter,
+      buttonsTypes.read,
+      buttonsTypes.tech_inspection_from_archive,
+      buttonsTypes.export,
+    ];
+  const permissions = is_archive ? techInspectionArchivePermissions : techInspectionPermissions;
 
   if (car_id) {
     Service.getRegistryData.payload = {
@@ -35,17 +63,10 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
 
   return {
     Service,
-    registryKey,
+    registryKey: regKey,
     header: {
-      title: 'Реестр техосмотров',
-      buttons: [
-        buttonsTypes.columns_control,
-        buttonsTypes.filter,
-        buttonsTypes.create,
-        buttonsTypes.read,
-        buttonsTypes.remove,
-        buttonsTypes.export,
-      ],
+      title,
+      buttons,
     },
     filter: {
       fields: [
@@ -117,7 +138,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
       ],
     },
     list: {
-      permissions: techInspectionPermissions,
+      permissions,
       data: {
         uniqKey: 'id',
         fixedWidth: true,

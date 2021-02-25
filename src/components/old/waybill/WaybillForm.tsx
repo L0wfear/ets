@@ -1192,7 +1192,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     this.getDutSensors(formState, false);
   };
 
-  getDutSensors = (formState, withTs: boolean) => {
+  getDutSensors = async (formState, withTs: boolean) => {
     const { trackCashingDut } = this.state;
     if (formState.car_id) {
       this.setState({
@@ -1201,7 +1201,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           loading: true,
         },
       });
-      this.props
+      await this.props
         .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, { withoutPreloader: true }))
         .then((res) => {
           if (withTs) {
@@ -1702,6 +1702,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         .then(async () => {
           if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
             const { rejectMissionList } = this.state;
+            await this.getDutSensors(this.props.formState, true);
             await this.rejectMissionHandler(rejectMissionList).then((res) => {
               const { origMissionsList } = this.state;
               const {
@@ -1741,7 +1742,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               this.setState({
                 missionsList: newMissionsList,
               });
-              this.getDutSensors(this.props.formState, true);
               if (!res.rejectMissionSubmitError) {
                 this.props.handleClose(taxesControl);
               }

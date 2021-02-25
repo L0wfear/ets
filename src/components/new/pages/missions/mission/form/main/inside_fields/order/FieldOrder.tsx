@@ -191,7 +191,7 @@ const FieldOrder: React.FC<Props> = React.memo(
         <EtsBootstrap.Col md={2}>
           <FlexContainer direction="column" alignItems="start">
             <FieldLabel>Поручение</FieldLabel>
-            <EtsBootstrap.Button disabled={props.disabled} onClick={handleClick}>
+            <EtsBootstrap.Button disabled={props.disabled || !props.value} onClick={handleClick}>
               Выбрать
             </EtsBootstrap.Button>
             <ErrorsBlock error={error} />

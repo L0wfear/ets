@@ -312,8 +312,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         technical_operation_id: null,
       }
       : {
-        ...changeObjDefault,
-        ...originalFormState
+        ...originalFormState,
+        ...changeObjDefault
       };
 
     this.props.handleChange({

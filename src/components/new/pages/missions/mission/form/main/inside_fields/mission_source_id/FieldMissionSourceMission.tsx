@@ -62,6 +62,7 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
             options={MISSION_SOURCE_OPTIONS}
             value={props.value}
             onChange={this.handleChange}
+            clearable={false}
           />
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={request_id ? 6 : 0}>

@@ -69,7 +69,9 @@ export const FuelCardsService = ETS_API_FACTORY.createApiServiceAdapter(
 export const FuelCardsArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_cards_archive',
 );
-
+export const InsurancePolicyArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/insurance_policy_archive_registry',
+);
 export const PenaltiesService = ETS_API_FACTORY.createApiServiceAdapter('penalties');
 export const CarExcludeService = ETS_API_FACTORY.createApiServiceAdapter('car/exclude_filter');
 
@@ -296,6 +298,9 @@ export const CarPassportGibddRegistryService = ETS_API_FACTORY.createApiServiceA
 );
 export const CarPassportGtnRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/car_passport_gtn_registry',
+);
+export const TechInspectionArchiveService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/tech_inspection_archive_registry',
 );
 export const TachographService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_registry');
 export const TachographRepairService = ETS_API_FACTORY.createApiServiceAdapter('autobase/tachograph_repair');

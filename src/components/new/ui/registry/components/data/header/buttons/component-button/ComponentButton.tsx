@@ -48,6 +48,10 @@ import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/
 import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
 import ButtonFuelCardCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardCreate';
 import ButtonRefillExport from './button-by-type/refill/ButtonRefillExport';
+import ButtonTechInspectionToArchive from './button-by-type/tech_inspection_archive/ButtonTechInspectionToArchive';
+import ButtonTechInspectionFromArchive from './button-by-type/tech_inspection_archive/ButtonTechInspectionFromArchive';
+import ButtonInsurancePolicyToArchive from './button-by-type/insurance_policy/ButtonInsurancePolicyToArchive';
+import ButtonInsurancePolicyFromArchive from './button-by-type/insurance_policy/ButtonInsurancePolicyFromArchive';
 
 type Props = CommonTypesForButton;
 
@@ -99,6 +103,10 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
   [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
   [buttonsTypes.fuel_card_create]: ButtonFuelCardCreate,
+  [buttonsTypes.tech_inspection_to_archive]: ButtonTechInspectionToArchive,
+  [buttonsTypes.tech_inspection_from_archive]: ButtonTechInspectionFromArchive,
+  [buttonsTypes.insurance_policy_to_archive]: ButtonInsurancePolicyToArchive,
+  [buttonsTypes.insurance_policy_from_archive]: ButtonInsurancePolicyFromArchive,
 };
 
 const ComponentButton: React.FC<Props> = (props) => {

@@ -28,7 +28,15 @@ export const getInspectionAutobaseDataRegistryConfig = (payload: InspectionPaylo
         buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
-        buttonsTypes.remove,
+        {
+          id: `${registryKey}_remove`,
+          type: buttonsTypes.remove,
+          message_multi: 'Вы уверены, что хотите удалить выбранные проверки?',
+          message_single: 'Вы уверены, что хотите удалить выбранную проверку?',
+          paramsForDisabling: {
+            status: 'deleted'
+          }
+        },
         buttonsTypes.export_filtred_data,
       ],
     },

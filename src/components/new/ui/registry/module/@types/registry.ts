@@ -203,6 +203,9 @@ export type OneRegistryData<F = any> = {
       modal_format?: 'yesno';
       message_single?: string;
       message_multi?: string;
+      paramsForDisabling?: {
+        [K in keyof F]?: string
+      };
       other_params?: {                                                       // что заменять в params при клике
         type?: typeof buttonsTypes[keyof typeof buttonsTypes];
         otherUniqKeyForParamsData?: {

@@ -3,7 +3,7 @@ const inspectPgmBasePermissions = {
   create: 'inspect.pgm_base.create',
   read: 'inspect.pgm_base.read',
   update: 'inspect.pgm_base.update',
-  delete: 'inspect.pgm_base.delete',
+  delete: 'inspect.pgm_base.list',
 
   update_closed: 'inspect.pgm_base_closed.update', // редактирование закрытой проверки
 };

@@ -3,7 +3,7 @@ const inspectAutobasePermissions = {
   create: 'inspect.autobase.create',
   read: 'inspect.autobase.read',
   update: 'inspect.autobase.update',
-  delete: 'inspect.autobase.delete',
+  delete: 'inspect.autobase.list',
 
   update_closed: 'inspect.autobase_closed.update', // редактирование закрытой проверки
 };

@@ -160,6 +160,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
           <FooterEnd>
             <ViewInspectPgmBaseButtonSubmit
               canSave={props.canSave}
+              canSaveIgnoreRequired={props.canSaveIgnoreRequired}
               type={props.type}
               handleSubmit={handleSubmit}
               isPermitted={props.isPermitted}

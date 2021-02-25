@@ -13,7 +13,7 @@ import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-import { canSaveTest } from 'components/@next/@form/validate/validate';
+import { canSaveTest, canSaveIgnoreRequiredTest } from 'components/@next/@form/validate/validate';
 import { removeEmptyString, getFormatedValue } from 'redux-main/reducers/modules/form_data_record/actions';
 
 /**
@@ -57,6 +57,7 @@ type WithFormState<F, P> = {
   hasData: boolean;
   inLoading: boolean;
   inSubmit: boolean;
+  canSaveIgnoreRequired: boolean;
 };
 
 type StateProps = {
@@ -105,6 +106,7 @@ const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataFor
     formErrors,
     canSave: canSaveTest(formErrors),
     hasData: hasDataForm,
+    canSaveIgnoreRequired: canSaveIgnoreRequiredTest(formErrors, formState),
   };
 };
 
@@ -243,6 +245,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
                 ...oldState,
                 formErrors,
               }),
+              canSaveIgnoreRequired: this.canSaveIgnoreRequired({
+                ...oldState,
+                formErrors,
+              }),
             };
           });
         }
@@ -253,6 +259,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
       };
       canSave = (state: WithFormState<F, P>) => {
         return canSaveTest(state.formErrors);
+      };
+      canSaveIgnoreRequired = (state: WithFormState<F, P>) => {
+        return canSaveIgnoreRequiredTest(state.formErrors, state.formState);
       };
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
         this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
@@ -277,12 +286,17 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             formState,
             formErrors,
             canSave: this.state.canSave,
+            canSaveIgnoreRequired: this.state.canSaveIgnoreRequired
           };
 
           console.info('ERROR CHANGE STATE', formErrors); // eslint-disable-line
           return {
             ...newState,
             canSave: this.canSave({
+              ...this.state,
+              ...newState,
+            }),
+            canSaveIgnoreRequired: this.canSaveIgnoreRequired({
               ...this.state,
               ...newState,
             }),
@@ -480,6 +494,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
               originalFormState={this.state.originalFormState}
               formErrors={this.state.formErrors}
               canSave={this.state.canSave && !this.state.inSubmit}
+              canSaveIgnoreRequired={this.state.canSaveIgnoreRequired}
               handleChange={this.handleChange}
               handleChangeBoolean={this.handleChangeBoolean}
               submitAction={this.submitAction}

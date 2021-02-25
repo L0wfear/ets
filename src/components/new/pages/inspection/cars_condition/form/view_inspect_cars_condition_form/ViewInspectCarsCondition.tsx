@@ -270,6 +270,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
               canSave={props.canSave && preparePlanCanSave}
+              canSaveIgnoreRequired={props.canSaveIgnoreRequired}
               loadingPage={props.loadingPage}
               searchState={props.searchState}
 

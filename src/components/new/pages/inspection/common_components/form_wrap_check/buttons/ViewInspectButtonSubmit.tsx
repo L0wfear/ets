@@ -13,7 +13,7 @@ type ViewInspectButtonSubmitProps = {
   handleGetAct: (format?: string) => any;
   handleSaveGetAct: (format?: string) => any;
   canSave: boolean;
-
+  canSaveIgnoreRequired: boolean;
   searchState?: any;
   id: number;
   registryPage: string;
@@ -61,7 +61,7 @@ export const ViewInspectButtonSubmit: React.FC<ViewInspectButtonSubmitProps> = (
       {
         props.type === INSPECT_TYPE_FORM.list && (
           <React.Fragment>
-            <EtsBootstrap.Button disabled={!props.isPermitted || !props.canSave} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button disabled={!props.isPermitted || !props.canSaveIgnoreRequired} onClick={props.handleSubmit}>Сохранить</EtsBootstrap.Button>
             <ButtonInspectShowActs id={props.id} registryKey={props.registryPage} />
             {props.searchState?.monitoringKind === 'car_use' ? (
               <EtsBootstrap.Dropdown

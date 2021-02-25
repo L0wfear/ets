@@ -122,13 +122,13 @@ export const metaMission: ConfigFormData<Mission> = {
           required: true,
         },
         order_id: {
-          title: 'Номер централизованного задани',
+          title: 'Номер централизованного задания',
           type: 'string',
           dependencies: [
             (value, { mission_source_id }, { some_uniq: { missionSource: { order_mission_source_id }}}) => {
               if (!value) {
                 if (mission_source_id === order_mission_source_id) {
-                  return getRequiredFieldMessage('Номер централизованного задани');
+                  return getRequiredFieldMessage('Номер централизованного задания');
                 }
               }
               return false;

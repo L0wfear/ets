@@ -96,7 +96,7 @@ const FieldOrder: React.FC<Props> = React.memo(
     const selectedOrderRow = React.useMemo(
       (): Order => {
         if (order_id) {
-          return orderRaw.find((rowData) => rowData.id === order_id);
+          return orderRaw.find((rowData) => rowData.id === Number(order_id));
         }
         return null;
       },
@@ -145,6 +145,8 @@ const FieldOrder: React.FC<Props> = React.memo(
             order_name: option.label?.split(' ')[0] ?? '',
             technical_operations: get(option.rowData, 'technical_operations', []),
             technical_operation_id: null,
+            municipal_facility_id: null,
+            municipal_facility_name: '',
           };
 
           props.onChange({

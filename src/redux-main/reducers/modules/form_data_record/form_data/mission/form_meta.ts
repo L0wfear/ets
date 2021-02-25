@@ -123,7 +123,7 @@ export const metaMission: ConfigFormData<Mission> = {
         },
         order_id: {
           title: 'Номер централизованного задания',
-          type: 'string',
+          type: 'number',
           dependencies: [
             (value, { mission_source_id }, { some_uniq: { missionSource: { order_mission_source_id }}}) => {
               if (!value) {

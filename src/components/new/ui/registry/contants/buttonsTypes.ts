@@ -10,6 +10,7 @@ import { order_types } from 'components/new/ui/registry/components/data/header/b
 import { fuel_cards_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/constant';
 import { refill_types } from '../components/data/header/buttons/component-button/button-by-type/refill/constant';
 import { tech_inspection_archive_types } from '../components/data/header/buttons/component-button/button-by-type/tech_inspection_archive/constant';
+import { insurance_policy_types } from '../components/data/header/buttons/component-button/button-by-type/insurance_policy/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -33,6 +34,7 @@ const buttonsTypes =  {
   ...fuel_cards_types,
   ...refill_types,
   ...tech_inspection_archive_types,
+  ...insurance_policy_types,
 } as const;
 
 export default buttonsTypes;

@@ -4,20 +4,47 @@ import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/aut
 import insurancePolicyPermissions from './permissions';
 import {displayIfContant} from '../../../../../../ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { insurancePolicyArchivePermissions } from 'components/new/pages/nsi/autobase/pages/insurance_policy_archive/_config-data/permissions';
 
 export const registryKey = 'insurancePolicyRegistry';
 
-export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> => {
-  const Service: any = {
+export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр страховок', regKey = registryKey): TypeConfigData<InsurancePolicy> => {
+  const Service: TypeConfigData<InsurancePolicy>['Service'] = {
     getRegistryData: {
       entity: 'autobase/insurance_policy_registry',
+      payload: {
+        is_archive,
+      },
+    },
+    getBlobData: {
+      entity: 'autobase/insurance_policy_registry',
+      payload: {
+        is_archive,
+      },
     },
     removeOneData: {
       entity: 'autobase/insurance_policy_registry',
       uniqKeyLikeQueryString: false,
     },
   };
-
+  const buttons: TypeConfigData<InsurancePolicy>['header']['buttons'] = !is_archive
+    ? [
+      buttonsTypes.columns_control,
+      buttonsTypes.filter,
+      buttonsTypes.create,
+      buttonsTypes.read,
+      buttonsTypes.remove,
+      buttonsTypes.insurance_policy_to_archive,
+      buttonsTypes.export,
+    ]
+    : [
+      buttonsTypes.columns_control,
+      buttonsTypes.filter,
+      buttonsTypes.read,
+      buttonsTypes.insurance_policy_from_archive,
+      buttonsTypes.export,
+    ];
+  const permissions = is_archive ? insurancePolicyArchivePermissions : insurancePolicyPermissions;
   if (car_id) {
     Service.getRegistryData.payload = {
       car_id,
@@ -34,17 +61,10 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
 
   return {
     Service,
-    registryKey,
+    registryKey: regKey,
     header: {
-      title: 'Реестр страховок',
-      buttons: [
-        buttonsTypes.columns_control,
-        buttonsTypes.filter,
-        buttonsTypes.create,
-        buttonsTypes.read,
-        buttonsTypes.remove,
-        buttonsTypes.export,
-      ],
+      title,
+      buttons,
     },
     filter: {
       fields: [
@@ -126,7 +146,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
       ],
     },
     list: {
-      permissions: insurancePolicyPermissions,
+      permissions,
       data: {
         uniqKey: 'id',
         fixedWidth: true,

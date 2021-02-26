@@ -6,7 +6,7 @@ const etsLoadingCounter = async <PromiseAns>(dispatch: EtsDispatch, promise: Pro
   let countLoad = false;
   let interval = null;
 
-  if (dispatch) {
+  if (dispatch && !meta.withoutPreloader) {
     if (!meta.noTimeout) {
       interval = setTimeout(() => {
         countLoad = true;

@@ -121,6 +121,20 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'valueOfArray',
           required: true,
         },
+        order_id: {
+          title: 'Номер централизованного задания',
+          type: 'valueOfArray',
+          dependencies: [
+            (value, { mission_source_id }, { some_uniq: { missionSource: { order_mission_source_id }}}) => {
+              if (!value) {
+                if (mission_source_id === order_mission_source_id) {
+                  return getRequiredFieldMessage('Номер централизованного задания');
+                }
+              }
+              return false;
+            }
+          ]
+        },
         date_start: {
           title: 'Время выполнения, с',
           type: 'datetime',

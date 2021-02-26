@@ -1189,26 +1189,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
 
   updateDut = () => {
     const { formState } = this.props;
-    const { trackCashingDut } = this.state;
-    this.setState({
-      trackCashingDut: {
-        ...trackCashingDut,
-        loading: true,
-      },
-    });
-    this.props
-      .dispatch(actionGetTrackSensor({ car_id: formState.car_id }, {page: 'none'}))
-      .then((res) => {
-        this.setState({
-          trackCashingDut: {
-            data: res,
-            loading: false,
-          },
-        });
-      });
+    this.getDutSensors(formState, false);
   };
 
-  getDutSensors = (formState, withTs: boolean) => {
+  getDutSensors = async (formState, withTs: boolean) => {
     const { trackCashingDut } = this.state;
     if (formState.car_id) {
       this.setState({
@@ -1217,8 +1201,8 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           loading: true,
         },
       });
-      this.props
-        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, {page: 'none'}))
+      await this.props
+        .dispatch(actionGetTrackSensor({ car_id: formState.car_id, ts: withTs ? makeUnixTimeMskTimezone(formState.fact_arrival_date) : '' }, { withoutPreloader: true }))
         .then((res) => {
           if (withTs) {
             this.handleChange('dut_data', res);
@@ -1230,6 +1214,13 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               },
             });
           }
+        }).catch(() => {
+          this.setState({
+            trackCashingDut: {
+              data: [],
+              loading: false,
+            }
+          });
         });
     }
   };
@@ -1424,7 +1415,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             { ...formState, driver_id },
             this.props.employeeIndex,
             this.props.waybillDriverList,
-            this.props.carList,
           );
 
           if (DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1665,7 +1655,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         { ...this.props.formState, structure_id },
         this.props.employeeIndex,
         this.props.waybillDriverList,
-        this.props.carList,
       );
 
       if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1713,6 +1702,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         .then(async () => {
           if (this.props.formState.status === 'active' || this.props.formState.status === 'deleted') {
             const { rejectMissionList } = this.state;
+            await this.getDutSensors(this.props.formState, true);
             await this.rejectMissionHandler(rejectMissionList).then((res) => {
               const { origMissionsList } = this.state;
               const {
@@ -1752,7 +1742,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
               this.setState({
                 missionsList: newMissionsList,
               });
-              this.getDutSensors(this.props.formState, true);
               if (!res.rejectMissionSubmitError) {
                 this.props.handleClose(taxesControl);
               }
@@ -2414,7 +2403,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           uniqEmployeesBindedOnCarList[0]
             ? uniqEmployeesBindedOnCarList
             : waybillDriverList,
-          this.props.carList,
         )
         : [];
 

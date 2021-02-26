@@ -47,7 +47,9 @@ const FieldOrder: React.FC<Props> = React.memo(
     const [selectedElement, setSelectedElement] = React.useState(null);
     const [orderRaw, setOrderRaw] = React.useState([]);
     const dispatch = etsUseDispatch();
-    const error = !order_id || !selectedElement ? 'Необходимо выбрать поручение' : '';
+    const errorOperation = !order_id || !selectedElement
+      ? 'Необходимо выбрать поручение'
+      : '';
 
     React.useEffect(() => {
       (async () => {
@@ -96,7 +98,7 @@ const FieldOrder: React.FC<Props> = React.memo(
     const selectedOrderRow = React.useMemo(
       (): Order => {
         if (order_id) {
-          return orderRaw.find((rowData) => rowData.id === order_id);
+          return orderRaw.find((rowData) => rowData.id === Number(order_id));
         }
         return null;
       },
@@ -145,6 +147,8 @@ const FieldOrder: React.FC<Props> = React.memo(
             order_name: option.label?.split(' ')[0] ?? '',
             technical_operations: get(option.rowData, 'technical_operations', []),
             technical_operation_id: null,
+            municipal_facility_id: null,
+            municipal_facility_name: '',
           };
 
           props.onChange({
@@ -171,6 +175,8 @@ const FieldOrder: React.FC<Props> = React.memo(
       setShowForm(false);
     }, []);
 
+    const disableOperationBtn = Boolean(props.disabled || !props.value);
+
     return (
       <>
         <EtsBootstrap.Col md={4}>
@@ -191,10 +197,10 @@ const FieldOrder: React.FC<Props> = React.memo(
         <EtsBootstrap.Col md={2}>
           <FlexContainer direction="column" alignItems="start">
             <FieldLabel>Поручение</FieldLabel>
-            <EtsBootstrap.Button disabled={props.disabled} onClick={handleClick}>
+            <EtsBootstrap.Button disabled={disableOperationBtn} onClick={handleClick}>
               Выбрать
             </EtsBootstrap.Button>
-            <ErrorsBlock error={error} />
+            {!Boolean(disableOperationBtn) && (<ErrorsBlock error={errorOperation} />)}
           </FlexContainer>
           {showForm && (
             <EtsBootstrap.ModalContainer

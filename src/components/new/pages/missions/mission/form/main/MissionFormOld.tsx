@@ -520,7 +520,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={MISSION_IS_ORDER_SOURCE ? 12 : 6}>
                 <EtsBootstrap.Row>
-                  <EtsBootstrap.Col md={MISSION_IS_ORDER_SOURCE ? 6 : 12}>
+                  <EtsBootstrap.Col md={page === 'order' ? 6 : 0} />
+                  <EtsBootstrap.Col md={page === 'order' ? 3 : (MISSION_IS_ORDER_SOURCE ? 6 : 12)}>
                     <FieldMissionSourceMission
                       value={state.mission_source_id}
                       name={state.mission_source_name}
@@ -530,6 +531,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                         || IS_POST_CREATING_ASSIGNED
                         || IS_DISPLAY
                         || state.request_id
+                        || page === 'order'
                       }
                       isPermitted={
                         isPermitted
@@ -547,6 +549,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                     MISSION_IS_ORDER_SOURCE
                       ? (
                         <FieldOrder
+                          order_number={state.order_number}
                           value={state.order_id}
                           error={errors.order_id}
                           date_start={state.date_start}

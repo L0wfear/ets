@@ -6,7 +6,7 @@ export const makeOptionsByMissionSourceForMission = (
   path: string,
 ) => (
   missionSource.reduce((newArr: DefaultSelectListMapper<MissionSource>, missionSourceData) => {
-    if (path !== 'Waybills') {
+    if (path !== 'Waybills' && path !== 'order') {
       if (!missionSourceData.auto) {
         newArr.push(defaultSelectListMapper(missionSourceData));
       }

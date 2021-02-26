@@ -1214,6 +1214,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
             this.setState({
               formState: {
                 ...formState,
+                files: newState.files,
                 status: 'draft',
                 id,
               },

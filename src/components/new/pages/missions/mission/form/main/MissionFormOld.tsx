@@ -299,7 +299,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   };
 
   handleChangeMissionSource = (value) => {
-    const { originalFormState } = this.props;
+    const { formState } = this.props;
 
     const changeObjDefault = {
       ...value,
@@ -312,7 +312,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         technical_operation_id: null,
       }
       : {
-        ...originalFormState,
+        ...formState,
         ...changeObjDefault
       };
 

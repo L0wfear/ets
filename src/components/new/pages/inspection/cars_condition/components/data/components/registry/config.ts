@@ -29,6 +29,15 @@ export const getInspectionCarsConditionDataRegistryConfig = (payload: Inspection
         buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
+        {
+          id: `${registryKey}_remove`,
+          type: buttonsTypes.remove,
+          message_multi: 'Вы уверены, что хотите удалить выбранные проверки?',
+          message_single: 'Вы уверены, что хотите удалить выбранную проверку?',
+          paramsForDisabling: {
+            status: 'deleted'
+          }
+        },
         buttonsTypes.export_filtred_data,
       ],
     },
@@ -338,6 +347,12 @@ export const getInspectionCarsConditionDataRegistryConfig = (payload: Inspection
             key: 'close_employee_fio',
             title: 'Завершена',
             width: 200,
+          },
+          {
+            key: 'delete_employee_fio',
+            title: 'Удалена',
+            width: 200,
+            dashIfEmpty: true,
           },
         ],
       },

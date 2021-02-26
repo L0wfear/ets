@@ -155,9 +155,22 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
       tachographRegistry
     ]);
 
+  const isDisabledByParams = React.useMemo(() => {
+    const checkedRows = Object.values(props.checkedRows);
+    if ((props.selectedRow || checkedRows.length) && data.paramsForDisabling) {
+      const rows = checkedRows.length ? checkedRows : [props.selectedRow];
+      return Object.entries(data.paramsForDisabling).some(([key, value]) => rows.some((el) => el[key] === value));
+    }
+    return false;
+  }, [props.selectedRow, props.checkedRows, data.paramsForDisabling]);
+
   return (
     <>
-      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled}>
+      <EtsBootstrap.Button 
+        id={`${props.registryKey}.open-remove-form`} 
+        bsSize="small" onClick={handleClickOpenForm} 
+        disabled={(!props.selectedRow && !Object.values(props.checkedRows).length) || disableBtnByRegistry || props.disabled || isDisabledByParams}>
+
         <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>
@@ -168,8 +181,8 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
         message={
           checkedRowsLength === 1 || checkedRowsLength === 0
-            ? data.message_multi || 'Вы уверены, что хотите удалить выбранный элемент?'
-            : data.message_single || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
+            ? data.message_single || 'Вы уверены, что хотите удалить выбранный элемент?'
+            : data.message_multi || `Вы уверены, что хотите удалить выбранные элементы (${checkedRowsLength} шт)?`
         }
 
         titleOk={(data.format === 'yesno' || tachographRegistry) ? buttonOK : null}

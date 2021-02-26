@@ -53,6 +53,8 @@ export type InspectPgmBase = {
   created_at: string;
   data: InspectPgmBaseData;
   date_start: string;
+  delete_employee_id: number;
+  delete_employee_fio: string;
   has_pgm: boolean;
   has_pgm_text: string;
   head_balance_holder_base: {

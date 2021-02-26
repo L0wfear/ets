@@ -10,6 +10,9 @@ import { ORDER_STATUS_KEYS, ORDER_ASSIGNMENTS_STATUS_KEYS } from 'constants/dict
 import { orderTechnicaOperationRegistryKey } from 'components/new/pages/nsi/order/order_technical_operation/_config-data/registry-config';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { lighten } from 'polished';
+import { registryKey as inpectCarsConditionRegistryKey} from 'components/new/pages/inspection/cars_condition/components/data/components/registry/config';
+import { registryKey as inpectPgmBaseRegistryKey} from 'components/new/pages/inspection/pgm_base/components/data/components/registry/config';
+import { registryKey as inpectAutobaseRegistryKey} from 'components/new/pages/inspection/autobase/components/data/components/registry/config';
 
 export const getColorTd = <F extends Record<string, any>>(rowData: F, checkData: Record<string, F>, registryKey: string) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
@@ -55,6 +58,15 @@ export const getColorTd = <F extends Record<string, any>>(rowData: F, checkData:
 
   if (isBoolean(get(rowData, 'is_actual', null)) && !get(rowData, 'is_actual', null)) {
     return constantColor.redRegisry;
+  }
+
+  if (
+    (registryKey === inpectCarsConditionRegistryKey
+      || registryKey === inpectPgmBaseRegistryKey
+      || registryKey === inpectAutobaseRegistryKey)
+      && rowData?.status === 'deleted'
+  ) {
+    return lighten(0.25, UiConstants.colorError);
   }
 
   return 'white';

@@ -27,6 +27,8 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   company_id: null,
   company_name: null,
   company_short_name: null,
+  delete_employee_fio: '',
+  delete_employee_id: null,
   head_balance_holder_base: {
     fio: null,
     tel: null,

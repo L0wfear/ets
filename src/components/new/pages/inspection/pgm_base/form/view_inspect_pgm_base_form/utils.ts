@@ -51,6 +51,8 @@ export const defaultInspectPgmBase: InspectPgmBase = {
   },
   date_start: null,
   date_end: null,
+  delete_employee_fio: '',
+  delete_employee_id: null,
   has_pgm: null,
   has_pgm_text: null,
   head_balance_holder_base: {

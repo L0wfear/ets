@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -16,6 +17,7 @@ import { makeOptionsByMissionSourceForMission } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/index';
 
 import { DivNone } from 'global-styled/global-styled';
+import { isOrderSource } from 'components/new/pages/missions/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSourceMission, StateFieldMissionSourceMission> {
@@ -23,6 +25,7 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
     MISSION_SOURCE_OPTIONS: (
       makeOptionsByMissionSourceForMission(
         this.props.missionSource.list,
+        isOrderSource(this.props.value, this.props.missionSource.order_mission_source_id),
       )
     ),
   };

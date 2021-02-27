@@ -53,17 +53,7 @@ export const metaMission: ConfigFormData<Mission> = {
         technical_operation_id: {
           title: 'Технологическая операция',
           type: 'valueOfArray',
-          dependencies: [
-            (value, { mission_source_id }) => {
-              if (!value) {
-                if (mission_source_id !== 4) {
-                  return 'Поле "Технологическая операция" должно быть заполнено';
-                }
-              }
-
-              return false;
-            },
-          ],
+          required: true,
         },
         structure_id: {
           title: 'Подразделение',
@@ -130,35 +120,6 @@ export const metaMission: ConfigFormData<Mission> = {
               const dependeceOrder = getMissionsState(reduxState).missionData.dependeceOrder;
               const waybillData = getMissionsState(reduxState).missionData.waybillData;
               const moscowTimeServer = getSomeUniqState(reduxState).moscowTimeServer;
-              const waybill_plan_departure_date = get(
-                waybillData,
-                'plan_departure_date',
-                null,
-              );
-              const waybill_plan_arrival_date = get(
-                waybillData,
-                'plan_arrival_date',
-                null,
-              );
-
-              const waybill_fact_departure_date = get(
-                waybillData,
-                'fact_departure_date',
-                null,
-              );
-              const waybill_fact_arrival_date = get(
-                waybillData,
-                'fact_arrival_date',
-                null,
-              );
-              const waybill_status = get(
-                waybillData,
-                'status',
-                null,
-              );
-
-              const checkWaybillDateFrom = waybill_fact_departure_date || waybill_plan_departure_date;
-              const checkWaybillDateTo = waybill_fact_arrival_date || waybill_plan_arrival_date;
 
               if (value) {
                 if (order_id) {
@@ -190,25 +151,48 @@ export const metaMission: ConfigFormData<Mission> = {
                   if (diffDates(value, checkOrderDateFrom) < 0 || diffDates(value, checkOrderDateTo) > 0) {
                     return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
                   }
-
-                  if (waybill_id) {
-                    if ((diffDates(value, checkOrderDateFrom) < 0 && diffDates(value, checkWaybillDateFrom) < 0)
-                      || (diffDates(value, checkOrderDateTo) && diffDates(value, checkWaybillDateTo) > 0)) {
-                      return 'Дата выходит за пределы действия поручения (факсограммы) и путевого листа.';
-                    }
-                  }
                 }
 
                 const dateStartMinutesDiff = diffDates(moscowTimeServer.date, value, 'minutes', false);
-                if (status === 'not_assigned') {
-                  if (moscowTimeServer.date && dateStartMinutesDiff > 15){
+                if(status === 'not_assigned') {
+                  if(moscowTimeServer.date && dateStartMinutesDiff > 15){
                     return 'Дата начала не может быть раньше на 15 минут от текущего времени';
                   }
                 }
 
                 if (waybill_id) {
+                  const waybill_plan_departure_date = get(
+                    waybillData,
+                    'plan_departure_date',
+                    null,
+                  );
+                  const waybill_plan_arrival_date = get(
+                    waybillData,
+                    'plan_arrival_date',
+                    null,
+                  );
+
+                  const waybill_fact_departure_date = get(
+                    waybillData,
+                    'fact_departure_date',
+                    null,
+                  );
+                  const waybill_fact_arrival_date = get(
+                    waybillData,
+                    'fact_arrival_date',
+                    null,
+                  );
+                  const waybill_status = get(
+                    waybillData,
+                    'status',
+                    null,
+                  );
+
+                  const checkWaybillDateFrom = waybill_fact_departure_date || waybill_plan_departure_date;
+                  const checkWaybillDateTo = waybill_fact_arrival_date || waybill_plan_arrival_date;
+
                   if (diffDates(value, checkWaybillDateFrom) < 0 || diffDates(value, checkWaybillDateTo) > 0) {
-                    return 'Дата выходит за пределы путевого листа';
+                    return 'Дата не должна выходить за пределы путевого листа';
                   }
 
                   if (status === 'assigned' && waybill_status === 'draft') {
@@ -219,11 +203,12 @@ export const metaMission: ConfigFormData<Mission> = {
 
                   const planDateStartMinutesDiff = diffDates(plan_date_start, value, 'minutes', false);
 
-                  if ((status === 'assigned' || status === 'in_progress' || status === 'expired') && waybill_status === 'active' && plan_date_start) {
+                  if ((status === 'assigned' || status === 'in_progress' || status === 'expired'  ) && waybill_status === 'active' && plan_date_start) {
                     if (moscowTimeServer.date && planDateStartMinutesDiff > 15) {
                       return `Дата начала не может быть раньше на 15 минут от первоначально указанного времени (${createValidDateTimeDots(plan_date_start)})`;
                     }
                   }
+
                 }
               }
               return '';
@@ -322,17 +307,7 @@ export const metaMission: ConfigFormData<Mission> = {
         municipal_facility_id: {
           title: 'Элемент',
           type: 'valueOfArray',
-          dependencies: [
-            (value, { mission_source_id }) => {
-              if (!value) {
-                if (mission_source_id !== 4) {
-                  return 'Поле "Элемент" должно быть заполнено';
-                }
-              }
-
-              return false;
-            },
-          ],
+          required: true,
         },
         route_id: {
           title: 'Маршрут',

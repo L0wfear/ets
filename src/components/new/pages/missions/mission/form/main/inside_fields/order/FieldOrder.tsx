@@ -27,7 +27,6 @@ type Props = {
   page?: string;
   value: number;
   error: string;
-  order_number: string;
   onChange: (obj: Partial<Mission>) => void;
   date_start: string;
   date_end: string;
@@ -178,71 +177,57 @@ const FieldOrder: React.FC<Props> = React.memo(
 
     const disableOperationBtn = Boolean(props.disabled || !props.value);
 
-    if (props.page === 'order') {
-      return (
-        <EtsBootstrap.Col md={3}>
+    return (
+      <>
+        <EtsBootstrap.Col md={4}>
           <ExtField
-            id="order-number"
-            type="string"
+            type="select"
+            id="order_id"
             label="Номер централизованного задания"
-            readOnly
-            value={props.order_number}
+            clearable={false}
+            disabled={props.disabled}
+            options={orderOptions}
+            placeholder="Не выбрано"
+            emptyValue={null}
+            value={props.value}
+            error={props.error}
+            onChange={handleChangeWrap}
           />
         </EtsBootstrap.Col>
-      );
-    } else {
-      return (
-        <>
-          <EtsBootstrap.Col md={4}>
-            <ExtField
-              type="select"
-              id="order_id"
-              label="Номер централизованного задания"
-              clearable={false}
-              disabled={props.disabled}
-              options={orderOptions}
-              placeholder="Не выбрано"
-              emptyValue={null}
-              value={props.value}
-              error={props.error}
-              onChange={handleChangeWrap}
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={2}>
-            <FlexContainer direction="column" alignItems="start">
-              <FieldLabel>Поручение</FieldLabel>
-              <EtsBootstrap.Button disabled={disableOperationBtn} onClick={handleClick}>
-                Выбрать
-              </EtsBootstrap.Button>
-              {!Boolean(disableOperationBtn) && (<ErrorsBlock error={errorOperation}/>)}
-            </FlexContainer>
-            {showForm && (
-              <EtsBootstrap.ModalContainer
-                id="modal-technical-operations"
-                show
-                onHide={onHide}
-                bsSize="large"
-              >
-                <EtsBootstrap.ModalHeader closeButton>
-                  <EtsBootstrap.ModalTitle>
-                    Доступные поручения
-                  </EtsBootstrap.ModalTitle>
-                </EtsBootstrap.ModalHeader>
+        <EtsBootstrap.Col md={2}>
+          <FlexContainer direction="column" alignItems="start">
+            <FieldLabel>Поручение</FieldLabel>
+            <EtsBootstrap.Button disabled={disableOperationBtn} onClick={handleClick}>
+              Выбрать
+            </EtsBootstrap.Button>
+            {!Boolean(disableOperationBtn) && (<ErrorsBlock error={errorOperation} />)}
+          </FlexContainer>
+          {showForm && (
+            <EtsBootstrap.ModalContainer
+              id="modal-technical-operations"
+              show
+              onHide={onHide}
+              bsSize="large"
+            >
+              <EtsBootstrap.ModalHeader closeButton>
+                <EtsBootstrap.ModalTitle>
+                  Доступные поручения
+                </EtsBootstrap.ModalTitle>
+              </EtsBootstrap.ModalHeader>
 
-                <ModalBodyPreloader path={props.path} page={props.page} typePreloader="mainpage">
-                  <Registry registryKey={orderTechnicalOperationRegistryKey}/>
-                </ModalBodyPreloader>
-                <EtsBootstrap.ModalFooter>
-                  <EtsBootstrap.Button onClick={onSelect}>
-                    Выбрать
-                  </EtsBootstrap.Button>
-                </EtsBootstrap.ModalFooter>
-              </EtsBootstrap.ModalContainer>
-            )}
-          </EtsBootstrap.Col>
-        </>
-      );
-    }
+              <ModalBodyPreloader path={props.path} page={props.page} typePreloader="mainpage">
+                <Registry registryKey={orderTechnicalOperationRegistryKey} />
+              </ModalBodyPreloader>
+              <EtsBootstrap.ModalFooter>
+                <EtsBootstrap.Button onClick={onSelect}>
+                  Выбрать
+                </EtsBootstrap.Button>
+              </EtsBootstrap.ModalFooter>
+            </EtsBootstrap.ModalContainer>
+          )}
+        </EtsBootstrap.Col>
+      </>
+    );
   },
 );
 

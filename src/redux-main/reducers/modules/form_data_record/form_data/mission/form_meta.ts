@@ -11,7 +11,6 @@ import { getMissionsState, getSomeUniqState } from 'redux-main/reducers/selector
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
-import { isNullOrUndefined } from 'util';
 
 export const validateNormConsumableMaterials = (norm_value: ValuesOf<Mission['consumable_materials']>['norm_value']) => {
   const floadError = floatValidate(Number(norm_value), 4, 'Норма');
@@ -54,17 +53,7 @@ export const metaMission: ConfigFormData<Mission> = {
         technical_operation_id: {
           title: 'Технологическая операция',
           type: 'valueOfArray',
-          dependencies: [
-            (value, { mission_source_id }) => {
-              if (!value) {
-                if (mission_source_id !== 4) {
-                  return 'Поле "Технологическая операция" должно быть заполнено';
-                }
-              }
-
-              return false;
-            },
-          ],
+          required: true,
         },
         structure_id: {
           title: 'Подразделение',
@@ -78,7 +67,7 @@ export const metaMission: ConfigFormData<Mission> = {
           integer: true,
           max: 10,
           dependencies: [
-            (value, { order_id, technical_operation_id }, reduxState) => {
+            (value, { order_id }, reduxState) => {
               const dependeceTechnicalOperation = getMissionsState(reduxState).missionData.dependeceTechnicalOperation;
 
               if (value) {
@@ -86,7 +75,7 @@ export const metaMission: ConfigFormData<Mission> = {
                   return '"Количество циклов" должно быть больше 0';
                 }
 
-                if (order_id && technical_operation_id && !isNullOrUndefined(dependeceTechnicalOperation) && Number(value) > get(dependeceTechnicalOperation, 'num_exec', 0)) {
+                if (order_id && Number(value) > get(dependeceTechnicalOperation, 'num_exec', 0)) {
                   return 'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
                 }
               }
@@ -121,20 +110,6 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'valueOfArray',
           required: true,
         },
-        order_id: {
-          title: 'Номер централизованного задания',
-          type: 'valueOfArray',
-          dependencies: [
-            (value, { mission_source_id }, { some_uniq: { missionSource: { order_mission_source_id }}}) => {
-              if (!value) {
-                if (mission_source_id === order_mission_source_id) {
-                  return getRequiredFieldMessage('Номер централизованного задания');
-                }
-              }
-              return false;
-            }
-          ]
-        },
         date_start: {
           title: 'Время выполнения, с',
           type: 'datetime',
@@ -145,35 +120,6 @@ export const metaMission: ConfigFormData<Mission> = {
               const dependeceOrder = getMissionsState(reduxState).missionData.dependeceOrder;
               const waybillData = getMissionsState(reduxState).missionData.waybillData;
               const moscowTimeServer = getSomeUniqState(reduxState).moscowTimeServer;
-              const waybill_plan_departure_date = get(
-                waybillData,
-                'plan_departure_date',
-                null,
-              );
-              const waybill_plan_arrival_date = get(
-                waybillData,
-                'plan_arrival_date',
-                null,
-              );
-
-              const waybill_fact_departure_date = get(
-                waybillData,
-                'fact_departure_date',
-                null,
-              );
-              const waybill_fact_arrival_date = get(
-                waybillData,
-                'fact_arrival_date',
-                null,
-              );
-              const waybill_status = get(
-                waybillData,
-                'status',
-                null,
-              );
-
-              const checkWaybillDateFrom = waybill_fact_departure_date || waybill_plan_departure_date;
-              const checkWaybillDateTo = waybill_fact_arrival_date || waybill_plan_arrival_date;
 
               if (value) {
                 if (order_id) {
@@ -205,25 +151,48 @@ export const metaMission: ConfigFormData<Mission> = {
                   if (diffDates(value, checkOrderDateFrom) < 0 || diffDates(value, checkOrderDateTo) > 0) {
                     return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
                   }
-
-                  if (waybill_id) {
-                    if ((diffDates(value, checkOrderDateFrom) < 0 && diffDates(value, checkWaybillDateFrom) < 0)
-                      || (diffDates(value, checkOrderDateTo) && diffDates(value, checkWaybillDateTo) > 0)) {
-                      return 'Дата выходит за пределы действия поручения (факсограммы) и путевого листа.';
-                    }
-                  }
                 }
 
                 const dateStartMinutesDiff = diffDates(moscowTimeServer.date, value, 'minutes', false);
-                if (status === 'not_assigned') {
-                  if (moscowTimeServer.date && dateStartMinutesDiff > 15){
+                if(status === 'not_assigned') {
+                  if(moscowTimeServer.date && dateStartMinutesDiff > 15){
                     return 'Дата начала не может быть раньше на 15 минут от текущего времени';
                   }
                 }
 
                 if (waybill_id) {
+                  const waybill_plan_departure_date = get(
+                    waybillData,
+                    'plan_departure_date',
+                    null,
+                  );
+                  const waybill_plan_arrival_date = get(
+                    waybillData,
+                    'plan_arrival_date',
+                    null,
+                  );
+
+                  const waybill_fact_departure_date = get(
+                    waybillData,
+                    'fact_departure_date',
+                    null,
+                  );
+                  const waybill_fact_arrival_date = get(
+                    waybillData,
+                    'fact_arrival_date',
+                    null,
+                  );
+                  const waybill_status = get(
+                    waybillData,
+                    'status',
+                    null,
+                  );
+
+                  const checkWaybillDateFrom = waybill_fact_departure_date || waybill_plan_departure_date;
+                  const checkWaybillDateTo = waybill_fact_arrival_date || waybill_plan_arrival_date;
+
                   if (diffDates(value, checkWaybillDateFrom) < 0 || diffDates(value, checkWaybillDateTo) > 0) {
-                    return 'Дата выходит за пределы путевого листа';
+                    return 'Дата не должна выходить за пределы путевого листа';
                   }
 
                   if (status === 'assigned' && waybill_status === 'draft') {
@@ -234,11 +203,12 @@ export const metaMission: ConfigFormData<Mission> = {
 
                   const planDateStartMinutesDiff = diffDates(plan_date_start, value, 'minutes', false);
 
-                  if ((status === 'assigned' || status === 'in_progress' || status === 'expired') && waybill_status === 'active' && plan_date_start) {
+                  if ((status === 'assigned' || status === 'in_progress' || status === 'expired'  ) && waybill_status === 'active' && plan_date_start) {
                     if (moscowTimeServer.date && planDateStartMinutesDiff > 15) {
                       return `Дата начала не может быть раньше на 15 минут от первоначально указанного времени (${createValidDateTimeDots(plan_date_start)})`;
                     }
                   }
+
                 }
               }
               return '';
@@ -337,17 +307,7 @@ export const metaMission: ConfigFormData<Mission> = {
         municipal_facility_id: {
           title: 'Элемент',
           type: 'valueOfArray',
-          dependencies: [
-            (value, { mission_source_id }) => {
-              if (!value) {
-                if (mission_source_id !== 4) {
-                  return 'Поле "Элемент" должно быть заполнено';
-                }
-              }
-
-              return false;
-            },
-          ],
+          required: true,
         },
         route_id: {
           title: 'Маршрут',

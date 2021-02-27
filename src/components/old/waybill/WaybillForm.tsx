@@ -2812,6 +2812,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 <Div hidden={!(this.state.isFuelKind)}>
                   <EtsBootstrap.Col md={6}>
                     <DutSensor
+                      status={state.status}
                       refresh={this.updateDut}
                       dutData={IS_CLOSED ? state.dut_data : trackCashingDut.data}
                       isLoading={trackCashingDut.loading}

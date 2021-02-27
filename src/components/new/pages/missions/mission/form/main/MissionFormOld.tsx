@@ -42,7 +42,6 @@ import { isOrderSource } from 'components/new/pages/missions/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
-import FieldOrder from 'components/new/pages/missions/mission/form/main/inside_fields/order/FieldOrder';
 import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
@@ -245,15 +244,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         autoDismiss: 0,
       });
     }
-
-    if (formState.mission_source_id !== prevProps.formState.mission_source_id) {
-      this.setState({
-        MISSION_IS_ORDER_SOURCE: isOrderSource(
-          formState.mission_source_id,
-          this.props.order_mission_source_id,
-        ),
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -296,29 +286,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       assign_to_waybill: [...value],
     });
     this.props.handleChange({ assign_to_waybill: value[0], });
-  };
-
-  handleChangeMissionSource = (value) => {
-    const { formState } = this.props;
-
-    const changeObjDefault = {
-      ...value,
-    };
-
-    const changeObj = value.mission_source_id === 4
-      ? {
-        ...changeObjDefault,
-        norm_id: null,
-        technical_operation_id: null,
-      }
-      : {
-        ...formState,
-        ...changeObjDefault
-      };
-
-    this.props.handleChange({
-      ...changeObj
-    });
   };
 
   hideColumnAssignment = () => {
@@ -516,10 +483,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                         <DivNone />
                       )
                   }
-                </EtsBootstrap.Row>
-              </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={MISSION_IS_ORDER_SOURCE ? 12 : 6}>
-                <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={MISSION_IS_ORDER_SOURCE ? 6 : 12}>
                     <FieldMissionSourceMission
                       value={state.mission_source_id}
@@ -529,6 +492,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                         !isPermitted
                         || IS_POST_CREATING_ASSIGNED
                         || IS_DISPLAY
+                        || MISSION_IS_ORDER_SOURCE
                         || state.request_id
                       }
                       isPermitted={
@@ -538,25 +502,31 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       request_id={state.request_id}
                       request_number={state.request_number}
-                      onChange={this.handleChangeMissionSource}
+                      onChange={this.props.handleChange}
                       page={page}
                       path={path}
                     />
+                    {IS_CREATING && !MISSION_IS_ORDER_SOURCE ? (
+                      <div className="help-block-mission-source">
+                        Задания на основе централизованных заданий необходимо
+                        создавать во вкладке "НСИ"-"Реестр централизованных заданий".
+                      </div>
+                    ) : (
+                      <DivNone />
+                    )}
                   </EtsBootstrap.Col>
                   {
                     MISSION_IS_ORDER_SOURCE
                       ? (
-                        <FieldOrder
-                          value={state.order_id}
-                          error={errors.order_id}
-                          date_start={state.date_start}
-                          date_end={state.date_end}
-                          disabled={!isPermitted}
-                          onChange={this.props.handleChange}
-                          formDataKey={this.props.formDataKey}
-                          path={path}
-                          page={page}
-                        />
+                        <EtsBootstrap.Col md={6}>
+                          <ExtField
+                            id="order-number"
+                            type="string"
+                            label="Номер централизованного задания"
+                            readOnly
+                            value={state.order_number}
+                          />
+                        </EtsBootstrap.Col>
                       )
                       : (
                         <DivNone />

@@ -3,10 +3,10 @@ import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old
 
 export const makeOptionsByMissionSourceForMission = (
   missionSource: Array<MissionSource>,
-  path: string,
+  selectedSourceIsOrder: boolean,
 ) => (
   missionSource.reduce((newArr: DefaultSelectListMapper<MissionSource>, missionSourceData) => {
-    if (path !== 'Waybills') {
+    if (!selectedSourceIsOrder) {
       if (!missionSourceData.auto) {
         newArr.push(defaultSelectListMapper(missionSourceData));
       }

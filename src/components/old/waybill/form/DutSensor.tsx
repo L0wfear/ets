@@ -29,6 +29,7 @@ const meta = [
 const DutBlock = styled(Div)`
   display: flex;
   align-items: center;
+  padding: 0 0 12px 0;
 `;
 
 const InfoPopover = styled(EtsBootstrap.Glyphicon)`
@@ -39,8 +40,8 @@ const InfoPopover = styled(EtsBootstrap.Glyphicon)`
 const RefreshButton = styled(EtsBootstrap.Button)`
   background: transparent!important;
   color: #4c4c4c!important;
-  padding-right: 0px!important;
-  padding-left: 0px!important;
+  padding: 0px!important;
+  min-height: 0px!important;
   &:hover {
     color: ${UiConstants.colorError}!important;
   }
@@ -56,6 +57,7 @@ const NoDataParagraph = styled.p`
 
 type Props = {
   dutData: Array<SensorDut>;
+  status: string;
   refresh(): void;
   isLoading: boolean;
 };
@@ -119,11 +121,13 @@ const DutSensor: React.FC<Props> = React.memo(
               >
                 <InfoPopover glyph="info-sign"/>
               </EtsBootstrap.OverlayTrigger>
-              <RefreshButton id="dut-refresh" onClick={props.refresh}>
-                <EtsBootstrap.Glyphicon
-                  glyph="refresh"
-                />
-              </RefreshButton>
+              {(props.status !== 'deleted' && props.status !== 'closed') && (
+                <RefreshButton id="dut-refresh" onClick={props.refresh}>
+                  <EtsBootstrap.Glyphicon
+                    glyph="refresh"
+                  />
+                </RefreshButton>
+              )}
             </DutBlock>
             <div>
               Количество установленных ДУТ: {props.dutData.length}

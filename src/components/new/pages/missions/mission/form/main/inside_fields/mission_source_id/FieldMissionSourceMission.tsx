@@ -23,7 +23,6 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
     MISSION_SOURCE_OPTIONS: (
       makeOptionsByMissionSourceForMission(
         this.props.missionSource.list,
-        this.props.page
       )
     ),
   };

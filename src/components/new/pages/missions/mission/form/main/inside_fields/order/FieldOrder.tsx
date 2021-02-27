@@ -47,9 +47,7 @@ const FieldOrder: React.FC<Props> = React.memo(
     const [selectedElement, setSelectedElement] = React.useState(null);
     const [orderRaw, setOrderRaw] = React.useState([]);
     const dispatch = etsUseDispatch();
-    const errorOperation = !order_id || !selectedElement
-      ? 'Необходимо выбрать поручение'
-      : '';
+    const error = !order_id || !selectedElement ? 'Необходимо выбрать поручение' : '';
 
     React.useEffect(() => {
       (async () => {
@@ -173,8 +171,6 @@ const FieldOrder: React.FC<Props> = React.memo(
       setShowForm(false);
     }, []);
 
-    const disableOperationBtn = Boolean(props.disabled || !props.value);
-
     return (
       <>
         <EtsBootstrap.Col md={4}>
@@ -195,10 +191,10 @@ const FieldOrder: React.FC<Props> = React.memo(
         <EtsBootstrap.Col md={2}>
           <FlexContainer direction="column" alignItems="start">
             <FieldLabel>Поручение</FieldLabel>
-            <EtsBootstrap.Button disabled={disableOperationBtn} onClick={handleClick}>
+            <EtsBootstrap.Button disabled={props.disabled || !props.value} onClick={handleClick}>
               Выбрать
             </EtsBootstrap.Button>
-            {!Boolean(disableOperationBtn) && (<ErrorsBlock error={errorOperation} />)}
+            <ErrorsBlock error={error} />
           </FlexContainer>
           {showForm && (
             <EtsBootstrap.ModalContainer

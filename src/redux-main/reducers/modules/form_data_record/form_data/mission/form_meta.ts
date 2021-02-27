@@ -11,7 +11,6 @@ import { getMissionsState, getSomeUniqState } from 'redux-main/reducers/selector
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
-import { isNullOrUndefined } from 'util';
 
 export const validateNormConsumableMaterials = (norm_value: ValuesOf<Mission['consumable_materials']>['norm_value']) => {
   const floadError = floatValidate(Number(norm_value), 4, 'Норма');
@@ -78,7 +77,7 @@ export const metaMission: ConfigFormData<Mission> = {
           integer: true,
           max: 10,
           dependencies: [
-            (value, { order_id, technical_operation_id }, reduxState) => {
+            (value, { order_id }, reduxState) => {
               const dependeceTechnicalOperation = getMissionsState(reduxState).missionData.dependeceTechnicalOperation;
 
               if (value) {
@@ -86,7 +85,7 @@ export const metaMission: ConfigFormData<Mission> = {
                   return '"Количество циклов" должно быть больше 0';
                 }
 
-                if (order_id && technical_operation_id && !isNullOrUndefined(dependeceTechnicalOperation) && Number(value) > get(dependeceTechnicalOperation, 'num_exec', 0)) {
+                if (order_id && Number(value) > get(dependeceTechnicalOperation, 'num_exec', 0)) {
                   return 'Поле "Количество циклов" должно быть не больше количества выполнений поручения (факсограммы)"';
                 }
               }

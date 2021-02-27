@@ -131,7 +131,6 @@ export const metaMission: ConfigFormData<Mission> = {
                   return getRequiredFieldMessage('Номер централизованного задани');
                 }
               }
-              return false;
             }
           ]
         },

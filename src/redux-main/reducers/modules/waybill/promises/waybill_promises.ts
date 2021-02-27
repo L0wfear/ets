@@ -7,7 +7,7 @@ import { isArray } from 'util';
 import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService, WaybillClosedService, RootService, WaybillAvailableMissionsService } from 'api/Services';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { monthOptions, makeDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { monthOptions, makeDate, createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isMotoHoursMileageType, isEmpty } from 'utils/functions';
@@ -126,6 +126,11 @@ export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
     payload.fact_departure_date,
   );
   payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
+  payload.dut_data = payload?.dut_data?.map((sensor) => ({
+    ...sensor,
+    tar_start_date: createValidDate(sensor.tar_start_date),
+    tar_end_date: createValidDate(sensor.tar_end_date),
+  })) ?? [];
 
   if (payload.tax_data) {
     const tax_data = payload.tax_data

@@ -121,11 +121,6 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'valueOfArray',
           required: true,
         },
-        order_id: {
-          title: 'Номер централизованного задани',
-          type: 'string',
-          required: true,
-        },
         date_start: {
           title: 'Время выполнения, с',
           type: 'datetime',

@@ -169,7 +169,7 @@ const FieldOrder: React.FC<Props> = React.memo(
 
     const onHide = React.useCallback(() => {
       setShowForm(false);
-    }, []);
+    }, [showForm]);
 
     return (
       <>

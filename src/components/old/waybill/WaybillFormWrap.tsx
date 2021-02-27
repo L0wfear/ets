@@ -1155,16 +1155,12 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       if (closeForm) {
         // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
         try {
-          const response = await this.updateWaybill(formState);
-          const newState = get(response, 'result.0', null);
-          if (newState) {
-            this.setState({
-              formState: {
-                ...formState,
-                files: newState.files,
-              },
+          await this.updateWaybill(formState).then((response) => {
+            const newFiles = get(response, 'result.0.files', []);
+            this.handleMultipleChange({
+              files: newFiles,
             });
-          }
+          });
         } catch ({ error_text }) {
           console.error(error_text); // eslint-disable-line
           return;

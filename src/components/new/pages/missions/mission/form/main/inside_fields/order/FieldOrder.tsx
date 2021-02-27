@@ -233,7 +233,7 @@ const FieldOrder: React.FC<Props> = React.memo(
                   <Registry registryKey={orderTechnicalOperationRegistryKey}/>
                 </ModalBodyPreloader>
                 <EtsBootstrap.ModalFooter>
-                  <EtsBootstrap.Button onClick={onSelect}>
+                  <EtsBootstrap.Button onClick={onSelect} disabled={!filteredTO.length}>
                     Выбрать
                   </EtsBootstrap.Button>
                 </EtsBootstrap.ModalFooter>

@@ -5,7 +5,6 @@ import { EtsDispatch, EtsActionReturnType, EtsAction } from 'components/@next/et
 const etsLoadingCounter = async <PromiseAns>(dispatch: EtsDispatch, promise: Promise<PromiseAns>, meta: LoadingMeta) => {
   let countLoad = false;
   let interval = null;
-
   if (dispatch && !meta.withoutPreloader) {
     if (!meta.noTimeout) {
       interval = setTimeout(() => {
@@ -26,7 +25,7 @@ const etsLoadingCounter = async <PromiseAns>(dispatch: EtsDispatch, promise: Pro
     errorData = error;
   }
 
-  if (dispatch) {
+  if (dispatch && !meta.withoutPreloader) {
     if (countLoad) {
       setTimeout(
         () => {

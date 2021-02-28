@@ -528,6 +528,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const result = await this.props.dispatch(
         actionCreateWaybill(waybill, this.props),
       );
+      const newFiles = get(result, 'result.0.files', []);
+      this.handleMultipleChange({
+        files: newFiles,
+      });
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
     } catch (e) {
@@ -539,6 +543,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const result = await this.props.dispatch(
         actionUpdateWaybill(waybill, this.props),
       );
+      const newFiles = get(result, 'result.0.files', []);
+      this.handleMultipleChange({
+        files: newFiles,
+      });
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
     } catch (e) {
@@ -1155,12 +1163,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       if (closeForm) {
         // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
         try {
-          await this.updateWaybill(formState).then((response) => {
-            const newFiles = get(response, 'result.0.files', []);
-            this.handleMultipleChange({
-              files: newFiles,
-            });
-          });
+          await this.updateWaybill(formState);
         } catch ({ error_text }) {
           console.error(error_text); // eslint-disable-line
           return;

@@ -24,6 +24,17 @@ export const canSaveTest = <F extends Record<string, any>>(formError: FormErrorB
   return !formError;
 };
 
+export const canSaveIgnoreRequiredTest = <F extends Record<string, any>>(formError: FormErrorBySchema<F> | FormErrorBySchema<F>[any], formState: F | F[any]): boolean => { 
+  return Object.keys(formError)
+    .filter((key) => formError[key])
+    .every((key) => {
+      if (isObject(formError[key])) {
+        return canSaveIgnoreRequiredTest(formError[key], formState[key]);
+      }
+      return isArray(formState[key]) ? formState[key].length === 0 : !formState[key];
+    });
+};
+
 export const validate = <F extends Record<string, any>>(validate_fields: SchemaFormContextBody<F>['validate_fields'], formState: F, reduxState: ReduxState) => {
   return Object.entries(validate_fields).reduce(
     (formError: FormErrorBySchema<F>, fieldSchemaEntries) => {

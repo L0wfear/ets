@@ -24,6 +24,7 @@ type ViewInspectCarsConditionButtonSubmitOwnProps = {
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectCarsCondition: InspectCarsCondition;
   canSave: boolean;
+  canSaveIgnoreRequired: boolean;
   loadingPage: string;
 
   searchState: any;
@@ -131,6 +132,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
       handleGetAct={handleGetCarsConditionAct}
       type={props.type}
       canSave={props.canSave}
+      canSaveIgnoreRequired={props.canSaveIgnoreRequired}
       handleSaveGetAct={handleSaveGetAct}
 
       searchState={props.searchState}

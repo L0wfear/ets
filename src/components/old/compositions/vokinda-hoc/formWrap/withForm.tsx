@@ -76,6 +76,7 @@ export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof
 type FormWithSubmitAction = (...arg: Array<any>) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> = (
   WithFormProps<P>
   & WithFormState<F, P>

@@ -43,7 +43,7 @@ type InspectionCarsConditionSelectProps = (
 
 const InspectionCarsConditionSelectData: React.FC<InspectionCarsConditionSelectProps> = (props) => {
   const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true, for: 'inspect' } : {};
 
   React.useEffect(
     () => {

@@ -29,6 +29,8 @@ import { SelectedMissionsList } from 'redux-main/reducers/modules/some_uniq/wayb
 import { OneRefillFuelCompanyData } from 'redux-main/reducers/modules/some_uniq/refill_fuel_company/@types';
 import { FuelTypes } from '../fuel_types/@types';
 import { MileageType } from '../car_mileage_options/@types';
+import { User } from '../users_access/@types';
+import { Okrug } from '../okrugs/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -100,4 +102,6 @@ export type IStateSomeUniq = {
   refillFuelCompany: OneRefillFuelCompanyData;
   fuelTypesList: Array<FuelTypes>;
   mileageTypesList: Array<MileageType>;
+  usersAccessList: Array<User>;
+  okrugsList: Array<Okrug>;
 };

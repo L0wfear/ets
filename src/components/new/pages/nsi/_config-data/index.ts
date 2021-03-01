@@ -15,6 +15,7 @@ import employeesList from 'components/new/pages/nsi/employee/_config-data';
 import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
 import dataForCalculation from 'components/new/pages/nsi/data_for_calculation/_config-data';
 import { ConfigParentData } from 'components/@next/@types/config_data';
+import usersAccessList from 'components/new/pages/nsi/user_acces/_config-data';
 
 const children: ConfigParentData['children'] = {
   employeesList,
@@ -33,6 +34,7 @@ const children: ConfigParentData['children'] = {
   dividerTwo: { divider: true },
   companyStructureList,
   userActionLogList,
+  usersAccessList,
 };
 
 export default {

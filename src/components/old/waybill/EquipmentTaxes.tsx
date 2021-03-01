@@ -5,7 +5,7 @@ import Table from 'components/old/waybill/Table';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/old/ui/Div';
-import { isEmpty, parseFloatWithFixed } from 'utils/functions';
+import { generateRandomKey, isEmpty, parseFloatWithFixed } from 'utils/functions';
 import { get } from 'lodash';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import {
@@ -356,6 +356,7 @@ export default class EquipmentTaxes extends React.Component<any, any> {
     tableData.push({
       FACT_VALUE: null,
       OPERATION: null,
+      key: generateRandomKey(),
     });
     this.setState({ tableData, errorsAll });
     this.props.onChange(tableData);

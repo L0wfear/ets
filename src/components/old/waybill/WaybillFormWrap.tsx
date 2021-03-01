@@ -528,6 +528,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const result = await this.props.dispatch(
         actionCreateWaybill(waybill, this.props),
       );
+      const newFiles = get(result, 'result.0.files', []);
+      this.handleMultipleChange({
+        files: newFiles,
+      });
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
     } catch (e) {
@@ -539,6 +543,10 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
       const result = await this.props.dispatch(
         actionUpdateWaybill(waybill, this.props),
       );
+      const newFiles = get(result, 'result.0.files', []);
+      this.handleMultipleChange({
+        files: newFiles,
+      });
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
     } catch (e) {

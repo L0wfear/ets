@@ -78,7 +78,7 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
     }, [okrugs, state.access_okrugs_ids]);
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    console.info(state);
+
     return (
       <EtsBootstrap.ModalContainer id="modal-users_access" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>

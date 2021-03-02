@@ -23,6 +23,7 @@ type ViewInspectAutobaseButtonSubmitOwnProps = {
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectAutobase: InspectAutobase;
   canSave: boolean;
+  canSaveIgnoreRequired: boolean;
   loadingPage: string;
 
   isPermitted: boolean;
@@ -113,6 +114,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
       handleGetAct={handleGetAutobaseAct}
       type={props.type}
       canSave={props.canSave}
+      canSaveIgnoreRequired={props.canSaveIgnoreRequired}
       handleSaveGetAct={handleSaveGetAct}
 
       id={props.id}

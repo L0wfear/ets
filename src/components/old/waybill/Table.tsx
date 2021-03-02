@@ -96,7 +96,7 @@ class Table extends React.Component<Props, any> {
     const rows = page.data.map((o, i) => (
       <TrRow
         renderers={this.props.cellRenderers}
-        key={i}
+        key={o.key || i}
         cells={o}
         index={i}
         tableCols={this.props.tableCols}

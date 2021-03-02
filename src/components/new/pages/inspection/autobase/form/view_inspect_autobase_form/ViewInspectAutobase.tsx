@@ -177,6 +177,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
               handleHide={props.handleHide}
               selectedInspectAutobase={state}
               canSave={props.canSave}
+              canSaveIgnoreRequired={props.canSaveIgnoreRequired}
               loadingPage={props.loadingPage}
 
               id={state.id}

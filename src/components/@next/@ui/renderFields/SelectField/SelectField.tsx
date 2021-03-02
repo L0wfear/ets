@@ -32,10 +32,12 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
         {
           isString(label) && (
             <React.Fragment>
-              <FieldLabel id={id}>{label}</FieldLabel>
-              <SpaceWrapper>
-                &nbsp;
-              </SpaceWrapper>
+              <FieldLabel id={id}>
+                {label}
+                <SpaceWrapper>
+                  &nbsp;
+                </SpaceWrapper>
+              </FieldLabel>
               {
                 props.hint && (
                   <EtsBootstrap.OverlayTrigger

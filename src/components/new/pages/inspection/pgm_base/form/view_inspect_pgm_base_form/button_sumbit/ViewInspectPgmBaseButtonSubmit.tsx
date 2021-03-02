@@ -23,6 +23,7 @@ type ViewInspectPgmBaseButtonSubmitOwnProps = {
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectPgmBase: InspectPgmBase;
   canSave: boolean;
+  canSaveIgnoreRequired: boolean;
   loadingPage: string;
 
   handleSubmit: any;
@@ -115,6 +116,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
       handleGetAct={handleGetPgmBaseAct}
       type={props.type}
       canSave={props.canSave}
+      canSaveIgnoreRequired={props.canSaveIgnoreRequired}
       handleSaveGetAct={handleSaveGetAct}
 
       id={props.id}

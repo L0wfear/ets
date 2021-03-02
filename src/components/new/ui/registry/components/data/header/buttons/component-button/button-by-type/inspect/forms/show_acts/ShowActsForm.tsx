@@ -85,7 +85,6 @@ const ShowActsForm: React.FC<Props> = React.memo(
     const isPermittedDelete = etsUseSelector(
       (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.delete),
     );
-    console.info(isPermittedDelete);
     const handleOpenForm = React.useCallback(
       () => {
         changeElement({

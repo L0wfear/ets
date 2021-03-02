@@ -43,28 +43,45 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
     const dispatch = etsUseDispatch();
     const companies = etsUseSelector((state) => getCompanyState(state).companyList);
     const okrugs = etsUseSelector((state) => getSomeUniqState(state).okrugsList);
-    const okrugsOptions: Array<Options<Okrug>> = React.useMemo(() => okrugs.map((el) => ({value: el.okrug_id, label: el.okrug_name, rowData: el})), [okrugs]);
-    const companiesOptions: Array<Options<Company>> = React.useMemo(() => companies.map((el) => ({value: el.company_id, label: el.short_name, rowData: el})), [companies]);
+    const okrugsOptions: Array<Options<Okrug>> = React.useMemo(() => 
+      okrugs.map((el) => ({
+        value: el.okrug_id, 
+        label: el.okrug_name, rowData: el
+      })), [okrugs]);
+    const companiesOptions: Array<Options<Company>> = React.useMemo(() => 
+      companies.map((el) => ({
+        value: el.company_id, 
+        label: el.short_name, rowData: el
+      })), [companies]);
 
-    const handleChangeOkrugs = React.useCallback((key, value, data: Array<Options<Okrug>>) => {
-      handleChange({
-        [key]: value,
-        access_okrugs: data.map((el) => ({id: el.value, name: el.label}))
-      });
-    }, []);
+    const onSubmit = React.useCallback(() => {
+      const access_okrugs = okrugs.reduce((acc, curr) => {
+        if(state.access_okrugs_ids.includes(curr.okrug_id)) {
+          acc.push({id: curr.okrug_id, name: curr.okrug_name});
+        }
+        return acc;
+      }, []);
+      const access_companies = companies.reduce((acc, curr) => {
+        if(state.access_companies_ids.includes(curr.company_id)) {
+          acc.push({id: curr.company_id, name: curr.company_name});
+        }
+        return acc;
+      }, []);
+      const objChange: Partial<User> = {
+        access_okrugs,
+        access_companies, 
+      };
 
-    const handleChangeCompanies = React.useCallback((key, value, data: Array<Options<Company>>) => {
-      handleChange({
-        [key]: value,
-        access_companies: data.map((el) => ({id: el.value, name: el.rowData.company_name}))
-      });
-    }, []);
+      handleChange(objChange);
+      setTimeout(() => {
+        props.defaultSubmit();
+      }, 0);
+
+    }, [state.access_companies_ids, state.access_okrugs_ids, okrugs, companies]);
 
     React.useEffect(() => {
-      if (!okrugs.length) {
-        dispatch(actionGetAndSetInStoreOkrugs({all: true}, {page, path}));
-      }
-    }, [okrugs]);
+      dispatch(actionGetAndSetInStoreOkrugs({all: true}, {page, path}));
+    }, []);
 
     React.useEffect(() => {
       if (okrugs.length && state.access_okrugs_ids.length) {
@@ -78,13 +95,8 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
 
     React.useEffect(() => {
       if (state.access_companies_ids.some((el) => !~companies.findIndex((elem) => elem.company_id === el))) {
-        const objChange: Partial<User> = {
-          access_companies_ids: state.access_companies_ids.filter((el) => !!companies.find((elem) => elem.company_id === el)),
-          access_companies: state.access_companies.filter((el) => !!companies.find((elem) => elem.company_id === el.id)),
-        };
-        (Object.keys(objChange) as Array<keyof User>).forEach((key) => {
-          handleChange(key, objChange[key]);
-        });
+        const access_companies_ids = state.access_companies_ids.filter((el) => !!companies.find((elem) => elem.company_id === el));
+        handleChange('access_companies_ids', access_companies_ids);
       }
     }, [state.access_okrugs_ids, companies]);
 
@@ -156,7 +168,7 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
                 label="Доступ к округу, по которому должна быть выполнена проверка"
                 value={state.access_okrugs_ids}
                 error={errors.access_okrugs_ids}
-                onChange={handleChangeOkrugs}
+                onChange={handleChange}
                 boundKeys="access_okrugs_ids"
                 options={okrugsOptions}
                 multi
@@ -170,7 +182,7 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
                 label="Доступ к организации, по которой должна быть выполнена проверка"
                 value={state.access_companies_ids}
                 error={errors.access_companies_ids}
-                onChange={handleChangeCompanies}
+                onChange={handleChange}
                 boundKeys="access_companies_ids"
                 options={companiesOptions}
                 multi
@@ -181,7 +193,7 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
         <EtsBootstrap.ModalFooter>
           {
             isPermitted && (
-              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={onSubmit}>Сохранить</EtsBootstrap.Button>
             )
           }
         </EtsBootstrap.ModalFooter>

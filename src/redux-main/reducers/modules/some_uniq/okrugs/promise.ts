@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import { OkrugsService } from 'api/Services';
-import { Okrug } from './@types';
+import { Okrug } from 'redux-main/reducers/modules/some_uniq/okrugs/@types';
 
 export const promiseGetOkrugs = async (payload = {}) => {
   let response = null;

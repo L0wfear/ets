@@ -2,8 +2,8 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { promiseGetOkrugs } from 'redux-main/reducers/modules/some_uniq/okrugs/promise';
-import { someUniqSetNewData } from '../common';
-import { IStateSomeUniq } from '../@types/some_uniq.h';
+import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 
 export const actionLoadOkrugs = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetOkrugs>> => (dispatch) => (
   etsLoadingCounter(

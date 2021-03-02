@@ -11,6 +11,7 @@ export const EtsPaginatorCountPages = styled.div`
   display: inline-flex;
   align-items: center;
   margin-bottom: 5px;
+  margin-top: 5px;
   ${SingleUiElementWrapperStyled} {
     min-width: 100px;
     margin-bottom: 0px;

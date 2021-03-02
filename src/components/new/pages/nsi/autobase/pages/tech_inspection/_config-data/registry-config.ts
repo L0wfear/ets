@@ -9,7 +9,12 @@ import { techInspectionArchivePermissions } from 'components/new/pages/nsi/autob
 export const registryKey = 'techInspectionRegistry';
 
 export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр техосмотров', regKey = registryKey): TypeConfigData<TechInspection> => {
-
+  const entity = !is_archive
+    ? 'autobase/tech_inspection_registry'
+    : 'autobase/tech_inspection_registry/export';
+  const payload = !is_archive 
+    ? {is_archive}
+    : {is_archive, format: 'xls'};
   const Service: TypeConfigData<TechInspection>['Service'] = {
     getRegistryData: {
       entity: 'autobase/tech_inspection_registry',
@@ -18,10 +23,8 @@ export const getToConfig = (car_id?: number, is_archive: boolean = false, title:
       },
     },
     getBlobData: {
-      entity: 'autobase/tech_inspection_registry',
-      payload: {
-        is_archive,
-      },
+      entity,
+      payload,
     },
     removeOneData: {
       entity: 'autobase/tech_inspection_registry',
@@ -39,11 +42,10 @@ export const getToConfig = (car_id?: number, is_archive: boolean = false, title:
       buttonsTypes.export,
     ]
     : [
-      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.tech_inspection_from_archive,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ];
   const permissions = is_archive ? techInspectionArchivePermissions : techInspectionPermissions;
 

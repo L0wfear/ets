@@ -9,7 +9,7 @@ import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {};
 
-const registryKey = 'techInspectionArchiveRegistry';
+export const registryKey = 'techInspectionArchiveRegistry';
 
 const TechInspectionArchiveList: React.FC<Props> = () => {
   const dispatch = etsUseDispatch();

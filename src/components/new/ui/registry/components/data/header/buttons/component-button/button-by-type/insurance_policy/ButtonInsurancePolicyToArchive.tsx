@@ -30,7 +30,8 @@ const ButtonInsurancePolicyToArchive: React.FC<Props> = React.memo(
         try {
           await global.confirmDialog({
             title: 'Внимание',
-            body: 'Вы уверены, что хотите перенести в архив выбранную страховку?',
+            body: 'Вы уверены, что хотите перенести в архив выбранную запись о страховке?',
+            okName: 'Перенести'
           });
         } catch {
           return;

@@ -1,7 +1,7 @@
 export default {
-  list: 'waybill.list',
-  create: 'waybill.create',
-  read: 'waybill.read',
-  update: 'waybill.update',
-  delete: 'waybill.delete',
+  list: 'access_registry.list',
+  create: 'access_registry.create',
+  read: 'access_registry.read',
+  update: 'access_registry.update',
+  delete: 'access_registry.delete',
 };

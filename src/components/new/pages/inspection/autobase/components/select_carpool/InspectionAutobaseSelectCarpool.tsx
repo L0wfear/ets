@@ -17,7 +17,7 @@ const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolP
   const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
   const showAll = permissions.has(monitoringPermissions.all_inspaction);
   const showAllCarPool = showAll ? { all: true } : {};
-  const showAllCompanies = showAll ? { all: true, for: 'inspect' } : {};
+  const showAllCompanies = showAll ? { for: 'inspect' } : {};
 
   React.useEffect(
     () => {

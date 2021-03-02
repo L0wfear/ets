@@ -37,7 +37,6 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
       formErrors: errors,
       page,
       path,
-      IS_CREATING,
       isPermitted,
       handleChange,
     } = props;
@@ -45,19 +44,19 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
     const companies = etsUseSelector((state) => getCompanyState(state).companyList);
     const okrugs = etsUseSelector((state) => getSomeUniqState(state).okrugsList);
     const okrugsOptions: Array<Options<Okrug>> = React.useMemo(() => okrugs.map((el) => ({value: el.okrug_id, label: el.okrug_name, rowData: el})), [okrugs]);
-    const companiesOptions: Array<Options<Company>> = React.useMemo(() => companies.map((el) => ({value: el.company_id, label: el.company_name, rowData: el})), [companies]);
+    const companiesOptions: Array<Options<Company>> = React.useMemo(() => companies.map((el) => ({value: el.company_id, label: el.short_name, rowData: el})), [companies]);
 
-    const handleChangeOkrugs = React.useCallback((key, value, rowData) => {
+    const handleChangeOkrugs = React.useCallback((key, value, data: Array<Options<Okrug>>) => {
       handleChange({
         [key]: value,
-        access_okrugs: rowData.map((el) => ({id: el.value, name: el.label}))
+        access_okrugs: data.map((el) => ({id: el.value, name: el.label}))
       });
     }, []);
 
-    const handleChangeCompanies = React.useCallback((key, value, rowData) => {
+    const handleChangeCompanies = React.useCallback((key, value, data: Array<Options<Company>>) => {
       handleChange({
         [key]: value,
-        access_companies: rowData.map((el) => ({id: el.value, name: el.label}))
+        access_companies: data.map((el) => ({id: el.value, name: el.rowData.company_name}))
       });
     }, []);
 
@@ -77,21 +76,84 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
       }
     }, [okrugs, state.access_okrugs_ids]);
 
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    React.useEffect(() => {
+      if (state.access_companies_ids.some((el) => !~companies.findIndex((elem) => elem.company_id === el))) {
+        const objChange: Partial<User> = {
+          access_companies_ids: state.access_companies_ids.filter((el) => !!companies.find((elem) => elem.company_id === el)),
+          access_companies: state.access_companies.filter((el) => !!companies.find((elem) => elem.company_id === el.id)),
+        };
+        (Object.keys(objChange) as Array<keyof User>).forEach((key) => {
+          handleChange(key, objChange[key]);
+        });
+      }
+    }, [state.access_okrugs_ids, companies]);
 
+    const title = 'Карточка настройки доступа';
     return (
-      <EtsBootstrap.ModalContainer id="modal-users_access" show onHide={props.hideWithoutChanges}>
+      <EtsBootstrap.ModalContainer id="modal-users_access" show onHide={props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="full_name"
+                modalKey={page}
+                type="string"
+                label="Фамилия Имя Отчество"
+                value={state.full_name}
+                error={errors.full_name}
+                onChange={handleChange}
+                boundKeys="full_name"
+                disabled
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="personnel_number"
+                modalKey={page}
+                type="string"
+                label="Табельный номер"
+                value={state.personnel_number}
+                error={errors.personnel_number}
+                onChange={handleChange}
+                boundKeys="personnel_number"
+                disabled
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="position_name"
+                modalKey={page}
+                type="string"
+                label="Должность"
+                value={state.position_name}
+                error={errors.position_name}
+                onChange={handleChange}
+                boundKeys="position_name"
+                disabled
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <ExtField
+                id="status"
+                modalKey={page}
+                type="string"
+                label="Статус"
+                value={state.status}
+                error={errors.status}
+                onChange={handleChange}
+                boundKeys="status"
+                disabled
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 id="access_okrugs_ids"
                 modalKey={page}
                 type="select"
-                label="Округ"
+                label="Доступ к округу, по которому должна быть выполнена проверка"
                 value={state.access_okrugs_ids}
                 error={errors.access_okrugs_ids}
                 onChange={handleChangeOkrugs}
@@ -100,12 +162,12 @@ const UserAccessForm: React.FC<PropsUsersAccess> = React.memo(
                 multi
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 id="access_companies_ids"
                 modalKey={page}
                 type="select"
-                label="Компания"
+                label="Доступ к организации, по которой должна быть выполнена проверка"
                 value={state.access_companies_ids}
                 error={errors.access_companies_ids}
                 onChange={handleChangeCompanies}

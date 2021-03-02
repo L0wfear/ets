@@ -18,6 +18,7 @@ import { ConfigParentData } from 'components/@next/@types/config_data';
 import usersAccessList from 'components/new/pages/nsi/user_acces/_config-data';
 
 const children: ConfigParentData['children'] = {
+  usersAccessList,
   employeesList,
   employeeOnCarList,
   orderList,
@@ -34,7 +35,6 @@ const children: ConfigParentData['children'] = {
   dividerTwo: { divider: true },
   companyStructureList,
   userActionLogList,
-  usersAccessList,
 };
 
 export default {

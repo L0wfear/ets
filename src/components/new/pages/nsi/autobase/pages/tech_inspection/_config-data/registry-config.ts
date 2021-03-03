@@ -11,10 +11,10 @@ export const registryKey = 'techInspectionRegistry';
 export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр техосмотров', regKey = registryKey): TypeConfigData<TechInspection> => {
   const entity = !is_archive
     ? 'autobase/tech_inspection_registry'
-    : 'autobase/tech_inspection_registry/export';
+    : 'autobase/tech_inspection_archive/export';
   const payload = !is_archive 
     ? {is_archive}
-    : {is_archive, format: 'xls'};
+    : {};
   const Service: TypeConfigData<TechInspection>['Service'] = {
     getRegistryData: {
       entity: 'autobase/tech_inspection_registry',

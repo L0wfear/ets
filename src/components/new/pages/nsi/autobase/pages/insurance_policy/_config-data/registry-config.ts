@@ -9,6 +9,12 @@ import { insurancePolicyArchivePermissions } from 'components/new/pages/nsi/auto
 export const registryKey = 'insurancePolicyRegistry';
 
 export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр страховок', regKey = registryKey): TypeConfigData<InsurancePolicy> => {
+  const entity = !is_archive
+    ? 'autobase/insurance_policy_registry'
+    : 'autobase/insurance_policy_registry/export';
+  const payload = !is_archive 
+    ? {is_archive}
+    : {is_archive, format: 'xls'};
   const Service: TypeConfigData<InsurancePolicy>['Service'] = {
     getRegistryData: {
       entity: 'autobase/insurance_policy_registry',
@@ -17,10 +23,8 @@ export const getToConfig = (car_id?: number, is_archive: boolean = false, title:
       },
     },
     getBlobData: {
-      entity: 'autobase/insurance_policy_registry',
-      payload: {
-        is_archive,
-      },
+      entity,
+      payload,
     },
     removeOneData: {
       entity: 'autobase/insurance_policy_registry',
@@ -38,11 +42,10 @@ export const getToConfig = (car_id?: number, is_archive: boolean = false, title:
       buttonsTypes.export,
     ]
     : [
-      buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.read,
       buttonsTypes.insurance_policy_from_archive,
-      buttonsTypes.export,
+      buttonsTypes.export_filtred_data,
     ];
   const permissions = is_archive ? insurancePolicyArchivePermissions : insurancePolicyPermissions;
   if (car_id) {

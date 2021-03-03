@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { isNullOrUndefined } from 'util';
 import { get } from 'lodash';
 
@@ -12,22 +10,24 @@ import { techInspectionFormSchema } from 'components/new/pages/nsi/autobase/page
 
 import { defaultTechInspection, getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
 import {
-  OwnTechInspectionProps,
   PropsTechInspection,
-  StatePropsTechInspection,
   PropsTechInspectionWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getSomeUniqState } from 'redux-main/reducers/selectors';
 
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 import { handleChangeBooleanWithSavedFields } from 'utils/functions';
+import { registryKey as  techInspectionArchiveRegistryKey} from 'components/new/pages/nsi/autobase/pages/tech_inspection_archive/TechInspectionArchiveList';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { techInspectionArchivePermissions } from 'components/new/pages/nsi/autobase/pages/tech_inspection_archive/_config-data/permissions';
+import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const inspectionFields: Array<keyof TechInspection> = [
   'reg_number',
@@ -43,28 +43,52 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
     formState: state,
     formErrors: errors,
     selectedCarData,
-
     page,
     path,
   } = props;
 
   const car_id = get(selectedCarData, 'asuods_id', null);
-
+  const dispatch = etsUseDispatch();
   const IS_CREATING = !state.id;
-
+  const is_archive = props.registryKey === techInspectionArchiveRegistryKey;
+  const userCompanyId = etsUseSelector((state) => getSessionState(state).userData.company_id);
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
   const ownIsPermitted = (
     !IS_CREATING
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
   );
+  const isPermittedUpdateExpired = etsUseSelector(
+    (state) => getSessionState(state).userData.permissionsSet.has(techInspectionArchivePermissions.update_expired),
+  );
+  const moscowTime = etsUseSelector((state) => getSomeUniqState(state).moscowTimeServer.date);
+  const isExpired = React.useMemo(() => {
+    return diffDates(createValidDate(moscowTime), createValidDate(state.date_end), 'days') > 1;
+  }, [state.date_end, moscowTime]);
 
   const isPermitted = (
     ownIsPermitted
     && (
       isNullOrUndefined(state.company_id)
-      || state.company_id === props.userCompanyId
+      || state.company_id === userCompanyId
     )
+    && (!isExpired || isPermittedUpdateExpired)
+    && !is_archive
+  );
+  const isPermitedDefault = (
+    ownIsPermitted
+    && (
+      isNullOrUndefined(state.company_id)
+      || state.company_id === userCompanyId
+    )
+  );
+  const isPermitedToSave = (
+    ownIsPermitted
+    && (
+      isNullOrUndefined(state.company_id)
+      || state.company_id === userCompanyId
+    )
+    && (!isExpired || isPermittedUpdateExpired)
   );
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
@@ -87,6 +111,13 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       }
     },
     [IS_CREATING, car_id, carList],
+  );
+
+  React.useEffect(
+    () => {
+      dispatch(actionGetAndSetInStoreMoscowTimeServer({}, {page, path}));
+    }, 
+    []
   );
 
   const handleChangeIsActiveToTrue = React.useCallback(
@@ -156,7 +187,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               error={errors.is_not_inspectionable}
               onChange={handleChangeIsNotInspectionable}
               boundKeys="is_not_inspectionable"
-              disabled={!isPermitted || !isAvailableForChangeIsNotInspectionable}
+              disabled={!isPermitedDefault || !isAvailableForChangeIsNotInspectionable}
               modalKey={path}
               warning={warningText}
             />
@@ -260,9 +291,9 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        {isPermitted ? ( // либо обновление, либо создание
+        {isPermitedDefault ? ( // либо обновление, либо создание
           <EtsBootstrap.Button
-            disabled={!props.canSave}
+            disabled={!props.canSave || !isPermitedToSave}
             onClick={props.defaultSubmit}>
             Сохранить
           </EtsBootstrap.Button>
@@ -274,18 +305,8 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   );
 };
 
-export default compose<PropsTechInspection, OwnTechInspectionProps>(
-  connect<
-    StatePropsTechInspection,
-    {},
-    OwnTechInspectionProps,
-    ReduxState
-  >(
-    (state) => ({
-      userCompanyId: getSessionState(state).userData.company_id,
-    }),
-  ),
-  withForm<PropsTechInspectionWithForm, TechInspection>({
+export default withForm<PropsTechInspectionWithForm, TechInspection>(
+  {
     uniqField: 'id',
     createAction: autobaseCreateTechInspection,
     updateAction: autobaseUpdateTechInspection,
@@ -294,5 +315,5 @@ export default compose<PropsTechInspection, OwnTechInspectionProps>(
     },
     schema: techInspectionFormSchema,
     permissions: techInspectionPermissions,
-  }),
+  }
 )(TechInspectionForm);

@@ -10,7 +10,7 @@ import {
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-const registryKey = 'insurancePolicyArchiveRegistry';
+export const registryKey = 'insurancePolicyArchiveRegistry';
 type OwnProps = {};
 const InsurancePolicyAchiveList: React.FC<OwnProps> = React.memo(
   () => {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -24,6 +23,12 @@ import { autobaseGetInsuranceType } from 'redux-main/reducers/modules/autobase/a
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 import { carActualOptionLabelGarage } from 'components/@next/@utils/formatData/formatDataOptions';
 import { handleChangeBooleanWithSavedFields } from 'utils/functions';
+import { registryKey as  insurancePolicyArchiveRegistryKey} from 'components/new/pages/nsi/autobase/pages/insurance_policy_archive/InsurancePolicyArchiveList';
+import { getSessionState, getSomeUniqState } from 'redux-main/reducers/selectors';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { insurancePolicyArchivePermissions } from 'components/new/pages/nsi/autobase/pages/insurance_policy_archive/_config-data/permissions';
+import { actionGetAndSetInStoreMoscowTimeServer } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 
 const insuranceFields: Array<keyof InsurancePolicy> = [
   'insurer',
@@ -43,18 +48,37 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
     formState: state,
     formErrors: errors,
     selectedCarData,
-
     page,
     path,
   } = props;
+  
   const car_id = get(selectedCarData, 'asuods_id', null);
   const IS_CREATING = !state.id;
+  const is_archive = props.registryKey === insurancePolicyArchiveRegistryKey;
+  const dispatch = etsUseDispatch();
+
+  const isPermittedUpdateExpired = etsUseSelector(
+    (state) => getSessionState(state).userData.permissionsSet.has(insurancePolicyArchivePermissions.update_expired),
+  );
+  const moscowTime = etsUseSelector((state) => getSomeUniqState(state).moscowTimeServer.date);
+  const isExpired = React.useMemo(() => {
+    return diffDates(createValidDate(moscowTime), createValidDate(state.date_end), 'days') > 1;
+  }, [state.date_end, moscowTime]);
 
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-  const isPermitted = (
+  const isPermitedDefault = (
     !IS_CREATING
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
+  );
+  const isPermitted = (
+    isPermitedDefault
+    && (!isExpired || isPermittedUpdateExpired)
+    && !is_archive
+  );
+  const isPermitedToSave = (
+    isPermitedDefault
+    && (!isExpired || isPermittedUpdateExpired)
   );
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
@@ -104,6 +128,13 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       }
     },
     [carList, state.car_id, state.gov_number],
+  );
+
+  React.useEffect(
+    () => {
+      dispatch(actionGetAndSetInStoreMoscowTimeServer({}, {page, path}));
+    }, 
+    []
   );
 
   const handleChangeIsNotInsurable = React.useCallback((field, event) => {
@@ -158,7 +189,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
               error={errors.is_not_insurable}
               onChange={handleChangeIsNotInsurable}
               boundKeys="is_not_insurable"
-              disabled={!isPermitted || !isAvailableForChangeIsNotInsurable}
+              disabled={!isPermitedDefault || !isAvailableForChangeIsNotInsurable}
               modalKey={path}
               warning={warningText}
             />
@@ -273,9 +304,9 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        {isPermitted ? ( // либо обновление, либо создание
+        {isPermitedDefault ? ( // либо обновление, либо создание
           <EtsBootstrap.Button
-            disabled={!props.canSave}
+            disabled={!props.canSave || !isPermitedToSave}
             onClick={props.defaultSubmit}>
             Сохранить
           </EtsBootstrap.Button>
@@ -287,8 +318,8 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   );
 };
 
-export default compose<PropsInsurancePolicy, PropsInsurancePolicyWithForm>(
-  withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
+export default withForm<PropsInsurancePolicyWithForm, InsurancePolicy>(
+  {
     uniqField: 'id',
     createAction: autobaseCreateInsurancePolicy,
     updateAction: autobaseUpdateInsurancePolicy,
@@ -297,5 +328,5 @@ export default compose<PropsInsurancePolicy, PropsInsurancePolicyWithForm>(
     },
     schema: insurancePolicyFormSchema,
     permissions: insurancePolicyPermissions,
-  }),
+  }
 )(InsurancePolicyForm);

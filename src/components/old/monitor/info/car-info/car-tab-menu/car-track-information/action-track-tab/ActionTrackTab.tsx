@@ -217,7 +217,7 @@ class ActionTrackTab extends React.Component<
                 )}
               </dd>
               <dt>Скорость:</dt>
-              <dd>{track[trackPointIndex].speed_avg}</dd>
+              <dd>{track[trackPointIndex]?.speed_avg}</dd>
             </dl>
           </div>
         )}

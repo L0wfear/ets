@@ -57,6 +57,8 @@ export const initialState: IStateSomeUniq = {
   },
   fuelTypesList: [],
   mileageTypesList: [],
+  usersAccessList: [],
+  okrugsList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

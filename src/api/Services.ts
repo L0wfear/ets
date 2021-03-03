@@ -162,6 +162,9 @@ export const CompanyStructureService = ETS_API_FACTORY.createApiServiceAdapter(
 export const CompanyService = ETS_API_FACTORY.createApiServiceAdapter(
   'companies',
 );
+export const OkrugsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'okrugs',
+);
 export const PositionService = ETS_API_FACTORY.createApiServiceAdapter(
   'position',
 );
@@ -475,4 +478,8 @@ export const TachographVerificationReasonService = ETS_API_FACTORY.createApiServ
 );
 export const RefillFuelCompanyService = ETS_API_FACTORY.createApiServiceAdapter(
   'waybill_refill_tx',
+);
+
+export const UsersAccessRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'user_access_registry',
 );

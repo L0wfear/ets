@@ -15,16 +15,18 @@ import DatePickerRange from 'components/new/pages/inspection/common_components/I
 
 const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolProps> = (props) => {
   const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+  const showAll = permissions.has(monitoringPermissions.all_inspaction);
+  const showAllCarPool = showAll ? { all: true } : {};
+  const showAllCompanies = showAll ? { for: 'inspect' } : {};
 
   React.useEffect(
     () => {
       props.actionGetAndSetInStoreCompany(
-        showAll,
+        showAllCompanies,
         { page: props.loadingPage },
       );
       props.actionGetAndSetInStoreCarpool(
-        showAll,
+        showAllCarPool,
         { page: props.loadingPage },
       );
 

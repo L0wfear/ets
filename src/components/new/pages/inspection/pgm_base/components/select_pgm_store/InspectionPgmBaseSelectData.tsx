@@ -34,12 +34,14 @@ type InspectionPgmBaseSelectCarpoolProps = (
 
 const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps> = (props) => {
   const permissions = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-  const showAll = permissions.has(monitoringPermissions.all_inspaction) ? { all: true } : {};
+  const showAll = permissions.has(monitoringPermissions.all_inspaction);
+  const showAllPgmBase = showAll ? { all: true } : {};
+  const showAllCompanies = showAll ? { for: 'inspect' } : {};
 
   React.useEffect(
     () => {
-      props.actionGetAndSetInStoreCompany(showAll, { page: props.loadingPage });
-      props.actionGetAndSetInStorePgmBase(showAll, { page: props.loadingPage });
+      props.actionGetAndSetInStoreCompany(showAllCompanies, { page: props.loadingPage });
+      props.actionGetAndSetInStorePgmBase(showAllPgmBase, { page: props.loadingPage });
 
       return () => {
         props.actionResetCompanyAndCarpool();

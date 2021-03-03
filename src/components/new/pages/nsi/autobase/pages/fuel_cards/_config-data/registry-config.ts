@@ -7,7 +7,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 export const uniqKeyForParams = 'fuel_cards_registry_id';
 export const registryKey = 'fuelCardsRegistry';
 
-export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
+export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт', regKey = registryKey): TypeConfigData<FuelCard> => {
   let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
     buttonsTypes.columns_control,
     buttonsTypes.filter,
@@ -44,7 +44,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
         },
       }
     },
-    registryKey,
+    registryKey: regKey,
     header: {
       title,
       buttons,

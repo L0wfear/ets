@@ -1,7 +1,7 @@
 export default {
-  list: 'access_registry.list',
-  create: 'access_registry.create',
-  read: 'access_registry.read',
-  update: 'access_registry.update',
-  delete: 'access_registry.delete',
+  list: 'user_access_registry.list',
+  create: 'user_access_registry.create',
+  read: 'user_access_registry.read',
+  update: 'user_access_registry.update',
+  delete: 'user_access_registry.delete',
 };

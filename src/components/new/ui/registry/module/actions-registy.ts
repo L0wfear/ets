@@ -53,6 +53,7 @@ import { makeInspectActScanFilesFront } from 'redux-main/reducers/modules/inspec
 import { makeConsumableMaterialFront } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
 import { registryIsPermitedByKey } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Tr';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: Array<any>) => Array<any>> = {
   dutyMissionTemplate: (array) => array.map(getFrontDutyMission),
@@ -88,19 +89,24 @@ const makePayloadFromObject = (payload: OneRegistryData<any>['Service']['getRegi
 export const registryAddInitialData = <F extends any = any>({ registryKey, ...config }: TypeConfigData<F>): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
+  const buttons = get(config, 'header.buttons', []);
   let serverUserFilterFields = null;
   let serverUserColumnFields = null;
-  try {
-    const filtersData = await dispatch(getUserSettingsThunk(registryKey, 'filters'));
-    serverUserFilterFields = filtersData;
-  } catch (error) {
-    global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей фильтров с сервера', 'error', 'tr');
+  if(buttons.includes(buttonsTypes.filter)) {
+    try {
+      const filtersData = await dispatch(getUserSettingsThunk(registryKey, 'filters'));
+      serverUserFilterFields = filtersData;
+    } catch (error) {
+      global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей фильтров с сервера', 'error', 'tr');
+    }
   }
-  try {
-    const fieldsData = await dispatch(getUserSettingsThunk(registryKey, 'fields'));
-    serverUserColumnFields = fieldsData;
-  } catch (error) {
-    global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей колонок с сервера', 'error', 'tr');
+  if (buttons.includes(buttonsTypes.columns_control)) {
+    try {
+      const fieldsData = await dispatch(getUserSettingsThunk(registryKey, 'fields'));
+      serverUserColumnFields = fieldsData;
+    } catch (error) {
+      global.NOTIFICATION_SYSTEM.notify('Не удалось загрузить данные полей колонок с сервера', 'error', 'tr');
+    }
   }
   const localStorageFilterFields = get(JSON.parse(localStorage.getItem(`filterFields`)), registryKey, []);
   const localStorageColumnFields = get(JSON.parse(localStorage.getItem(`columnContorol`)), registryKey, []);

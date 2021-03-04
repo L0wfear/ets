@@ -4,12 +4,13 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import { loadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/promise';
 import { someUniqSetNewData } from '../common';
 import { IStateSomeUniq } from '../@types/some_uniq.h';
+import { isNullOrUndefined } from 'util';
 
 export const actionLoadTimeMoscow = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<typeof loadTimeMoscow>> => (dispatch) => (
   etsLoadingCounter(
     dispatch,
     loadTimeMoscow(payload),
-    meta,
+    {...meta, withoutPreloader: isNullOrUndefined(meta.withoutPreloader) ? true : meta.withoutPreloader},
   )
 );
 

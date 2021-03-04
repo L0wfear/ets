@@ -26,7 +26,8 @@ const ButtonTechInspectionFromArchive: React.FC<Props> = React.memo(
         try {
           await global.confirmDialog({
             title: 'Внимание',
-            body: 'Вы уверены, что хотите перенести из архива выбранную карту техосмотра?',
+            body: 'Вы уверены, что хотите перенести из архива выбранную запись о техосмотре?',
+            okName: 'Перенести'
           });
         } catch {
           return;

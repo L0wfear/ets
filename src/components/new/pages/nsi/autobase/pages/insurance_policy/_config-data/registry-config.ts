@@ -11,10 +11,10 @@ export const registryKey = 'insurancePolicyRegistry';
 export const getToConfig = (car_id?: number, is_archive: boolean = false, title: string = 'Реестр страховок', regKey = registryKey): TypeConfigData<InsurancePolicy> => {
   const entity = !is_archive
     ? 'autobase/insurance_policy_registry'
-    : 'autobase/insurance_policy_registry/export';
+    : 'autobase/insurance_policy_archive/export';
   const payload = !is_archive 
     ? {is_archive}
-    : {is_archive, format: 'xls'};
+    : {};
   const Service: TypeConfigData<InsurancePolicy>['Service'] = {
     getRegistryData: {
       entity: 'autobase/insurance_policy_registry',

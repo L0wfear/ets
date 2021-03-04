@@ -71,15 +71,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
   );
-  const isPermitted = (
-    isPermitedDefault
-    && (!isExpired || isPermittedUpdateExpired)
-    && !is_archive
-  );
-  const isPermitedToSave = (
-    isPermitedDefault
-    && (!isExpired || isPermittedUpdateExpired)
-  );
+  const isPermitted = isPermitedDefault && (!isExpired || isPermittedUpdateExpired) && !is_archive;
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
   const isLoading = carActualOptions.isLoading;
@@ -189,7 +181,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
               error={errors.is_not_insurable}
               onChange={handleChangeIsNotInsurable}
               boundKeys="is_not_insurable"
-              disabled={!isPermitedDefault || !isAvailableForChangeIsNotInsurable}
+              disabled={!isPermitted || !isAvailableForChangeIsNotInsurable}
               modalKey={path}
               warning={warningText}
             />
@@ -306,7 +298,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       <EtsBootstrap.ModalFooter>
         {isPermitedDefault ? ( // либо обновление, либо создание
           <EtsBootstrap.Button
-            disabled={!props.canSave || !isPermitedToSave}
+            disabled={!props.canSave || !isPermitted}
             onClick={props.defaultSubmit}>
             Сохранить
           </EtsBootstrap.Button>

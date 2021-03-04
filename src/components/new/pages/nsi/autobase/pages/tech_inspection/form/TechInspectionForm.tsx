@@ -66,15 +66,6 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
     return diffDates(createValidDate(moscowTime), createValidDate(state.date_end), 'days') > 1;
   }, [state.date_end, moscowTime]);
 
-  const isPermitted = (
-    ownIsPermitted
-    && (
-      isNullOrUndefined(state.company_id)
-      || state.company_id === userCompanyId
-    )
-    && (!isExpired || isPermittedUpdateExpired)
-    && !is_archive
-  );
   const isPermitedDefault = (
     ownIsPermitted
     && (
@@ -82,14 +73,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       || state.company_id === userCompanyId
     )
   );
-  const isPermitedToSave = (
-    ownIsPermitted
-    && (
-      isNullOrUndefined(state.company_id)
-      || state.company_id === userCompanyId
-    )
-    && (!isExpired || isPermittedUpdateExpired)
-  );
+  const isPermitted = isPermitedDefault && (!isExpired || isPermittedUpdateExpired) && !is_archive;
   const carActualOptions = useCarActualOptions(props.page, props.path, { labelFunc: carActualOptionLabelGarage, });
   const carList = carActualOptions.options;
   const isLoading = carActualOptions.isLoading;
@@ -187,7 +171,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               error={errors.is_not_inspectionable}
               onChange={handleChangeIsNotInspectionable}
               boundKeys="is_not_inspectionable"
-              disabled={!isPermitedDefault || !isAvailableForChangeIsNotInspectionable}
+              disabled={!isPermitted || !isAvailableForChangeIsNotInspectionable}
               modalKey={path}
               warning={warningText}
             />
@@ -293,7 +277,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       <EtsBootstrap.ModalFooter>
         {isPermitedDefault ? ( // либо обновление, либо создание
           <EtsBootstrap.Button
-            disabled={!props.canSave || !isPermitedToSave}
+            disabled={!props.canSave || !isPermitted}
             onClick={props.defaultSubmit}>
             Сохранить
           </EtsBootstrap.Button>

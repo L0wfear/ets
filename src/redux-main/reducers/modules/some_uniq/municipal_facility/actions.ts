@@ -123,7 +123,7 @@ export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = 
   const data = await dispatch(
     actionGetMunicipalFacility(
       {
-        for: 'duty-mission',
+        for: 'duty_mission',
         ...payload,
       },
       meta,

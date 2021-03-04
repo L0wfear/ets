@@ -44,18 +44,28 @@ export const meta: IDataTableSchema = {
       displayName: 'Дата замены',
       type: 'date',
       cssClassName: 'width150',
+      filter: {
+        type: 'advanced-date'
+      }
     },
     {
       name: 'replacement_reason_id',
       displayName: 'Причина замены',
       type: 'select',
       cssClassName: 'width200',
+      filter: {
+        type: 'multiselect',
+        byLabel: 'replacement_reason_name'
+      }
     },
     {
       name: 'next_replacement_date',
       displayName: 'Дата следующей замены (план)',
       type: 'date',
       cssClassName: 'width150',
+      filter: {
+        type: 'advanced-date'
+      }
     },
   ],
 };

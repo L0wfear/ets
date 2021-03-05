@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { isPlainObject, cloneDeep } from 'lodash';
 import cx from 'classnames';
 
-import { diffDates, makeDataFromRaw } from 'components/@next/@utils/dates/dates';
+import { createValidDate, diffDates, makeDataFromRaw } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/old/ui/table/simple-griddle/SimpleGriddle';
 
@@ -559,7 +559,11 @@ export default class DataTable extends React.Component<Props, State> {
           } else if (
             filter.type === 'advanced-date'
           ) {
-            isValid = parseAdvancedFilter(value, key, makeDataFromRaw(obj[key]), filter.type);
+            const dateWithDotsRegExp = /\d{2}\.\d{2}\.\d{4}/;
+            const date = dateWithDotsRegExp.test(obj[key]) 
+              ? makeDataFromRaw(obj[key])
+              : createValidDate(obj[key]);
+            isValid = parseAdvancedFilter(value, key, date, filter.type);
           } else if (
             moment(obj[key]).format(global.APP_DATE_FORMAT)
             !== moment(value).format(global.APP_DATE_FORMAT)

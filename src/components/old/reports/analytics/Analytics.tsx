@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 
 import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 import { oldReportGetAnalytics } from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
 import companyActions from 'redux-main/reducers/modules/company/actions';
@@ -145,10 +146,10 @@ class Analytics extends React.Component<Props, any> {
     return (
       <EtsPageWrap>
         <Div>
-          <EtsBootstrap.Col mdOffset={1} md={4}>
+          <EtsBootstrap.Col mdOffset={1} md={5}>
             <EtsBootstrap.Row>
               <Div>
-                <label>Период формирования:</label>
+                <FieldLabel>Период формирования:</FieldLabel>
               </Div>
               <DatePickerRange
                 date_start_id="date_from"

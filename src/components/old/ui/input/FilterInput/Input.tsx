@@ -43,7 +43,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     const time = this.props.time ?? Boolean(this.props.type === 'datetime' || this.props.type === 'advanced-datetime');
 
     return (
-      <div className="inputs">
+      <div>
         <DatePicker
           id={idValueBeg}
           date={value[0]}

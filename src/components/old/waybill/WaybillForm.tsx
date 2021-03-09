@@ -3043,6 +3043,14 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
             </EtsBootstrap.Row>
           </Div>
           <Div hidden={!state.car_id}>
+            {/* refilll start */}
+            {
+              Boolean((IS_ACTIVE && !IS_DELETE || IS_CLOSED) && !isElectricalKind) && (
+                <RefillFuelCompany
+                  refills={state.refills || []}
+                />
+              )}
+            {/* refilll end */}
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
                 <h3 style={{ marginBottom: '20px' }} >Транспортное средство</h3>
@@ -3691,14 +3699,6 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
                 </EtsBootstrap.Row>
               </React.Fragment>
             )}
-            {/* refilll start */}
-            {
-              Boolean((IS_ACTIVE && !IS_DELETE || IS_CLOSED) && !isElectricalKind) && (
-                <RefillFuelCompany
-                  refills={state.refills || []}
-                />
-              )}
-            {/* refilll end */}
           </Div>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>

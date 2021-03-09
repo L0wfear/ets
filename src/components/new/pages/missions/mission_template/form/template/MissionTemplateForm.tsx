@@ -23,7 +23,7 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getMissionsState } from 'redux-main/reducers/selectors';
 
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
@@ -108,6 +108,29 @@ class MissionTemplateForm extends React.PureComponent<
 
   componentDidMount() {
     this.props.handleChange('name', null);
+  }
+
+  componentDidUpdate(prevProps: PropsMissionTemplateForm ) {
+    const {
+      car_ids: carIds,
+    } = this.props.formState;
+    const {
+      car_ids: prevCarIds
+    } = prevProps.formState;
+    const {
+      carList,
+      handleChange
+    } = this.props;
+    if(
+      carIds.length === 1 
+      && carList.length
+      && (carIds[0] !== prevCarIds[0] || carIds.length !== prevCarIds.length)
+    ) {
+      const car = carList.find((car) => car.asuods_id === carIds[0]);
+      if (car.company_structure_id && !car.is_common) {
+        handleChange('structure_id', car.company_structure_id);
+      }
+    }
   }
 
   handleSubmit = async () => {
@@ -394,6 +417,7 @@ export default compose<PropsMissionTemplateForm, OwnMissionTemplateProps>(
     (state) => ({
       userStructureId: getSessionState(state).userData.structure_id,
       userStructureName: getSessionState(state).userData.structure_name,
+      carList: getMissionsState(state).missionData.carsList,
       ...getSessionStructuresParams(state),
     }),
     (dispatch: any) => ({

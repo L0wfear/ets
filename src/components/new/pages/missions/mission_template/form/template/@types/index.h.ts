@@ -7,10 +7,12 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 
 export type StatePropsMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
+  carList: IStateMissions['missionData']['carsList'];
 } & ReturnType<typeof getSessionStructuresParams>;
 
 export type DispatchPropsMissionTemplate = {

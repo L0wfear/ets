@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { get } from 'lodash';
+import { get, uniqBy } from 'lodash';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
 import { Option } from 'react-select/src/filters';
@@ -24,7 +24,6 @@ import {
   PropsEmployeeWithForm,
 } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
@@ -72,7 +71,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       carList: [],
       categoryDriversLicenseOptions,
       categorySpecialLicenseOptions,
-      companyStructureOptions: [],
+      companyStructureData: [],
       driverStateOptions,
       isCommonOptions,
       countryOptions: [],
@@ -168,7 +167,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       ),
     );
     this.setState({
-      companyStructureOptions: data.map(defaultSelectListMapper),
+      companyStructureData: data,
     });
   }
 
@@ -351,6 +350,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
       path,
     } = this.props;
 
+    const { companyStructureData } = this.state;
+
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание сотрудника';
@@ -358,6 +359,16 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const isLayoff = Boolean(!original.active
       && (original.layoff_reason_id === state.layoff_reason_id)
       && (original.comment === state.comment));
+    const employeeStructure = [{
+      name: state.company_structure_name,
+      id: state.company_structure_id,
+    }].filter((filterItem) => Boolean(filterItem.id));
+    const structureList = uniqBy(
+      [...companyStructureData, ...employeeStructure].map(
+        (rowData) => ({ label: rowData.name, value: rowData.id, rowData }),
+      ),
+      'value',
+    );
     
     return (
       <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -718,7 +729,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     type="select"
                     modalKey={path}
                     label="Подразделение"
-                    options={this.state.companyStructureOptions}
+                    options={structureList}
                     value={state.company_structure_id}
                     disabled={!isPermitted}
                     emptyValue={null}

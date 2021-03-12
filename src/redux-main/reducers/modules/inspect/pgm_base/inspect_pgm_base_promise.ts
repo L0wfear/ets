@@ -116,7 +116,7 @@ export const promiseCreateInspectionPgmBase = async (payload: { base_id: number;
 export const promiseUpdateInspectionPgmBase = async (id: number, data: InspectAutobase['data'], files: Array<any>, payload: any) => {
   const newPayload = {
     ...payload,
-    commission_members: payload.commission_members.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
+    commission_members: payload.commission_members?.map((elem) => ({...elem, assignment_date_start: createValidDate(elem.assignment_date_start)})),
   };
 
   const response = await InspectPgmBaseService.path(id).put(

@@ -44,7 +44,7 @@ const dataRemove: ValuesOf<OneRegistryData['header']['buttons']> = {
   type: buttonsTypes.remove,
   message_single: 'Вы уверены, что хотите удалить файл?',
   message_multi: 'Вы уверены, что хотите удалить файлы?',
-  modal_format: 'yesno',
+  format: 'yesno',
 };
 
 const ShowActsForm: React.FC<Props> = React.memo(

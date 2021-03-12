@@ -37,13 +37,23 @@ export const config: TypeConfigData<User> = {
         valueKey: 'okrug_name',
         labelKey: 'okrug_name_text',
         type: 'multiselect',
-        title: 'Округ',
+        title: [
+          {
+            title: 'Округ',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
       },
       {
         valueKey: 'company_name',
         labelKey: 'company_name_text',
         type: 'multiselect',
-        title: 'Организация',
+        title: [
+          {
+            title: 'Организация',
+            displayIf: displayIfContant.isKgh,
+          }
+        ],
       },
       {
         valueKey: 'full_name',

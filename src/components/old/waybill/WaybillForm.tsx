@@ -657,6 +657,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
     const IS_CLOSED = status === 'closed';
+    const IS_DELETE = status === 'deleted';
 
     const canChangeEngineKindIds = Boolean(IS_CREATING || IS_DRAFT);
     const engineKindIdsByStatus = canChangeEngineKindIds
@@ -669,7 +670,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
       });
     }
     this.updateEngineKindsFields(); // trigger update
-    if(!IS_CLOSED && !isDidMount) {
+    if(!IS_CLOSED && !IS_DELETE && !isDidMount) {
       this.refresh(true, false);
     }
   };
@@ -1011,7 +1012,7 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
         });
     }
     
-    if(car_id && !IS_CLOSED) {
+    if(car_id && !IS_CLOSED && !IS_DELETE) {
       await this.refresh(true, false).then(() => {
         if(IS_ACTIVE) {
           this.updateEngineKindsFields();

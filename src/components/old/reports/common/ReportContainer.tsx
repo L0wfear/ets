@@ -611,6 +611,10 @@ class ReportContainer extends React.Component<
       };
     }
 
+    if (this.props.useFiltersForPrint && Object.keys(this.state.filterValues).length) {
+      payload.rows = filterFunction(payload.rows, { filterValues: this.state.filterValues });
+    }
+    
     try {
       await this.props.exportByPostData(payload, searchObject);
     } catch (e) {

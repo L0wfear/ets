@@ -22,4 +22,5 @@ export type IReportProps = {
   headerStateMaker?(state: any): any;
   onRowDoubleClick?: any;
   notUseServerSummerTableForPrint?: boolean;
+  useFiltersForPrint?: boolean;
 };

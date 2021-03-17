@@ -117,23 +117,25 @@ export const checkAndModifyTrack = async (
 
       isCorssingMKAD = isCorssingMKAD || point.checkCoordsMsk.onMkad;
 
-      if (point.sensors && point.sensors.level && Object.values(front_cars_sensors_level).length) {
+      if (point.sensors && point.sensors.level && Object.values(front_cars_sensors_level).length) { //front_cars_sensors_level на основе cars_sensors из tc
         const { sensors: { level = [] } = {} } = point;
-        level.forEach((sensorData) => {
-          try {
-            front_cars_sensors_level[sensorData.sensor_id].data.push([
-              point.timestamp,
-              sensorData.val,
-            ]);
-            front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
-              point.timestamp,
-              sensorData.raw,
-            ]);
-          } catch (e) {
-            // tslint:disable-next-line:no-console
-            console.error('sensors Error: ', e);
-          }
-        });
+        try {
+          level.forEach((sensorData) => { // тут массив {sensor_id: 108027, id: 108027, i: 0, val: 73.269, raw: 73.269}
+            if(front_cars_sensors_level[sensorData.sensor_id]) {
+              front_cars_sensors_level[sensorData.sensor_id].data.push([
+                point.timestamp,
+                sensorData.val,
+              ]);
+              front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
+                point.timestamp,
+                sensorData.raw,
+              ]);
+            }
+          });
+        } catch (e) {
+          // tslint:disable-next-line:no-console
+          console.error('sensors Error: ', e);
+        }
       }
 
       const { sensors: { equipment = [] } = {} } = point;

@@ -163,6 +163,7 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
           return res;
         }).catch(() => {
           global.NOTIFICATION_SYSTEM.notify('Не удалось сохранить данные', 'error');
+          throw new Error;
         }),
         {
           ...formData.meta,

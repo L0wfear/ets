@@ -907,8 +907,7 @@ class WaybillFormWrap extends React.Component<WaybillFormWrapProps, State> {
     const isGasKind = formState.engine_kind_ids?.includes(GAS_ENGINE_TYPE_ID);
     tax_data.forEach((currElem, i) => {
       const isFirstElemTaxOperationField = (field === 'taxes_operation' || field === 'gas_taxes_operation' || field === 'electrical_taxes_operation') && index === firstElemIndex;
-      const firstEl = i === 0;
-      
+      const firstEl = i === firstElemIndex;
       if (
         (field === 'odometr_end' || isFirstElemTaxOperationField || field === 'odometr_start')
             && currElem.measure_unit_name !== motohoursMeasureUnitName

@@ -39,7 +39,7 @@ export type StateEmployee = {
   preferCarOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
   secondaryCarOptions: Array<DefaultSelectOption<Car['asuods_id'], string, Car>>;
   positionOptions: DefaultSelectListMapper<Position>;
-  companyStructureOptions: DefaultSelectListMapper<CompanyStructureLinear>;
+  companyStructureData: Array<CompanyStructureLinear>;
   isCommonOptions: Array<{ value: number; label: string; }>;
   countryOptions: Array<{ value: number; label: string; }>;
   driverStateOptions: Array<{ value: number; label: string; }>;

@@ -69,6 +69,7 @@ const RefillIntervalPrintForm: React.FC<PropsRefillIntervalPrint> = React.memo(
         const payload: Partial<RefillReportForm> = {
           date_from: createValidDateTime(date_from),
           date_to: createValidDateTime(date_to),
+          registryKey: props.registryKey,
         };
 
         const result = await props.submitAction(

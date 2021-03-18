@@ -4,6 +4,7 @@ import { RefillReportForm } from './@types';
 export const defaultRefillReportFormFunc = (): RefillReportForm => ({
   date_from: '',
   date_to: '',
+  registryKey: '',
 });
 
 export const getDefaultRefillReportFormElement = (element: Partial<RefillReportForm>): RefillReportForm => {

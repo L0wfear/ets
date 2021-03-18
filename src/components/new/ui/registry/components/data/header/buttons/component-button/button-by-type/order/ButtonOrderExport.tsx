@@ -16,7 +16,7 @@ const ButtonOrderExport: React.FC<Props> = React.memo(
 
     const showPrintForm = React.useCallback(
       (eventValue) => {
-        promiseLoadOrderBlobAndSave(selectedRow.id, eventValue);
+        promiseLoadOrderBlobAndSave(selectedRow.id, eventValue, props.registryKey);
       },
       [selectedRow],
     );

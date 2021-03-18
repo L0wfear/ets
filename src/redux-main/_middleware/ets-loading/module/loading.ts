@@ -36,13 +36,13 @@ export default (state = initialState, { type, payload }) => {
       const { [path]: pathCounter = 0 } = pageCounters;
 
       return {
-        allCount: state.allCount - 1,
+        allCount: state.allCount <= 0 ? 0 : state.allCount - 1, // чтобы allCount не уходил в минус при ETS_LOADING_RESET
         countByPage: {
           ...state.countByPage,
           [page]: {
             ...pageCounters,
-            allCount: pageCounters.allCount - 1,
-            [path]: pathCounter - 1,
+            allCount: pageCounters.allCount <= 0 ? 0 : pageCounters.allCount - 1,
+            [path]: pathCounter <= 0 ? 0 : pathCounter - 1,
           },
         },
       };

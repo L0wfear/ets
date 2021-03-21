@@ -148,7 +148,8 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               company_short_name={state.company_short_name}
               resolve_to={state.resolve_to}
               files={state.files}
-
+              additional_fields={state.data.additional_fields}
+              onChangeData={onChangeData}
               error_resolve_to={errors.resolve_to}
               handleChange={props.handleChange}
               page={props.page}

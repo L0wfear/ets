@@ -3,6 +3,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ViewInspectCarsConditionProps } from '../../@types/ViewInspectCarsContidion';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import CommissionMembers from './commission_members';
+import AdditionalFields from './additional_fields';
 import AgentsFromGbu from './agents_from_gbu';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
@@ -13,6 +14,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
+import { CommonDataInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
   type: keyof typeof INSPECT_TYPE_FORM;
@@ -27,9 +29,9 @@ type BlockCarsConditionSetInspectEmployeeProps = {
   error_agents_from_gbu: string;
   error_commission_members: string;
   company_short_name: InspectCarsCondition['company_short_name'];
-
+  additional_fields: CommonDataInspect['additional_fields'];
   files: InspectCarsCondition['files'];
-
+  onChangeData: (objChange: Object) => void;
   handleChange: ViewInspectCarsConditionProps['handleChange'] | ViewInspectAutobaseProps['handleChange'] | ViewInspectPgmBaseProps['handleChange'];
 
   resolve_to: InspectCarsCondition['resolve_to'];
@@ -53,9 +55,11 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           actionLoadTimeMoscow({}, { page: '' })
         );
         const props_resolve_to = props.resolve_to;
-        props.handleChange('dataForValidation', {
-          current_date: createValidDate(current_date.date),
-          props_resolve_to: createValidDate(props_resolve_to),
+        props.handleChange({
+          dataForValidation: {
+            current_date: createValidDate(current_date.date),
+            props_resolve_to: createValidDate(props_resolve_to),
+          }
         });
       })();
     }, []);
@@ -83,6 +87,13 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <AdditionalFields
+          isPermittedChangeListParams={isPermittedChangeListParams}
+          additional_fields={props.additional_fields}
+          handleChange={props.onChangeData}
+          page={props.page}
+          path={props.path}
+        />
         <CommissionMembers
           isPermittedChangeListParams={isPermittedChangeListParams}
 

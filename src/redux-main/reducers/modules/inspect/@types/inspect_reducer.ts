@@ -11,6 +11,10 @@ export type DefaultPartInspect = {
   };
 };
 
+export type CommonDataInspect = {
+  additional_fields: Array<{ field_name: string; field_val: string; }>
+};
+
 export type TypeOfInspect = 'autobase' | 'pgm_base' | 'container' | 'cars_condition';
 
 export type IStateInspect = {

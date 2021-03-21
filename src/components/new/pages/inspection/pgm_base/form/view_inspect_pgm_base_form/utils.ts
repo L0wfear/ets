@@ -48,6 +48,7 @@ export const defaultInspectPgmBase: InspectPgmBase = {
     type_coverage_in_hangar: [],
     type_of_base_coverage: [],
     comments: null,
+    additional_fields: [],
   },
   date_start: null,
   date_end: null,

@@ -1,6 +1,6 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { DefaultPartInspect } from '../../@types/inspect_reducer';
+import { CommonDataInspect, DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {
   is_coating_defects: boolean;
@@ -35,7 +35,7 @@ type InspectAutobaseData = {
   lack_of_toilets: boolean;
   lack_shower_cabins: boolean;
   comments: string;
-};
+} & CommonDataInspect;
 
 export type InspectAutobase = {
   base_address: string;

@@ -32,7 +32,7 @@ export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   insufficient_availability_of_wooden_pallets: false,
   lack_of_shelter_for_solid_pgm: false,
   pgm_on_open_area: '',
-
+  additional_fields: [],
   equipment_and_piping_in_poor_condition: false,
   containers_in_poor_condition: false,
 
@@ -50,6 +50,12 @@ const makeInspectPgmBase = (inspect: any): InspectPgmBase => {
   Object.keys(inspectAutobase.data).forEach(
     (key) => {
       if (!isNullOrUndefined(get(inspect, `data.${key}`))) {
+        if(key === 'additional_fields') {
+          inspectAutobase.data[key] = get(inspect, `data.${key}`, ).map((rowData, index) => {
+            rowData.customId = index + 1;
+            return rowData;
+          })
+        }
         inspectAutobase.data[key] = get(inspect, `data.${key}`);
       }
     },

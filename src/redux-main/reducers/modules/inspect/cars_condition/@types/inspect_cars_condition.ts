@@ -1,5 +1,5 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
-import { DefaultPartInspect } from '../../@types/inspect_reducer';
+import { DefaultPartInspect, CommonDataInspect } from '../../@types/inspect_reducer';
 
 type AgentsFromGbu = {
   fio: string;
@@ -116,7 +116,7 @@ export type InspectCarsCondition = {
     preparing_cars_check: PreparingCarsCheck;
     headcount: HeadcountList;
     cars_use: CarsUse;
-  };
+  } & CommonDataInspect;
   files: Array<any>;
   action: string;
 } & DefaultPartInspect;

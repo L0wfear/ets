@@ -66,6 +66,10 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
       ...cloneDeep(default_cars_use),
       ...get(inspectCarsCondition, 'data.cars_use', {}),
     },
+    additional_fields: get(inspectCarsCondition, 'data.additional_fields', []).map((rowData, index) => {
+      rowData.customId = index + 1;
+      return rowData;
+    }),
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 

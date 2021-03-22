@@ -439,3 +439,11 @@ export const handleChangeBooleanWithSavedFields = <T>(
     handleChange(savedFields);
   }
 };
+
+export const blobFromBase64 = (url: string, type: BlobPropertyBag['type']): Blob => {
+  const byteCharacters = atob(url);
+  const byteNumbers = byteCharacters.split('').map((_, i) => byteCharacters.charCodeAt(i));
+  const byteArray = new Uint8Array(byteNumbers);
+  
+  return new Blob([byteArray], {type});
+};

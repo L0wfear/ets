@@ -12,7 +12,8 @@ import {
   CarPassportGtnRegistryService,
   CarService,
   CarInfoService,
-  CarExcludeService
+  CarExcludeService,
+  RootService
 } from 'api/Services';
 import { CarDriversData, CarRegistrationData, CarPassporntData, CarExcludeOptions } from './@types';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
@@ -181,3 +182,6 @@ export const promiseGetCarMissionsAndWaybillsByTimestamp = async (payload: Payla
   return result;
 };
 
+export const promisePrintCarActualFile = (url: string) => {
+  return RootService.path(url).getBlob();
+};

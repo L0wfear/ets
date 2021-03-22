@@ -8,9 +8,13 @@ import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/u
 import { ButtonRemoveFile, FileInputWrapper, SingleInputFileItem } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
+import jsPDF from 'jspdf';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { printData, blobFromBase64 } from 'utils/functions';
 
 const FileListItem: React.FC<any> = React.memo(
   (props) => {
+    const dispatch = etsUseDispatch();
 
     const onFileRemove = React.useCallback(
       async () => {
@@ -48,6 +52,54 @@ const FileListItem: React.FC<any> = React.memo(
         }
       }, [props.url]);
 
+    const disablePrintBtn = React.useMemo(() => {
+      const regexp = new RegExp( props.allowedFormats.join( '|' ), 'i');
+      const url = props.url.includes('base64')
+        ? props.url.split(';')[0]
+        : props.url;
+      return !regexp.test(url);
+    }, [props.url, props.allowedFormats]); 
+    
+    const handlePrint = React.useCallback(
+      async () => {
+        const addImgToPDF = (url: string): string => {
+          const doc = new jsPDF();
+          doc.addImage(url, 'JPEG', 15, 40, 180, 200);
+          return doc.output('datauristring').split(',')[1];
+        };
+ 
+        const propsURL = props.url.split(',')[1];
+        let blob = null;
+       
+        if (props.url.includes('data:application')) {
+          blob = blobFromBase64(propsURL, 'application/pdf');
+        } else if (props.url.includes('data:image')) {
+          blob = blobFromBase64(addImgToPDF(props.url), 'application/pdf');
+        } else {
+          try {
+            const { blob: serverBlob } = await dispatch(props.getFileAction(props.url, {}));
+            if(props.url.includes('.pdf')) {
+              blob = serverBlob;
+            } else {
+              const reader = new FileReader();
+              reader.readAsDataURL(serverBlob);
+              reader.onload = () => {
+                const blob = blobFromBase64(addImgToPDF(reader.result as string), 'application/pdf');
+                printData(blob);
+              }; 
+            }
+          } catch (e) {
+            throw new Error(e);
+          }
+        }
+ 
+        if(!!blob) {
+          printData(blob);
+        }
+      },
+      [props.url]
+    );
+
     const createdAt = get(props, 'created_at', null);
     const withDateTime = get(props, 'withDateTime', false);
 
@@ -67,6 +119,12 @@ const FileListItem: React.FC<any> = React.memo(
               )
             }
             <a href={encodeURI(props.url)} title={props.name} onClick={onOpenFile} target={props.url.includes('base64') ? '' : '_blank'}>{props.name}</a>
+            {props.showPrintBtn 
+              ? <EtsBootstrap.Button style={{marginRight: '20px'}} bsSize='xsmall' onClick={handlePrint} disabled={disablePrintBtn}>
+                <EtsBootstrap.Glyphicon glyph="print"/>
+              </EtsBootstrap.Button>
+              : null
+            }
           </SingleInputFileItem>
           {
             Boolean(createdAt && withDateTime) && (
@@ -142,6 +200,9 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
                 askBefoeRemove={this.props.askBefoeRemove}
                 created_at={created_at}
                 withDateTime={withDateTime}
+                showPrintBtn={this.props.showPrintBtn}
+                getFileAction={this.props.getFileAction}
+                allowedFormats={this.props.allowedFormats}
               />,
             );
           }

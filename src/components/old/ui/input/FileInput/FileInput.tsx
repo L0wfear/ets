@@ -53,11 +53,14 @@ const FileListItem: React.FC<any> = React.memo(
       }, [props.url]);
 
     const disablePrintBtn = React.useMemo(() => {
-      const regexp = new RegExp( props.allowedFormats.join( '|' ), 'i');
-      const url = props.url.includes('base64')
-        ? props.url.split(';')[0]
-        : props.url;
-      return !regexp.test(url);
+      if (props.allowedFormats?.length) {
+        const regexp = new RegExp( props.allowedFormats.join( '|' ), 'i');
+        const url = props.url.includes('base64')
+          ? props.url.split(';')[0]
+          : props.url;
+        return !regexp.test(url);
+      }
+      return true;
     }, [props.url, props.allowedFormats]); 
     
     const handlePrint = React.useCallback(

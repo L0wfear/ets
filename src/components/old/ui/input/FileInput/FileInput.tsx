@@ -10,7 +10,7 @@ import { get } from 'lodash';
 import { createValidDateTimeDots } from 'components/@next/@utils/dates/dates';
 import jsPDF from 'jspdf';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { printData, blobFromBase64 } from 'utils/functions';
+import { printData, blobFromBase64, base64ToArrayBuffer } from 'utils/functions';
 
 const FileListItem: React.FC<any> = React.memo(
   (props) => {
@@ -67,7 +67,25 @@ const FileListItem: React.FC<any> = React.memo(
       async () => {
         const addImgToPDF = (url: string): string => {
           const doc = new jsPDF();
-          doc.addImage(url, 'JPEG', 15, 40, 180, 200);
+          const docWidth = Math.round(doc.internal.pageSize.getWidth());
+          const docHeight = Math.round(doc.internal.pageSize.getHeight());
+          const MAX_WIDTH = docWidth - 30;
+          const MAX_HEIGHT = docHeight - 30;
+          const { width, height} = doc.getImageProperties(url);
+          const dimensions = {
+            width,
+            height
+          };
+          if(height > MAX_HEIGHT || width > MAX_WIDTH) {
+            const RATIO = MAX_HEIGHT / MAX_WIDTH;
+            const originRatio = height / width;
+            const resizeCoef = originRatio >= RATIO ? MAX_HEIGHT / height : MAX_WIDTH / width;
+            dimensions.width = Math.round(width * resizeCoef);
+            dimensions.height = Math.round(height * resizeCoef);
+          }
+          const x = Math.round((docWidth - dimensions.width) / 2);
+          const y = Math.round((docHeight - dimensions.height) / 2);
+          doc.addImage(url, 'JPEG', x, y, dimensions.width, dimensions.height);
           return doc.output('datauristring').split(',')[1];
         };
  
@@ -75,9 +93,9 @@ const FileListItem: React.FC<any> = React.memo(
         let blob = null;
        
         if (props.url.includes('data:application')) {
-          blob = blobFromBase64(propsURL, 'application/pdf');
+          blob = blobFromBase64(base64ToArrayBuffer(propsURL), 'application/pdf');
         } else if (props.url.includes('data:image')) {
-          blob = blobFromBase64(addImgToPDF(props.url), 'application/pdf');
+          blob = blobFromBase64(base64ToArrayBuffer(addImgToPDF(props.url)), 'application/pdf');
         } else {
           try {
             const { blob: serverBlob } = await dispatch(props.getFileAction(props.url, {}));
@@ -87,7 +105,7 @@ const FileListItem: React.FC<any> = React.memo(
               const reader = new FileReader();
               reader.readAsDataURL(serverBlob);
               reader.onload = () => {
-                const blob = blobFromBase64(addImgToPDF(reader.result as string), 'application/pdf');
+                const blob = blobFromBase64(base64ToArrayBuffer(addImgToPDF(reader.result as string)), 'application/pdf');
                 printData(blob);
               }; 
             }

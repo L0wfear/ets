@@ -28,9 +28,9 @@ export const getToConfig = (fuel_card_number: string): TypeConfigData<Refill> =>
     list: {
       permissions: refillPermissions,
       data: {
-        uniqKey: 'rrn_code',
+        uniqKey: 'tx_id',
         fixedWidth: true,
-        uniqKeyForParams: 'rrn_code',
+        uniqKeyForParams: 'tx_id',
         uniqKeyType: 'string',
         withoutWithSearch: true,
       },

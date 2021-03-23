@@ -5,5 +5,5 @@ export type OneRefillFuelCompanyData = {
     refill_at: string;
     fuel_given: number;
   }>;
-  rrn_codes: Array<string>;
+  tx_ids: Array<string>;
 };

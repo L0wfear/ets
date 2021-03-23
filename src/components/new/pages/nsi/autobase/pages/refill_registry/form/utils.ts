@@ -15,7 +15,7 @@ export const defaultRefill: Refill = {
   fuel_type: '',
   fuel_given: null,
   car_gov_number_text: '',
-  rrn_code: null,
+  tx_id: null,
   waybill_id: null,
   waybill_number: null,
   wb_fuel_card_ids: [],
@@ -26,7 +26,7 @@ export const defaultRefill: Refill = {
   gas_station_address: '',
   structure_id: null,
   structure_name: '',
-  tx_type_name: '',
+  op_type_name: '',
 };
 
 export const getDefaultRefillElement = (element: Partial<Refill>): Refill => {

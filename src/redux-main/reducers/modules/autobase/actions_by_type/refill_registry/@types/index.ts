@@ -11,7 +11,7 @@ export type Refill = {
   fuel_type: string;
   fuel_given: number;
   car_gov_number_text: string;
-  rrn_code: number;
+  tx_id: number;
   waybill_id: number;
   waybill_number: number;
   wb_fuel_card_ids: Array<number>;
@@ -22,5 +22,5 @@ export type Refill = {
   gas_station_address: string;
   structure_id: number;
   structure_name: string;
-  tx_type_name: string;
+  op_type_name: string;
 };

@@ -208,7 +208,7 @@ export default compose<PropsRefill, OwnRefillProps>(
     }),
   ),
   withForm<PropsRefillWithForm, Refill>({
-    uniqField: 'rrn_code',
+    uniqField: 'tx_id',
     mergeElement: (props) => {
       return getDefaultRefillElement(props.element);
     },

@@ -190,9 +190,9 @@ export const getToConfig = (): TypeConfigData<Refill> => {
     list: {
       permissions: refillPermissions,
       data: {
-        uniqKey: 'rrn_code',
+        uniqKey: 'tx_id',
         fixedWidth: true,
-        uniqKeyForParams: 'rrn_code',
+        uniqKeyForParams: 'tx_id',
         uniqKeyType: 'string',
       },
       meta: {

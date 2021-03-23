@@ -171,7 +171,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   fuel_card_ids: null,
   refill_type_ids: null,
   engine_kind_ids: [],
-  rrn_codes: [],
+  tx_ids: [],
   refill: [],
   ...gasDefaultElement,
   ...electricalDefaultElement,

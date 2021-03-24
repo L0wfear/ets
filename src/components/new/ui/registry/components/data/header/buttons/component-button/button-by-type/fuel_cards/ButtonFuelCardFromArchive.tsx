@@ -18,7 +18,7 @@ const ButtonFuelCardFromArchive: React.FC<Props> = React.memo(
   (props) => {
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-
+    const is_manualy_created_card = selectedRow?.source_type_id === 1;
     const dispatch = etsUseDispatch();
     const handleSubmit = React.useCallback(
       async () => {
@@ -42,7 +42,7 @@ const ButtonFuelCardFromArchive: React.FC<Props> = React.memo(
       [selectedRow, uniqKey],
     );
 
-    const disabled = !selectedRow;
+    const disabled = !selectedRow || !is_manualy_created_card;
 
     return (
       <EtsBootstrap.Button id="fuel_card-from-archive" bsSize="small" onClick={handleSubmit} disabled={disabled}>

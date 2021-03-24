@@ -13,7 +13,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 export type AdditionalFiled = {
   field_name: string;
   field_val: string;
- }
+ };
 
 export const validationSchema: SchemaType<
   AdditionalFiled,
@@ -24,11 +24,13 @@ export const validationSchema: SchemaType<
       title: 'Наименование',
       type: 'string',
       required: true,
+      maxLength: 120,
     },
     field_val: {
       title: 'Значение',
       type: 'string',
       required: true,
+      maxLength: 120,
     },
   },
 };
@@ -73,6 +75,7 @@ const FieldNameRenderer: React.FC<IPropsAdditionalFiledRenderer> = ({
       onChange={handleChange}
       disabled={!isPermitted}
       boundKeys='field_name'
+      maxLength={120}
     />
   );
 };
@@ -98,6 +101,7 @@ const FieldValueRenderer: React.FC<IPropsAdditionalFiledRenderer> = ({
       onChange={handleChange}
       disabled={!isPermitted}
       boundKeys='field_val'
+      maxLength={120}
     />
   );
 };

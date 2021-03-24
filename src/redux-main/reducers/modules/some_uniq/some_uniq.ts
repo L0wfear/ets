@@ -53,7 +53,7 @@ export const initialState: IStateSomeUniq = {
   selectedMissionsList: [],
   refillFuelCompany: {
     refills: [],
-    rrn_codes: [],
+    tx_ids: [],
   },
   fuelTypesList: [],
   mileageTypesList: [],

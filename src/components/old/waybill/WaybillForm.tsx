@@ -1393,10 +1393,10 @@ class WaybillForm extends React.Component<WaybillProps, WaybillState> {
           fact_departure_date: createValidDateTime(fact_departure_date),
           fact_arrival_date: createValidDateTime(fact_arrival_date),
         }, this.props,)
-      ).then(({ refills, rrn_codes, }) => {
+      ).then(({ refills, tx_ids, }) => {
         this.props.handleMultipleChange({
           refills,
-          rrn_codes,
+          tx_ids,
         });
       });
     }

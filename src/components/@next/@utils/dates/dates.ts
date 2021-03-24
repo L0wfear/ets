@@ -430,3 +430,8 @@ export const getStartOfWeek = (date: Date | string) =>
   moment(date)
     .startOf('week')
     .format();
+
+export function getAWeekBefore() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 0, 0);
+}

@@ -4,6 +4,8 @@ import { hasWarningNotification } from 'utils/notifications';
 import * as ReduxTypes from 'components/old/reports/redux-main/modules/@types/report.h';
 import { makeDataForSummerTable } from 'components/old/reports/redux-main/modules/report_utils';
 import { isArray } from 'util';
+import { get } from 'lodash';
+import { createValidDate, getYesterday0am, getAWeekBefore } from 'components/@next/@utils/dates/dates';
 
 export type IStateReport = ReduxTypes.IReportStateProps;
 
@@ -59,7 +61,18 @@ export const getTableMetaInfo: ReduxTypes.IGetTableMetaInfo = (serviceName) => (
       };
 
       dispatch({ type: GET_REPORT_META_START });
-      const payload = await reports[serviceName].get(metaOpts);
+
+      //const payload = await reports[serviceName].get(metaOpts);
+      let payload;
+      if (serviceName === 'InspectionCarsUsage') {
+        const data = await reports[serviceName].get({
+          date_from: createValidDate(getAWeekBefore()),
+          date_to: createValidDate(getYesterday0am()),
+        });
+        payload = get(data, ['result.meta'], {});
+      } else {
+        payload = await reports[serviceName].get(metaOpts);
+      }
       dispatch({ type: GET_REPORT_META_DONE });
 
       dispatch({

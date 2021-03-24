@@ -3,7 +3,7 @@ import memoizeOne from 'memoize-one';
 import { CarWrap, MileageTypesArray } from './@types/CarForm';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isFourDigitGovNumber } from 'utils/functions';
-import { diffDates } from 'components/@next/@utils/dates/dates';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import * as React from 'react';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -162,6 +162,8 @@ export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {
             newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : getDefaultCar()[key][key2];
           });
         }
+      } else if (key === 'exploitation_date_start' && !isNullOrUndefined(element[key])) {
+        newElement[key] = createValidDate(element[key]);
       } else {
         newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : getDefaultCar()[key];
       }

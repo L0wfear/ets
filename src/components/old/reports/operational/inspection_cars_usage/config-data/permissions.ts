@@ -1,3 +1,3 @@
 export default {
-  list: 'waybill.list',
+  list: 'cars_usage_report.list',
 };

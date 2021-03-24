@@ -457,7 +457,7 @@ export default class DataTable extends React.Component<Props, State> {
 
     if (
       typeof data === 'string'
-      && data.split(' ').some((d) => d.length > 120)
+      && data.split(' ').some((d) => d.length > 30)
     ) {
       data = `${data.slice(0, 50)}...`;
     }

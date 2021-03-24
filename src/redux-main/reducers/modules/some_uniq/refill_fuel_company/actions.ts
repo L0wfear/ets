@@ -24,7 +24,7 @@ export const actionResetRefillFuelCompany = (): EtsAction<EtsActionReturnType<ty
   dispatch(
     actionSetRefillFuelCompany({
       refills: [],
-      rrn_codes: [],
+      tx_ids: [],
     }),
   )
 );

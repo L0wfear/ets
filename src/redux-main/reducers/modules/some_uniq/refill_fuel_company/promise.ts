@@ -17,7 +17,7 @@ export const promiseGetRefillFuelCompany = async (payload) => {
 
   const result: OneRefillFuelCompanyData = {
     refills: get(response, 'result.refills'),
-    rrn_codes: get(response, 'result.rrn_codes'),
+    tx_ids: get(response, 'result.tx_ids'),
   };
 
   return result;

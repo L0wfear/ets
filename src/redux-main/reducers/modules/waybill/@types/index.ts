@@ -213,7 +213,7 @@ export type Waybill = (
     hasEquipmentFuelRates?: boolean;
 
     refill: OneRefillFuelCompanyData['refills'];
-    rrn_codes: OneRefillFuelCompanyData['rrn_codes'];
+    tx_ids: OneRefillFuelCompanyData['tx_ids'];
   }
   & WaybillGas
   & WaybillElectrical

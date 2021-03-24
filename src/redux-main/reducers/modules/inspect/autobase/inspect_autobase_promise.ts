@@ -37,6 +37,7 @@ export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   lack_of_toilets: false,
   lack_shower_cabins: false,
   comments: '',
+  additional_fields: [],
 };
 
 const makeInspectAutobase = (inspect: any): InspectAutobase => {
@@ -50,6 +51,12 @@ const makeInspectAutobase = (inspect: any): InspectAutobase => {
   Object.keys(inspectAutobase.data).forEach(
     (key) => {
       if (!isNullOrUndefined(get(inspect, `data.${key}`))) {
+        if(key === 'additional_fields') {
+          inspectAutobase.data[key] = get(inspect, `data.${key}`, ).map((rowData, index) => {
+            rowData.customId = index + 1;
+            return rowData;
+          })
+        }
         inspectAutobase.data[key] = get(inspect, `data.${key}`);
       }
     },

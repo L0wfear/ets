@@ -45,6 +45,7 @@ export const defaultInspectAutobase: InspectAutobase = {
     lack_of_toilets: false,
     lack_shower_cabins: false,
     comments: null,
+    additional_fields: [],
   },
   date_start: null,
   delete_employee_fio: '',

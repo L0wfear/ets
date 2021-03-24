@@ -1,6 +1,6 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { DefaultPartInspect } from '../../@types/inspect_reducer';
+import { DefaultPartInspect, CommonDataInspect } from '../../@types/inspect_reducer';
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 
 export type InspectPgmBaseData = {
@@ -32,7 +32,7 @@ export type InspectPgmBaseData = {
   type_coverage_in_hangar: Array<string>;
   type_of_base_coverage: Array<string>;
   comments: string;
-};
+} & CommonDataInspect;
 
 export type InspectPgmBase = {
   agents_from_gbu: Array<any>;

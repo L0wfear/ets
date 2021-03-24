@@ -88,6 +88,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       comment: null,
       comment_detected: null,
     },
+    additional_fields: [],
   },
   status: 'conducting',
   date_end: null,

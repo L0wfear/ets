@@ -112,3 +112,8 @@ export const TachographReport = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/reports/tachograph',
   {},
 );
+
+export const InspectionCarsUsage = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/inspection_cars_usage',
+  {},
+);

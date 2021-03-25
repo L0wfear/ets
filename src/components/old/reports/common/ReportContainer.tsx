@@ -82,9 +82,9 @@ class ReportContainer extends React.Component<
       this.props.setDateRange(dateRange);
     }
 
-    if (Object.keys(searchObject).length > 0) {
+    if (Object.keys(searchObject).length > 0 || this.props.initialLoadPayload) {
       try {
-        this.getReportData(searchObject);
+        this.getReportData(this.props?.initialLoadPayload || searchObject);
       } catch (e) {
         console.warn(e); // tslint:disable-line
         return;
@@ -517,7 +517,7 @@ class ReportContainer extends React.Component<
         ...currVal[newKey],
       },
     };
-  }, {});;
+  }, {});
 
   handleReportPrint = async () => {
     const {

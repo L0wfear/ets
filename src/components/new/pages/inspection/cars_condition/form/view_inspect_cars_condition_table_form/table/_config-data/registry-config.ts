@@ -250,6 +250,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         valueKey: 'status_at_check',
         type: 'multiselect',
         title: 'Нахождение ТС на момент проверки',
+        registry_type: 'inspection_select',
       },
       {
         valueKey: 'mileage',
@@ -330,6 +331,10 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         valueKey: 'not_maintenance_and_repair',
         type: 'multiselect',
         title: 'Тех. обслуживание, ремонт не произведены',
+        options: [
+          { value: true, label: 'Да' },
+          { value: false, label: 'Нет' },
+        ],
       },
       {
         valueKey: 'not_ready_to_work',

@@ -46,7 +46,6 @@ import DataTableNew from 'components/old/ui/tableNew/DataTable';
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { isArray, isNumber, isNull, } from 'util';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { createValidDate, getYesterday0am, getAWeekBefore } from 'components/@next/@utils/dates/dates';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -82,14 +81,10 @@ class ReportContainer extends React.Component<
       const {level, ...dateRange} = searchObject;
       this.props.setDateRange(dateRange);
     }
-    const InspectionCarsUsageFirstTime = (this.props.serviceName === 'InspectionCarsUsage' && !Object.keys(searchObject).length);
-    const carUsageMeta = {
-      date_from: createValidDate(getAWeekBefore()),
-      date_to: createValidDate(getYesterday0am()),
-    };
-    if (Object.keys(searchObject).length > 0 || InspectionCarsUsageFirstTime) {
+
+    if (Object.keys(searchObject).length > 0 || this.props.initialLoadPayload) {
       try {
-        this.getReportData(InspectionCarsUsageFirstTime ? carUsageMeta : searchObject);
+        this.getReportData(this.props?.initialLoadPayload || searchObject);
       } catch (e) {
         console.warn(e); // tslint:disable-line
         return;

@@ -22,4 +22,9 @@ export type IReportProps = {
   headerStateMaker?(state: any): any;
   onRowDoubleClick?: any;
   notUseServerSummerTableForPrint?: boolean;
+  initialLoadPayload?: {
+    date_from?: string;
+    date_to?: string;
+    [key: string]: string;
+  };
 };

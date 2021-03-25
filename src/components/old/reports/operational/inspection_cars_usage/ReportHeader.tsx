@@ -21,12 +21,17 @@ type IPropsReportHeader = {
   date_to: string;
 } & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
+export const dateRangeDefault = {
+  date_from: getAWeekBefore(),
+  date_to: getYesterday0am(),
+};
+
 const ReportHeader: React.FC<IPropsReportHeader> = React.memo(
   (props) => {
     const {
       readOnly,
-      date_from = getAWeekBefore(),
-      date_to = getYesterday0am(),
+      date_from = dateRangeDefault.date_from,
+      date_to = dateRangeDefault.date_to,
       onClick,
     } = props;
 

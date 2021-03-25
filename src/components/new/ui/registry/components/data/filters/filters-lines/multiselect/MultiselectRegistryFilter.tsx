@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { isNumber, isBoolean, isArray, isObject } from 'util';
+import { isNumber, isBoolean, isArray, isObject, isNull } from 'util';
 import { get, uniqBy } from 'lodash';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
@@ -30,6 +30,7 @@ type PropsMultiselectRegistryFilter = {
     valueKey: string;
     labelKey?: string | number;
     options?: any;
+    registry_type?: string;
     disabled?: boolean;
     getRegistryData: any;
     format?: string;
@@ -47,6 +48,7 @@ type PropsMultiselectRegistryFilter = {
   total_count: number;
   onChange: (valueKey: string, type: string, value: Array<any>, option: object) => any;
   session: any;
+  inspectionConfig: any;
   dispatch: EtsDispatch;
   cache: Record<string, any>;
   setCache: React.Dispatch<React.SetStateAction<Record<string, any>>>;
@@ -168,6 +170,9 @@ const makeOptions = (props: PropsMultiselectRegistryFilter) => {
       ),
       'value'
     );
+  }
+  if (props.filterData.registry_type === 'inspection_select' && !isNull(props.inspectionConfig)) {
+    return props.inspectionConfig[props.filterData.valueKey];
   }
   return (
     props.filterData.options
@@ -429,5 +434,6 @@ export default connect<any, any, any, ReduxState>(
     array: getListData(state.registry, registryKey)?.data.array,
     filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
     session: state.session,
+    inspectionConfig: state.some_uniq.inspectionConfig,
   }),
 )(MultiselectRegistryFilter);

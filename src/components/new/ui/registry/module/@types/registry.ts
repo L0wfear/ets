@@ -121,6 +121,7 @@ export type OneFilterType<F> = {
   } | {
     type: 'multiselect';
     labelKey?: Extract<keyof F, string>;
+    registry_type?: string;
     options?: Array<FilterOptionType<F>>;
     getRegistryData?: {
       entity: string;

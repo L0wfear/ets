@@ -78,7 +78,7 @@ const validateFuelCardId = (
     return 'Укажите актуальную топливную карту';
   }
 
-  if (selectedFuelCard?.status === 'Locked' && !IS_CLOSED && !IS_DELETE) {
+  if (selectedFuelCard?.status === 'locked' && !IS_CLOSED && !IS_DELETE) {
     return 'Выбранная топливная карта заблокирована';
   }
 

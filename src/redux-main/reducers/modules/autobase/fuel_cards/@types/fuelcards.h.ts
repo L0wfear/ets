@@ -46,7 +46,7 @@ export type FuelCard = {
   refill_sum_text: string;
   source_type_id: number;
   source_type_text: string;
-  status: 'Active' | 'Locked';
+  status: 'active' | 'locked';
   status_text: string;
   comment: string; // поле из синхры
   // для таблички с тачками

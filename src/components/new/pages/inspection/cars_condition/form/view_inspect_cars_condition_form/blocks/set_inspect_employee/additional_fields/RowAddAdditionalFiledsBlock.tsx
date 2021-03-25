@@ -26,10 +26,10 @@ type RowAddCommissionMembersProps = {
 
 const RowAddAdditionalFiledsBlock: React.FC<RowAddCommissionMembersProps> = React.memo(
   (props) => {
-    const disabledAddButton = React.useMemo(() => props.additional_fields.length >=10, props.additional_fields)
+    const disabledAddButton = React.useMemo(() => props.additional_fields.length >=10, [props.additional_fields]);
     const onChange = React.useCallback((key, value) => {
-        props.handleChange({[key]: value})
-    }, [props.additional_fields, props.handleChange, props.selectField])
+      props.handleChange({[key]: value});
+    }, [props.additional_fields, props.handleChange, props.selectField]);
     return (
       <RowAddAdditionalFiledsWrapper>
         <EtsBootstrap.Row>

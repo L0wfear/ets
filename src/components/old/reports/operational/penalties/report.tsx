@@ -29,6 +29,7 @@ const reportProps: IReportProps = {
   renderers,
   enumerated: true,
   schemaMakers,
+  useFiltersForPrint: true,
 };
 
 const ExportableReportContainer = exportable({

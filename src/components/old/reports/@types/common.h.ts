@@ -27,4 +27,5 @@ export type IReportProps = {
     date_to?: string;
     [key: string]: string;
   };
+  useFiltersForPrint?: boolean;
 };

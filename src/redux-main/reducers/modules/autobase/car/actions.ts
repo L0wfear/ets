@@ -13,6 +13,7 @@ import {
   promiseUpdateCarPassportData,
   promiseLoadCarByAsuodsId,
   promiseGetCarMissionsAndWaybillsByTimestamp,
+  promisePrintCarActualFile,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
@@ -279,3 +280,15 @@ export const actionGetCarMissionsAndWaybillsByTimestamp = (payload: Parameters<t
   );
 };
 
+export const actionPrintCarActualFile = (url: string, meta: LoadingMeta): EtsAction<Promise<{
+  blob: Blob;
+  fileName: string;
+}>> => async (dispatch) => {
+  const file = await etsLoadingCounter(
+    dispatch,
+    promisePrintCarActualFile(url),
+    meta,
+  );
+
+  return file;
+};

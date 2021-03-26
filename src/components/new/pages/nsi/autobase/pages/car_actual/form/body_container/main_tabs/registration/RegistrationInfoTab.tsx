@@ -10,6 +10,7 @@ import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FileField } from 'components/old/ui/input/fields';
 import { Redirect, useLocation } from 'react-router-dom';
+import { actionPrintCarActualFile } from 'redux-main/reducers/modules/autobase/car/actions';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -120,6 +121,9 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               disabled={!isPermitted}
               withDateTime
               kind="registration_certificate"
+              showPrintBtn={true}
+              getFileAction={actionPrintCarActualFile}
+              allowedFormats={['pdf', 'png', 'jpg', 'jpeg']}
             />
           </EtsBootstrap.Col>
           <CenterCol md={6}>

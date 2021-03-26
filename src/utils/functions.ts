@@ -439,3 +439,6 @@ export const handleChangeBooleanWithSavedFields = <T>(
     handleChange(savedFields);
   }
 };
+
+export const base64ToArrayBuffer = (data: string) => new Uint8Array(atob(data).split('').map((el) => el.charCodeAt(0)));
+export const blobFromBase64 = (arr: Uint8Array, type: BlobPropertyBag['type']): Blob => new Blob([arr], {type});

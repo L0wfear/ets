@@ -1,3 +1,5 @@
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 export type IPropsFileInput = {
   disabled?: boolean;
   value: Array<IFileWrapper>;
@@ -17,7 +19,18 @@ export type IPropsFileInput = {
   isLoading?(callback: (indicator: boolean, error?: any) => void): void;
 
   askBefoeRemove?: boolean;
-};
+} & (
+  | {
+    showPrintBtn?: never;
+    getFileAction?: never;
+    allowedFormats?: never;
+    }
+  | {
+    showPrintBtn: boolean;
+    getFileAction: (url: string, meta: LoadingMeta) => EtsAction<Promise<{blob: Blob; fileName: string;}>>;
+    allowedFormats: Array<string>;
+  }
+);
 
 export type IStateFileInput = {
   isFilesLoading: boolean;

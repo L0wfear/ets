@@ -56,7 +56,7 @@ import ButtonInsurancePolicyFromArchive from './button-by-type/insurance_policy/
 type Props = CommonTypesForButton;
 
 type AllButtons = Record<typeof buttonsTypes[keyof typeof buttonsTypes], React.ComponentType<CommonTypesForButton & Record<string, any>>>;
-
+ 
 const buttonComponents: AllButtons = {
   [buttonsTypes.export]: ButtonExport,
   [buttonsTypes.export_filtred_data]: ButtonExportFiltredData,

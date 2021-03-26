@@ -28,18 +28,24 @@ export const promiseLoadOrderHistory = async (id: Order['id']) => {
   return result;
 };
 
-export const promiseLoadOrderBlob = async (id: Order['id'], eventName: typeof TypeDownload[keyof typeof TypeDownload]) => {
+export const promiseLoadOrderBlob = async (id: Order['id'], eventName: typeof TypeDownload[keyof typeof TypeDownload], registryKey?: string) => {
+  const localStorageColumns = registryKey && JSON.parse(localStorage.getItem(`columnContorol`));
+  const registryColumns: Array<{key: string; hidden: boolean;}> = localStorageColumns && localStorageColumns[registryKey] || []; 
   const payload: any = {};
   if (eventName === TypeDownload.new) {
     payload.format = 'xls';
+  }
+  const registryColumnsStr = registryColumns.reduce((a, b) => !b.hidden ? (!a.length ? a + b.key : a + `,${b.key}`) : a, '');
+  if(registryColumnsStr.length) {
+    payload.columns = registryColumnsStr;
   }
   const response: { blob: Blob; fileName: string; } = await OrderService.path(id).getBlob(payload);
 
   return response;
 };
 
-export const promiseLoadOrderBlobAndSave = (id: Order['id'], eventName: typeof TypeDownload[keyof typeof TypeDownload]) => {
-  return promiseLoadOrderBlob(id, eventName)
+export const promiseLoadOrderBlobAndSave = (id: Order['id'], eventName: typeof TypeDownload[keyof typeof TypeDownload], registryKey?: string) => {
+  return promiseLoadOrderBlob(id, eventName, registryKey)
     .then(({ blob, fileName }) => saveData(blob, fileName));
 };
 

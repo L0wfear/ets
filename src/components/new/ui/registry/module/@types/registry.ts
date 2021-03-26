@@ -172,6 +172,7 @@ export type OneRegistryData<F = any> = {
       typeAns?: 'result.rows' | 'result';     // путь до массива в ответе
       typeExtra?: 'result.extra';             // путь до экстры
       userServerFilters?: boolean;            // используется ли серверная фильтрация/ пагинация
+      withoutColumns?: boolean;
     };
     removeOneData?: {
       entity: string;
@@ -180,6 +181,7 @@ export type OneRegistryData<F = any> = {
     getBlobData?: {
       entity: string;
       payload?: Record<string, any>;
+      withoutColumns?: boolean;
     };
   };
   path: string;

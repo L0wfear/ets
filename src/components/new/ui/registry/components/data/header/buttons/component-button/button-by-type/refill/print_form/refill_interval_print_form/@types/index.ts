@@ -4,6 +4,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 export type RefillReportForm = {
   date_from: string;
   date_to: string;
+  registryKey: string;
 };
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

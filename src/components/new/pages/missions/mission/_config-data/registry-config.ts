@@ -29,6 +29,7 @@ export const config: TypeConfigData<Mission> = {
         is_archive: false,
         format: 'xls',
       },
+      withoutColumns: true,
     },
   },
   registryKey,

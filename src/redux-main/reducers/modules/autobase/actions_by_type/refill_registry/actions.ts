@@ -5,8 +5,9 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { RefillReportForm } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/refill/print_form/refill_interval_print_form/@types';
 
-export const actionGetBlobRefill = (payload: { date_start: string; date_end: string; }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
+export const actionGetBlobRefill = (payload: RefillReportForm, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobRefill(payload, filter),

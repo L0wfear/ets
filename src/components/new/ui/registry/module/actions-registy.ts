@@ -117,6 +117,9 @@ export const registryAddInitialData = <F extends any = any>({ registryKey, ...co
   const columnFieldsData = serverUserColumnFields && serverUserColumnFields.length
     ? serverUserColumnFields
     : localStorageColumnFields;
+  if(!localStorageColumnFields.lenth && serverUserColumnFields.length) {
+    localStorage.setItem('columnContorol', JSON.stringify({[registryKey]: serverUserColumnFields}));
+  }
 
   const filterFields = filterFieldsData.length 
     ? config.filter.fields.map((el) => {
@@ -791,6 +794,8 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
   const getRegistryData = get(Service, 'getRegistryData');
   const userServerFilters = get(getRegistryData, 'userServerFilters');
   const isServerFilterPrint = useFiltredData && userServerFilters;
+  const localStorageColumns = JSON.parse(localStorage.getItem(`columnContorol`));
+  const registryColumns: Array<{key: string; hidden: boolean;}> = localStorageColumns && localStorageColumns[registryKey] || [];
 
   const getBlobData = (
     get(Service, 'getBlobData')
@@ -800,7 +805,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
   let fileName = '';
 
   if (getBlobData) {
-    const payload = {
+    const payload: {format: string; columns?: string;} = {
       ...Object.entries(getBlobData.payload || {}).reduce(
         (newObj, [key, value]) => {
           if (!isNullOrUndefined(value)) {
@@ -823,7 +828,7 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
         dispatch,
         postBlob(
           `${configStand.backend}/${getBlobData.entity}?${paylaodAsString}`,
-          { rows: processedArray },
+          { rows: processedArray, columns: registryColumns },
         ),
         { page: registryKey, path },
       );
@@ -840,7 +845,12 @@ export const registyLoadPrintForm = (registryKey: string, useFiltredData?: boole
         sort_by: get(PayloadForLoad, 'sort_by'),
         filter: get(PayloadForLoad, 'filter'),
       };
-
+      if(!getBlobData.withoutColumns) {
+        const registryColumnsStr = registryColumns.reduce((a, b) => !b.hidden ? (!a.length ? a + b.key : a + `,${b.key}`) : a, '');
+        if(registryColumnsStr.length) {
+          payload.columns = registryColumnsStr;
+        }
+      }
       const getPayload = isServerFilterPrint
         ? {
           ...payload,

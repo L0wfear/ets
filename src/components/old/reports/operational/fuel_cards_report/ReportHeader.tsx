@@ -69,7 +69,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
   getState() {
     const {
-      switch_report_type = 'fuel_cards'
+      switch_report_type = 'cars'
     } = this.props;
 
     return {

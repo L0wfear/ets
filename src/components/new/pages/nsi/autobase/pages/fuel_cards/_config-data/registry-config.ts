@@ -120,7 +120,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
         },
         {
           valueKey: 'structure_id',
-          labelKey: 'structure_name',
+          labelKey: 'structure_name_text',
           title: 'Подразделение',
           type: 'multiselect',
           displayIf: displayIfContant.lenghtStructureMoreOne,
@@ -215,7 +215,7 @@ export const getToConfig = (is_archive: boolean = false, title: string = 'Рее
             width: 200,
           },
           {
-            key: 'structure_name',
+            key: 'structure_name_text',
             title: 'Подразделение',
             width: 200,
           },

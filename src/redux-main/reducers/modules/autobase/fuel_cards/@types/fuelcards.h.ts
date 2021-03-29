@@ -36,6 +36,7 @@ export type FuelCard = {
   is_common: boolean | null;
   okrug_name: string | null;
   structure_name: string | null;
+  structure_name_text: string | null;
   released_at: string;
   date_end: string;
   car_id: number;
